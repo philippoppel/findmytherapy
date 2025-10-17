@@ -1,0 +1,430 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  CLIENT
+  THERAPIST
+  ADMIN
+}
+
+enum TherapistStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum ListingPlan {
+  FREE
+  PRO
+  PRO_PLUS
+}
+
+enum ListingStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum OrderType {
+  LISTING_SUB
+  COURSE
+}
+
+enum OrderStatus {
+  REQUIRES_PAYMENT
+  PAID
+  REFUNDED
+  CANCELED
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum NextStep {
+  INFO
+  COURSE
+  THERAPIST
+}
+
+enum MatchStatus {
+  NEW
+  CONTACTED
+  DECLINED
+  ACCEPTED
+}
+
+enum AlertSeverity {
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  emailVerified  DateTime?
+  passwordHash   String?
+  role           UserRole @default(CLIENT)
+  twoFASecret    String?
+  locale         String   @default("de-AT")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+
+  // Relations
+  accounts         Account[]
+  sessions         Session[]
+  therapistProfile TherapistProfile?
+  clientOrders     Order[] @relation("ClientOrders")
+  enrollments      Enrollment[]
+  triageSessions   TriageSession[]
+  clientMatches    Match[] @relation("ClientMatches")
+  emergencyAlerts  EmergencyAlert[] @relation("ClientAlerts")
+  handledAlerts    EmergencyAlert[] @relation("HandlerAlerts")
+  auditLogs        AuditLog[]
+  appointments     Appointment[]
+
+  @@index([email])
+  @@index([role])
+  @@index([deletedAt])
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([expires])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model TherapistProfile {
+  id               String          @id @default(cuid())
+  userId           String          @unique
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status           TherapistStatus @default(PENDING)
+  adminNotes       String?         @db.Text
+  licenseAuthority String?
+  licenseId        String?
+  modalities       String[]
+  specialties      String[]
+  priceMin         Int?            // in minor units (cents)
+  priceMax         Int?            // in minor units (cents)
+  languages        String[]
+  online           Boolean         @default(false)
+  city             String?
+  country          String          @default("AT")
+  about            String?         @db.Text
+  isPublic         Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deletedAt        DateTime?
+
+  // Relations
+  listings         Listing[]
+  courses          Course[]
+  payouts          Payout[]
+  therapistMatches Match[] @relation("TherapistMatches")
+  appointments     Appointment[]
+
+  @@index([status, isPublic])
+  @@index([city])
+  @@index([country])
+  @@index([deletedAt])
+}
+
+model Listing {
+  id                 String        @id @default(cuid())
+  therapistId        String
+  therapist          TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  plan               ListingPlan   @default(FREE)
+  status             ListingStatus @default(ACTIVE)
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  stripeCustomerId   String?
+  stripeSubId        String?       @unique
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  deletedAt          DateTime?
+
+  @@index([therapistId])
+  @@index([status])
+  @@index([stripeSubId])
+  @@index([deletedAt])
+}
+
+model Course {
+  id            String       @id @default(cuid())
+  therapistId   String
+  therapist     TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  title         String
+  slug          String       @unique
+  description   String       @db.Text
+  price         Int          // in minor units (cents)
+  currency      String       @default("EUR")
+  status        CourseStatus @default(DRAFT)
+  mediaManifest Json?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  lessons      Lesson[]
+  enrollments  Enrollment[]
+
+  @@index([therapistId])
+  @@index([slug])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  durationSec Int
+  assetRef    String?
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@unique([courseId, order])
+  @@index([courseId])
+  @@index([deletedAt])
+}
+
+model Order {
+  id                    String      @id @default(cuid())
+  buyerId               String
+  buyer                 User        @relation("ClientOrders", fields: [buyerId], references: [id])
+  type                  OrderType
+  amount                Int         // in minor units (cents)
+  currency              String      @default("EUR")
+  status                OrderStatus @default(REQUIRES_PAYMENT)
+  stripePaymentIntentId String?     @unique
+  stripeCheckoutSessionId String?   @unique
+  metadata              Json?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([buyerId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+  @@index([stripeCheckoutSessionId])
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    User     @relation(fields: [clientId], references: [id])
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([clientId, courseId])
+  @@index([clientId])
+  @@index([courseId])
+}
+
+model Payout {
+  id               String       @id @default(cuid())
+  therapistId      String
+  therapist        TherapistProfile @relation(fields: [therapistId], references: [id])
+  amount           Int          // in minor units (cents)
+  currency         String       @default("EUR")
+  stripeTransferId String?      @unique
+  status           PayoutStatus @default(PENDING)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([therapistId])
+  @@index([status])
+  @@index([stripeTransferId])
+}
+
+model TriageSession {
+  id                 String    @id @default(cuid())
+  clientId           String
+  client             User      @relation(fields: [clientId], references: [id])
+  phq9Score          Int?
+  gad7Score          Int?
+  riskLevel          RiskLevel
+  recommendedNextStep NextStep
+  meta               Json?
+  createdAt          DateTime  @default(now())
+
+  @@index([clientId])
+  @@index([riskLevel])
+}
+
+model Match {
+  id          String      @id @default(cuid())
+  clientId    String
+  client      User        @relation("ClientMatches", fields: [clientId], references: [id])
+  therapistId String
+  therapist   TherapistProfile @relation("TherapistMatches", fields: [therapistId], references: [id])
+  score       Float
+  reason      String[]
+  status      MatchStatus @default(NEW)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([clientId, therapistId])
+  @@index([clientId])
+  @@index([therapistId])
+  @@index([status])
+}
+
+model EmergencyAlert {
+  id          String        @id @default(cuid())
+  clientId    String
+  client      User          @relation("ClientAlerts", fields: [clientId], references: [id])
+  severity    AlertSeverity
+  triggeredAt DateTime      @default(now())
+  handledBy   String?
+  handler     User?         @relation("HandlerAlerts", fields: [handledBy], references: [id])
+  notes       String?       @db.Text
+
+  @@index([clientId])
+  @@index([severity])
+  @@index([handledBy])
+}
+
+model AuditLog {
+  id       String   @id @default(cuid())
+  actorId  String
+  actor    User     @relation(fields: [actorId], references: [id])
+  action   String
+  entity   String
+  entityId String
+  ip       String?
+  at       DateTime @default(now())
+
+  @@index([actorId])
+  @@index([entity, entityId])
+  @@index([at])
+}
+
+model ContactRequest {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  topic         String
+  message       String   @db.Text
+  preferredSlot String
+  status        String   @default("NEW") // NEW, IN_PROGRESS, RESOLVED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model DemoRequest {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  role      String   // THERAPIST, ORGANISATION, PRIVATE
+  company   String?
+  notes     String?  @db.Text
+  status    String   @default("NEW") // NEW, CONTACTED, DEMO_SCHEDULED, COMPLETED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model PasswordResetRequest {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+  @@index([expires])
+}
+
+model Appointment {
+  id           String   @id @default(cuid())
+  therapistId  String
+  therapist    TherapistProfile @relation(fields: [therapistId], references: [id], onDelete: Cascade)
+  clientId     String?
+  client       User?    @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  title        String
+  description  String?  @db.Text
+  startTime    DateTime
+  endTime      DateTime
+  status       String   @default("SCHEDULED") // SCHEDULED, CONFIRMED, CANCELED, COMPLETED
+  location     String?  // "online" or physical address
+  meetingLink  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([therapistId])
+  @@index([clientId])
+  @@index([startTime])
+  @@index([status])
+}

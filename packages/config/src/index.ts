@@ -1,0 +1,101 @@
+import { z } from 'zod';
+
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+  REDIS_URL: z.string().min(1, 'REDIS_URL is required'),
+  NEXTAUTH_URL: z.string().url('NEXTAUTH_URL must be a valid URL'),
+  NEXTAUTH_SECRET: z.string().min(32, 'NEXTAUTH_SECRET must be at least 32 characters'),
+  EMAIL_FROM: z.string().email('EMAIL_FROM must be a valid email'),
+  EMAIL_PROVIDER_API_KEY: z.string().min(1, 'EMAIL_PROVIDER_API_KEY is required'),
+  EMAIL_SMTP_HOST: z.string().min(1, 'EMAIL_SMTP_HOST is required').default('localhost'),
+  EMAIL_SMTP_PORT: z.coerce.number().positive('EMAIL_SMTP_PORT must be positive').default(1025),
+  EMAIL_SMTP_USER: z.string().optional().default(''),
+  EMAIL_SMTP_PASS: z.string().optional().default(''),
+  STRIPE_SECRET_KEY: z.string().min(1, 'STRIPE_SECRET_KEY is required'),
+  STRIPE_PUBLISHABLE_KEY: z.string().min(1, 'STRIPE_PUBLISHABLE_KEY is required'),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1, 'STRIPE_WEBHOOK_SECRET is required'),
+  STRIPE_CONNECT_CLIENT_ID: z.string().min(1, 'STRIPE_CONNECT_CLIENT_ID is required'),
+  STRIPE_PRICE_LISTING_MONTHLY: z.string().min(1, 'STRIPE_PRICE_LISTING_MONTHLY is required'),
+  STRIPE_PRICE_LISTING_YEARLY: z.string().min(1, 'STRIPE_PRICE_LISTING_YEARLY is required'),
+  STRIPE_TAX_ENABLED: z
+    .string()
+    .optional()
+    .transform((value) => value === 'true'),
+  S3_ENDPOINT: z.string().url('S3_ENDPOINT must be a valid URL'),
+  S3_REGION: z.string().min(1, 'S3_REGION is required'),
+  S3_BUCKET: z.string().min(1, 'S3_BUCKET is required'),
+  S3_ACCESS_KEY_ID: z.string().min(1, 'S3_ACCESS_KEY_ID is required'),
+  S3_SECRET_ACCESS_KEY: z.string().min(1, 'S3_SECRET_ACCESS_KEY is required'),
+  APP_BASE_URL: z.string().url('APP_BASE_URL must be a valid URL'),
+});
+
+type Env = z.infer<typeof envSchema>;
+
+let cachedEnv: Env | null = null;
+
+export const loadEnv = (): Env => {
+  if (cachedEnv) {
+    return cachedEnv;
+  }
+
+  const parsed = envSchema.safeParse(process.env);
+
+  if (!parsed.success) {
+    const formattedErrors = parsed.error.issues
+      .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+      .join('\n');
+
+    throw new Error(`Invalid environment configuration:\n${formattedErrors}`);
+  }
+
+  cachedEnv = parsed.data;
+  return cachedEnv;
+};
+
+export const env = (() => {
+  try {
+    return loadEnv();
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[config] Environment not fully configured yet:', (error as Error).message);
+      return envSchema.parse({
+        NODE_ENV: process.env.NODE_ENV ?? 'development',
+        DATABASE_URL:
+          process.env.DATABASE_URL ??
+          'postgresql://postgres:password@localhost:5432/mental_health_dev',
+        REDIS_URL: process.env.REDIS_URL ?? 'redis://localhost:6379',
+        NEXTAUTH_URL: process.env.NEXTAUTH_URL ?? 'http://localhost:3000',
+        NEXTAUTH_SECRET:
+          process.env.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
+        EMAIL_FROM: process.env.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
+        EMAIL_PROVIDER_API_KEY: process.env.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
+        EMAIL_SMTP_HOST: process.env.EMAIL_SMTP_HOST ?? 'localhost',
+        EMAIL_SMTP_PORT: process.env.EMAIL_SMTP_PORT ?? '1025',
+        EMAIL_SMTP_USER: process.env.EMAIL_SMTP_USER ?? '',
+        EMAIL_SMTP_PASS: process.env.EMAIL_SMTP_PASS ?? '',
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? 'sk_test_dummy',
+        STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY ?? 'pk_test_dummy',
+        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? 'whsec_test_dummy',
+        STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID ?? 'ca_test_dummy',
+        STRIPE_PRICE_LISTING_MONTHLY:
+          process.env.STRIPE_PRICE_LISTING_MONTHLY ?? 'price_listing_monthly_test',
+        STRIPE_PRICE_LISTING_YEARLY:
+          process.env.STRIPE_PRICE_LISTING_YEARLY ?? 'price_listing_yearly_test',
+        STRIPE_TAX_ENABLED: process.env.STRIPE_TAX_ENABLED ?? 'false',
+        S3_ENDPOINT: process.env.S3_ENDPOINT ?? 'http://localhost:9000',
+        S3_REGION: process.env.S3_REGION ?? 'eu-central-1',
+        S3_BUCKET: process.env.S3_BUCKET ?? 'mental-health-platform',
+        S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID ?? 'minio',
+        S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY ?? 'minio-secret',
+        APP_BASE_URL: process.env.APP_BASE_URL ?? 'http://localhost:3000',
+      });
+    }
+
+    throw error;
+  }
+})();
+
+export const isProduction = env.NODE_ENV === 'production';
+export const isDevelopment = env.NODE_ENV === 'development';
+export const isTest = env.NODE_ENV === 'test';

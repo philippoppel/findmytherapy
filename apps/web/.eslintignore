@@ -1,0 +1,9 @@
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+tests/
+__tests__/
+coverage/
+.next/
+node_modules/

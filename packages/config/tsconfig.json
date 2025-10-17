@@ -1,0 +1,4 @@
+{
+  "extends": "@mental-health/tsconfig/node.json",
+  "include": ["src"]
+}

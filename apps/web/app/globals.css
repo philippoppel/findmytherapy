@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@mental-health/ui/src/styles/tokens.css';
+@import '@mental-health/ui/src/styles/components.css';
+
+@layer base {
+  *, *::before, *::after {
+    border-color: rgb(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
+  }
+
+  a {
+    color: inherit;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-primary-200));
+    color: rgb(var(--color-neutral-950));
+  }
+}
+
+@layer utilities {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--color-neutral-400), 0.5) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-neutral-300));
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-neutral-400));
+  }
+}

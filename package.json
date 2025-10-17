@@ -1,0 +1,52 @@
+{
+  "name": "mental-health-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mental health platform with therapist directory and courses",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "build:web": "turbo build --filter=web",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "postinstall": "pnpm --filter @mental-health/db db:generate",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "db:push": "pnpm --filter @mental-health/db db:push",
+    "db:migrate": "pnpm --filter @mental-health/db db:migrate",
+    "db:seed": "pnpm --filter @mental-health/db db:seed",
+    "db:studio": "pnpm --filter @mental-health/db db:studio",
+    "db:init": "pnpm db:push && pnpm db:seed",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "e2e": "pnpm --filter web e2e",
+    "e2e:ui": "pnpm --filter web e2e:ui",
+    "prepare": "husky install",
+    "vercel-build": "pnpm prisma generate && pnpm turbo build --filter=web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.0",
+    "turbo": "^1.12.0",
+    "typescript": "^5.3.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@auth/core": "0.40.0"
+    }
+  },
+  "packageManager": "pnpm@8.15.0"
+}
