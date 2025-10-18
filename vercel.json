@@ -1,6 +1,0 @@
-{
-  "buildCommand": "cd ../.. && pnpm vercel-build",
-  "installCommand": "cd ../.. && pnpm install",
-  "framework": "nextjs",
-  "regions": ["fra1"]
-}
