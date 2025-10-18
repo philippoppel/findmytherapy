@@ -4,8 +4,24 @@ const withNextIntl = require('next-intl/plugin')();
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@mental-health/ui', '@mental-health/db', '@mental-health/config'],
+  output: 'standalone',
+  poweredByHeader: false,
+  compress: true,
   images: {
-    domains: ['localhost', 'images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
+  },
+  experimental: {
+    optimizePackageImports: ['@mental-health/ui', 'lucide-react'],
   },
   async headers() {
     return [
@@ -27,6 +43,15 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

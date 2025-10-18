@@ -1,5 +1,29 @@
 import { z } from 'zod';
 
+const sanitizeEnvValue = (value: string | undefined): string | undefined => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return trimmed;
+  }
+
+  return trimmed.replace(/^['"]+|['"]+$/g, '');
+};
+
+const sanitizeProcessEnv = (env: NodeJS.ProcessEnv): Record<string, string | undefined> => {
+  return Object.entries(env).reduce<Record<string, string | undefined>>((acc, [key, value]) => {
+    const sanitized = sanitizeEnvValue(value);
+    if (sanitized !== undefined) {
+      acc[key] = sanitized;
+    }
+    return acc;
+  }, {});
+};
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
@@ -39,7 +63,8 @@ export const loadEnv = (): Env => {
     return cachedEnv;
   }
 
-  const parsed = envSchema.safeParse(process.env);
+  const sanitizedEnv = sanitizeProcessEnv(process.env);
+  const parsed = envSchema.safeParse(sanitizedEnv);
 
   if (!parsed.success) {
     const formattedErrors = parsed.error.issues
@@ -57,38 +82,41 @@ export const env = (() => {
   try {
     return loadEnv();
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
+    const sanitizedEnv = sanitizeProcessEnv(process.env);
+    const nodeEnv = sanitizedEnv.NODE_ENV ?? 'development';
+
+    if (nodeEnv !== 'production') {
       console.warn('[config] Environment not fully configured yet:', (error as Error).message);
       return envSchema.parse({
-        NODE_ENV: process.env.NODE_ENV ?? 'development',
+        NODE_ENV: nodeEnv,
         DATABASE_URL:
-          process.env.DATABASE_URL ??
+          sanitizedEnv.DATABASE_URL ??
           'postgresql://postgres:password@localhost:5432/mental_health_dev',
-        REDIS_URL: process.env.REDIS_URL ?? 'redis://localhost:6379',
-        NEXTAUTH_URL: process.env.NEXTAUTH_URL ?? 'http://localhost:3000',
+        REDIS_URL: sanitizedEnv.REDIS_URL ?? 'redis://localhost:6379',
+        NEXTAUTH_URL: sanitizedEnv.NEXTAUTH_URL ?? 'http://localhost:3000',
         NEXTAUTH_SECRET:
-          process.env.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
-        EMAIL_FROM: process.env.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
-        EMAIL_PROVIDER_API_KEY: process.env.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
-        EMAIL_SMTP_HOST: process.env.EMAIL_SMTP_HOST ?? 'localhost',
-        EMAIL_SMTP_PORT: process.env.EMAIL_SMTP_PORT ?? '1025',
-        EMAIL_SMTP_USER: process.env.EMAIL_SMTP_USER ?? '',
-        EMAIL_SMTP_PASS: process.env.EMAIL_SMTP_PASS ?? '',
-        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? 'sk_test_dummy',
-        STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY ?? 'pk_test_dummy',
-        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? 'whsec_test_dummy',
-        STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID ?? 'ca_test_dummy',
+          sanitizedEnv.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
+        EMAIL_FROM: sanitizedEnv.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
+        EMAIL_PROVIDER_API_KEY: sanitizedEnv.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
+        EMAIL_SMTP_HOST: sanitizedEnv.EMAIL_SMTP_HOST ?? 'localhost',
+        EMAIL_SMTP_PORT: sanitizedEnv.EMAIL_SMTP_PORT ?? '1025',
+        EMAIL_SMTP_USER: sanitizedEnv.EMAIL_SMTP_USER ?? '',
+        EMAIL_SMTP_PASS: sanitizedEnv.EMAIL_SMTP_PASS ?? '',
+        STRIPE_SECRET_KEY: sanitizedEnv.STRIPE_SECRET_KEY ?? 'sk_test_dummy',
+        STRIPE_PUBLISHABLE_KEY: sanitizedEnv.STRIPE_PUBLISHABLE_KEY ?? 'pk_test_dummy',
+        STRIPE_WEBHOOK_SECRET: sanitizedEnv.STRIPE_WEBHOOK_SECRET ?? 'whsec_test_dummy',
+        STRIPE_CONNECT_CLIENT_ID: sanitizedEnv.STRIPE_CONNECT_CLIENT_ID ?? 'ca_test_dummy',
         STRIPE_PRICE_LISTING_MONTHLY:
-          process.env.STRIPE_PRICE_LISTING_MONTHLY ?? 'price_listing_monthly_test',
+          sanitizedEnv.STRIPE_PRICE_LISTING_MONTHLY ?? 'price_listing_monthly_test',
         STRIPE_PRICE_LISTING_YEARLY:
-          process.env.STRIPE_PRICE_LISTING_YEARLY ?? 'price_listing_yearly_test',
-        STRIPE_TAX_ENABLED: process.env.STRIPE_TAX_ENABLED ?? 'false',
-        S3_ENDPOINT: process.env.S3_ENDPOINT ?? 'http://localhost:9000',
-        S3_REGION: process.env.S3_REGION ?? 'eu-central-1',
-        S3_BUCKET: process.env.S3_BUCKET ?? 'mental-health-platform',
-        S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID ?? 'minio',
-        S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY ?? 'minio-secret',
-        APP_BASE_URL: process.env.APP_BASE_URL ?? 'http://localhost:3000',
+          sanitizedEnv.STRIPE_PRICE_LISTING_YEARLY ?? 'price_listing_yearly_test',
+        STRIPE_TAX_ENABLED: sanitizedEnv.STRIPE_TAX_ENABLED ?? 'false',
+        S3_ENDPOINT: sanitizedEnv.S3_ENDPOINT ?? 'http://localhost:9000',
+        S3_REGION: sanitizedEnv.S3_REGION ?? 'eu-central-1',
+        S3_BUCKET: sanitizedEnv.S3_BUCKET ?? 'mental-health-platform',
+        S3_ACCESS_KEY_ID: sanitizedEnv.S3_ACCESS_KEY_ID ?? 'minio',
+        S3_SECRET_ACCESS_KEY: sanitizedEnv.S3_SECRET_ACCESS_KEY ?? 'minio-secret',
+        APP_BASE_URL: sanitizedEnv.APP_BASE_URL ?? 'http://localhost:3000',
       });
     }
 

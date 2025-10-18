@@ -1,7 +1,12 @@
 {
-  "buildCommand": "pnpm turbo build --filter=web",
-  "outputDirectory": "apps/web/.next",
+  "buildCommand": "pnpm vercel-build",
   "installCommand": "pnpm install",
+  "outputDirectory": "apps/web/.next",
   "framework": null,
-  "regions": ["fra1"]
+  "regions": ["fra1"],
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
 }
