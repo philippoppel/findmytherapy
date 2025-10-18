@@ -1,11 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm vercel-build"
+  "installCommand": "pnpm install --filter=web...",
+  "buildCommand": "pnpm --filter=web build"
 }
