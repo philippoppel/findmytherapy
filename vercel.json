@@ -1,12 +1,5 @@
 {
   "buildCommand": "pnpm vercel-build",
   "installCommand": "pnpm install",
-  "outputDirectory": "apps/web/.next",
-  "framework": null,
-  "regions": ["fra1"],
-  "git": {
-    "deploymentEnabled": {
-      "main": true
-    }
-  }
+  "regions": ["fra1"]
 }
