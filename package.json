@@ -24,7 +24,7 @@
     "e2e": "pnpm --filter web e2e",
     "e2e:ui": "pnpm --filter web e2e:ui",
     "prepare": "husky install",
-    "vercel-build": "pnpm prisma generate && pnpm turbo build --filter=web"
+    "vercel-build": "pnpm --filter @mental-health/db db:generate && pnpm turbo build --filter=web"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
