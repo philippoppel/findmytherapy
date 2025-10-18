@@ -22,19 +22,68 @@ const getSystemTheme = (): ThemeName =>
     ? 'theme-dark'
     : 'theme-light';
 
+const getDocumentTheme = (): ThemeName => {
+  if (typeof document === 'undefined') {
+    return 'theme-light';
+  }
+
+  const datasetValue = document.documentElement.dataset.theme;
+
+  if (datasetValue === 'dark') {
+    return 'theme-dark';
+  }
+  if (datasetValue === 'simple') {
+    return 'theme-simple';
+  }
+
+  const htmlClassMatch = THEME_CLASSES.find((themeName) =>
+    document.documentElement.classList.contains(themeName),
+  );
+
+  if (htmlClassMatch) {
+    return htmlClassMatch;
+  }
+
+  const bodyClassMatch = THEME_CLASSES.find((themeName) =>
+    document.body.classList.contains(themeName),
+  );
+
+  return bodyClassMatch ?? 'theme-light';
+};
+
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = React.useState<ThemeName>('theme-light');
-  const [userPreference, setUserPreference] = React.useState<ThemeName | null>(null);
+  const resolveStoredTheme = () => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeName | null;
+      if (stored && THEME_CLASSES.includes(stored)) {
+        return stored;
+      }
+    } catch (error) {
+      return null;
+    }
+
+    return null;
+  };
+
+  const storedTheme = resolveStoredTheme();
+
+  const [theme, setThemeState] = React.useState<ThemeName>(() => storedTheme ?? getDocumentTheme());
+  const [userPreference, setUserPreference] = React.useState<ThemeName | null>(storedTheme);
   const [isReady, setIsReady] = React.useState(false);
-  const userPreferenceRef = React.useRef<ThemeName | null>(null);
+  const userPreferenceRef = React.useRef<ThemeName | null>(storedTheme);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
-    const stored = window.localStorage.getItem(STORAGE_KEY) as ThemeName | null;
-    if (stored && THEME_CLASSES.includes(stored)) {
+    const stored = resolveStoredTheme();
+
+    if (stored) {
       setThemeState(stored);
       setUserPreference(stored);
       userPreferenceRef.current = stored;

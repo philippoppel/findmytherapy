@@ -8,6 +8,7 @@ import { SessionProvider } from '../components/providers/SessionProvider'
 import { ThemeProvider } from '../components/providers/ThemeProvider'
 import { ChatWidget } from '../components/support/ChatWidget'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { ThemeScript } from './components/ThemeScript'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="de-AT" suppressHydrationWarning>
       <body className={inter.className}>
+        <ThemeScript />
         <ErrorBoundary>
           <ThemeProvider>
             <SessionProvider>
