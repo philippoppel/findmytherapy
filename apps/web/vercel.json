@@ -1,0 +1,6 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && pnpm --filter=web build",
+  "devCommand": "cd ../.. && pnpm --filter=web dev",
+  "installCommand": "cd ../.. && pnpm install --filter=web..."
+}
