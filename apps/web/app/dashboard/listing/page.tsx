@@ -24,7 +24,7 @@ export default async function ListingPage() {
       <header className="space-y-2">
         <Link
           href="/dashboard"
-          className="inline-flex items-center text-sm font-medium text-muted hover:text-neutral-900 mb-2"
+          className="inline-flex items-center text-sm font-medium text-muted hover:text-default mb-2"
         >
           ← Zurück zum Dashboard
         </Link>
@@ -121,8 +121,8 @@ export default async function ListingPage() {
 
           <div className="bg-info-50 border border-info-200 rounded-lg p-4">
             <p className="text-sm text-info-900">
-              <strong>Hinweis:</strong> Änderungen am Abonnement sind in dieser Demo-Version noch nicht verfügbar.
-              In der finalen Version können Sie hier direkt upgraden oder downgraden.
+              <strong>Hinweis:</strong> Änderungen am Abonnement nehmen wir derzeit gemeinsam mit Ihnen vor. In Kürze können
+              Sie hier direkt upgraden oder downgraden.
             </p>
           </div>
         </div>
@@ -137,7 +137,7 @@ export default async function ListingPage() {
             className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-hover transition-colors"
             disabled
           >
-            Listing aktivieren (Demo)
+            Listing aktivieren
           </button>
         </div>
       )}

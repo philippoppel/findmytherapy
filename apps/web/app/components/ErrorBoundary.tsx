@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <div className="mx-auto mb-4 h-16 w-16 rounded-full border-4 border-red-500 flex items-center justify-center">
               <span className="text-2xl text-red-500 font-bold">!</span>
             </div>
-            <h1 className="text-2xl font-semibold text-neutral-900 mb-2">
+            <h1 className="text-2xl font-semibold text-default mb-2">
               Etwas ist schiefgelaufen
             </h1>
             <p className="text-sm text-muted mb-6">
@@ -53,7 +53,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </button>
               <button
                 onClick={() => (window.location.href = '/')}
-                className="w-full rounded-full border border-divider px-6 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-50"
+                className="w-full rounded-full border border-divider px-6 py-3 text-sm font-semibold text-default transition hover:bg-neutral-50"
               >
                 Zur Startseite
               </button>

@@ -41,6 +41,8 @@ const fetchAdminData = async () => {
         specialties: true,
         modalities: true,
         about: true,
+        availabilityNote: true,
+        pricingNote: true,
         updatedAt: true,
         user: {
           select: {
@@ -124,6 +126,16 @@ export default async function AdminDashboardPage() {
                   {profile.modalities.length > 0 && (
                     <p className="text-xs text-gray-500">
                       Methoden: {profile.modalities.join(', ')}
+                    </p>
+                  )}
+                  {profile.availabilityNote && (
+                    <p className="text-xs text-primary">
+                      Termine: {profile.availabilityNote}
+                    </p>
+                  )}
+                  {profile.pricingNote && (
+                    <p className="text-xs text-primary">
+                      Preise: {profile.pricingNote}
                     </p>
                   )}
                   <p className="text-xs text-gray-400">

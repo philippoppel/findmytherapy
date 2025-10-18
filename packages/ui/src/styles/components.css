@@ -1,4 +1,8 @@
 .bg-surface {
+  background-color: rgb(var(--bg));
+}
+
+.bg-surface-1 {
   background-color: rgb(var(--surface-1));
 }
 
@@ -10,12 +14,36 @@
   background-color: rgb(var(--surface-3));
 }
 
+.text-default {
+  color: rgb(var(--text));
+}
+
 .text-muted {
   color: rgb(var(--text-muted));
 }
 
 .text-subtle {
   color: rgb(var(--text-subtle));
+}
+
+.text-primary {
+  color: rgb(var(--primary));
+}
+
+.text-link {
+  color: rgb(var(--link));
+}
+
+.border-divider {
+  border-color: rgb(var(--divider));
+}
+
+.bg-primary-light {
+  background-color: rgb(var(--color-primary-100));
+}
+
+.bg-primary-subtle {
+  background-color: rgb(var(--color-primary-50));
 }
 
 .ring-focus {

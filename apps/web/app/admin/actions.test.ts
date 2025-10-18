@@ -1,5 +1,3 @@
-import { updateTherapistStatus } from './actions';
-
 jest.mock('../../lib/auth-guards', () => ({
   requireAdmin: jest.fn(() => Promise.resolve()),
 }));
@@ -25,6 +23,9 @@ jest.mock('next/cache', () => ({
 }));
 
 const { requireAdmin } = require('../../lib/auth-guards') as { requireAdmin: jest.Mock };
+const { updateTherapistStatus } = require('./actions') as {
+  updateTherapistStatus: (form: FormData) => Promise<void>;
+};
 
 describe('updateTherapistStatus', () => {
   beforeEach(() => {

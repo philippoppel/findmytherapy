@@ -30,7 +30,7 @@ export const blogPosts: BlogPost[] = [
       'digitale Ersteinschätzung',
       'mentale Gesundheit',
       'Therapie finden',
-      'Produkt-Demo',
+      'Produkt-Einblick',
     ],
     sections: [
       {
@@ -41,9 +41,9 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
-        heading: 'Was die Demo aktuell zeigt',
+        heading: 'Was Klarthera aktuell zeigt',
         paragraphs: [
-          'In der Demo führen wir durch alle Schritte – von der Profilerstellung über das Screening bis zu Empfehlungen. Auch wenn unser Therapeut:innen-Netzwerk noch im Aufbau ist, zeigt die Demo alle vorgesehenen Schnittstellen und wie Empfehlungen priorisiert werden.',
+          'Wir führen durch alle Schritte – von der Profilerstellung über das Screening bis zu Empfehlungen. Auch wenn unser Therapeut:innen-Netzwerk noch im Aufbau ist, zeigen wir alle vorgesehenen Schnittstellen und wie Empfehlungen priorisiert werden.',
         ],
         list: [
           'Kontextfragen zu Anliegen, Tempo und Präferenzen',
@@ -90,7 +90,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Warum wir mit einer Warteliste starten',
         paragraphs: [
-          'Damit wir Empfehlungen geben können, bevor alle Profile live sind, visualisiert die Demo realistische Matches mit anonymisierten Beispielprofilen. Sobald Profile live gehen, ersetzen wir diese Placeholder durch echte Therapeut:innen.',
+          'Damit wir Empfehlungen geben können, bevor alle Profile live sind, visualisieren wir realistische Matches mit anonymisierten Beispielprofilen. Sobald Profile live gehen, ersetzen wir diese Placeholder durch echte Therapeut:innen.',
         ],
       },
       {

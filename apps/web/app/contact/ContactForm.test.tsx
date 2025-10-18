@@ -7,9 +7,16 @@ import { ContactForm } from './ContactForm'
 describe('ContactForm', () => {
   beforeEach(() => {
     jest.useFakeTimers()
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ message: 'ok' }),
+    }) as unknown as typeof fetch
   })
 
   afterEach(() => {
+    jest.resetAllMocks()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (global as any).fetch
     jest.runOnlyPendingTimers()
     jest.useRealTimers()
   })
@@ -23,7 +30,7 @@ describe('ContactForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /Abends/i }))
     fireEvent.click(screen.getByRole('button', { name: /Therapeut:innen-Matching/i }))
     fireEvent.change(screen.getByLabelText(/Nachricht oder Fragen/i), {
-      target: { value: 'Bitte Termin für eine Live-Demo vereinbaren.' },
+      target: { value: 'Bitte Termin für eine Live-Session vereinbaren.' },
     })
 
     fireEvent.click(screen.getByRole('button', { name: /Abschicken/i }))

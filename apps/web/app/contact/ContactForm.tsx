@@ -83,7 +83,7 @@ export function ContactForm() {
           <PhoneCall className="h-4 w-4" aria-hidden />
           Kontakt aufnehmen
         </div>
-        <h2 className="text-2xl font-semibold text-neutral-900">Nachricht an das Care-Team</h2>
+        <h2 className="text-2xl font-semibold text-default">Nachricht an das Care-Team</h2>
         <p className="text-sm text-muted">
           Sende uns dein Anliegen – wir melden uns werktags innerhalb von 45 Minuten mit einer persönlichen Antwort oder einem Terminvorschlag.
         </p>
@@ -118,7 +118,7 @@ export function ContactForm() {
       <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="name">
-            <span className="font-medium text-neutral-900">Name</span>
+            <span className="font-medium text-default">Name</span>
             <Input
               id="name"
               value={form.name}
@@ -128,7 +128,7 @@ export function ContactForm() {
             />
           </label>
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="email">
-            <span className="font-medium text-neutral-900">E-Mail</span>
+            <span className="font-medium text-default">E-Mail</span>
             <Input
               id="email"
               type="email"
@@ -142,7 +142,7 @@ export function ContactForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_0.65fr]">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="phone">
-            <span className="font-medium text-neutral-900">Telefon (optional)</span>
+            <span className="font-medium text-default">Telefon (optional)</span>
             <Input
               id="phone"
               type="tel"
@@ -153,7 +153,7 @@ export function ContactForm() {
           </label>
 
           <fieldset className="space-y-2">
-            <legend className="text-sm font-medium text-neutral-900">Wann passt es dir für einen Rückruf?</legend>
+            <legend className="text-sm font-medium text-default">Wann passt es dir für einen Rückruf?</legend>
             <div className="grid grid-cols-2 gap-2 text-xs">
               {[
                 { value: 'morning', label: 'Vormittag' },
@@ -169,7 +169,7 @@ export function ContactForm() {
                     onClick={() => handleSelectChange('preferredSlot')(slot.value)}
                     className={`rounded-full border px-3 py-2 font-semibold transition ${
                       isActive
-                        ? 'border-primary bg-primary/10 text-primary-900'
+                        ? 'border-primary bg-primary/10 text-primary'
                         : 'border-divider text-muted hover:border-primary/40 hover:text-primary'
                     }`}
                   >
@@ -182,7 +182,7 @@ export function ContactForm() {
         </div>
 
         <fieldset>
-          <legend className="text-sm font-medium text-neutral-900">Anliegen</legend>
+          <legend className="text-sm font-medium text-default">Anliegen</legend>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {[
               { value: 'orientation', label: 'Ersteinschätzung & Einstieg' },
@@ -198,8 +198,8 @@ export function ContactForm() {
                   onClick={() => handleSelectChange('topic')(topic.value)}
                   className={`rounded-2xl border px-4 py-3 text-left text-sm transition ${
                     isActive
-                      ? 'border-primary bg-primary/10 text-primary-900 shadow-sm shadow-primary/10'
-                      : 'border-divider text-muted hover:border-primary/40 hover:text-primary-900'
+                      ? 'border-primary bg-primary/10 text-primary shadow-sm shadow-primary/10'
+                      : 'border-divider text-muted hover:border-primary/40 hover:text-primary'
                   }`}
                 >
                   {topic.label}
@@ -210,13 +210,13 @@ export function ContactForm() {
         </fieldset>
 
         <label className="space-y-1 text-sm text-neutral-700" htmlFor="message">
-          <span className="font-medium text-neutral-900">Nachricht oder Fragen</span>
+          <span className="font-medium text-default">Nachricht oder Fragen</span>
           <Textarea
             id="message"
             value={form.message}
             onChange={handleChange('message')}
             rows={5}
-            placeholder="Erzähl uns kurz, worum es geht oder welche Demo wir vorbereiten sollen."
+            placeholder="Erzähl uns kurz, worum es geht oder welche Schwerpunkte wir vorbereiten sollen."
             required
           />
         </label>

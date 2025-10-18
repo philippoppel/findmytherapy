@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
-import { demoAccounts, demoCourses, demoTherapists } from './demo-data'
+import { seedAccounts, seedCourses, seedTherapists } from './seed-data'
 
 const prisma = new PrismaClient()
 
@@ -27,6 +27,7 @@ async function main() {
   await prisma.emergencyAlert.deleteMany()
   await prisma.match.deleteMany()
   await prisma.triageSession.deleteMany()
+  await prisma.triageSnapshot.deleteMany()
   await prisma.payout.deleteMany()
   await prisma.enrollment.deleteMany()
   await prisma.order.deleteMany()
@@ -39,21 +40,27 @@ async function main() {
 
   const admin = await prisma.user.create({
     data: {
-      email: demoAccounts.admin.email,
+      email: seedAccounts.admin.email,
       emailVerified: new Date(),
-      passwordHash: await hashPassword(demoAccounts.admin.password),
-      role: demoAccounts.admin.role,
-      locale: demoAccounts.admin.locale,
+      passwordHash: await hashPassword(seedAccounts.admin.password),
+      role: seedAccounts.admin.role,
+      locale: seedAccounts.admin.locale,
+      firstName: seedAccounts.admin.firstName,
+      lastName: seedAccounts.admin.lastName,
+      marketingOptIn: false,
     },
   })
 
   const client = await prisma.user.create({
     data: {
-      email: demoAccounts.client.email,
+      email: seedAccounts.client.email,
       emailVerified: new Date(),
-      passwordHash: await hashPassword(demoAccounts.client.password),
-      role: demoAccounts.client.role,
-      locale: demoAccounts.client.locale,
+      passwordHash: await hashPassword(seedAccounts.client.password),
+      role: seedAccounts.client.role,
+      locale: seedAccounts.client.locale,
+      firstName: seedAccounts.client.firstName,
+      lastName: seedAccounts.client.lastName,
+      marketingOptIn: true,
     },
   })
 
@@ -65,7 +72,7 @@ async function main() {
     }
   >()
 
-  for (const therapist of demoTherapists) {
+  for (const therapist of seedTherapists) {
     const created = await prisma.user.create({
       data: {
         email: therapist.email,
@@ -73,6 +80,9 @@ async function main() {
         passwordHash: await hashPassword(therapist.password),
         role: 'THERAPIST',
         locale: 'de-AT',
+        firstName: therapist.firstName,
+        lastName: therapist.lastName,
+        marketingOptIn: false,
         therapistProfile: {
           create: {
             status: therapist.profile.status,
@@ -87,6 +97,8 @@ async function main() {
             city: therapist.profile.city,
             country: therapist.profile.country,
             about: therapist.profile.about,
+            availabilityNote: therapist.profile.availabilityNote,
+            pricingNote: therapist.profile.pricingNote,
             isPublic: therapist.profile.isPublic,
           },
         },
@@ -118,7 +130,7 @@ async function main() {
 
   const createdCourses = []
 
-  for (const course of demoCourses) {
+  for (const course of seedCourses) {
     const author = therapistMap.get(course.therapistEmail)
     if (!author) {
       continue
@@ -185,13 +197,13 @@ async function main() {
       recommendedNextStep: 'THERAPIST',
       meta: {
         completedAt: new Date().toISOString(),
-        recommendedTherapists: demoTherapists.length,
+        recommendedTherapists: seedTherapists.length,
       },
     },
   })
 
-  const firstTherapist = therapistMap.get(demoTherapists[0]?.email ?? '')
-  const secondTherapist = therapistMap.get(demoTherapists[1]?.email ?? '')
+  const firstTherapist = therapistMap.get(seedTherapists[0]?.email ?? '')
+  const secondTherapist = therapistMap.get(seedTherapists[1]?.email ?? '')
 
   if (firstTherapist) {
     await prisma.match.create({
@@ -217,7 +229,7 @@ async function main() {
     })
   }
 
-  // Create demo appointments for first therapist
+  // Create sample appointments for first therapist
   if (firstTherapist) {
     const now = new Date()
     const tomorrow = new Date(now)
@@ -269,9 +281,9 @@ async function main() {
 
   console.log('✅ Database seeded successfully!')
   console.log('\n📧 Login credentials:')
-  console.log(`${demoAccounts.admin.email} / ${demoAccounts.admin.password}`)
-  console.log(`${demoAccounts.client.email} / ${demoAccounts.client.password}`)
-  demoTherapists.forEach((therapist) => {
+  console.log(`${seedAccounts.admin.email} / ${seedAccounts.admin.password}`)
+  console.log(`${seedAccounts.client.email} / ${seedAccounts.client.password}`)
+  seedTherapists.forEach((therapist) => {
     console.log(`${therapist.email} / ${therapist.password}`)
   })
 }

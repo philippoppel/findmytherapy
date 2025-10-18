@@ -77,7 +77,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-800 focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
           Zur Übersicht
@@ -85,7 +85,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
         <header className="mt-8 space-y-4">
           <div className="flex flex-wrap items-center gap-3 text-sm text-subtle">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary-700">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
               <Tag className="h-4 w-4" aria-hidden />
               {post.category}
             </span>
@@ -98,7 +98,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               {post.readingTime}
             </span>
           </div>
-          <h1 className="text-4xl font-semibold leading-tight text-neutral-900">
+          <h1 className="text-4xl font-semibold leading-tight text-default">
             {post.title}
           </h1>
           <p className="text-lg leading-relaxed text-muted">{post.excerpt}</p>
@@ -107,7 +107,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="mt-12 space-y-12 text-base leading-relaxed text-muted">
           {post.sections.map((section) => (
             <section key={section.heading} className="space-y-4">
-              <h2 className="text-2xl font-semibold text-neutral-900">
+              <h2 className="text-2xl font-semibold text-default">
                 {section.heading}
               </h2>
               {section.paragraphs.map((paragraph) => (
@@ -125,9 +125,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         <footer className="mt-16 rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10">
-          <h3 className="text-2xl font-semibold text-neutral-900">Lust auf mehr Einblicke?</h3>
+          <h3 className="text-2xl font-semibold text-default">Lust auf mehr Einblicke?</h3>
           <p className="mt-3 text-base leading-relaxed text-muted">
-            Unser Netzwerk befindet sich im Aufbau – in der Demo zeigen wir dir bereits heute, wie Klarthera Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
+            Unser Netzwerk befindet sich im Aufbau – wir zeigen dir bereits heute, wie Klarthera Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -140,7 +140,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               href="/triage"
               className="btn btn-outline inline-flex items-center justify-center gap-2"
             >
-              Demo testen
+              Ersteinschätzung testen
             </Link>
           </div>
         </footer>

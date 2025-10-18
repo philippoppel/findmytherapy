@@ -25,6 +25,8 @@ test.describe('Triage MVP Flow', () => {
 
     await expect(page.getByRole('heading', { name: /Deine Klarthera Empfehlung/i })).toBeVisible();
     await expect(page.getByText(/Score \d+ von 18/i)).toBeVisible();
+    await expect(page.getByText(/Empfohlene Pilot-Therapeut:innen/i)).toBeVisible();
+    await expect(page.getByText(/Passende Programme/i)).toBeVisible();
     await expect(page.getByRole('link', { name: /Therapeut:innen ansehen/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Kurse vergleichen/i })).toBeVisible();
   });

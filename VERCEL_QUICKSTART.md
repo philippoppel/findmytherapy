@@ -142,7 +142,7 @@ vercel env pull .env.production
 source .env.production
 pnpm prisma db push
 
-# Demo-Daten laden (optional)
+# Seed-Daten laden (optional)
 pnpm db:seed
 
 # Cleanup
@@ -285,7 +285,7 @@ Im Dashboard: Deployments → Select Deployment → Logs
 
 ## 💰 Kosten
 
-**Free Tier**: Perfekt für MVP & Demos
+**Free Tier**: Perfekt für MVP & Pilotphasen
 - 100 GB Bandwidth
 - Unlimited Requests
 - 6000 Build Minutes/Monat
@@ -305,4 +305,4 @@ Im Dashboard: Deployments → Select Deployment → Logs
 
 **🎉 Geschafft! Deine App ist jetzt live auf Vercel!**
 
-Teile die URL mit deinem Team für Demos & Testing.
+Teile die URL mit deinem Team für Pilot-Tests & internes Feedback.

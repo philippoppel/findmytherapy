@@ -26,10 +26,10 @@ export default function BlogPage() {
     <div className="bg-gradient-to-b from-surface-1 via-surface-2/30 to-surface-1 py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
         <header className="text-center space-y-4" aria-labelledby="blog-title">
-          <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary-700">
+          <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
             Klarthera Blog
           </span>
-          <h1 id="blog-title" className="text-4xl font-semibold text-neutral-900">
+          <h1 id="blog-title" className="text-4xl font-semibold text-default">
             Wissen, Updates und Einblicke rund um mentale Gesundheit
           </h1>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
@@ -44,7 +44,7 @@ export default function BlogPage() {
           <article className="grid grid-cols-1 gap-8 rounded-3xl border border-divider bg-white/90 p-10 shadow-lg shadow-primary/10 backdrop-blur md:grid-cols-5">
             <div className="md:col-span-3 space-y-4">
               <div className="flex items-center gap-3 text-sm text-subtle">
-                <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary-700">
+                <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
                   <Tag className="h-4 w-4" aria-hidden />
                   {featuredPost.category}
                 </span>
@@ -57,7 +57,7 @@ export default function BlogPage() {
                   {featuredPost.readingTime}
                 </span>
               </div>
-              <h3 className="text-3xl font-semibold text-neutral-900">
+              <h3 className="text-3xl font-semibold text-default">
                 <Link href={`/blog/${featuredPost.slug}`} className="transition-colors hover:text-primary">
                   {featuredPost.title}
                 </Link>
@@ -66,22 +66,24 @@ export default function BlogPage() {
               <div>
                 <Link
                   href={`/blog/${featuredPost.slug}`}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-800 focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
                 >
                   Beitrag lesen
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </div>
             </div>
-            <div className="md:col-span-2 space-y-4 rounded-2xl bg-gradient-to-br from-primary-50 via-surface-1 to-surface-2 p-6">
-              <h4 className="text-lg font-semibold text-neutral-900">Das erwartet dich</h4>
+            <div
+              className="md:col-span-2 space-y-4 rounded-2xl border border-divider/70 bg-gradient-to-br from-primary-50 via-surface-1 to-surface-2 p-6 dark:from-primary-700/35 dark:via-surface-2 dark:to-surface-3"
+            >
+              <h4 className="text-lg font-semibold text-default">Das erwartet dich</h4>
               <ul className="space-y-3 text-sm leading-relaxed text-muted">
-                <li>• Schritt-für-Schritt Einblick in unsere Demo</li>
+                <li>• Schritt-für-Schritt Einblick in Klarthera</li>
                 <li>• Transparenz über Qualitätskriterien im Netzwerk</li>
                 <li>• Nächste Schritte für Pilotkund:innen</li>
               </ul>
               <p className="text-sm text-subtle">
-                Du möchtest über neue Beiträge informiert werden? Trage dich ins Demo-Formular ein – wir halten dich auf dem Laufenden.
+                Du möchtest über neue Beiträge informiert werden? Trage dich ins Formular ein – wir halten dich auf dem Laufenden.
               </p>
             </div>
           </article>
@@ -89,12 +91,12 @@ export default function BlogPage() {
 
         <section aria-labelledby="all-posts-title" className="space-y-8">
           <div className="flex items-center justify-between">
-            <h2 id="all-posts-title" className="text-2xl font-semibold text-neutral-900">
+            <h2 id="all-posts-title" className="text-2xl font-semibold text-default">
               Weitere Artikel
             </h2>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-800 focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
             >
               Themenwunsch teilen
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -119,7 +121,7 @@ export default function BlogPage() {
                       {post.readingTime}
                     </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900">
+                  <h3 className="text-xl font-semibold text-default">
                     <Link href={`/blog/${post.slug}`} className="transition-colors hover:text-primary">
                       {post.title}
                     </Link>
@@ -129,7 +131,7 @@ export default function BlogPage() {
                 <div className="mt-6">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-800 focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary focus-visible:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
                   >
                     Weiterlesen
                     <ArrowRight className="h-4 w-4" aria-hidden />

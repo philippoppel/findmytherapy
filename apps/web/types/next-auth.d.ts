@@ -10,6 +10,9 @@ declare module 'next-auth' {
       role: UserRole;
       locale: string;
       twoFAEnabled: boolean;
+      firstName?: string | null;
+      lastName?: string | null;
+      marketingOptIn?: boolean;
     };
   }
 
@@ -19,6 +22,9 @@ declare module 'next-auth' {
     role: UserRole;
     locale: string;
     twoFASecret?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    marketingOptIn?: boolean;
   }
 }
 
@@ -27,5 +33,8 @@ declare module 'next-auth/jwt' {
     role?: UserRole;
     locale?: string;
     twoFAEnabled?: boolean;
+    firstName?: string | null;
+    lastName?: string | null;
+    marketingOptIn?: boolean;
   }
 }

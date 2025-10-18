@@ -51,16 +51,16 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="bg-surface">
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary-50 via-surface-1 to-surface-1 py-20">
+      <section className="relative overflow-hidden bg-white py-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-primary-200/35 blur-3xl" />
-          <div className="absolute bottom-[-10rem] left-[-2rem] h-80 w-80 rounded-full bg-secondary-200/30 blur-3xl" />
+          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-blue-100/30 blur-3xl" />
+          <div className="absolute bottom-[-10rem] left-[-2rem] h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary-700 shadow-sm">
-            Klarthera Story - Demo-Inhalt
+          <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
+            Klarthera Story – Unser Weg
           </span>
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl">
+          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-default md:text-5xl">
             Warum Klarthera Menschen durch mentale Gesundheit begleitet
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted">
@@ -73,8 +73,8 @@ export default function AboutPage() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="space-y-8 rounded-3xl border border-divider bg-white/85 p-8 shadow-md shadow-primary/10 backdrop-blur">
-              <h2 className="text-3xl font-semibold text-neutral-900">Unsere Herangehensweise</h2>
+            <div className="space-y-8 rounded-3xl border border-divider bg-surface-1/85 p-8 shadow-md shadow-primary/10 backdrop-blur">
+              <h2 className="text-3xl font-semibold text-default">Unsere Herangehensweise</h2>
               <p className="text-base leading-relaxed text-muted">
                 Klarthera verbindet klinische Exzellenz mit digitalen Tools. Wir entwickeln Care Journeys, die Menschen dort
                 abholen, wo sie stehen, und sie mit klaren nächsten Schritten begleiten – von der Ersteinschätzung über die
@@ -87,7 +87,7 @@ export default function AboutPage() {
                       <value.icon className="h-6 w-6" aria-hidden />
                     </span>
                     <div>
-                      <h3 className="text-lg font-semibold text-neutral-900">{value.title}</h3>
+                      <h3 className="text-lg font-semibold text-default">{value.title}</h3>
                       <p className="mt-1 text-sm leading-relaxed text-muted">{value.description}</p>
                     </div>
                   </div>
@@ -97,7 +97,7 @@ export default function AboutPage() {
 
             <aside className="flex flex-col justify-between rounded-3xl border border-divider bg-primary-600 px-6 py-8 text-primary-foreground shadow-[0_25px_55px_-35px_rgb(var(--color-primary-950))]">
               <div className="space-y-4">
-                <h3 className="text-2xl font-semibold">Klarthera in Zahlen (Demo)</h3>
+                <h3 className="text-2xl font-semibold">Klarthera in Zahlen</h3>
                 <ul className="space-y-3 text-sm leading-relaxed">
                   <li className="flex items-start gap-3">
                     <Sparkles className="mt-1 h-5 w-5 flex-none" aria-hidden /> 120+ verifizierte Therapeut:innen in Österreich
@@ -111,31 +111,31 @@ export default function AboutPage() {
                 </ul>
               </div>
               <p className="rounded-2xl bg-primary-500/40 p-4 text-sm leading-relaxed">
-                Wir teilen diese Demo-Zahlen, um zu zeigen, wie Klarthera Wirkung sichtbar macht. Für Präsentationen oder Sales kann der Abschnitt jederzeit angepasst werden.
+                Wir teilen diese Kennzahlen, um zu zeigen, wie Klarthera Wirkung sichtbar macht. Für Präsentationen oder Sales kann der Abschnitt jederzeit angepasst werden.
               </p>
             </aside>
           </div>
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-secondary-50 via-surface-1 to-primary-50 py-16">
+      <section className="bg-gradient-to-r from-blue-50 via-surface-1 to-blue-50 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl space-y-3">
-              <h2 className="text-3xl font-semibold text-neutral-900">Team Klarthera (Demo)</h2>
+              <h2 className="text-3xl font-semibold text-default">Team Klarthera</h2>
               <p className="text-base text-muted">
                 Interdisziplinär aufgestellt – mit klaren Rollen zwischen therapeutischer Expertise, Produktentwicklung und Care-Team.
               </p>
             </div>
-            <span className="inline-flex items-center rounded-full border border-divider bg-white/70 px-4 py-2 text-sm text-muted">
-              <Sparkles className="mr-2 h-4 w-4 text-primary" /> Demodaten - für Präsentationen anpassbar
+            <span className="inline-flex items-center rounded-full border border-divider bg-surface-1/70 px-4 py-2 text-sm text-muted">
+              <Sparkles className="mr-2 h-4 w-4 text-primary" /> Kuratierte Beispiele – für Präsentationen anpassbar
             </span>
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             {teamMembers.map((member) => (
-              <div key={member.name} className="rounded-3xl border border-divider bg-white/85 p-6 shadow-sm shadow-primary/10">
-                <h3 className="text-lg font-semibold text-neutral-900">{member.name}</h3>
+              <div key={member.name} className="rounded-3xl border border-divider bg-surface-1/85 p-6 shadow-sm shadow-primary/10">
+                <h3 className="text-lg font-semibold text-default">{member.name}</h3>
                 <p className="text-sm font-medium text-primary">{member.role}</p>
                 <p className="mt-3 text-sm leading-relaxed text-muted">{member.focus}</p>
               </div>

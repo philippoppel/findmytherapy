@@ -1,14 +1,17 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { SessionProvider } from '../components/providers/SessionProvider'
 import { ThemeProvider } from '../components/providers/ThemeProvider'
-import { ChatDemo } from '../components/support/ChatDemo'
+import { ChatWidget } from '../components/support/ChatWidget'
 import { ErrorBoundary } from './components/ErrorBoundary'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const analyticsConsoleLog = process.env.NODE_ENV !== 'production' ? "console.info('[analytics]', event, payload);" : ''
 
 export const metadata: Metadata = {
   title: 'Klarthera – Der klare Weg zur richtigen Hilfe.',
@@ -32,11 +35,22 @@ export default function RootLayout({
                   {children}
                 </main>
                 <Footer />
-                <ChatDemo />
+                <ChatWidget />
               </div>
             </SessionProvider>
           </ThemeProvider>
         </ErrorBoundary>
+        <Script id="analytics-placeholder" strategy="lazyOnload">
+          {`
+            window.klartheraAnalytics = window.klartheraAnalytics || {
+              events: [],
+              push(event, payload) {
+                this.events.push({ event, payload, timestamp: Date.now() });
+                ${analyticsConsoleLog}
+              }
+            };
+          `}
+        </Script>
       </body>
     </html>
   )

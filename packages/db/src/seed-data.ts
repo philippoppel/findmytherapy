@@ -1,30 +1,38 @@
 import type { CourseStatus, ListingPlan, ListingStatus, TherapistStatus } from '@prisma/client'
 
-export type DemoAccount = {
+export type SeedAccount = {
   email: string
   password: string
   role: 'ADMIN' | 'CLIENT'
   locale: string
+  firstName?: string
+  lastName?: string
 }
 
-export const demoAccounts: Record<'admin' | 'client', DemoAccount> = {
+export const seedAccounts: Record<'admin' | 'client', SeedAccount> = {
   admin: {
     email: 'admin@mental-health-platform.com',
     password: 'Admin123!',
     role: 'ADMIN',
     locale: 'de-AT',
+    firstName: 'Alex',
+    lastName: 'Admin',
   },
   client: {
     email: 'demo.client@example.com',
     password: 'Client123!',
     role: 'CLIENT',
     locale: 'de-AT',
+    firstName: 'Nora',
+    lastName: 'Beispiel',
   },
 }
 
-export type DemoTherapist = {
+export type SeedTherapist = {
   email: string
   password: string
+  firstName: string
+  lastName: string
   displayName: string
   title: string
   focus: string[]
@@ -49,6 +57,8 @@ export type DemoTherapist = {
     city: string
     country: string
     about: string
+    availabilityNote: string
+    pricingNote: string
     isPublic: boolean
   }
   listing?: {
@@ -57,10 +67,12 @@ export type DemoTherapist = {
   }
 }
 
-export const demoTherapists: DemoTherapist[] = [
+export const seedTherapists: SeedTherapist[] = [
   {
     email: 'dr.mueller@example.com',
     password: 'Therapist123!',
+    firstName: 'Lena',
+    lastName: 'Huber',
     displayName: 'Dr.in Lena Huber',
     title: 'Klinische Psychologin & Gesundheitspsychologin',
     focus: ['Depression', 'Burnout-Prävention', 'Achtsamkeit'],
@@ -86,6 +98,10 @@ export const demoTherapists: DemoTherapist[] = [
       country: 'AT',
       about:
         'Fokussiert auf ressourcenorientierte Verhaltenstherapie mit Achtsamkeitsintegration. Langjährige Erfahrung mit Führungskräften und Personen in beruflichen Belastungssituationen.',
+      availabilityNote:
+        'Erstgespräche Montag & Mittwoch Nachmittag; bei Akutfällen Slots innerhalb von 5 Werktagen möglich.',
+      pricingNote:
+        'Honorar €80–120 je 50 Minuten; Sozialtarife für Studierende auf Anfrage.',
       isPublic: true,
     },
     listing: {
@@ -96,6 +112,8 @@ export const demoTherapists: DemoTherapist[] = [
   {
     email: 'mag.wagner@example.com',
     password: 'Therapist123!',
+    firstName: 'Tobias',
+    lastName: 'Leitner',
     displayName: 'Mag. Tobias Leitner',
     title: 'Psychotherapeut (Verhaltenstherapie)',
     focus: ['Angst & Panik', 'Chronischer Stress', 'ADHS bei Erwachsenen'],
@@ -121,6 +139,10 @@ export const demoTherapists: DemoTherapist[] = [
       country: 'AT',
       about:
         'Begleitet Klient:innen mit Angst- und Aufmerksamkeitsstörungen. Kombiniert strukturierte Verhaltenstherapie mit neuropsychologischen Methoden und Biofeedback.',
+      availabilityNote:
+        'Abendtermine Dienstag–Donnerstag, einzelne Hybrid-Slots vor Ort in Graz ab nächster Woche.',
+      pricingNote:
+        '€90–150 je Einheit, Firmenabrechnung via Klarthera möglich. Paketpreise für ADHS-Coaching.',
       isPublic: true,
     },
     listing: {
@@ -131,6 +153,8 @@ export const demoTherapists: DemoTherapist[] = [
   {
     email: 'dr.schneider@example.com',
     password: 'Therapist123!',
+    firstName: 'Sara',
+    lastName: 'Eder',
     displayName: 'Dr.in Sara Eder',
     title: 'Kinder- & Jugendpsychiaterin',
     focus: ['Jugendliche 12–18', 'Essstörungen', 'Familienbegleitung'],
@@ -156,12 +180,18 @@ export const demoTherapists: DemoTherapist[] = [
       country: 'AT',
       about:
         'Verbindet kinder- und jugendpsychiatrische Expertise mit systemischer Elternarbeit. Entwickelt digitale Lerntracks zur Familienintegration.',
+      availabilityNote:
+        'Erstgespräche für Jugendliche ab 20. Mai, Elterntermine Freitag Vormittag.',
+      pricingNote:
+        '€100–160 je Einheit; Kassenrückerstattung bei Diagnose nach Antrag möglich.',
       isPublic: false,
     },
   },
   {
     email: 'sofia.kraus@example.com',
     password: 'Therapist123!',
+    firstName: 'Sofia',
+    lastName: 'Kraus',
     displayName: 'Mag.a Sofia Kraus',
     title: 'Psychotherapeutin (Systemische Familientherapie)',
     focus: ['Beziehungsdynamiken', 'LGBTQIA+', 'Lebensübergänge'],
@@ -187,6 +217,10 @@ export const demoTherapists: DemoTherapist[] = [
       country: 'AT',
       about:
         'Arbeitet mit systemischen Kurzzeitinterventionen und fokussiert auf Beziehungen sowie LGBTQIA+-affirmative Begleitung.',
+      availabilityNote:
+        'Kurzfristige Online-Slots täglich 08:00–10:00 sowie 18:00–21:00 Uhr; Wochenendtermine jeden ersten Samstag.',
+      pricingNote:
+        '€75–110 je Einheit, Paarsettings €140. Reduzierte Kontingente für Community-Projekte.',
       isPublic: true,
     },
     listing: {
@@ -196,7 +230,7 @@ export const demoTherapists: DemoTherapist[] = [
   },
 ]
 
-export type DemoCourse = {
+export type SeedCourse = {
   slug: string
   title: string
   shortDescription: string
@@ -221,7 +255,7 @@ export type DemoCourse = {
   }>
 }
 
-export const demoCourses: DemoCourse[] = [
+export const seedCourses: SeedCourse[] = [
   {
     slug: 'stabil-durch-den-alltag',
     title: 'Stabil durch den Alltag',

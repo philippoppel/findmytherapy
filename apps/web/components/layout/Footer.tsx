@@ -28,7 +28,7 @@ export function Footer() {
         { name: 'Datenschutz', href: '/privacy' },
         { name: 'Impressum', href: '/imprint' },
         { name: 'AGB', href: '/terms' },
-        { name: 'Cookie-Einstellungen', href: '#' },
+        { name: 'Cookie-Einstellungen', href: '/privacy#cookies' },
       ],
     },
   }
@@ -40,10 +40,10 @@ export function Footer() {
           {/* Brand Section */}
           <div className="col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary-700">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Compass className="h-6 w-6" aria-hidden />
               </span>
-              <span className="text-xl font-semibold text-neutral-900">Klarthera</span>
+              <span className="text-xl font-semibold text-default">Klarthera</span>
             </div>
             <p className="text-sm text-subtle mb-4">
               Klarthera – Der klare Weg zur richtigen Hilfe. Wir verbinden Therapeut:innen, digitale Programme und Erstberatung in einer verlässlichen Plattform.

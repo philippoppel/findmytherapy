@@ -54,6 +54,8 @@ export function AuthHeader() {
   const isClient = role === 'CLIENT'
   const dashboardHref = isAdmin ? '/admin' : '/dashboard'
   const showSecurityLink = isTherapist || isAdmin
+  const profileHref = isTherapist ? '/dashboard/profile' : isAdmin ? '/admin' : '/settings'
+  const profileLabel = isTherapist ? 'Profil verwalten' : isAdmin ? 'Adminbereich' : 'Profil & Einstellungen'
 
   return (
     <div className="relative" ref={menuRef}>
@@ -72,7 +74,7 @@ export function AuthHeader() {
       {isMenuOpen && (
         <div className="absolute right-0 z-50 mt-2 w-52 rounded-lg border border-divider bg-surface-1/95 py-1 shadow-lg backdrop-blur">
           <div className="border-b border-divider px-4 py-2">
-            <p className="text-sm font-medium text-neutral-900">
+            <p className="text-sm font-medium text-default">
               {session.user?.email}
             </p>
             <p className="text-xs text-subtle">
@@ -118,12 +120,12 @@ export function AuthHeader() {
           )}
 
           <Link
-            href="/settings"
+            href={profileHref}
             className="flex items-center px-4 py-2 text-sm text-muted transition-colors hover:bg-surface-2/80"
             onClick={() => setIsMenuOpen(false)}
           >
             <User className="h-4 w-4 mr-2" />
-            Profil
+            {profileLabel}
           </Link>
 
           <button

@@ -33,7 +33,7 @@ const successMessages = {
     'Falls ein Konto existiert, wurde ein Login-Link versendet. Bitte prüfe dein Postfach (oder den Spam-Ordner).',
 };
 
-type DemoAccount = {
+type PrefilledAccount = {
   id: string;
   role: string;
   email: string;
@@ -43,22 +43,22 @@ type DemoAccount = {
   focus: string;
 };
 
-const demoAccounts: DemoAccount[] = [
+const preparedAccounts: PrefilledAccount[] = [
   {
     id: 'therapist',
     role: 'Therapeut:in',
     email: 'dr.mueller@example.com',
     password: 'Therapist123!',
-    totpHint: 'Bei Bedarf 000000 eingeben (Demo-Modus).',
+    totpHint: 'Bei Bedarf 000000 eingeben.',
     description: 'Zugang zum Dashboard mit Kursverwaltung, Auszahlungen und Sicherheitscenter.',
-    focus: 'Ideal für Live-Demonstrationen der Anbieter-Perspektive.',
+    focus: 'Ideal für die Anbieter-Perspektive.',
   },
   {
     id: 'admin',
     role: 'Admin',
     email: 'admin@mental-health-platform.com',
     password: 'Admin123!',
-    totpHint: 'Für die Demo kann das Feld leer bleiben.',
+    totpHint: 'Aktuell optional, bei Bedarf leer lassen.',
     description: 'Admin-Konsole mit Verifizierungs-Queue, Notfallmeldungen und Systemüberblick.',
     focus: 'Zeigt Governance, Sicherheits- und Monitoring-Funktionen.',
   },
@@ -102,15 +102,19 @@ export default function LoginPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [prefilledAccount, setPrefilledAccount] = useState<DemoAccount | null>(null);
+  const [prefilledAccount, setPrefilledAccount] = useState<PrefilledAccount | null>(null);
 
   useEffect(() => {
     const errorParam = searchParams.get('error');
+    const statusParam = searchParams.get('status');
 
     if (errorParam) {
       const code = mapErrorCode(errorParam);
       setError(errorMessages[code]);
       setSuccess(null);
+    } else if (statusParam === 'registered') {
+      setSuccess('Account erstellt. Melde dich jetzt mit deinem Passwort an.');
+      setError(null);
     }
   }, [searchParams]);
 
@@ -133,7 +137,7 @@ export default function LoginPage() {
         const code = mapErrorCode(result?.error ?? 'CredentialsSignin');
         const extra =
           code === 'CredentialsSignin'
-            ? ' Tipp: Übernimm mit einem Klick die vorbereiteten Demo-Zugangsdaten rechts und versuche es erneut.'
+            ? ' Tipp: Übernimm mit einem Klick die vorbereiteten Zugangsdaten rechts und versuche es erneut.'
             : '';
         setError(`${errorMessages[code]}${extra}`);
         return;
@@ -162,22 +166,18 @@ export default function LoginPage() {
 
         if (result?.error || result === undefined) {
           const code = mapErrorCode(result?.error ?? 'default');
-          setError(
-            `${errorMessages[code]} Für die Demo empfehlen wir die Anmeldung per Passwort – nutze die vorbereiteten Zugänge.`,
-          );
+          setError(`${errorMessages[code]} Wir empfehlen in diesem Fall die Anmeldung per Passwort – nutze die vorbereiteten Zugänge.`);
           return;
         }
 
         setSuccess(successMessages.magicLinkSent);
       } catch {
-        setError(
-          'Der Magic Link konnte nicht versendet werden. Für die Demo nutze bitte die vorbereiteten Passwort-Zugänge.',
-        );
+        setError('Der Magic Link konnte nicht versendet werden. Bitte nutze die vorbereiteten Passwort-Zugänge.');
       }
     });
   };
 
-  const handlePrefill = (account: DemoAccount) => {
+  const handlePrefill = (account: PrefilledAccount) => {
     setMode('password');
     setCredentialsEmail(account.email);
     setPassword(account.password ?? '');
@@ -203,20 +203,19 @@ export default function LoginPage() {
     <div className="bg-surface">
       <section className="relative overflow-hidden py-16">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-36 right-[-6rem] h-96 w-96 rounded-full bg-primary-200/30 blur-3xl" />
-          <div className="absolute bottom-[-8rem] left-[-4rem] h-80 w-80 rounded-full bg-secondary-200/30 blur-3xl" />
+          <div className="absolute -top-36 right-[-6rem] h-96 w-96 rounded-full bg-blue-50/30 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-[-4rem] h-80 w-80 rounded-full bg-blue-50/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 max-w-3xl space-y-3">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary-700 shadow-sm">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
               <Sparkles className="h-4 w-4" aria-hidden />
-              Demo-Logins &amp; Sicherheitsfeatures
+              Vorkonfigurierte Logins &amp; Sicherheitsfeatures
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl">Anmelden</h1>
+            <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">Anmelden</h1>
             <p className="text-lg leading-relaxed text-muted">
-              Nutze die vorbereiteten Zugangsdaten für eine sofortige Demo oder melde dich mit eigenen Testkonten an. Alle
-              Logins sind für die Präsentation vorkonfiguriert.
+              Nutze die vorbereiteten Zugangsdaten oder melde dich mit eigenen Testkonten an. Alle Logins sind für Präsentationen vorkonfiguriert.
             </p>
           </div>
 
@@ -230,7 +229,7 @@ export default function LoginPage() {
                   className={`flex-1 border rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                     mode === 'password'
                       ? 'border-primary-800 bg-primary-800 text-white'
-                      : 'border-neutral-300 text-neutral-900 hover:border-primary-700'
+                      : 'border-neutral-300 text-default hover:border-primary-700'
                   }`}
                   onClick={() => {
                     setMode('password');
@@ -247,7 +246,7 @@ export default function LoginPage() {
                   className={`flex-1 border rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                     mode === 'magic'
                       ? 'border-primary-800 bg-primary-800 text-white'
-                      : 'border-neutral-300 text-neutral-900 hover:border-primary-700'
+                      : 'border-neutral-300 text-default hover:border-primary-700'
                   }`}
                   onClick={() => {
                     setMode('magic');
@@ -262,7 +261,7 @@ export default function LoginPage() {
               {activePrefillInfo && (
                 <div
                   role="status"
-                  className="mb-4 flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-primary-900"
+                  className="mb-4 flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary dark:border-primary/50 dark:bg-primary/20"
                 >
                   <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
                   <p>{activePrefillInfo}</p>
@@ -292,7 +291,7 @@ export default function LoginPage() {
               {mode === 'password' ? (
             <form onSubmit={handleCredentialsSignIn} className="space-y-4" noValidate>
               <div>
-                <label htmlFor="credentials-email" className="block text-sm font-medium text-neutral-900 mb-1">
+                <label htmlFor="credentials-email" className="block text-sm font-medium text-default mb-1">
                   E-Mail-Adresse
                 </label>
                 <div className="relative">
@@ -311,7 +310,7 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-neutral-900 mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-default mb-1">
                   Passwort
                 </label>
                 <div className="relative">
@@ -330,7 +329,7 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label htmlFor="totp" className="block text-sm font-medium text-neutral-900 mb-1">
+                <label htmlFor="totp" className="block text-sm font-medium text-default mb-1">
                   Zwei-Faktor-Code
                 </label>
                 <input
@@ -345,12 +344,12 @@ export default function LoginPage() {
                   aria-describedby="totp-hint"
                 />
                 <p id="totp-hint" className="text-xs text-neutral-700 mt-1">
-                  Für Admins und Therapeut:innen empfohlen. Im Demo-Modus genügt „000000“ oder lasse das Feld leer.
+                  Für Admins und Therapeut:innen empfohlen. Bei Bedarf genügt „000000“ oder lasse das Feld leer.
                 </p>
               </div>
 
               <div className="flex items-center justify-between">
-                <Link href="/forgot-password" className="text-sm text-primary-900 hover:underline">
+                <Link href="/forgot-password" className="text-sm text-primary hover:underline">
                   Passwort vergessen?
                 </Link>
                 <span className="text-xs text-neutral-700">Unterstützt Passwort + TOTP</span>
@@ -367,7 +366,7 @@ export default function LoginPage() {
           ) : (
             <form onSubmit={handleMagicLink} className="space-y-4" noValidate>
               <div>
-                <label htmlFor="magic-email" className="block text-sm font-medium text-neutral-900 mb-1">
+                <label htmlFor="magic-email" className="block text-sm font-medium text-default mb-1">
                   E-Mail-Adresse
                 </label>
                 <div className="relative">
@@ -410,8 +409,8 @@ export default function LoginPage() {
 
             <div className="mt-6">
               <Link
-                href="/register"
-                className="w-full flex justify-center py-2 px-4 border-2 border-primary-900 text-primary-900 rounded-md hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-800 focus:ring-offset-2 transition-colors"
+                href="/signup"
+                className="w-full flex justify-center py-2 px-4 border-2 border-primary-900 text-primary rounded-md hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary-800 focus:ring-offset-2 transition-colors"
               >
                 Kostenloses Konto erstellen
               </Link>
@@ -421,7 +420,7 @@ export default function LoginPage() {
 
             <aside className="rounded-3xl border border-divider bg-surface-1/90 p-6 shadow-md shadow-primary/10 backdrop-blur">
               <header className="space-y-2">
-                <h2 className="text-2xl font-semibold text-neutral-900">Schnelle Demo-Logins</h2>
+                <h2 className="text-2xl font-semibold text-default">Schnelle Zugänge</h2>
                 <p className="text-sm leading-relaxed text-muted">
                   Übernimm vorbereitete Zugangsdaten mit einem Klick. Das Formular links wird automatisch ausgefüllt und ist
                   sofort einsatzbereit.
@@ -429,7 +428,7 @@ export default function LoginPage() {
               </header>
 
               <ul className="mt-6 space-y-4">
-                {demoAccounts.map((account) => (
+                {preparedAccounts.map((account) => (
                   <li
                     key={account.id}
                     className="rounded-2xl border border-divider bg-white/75 p-5 shadow-sm shadow-primary/5 transition hover:-translate-y-0.5 hover:shadow-primary/10"
@@ -437,7 +436,7 @@ export default function LoginPage() {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="space-y-1">
                         <p className="text-sm font-semibold uppercase tracking-wide text-primary-600">{account.role}</p>
-                        <p className="text-base font-medium text-neutral-900">{account.description}</p>
+                        <p className="text-base font-medium text-default">{account.description}</p>
                         <p className="text-xs text-muted">{account.focus}</p>
                       </div>
                       <button
@@ -452,18 +451,18 @@ export default function LoginPage() {
 
                     <dl className="mt-4 grid grid-cols-1 gap-2 text-xs text-muted">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-neutral-900">E-Mail:</span>
+                        <span className="font-semibold text-default">E-Mail:</span>
                         <span className="break-all">{account.email}</span>
                       </div>
                       {account.password && (
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-neutral-900">Passwort:</span>
+                          <span className="font-semibold text-default">Passwort:</span>
                           <span>{account.password}</span>
                         </div>
                       )}
                       {account.totpHint && (
                         <div className="flex items-start gap-2">
-                          <span className="font-semibold text-neutral-900">TOTP:</span>
+                          <span className="font-semibold text-default">TOTP:</span>
                           <span className="text-xs leading-normal">{account.totpHint}</span>
                         </div>
                       )}

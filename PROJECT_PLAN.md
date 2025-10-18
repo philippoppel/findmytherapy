@@ -1,47 +1,48 @@
 # Klarthera MVP Plan
 
 ## 0. Zielbild & Erfolgskriterien
-- Fokus: Vorzeigbarer MVP-Prototyp für Investor:innen-Demos und erste Pilot-Kund:innen.
-- Live-Fähigkeit: Stable Web-Demo mit echter Authentifizierung, Demo-Daten und erster Real-World-Anbindung für Pilot-Therapeut:innen.
+- Fokus: Vorzeigbarer MVP-Prototyp für Investor:innen-Sessions und erste Pilot-Kund:innen.
+- Live-Fähigkeit: Stable Web-Erlebnis mit echter Authentifizierung, Seed-Daten und erster Real-World-Anbindung für Pilot-Therapeut:innen.
 - Erfolgsmessung:
   - Mindestens 5 Pilot-Therapeut:innen können sich registrieren, Profil anlegen und freigeschaltet werden.
-  - Interessierte Kund:innen durchlaufen Triagedemo und erhalten handverlesene Empfehlungen (manuell kuratiert).
-  - Investoren-Demo deckt 3 Kern-Stories ab: Landing → Triage → Empfehlung, Landing → Therapiesuche, Landing → Pilot-Therapeut-Investitionsstory.
+  - Interessierte Kund:innen durchlaufen den Triage-Flow und erhalten handverlesene Empfehlungen (manuell kuratiert).
+  - Investor:innen-Story deckt 3 Kern-Szenarien ab: Landing → Triage → Empfehlung, Landing → Therapiesuche, Landing → Pilot-Therapeut:innen-Story.
 
-## 1. Kern-Erlebnis für Investor:innen-Demo
-- Marketing-Homepage, Blog/Stories und strukturierte Produkt-Abschnitte finalisieren.
-- Geführte Triage-Demo mit validiertem Copywriting, klaren Ergebnissen und Notfall-Hinweisen.
-- Demo-Empfehlungen auf Basis von Demo-Datensätzen sichtbar machen (keine echte Matching-Engine, aber Storytelling für Algorithmus).
-- Kurs- und Therapieseiten präsentieren Demo-Inhalte inklusive Pricing-Hinweisen (kein Checkout).
-- Analytics-Basics (z. B. Plausible/Segment placeholder) für Engagement-Messung vorbereiten.
+## 1. Kern-Erlebnis für Investor:innen
+- [x] Marketing-Homepage, Blog/Stories und strukturierte Produkt-Abschnitte finalisiert (apps/web/app/page.tsx, apps/web/app/blog/*).
+- [x] Geführter Triage-Flow mit validiertem Copywriting, Ergebnisscreen und Hinweistext verfügbar (apps/web/app/triage/TriageFlow.tsx).
+- [x] Empfehlungen auf Basis der Seed-Datensätze sichtbar (API persistiert Snapshot + empfiehlt Pilotprofile & Kurse in apps/web/app/api/triage/route.ts, TriageFlow).
+- [x] Kurs- und Therapieseiten zeigen Seed-Inhalte inklusive Pricing-Hinweisen (apps/web/app/courses/page.tsx, apps/web/app/therapists/page.tsx).
+- [x] Analytics-Basics per Placeholder Script & track()-Utility integriert (apps/web/app/layout.tsx, apps/web/lib/analytics.ts).
 
 ## 2. Pilot-Therapeut:innen Onboarding
-- Vereinfachtes Registrierungsformular: E-Mail/Passwort + Profilgrundlagen (Name, Stadt, Fachgebiete, Formate).
-- Admin-Review-Flow: einfache Ansicht mit Statuswechsel (Pending → Freigeschaltet) und Kommentar-Feld.
-- Sichtbarkeit: freigeschaltete Profile erscheinen im Verzeichnis mit Kennzeichnung „Pilot“.
-- Optional: Termine/Pricing als Freitext, keine Stripe-Integration im MVP.
-- Vertragliche/Compliance Hinweise als statischer Download oder PDF-Link integrieren.
+- [x] Vereinfachtes Registrierungsformular mit Passwort + Profilfeldern erstellt, schreibt in DB und markiert Profile als pending (apps/web/app/register/RegistrationForm.tsx, api/register).
+- [x] Admin-Review-Flow inklusive Statuswechsel und Notizfeld umgesetzt (apps/web/app/admin/page.tsx, actions.ts).
+- [x] Sichtbarkeit im Verzeichnis nur für freigeschaltete Pilot-Profile inkl. „Pilot“-Badge (apps/web/app/therapists/page.tsx & TherapistDirectory.tsx).
+- [x] Dedizierte Felder für Termin-/Pricing-Freitext im Onboarding ergänzen Profil & Admin-Review (apps/web/app/register/RegistrationForm.tsx, dashboard/profile, admin/page.tsx).
+- [x] Vertragliche/Compliance-Hinweise stehen als Download bereit (apps/web/app/register/page.tsx, public/compliance/klarthera-pilot-compliance-pack.pdf).
 
-## 3. Client Journey & Demo-Daten
-- Registrierung/Login für Kund:innen (Passwort + optional Magic Link) mit TOTP nur für Admin/Therapeut:innen.
-- Geführte Triageschritte mit persistierter Session (Speicherung in DB, um manuelle Nachbearbeitung zu ermöglichen).
-- Empfehlungsscreen mit handverlesenen Pilot-Profilen, Kursmodulen und manuellem Call-to-Action („Termin anfragen“ per Formular/E-Mail).
-- Kontaktformular mit Routing an internes Demo-Team (Mailhog/SMTP) inkl. Auto-Bestätigung.
-- Öffentliche Verzeichnisse (Therapists, Courses) nutzen dieselbe Datenquelle, leiten aber auf Triagedemo für tiefergehende Empfehlungen.
+## 3. Client Journey & Seed-Daten
+- [x] Registrierung/Login für Kund:innen: Self-Service-Registrierung + Auto-Login (apps/web/app/signup/*, apps/web/app/api/clients/register/route.ts), Magic-Link-Login weiter verfügbar; role-based Redirects leiten zum passenden Dashboard.
+- [x] Geführte Triageschritte werden als Snapshot persistiert (packages/db/prisma/schema.prisma, apps/web/app/api/triage/route.ts).
+- [x] Empfehlungsscreen zeigt kuratierte Pilot-Profile & Programme mit Highlights (apps/web/app/triage/TriageFlow.tsx).
+- [x] Client-Dashboard bündelt Programme, Matches & Bestellungen (apps/web/app/dashboard/client/page.tsx).
+- [ ] Kontaktformular legt Anfragen in der DB an (apps/web/app/api/contact/route.ts); queueNotification ist weiterhin nur ein Placeholder, kein E-Mail-Routing oder Auto-Bestätigung.
+- [x] Öffentliche Verzeichnisse für Therapeut:innen und Kurse nutzen gemeinsame Seed-Daten und verlinken zurück zur Triage.
 
 ## 4. Operatives Backbone
-- Datenmodell: Prisma-Tabellen für Users, TherapistProfiles, Listings, Courses, Matches (Dummy) sind ausreichend; Cleanup und Migrationsskript beibehalten.
-- Seed-Skripte aktualisieren: Demo-Accounts + Pilot-Beispiele + initiale Matches/Triage-Resultate.
-- Hintergrundjobs: Worker bleibt minimal (Logs), aber vorbereiteter Hook für E-Mail-Benachrichtigungen (TODO in Code kommentieren).
-- Monitoring: Manuelles Error-Logging via console/Sentry-Placeholder; tatsächliche Integration nur bei Bedarf.
-- Infrastruktur: Lokale Docker-Compose-Stacks; Deployment erfolgt manuell (z. B. Vercel/Render). Terraform erst nach MVP neu planen.
+- [x] Datenmodell in Prisma deckt Users, TherapistProfiles, Listings, Courses, Matches etc. ab (packages/db/prisma/schema.prisma).
+- [x] Seed-Skripte erzeugen Pilot-Accounts, Profile, Kurse und Matches inkl. Triage-Resultaten (packages/db/src/seed.ts).
+- [x] Hintergrundjobs: Worker loggt Heartbeats und verweist auf Notification-Hook Placeholder (apps/worker/src/index.ts); API-Queues nutzen queueNotification.
+- [x] Monitoring: Fehler landen im captureError Placeholder (apps/web/lib/monitoring.ts, API-Routen).
+- [x] Infrastruktur: Docker-Compose-Stack & Deployment-Guides (docker-compose.yml, README.md, DEPLOYMENT.md) vorhanden; Terraform bleibt verschoben.
 
 ## 5. Qualität & Kommunikation
-- Smoke-Tests: Jest für kritische Komponenten (Auth-Flow, Triage, Kontaktformular) + Playwright Happy Path (Landing → Triage → Empfehlung).
-- Accessibility-Check: Weiterhin axe-Basislauf für zentrale Seiten.
-- Dokumentation: README aktualisieren für MVP-Setup (Pilot-Registrierung, Seed-Daten, Demo-Ablauf), kurzer Pitch-Guide für Demo-Szenarien.
-- Feedback-Loop: Admin kann Notizen zu Pilot-Therapeut:innen hinterlegen (zunächst in separater Tabelle/JSON-Feld).
-- Security: Passwort-Reset-Link als statischer Hinweis (Support kontaktieren), Sessions auf Standard NextAuth-Konfiguration belassen.
+- [ ] Smoke-Tests: Jest deckt Triage-, Registrierungs- und Kontaktformulare ab (plus TOTP-Helper); End-to-End/Auth-Flow-Szenarien fehlen weiterhin.
+- [x] Accessibility-Check via Playwright + axe für zentrale Seiten eingerichtet (apps/web/tests/e2e/docs-accessibility.spec.ts).
+- [x] Dokumentation (README.md, Guides) aktualisiert.
+- [x] Feedback-Loop über Admin-Notizen verfügbar (apps/web/app/admin/page.tsx).
+- [x] Security-Hinweise & Passwort-Reset-Fluss mit Supportverweis vorhanden (apps/web/app/forgot-password, apps/web/app/api/password-reset/request/route.ts, NextAuth-Konfiguration).
 
 ## 6. Nach-MVP Parkposition
 - Stripe-Zahlungsflüsse, Matching-Algorithmus, Content-Streaming, Terraform-Infrastruktur, vollwertige Hintergrundjobs bleiben explizit „Post-MVP“.

@@ -1,13 +1,13 @@
-# Klarthera MVP – Demo-Plattform für Investor:innen & Pilot-Therapeut:innen
+# Klarthera MVP – Pilot-Plattform für Investor:innen & Therapeut:innen
 
-Klarthera befindet sich in der MVP-Phase. Ziel ist eine vorzeigbare Demo, die Investor:innen den Kernnutzen zeigt und erste Pilot-Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP“.
+Klarthera befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, der Investor:innen den Kernnutzen zeigt und erste Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP“.
 
 ## 🎯 MVP-Fokus
-- **Investor:innen-Story**: Marketing-Homepage, geführte Triage-Demo, Empfehlungen aus kuratierten Demo-Daten.
+- **Investor:innen-Story**: Marketing-Homepage, geführte Triage-Erfahrung, Empfehlungen aus kuratierten Seed-Daten.
 - **Pilot-Therapeut:innen**: Registrierung mit Profilangaben, Admin-Freigabe und Sichtbarkeit im Verzeichnis.
-- **Interessierte Kund:innen**: Login/Registrierung, Triagedemo mit persistierten Antworten, Kontaktaufnahme zum Team.
+- **Interessierte Kund:innen**: Login/Registrierung, Triage-Flow mit persistierten Antworten, Kontaktaufnahme zum Team.
 - **Admin-Einblicke**: Dashboard mit Statusüberblick, einfache Pilot-Freigabe.
-- **Demo-Datenbasis**: Seeds für Accounts, Kurse, Matches und Triage-Ergebnisse.
+- **Seed-Datenbasis**: Seeds für Accounts, Kurse, Matches und Triage-Ergebnisse.
 
 > **Nicht Teil des MVP:** Stripe-Zahlungen, automatisierte Matching-Engine, Content-Streaming, produktionsfertige Infrastruktur.
 
@@ -38,7 +38,7 @@ cd mental-health-platform
 pnpm install
 
 cp .env.example .env
-# Werte bei Bedarf anpassen – Default-Werte reichen für die Demo
+# Werte bei Bedarf anpassen – Default-Werte reichen für den Pilotbetrieb
 
 docker-compose up -d
 pnpm db:push
@@ -79,11 +79,11 @@ git push origin main
 | Pilot-Therapeut:in | mag.wagner@example.com           | Therapist123! |
 | Pilot-Therapeut:in | dr.schneider@example.com         | Therapist123! |
 
-## 🧭 Demo-Guides
+## 🧭 Pilot-Guides
 
 ### 1. Investor:innen-Tour
 1. `http://localhost:3000/` – Hero, Vision, Social Proof.
-2. `Triagedemo starten` → vollständiger Flow mit Demo-Fragen.
+2. `Ersteinschätzung starten` → vollständiger Flow mit Beispiel-Fragen.
 3. Ergebnissecreen zeigt Empfehlungen (Therapeut:innen & Programme) aus Seed-Daten.
 4. Wahlweise Kurs- oder Therapist-Verzeichnisse öffnen, um Tiefe zu zeigen.
 
@@ -95,20 +95,20 @@ git push origin main
 5. Profil erscheint im öffentlichen Verzeichnis (`/therapists`) mit Badge „Verifiziert“.
 
 ### 3. Kund:innenreise
-1. `http://localhost:3000/login` – Login oder `Registrieren`.
-2. `http://localhost:3000/triage` – Fragen beantworten, Ergebnis wird gespeichert.
-3. Empfehlungen durchsuchen, anschließend `Kontakt` für Follow-up auslösen.
-4. E-Mails landen in Mailhog (`http://localhost:8025`) für Demo-Zwecke.
+1. `http://localhost:3000/signup` – Self-Service-Registrierung oder Seed-Login via `http://localhost:3000/login` nutzen.
+2. Nach dem Login erfolgt automatische Weiterleitung zum Client-Dashboard (`/dashboard/client`) mit Programmen, Matches & Bestellungen.
+3. `http://localhost:3000/triage` – Ersteinschätzung ausfüllen, Ergebnisse landen im Dashboard.
+4. Empfehlungen durchsuchen, anschließend `Kontakt` für Follow-up auslösen; Mails landen in Mailhog (`http://localhost:8025`).
 
 ## ⚙️ Technik & Daten
 - **Auth**: NextAuth (Passwort + Magic Link). TOTP optional für `ADMIN` & `THERAPIST`.
-- **Datenbank**: PostgreSQL via Prisma. Seeds erzeugen Demo-User, Pilot-Profile, Kurse, Matches.
+- **Datenbank**: PostgreSQL via Prisma. Seeds erzeugen Pilot-Accounts, Profile, Kurse und Matches.
 - **Lokalisierung**: Statisches `de-AT`, Internationalisierung wird post-MVP erweitert.
 - **Background-Worker**: Placeholder – zukünftige Jobs (Stripe, Benachrichtigungen) sind TODOs.
 - **Monitoring**: Sentry/OTel nur vorbereitet; aktive Integration erst nach MVP.
 
 ## 🧪 Tests & Qualität
-- `pnpm test` – leichte Jest-Coverage (Triage-Demo, Formulare, UI-Tokens).
+- `pnpm test` – leichte Jest-Coverage (Triage-Flow, Formulare, UI-Tokens).
 - `pnpm e2e` – Playwright Happy Path für Design-Doku & Accessibility.
 - `pnpm lint`, `pnpm format` – Codequalität vor Pushes sicherstellen.
 - Manuelle QA-Checkliste:
@@ -119,7 +119,7 @@ git push origin main
 ## 🔐 Sicherheit (MVP-Status)
 - Passwort-Login mit bcrypt-Hashes + Magic Link.
 - TOTP-Setup & -Verwaltung für privilegierte Rollen.
-- Keine Rate-Limits, CSP oder Zahlungsfreigaben – Demo-Only! Feedback/Support via Team.
+- Keine Rate-Limits, CSP oder Zahlungsfreigaben – MVP-only! Feedback/Support via Team.
 - Hinweis auf jeder Produktdemo: Daten nur Mock/Pilot, kein Notfall-Support.
 
 ## 🧭 Post-MVP (Parkposition)
@@ -130,8 +130,8 @@ git push origin main
 - Compliance-Dokumente (DSGVO, Notfall, Bezahlflows).
 
 ## 🤝 Pitch-Hilfen
-- **Demo-Skript**: Starte im Hero, erzähle Problem → Triagedemo → Pilot-Profil → Admin-Backoffice.
+- **Pilot-Skript**: Starte im Hero, erzähle Problem → Triage-Flow → Pilot-Profil → Admin-Backoffice.
 - **Storytelling**: Betone, dass Matching & Payments vorbereitet, aber bewusst aus dem MVP scoped sind.
 - **Feedback-Loop**: Dokumentiere Pilot-Rückmeldungen im Admin-Dashboard (Notizfelder folgen).
 
-Viel Erfolg bei Demos & Gesprächen – und gib Bescheid, falls wir die nächste Ausbaustufe priorisieren sollen! 🏁
+Viel Erfolg bei Gesprächen – und gib Bescheid, falls wir die nächste Ausbaustufe priorisieren sollen! 🏁

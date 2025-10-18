@@ -30,3 +30,5 @@ export const requireRoles = async (roles: UserRole[], options: RequireRoleOption
 export const requireTherapist = () => requireRoles(['THERAPIST']);
 
 export const requireAdmin = () => requireRoles(['ADMIN']);
+
+export const requireClient = () => requireRoles(['CLIENT']);

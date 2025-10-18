@@ -100,6 +100,9 @@ const config: Config = {
     plugin(({ addUtilities }) => {
       addUtilities({
         '.bg-surface': {
+          backgroundColor: 'rgb(var(--bg))',
+        },
+        '.bg-surface-1': {
           backgroundColor: 'rgb(var(--surface-1))',
         },
         '.bg-surface-2': {
@@ -107,6 +110,9 @@ const config: Config = {
         },
         '.bg-surface-3': {
           backgroundColor: 'rgb(var(--surface-3))',
+        },
+        '.text-default': {
+          color: 'rgb(var(--text))',
         },
         '.text-muted': {
           color: 'rgb(var(--text-muted))',
@@ -116,6 +122,12 @@ const config: Config = {
         },
         '.text-link': {
           color: 'rgb(var(--link))',
+        },
+        '.text-primary-color': {
+          color: 'rgb(var(--primary))',
+        },
+        '.border-divider': {
+          borderColor: 'rgb(var(--divider))',
         },
         '.ring-focus': {
           '--tw-ring-color': 'rgb(var(--focus-ring))',

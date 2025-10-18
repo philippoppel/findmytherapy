@@ -76,7 +76,7 @@ export function ForgotPasswordForm() {
         <Mail className="h-4 w-4" aria-hidden />
         Passwort zurücksetzen
       </div>
-      <h2 className="mt-4 text-2xl font-semibold text-neutral-900">
+      <h2 className="mt-4 text-2xl font-semibold text-default">
         Passwort vergessen?
       </h2>
       <p className="mt-2 text-sm text-muted">
@@ -98,7 +98,7 @@ export function ForgotPasswordForm() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
         <label className="space-y-2 text-sm text-neutral-700" htmlFor="reset-email">
-          <span className="font-medium text-neutral-900">E-Mail-Adresse</span>
+          <span className="font-medium text-default">E-Mail-Adresse</span>
           <Input
             id="reset-email"
             type="email"

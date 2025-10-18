@@ -17,6 +17,9 @@ type ExtendedUser = {
   locale?: string | null;
   twoFASecret?: string | null;
   twoFAEnabled?: boolean | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  marketingOptIn?: boolean | null;
 };
 
 const isExtendedUser = (value: unknown): value is ExtendedUser => typeof value === 'object' && value !== null;
@@ -101,6 +104,9 @@ const authConfig: NextAuthConfig = {
           role: user.role,
           locale: user.locale,
           twoFAEnabled: Boolean(user.twoFASecret),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          marketingOptIn: user.marketingOptIn,
         };
       },
     }),
@@ -137,6 +143,15 @@ const authConfig: NextAuthConfig = {
         const twoFAEnabled = 'twoFAEnabled' in user ? user.twoFAEnabled : undefined;
         const twoFASecret = 'twoFASecret' in user ? user.twoFASecret : undefined;
         token.twoFAEnabled = typeof twoFAEnabled !== 'undefined' ? Boolean(twoFAEnabled) : Boolean(twoFASecret);
+        if ('firstName' in user && typeof user.firstName === 'string') {
+          token.firstName = user.firstName;
+        }
+        if ('lastName' in user && typeof user.lastName === 'string') {
+          token.lastName = user.lastName;
+        }
+        if ('marketingOptIn' in user && typeof user.marketingOptIn !== 'undefined') {
+          token.marketingOptIn = Boolean(user.marketingOptIn);
+        }
       }
 
       return token;
@@ -148,6 +163,14 @@ const authConfig: NextAuthConfig = {
         session.user.role = (token.role as UserRole) ?? 'CLIENT';
         session.user.locale = (token.locale as string) ?? 'de-AT';
         session.user.twoFAEnabled = Boolean(token.twoFAEnabled);
+        session.user.firstName =
+          typeof token.firstName === 'string' ? token.firstName : session.user.firstName ?? null;
+        session.user.lastName =
+          typeof token.lastName === 'string' ? token.lastName : session.user.lastName ?? null;
+        session.user.marketingOptIn =
+          typeof token.marketingOptIn === 'boolean'
+            ? token.marketingOptIn
+            : session.user.marketingOptIn ?? false;
       }
 
       return session;

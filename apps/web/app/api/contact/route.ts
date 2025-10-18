@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@mental-health/db'
 import { z } from 'zod'
+import { queueNotification } from '../../../lib/notifications'
+import { captureError } from '../../../lib/monitoring'
 
 const contactSchema = z.object({
   name: z.string().min(1, 'Name ist erforderlich'),
@@ -31,8 +33,10 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Optional: E-Mail-Benachrichtigung an das Team senden
-    // await sendContactNotificationEmail(contactRequest)
+    await queueNotification('contact-request', {
+      id: contactRequest.id,
+      topic: contactRequest.topic,
+    })
 
     return NextResponse.json(
       {
@@ -43,7 +47,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Error processing contact request:', error)
+    captureError(error, { location: 'api/contact' })
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

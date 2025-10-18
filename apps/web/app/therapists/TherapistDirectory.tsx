@@ -15,8 +15,8 @@ const formatOptions = [
 ] as const
 
 const statusLabel: Record<TherapistStatus, string> = {
-  VERIFIED: 'Verifiziert',
-  PENDING: 'In Prüfung',
+  VERIFIED: 'Pilot (verifiziert)',
+  PENDING: 'Pilot (in Prüfung)',
   REJECTED: 'Nicht gelistet',
 }
 
@@ -74,7 +74,7 @@ export function TherapistDirectory({ therapists }: Props) {
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">Fokus</p>
               <p className="text-sm text-muted">
-                Wähle Schwerpunkte, um passende Therapeut:innen in der Demo zu sehen.
+                Wähle Schwerpunkte, um passende Therapeut:innen angezeigt zu bekommen.
               </p>
             </div>
             {hasFilters && (
@@ -183,7 +183,7 @@ export function TherapistDirectory({ therapists }: Props) {
                 <div className="space-y-4">
                   <div className="space-y-1">
                     <div className="inline-flex items-center gap-2">
-                      <span className="text-lg font-semibold text-neutral-900">{therapist.name}</span>
+                      <span className="text-lg font-semibold text-default">{therapist.name}</span>
                       <Award className="h-4 w-4 text-primary" aria-hidden />
                     </div>
                     <p className="text-sm text-muted">{therapist.title}</p>
@@ -224,7 +224,7 @@ export function TherapistDirectory({ therapists }: Props) {
                       </div>
                     </div>
                     <div className="rounded-xl border border-divider bg-white/60 p-4 text-sm text-muted">
-                      <p className="font-medium text-neutral-900">Therapieansatz</p>
+                      <p className="font-medium text-default">Therapieansatz</p>
                       <p className="mt-1 leading-relaxed">{therapist.approach}</p>
                     </div>
                   </div>

@@ -53,4 +53,125 @@
   *::-webkit-scrollbar-thumb:hover {
     background: rgb(var(--color-neutral-400));
   }
+
+  .theme-dark .text-neutral-950,
+  .theme-dark .text-neutral-900,
+  .theme-dark .text-neutral-800,
+  .theme-dark .text-gray-950,
+  .theme-dark .text-gray-900,
+  .theme-dark .text-gray-800 {
+    color: rgb(var(--text));
+  }
+
+  .theme-dark .text-neutral-700,
+  .theme-dark .text-neutral-600,
+  .theme-dark .text-neutral-500,
+  .theme-dark .text-gray-700,
+  .theme-dark .text-gray-600,
+  .theme-dark .text-gray-500 {
+    color: rgb(var(--text-muted));
+  }
+
+  .theme-dark .text-neutral-400,
+  .theme-dark .text-neutral-300,
+  .theme-dark .text-neutral-200,
+  .theme-dark .text-gray-400,
+  .theme-dark .text-gray-300 {
+    color: rgb(var(--text-subtle));
+  }
+
+  .theme-dark .bg-primary-50,
+  .theme-dark .bg-primary\/10 {
+    background-color: rgb(var(--primary) / 0.18);
+  }
+
+  .theme-dark .border-primary\/20,
+  .theme-dark .border-primary\/30 {
+    border-color: rgb(var(--primary) / 0.45);
+  }
+
+  .theme-dark .bg-primary-500\/40 {
+    background-color: rgb(var(--primary) / 0.35);
+  }
+
+  .theme-light .bg-white {
+    background-color: rgb(var(--surface-surface1));
+  }
+
+  .theme-light .bg-white\/95 {
+    background-color: rgb(var(--surface-surface1) / 0.95);
+  }
+
+  .theme-light .bg-white\/92 {
+    background-color: rgb(var(--surface-surface1) / 0.92);
+  }
+
+  .theme-light .bg-white\/90 {
+    background-color: rgb(var(--surface-surface1) / 0.9);
+  }
+
+  .theme-light .bg-white\/88 {
+    background-color: rgb(var(--surface-surface1) / 0.88);
+  }
+
+  .theme-light .bg-white\/85 {
+    background-color: rgb(var(--surface-surface1) / 0.85);
+  }
+
+  .theme-light .bg-white\/80 {
+    background-color: rgb(var(--surface-surface1) / 0.8);
+  }
+
+  .theme-light .bg-white\/75 {
+    background-color: rgb(var(--surface-surface1) / 0.75);
+  }
+
+  .theme-light .bg-white\/70 {
+    background-color: rgb(var(--surface-surface1) / 0.7);
+  }
+
+  .theme-light .bg-white\/60 {
+    background-color: rgb(var(--surface-surface1) / 0.6);
+  }
+
+  .theme-dark .bg-white {
+    /* Bring legacy white surfaces in line with dark tokens */
+    background-color: rgb(var(--surface-1));
+  }
+
+  .theme-dark .bg-white\/95 {
+    background-color: rgb(var(--surface-1) / 0.95);
+  }
+
+  .theme-dark .bg-white\/92 {
+    background-color: rgb(var(--surface-1) / 0.92);
+  }
+
+  .theme-dark .bg-white\/90 {
+    background-color: rgb(var(--surface-1) / 0.9);
+  }
+
+  .theme-dark .bg-white\/88 {
+    background-color: rgb(var(--surface-1) / 0.88);
+  }
+
+  .theme-dark .bg-white\/85 {
+    background-color: rgb(var(--surface-1) / 0.85);
+  }
+
+  .theme-dark .bg-white\/80 {
+    background-color: rgb(var(--surface-1) / 0.8);
+  }
+
+  .theme-dark .bg-white\/75 {
+    background-color: rgb(var(--surface-1) / 0.75);
+  }
+
+  .theme-dark .bg-white\/70 {
+    background-color: rgb(var(--surface-1) / 0.7);
+  }
+
+  .theme-dark .bg-white\/60 {
+    background-color: rgb(var(--surface-1) / 0.6);
+  }
 }

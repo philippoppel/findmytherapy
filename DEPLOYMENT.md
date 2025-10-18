@@ -328,7 +328,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 | Vercel Blob | 500MB | $0.15/GB |
 | Build Minutes | 6000/Monat | Unlimited |
 
-**MVP-Empfehlung**: Free Tier ist ausreichend für Demos & erste 1000 Nutzer.
+**MVP-Empfehlung**: Free Tier ist ausreichend für Pilotphasen & erste 1000 Nutzer.
 
 ---
 

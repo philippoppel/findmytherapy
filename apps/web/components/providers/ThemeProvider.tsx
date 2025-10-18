@@ -12,12 +12,12 @@ interface ThemeContextValue {
   themes: ThemeName[];
 }
 
-const STORAGE_KEY = 'mental-health-theme';
+const STORAGE_KEY = 'mental-health-theme:v2';
 const THEME_CLASSES: ThemeName[] = ['theme-light', 'theme-dark', 'theme-simple'];
 
 const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined);
 
-const getSystemTheme = () =>
+const getSystemTheme = (): ThemeName =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'theme-dark'
     : 'theme-light';
@@ -25,6 +25,8 @@ const getSystemTheme = () =>
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = React.useState<ThemeName>('theme-light');
   const [userPreference, setUserPreference] = React.useState<ThemeName | null>(null);
+  const [isReady, setIsReady] = React.useState(false);
+  const userPreferenceRef = React.useRef<ThemeName | null>(null);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') {
@@ -35,25 +37,45 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     if (stored && THEME_CLASSES.includes(stored)) {
       setThemeState(stored);
       setUserPreference(stored);
-      return;
+      userPreferenceRef.current = stored;
+    } else {
+      setThemeState(getSystemTheme());
     }
 
-    // Standard: immer hell, unabhängig von System-Präferenz
-    setThemeState('theme-light');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (userPreferenceRef.current) {
+        return;
+      }
+      setThemeState(event.matches ? 'theme-dark' : 'theme-light');
+    };
 
-    // System-Präferenz-Listener entfernt - Nutzer muss explizit Dark Mode wählen
+    media.addEventListener('change', handleChange);
+    setIsReady(true);
+    return () => {
+      media.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    userPreferenceRef.current = userPreference;
   }, [userPreference]);
 
   React.useEffect(() => {
-    if (typeof document === 'undefined') {
+    if (typeof document === 'undefined' || !isReady) {
       return;
     }
 
     const root = document.documentElement;
+    const body = document.body;
     root.classList.remove(...THEME_CLASSES);
+    body.classList.remove(...THEME_CLASSES);
     root.classList.add(theme);
-    root.dataset.theme = theme.replace('theme-', '');
-  }, [theme]);
+    body.classList.add(theme);
+    const themeName = theme.replace('theme-', '');
+    root.dataset.theme = themeName;
+    body.dataset.theme = themeName;
+  }, [theme, isReady]);
 
   const setTheme = React.useCallback((nextTheme: ThemeName) => {
     if (typeof window === 'undefined') {
@@ -61,6 +83,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setThemeState(nextTheme);
     setUserPreference(nextTheme);
+    userPreferenceRef.current = nextTheme;
     window.localStorage.setItem(STORAGE_KEY, nextTheme);
   }, []);
 
@@ -70,6 +93,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
     window.localStorage.removeItem(STORAGE_KEY);
     setUserPreference(null);
+    userPreferenceRef.current = null;
     setThemeState(getSystemTheme());
   }, []);
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Brain, CalendarPlus, ClipboardList, Sparkles, Thermometer, Users } from 'lucide-react'
-import { TriageDemo } from './TriageDemo'
+import { TriageFlow } from './TriageFlow'
 
 const triageSteps = [
   {
@@ -51,24 +51,24 @@ const sampleQuestions = [
 export const metadata: Metadata = {
   title: 'Ersteinschätzung – Klarthera',
   description:
-    'Die Klarthera Ersteinschätzung bietet einen klaren Überblick über aktuelle Bedürfnisse und schlägt passende Therapeut:innen sowie Programme vor. Demo zeigt den Ablauf.',
+    'Die Klarthera Ersteinschätzung bietet einen klaren Überblick über aktuelle Bedürfnisse und schlägt passende Therapeut:innen sowie Programme vor.',
 }
 
 export default function TriagePage() {
   return (
     <div className="bg-surface">
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary-50 via-surface-1 to-surface-1 py-20">
+      <section className="relative overflow-hidden bg-white py-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-[-5rem] h-80 w-80 rounded-full bg-primary-200/40 blur-3xl" />
-          <div className="absolute bottom-[-8rem] left-[-4rem] h-72 w-72 rounded-full bg-secondary-200/30 blur-3xl" />
+          <div className="absolute -top-24 right-[-5rem] h-80 w-80 rounded-full bg-blue-100/30 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-[-4rem] h-72 w-72 rounded-full bg-blue-50/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-6 text-center">
-            <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary-700 shadow-sm">
-              Demo - Ersteinschätzung in 4 Schritten
+            <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
+              Ersteinschätzung in 4 Schritten
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 md:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
               Klarthera Ersteinschätzung – dein Weg zur passenden Hilfe
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
@@ -77,7 +77,7 @@ export default function TriagePage() {
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="#demo-flow"
+                href="#ablauf"
                 className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
               >
                 Ersteinschätzung starten
@@ -94,19 +94,19 @@ export default function TriagePage() {
         </div>
       </section>
 
-      <section id="demo-flow" className="py-16">
+      <section id="ablauf" className="py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 space-y-3 text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
               <Sparkles className="h-4 w-4" aria-hidden />
-              Demo-Flow ausprobieren
+              Ablauf ansehen
             </span>
-            <h2 className="text-3xl font-semibold text-neutral-900">Beantworte die Fragen und sieh sofort eine Empfehlung</h2>
+            <h2 className="text-3xl font-semibold text-default">Beantworte die Fragen und sieh sofort eine Empfehlung</h2>
             <p className="text-base text-muted">
-              Diese Simulation zeigt, wie Klarthera Antworten bündelt, das Belastungslevel einschätzt und nächste Schritte vorschlägt. Alle Daten bleiben im Browser – perfekt für Live-Demos.
+              Diese Simulation zeigt, wie Klarthera Antworten bündelt, das Belastungslevel einschätzt und nächste Schritte vorschlägt. Alle Daten bleiben im Browser – ideal für deine Vorbereitung.
             </p>
           </div>
-          <TriageDemo />
+          <TriageFlow />
         </div>
       </section>
 
@@ -114,8 +114,8 @@ export default function TriagePage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div className="max-w-3xl space-y-3">
-              <h2 className="text-3xl font-semibold text-neutral-900">
-                Demo: So läuft die Klarthera Ersteinschätzung ab
+              <h2 className="text-3xl font-semibold text-default">
+                So läuft die Klarthera Ersteinschätzung ab
               </h2>
               <p className="text-base text-muted">
                 Die Screens sind so gestaltet, dass du dich sicher fühlst, weißt wo du stehst und sofort Weiteres planen kannst – ohne, dass sensible Informationen verloren gehen.
@@ -123,7 +123,7 @@ export default function TriagePage() {
             </div>
             <div className="flex items-center gap-3 rounded-full border border-divider bg-white/70 px-4 py-2 text-sm text-muted">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span>Demo-Daten. Austausch jederzeit möglich.</span>
+              <span>Kuratiertes Beispiel. Austausch jederzeit möglich.</span>
             </div>
           </div>
 
@@ -141,7 +141,7 @@ export default function TriagePage() {
                     <step.icon className="h-6 w-6" aria-hidden />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-neutral-900">{step.title}</h3>
+                    <h3 className="text-lg font-semibold text-default">{step.title}</h3>
                     <p className="text-sm text-muted">{step.description}</p>
                   </div>
                 </div>
@@ -154,11 +154,11 @@ export default function TriagePage() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-primary-50 via-surface-1 to-secondary-50 py-16">
+      <section className="bg-gradient-to-r from-primary-50 via-surface-1 to-blue-50 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="rounded-3xl border border-divider bg-white/80 p-8 shadow-md shadow-primary/10 backdrop-blur">
-              <h2 className="text-2xl font-semibold text-neutral-900">Beispielscreen - Selbsteinschätzung</h2>
+              <h2 className="text-2xl font-semibold text-default">Beispielscreen - Selbsteinschätzung</h2>
               <p className="mt-3 text-base text-muted">
                 So könnte eine der Screens innerhalb der Ersteinschätzung aussehen. Die Fragen bleiben jederzeit transparent
                 und geben Hinweise, wie du Antworten einschätzen kannst.
@@ -169,7 +169,7 @@ export default function TriagePage() {
                     <div className="flex items-start gap-3">
                       <Thermometer className="mt-1 h-5 w-5 text-primary" aria-hidden />
                       <div>
-                        <h3 className="text-base font-semibold text-neutral-900">{question.title}</h3>
+                        <h3 className="text-base font-semibold text-default">{question.title}</h3>
                         <p className="text-xs font-medium uppercase tracking-wide text-primary">Antworttyp: {question.type}</p>
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export default function TriagePage() {
               </div>
               <Link
                 href="/register"
-                className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-700 shadow-lg shadow-black/10 transition hover:bg-primary-50 hover:text-primary-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Jetzt Klarthera Zugang erstellen
                 <ArrowRight className="ml-2 h-4 w-4" />

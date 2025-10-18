@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Menu, X, Compass } from 'lucide-react'
+import { Menu, X, Compass, Moon, Sun } from 'lucide-react'
 import { AuthHeader } from './AuthHeader'
+import { useTheme } from '../providers/ThemeProvider'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { theme, setTheme } = useTheme()
 
   const navigation = [
     { name: 'Therapeut:innen', href: '/therapists' },
@@ -16,8 +18,14 @@ export function Header() {
     { name: 'Über uns', href: '/about' },
   ]
 
+  const isDark = theme === 'theme-dark'
+  const toggleTheme = () => {
+    setIsMenuOpen(false)
+    setTheme(isDark ? 'theme-light' : 'theme-dark')
+  }
+
   return (
-    <header className="bg-surface-1/80 border-b border-divider backdrop-blur">
+    <header className="relative z-40 bg-surface-1/80 border-b border-divider backdrop-blur">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 justify-between items-center">
           {/* Logo */}
@@ -26,14 +34,14 @@ export function Header() {
               href="/"
               className="group flex items-center gap-3 rounded-xl px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary-700 transition-colors duration-200 group-hover:bg-primary/20">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary/20">
                 <Compass className="h-6 w-6" aria-hidden />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-xl font-semibold text-neutral-900">
+                <span className="text-xl font-semibold text-default">
                   Klarthera
                 </span>
-                <span className="hidden text-xs font-medium text-primary-700 sm:block">
+                <span className="hidden text-xs font-medium text-primary sm:block">
                   Der klare Weg zur richtigen Hilfe.
                 </span>
               </span>
@@ -55,6 +63,15 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex md:items-center md:space-x-4">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold text-muted transition-colors duration-150 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+              aria-label={isDark ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln'}
+            >
+              {isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
+              <span className="hidden lg:inline">{isDark ? 'Hell' : 'Dunkel'}</span>
+            </button>
             <AuthHeader />
           </div>
 
@@ -78,6 +95,15 @@ export function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-divider pt-2 pb-3 space-y-1 text-base">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-3 font-medium text-muted transition-colors hover:bg-surface-2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+              aria-label={isDark ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln'}
+            >
+              <span>Darstellung</span>
+              {isDark ? <Sun className="h-5 w-5" aria-hidden /> : <Moon className="h-5 w-5" aria-hidden />}
+            </button>
             {navigation.map((item) => (
               <Link
                 key={item.name}
