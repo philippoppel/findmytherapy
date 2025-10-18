@@ -3,16 +3,5 @@
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
   "framework": null,
-  "regions": ["fra1"],
-  "functions": {
-    "apps/web/app/api/**/*.ts": {
-      "maxDuration": 10
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/apps/web/$1"
-    }
-  ]
+  "regions": ["fra1"]
 }
