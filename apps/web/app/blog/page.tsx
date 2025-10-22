@@ -4,14 +4,14 @@ import { ArrowRight, Calendar, Clock, Tag } from 'lucide-react'
 import { blogPosts } from '../../lib/blogData'
 
 export const metadata: Metadata = {
-  title: 'Blog & Insights | Klarthera',
+  title: 'Blog & Insights | FindMyTherapy',
   description:
-    'Aktuelle Einblicke zu mentaler Gesundheit, Produkt-Updates und dem Aufbau unseres Therapeut:innen-Netzwerks bei Klarthera.',
+    'Aktuelle Einblicke zu mentaler Gesundheit, Produkt-Updates und dem Aufbau unseres Therapeut:innen-Netzwerks bei FindMyTherapy.',
   alternates: {
-    canonical: 'https://klarthera.at/blog',
+    canonical: 'https://findmytherapy.health/blog',
   },
   openGraph: {
-    title: 'Klarthera Blog & Insights',
+    title: 'FindMyTherapy Blog & Insights',
     description: 'Ratgeber, Produkt-Updates und Interviews zu mentaler Gesundheit und digitalen Lösungen.',
     type: 'website',
   },
@@ -27,7 +27,7 @@ export default function BlogPage() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
         <header className="text-center space-y-4" aria-labelledby="blog-title">
           <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary">
-            Klarthera Blog
+            FindMyTherapy Blog
           </span>
           <h1 id="blog-title" className="text-4xl font-semibold text-default">
             Wissen, Updates und Einblicke rund um mentale Gesundheit
@@ -78,7 +78,7 @@ export default function BlogPage() {
             >
               <h4 className="text-lg font-semibold text-default">Das erwartet dich</h4>
               <ul className="space-y-3 text-sm leading-relaxed text-muted">
-                <li>• Schritt-für-Schritt Einblick in Klarthera</li>
+                <li>• Schritt-für-Schritt Einblick in FindMyTherapy</li>
                 <li>• Transparenz über Qualitätskriterien im Netzwerk</li>
                 <li>• Nächste Schritte für Pilotkund:innen</li>
               </ul>

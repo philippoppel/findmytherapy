@@ -39,7 +39,7 @@ export function Header() {
               </span>
               <span className="flex flex-col leading-tight">
                 <span className="text-xl font-semibold text-default">
-                  Klarthera
+                  FindMyTherapy
                 </span>
                 <span className="hidden text-xs font-medium text-primary sm:block">
                   Der klare Weg zur richtigen Hilfe.

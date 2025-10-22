@@ -2,7 +2,7 @@ import { authenticator } from 'otplib';
 import Iron from '@hapi/iron';
 import { env } from '@mental-health/config';
 
-const SERVICE_NAME = 'Klarthera';
+const SERVICE_NAME = 'FindMyTherapy';
 
 export const generateTotpSecret = () => authenticator.generateSecret();
 

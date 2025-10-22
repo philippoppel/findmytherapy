@@ -176,7 +176,7 @@ export function ClientRegistrationForm() {
   return (
     <aside className="rounded-3xl border border-divider bg-white/95 p-6 shadow-lg shadow-primary/10 backdrop-blur">
       <header className="space-y-2 text-center">
-        <h2 className="text-2xl font-semibold text-default">Kostenlosen Klarthera-Zugang erstellen</h2>
+        <h2 className="text-2xl font-semibold text-default">Kostenlosen FindMyTherapy-Zugang erstellen</h2>
         <p className="text-sm text-muted">
           Sichere dir den Zugang zu empfohlenen Programmen, Kursfortschritt und deinem Care-Team.
         </p>
@@ -245,7 +245,7 @@ export function ClientRegistrationForm() {
             type="email"
             value={form.email}
             onChange={handleChange('email')}
-            placeholder="kunde@klarthera.at"
+            placeholder="kunde@findmytherapy.health"
             hasError={Boolean(errors.email)}
             required
             autoComplete="email"

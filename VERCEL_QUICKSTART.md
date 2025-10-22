@@ -21,9 +21,9 @@ git commit -m "Initial commit - ready for deployment"
 
 # GitHub Repo erstellen und pushen
 # Gehe zu https://github.com/new
-# Erstelle Repository "klarthera" (oder anderer Name)
+# Erstelle Repository "findmytherapy" (oder anderer Name)
 # Dann:
-git remote add origin git@github.com:DEIN-USERNAME/klarthera.git
+git remote add origin git@github.com:DEIN-USERNAME/findmytherapy.git
 git branch -M main
 git push -u origin main
 ```
@@ -32,7 +32,7 @@ git push -u origin main
 
 1. Gehe zu https://vercel.com/new
 2. Klicke auf "Import Git Repository"
-3. Wähle dein GitHub Repository "klarthera"
+3. Wähle dein GitHub Repository "findmytherapy"
 4. **Framework Preset**: Next.js wird automatisch erkannt
 5. **Root Directory**: Lasse leer (oder wähle `./`)
 6. **Build Settings**:
@@ -178,11 +178,11 @@ rm .env.production
 
 ### NEXTAUTH_URL & APP_BASE_URL aktualisieren
 
-1. Notiere deine Vercel URL (z.B. `klarthera.vercel.app`)
+1. Notiere deine Vercel URL (z.B. `findmytherapy.vercel.app`)
 2. Gehe zu Vercel Dashboard → Settings → Environment Variables
 3. Aktualisiere:
-   - `NEXTAUTH_URL=https://klarthera.vercel.app`
-   - `APP_BASE_URL=https://klarthera.vercel.app`
+   - `NEXTAUTH_URL=https://findmytherapy.vercel.app`
+   - `APP_BASE_URL=https://findmytherapy.vercel.app`
 4. Klicke auf "Redeploy" (ohne neuen Commit)
 
 ### Email-Versand einrichten (Optional)
@@ -207,7 +207,7 @@ Für funktionierende Emails:
 ## 🎯 Custom Domain (Optional)
 
 1. Vercel Dashboard → Settings → Domains
-2. Add Domain: `klarthera.at`
+2. Add Domain: `findmytherapy.health`
 3. Folge DNS-Anweisungen
 4. Update `NEXTAUTH_URL` und `APP_BASE_URL`
 5. Redeploy

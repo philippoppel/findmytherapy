@@ -23,7 +23,7 @@ test.describe('Triage MVP Flow', () => {
     await page.getByRole('button', { name: 'Hybrid' }).click();
     await page.getByRole('button', { name: /^Weiter$/ }).click();
 
-    await expect(page.getByRole('heading', { name: /Deine Klarthera Empfehlung/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Deine FindMyTherapy Empfehlung/i })).toBeVisible();
     await expect(page.getByText(/Score \d+ von 18/i)).toBeVisible();
     await expect(page.getByText(/Empfohlene Pilot-Therapeut:innen/i)).toBeVisible();
     await expect(page.getByText(/Passende Programme/i)).toBeVisible();

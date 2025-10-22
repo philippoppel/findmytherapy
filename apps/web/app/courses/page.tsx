@@ -6,9 +6,9 @@ import { seedCourses } from '@mental-health/db'
 import { CourseCatalog, type CourseCard } from './CourseCatalog'
 
 export const metadata: Metadata = {
-  title: 'Programme & Kurse – Klarthera',
+  title: 'Programme & Kurse – FindMyTherapy',
   description:
-    'Geführte digitale Programme, Live-Workshops und Hybridformate von Klarthera. Einblicke in Aufbau, Inhalte und Begleitung.',
+    'Geführte digitale Programme, Live-Workshops und Hybridformate von FindMyTherapy. Einblicke in Aufbau, Inhalte und Begleitung.',
 }
 
 export default function CoursesPage() {
@@ -40,13 +40,13 @@ export default function CoursesPage() {
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-6 text-center">
             <span className="inline-flex items-center rounded-full bg-secondary-100 px-4 py-1 text-sm font-semibold text-secondary-700 shadow-sm">
-              Klarthera Programme – Einblicke
+              FindMyTherapy Programme – Einblicke
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
               Digitale Programme, die dich zwischen den Sessions tragen
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              Wir zeigen, wie Kurse und Hybridprogramme aufgebaut sind: klare Ziele, modulare Struktur, transparente Dauer und Integration ins Klarthera-Sicherheitsnetz.
+              Wir zeigen, wie Kurse und Hybridprogramme aufgebaut sind: klare Ziele, modulare Struktur, transparente Dauer und Integration ins FindMyTherapy-Sicherheitsnetz.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link

@@ -17,7 +17,7 @@ const triageSteps = [
     icon: ClipboardList,
   },
   {
-    title: 'Klarthera Empfohlen',
+    title: 'FindMyTherapy Empfohlen',
     description: 'Algorithmus & Expert:innen kombinieren therapeutische Profile, freie Kapazitäten und Kursmodule.',
     detail: 'Du erhältst direkt 3 Vorschläge, die du weiter filtern oder mit unserem Team besprechen kannst.',
     icon: Brain,
@@ -25,7 +25,7 @@ const triageSteps = [
   {
     title: 'Nächste Schritte buchen',
     description: 'Termin oder Programm starten, Fragen an das Care-Team schicken oder weitere Optionen vergleichen.',
-    detail: 'Alles in deinem Klarthera-Cockpit, inklusive Erinnerungen und Fortschrittsübersicht.',
+    detail: 'Alles in deinem FindMyTherapy-Cockpit, inklusive Erinnerungen und Fortschrittsübersicht.',
     icon: CalendarPlus,
   },
 ]
@@ -37,7 +37,7 @@ const sampleQuestions = [
     scale: ['Nie', 'An einzelnen Tagen', 'Mehr als die Hälfte der Tage', 'Fast jeden Tag'],
   },
   {
-    title: 'Was wünschst du dir von Klarthera?',
+    title: 'Was wünschst du dir von FindMyTherapy?',
     type: 'Mehrfachauswahl',
     options: ['Therapeut:in finden', 'Digitales Programm', 'Kurzfristige Beratung', 'Noch unsicher'],
   },
@@ -49,9 +49,9 @@ const sampleQuestions = [
 ]
 
 export const metadata: Metadata = {
-  title: 'Ersteinschätzung – Klarthera',
+  title: 'Ersteinschätzung – FindMyTherapy',
   description:
-    'Die Klarthera Ersteinschätzung bietet einen klaren Überblick über aktuelle Bedürfnisse und schlägt passende Therapeut:innen sowie Programme vor.',
+    'Die FindMyTherapy Ersteinschätzung bietet einen klaren Überblick über aktuelle Bedürfnisse und schlägt passende Therapeut:innen sowie Programme vor.',
 }
 
 export default function TriagePage() {
@@ -69,7 +69,7 @@ export default function TriagePage() {
               Ersteinschätzung in 4 Schritten
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
-              Klarthera Ersteinschätzung – dein Weg zur passenden Hilfe
+              FindMyTherapy Ersteinschätzung – dein Weg zur passenden Hilfe
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
               Die Ersteinschätzung kombiniert validierte Screening-Tools mit deinen Präferenzen, damit du sofort spürst, in
@@ -103,7 +103,7 @@ export default function TriagePage() {
             </span>
             <h2 className="text-3xl font-semibold text-default">Beantworte die Fragen und sieh sofort eine Empfehlung</h2>
             <p className="text-base text-muted">
-              Diese Simulation zeigt, wie Klarthera Antworten bündelt, das Belastungslevel einschätzt und nächste Schritte vorschlägt. Alle Daten bleiben im Browser – ideal für deine Vorbereitung.
+              Diese Simulation zeigt, wie FindMyTherapy Antworten bündelt, das Belastungslevel einschätzt und nächste Schritte vorschlägt. Alle Daten bleiben im Browser – ideal für deine Vorbereitung.
             </p>
           </div>
           <TriageFlow />
@@ -115,7 +115,7 @@ export default function TriagePage() {
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div className="max-w-3xl space-y-3">
               <h2 className="text-3xl font-semibold text-default">
-                So läuft die Klarthera Ersteinschätzung ab
+                So läuft die FindMyTherapy Ersteinschätzung ab
               </h2>
               <p className="text-base text-muted">
                 Die Screens sind so gestaltet, dass du dich sicher fühlst, weißt wo du stehst und sofort Weiteres planen kannst – ohne, dass sensible Informationen verloren gehen.
@@ -225,7 +225,7 @@ export default function TriagePage() {
                 href="/register"
                 className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary shadow-lg shadow-black/10 transition hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
-                Jetzt Klarthera Zugang erstellen
+                Jetzt FindMyTherapy Zugang erstellen
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </aside>

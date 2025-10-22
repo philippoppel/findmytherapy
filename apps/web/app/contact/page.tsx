@@ -18,9 +18,9 @@ const careTeam = [
 ]
 
 export const metadata: Metadata = {
-  title: 'Kontakt & Care-Team – Klarthera',
+  title: 'Kontakt & Care-Team – FindMyTherapy',
   description:
-    'Das Klarthera Care-Team unterstützt bei Fragen zur Ersteinschätzung, Terminfindung und zu digitalen Programmen. Die folgenden Angaben zeigen unsere Kontaktmöglichkeiten.',
+    'Das FindMyTherapy Care-Team unterstützt bei Fragen zur Ersteinschätzung, Terminfindung und zu digitalen Programmen. Die folgenden Angaben zeigen unsere Kontaktmöglichkeiten.',
 }
 
 export default function ContactPage() {
@@ -33,7 +33,7 @@ export default function ContactPage() {
         </div>
         <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <span className="inline-flex items-center rounded-full bg-secondary-100 px-4 py-1 text-sm font-semibold text-secondary-700 shadow-sm">
-            Klarthera Care-Team
+            FindMyTherapy Care-Team
           </span>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-default md:text-5xl">
             Wir beantworten deine Fragen persönlich und vertraulich
@@ -76,14 +76,14 @@ export default function ContactPage() {
                   <Mail className="mt-1 h-5 w-5 flex-none text-primary" />
                   <div>
                     <p className="font-medium text-default">E-Mail</p>
-                    <p>care@klarthera.at — Antworten typischerweise innerhalb von 3 Stunden.</p>
+                    <p>care@findmytherapy.health — Antworten typischerweise innerhalb von 3 Stunden.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CalendarCheck className="mt-1 h-5 w-5 flex-none text-primary" />
                   <div>
                     <p className="font-medium text-default">Terminvereinbarung</p>
-                    <p>Online-Erstgespräch via Klarthera — unverbindlich, 20 Minuten, ohne Wartezimmer.</p>
+                    <p>Online-Erstgespräch via FindMyTherapy — unverbindlich, 20 Minuten, ohne Wartezimmer.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">

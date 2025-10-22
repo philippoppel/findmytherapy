@@ -5,8 +5,8 @@
 
 set -e
 
-echo "🗄️  Klarthera Production Database Setup"
-echo "======================================="
+echo "🗄️  FindMyTherapy Production Database Setup"
+echo "============================================"
 echo ""
 
 # Farben

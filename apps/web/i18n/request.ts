@@ -9,7 +9,7 @@ export default getRequestConfig(async () => {
     messages: {
       // Add minimal messages
       common: {
-        title: 'Klarthera',
+        title: 'FindMyTherapy',
       },
     },
   };

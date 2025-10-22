@@ -23,14 +23,14 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
 
   if (!post) {
     return {
-      title: 'Klarthera Blog',
+      title: 'FindMyTherapy Blog',
     }
   }
 
-  const canonicalUrl = `https://klarthera.at/blog/${post.slug}`
+  const canonicalUrl = `https://findmytherapy.health/blog/${post.slug}`
 
   return {
-    title: `${post.title} | Klarthera Blog`,
+    title: `${post.title} | FindMyTherapy Blog`,
     description: post.excerpt,
     keywords: post.keywords,
     alternates: {
@@ -68,7 +68,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     articleSection: post.category,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://klarthera.at/blog/${post.slug}`,
+      '@id': `https://findmytherapy.health/blog/${post.slug}`,
     },
   }
 
@@ -127,7 +127,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         <footer className="mt-16 rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10">
           <h3 className="text-2xl font-semibold text-default">Lust auf mehr Einblicke?</h3>
           <p className="mt-3 text-base leading-relaxed text-muted">
-            Unser Netzwerk befindet sich im Aufbau – wir zeigen dir bereits heute, wie Klarthera Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
+            Unser Netzwerk befindet sich im Aufbau – wir zeigen dir bereits heute, wie FindMyTherapy Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link

@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    klartheraAnalytics?: {
+    findmytherapyAnalytics?: {
       events: Array<{ event: string; payload: Record<string, unknown>; timestamp: number }>
       push: (event: string, payload: Record<string, unknown>) => void
     }
@@ -14,7 +14,7 @@ export function track(event: string, payload: AnalyticsPayload = {}) {
     return
   }
 
-  const analytics = window.klartheraAnalytics
+  const analytics = window.findmytherapyAnalytics
 
   if (analytics?.push) {
     analytics.push(event, payload)

@@ -1,4 +1,4 @@
-# Vercel Deployment Guide - Klarthera
+# Vercel Deployment Guide - FindMyTherapy
 
 Diese Anleitung führt dich Schritt für Schritt durch das Deployment auf Vercel.
 
@@ -82,7 +82,7 @@ STRIPE_PRICE_LISTING_YEARLY=price_...
 # S3 (Kann mit Dummy-Werten gefüllt werden)
 S3_ENDPOINT=https://s3.eu-central-1.amazonaws.com
 S3_REGION=eu-central-1
-S3_BUCKET=klarthera-media
+S3_BUCKET=findmytherapy-media
 S3_ACCESS_KEY_ID=dummy
 S3_SECRET_ACCESS_KEY=dummy
 ```
@@ -252,7 +252,7 @@ openssl rand -base64 32
 ## Custom Domain einrichten
 
 1. Gehe zu Vercel Dashboard → Settings → Domains
-2. Füge deine Domain hinzu (z.B. klarthera.at)
+2. Füge deine Domain hinzu (z.B. findmytherapy.health)
 3. Folge den DNS-Anweisungen (A Record oder CNAME)
 4. Aktualisiere `NEXTAUTH_URL` und `APP_BASE_URL` in Environment Variables
 5. Redeploy

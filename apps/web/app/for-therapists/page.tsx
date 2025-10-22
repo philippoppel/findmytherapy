@@ -32,7 +32,7 @@ export default function ForTherapistsPage() {
           Verbinde persönliche Therapie mit smarter digitaler Begleitung
         </h1>
         <p className="mx-auto max-w-2xl text-base text-neutral-700">
-          Klarthera unterstützt dich bei Klient:innengewinnung, Terminorganisation und der digitalen Verlängerung deiner Praxis.
+          FindMyTherapy unterstützt dich bei Klient:innengewinnung, Terminorganisation und der digitalen Verlängerung deiner Praxis.
         </p>
       </header>
 
@@ -49,7 +49,7 @@ export default function ForTherapistsPage() {
         <h2 className="text-lg font-semibold text-info-900">Erstgespräch vereinbaren</h2>
         <p className="mt-2">
           In 30 Minuten zeigen wir dir, wie unser Matching funktioniert und wie du deine Profile pflegst. Schreibe uns an{' '}
-          <a className="underline" href="mailto:therapists@klarthera.at">therapists@klarthera.at</a>.
+          <a className="underline" href="mailto:therapists@findmytherapy.health">therapists@findmytherapy.health</a>.
         </p>
       </section>
     </main>

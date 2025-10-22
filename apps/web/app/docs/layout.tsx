@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { ThemeSwitcher } from '../../components/docs/ThemeSwitcher';
 
 export const metadata: Metadata = {
-  title: 'Design Tokens & Komponenten – Klarthera',
+  title: 'Design Tokens & Komponenten – FindMyTherapy',
   description:
-    'Design System Dokumentation für Farben, Komponenten und die neue Klarthera Brand Identity.',
+    'Design System Dokumentation für Farben, Komponenten und die neue FindMyTherapy Brand Identity.',
 };
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {

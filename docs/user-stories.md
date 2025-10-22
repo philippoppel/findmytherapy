@@ -1,16 +1,16 @@
-# Klarthera MVP – User Stories
+# FindMyTherapy MVP – User Stories
 
 ## 1. Investor:innen-Erlebnis & Marketing
-- **Story ID:** MKT-001  
-  **Als** Interessent:in auf der Landingpage  
-  **möchte ich** die Kernbotschaft und Produktwerte klar verstehen  
-  **damit** ich entscheide, ob ich ein Erstgespräch anfordere.  
+- **Story ID:** MKT-001
+  **Als** Interessent:in auf der Landingpage
+  **möchte ich** die Kernbotschaft und Produktwerte klar verstehen
+  **damit** ich entscheide, ob ich ein Erstgespräch anfordere.
   **Akzeptanzkriterien:** Hero-Sektion mit Value Proposition, Call-to-Action zum Erstgespräch, vertrauensbildende Elemente (Logos, Testimonials, Sicherheits-Hinweis).
 
-- **Story ID:** MKT-002  
-  **Als** Investorin  
-  **möchte ich** den moderierten Triagedurchlauf sehen  
-  **damit** ich verstehe, wie Klarthera Klient:innen zur passenden Versorgung führt.  
+- **Story ID:** MKT-002
+  **Als** Investorin
+  **möchte ich** den moderierten Triagedurchlauf sehen
+  **damit** ich verstehe, wie FindMyTherapy Klient:innen zur passenden Versorgung führt.
   **Akzeptanzkriterien:** Triage-Flow per Klick startbar, Fortschrittsanzeige, Beispielantworten, Ergebnisbildschirm mit Empfehlungen und Hinweis auf kuratierte Seed-Daten.
 
 - **Story ID:** MKT-003  

@@ -9,13 +9,13 @@ export default function ImprintPage() {
       <section className="rounded-2xl border border-divider bg-white p-6 text-sm text-neutral-800">
         <h2 className="text-lg font-semibold text-neutral-950">Anbieter</h2>
         <p className="mt-2">
-          Klarthera GmbH<br />
+          FindMyTherapy GmbH<br />
           Mariahilfer Straße 10/2<br />
           1070 Wien<br />
           Österreich
         </p>
         <p className="mt-4">
-          E-Mail: <a className="underline" href="mailto:servus@klarthera.at">servus@klarthera.at</a><br />
+          E-Mail: <a className="underline" href="mailto:servus@findmytherapy.health">servus@findmytherapy.health</a><br />
           Telefon: <a className="underline" href="tel:+4319971212">+43 1 997 1212</a>
         </p>
         <p className="mt-4">

@@ -350,7 +350,7 @@ export function RegistrationForm() {
             type="email"
             value={form.email}
             onChange={handleChange('email')}
-            placeholder="kontakt@klarthera.at"
+            placeholder="kontakt@findmytherapy.health"
             hasError={Boolean(errors.email)}
             required
           />
@@ -498,7 +498,7 @@ export function RegistrationForm() {
                   onChange={handleChange('pricingNote')}
                   rows={3}
                   maxLength={500}
-                  placeholder="z. B. €80–110 pro Einheit, Sozialtarife für Studierende, Firmenabrechnung via Klarthera …"
+                  placeholder="z. B. €80–110 pro Einheit, Sozialtarife für Studierende, Firmenabrechnung via FindMyTherapy …"
                 />
                 <span className="text-xs text-subtle">Optional, max. 500 Zeichen</span>
               </label>
@@ -513,7 +513,7 @@ export function RegistrationForm() {
               id="company"
               value={form.company}
               onChange={handleChange('company')}
-              placeholder="Klarthera GmbH"
+              placeholder="FindMyTherapy GmbH"
               hasError={Boolean(errors.company)}
               required
             />

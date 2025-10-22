@@ -79,7 +79,7 @@ describe('TriageFlow', () => {
     fireEvent.click(screen.getByRole('button', { name: /Hybrid/i }))
     fireEvent.click(screen.getByRole('button', { name: /^Weiter$/i }))
 
-    expect(await screen.findByText(/Deine Klarthera Empfehlung/i)).toBeInTheDocument()
+    expect(await screen.findByText(/Deine FindMyTherapy Empfehlung/i)).toBeInTheDocument()
     expect(screen.getByText(/Score/i)).toBeInTheDocument()
     expect(await screen.findByText(/Empfohlene Pilot-Therapeut:innen/i)).toBeInTheDocument()
     expect(screen.getByText(/Dr\.in Lena Huber/i)).toBeInTheDocument()

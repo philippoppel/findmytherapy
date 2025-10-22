@@ -142,7 +142,7 @@ export const seedTherapists: SeedTherapist[] = [
       availabilityNote:
         'Abendtermine Dienstag–Donnerstag, einzelne Hybrid-Slots vor Ort in Graz ab nächster Woche.',
       pricingNote:
-        '€90–150 je Einheit, Firmenabrechnung via Klarthera möglich. Paketpreise für ADHS-Coaching.',
+        '€90–150 je Einheit, Firmenabrechnung via FindMyTherapy möglich. Paketpreise für ADHS-Coaching.',
       isPublic: true,
     },
     listing: {

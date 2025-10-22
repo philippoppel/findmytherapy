@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Starting Klarthera..."
+echo "🚀 Starting FindMyTherapy..."
 echo ""
 
 # Check if Docker is running
@@ -35,7 +35,7 @@ echo ""
 echo "🌐 Starting Next.js development server..."
 echo ""
 echo "=================================="
-echo "🎉 Klarthera – Der klare Weg zur richtigen Hilfe."
+echo "🎉 FindMyTherapy – Der klare Weg zur richtigen Hilfe."
 echo "=================================="
 echo ""
 echo "📍 URLs:"

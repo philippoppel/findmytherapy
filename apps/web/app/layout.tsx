@@ -15,8 +15,8 @@ const inter = Inter({ subsets: ['latin'] })
 const analyticsConsoleLog = process.env.NODE_ENV !== 'production' ? "console.info('[analytics]', event, payload);" : ''
 
 export const metadata: Metadata = {
-  title: 'Klarthera – Der klare Weg zur richtigen Hilfe.',
-  description: 'Klarthera verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
+  title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe.',
+  description: 'FindMyTherapy verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
 }
 
 export default function RootLayout({
@@ -44,7 +44,7 @@ export default function RootLayout({
         </ErrorBoundary>
         <Script id="analytics-placeholder" strategy="lazyOnload">
           {`
-            window.klartheraAnalytics = window.klartheraAnalytics || {
+            window.findMyTherapyAnalytics = window.findMyTherapyAnalytics || {
               events: [],
               push(event, payload) {
                 this.events.push({ event, payload, timestamp: Date.now() });

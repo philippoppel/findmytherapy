@@ -1,6 +1,6 @@
-# Klarthera MVP – Pilot-Plattform für Investor:innen & Therapeut:innen
+# FindMyTherapy MVP – Pilot-Plattform für Investor:innen & Therapeut:innen
 
-Klarthera befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, der Investor:innen den Kernnutzen zeigt und erste Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP“.
+FindMyTherapy befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, der Investor:innen den Kernnutzen zeigt und erste Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP".
 
 ## 🎯 MVP-Fokus
 - **Investor:innen-Story**: Marketing-Homepage, geführte Triage-Erfahrung, Empfehlungen aus kuratierten Seed-Daten.
@@ -52,7 +52,7 @@ pnpm dev        # Startet Next.js (http://localhost:3000)
 
 ### Schnellstart (5 Minuten)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDEIN-USERNAME%2Fklarthera)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDEIN-USERNAME%2Ffindmytherapy)
 
 **Oder manuell:**
 

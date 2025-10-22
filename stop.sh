@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🛑 Stopping Klarthera..."
+echo "🛑 Stopping FindMyTherapy..."
 echo ""
 
 # Stop Next.js dev server

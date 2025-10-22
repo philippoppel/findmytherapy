@@ -4,7 +4,7 @@ process.env.DATABASE_URL ??= 'postgresql://postgres:password@localhost:5432/test
 process.env.REDIS_URL ??= 'redis://localhost:6379';
 process.env.NEXTAUTH_URL ??= 'http://localhost:3000';
 process.env.NEXTAUTH_SECRET ??= 'test-nextauth-secret-please-change-this-123456';
-process.env.EMAIL_FROM ??= 'demo@klarthera.test';
+process.env.EMAIL_FROM ??= 'demo@findmytherapy.test';
 process.env.EMAIL_PROVIDER_API_KEY ??= 'test-email-api-key';
 process.env.EMAIL_SMTP_HOST ??= 'localhost';
 process.env.EMAIL_SMTP_PORT ??= '1025';
@@ -19,7 +19,7 @@ process.env.STRIPE_PRICE_LISTING_YEARLY ??= 'price_yearly';
 process.env.STRIPE_TAX_ENABLED ??= 'false';
 process.env.S3_ENDPOINT ??= 'http://localhost:9000';
 process.env.S3_REGION ??= 'eu-central-1';
-process.env.S3_BUCKET ??= 'klarthera-demo';
+process.env.S3_BUCKET ??= 'findmytherapy-demo';
 process.env.S3_ACCESS_KEY_ID ??= 'minio';
 process.env.S3_SECRET_ACCESS_KEY ??= 'minio-secret';
 process.env.APP_BASE_URL ??= 'http://localhost:3000';
@@ -51,7 +51,7 @@ describe('totp helpers', () => {
 
     const uri = createTotpUri(secret, 'pilot@example.com');
     expect(uri).toContain(secret);
-    expect(uri).toContain('Klarthera:pilot%40example.com');
+    expect(uri).toContain('FindMyTherapy:pilot%40example.com');
   });
 
   it('seals and unseals secrets transparently', async () => {

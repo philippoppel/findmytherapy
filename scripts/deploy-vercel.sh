@@ -5,8 +5,8 @@
 
 set -e
 
-echo "🚀 Klarthera Vercel Deployment Setup"
-echo "======================================"
+echo "🚀 FindMyTherapy Vercel Deployment Setup"
+echo "========================================="
 echo ""
 
 # Farben für Output

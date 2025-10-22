@@ -3,34 +3,34 @@ import type { Metadata } from 'next'
 import { ArrowRight, BookOpen, Compass, ShieldCheck, ClipboardList, Brain, CalendarPlus } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Klarthera – Mentale Gesundheit mit klarer Richtung | Digitale Ersteinschätzung & Ressourcen',
+  title: 'FindMyTherapy – Mentale Gesundheit mit klarer Richtung | Digitale Ersteinschätzung & Ressourcen',
   description:
-    'Klarthera führt dich Schritt für Schritt zur passenden Unterstützung: digitale Ersteinschätzung, kuratierte Warteliste für Therapeut:innen und evidenzbasierte Programme.',
+    'FindMyTherapy führt dich Schritt für Schritt zur passenden Unterstützung: digitale Ersteinschätzung, kuratierte Warteliste für Therapeut:innen und evidenzbasierte Programme.',
   keywords: [
     'mentale Gesundheit',
     'Therapie finden',
     'psychische Gesundheit Österreich',
     'digitale Ersteinschätzung',
     'Therapeut:in finden',
-    'Klarthera Blog',
+    'FindMyTherapy Blog',
   ],
   openGraph: {
-    title: 'Klarthera – Der klare Weg zur richtigen Hilfe.',
+    title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe.',
     description:
       'Digitale Ersteinschätzung, persönliche Empfehlungen und Ressourcen für mentale Gesundheit in Österreich.',
     type: 'website',
     locale: 'de_AT',
-    url: 'https://klarthera.at/',
+    url: 'https://findmytherapy.health/',
   },
   alternates: {
-    canonical: 'https://klarthera.at/',
+    canonical: 'https://findmytherapy.health/',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Klarthera – Digitale Unterstützung für mentale Gesundheit',
+    title: 'FindMyTherapy – Digitale Unterstützung für mentale Gesundheit',
     description:
       'Ersteinschätzung, individuelle Empfehlungen und Wissen rund um mentale Gesundheit auf einer Plattform.',
-    creator: '@klarthera',
+    creator: '@findmytherapy',
   },
 }
 
@@ -85,7 +85,7 @@ export default function HomePage() {
 
   const faqs = [
     {
-      question: 'Wie funktioniert Klarthera?',
+      question: 'Wie funktioniert FindMyTherapy?',
       answer:
         'Du startest mit einer digitalen Ersteinschätzung, erhältst direkte Empfehlungen und kannst anschließend passende Angebote buchen oder mit unserem Care-Team sprechen. Wir begleiten dich vom ersten Kontakt bis zur laufenden Stabilisierung.',
     },
@@ -95,7 +95,7 @@ export default function HomePage() {
         'Du erhältst Vorschläge für Formate und Spezialisierungen, inklusive digitaler Programme und möglicher nächster Schritte. Sobald verifizierte Therapeut:innen verfügbar sind, ergänzen wir diese automatisch.',
     },
     {
-      question: 'Ist Klarthera für Teams oder Unternehmen geeignet?',
+      question: 'Ist FindMyTherapy für Teams oder Unternehmen geeignet?',
       answer:
         'Ja. Wir bereiten eine Team-Variante mit Reporting und anonymisierten Insights vor. Interessierte Unternehmen können sich für Pilotprojekte registrieren.',
     },
@@ -137,7 +137,7 @@ export default function HomePage() {
               Beta Live • Digitale mentale Gesundheitsplattform
             </span>
             <h1 id="hero-title" className="text-4xl md:text-6xl font-semibold tracking-tight">
-              <span className="text-gray-700">Klarthera –</span> <span className="text-blue-600">Der klare Weg zur richtigen Hilfe.</span>
+              <span className="text-gray-700">FindMyTherapy –</span> <span className="text-blue-600">Der klare Weg zur richtigen Hilfe.</span>
             </h1>
             <p className="mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-muted">
               Wir führen dich Schritt für Schritt durch den Prozess: von der ersten Einschätzung über fundierte Empfehlungen bis hin zur langfristigen Begleitung – transparent, menschlich und technisch sicher.
@@ -165,7 +165,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mx-auto max-w-xl text-sm text-subtle">
-              Hinweis: Unser kuratiertes Therapeut:innen-Netzwerk befindet sich im Aufbau. Wir zeigen dir transparent, wie Klarthera Empfehlungen und Ressourcen bündelt.
+              Hinweis: Unser kuratiertes Therapeut:innen-Netzwerk befindet sich im Aufbau. Wir zeigen dir transparent, wie FindMyTherapy Empfehlungen und Ressourcen bündelt.
             </p>
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function HomePage() {
               Orientierung, Wissen und Begleitung aus einer Hand
             </h2>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              Klarthera vereint persönliche Beratung, digitale Tools und eine wachsende Wissensbasis, damit du schneller verstehst, welche Unterstützung zu dir passt – ganz ohne Umwege.
+              FindMyTherapy vereint persönliche Beratung, digitale Tools und eine wachsende Wissensbasis, damit du schneller verstehst, welche Unterstützung zu dir passt – ganz ohne Umwege.
             </p>
           </div>
 
@@ -213,7 +213,7 @@ export default function HomePage() {
             <div className="flex flex-wrap items-center justify-between gap-6">
               <div className="max-w-2xl space-y-3">
                 <h2 id="triage-title" className="text-3xl font-semibold text-default">
-                  Ersteinschätzung mit Klarthera
+                  Ersteinschätzung mit FindMyTherapy
                 </h2>
                 <p className="text-base leading-relaxed text-muted">
                   Ein schneller Überblick, wie du in wenigen Schritten zu konkreten Empfehlungen kommst. Vollständig digital, sicher und begleitet.

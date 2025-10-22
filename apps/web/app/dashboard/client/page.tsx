@@ -108,14 +108,14 @@ export default async function ClientDashboardPage() {
       <header className="space-y-4">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
           <Sparkles className="h-4 w-4" aria-hidden />
-          Dein Klarthera-Bereich
+          Dein FindMyTherapy-Bereich
         </div>
         <h1 className="text-3xl font-bold text-neutral-950">
           Hallo {firstName}, willkommen zurück!
         </h1>
         <p className="text-sm text-neutral-700 max-w-2xl">
           Behalte deine Programme, Termine und Empfehlungen im Blick. Wir synchronisieren Kursdaten, Ersteinschätzungen und
-          persönliche Matches für Investor:innen-Storytelling.
+          persönliche Matches für Storytelling.
         </p>
       </header>
 

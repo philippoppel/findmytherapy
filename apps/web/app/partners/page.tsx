@@ -41,7 +41,7 @@ export default function PartnersPage() {
       <section className="rounded-2xl border border-primary/20 bg-primary-50 p-6 text-sm text-primary">
         <h2 className="text-lg font-semibold text-primary">Kontakt aufnehmen</h2>
         <p className="mt-2">
-          Schreibe uns an <a className="underline" href="mailto:partners@klarthera.at">partners@klarthera.at</a>. Wir melden uns innerhalb eines Werktags mit einem Termin.
+          Schreibe uns an <a className="underline" href="mailto:partners@findmytherapy.health">partners@findmytherapy.health</a>. Wir melden uns innerhalb eines Werktags mit einem Termin.
         </p>
       </section>
     </main>

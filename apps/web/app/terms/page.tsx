@@ -2,12 +2,12 @@ const clauses = [
   {
     title: '1. Geltungsbereich',
     body:
-      'Diese Bedingungen gelten für alle Verträge zwischen der Klarthera GmbH und Nutzer:innen der Plattform. Abweichende Bedingungen werden nicht anerkannt.',
+      'Diese Bedingungen gelten für alle Verträge zwischen der FindMyTherapy GmbH und Nutzer:innen der Plattform. Abweichende Bedingungen werden nicht anerkannt.',
   },
   {
     title: '2. Leistungen',
     body:
-      'Klarthera vermittelt therapeutische Leistungen, bietet digitale Programme an und stellt Kommunikations- sowie Terminwerkzeuge bereit. Therapeutische Leistungen werden von selbstständigen Partner:innen erbracht.',
+      'FindMyTherapy vermittelt therapeutische Leistungen, bietet digitale Programme an und stellt Kommunikations- sowie Terminwerkzeuge bereit. Therapeutische Leistungen werden von selbstständigen Partner:innen erbracht.',
   },
   {
     title: '3. Zahlungsmodalitäten',
@@ -42,7 +42,7 @@ export default function TermsPage() {
         <h2 className="text-lg font-semibold text-info-900">Widerruf & Support</h2>
         <p className="mt-2">
           Du kannst digitale Produkte innerhalb von 14 Tagen widerrufen, sofern du noch keine Inhalte abgeschlossen hast. Kontaktiere uns unter{' '}
-          <a className="underline" href="mailto:support@klarthera.at">support@klarthera.at</a>.
+          <a className="underline" href="mailto:support@findmytherapy.health">support@findmytherapy.health</a>.
         </p>
       </section>
     </main>

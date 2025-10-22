@@ -27,7 +27,7 @@ export default function HowItWorksPage() {
           In drei Schritten zu deinem passenden Unterstützungsangebot
         </h1>
         <p className="mx-auto max-w-2xl text-base text-neutral-700">
-          Klarthera kombiniert individuelles Matching, telemedizinische Tools und ein Care-Team, das dich auf deinem Weg begleitet.
+          FindMyTherapy kombiniert individuelles Matching, telemedizinische Tools und ein Care-Team, das dich auf deinem Weg begleitet.
         </p>
       </section>
 

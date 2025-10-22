@@ -3,9 +3,9 @@ import { CalendarCheck, FileText, HeartHandshake, ShieldCheck, Users } from 'luc
 import { RegistrationForm } from './RegistrationForm'
 
 export const metadata: Metadata = {
-  title: 'Registrierung – Klarthera',
+  title: 'Registrierung – FindMyTherapy',
   description:
-    'Registriere dich für den Klarthera-Zugang. Wähle dein Profil aus und wir melden uns mit dem passenden Onboarding.',
+    'Registriere dich für den FindMyTherapy-Zugang. Wähle dein Profil aus und wir melden uns mit dem passenden Onboarding.',
 }
 
 export default function RegisterPage() {
@@ -25,7 +25,7 @@ export default function RegisterPage() {
                 Zugang anfragen
               </span>
               <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
-                Klarthera Zugang – Pilot anfordern
+                FindMyTherapy Zugang – Pilot anfordern
               </h1>
               <p className="text-lg leading-relaxed text-muted">
                 Egal ob Therapeut:in, Unternehmen oder Privatperson: Hinterlasse uns ein paar Eckdaten und wir aktivieren dir
@@ -72,7 +72,7 @@ export default function RegisterPage() {
                     </div>
                   </div>
                   <a
-                    href="/compliance/klarthera-pilot-compliance-pack.pdf"
+                    href="/compliance/findmytherapy-pilot-compliance-pack.pdf"
                     download
                     className="inline-flex items-center justify-center rounded-full border border-primary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >

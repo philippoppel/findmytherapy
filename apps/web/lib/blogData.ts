@@ -19,13 +19,13 @@ export type BlogPost = {
 export const blogPosts: BlogPost[] = [
   {
     slug: 'digitale-ersteinschaetzung-mental-health',
-    title: 'Digitale Ersteinschätzung: Wie Klarthera Orientierung schafft',
+    title: 'Digitale Ersteinschätzung: Wie FindMyTherapy Orientierung schafft',
     excerpt:
-      'Vom ersten Fragebogen bis zur Empfehlung: So unterstützt Klarthera Menschen, die einen schnellen Überblick über passende Hilfsangebote suchen.',
+      'Vom ersten Fragebogen bis zur Empfehlung: So unterstützt FindMyTherapy Menschen, die einen schnellen Überblick über passende Hilfsangebote suchen.',
     category: 'Produkt',
     publishedAt: '2025-04-10',
     readingTime: '6 Min.',
-    author: 'Team Klarthera',
+    author: 'Team FindMyTherapy',
     keywords: [
       'digitale Ersteinschätzung',
       'mentale Gesundheit',
@@ -37,11 +37,11 @@ export const blogPosts: BlogPost[] = [
         heading: 'Warum eine strukturierte Ersteinschätzung wichtig ist',
         paragraphs: [
           'Wer Unterstützung für mentale Gesundheit sucht, steht häufig vor einem Berg an Fragen. Welche Therapieform passt? Reicht ein Kurs? Kann ich mit jemandem sprechen, bevor ich mich entscheide?',
-          'Klarthera setzt genau hier an: Ein validierter Fragebogen, der in wenigen Minuten ausgefüllt ist, liefert eine erste Orientierung und verschafft einen Überblick über geeignete Formate.',
+          'FindMyTherapy setzt genau hier an: Ein validierter Fragebogen, der in wenigen Minuten ausgefüllt ist, liefert eine erste Orientierung und verschafft einen Überblick über geeignete Formate.',
         ],
       },
       {
-        heading: 'Was Klarthera aktuell zeigt',
+        heading: 'Was FindMyTherapy aktuell zeigt',
         paragraphs: [
           'Wir führen durch alle Schritte – von der Profilerstellung über das Screening bis zu Empfehlungen. Auch wenn unser Therapeut:innen-Netzwerk noch im Aufbau ist, zeigen wir alle vorgesehenen Schnittstellen und wie Empfehlungen priorisiert werden.',
         ],
@@ -54,7 +54,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Nächste Schritte für Stakeholder',
         paragraphs: [
-          'Wir sind in Gesprächen mit zertifizierten Therapeut:innen und Organisationen, um unsere Warteliste zu erweitern. Parallel entwickeln wir Onboarding-Prozesse für Unternehmen, die Klarthera als Benefit einsetzen möchten.',
+          'Wir sind in Gesprächen mit zertifizierten Therapeut:innen und Organisationen, um unsere Warteliste zu erweitern. Parallel entwickeln wir Onboarding-Prozesse für Unternehmen, die FindMyTherapy als Benefit einsetzen möchten.',
         ],
       },
     ],
@@ -63,11 +63,11 @@ export const blogPosts: BlogPost[] = [
     slug: 'therapeuten-netzwerk-aufbau-transparenz',
     title: 'Therapeut:innen-Netzwerk im Aufbau: Transparenz von Anfang an',
     excerpt:
-      'Klarthera legt offen, wie wir Expert:innen auswählen, welche Qualitätskriterien gelten und wie Zusammenarbeit in der Beta-Phase funktioniert.',
+      'FindMyTherapy legt offen, wie wir Expert:innen auswählen, welche Qualitätskriterien gelten und wie Zusammenarbeit in der Beta-Phase funktioniert.',
     category: 'Netzwerk',
     publishedAt: '2025-03-28',
     readingTime: '5 Min.',
-    author: 'Team Klarthera',
+    author: 'Team FindMyTherapy',
     keywords: [
       'Therapeut:innen Netzwerk',
       'Qualitätskriterien',
@@ -103,13 +103,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'mental-health-benefits-fuer-teams',
-    title: 'Mental Health Benefits für Teams: Klarthera als Baustein',
+    title: 'Mental Health Benefits für Teams: FindMyTherapy als Baustein',
     excerpt:
       'Warum digitale Ersteinschätzung, On-Demand-Ressourcen und persönliche Betreuung zusammengehören, wenn Unternehmen ihre Teams unterstützen möchten.',
     category: 'Arbeitswelt',
     publishedAt: '2025-03-12',
     readingTime: '7 Min.',
-    author: 'Team Klarthera',
+    author: 'Team FindMyTherapy',
     keywords: [
       'Mental Health Benefits',
       'Arbeitswelt',
@@ -120,11 +120,11 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Herausforderungen in Unternehmen',
         paragraphs: [
-          'Mentale Gesundheit wird zur Chefsache. Führungskräfte suchen Programme, die schnellen Zugang bieten und gleichzeitig datenschutzkonform bleiben. Klarthera deckt beide Anforderungen ab.',
+          'Mentale Gesundheit wird zur Chefsache. Führungskräfte suchen Programme, die schnellen Zugang bieten und gleichzeitig datenschutzkonform bleiben. FindMyTherapy deckt beide Anforderungen ab.',
         ],
       },
       {
-        heading: 'Warum Klarthera gut in bestehende Benefits passt',
+        heading: 'Warum FindMyTherapy gut in bestehende Benefits passt',
         paragraphs: [
           'Die digitale Ersteinschätzung ist der Anfangspunkt. Mitarbeitende erhalten Empfehlungen, die an bestehende Angebote andocken oder neue Impulse setzen. Das entlastet HR-Teams und schafft Klarheit für alle Beteiligten.',
         ],

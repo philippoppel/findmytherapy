@@ -6,7 +6,7 @@ import { seedTherapists } from '@mental-health/db'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 
 export const metadata: Metadata = {
-  title: 'Therapeut:innen entdecken – Klarthera',
+  title: 'Therapeut:innen entdecken – FindMyTherapy',
   description:
     'Finde zertifizierte Therapeut:innen mit klarer Spezialisierung, verfügbaren Terminen und transparenten Therapieschwerpunkten.',
 }
@@ -41,13 +41,13 @@ export default function TherapistsPage() {
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-6 text-center">
             <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
-              Verlässliche Therapeut:innen - Klarthera Netzwerk
+              Verlässliche Therapeut:innen - FindMyTherapy Netzwerk
             </span>
             <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
               Finde die richtige Therapeut:in für deine Situation
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              Klarthera kuratiert Expert:innen mit überprüften Qualifikationen, Spezialisierungen und freien Kapazitäten.
+              FindMyTherapy kuratiert Expert:innen mit überprüften Qualifikationen, Spezialisierungen und freien Kapazitäten.
               Starte mit einer Ersteinschätzung und erhalte maßgeschneiderte Empfehlungen.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -74,7 +74,7 @@ export default function TherapistsPage() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h2 className="text-left text-3xl font-semibold text-default">
-                  Ausgewählte Klarthera-Therapeut:innen
+                  Ausgewählte FindMyTherapy-Therapeut:innen
                 </h2>
                 <p className="mt-2 text-base text-muted">
                   Detaillierte Profile, transparente Spezialisierungen und aktuelle Verfügbarkeiten – alles an einem Ort.

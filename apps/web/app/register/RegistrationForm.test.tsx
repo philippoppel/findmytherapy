@@ -69,7 +69,7 @@ describe('RegistrationForm', () => {
     fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'Muster' } })
     fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'alex@example.com' } })
     fireEvent.change(screen.getByLabelText(/Unternehmen \/ Organisation/i), {
-      target: { value: 'Klarthera Health GmbH' },
+      target: { value: 'FindMyTherapy Health GmbH' },
     })
     fireEvent.change(screen.getByLabelText(/Worauf sollen wir uns vorbereiten/i), {
       target: { value: 'Bitte Fokus auf BGM.' },

@@ -5,7 +5,7 @@ import { MessageCircle, Send, X } from 'lucide-react'
 
 const supportMessages = [
   {
-    from: 'klarthera',
+    from: 'findmytherapy',
     text: 'Hallo! Ich bin Klaris, deine erste Ansprechperson. Wobei dürfen wir dich heute unterstützen?',
   },
   {
@@ -13,7 +13,7 @@ const supportMessages = [
     text: 'Ich bin mir unsicher, ob ich eine Therapie beginnen soll.',
   },
   {
-    from: 'klarthera',
+    from: 'findmytherapy',
     text: 'Das geht vielen so. Wir können mit einer Ersteinschätzung starten und dir verlässliche Optionen zeigen – unverbindlich.',
   },
 ]
@@ -26,12 +26,12 @@ export function ChatWidget() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {isOpen && (
         <div
-          id="klarthera-chat-widget"
+          id="findmytherapy-chat-widget"
           className="w-80 rounded-2xl border border-divider bg-white/95 p-4 shadow-2xl shadow-primary/20 backdrop-blur"
         >
           <header className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-default">Klarthera Care-Team</p>
+              <p className="text-sm font-semibold text-default">FindMyTherapy Care-Team</p>
               <p className="text-xs text-muted">Care-Chat · Reaktionszeit unter 5 Minuten</p>
             </div>
             <button
@@ -96,7 +96,7 @@ export function ChatWidget() {
         onClick={() => setIsOpen((state) => !state)}
         className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/35 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         aria-expanded={isOpen}
-        aria-controls="klarthera-chat-widget"
+        aria-controls="findmytherapy-chat-widget"
       >
         <MessageCircle className="h-4 w-4" />
         {isOpen ? 'Chat schließen' : 'Care-Chat'}

@@ -4,9 +4,9 @@ import { HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react'
 import { ClientRegistrationForm } from './ClientRegistrationForm'
 
 export const metadata: Metadata = {
-  title: 'Konto erstellen – Klarthera',
+  title: 'Konto erstellen – FindMyTherapy',
   description:
-    'Registriere dich als Kund:in für Klarthera. Behalte deine Kurse, Empfehlungen und Support-Kontakte im Blick.',
+    'Registriere dich als Kund:in für FindMyTherapy. Behalte deine Kurse, Empfehlungen und Support-Kontakte im Blick.',
 }
 
 export default function ClientSignupPage() {
@@ -23,7 +23,7 @@ export default function ClientSignupPage() {
             <div className="space-y-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" aria-hidden />
-                Dein Klarthera Bereich
+                Dein FindMyTherapy Bereich
               </span>
               <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
                 Zugang zu Programmen, Care-Team & Empfehlungen

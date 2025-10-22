@@ -1,4 +1,4 @@
-# Klarthera MVP Plan
+# FindMyTherapy MVP Plan
 
 ## 0. Zielbild & Erfolgskriterien
 - Fokus: Vorzeigbarer MVP-Prototyp für Investor:innen-Sessions und erste Pilot-Kund:innen.
@@ -20,7 +20,7 @@
 - [x] Admin-Review-Flow inklusive Statuswechsel und Notizfeld umgesetzt (apps/web/app/admin/page.tsx, actions.ts).
 - [x] Sichtbarkeit im Verzeichnis nur für freigeschaltete Pilot-Profile inkl. „Pilot“-Badge (apps/web/app/therapists/page.tsx & TherapistDirectory.tsx).
 - [x] Dedizierte Felder für Termin-/Pricing-Freitext im Onboarding ergänzen Profil & Admin-Review (apps/web/app/register/RegistrationForm.tsx, dashboard/profile, admin/page.tsx).
-- [x] Vertragliche/Compliance-Hinweise stehen als Download bereit (apps/web/app/register/page.tsx, public/compliance/klarthera-pilot-compliance-pack.pdf).
+- [x] Vertragliche/Compliance-Hinweise stehen als Download bereit (apps/web/app/register/page.tsx, public/compliance/findmytherapy-pilot-compliance-pack.pdf).
 
 ## 3. Client Journey & Seed-Daten
 - [x] Registrierung/Login für Kund:innen: Self-Service-Registrierung + Auto-Login (apps/web/app/signup/*, apps/web/app/api/clients/register/route.ts), Magic-Link-Login weiter verfügbar; role-based Redirects leiten zum passenden Dashboard.

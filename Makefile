@@ -2,7 +2,7 @@
 
 # Default target
 help:
-	@echo "Klarthera – Der klare Weg zur richtigen Hilfe. (Development Commands)"
+	@echo "FindMyTherapy – Der klare Weg zur richtigen Hilfe. (Development Commands)"
 	@echo ""
 	@echo "Setup & Installation:"
 	@echo "  make install       - Install all dependencies"

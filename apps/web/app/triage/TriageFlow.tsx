@@ -153,14 +153,14 @@ const moodCopy = ['Stabile Verfassung', 'Leichte Belastung', 'Erhöhte Belastung
 const supportRecommendations: Record<'low' | 'medium' | 'high', string> = {
   low: 'Unsere digitalen Programme und Micro-Interventionen stärken dich im Alltag. Ergänzend können optionale Check-ins mit dem Care-Team vereinbart werden.',
   medium:
-    'Wir empfehlen ein Erstgespräch mit einer*m Klarthera-Therapeut:in, kombiniert mit einem strukturierten Kursmodul. So bekommst du professionelle Begleitung und Werkzeuge für dazwischen.',
+    'Wir empfehlen ein Erstgespräch mit einer*m FindMyTherapy-Therapeut:in, kombiniert mit einem strukturierten Kursmodul. So bekommst du professionelle Begleitung und Werkzeuge für dazwischen.',
   high:
     'Wir priorisieren ein schnelles Gespräch mit unserem Care-Team und verbinden dich mit spezialisierten Therapeut:innen. Parallel stellen wir Akutressourcen und engmaschige Check-ins bereit.',
 }
 
 const nextStepsCopy = [
   '3 passende Therapeut:innen mit freien Slots (innerhalb von 7 Tagen startklar).',
-  'Individuelles Klarthera-Programm mit Übungen für Fokus & Alltag.',
+  'Individuelles FindMyTherapy-Programm mit Übungen für Fokus & Alltag.',
   'Optionaler Check-in mit dem Care-Team nach 48 Stunden, um Fortschritte zu reflektieren.',
 ]
 
@@ -377,7 +377,7 @@ export function TriageFlow() {
             <CheckCircle2 className="h-4 w-4" aria-hidden />
             Ergebnisse bereit
           </div>
-          <h3 className="text-2xl font-semibold text-default">Deine Klarthera Empfehlung</h3>
+          <h3 className="text-2xl font-semibold text-default">Deine FindMyTherapy Empfehlung</h3>
           <p className="text-sm text-muted">
             Auf Basis deiner Angaben schlagen wir das folgende Paket vor. Der vollständige Ablauf zeigt, wie Matches und Kurszugänge freigeschaltet werden.
           </p>

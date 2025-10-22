@@ -21,7 +21,7 @@ const sections = [
     id: 'rights',
     title: '4. Deine Rechte',
     body:
-      'Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Anfragen richtest du an privacy@klarthera.at.',
+      'Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Anfragen richtest du an privacy@findmytherapy.health.',
   },
 ];
 
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
       <header className="space-y-3">
         <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">Datenschutzerklärung</h1>
         <p className="text-sm text-neutral-700">
-          Verantwortlich: Klarthera GmbH, Wien, Österreich. Stand: {new Date().getFullYear()}.
+          Verantwortlich: FindMyTherapy GmbH, Wien, Österreich. Stand: {new Date().getFullYear()}.
         </p>
       </header>
 
