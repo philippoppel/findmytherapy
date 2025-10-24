@@ -263,7 +263,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     setExpandedSections({ phq9: false, gad7: false })
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
-    setPersistState('idle')
     setHasPersisted(false)
   }
 
