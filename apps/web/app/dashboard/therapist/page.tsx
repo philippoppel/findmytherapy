@@ -45,19 +45,29 @@ export default async function TherapistDashboardPage() {
   const profile = await fetchTherapistProfile(session.user.id);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold text-neutral-950">Willkommen zurück, {session.user.email}</h1>
-        <p className="text-neutral-800">
-          Status:{' '}
-          <span className="font-medium">
+    <div className="space-y-8">
+      <header className="space-y-3">
+        <h1 className="text-3xl font-bold text-neutral-900">
+          Willkommen zurück, {session.user.firstName || session.user.email}
+        </h1>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-neutral-600">Status:</span>
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+              profile?.status === 'VERIFIED'
+                ? 'bg-green-100 text-green-700'
+                : profile?.status === 'PENDING'
+                ? 'bg-yellow-100 text-yellow-700'
+                : 'bg-red-100 text-red-700'
+            }`}
+          >
             {profile?.status === 'VERIFIED'
-              ? 'Verifiziert'
+              ? '✓ Verifiziert'
               : profile?.status === 'PENDING'
-              ? 'In Prüfung'
-              : 'Abgelehnt'}
+              ? '⏳ In Prüfung'
+              : '✕ Abgelehnt'}
           </span>
-        </p>
+        </div>
       </header>
 
       <section aria-label="Kennzahlen">
@@ -81,8 +91,8 @@ export default async function TherapistDashboardPage() {
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6" aria-label="Schnellaktionen und Termine">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-neutral-950 mb-4">Ihre nächsten Termine</h2>
+          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-neutral-900 mb-4">Ihre nächsten Termine</h2>
             {profile?.appointments && profile.appointments.length > 0 ? (
               <ul className="space-y-3">
                 {profile.appointments.map((appointment) => (
@@ -131,8 +141,8 @@ export default async function TherapistDashboardPage() {
             )}
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-neutral-950 mb-4">Kurse verwalten</h2>
+          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-neutral-900 mb-4">Kurse verwalten</h2>
             {profile?.courses.length ? (
               <ul className="divide-y divide-neutral-200">
                 {profile.courses.map((course) => (
@@ -168,9 +178,9 @@ export default async function TherapistDashboardPage() {
         </div>
 
         <aside className="space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-neutral-950 mb-4">Schnellzugriff</h2>
-            <nav className="space-y-3">
+          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-neutral-900 mb-4">Schnellzugriff</h2>
+            <nav className="space-y-2">
               <QuickAction href="/dashboard/security" icon={Heart} label="Zwei-Faktor-Schutz verwalten" />
               <QuickAction href="/dashboard/profile" icon={Settings} label="Profil aktualisieren" />
               <QuickAction href="/dashboard/listing" icon={TrendingUp} label="Listing-Plan anpassen" />
@@ -178,16 +188,16 @@ export default async function TherapistDashboardPage() {
             </nav>
           </div>
 
-          <div className="bg-primary-50 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-primary mb-2">Listing-Status</h3>
-            <p className="text-sm text-primary mb-4">
+          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl border border-teal-200 p-6">
+            <h3 className="text-lg font-semibold text-teal-900 mb-2">Listing-Status</h3>
+            <p className="text-sm text-teal-700 mb-4">
               {profile?.listings[0]?.status === 'ACTIVE'
                 ? 'Ihr Auftritt ist aktiv und wird Klient:innen angezeigt.'
                 : 'Ihr Listing ist derzeit nicht aktiv.'}
             </p>
             <a
               href="/dashboard/listing"
-              className="inline-flex items-center justify-center w-full bg-primary-800 text-white py-2 px-4 rounded-md hover:bg-primary-900 transition-colors"
+              className="inline-flex items-center justify-center w-full bg-teal-600 text-white py-2.5 px-4 rounded-xl hover:bg-teal-700 transition-colors font-medium shadow-sm"
             >
               Listing verwalten
             </a>
@@ -206,21 +216,23 @@ type MetricCardProps = {
 };
 
 const toneStyles: Record<MetricCardProps['tone'], string> = {
-  info: 'bg-info-50 text-info-600',
-  accent: 'bg-accent-50 text-accent-600',
-  primary: 'bg-primary-50 text-primary-600',
-  success: 'bg-success-50 text-success-600',
+  info: 'bg-blue-100 text-blue-600',
+  accent: 'bg-purple-100 text-purple-600',
+  primary: 'bg-teal-100 text-teal-600',
+  success: 'bg-green-100 text-green-600',
 };
 
 function MetricCard({ icon: Icon, label, value, tone }: MetricCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow p-5 flex items-center gap-4">
-      <div className={`h-12 w-12 rounded-full flex items-center justify-center ${toneStyles[tone]}`}>
-        <Icon className="h-6 w-6" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold text-neutral-950">{value}</p>
-        <p className="text-sm text-neutral-800">{label}</p>
+    <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm transition hover:shadow-md">
+      <div className="flex items-center gap-4">
+        <div className={`h-14 w-14 rounded-xl flex items-center justify-center ${toneStyles[tone]}`}>
+          <Icon className="h-7 w-7" />
+        </div>
+        <div>
+          <p className="text-3xl font-bold text-neutral-900">{value}</p>
+          <p className="text-sm text-neutral-600">{label}</p>
+        </div>
       </div>
     </div>
   );
@@ -236,10 +248,10 @@ function QuickAction({ href, icon: Icon, label }: QuickActionProps) {
   return (
     <a
       href={href}
-      className="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-neutral-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-800"
+      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-50 transition-all border border-transparent hover:border-neutral-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
     >
-      <Icon className="h-5 w-5 text-neutral-700" />
-      <span className="text-sm font-medium text-default">{label}</span>
+      <Icon className="h-5 w-5 text-teal-600" />
+      <span className="text-sm font-medium text-neutral-700">{label}</span>
     </a>
   );
 }

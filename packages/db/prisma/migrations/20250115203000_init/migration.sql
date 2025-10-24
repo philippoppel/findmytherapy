@@ -159,7 +159,7 @@ CREATE TABLE "Lesson" (
     "title" TEXT NOT NULL,
     "durationSec" INTEGER NOT NULL,
     "assetRef" TEXT,
-    "\"order\"" INTEGER NOT NULL,
+    "order" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
@@ -337,7 +337,7 @@ CREATE INDEX "Lesson_courseId_idx" ON "Lesson"("courseId");
 CREATE INDEX "Lesson_deletedAt_idx" ON "Lesson"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Lesson_courseId_order_key" ON "Lesson"("courseId", "\"order\"");
+CREATE UNIQUE INDEX "Lesson_courseId_order_key" ON "Lesson"("courseId", "order");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Order_stripePaymentIntentId_key" ON "Order"("stripePaymentIntentId");

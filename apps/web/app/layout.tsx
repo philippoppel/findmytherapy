@@ -1,12 +1,10 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
+import './marketing-theme.css'
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Header } from '../components/layout/Header'
-import { Footer } from '../components/layout/Footer'
 import { SessionProvider } from '../components/providers/SessionProvider'
 import { ThemeProvider } from '../components/providers/ThemeProvider'
-import { ChatWidget } from '../components/support/ChatWidget'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { ThemeScript } from './components/ThemeScript'
 
@@ -26,21 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de-AT" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeScript />
+      <body className={`${inter.className} bg-white`} suppressHydrationWarning>
         <ErrorBoundary>
-          <ThemeProvider>
-            <SessionProvider>
-              <div className="min-h-screen flex flex-col bg-surface text-base antialiased">
-                <Header />
-                <main className="flex-1 bg-surface">
-                  {children}
-                </main>
-                <Footer />
-                <ChatWidget />
-              </div>
-            </SessionProvider>
-          </ThemeProvider>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
         </ErrorBoundary>
         <Script id="analytics-placeholder" strategy="lazyOnload">
           {`

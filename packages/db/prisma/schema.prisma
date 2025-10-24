@@ -105,6 +105,7 @@ model User {
   handledAlerts    EmergencyAlert[] @relation("HandlerAlerts")
   auditLogs        AuditLog[]
   appointments     Appointment[]
+  profileVersions  TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
 
   @@index([email])
   @@index([role])
@@ -161,6 +162,19 @@ model TherapistProfile {
   adminNotes       String?         @db.Text
   licenseAuthority String?
   licenseId        String?
+  displayName      String?
+  title            String?
+  headline         String?
+  profileImageUrl  String?
+  approachSummary  String?         @db.Text
+  experienceSummary String?        @db.Text
+  services         String[]        @default([])
+  videoUrl         String?
+  acceptingClients Boolean         @default(true)
+  yearsExperience  Int?
+  rating           Float?
+  reviewCount      Int?            @default(0)
+  responseTime     String?
   modalities       String[]
   specialties      String[]
   priceMin         Int?            // in minor units (cents)
@@ -183,11 +197,28 @@ model TherapistProfile {
   payouts          Payout[]
   therapistMatches Match[] @relation("TherapistMatches")
   appointments     Appointment[]
+  versions         TherapistProfileVersion[]
 
   @@index([status, isPublic])
   @@index([city])
   @@index([country])
+  @@index([acceptingClients])
+  @@index([rating])
   @@index([deletedAt])
+}
+
+model TherapistProfileVersion {
+  id        String           @id @default(cuid())
+  profileId String
+  profile   TherapistProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  data      Json
+  createdAt DateTime         @default(now())
+  authorId  String?
+  author    User?            @relation("TherapistProfileVersionAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([profileId])
+  @@index([authorId])
+  @@index([createdAt])
 }
 
 model Listing {
@@ -305,15 +336,39 @@ model TriageSession {
   id                 String    @id @default(cuid())
   clientId           String
   client             User      @relation(fields: [clientId], references: [id])
-  phq9Score          Int?
-  gad7Score          Int?
+
+  // PHQ-9 (Patient Health Questionnaire) - 9 items, each 0-3
+  phq9Answers        Int[]     // Array of 9 answers (0-3 each)
+  phq9Score          Int?      // Total score 0-27
+  phq9Severity       String?   // "minimal", "mild", "moderate", "moderately_severe", "severe"
+
+  // GAD-7 (Generalized Anxiety Disorder) - 7 items, each 0-3
+  gad7Answers        Int[]     // Array of 7 answers (0-3 each)
+  gad7Score          Int?      // Total score 0-21
+  gad7Severity       String?   // "minimal", "mild", "moderate", "severe"
+
+  // Additional context questions
+  supportPreferences String[]  // therapist, course, group, checkin
+  availability       String[]  // online, hybrid, mornings, weekend
+
+  // Risk assessment
   riskLevel          RiskLevel
   recommendedNextStep NextStep
+
+  // Emergency flag for critical scores
+  requiresEmergency  Boolean   @default(false)
+  emergencyTriggered Boolean   @default(false)
+
   meta               Json?
   createdAt          DateTime  @default(now())
 
+  // Relations
+  emergencyAlerts    EmergencyAlert[] @relation("TriageEmergencyAlerts")
+
   @@index([clientId])
   @@index([riskLevel])
+  @@index([requiresEmergency])
+  @@index([createdAt])
 }
 
 model TriageSnapshot {
@@ -352,16 +407,19 @@ model Match {
 }
 
 model EmergencyAlert {
-  id          String        @id @default(cuid())
-  clientId    String
-  client      User          @relation("ClientAlerts", fields: [clientId], references: [id])
-  severity    AlertSeverity
-  triggeredAt DateTime      @default(now())
-  handledBy   String?
-  handler     User?         @relation("HandlerAlerts", fields: [handledBy], references: [id])
-  notes       String?       @db.Text
+  id              String         @id @default(cuid())
+  clientId        String
+  client          User           @relation("ClientAlerts", fields: [clientId], references: [id])
+  triageSessionId String?
+  triageSession   TriageSession? @relation("TriageEmergencyAlerts", fields: [triageSessionId], references: [id])
+  severity        AlertSeverity
+  triggeredAt     DateTime       @default(now())
+  handledBy       String?
+  handler         User?          @relation("HandlerAlerts", fields: [handledBy], references: [id])
+  notes           String?        @db.Text
 
   @@index([clientId])
+  @@index([triageSessionId])
   @@index([severity])
   @@index([handledBy])
 }

@@ -1,124 +1,86 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, ArrowRight, BookOpen, Brain, CheckCircle2, HeartPulse, Loader2, RotateCcw, Sparkles } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  ArrowRight,
+  ArrowLeft,
+  BookOpen,
+  CheckCircle2,
+  RotateCcw,
+  Sparkles,
+  Calendar,
+} from 'lucide-react'
 import { Button } from '@mental-health/ui'
 import { track } from '../../lib/analytics'
+import {
+  phq9Questions,
+  gad7Questions,
+  standardResponseOptions,
+  supportOptions,
+  availabilityOptions,
+  calculatePHQ9Severity,
+  calculateGAD7Severity,
+  assessRiskLevel,
+  phq9SeverityLabels,
+  phq9SeverityDescriptions,
+  gad7SeverityLabels,
+  gad7SeverityDescriptions,
+} from '../../lib/triage/questionnaires'
+import { QuestionTooltip } from './QuestionTooltip'
+import { AmpelVisualization } from './AmpelVisualization'
+import { CrisisResources } from './CrisisResources'
+import { ProgressChart } from './ProgressChart'
 
-type ScaleOption = {
-  value: number
-  label: string
-  description: string
+type QuestionSection = {
+  id: string
+  type: 'phq9' | 'gad7' | 'support' | 'availability'
+  title: string
+  subtitle: string
+  icon: React.ComponentType<{ className?: string }>
 }
 
-type MultipleOption = {
-  value: string
-  label: string
-}
-
-type Question =
-  | {
-      id: 'mood' | 'motivation' | 'anxiety'
-      type: 'scale'
-      title: string
-      subtitle: string
-      options: ScaleOption[]
-      icon: React.ComponentType<{ className?: string }>
-    }
-  | {
-      id: 'support'
-      type: 'multiple'
-      title: string
-      subtitle: string
-      options: MultipleOption[]
-      icon: React.ComponentType<{ className?: string }>
-    }
-  | {
-      id: 'availability'
-      type: 'multiple'
-      title: string
-      subtitle: string
-      options: MultipleOption[]
-      icon: React.ComponentType<{ className?: string }>
-    }
-
-const questions: Question[] = [
+const questionSections: QuestionSection[] = [
   {
-    id: 'mood',
-    type: 'scale',
-    title: 'Stimmung & Antrieb',
-    subtitle: 'Wie oft hast du dich in den letzten zwei Wochen niedergeschlagen gefühlt?',
-    icon: HeartPulse,
-    options: [
-      { value: 0, label: 'Selten oder nie', description: 'Stimmung überwiegend stabil' },
-      { value: 1, label: 'An einzelnen Tagen', description: 'Manchmal bedrückt oder antriebslos' },
-      { value: 2, label: 'Mehr als die Hälfte der Tage', description: 'Häufig belastet' },
-      { value: 3, label: 'Beinahe täglich', description: 'Dauert an und erschwert deinen Alltag' },
-    ],
+    id: 'phq9',
+    type: 'phq9',
+    title: 'PHQ-9: Depressive Symptome',
+    subtitle: 'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    icon: CheckCircle2,
   },
   {
-    id: 'motivation',
-    type: 'scale',
-    title: 'Energie & Fokus',
-    subtitle: 'Wie stark beeinflussen Stress oder Müdigkeit deine Routinen?',
-    icon: Brain,
-    options: [
-      { value: 0, label: 'Kaum', description: 'Alltag läuft weitgehend normal' },
-      { value: 1, label: 'Etwas', description: 'Ab und zu fehlen Kraft oder Fokus' },
-      { value: 2, label: 'Stark', description: 'Du brauchst häufiger Pausen oder Unterstützung' },
-      { value: 3, label: 'Sehr stark', description: 'Du kommst ohne Hilfe kaum voran' },
-    ],
-  },
-  {
-    id: 'anxiety',
-    type: 'scale',
-    title: 'Innere Anspannung',
-    subtitle: 'Wie oft fühlst du dich nervös oder ängstlich?',
-    icon: AlertTriangle,
-    options: [
-      { value: 0, label: 'Selten', description: 'Gelassenheit überwiegt' },
-      { value: 1, label: 'Manchmal', description: 'Innere Unruhe ist spürbar, aber gut händelbar' },
-      { value: 2, label: 'Häufig', description: 'Anspannung begleitet dich oft' },
-      { value: 3, label: 'Fast durchgehend', description: 'Ständige Anspannung, Ruhe schwer möglich' },
-    ],
+    id: 'gad7',
+    type: 'gad7',
+    title: 'GAD-7: Angstsymptome',
+    subtitle: 'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    icon: Sparkles,
   },
   {
     id: 'support',
-    type: 'multiple',
-    title: 'Was hilft dir gerade am meisten?',
-    subtitle: 'Wähle alle Formate aus, die dich unterstützen könnten.',
+    type: 'support',
+    title: 'Gewünschte Unterstützung',
+    subtitle: 'Welche Form der Unterstützung könntest du dir vorstellen?',
     icon: BookOpen,
-    options: [
-      { value: 'therapist', label: '1:1 Therapie oder Beratung' },
-      { value: 'course', label: 'Digitale Programme & Übungen' },
-      { value: 'group', label: 'Gruppenangebot oder Peer-Support' },
-      { value: 'checkin', label: 'Regelmäßige Check-ins mit Care-Team' },
-    ],
   },
   {
     id: 'availability',
-    type: 'multiple',
-    title: 'Wie flexibel bist du terminlich?',
-    subtitle: 'Wähle alle Optionen, die für dich passen.',
-    icon: Sparkles,
-    options: [
-      { value: 'online', label: 'Online & Abends' },
-      { value: 'hybrid', label: 'Hybrid (vor Ort + online)' },
-      { value: 'mornings', label: 'Morgens unter der Woche' },
-      { value: 'weekend', label: 'Wochenende / Kurzfristige Slots' },
-    ],
+    type: 'availability',
+    title: 'Verfügbarkeit & Präferenzen',
+    subtitle: 'Welche Optionen passen zu deinem Alltag?',
+    icon: Calendar,
   },
 ]
 
 type Answers = {
-  mood?: number
-  motivation?: number
-  anxiety?: number
+  phq9: number[]
+  gad7: number[]
   support: string[]
   availability: string[]
 }
 
 const initialAnswers: Answers = {
+  phq9: [],
+  gad7: [],
   support: [],
   availability: [],
 }
@@ -127,6 +89,7 @@ type TherapistRecommendation = {
   id: string
   name: string
   title: string
+  headline?: string
   focus: string[]
   availability: string
   location: string
@@ -135,6 +98,12 @@ type TherapistRecommendation = {
   status: string
   formatTags: Array<'online' | 'praesenz' | 'hybrid'>
   highlights: string[]
+  acceptingClients?: boolean
+  services?: string[]
+  responseTime?: string
+  yearsExperience?: number
+  languages?: string[]
+  image?: string | null
 }
 
 type CourseRecommendation = {
@@ -148,106 +117,151 @@ type CourseRecommendation = {
   highlights: string[]
 }
 
-const moodCopy = ['Stabile Verfassung', 'Leichte Belastung', 'Erhöhte Belastung', 'Akuter Handlungsbedarf'] as const
-
-const supportRecommendations: Record<'low' | 'medium' | 'high', string> = {
-  low: 'Unsere digitalen Programme und Micro-Interventionen stärken dich im Alltag. Ergänzend können optionale Check-ins mit dem Care-Team vereinbart werden.',
-  medium:
-    'Wir empfehlen ein Erstgespräch mit einer*m FindMyTherapy-Therapeut:in, kombiniert mit einem strukturierten Kursmodul. So bekommst du professionelle Begleitung und Werkzeuge für dazwischen.',
-  high:
-    'Wir priorisieren ein schnelles Gespräch mit unserem Care-Team und verbinden dich mit spezialisierten Therapeut:innen. Parallel stellen wir Akutressourcen und engmaschige Check-ins bereit.',
+type TriageFlowProps = {
+  embedded?: boolean
+  historicalData?: Array<{
+    date: string
+    phq9Score: number
+    gad7Score: number
+  }>
 }
 
-const nextStepsCopy = [
-  '3 passende Therapeut:innen mit freien Slots (innerhalb von 7 Tagen startklar).',
-  'Individuelles FindMyTherapy-Programm mit Übungen für Fokus & Alltag.',
-  'Optionaler Check-in mit dem Care-Team nach 48 Stunden, um Fortschritte zu reflektieren.',
-]
-
-const therapistStatusLabel: Record<string, string> = {
-  VERIFIED: 'Pilot (verifiziert)',
-  PENDING: 'Pilot (in Prüfung)',
-  REJECTED: 'Nicht gelistet',
-}
-
-const formatTagLabel: Record<'online' | 'praesenz' | 'hybrid', string> = {
-  online: 'Online',
-  praesenz: 'Vor Ort',
-  hybrid: 'Hybrid',
-}
-
-export function TriageFlow() {
-  const [stepIndex, setStepIndex] = useState(0)
+export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlowProps = {}) {
+  const [sectionIndex, setSectionIndex] = useState(0)
+  const [questionIndex, setQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>(initialAnswers)
   const [showSummary, setShowSummary] = useState(false)
   const [recommendations, setRecommendations] = useState<{
     therapists: TherapistRecommendation[]
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
-  const [persistState, setPersistState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
-  const [persistError, setPersistError] = useState<string | null>(null)
   const [hasPersisted, setHasPersisted] = useState(false)
 
-  const currentQuestion = questions[stepIndex]
+  const currentSection = questionSections[sectionIndex]
 
-  const progress = Math.round(((stepIndex) / questions.length) * 100)
+  const currentQuestions = useMemo(() => {
+    if (currentSection.type === 'phq9') return phq9Questions
+    if (currentSection.type === 'gad7') return gad7Questions
+    return []
+  }, [currentSection.type])
 
-  const handleScaleSelect = (value: number) => {
-    if (currentQuestion.type !== 'scale') {
-      return
+  const totalQuestions = phq9Questions.length + gad7Questions.length + 2 // +2 for support and availability
+  const answeredQuestions = answers.phq9.length + answers.gad7.length + (answers.support.length > 0 ? 1 : 0) + (answers.availability.length > 0 ? 1 : 0)
+  const progress = Math.round((answeredQuestions / totalQuestions) * 100)
+  const progressCopy = useMemo(() => {
+    if (progress >= 90) {
+      return 'Fast geschafft – nur noch letzte Antworten.'
     }
-
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion.id]: value,
-    }))
-
-    const nextStep = stepIndex + 1
-    if (nextStep < questions.length) {
-      setStepIndex(nextStep)
-    } else {
-      setShowSummary(true)
+    if (progress >= 60) {
+      return 'Mehr als die Hälfte ist erledigt.'
     }
+    if (progress >= 30) {
+      return 'Guter Start – bleib kurz dran.'
+    }
+    return 'Kurzer Check – das dauert nur eine Minute.'
+  }, [progress])
+
+  const handleScaleAnswer = (value: number) => {
+    const sectionType = currentSection.type
+    if (sectionType !== 'phq9' && sectionType !== 'gad7') return
+
+    setAnswers((prev) => {
+      const newAnswers = { ...prev }
+      const currentAnswers = [...newAnswers[sectionType]]
+      currentAnswers[questionIndex] = value
+      newAnswers[sectionType] = currentAnswers
+      return newAnswers
+    })
+
+    // Auto-advance to next question
+    setTimeout(() => {
+      if (questionIndex < currentQuestions.length - 1) {
+        setQuestionIndex(questionIndex + 1)
+      } else {
+        // Move to next section
+        if (sectionIndex < questionSections.length - 1) {
+          setSectionIndex(sectionIndex + 1)
+          setQuestionIndex(0)
+        } else {
+          setShowSummary(true)
+        }
+      }
+    }, 300)
   }
 
   const toggleMultipleSelect = (option: string) => {
-    if (currentQuestion.type !== 'multiple') {
-      return
-    }
+    const sectionType = currentSection.type
+    if (sectionType !== 'support' && sectionType !== 'availability') return
 
     setAnswers((prev) => {
-      const prevValues = prev[currentQuestion.id]
-      const alreadySelected = prevValues.includes(option)
+      const currentAnswers = prev[sectionType]
+      const alreadySelected = currentAnswers.includes(option)
 
       return {
         ...prev,
-        [currentQuestion.id]: alreadySelected
-          ? prevValues.filter((item) => item !== option)
-          : [...prevValues, option],
+        [sectionType]: alreadySelected
+          ? currentAnswers.filter((item) => item !== option)
+          : [...currentAnswers, option],
       }
     })
   }
 
-  const goNextFromMultiple = () => {
-    const nextStep = stepIndex + 1
-    if (nextStep < questions.length) {
-      setStepIndex(nextStep)
+  const goNext = () => {
+    if (currentSection.type === 'phq9' || currentSection.type === 'gad7') {
+      // For PHQ/GAD, check if current question is answered
+      const currentAnswer = answers[currentSection.type][questionIndex]
+      if (currentAnswer === undefined) return
+
+      if (questionIndex < currentQuestions.length - 1) {
+        setQuestionIndex(questionIndex + 1)
+      } else {
+        nextSection()
+      }
+    } else {
+      // For multiple choice
+      nextSection()
+    }
+  }
+
+  const nextSection = () => {
+    if (sectionIndex < questionSections.length - 1) {
+      setSectionIndex(sectionIndex + 1)
+      setQuestionIndex(0)
     } else {
       setShowSummary(true)
     }
   }
 
   const goPrevious = () => {
-    if (stepIndex === 0) {
-      return
+    if (currentSection.type === 'phq9' || currentSection.type === 'gad7') {
+      if (questionIndex > 0) {
+        setQuestionIndex(questionIndex - 1)
+      } else if (sectionIndex > 0) {
+        setSectionIndex(sectionIndex - 1)
+        const prevSection = questionSections[sectionIndex - 1]
+        if (prevSection.type === 'phq9') {
+          setQuestionIndex(phq9Questions.length - 1)
+        } else if (prevSection.type === 'gad7') {
+          setQuestionIndex(gad7Questions.length - 1)
+        }
+      }
+    } else {
+      if (sectionIndex > 0) {
+        setSectionIndex(sectionIndex - 1)
+        const prevSection = questionSections[sectionIndex - 1]
+        if (prevSection.type === 'phq9') {
+          setQuestionIndex(phq9Questions.length - 1)
+        } else if (prevSection.type === 'gad7') {
+          setQuestionIndex(gad7Questions.length - 1)
+        }
+      }
     }
-
-    setStepIndex(stepIndex - 1)
   }
 
   const resetFlow = () => {
     setAnswers(initialAnswers)
-    setStepIndex(0)
+    setSectionIndex(0)
+    setQuestionIndex(0)
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
     setPersistState('idle')
@@ -255,33 +269,43 @@ export function TriageFlow() {
     setHasPersisted(false)
   }
 
-  const { score, level, recommendation } = useMemo(() => {
-    const numericScore =
-      (answers.mood ?? 0) + (answers.motivation ?? 0) + (answers.anxiety ?? 0)
+  const { phq9Score, gad7Score, phq9Severity, gad7Severity, riskLevel, ampelColor, requiresEmergency } = useMemo(() => {
+    const phq9Total = answers.phq9.reduce((sum, val) => sum + (val || 0), 0)
+    const gad7Total = answers.gad7.reduce((sum, val) => sum + (val || 0), 0)
 
-    let level: 'low' | 'medium' | 'high' = 'low'
-
-    if (numericScore >= 6 && numericScore < 9) {
-      level = 'medium'
-    } else if (numericScore >= 9) {
-      level = 'high'
-    }
+    const phq9Sev = calculatePHQ9Severity(phq9Total)
+    const gad7Sev = calculateGAD7Severity(gad7Total)
+    const risk = assessRiskLevel(phq9Total, gad7Total)
 
     return {
-      score: numericScore,
-      level,
-      recommendation: supportRecommendations[level],
+      phq9Score: phq9Total,
+      gad7Score: gad7Total,
+      phq9Severity: phq9Sev,
+      gad7Severity: gad7Sev,
+      riskLevel: risk.level,
+      ampelColor: risk.ampelColor,
+      requiresEmergency: risk.requiresEmergency,
     }
-  }, [answers.mood, answers.motivation, answers.anxiety])
+  }, [answers.phq9, answers.gad7])
 
   const persistResults = useCallback(
     async ({ force = false }: { force?: boolean } = {}) => {
-      if (hasPersisted && !force) {
+      if (hasPersisted && !force) return
+
+      // For embedded mode, use mock data
+      if (embedded) {
+        setTimeout(() => {
+          setPersistState('success')
+          setHasPersisted(true)
+          track('triage_completed', {
+            phq9Score,
+            gad7Score,
+            riskLevel,
+            source: 'embedded',
+          })
+        }, 1000)
         return
       }
-
-      setPersistState('saving')
-      setPersistError(null)
 
       try {
         const response = await fetch('/api/triage', {
@@ -290,13 +314,16 @@ export function TriageFlow() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            mood: answers.mood ?? null,
-            motivation: answers.motivation ?? null,
-            anxiety: answers.anxiety ?? null,
-            support: answers.support,
+            phq9Answers: answers.phq9,
+            gad7Answers: answers.gad7,
+            phq9Score,
+            gad7Score,
+            phq9Severity,
+            gad7Severity,
+            supportPreferences: answers.support,
             availability: answers.availability,
-            score,
-            level,
+            riskLevel,
+            requiresEmergency,
           }),
         })
 
@@ -306,31 +333,23 @@ export function TriageFlow() {
           throw new Error(data.message || 'Die Ergebnisse konnten nicht gespeichert werden.')
         }
 
-        const therapistRecommendations = Array.isArray(data?.recommendations?.therapists)
-          ? (data.recommendations.therapists as TherapistRecommendation[])
-          : []
-        const courseRecommendations = Array.isArray(data?.recommendations?.courses)
-          ? (data.recommendations.courses as CourseRecommendation[])
-          : []
-
         setRecommendations({
-          therapists: therapistRecommendations,
-          courses: courseRecommendations,
+          therapists: data.recommendations?.therapists || [],
+          courses: data.recommendations?.courses || [],
         })
+
         track('triage_completed', {
-          level,
-          score,
-          support: answers.support,
-          availability: answers.availability,
-          recommendedTherapists: therapistRecommendations.map((item) => item.id),
-          recommendedCourses: courseRecommendations.map((item) => item.slug),
+          phq9Score,
+          gad7Score,
+          phq9Severity,
+          gad7Severity,
+          riskLevel,
+          requiresEmergency,
         })
-        setPersistState('success')
+
       } catch (error) {
         console.error('Failed to persist triage results', error)
-        setPersistState('error')
-        setPersistError(error instanceof Error ? error.message : 'Unbekannter Fehler beim Speichern')
-        track('triage_recommendations_failed', {
+        track('triage_save_failed', {
           message: error instanceof Error ? error.message : 'unknown',
         })
       } finally {
@@ -338,249 +357,186 @@ export function TriageFlow() {
       }
     },
     [
-      answers.anxiety,
-      answers.availability,
-      answers.mood,
-      answers.motivation,
-      answers.support,
+      answers,
+      phq9Score,
+      gad7Score,
+      phq9Severity,
+      gad7Severity,
+      riskLevel,
+      requiresEmergency,
+      embedded,
       hasPersisted,
-      level,
-      score,
     ]
   )
 
   useEffect(() => {
-    if (!showSummary) {
-      return
-    }
-
+    if (!showSummary) return
     void persistResults()
   }, [showSummary, persistResults])
 
-  const retryPersist = () => {
-    setHasPersisted(false)
-    track('triage_recommendations_retry', {
-      level,
-      support: answers.support,
-    })
-    void persistResults({ force: true })
-  }
-
-  const levelLabel =
-    level === 'low' ? moodCopy[0] : level === 'medium' ? moodCopy[2] : moodCopy[3]
-
+  // Summary view
   if (showSummary) {
     return (
-      <div className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10 backdrop-blur">
-        <header className="space-y-2">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-            <CheckCircle2 className="h-4 w-4" aria-hidden />
-            Ergebnisse bereit
-          </div>
-          <h3 className="text-2xl font-semibold text-default">Deine FindMyTherapy Empfehlung</h3>
-          <p className="text-sm text-muted">
-            Auf Basis deiner Angaben schlagen wir das folgende Paket vor. Der vollständige Ablauf zeigt, wie Matches und Kurszugänge freigeschaltet werden.
-          </p>
-        </header>
-
-        <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Belastungslevel</p>
-            <p className="mt-2 text-lg font-semibold text-default">{levelLabel}</p>
-            <p className="text-sm text-muted">Score {score} von 18 möglichen Punkten</p>
-          </div>
-          <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Wichtigste Wunschformate</p>
-            <p className="mt-2 text-sm text-muted">
-              {answers.support.length
-                ? answers.support
-                    .map((item) => {
-                      const option = questions
-                        .filter((q): q is Extract<Question, { type: 'multiple' }> => q.type === 'multiple')
-                        .flatMap((q) => q.options)
-                        .find((opt) => opt.value === item)
-                      return option?.label ?? item
-                    })
-                    .join(' · ')
-                : 'Keine Auswahl – wir schlagen einen Mix vor'}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/10 p-6 text-sm leading-relaxed text-primary dark:border-primary/50 dark:bg-primary/20">
-          {recommendation}
-        </div>
-
-        {persistState === 'saving' && (
-          <div className="mt-6 flex items-center gap-3 rounded-2xl border border-divider bg-surface-1/95 p-4 text-sm text-muted">
-            <Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden />
-            <span>Wir bereiten individuelle Empfehlungen vor …</span>
-          </div>
+      <div className="space-y-6">
+        {/* Progress History */}
+        {historicalData.length > 0 && (
+          <ProgressChart
+            data={[
+              ...historicalData,
+              {
+                date: new Date().toISOString(),
+                phq9Score,
+                gad7Score,
+              },
+            ]}
+          />
         )}
 
-        {persistState === 'error' && (
-          <div className="mt-6 space-y-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-            <div>
-              <p className="font-semibold">Empfehlungen konnten nicht geladen werden</p>
-              <p>{persistError ?? 'Bitte versuche es in Kürze erneut.'}</p>
+        {/* Ampel Visualization */}
+        <AmpelVisualization
+          color={ampelColor}
+          phq9Score={phq9Score}
+          gad7Score={gad7Score}
+          phq9Severity={phq9Severity}
+          gad7Severity={gad7Severity}
+        />
+
+        {/* Crisis Resources if HIGH risk */}
+        {requiresEmergency && (
+          <CrisisResources showCareTeamContact={!embedded} />
+        )}
+
+        {/* Detailed Results */}
+        <div className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10">
+          <header className="space-y-2">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+              <CheckCircle2 className="h-4 w-4" aria-hidden />
+              Detaillierte Ergebnisse
             </div>
-            <Button variant="outline" size="sm" onClick={retryPersist}>
-              Erneut versuchen
-            </Button>
+            <h3 className="text-2xl font-semibold text-default">Deine Ersteinschätzung</h3>
+          </header>
+
+          {/* PHQ-9 Details */}
+          <div className="mt-6 rounded-2xl border border-divider bg-surface-1/90 p-6">
+            <h4 className="text-lg font-semibold text-default">PHQ-9: {phq9SeverityLabels[phq9Severity]}</h4>
+            <p className="mt-2 text-sm text-muted">{phq9SeverityDescriptions[phq9Severity]}</p>
           </div>
-        )}
 
-        {recommendations.therapists.length > 0 && (
-          <section className="mt-6 space-y-4">
-            <h4 className="text-lg font-semibold text-default">Empfohlene Pilot-Therapeut:innen</h4>
-            <div className="space-y-4">
-              {recommendations.therapists.map((therapist) => (
-                <article
-                  key={therapist.id}
-                  className="rounded-2xl border border-divider bg-white/90 p-5 shadow-sm shadow-primary/5"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <p className="text-base font-semibold text-default">{therapist.name}</p>
-                      <p className="text-xs text-muted">{therapist.title}</p>
-                    </div>
-                    <span
-                      className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold ${
-                        therapist.status === 'VERIFIED'
-                          ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-                          : therapist.status === 'PENDING'
-                          ? 'border-amber-200 bg-amber-50 text-amber-800'
-                          : 'border-divider bg-surface-1 text-muted'
-                      }`}
-                    >
-                      {therapistStatusLabel[therapist.status] ?? 'Pilot'}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-xs text-muted">
-                    {therapist.location} • {therapist.availability}
-                  </p>
-                  <p className="mt-2 text-sm text-muted">
-                    Schwerpunkte: {therapist.focus.slice(0, 3).join(', ')}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {therapist.formatTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 rounded-full border border-divider bg-surface-1 px-3 py-1 text-xs font-semibold text-muted"
-                      >
-                        {formatTagLabel[tag]}
-                      </span>
-                    ))}
-                  </div>
-                  {therapist.highlights.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {therapist.highlights.map((highlight) => (
-                        <span
-                          key={highlight}
-                          className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
-                        >
-                          {highlight}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {recommendations.courses.length > 0 && (
-          <section className="mt-6 space-y-4">
-            <h4 className="text-lg font-semibold text-default">Passende Programme & Kurse</h4>
-            <div className="space-y-4">
-              {recommendations.courses.map((course) => (
-                <article
-                  key={course.slug}
-                  className="rounded-2xl border border-divider bg-surface-1/90 p-5 shadow-sm shadow-secondary/10"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <p className="text-base font-semibold text-default">{course.title}</p>
-                      <p className="text-xs text-muted">{course.focus}</p>
-                    </div>
-                    <span className="inline-flex items-center gap-1 rounded-full border border-divider bg-white px-3 py-1 text-xs font-semibold text-muted">
-                      {course.duration}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-sm text-muted">{course.shortDescription}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {course.outcomes.map((outcome) => (
-                      <span
-                        key={outcome}
-                        className="inline-flex items-center rounded-full border border-divider bg-white px-3 py-1 text-xs text-muted"
-                      >
-                        {outcome}
-                      </span>
-                    ))}
-                  </div>
-                  {course.highlights.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {course.highlights.map((highlight) => (
-                        <span
-                          key={highlight}
-                          className="inline-flex items-center rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary-700"
-                        >
-                          {highlight}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-2xl border border-divider bg-surface-1/95 p-6">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Nächste Schritte</p>
-            <ul className="mt-3 space-y-3 text-sm text-muted">
-              {nextStepsCopy.map((item) => (
-                <li key={item} className="flex items-start gap-2">
-                  <ArrowRight className="mt-1 h-4 w-4 flex-none text-primary" aria-hidden />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+          {/* GAD-7 Details */}
+          <div className="mt-4 rounded-2xl border border-divider bg-surface-1/90 p-6">
+            <h4 className="text-lg font-semibold text-default">GAD-7: {gad7SeverityLabels[gad7Severity]}</h4>
+            <p className="mt-2 text-sm text-muted">{gad7SeverityDescriptions[gad7Severity]}</p>
           </div>
-          <div className="flex flex-col justify-between rounded-2xl border border-divider bg-white/85 p-6 shadow-sm shadow-primary/5">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Empfohlene Optionen</p>
-              <p className="text-sm text-muted">
-                Starte mit einer*m verifizierten Pilot-Therapeut:in oder aktiviere das passende Kursmodul. Termine lassen sich direkt buchen.
+
+          {/* Preferences */}
+          <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Gewünschte Unterstützung</p>
+              <p className="mt-2 text-sm text-muted">
+                {answers.support.length
+                  ? answers.support
+                      .map((item) => supportOptions.find((opt) => opt.value === item)?.label ?? item)
+                      .join(' · ')
+                  : 'Keine Auswahl'}
               </p>
             </div>
-            <div className="mt-4 space-y-3">
-              <Button asChild className="w-full">
-                <a href="/therapists">
-                  Therapeut:innen ansehen
-                </a>
-              </Button>
-              <Button variant="outline" asChild className="w-full">
-                <a href="/courses">Kurse vergleichen</a>
-              </Button>
+            <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Verfügbarkeit</p>
+              <p className="mt-2 text-sm text-muted">
+                {answers.availability.length
+                  ? answers.availability
+                      .map((item) => availabilityOptions.find((opt) => opt.value === item)?.label ?? item)
+                      .join(' · ')
+                  : 'Keine Auswahl'}
+              </p>
             </div>
           </div>
-        </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <Button variant="ghost" onClick={resetFlow} className="inline-flex items-center gap-2">
-            <RotateCcw className="h-4 w-4" aria-hidden />
-            Neue Ersteinschätzung
-          </Button>
-          <p className="text-xs text-subtle">
-            Hinweis: Die Ergebnisse dienen als Orientierung. Im Produkt werden medizinische Schwellenwerte geprüft und Notfallroutinen ausgelöst.
-          </p>
+          {/* Recommendations */}
+          {recommendations.therapists.length > 0 && (
+            <section className="mt-6 space-y-4">
+              <h4 className="text-lg font-semibold text-default">Empfohlene Therapeut:innen</h4>
+              <div className="space-y-4">
+                {recommendations.therapists.map((therapist) => (
+                  <article
+                    key={therapist.id}
+                    className="rounded-2xl border border-divider bg-white/90 p-5 shadow-sm"
+                  >
+                    <div className="space-y-2">
+                      <div>
+                        <p className="text-base font-semibold text-default">{therapist.name}</p>
+                        <p className="text-xs text-muted">{therapist.title}</p>
+                        {therapist.headline ? (
+                          <p className="mt-1 text-xs text-default">{therapist.headline}</p>
+                        ) : null}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-[10px] font-medium uppercase tracking-wide text-muted">
+                        <span>{therapist.focus.slice(0, 3).join(' • ')}</span>
+                        <span aria-hidden>•</span>
+                        <span>{therapist.location}</span>
+                      </div>
+                      {therapist.services && therapist.services.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {therapist.services.slice(0, 2).map((service) => (
+                            <span key={service} className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary">
+                              {service}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                      <div className="text-[11px] text-muted">
+                        <span className="font-semibold text-primary">{therapist.availability}</span>
+                        {therapist.responseTime ? ` · ${therapist.responseTime}` : null}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {recommendations.courses.length > 0 && (
+            <section className="mt-6 space-y-4">
+              <h4 className="text-lg font-semibold text-default">Empfohlene Programme</h4>
+              <div className="space-y-4">
+                {recommendations.courses.map((course) => (
+                  <article
+                    key={course.slug}
+                    className="rounded-2xl border border-divider bg-surface-1/90 p-5 shadow-sm"
+                  >
+                    <p className="text-base font-semibold text-default">{course.title}</p>
+                    <p className="mt-1 text-sm text-muted">{course.shortDescription}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Actions */}
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+            <Button variant="ghost" onClick={resetFlow} className="inline-flex items-center gap-2">
+              <RotateCcw className="h-4 w-4" aria-hidden />
+              Neue Ersteinschätzung
+            </Button>
+            {!embedded && (
+              <div className="flex gap-3">
+                <Button variant="outline" asChild>
+                  <a href="/courses">Kurse ansehen</a>
+                </Button>
+                <Button asChild>
+                  <a href="/therapists">Therapeut:innen finden</a>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
   }
+
+  // Question flow
+  const currentQuestion = currentQuestions[questionIndex]
+  const isMultipleChoice = currentSection.type === 'support' || currentSection.type === 'availability'
 
   return (
     <div
@@ -590,88 +546,129 @@ export function TriageFlow() {
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
           <Sparkles className="h-4 w-4" aria-hidden />
-          Schritt {stepIndex + 1} von {questions.length}
+          {currentSection.title}
         </div>
-        <h3 className="text-2xl font-semibold text-default">{currentQuestion.title}</h3>
-        <p className="text-sm text-muted">{currentQuestion.subtitle}</p>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-2xl font-semibold text-default">
+              {isMultipleChoice ? currentSection.title : currentQuestion?.text}
+            </h3>
+            <p className="mt-1 text-sm text-muted">{currentSection.subtitle}</p>
+          </div>
+          {!isMultipleChoice && currentQuestion && (
+            <QuestionTooltip
+              helpText={currentQuestion.helpText}
+              scientificContext={currentQuestion.scientificContext}
+            />
+          )}
+        </div>
       </header>
 
+      {/* Progress bar */}
       <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-surface-2">
-        <div
-          className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-          style={{ width: `${progress}%` }}
+        <motion.div
+          className="h-full rounded-full bg-primary"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           aria-hidden
         />
       </div>
 
-      <div className="mt-6 space-y-4">
-        {currentQuestion.type === 'scale' ? (
-          currentQuestion.options.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => handleScaleSelect(option.value)}
-              className="flex w-full items-start justify-between gap-3 rounded-2xl border border-divider bg-surface-1/95 p-4 text-left shadow-sm shadow-primary/5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-            >
-              <div className="flex items-start gap-3">
-                <currentQuestion.icon className="mt-1 h-5 w-5 flex-none text-primary" aria-hidden />
-                <div>
-                  <p className="text-base font-semibold text-default">{option.label}</p>
-                  <p className="text-sm text-muted">{option.description}</p>
-                </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`${sectionIndex}-${questionIndex}`}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+          className="mt-6"
+        >
+          {isMultipleChoice ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {(currentSection.type === 'support' ? supportOptions : availabilityOptions).map((option) => {
+                  const selected = answers[currentSection.type].includes(option.value)
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => toggleMultipleSelect(option.value)}
+                      className={`flex flex-col items-start gap-2 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                        selected
+                          ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
+                          : 'border-divider bg-surface-1/95 hover:border-primary/30'
+                      }`}
+                    >
+                      <span className={`text-base font-semibold ${selected ? 'text-primary' : 'text-default'}`}>
+                        {option.label}
+                      </span>
+                      <span className="text-sm text-muted">{option.description}</span>
+                    </button>
+                  )
+                })}
               </div>
-              <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full border border-divider bg-white text-sm font-semibold text-primary">
-                {option.value}
+              <div className="flex items-center justify-between pt-4">
+                <Button variant="ghost" onClick={goPrevious} disabled={sectionIndex === 0 && questionIndex === 0}>
+                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
+                  Zurück
+                </Button>
+                <Button onClick={goNext}>
+                  Weiter
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                </Button>
               </div>
-            </button>
-          ))
-        ) : (
-          <>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {currentQuestion.options.map((option) => {
-                const selected = answers[currentQuestion.id].includes(option.value)
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {standardResponseOptions.map((option) => {
+                const isSelected = answers[currentSection.type][questionIndex] === option.value
                 return (
                   <button
                     key={option.value}
                     type="button"
-                    onClick={() => toggleMultipleSelect(option.value)}
-                    className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface ${
-                      selected
-                        ? 'border-primary bg-primary/10 text-primary shadow-sm shadow-primary/10'
-                        : 'border-divider bg-surface-1/95 text-muted hover:border-primary/30 hover:text-primary'
+                    onClick={() => handleScaleAnswer(option.value)}
+                    className={`flex w-full items-center justify-between gap-3 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                      isSelected
+                        ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
+                        : 'border-divider bg-surface-1/95 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-primary/10'
                     }`}
                   >
-                    <currentQuestion.icon className="h-5 w-5 flex-none" aria-hidden />
-                    <span className="text-sm font-medium">{option.label}</span>
+                    <div>
+                      <p className={`text-base font-semibold ${isSelected ? 'text-primary' : 'text-default'}`}>
+                        {option.label}
+                      </p>
+                      <p className="text-sm text-muted">{option.description}</p>
+                    </div>
+                    <div
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold ${
+                        isSelected
+                          ? 'border-primary bg-primary text-primary-foreground'
+                          : 'border-divider bg-white text-primary'
+                      }`}
+                    >
+                      {option.value}
+                    </div>
                   </button>
                 )
               })}
+              <div className="flex items-center justify-between pt-4 text-xs text-subtle">
+                <button
+                  type="button"
+                  onClick={goPrevious}
+                  disabled={sectionIndex === 0 && questionIndex === 0}
+                  className="rounded-full border border-divider bg-surface-1 px-3 py-1.5 font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Zurück
+                </button>
+                <span>
+                  Fortschritt: {progress}% · {progressCopy}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center justify-between">
-              <Button variant="ghost" onClick={goPrevious} disabled={stepIndex === 0}>
-                Zurück
-              </Button>
-              <Button onClick={goNextFromMultiple} disabled={answers[currentQuestion.id].length === 0}>
-                Weiter
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-
-      {currentQuestion.type === 'scale' && (
-        <div className="mt-6 flex items-center justify-between text-xs text-subtle">
-          <button
-            type="button"
-            onClick={goPrevious}
-            disabled={stepIndex === 0}
-            className="rounded-full border border-divider bg-surface-1 px-3 py-1.5 font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Zurück
-          </button>
-          <span>{questions.length - stepIndex - 1} Fragen verbleiben</span>
-        </div>
-      )}
+          )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }

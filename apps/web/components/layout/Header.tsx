@@ -1,133 +1,113 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { Menu, X, Compass, Moon, Sun } from 'lucide-react'
+import { Compass, Menu, X } from 'lucide-react'
+import { marketingNavigation } from '../../app/marketing-content'
 import { AuthHeader } from './AuthHeader'
-import { useTheme } from '../providers/ThemeProvider'
+
+const appNavigation = [
+  { label: 'Therapeut:innen', href: '/therapists' },
+  { label: 'Kurse', href: '/courses' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Ersteinschätzung', href: '/triage' },
+  { label: 'Über uns', href: '/about' },
+]
 
 export function Header() {
+  const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const isHome = pathname === '/'
+  const navigation = isHome ? marketingNavigation : appNavigation
 
-  const navigation = [
-    { name: 'Therapeut:innen', href: '/therapists' },
-    { name: 'Kurse', href: '/courses' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Ersteinschätzung', href: '/triage' },
-    { name: 'Über uns', href: '/about' },
-  ]
-
-  const isDark = theme === 'theme-dark'
-  const toggleTheme = () => {
-    setIsMenuOpen(false)
-    setTheme(isDark ? 'theme-light' : 'theme-dark')
-  }
+  // Auf der Homepage nur die wichtigsten Links zeigen
+  const desktopNavigation = isHome
+    ? [
+        { label: 'Ersteinschätzung', href: '/triage' },
+        { label: 'Therapeut:innen', href: '#therapists' },
+        { label: 'Angebote', href: '#features' },
+        { label: 'FAQ', href: '#faq' },
+      ]
+    : navigation
 
   return (
-    <header className="relative z-40 bg-surface-1/80 border-b border-divider backdrop-blur">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="group flex items-center gap-3 rounded-xl px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary/20">
-                <Compass className="h-6 w-6" aria-hidden />
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-gradient-to-r from-teal-950 via-cyan-900 to-blue-950 text-white backdrop-blur-xl">
+      <nav className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-4">
+          <Link
+            href="/"
+            className="group flex items-center gap-2.5 transition-transform hover:scale-105"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
+              <Compass className="h-5 w-5 text-white" aria-hidden />
+            </div>
+            <div className="hidden flex-col sm:flex">
+              <span className="text-base font-semibold leading-tight text-white">
+                FindMyTherapy
               </span>
-              <span className="flex flex-col leading-tight">
-                <span className="text-xl font-semibold text-default">
-                  FindMyTherapy
-                </span>
-                <span className="hidden text-xs font-medium text-primary sm:block">
-                  Der klare Weg zur richtigen Hilfe.
-                </span>
+              <span className="text-[10px] font-medium text-teal-200/90">
+                Mentale Orientierung
               </span>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-6 text-base">
-            {navigation.map((item) => (
+          <div className="hidden flex-1 items-center justify-center gap-1 lg:flex">
+            {desktopNavigation.map((item) => (
               <Link
-                key={item.name}
+                key={item.href}
                 href={item.href}
-                className="rounded-lg px-3 py-2 text-base font-semibold text-muted transition-colors duration-150 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                className="rounded-full px-4 py-2 text-sm font-medium text-white/80 transition-all hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
               >
-                {item.name}
+                {item.label}
               </Link>
             ))}
           </div>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold text-muted transition-colors duration-150 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-              aria-label={isDark ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln'}
-            >
-              {isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
-              <span className="hidden lg:inline">{isDark ? 'Hell' : 'Dunkel'}</span>
-            </button>
+          <div className="hidden items-center gap-3 md:flex">
             <AuthHeader />
+            {!isHome && (
+              <Link
+                href="/triage"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-teal-400 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:-translate-y-0.5 hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
+              >
+                Kostenlose Ersteinschätzung
+              </Link>
+            )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              type="button"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="rounded-lg p-2 text-muted transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-              aria-label="Menu öffnen"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="rounded-xl p-2 text-white/80 transition hover:bg-white/10 hover:text-white md:hidden"
+            aria-label="Menü öffnen"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-divider pt-2 pb-3 space-y-1 text-base">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-3 font-medium text-muted transition-colors hover:bg-surface-2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-              aria-label={isDark ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln'}
-            >
-              <span>Darstellung</span>
-              {isDark ? <Sun className="h-5 w-5" aria-hidden /> : <Moon className="h-5 w-5" aria-hidden />}
-            </button>
-            {navigation.map((item) => (
+          <div className="mb-4 mt-2 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/85 shadow-lg backdrop-blur md:hidden">
+            <div className="space-y-2">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block rounded-xl px-3 py-2 font-medium transition hover:bg-white/10 hover:text-white"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <div className="space-y-2 border-t border-white/10 pt-3">
+              <AuthHeader />
               <Link
-                key={item.name}
-                href={item.href}
-                className="block rounded-lg px-3 py-3 font-medium text-muted transition-colors hover:bg-surface-2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                href="/triage"
+                className="block rounded-xl bg-teal-400 px-4 py-3 text-center text-sm font-semibold text-white shadow-md shadow-teal-900/30 transition hover:bg-teal-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.name}
-              </Link>
-            ))}
-            <div className="mt-2 border-t border-divider pt-2">
-              <Link
-                href="/login"
-                className="block rounded-lg px-3 py-3 font-medium text-muted transition-colors hover:bg-surface-2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Anmelden
-              </Link>
-              <Link
-                href="/register"
-                className="block rounded-lg px-3 py-3 font-medium text-muted transition-colors hover:bg-surface-2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Registrieren
+                Kostenlose Ersteinschätzung
               </Link>
             </div>
           </div>

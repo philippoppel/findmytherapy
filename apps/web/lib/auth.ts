@@ -1,12 +1,14 @@
 import NextAuth, { type NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import EmailProvider from 'next-auth/providers/email';
-import { PrismaAdapter } from '@auth/prisma-adapter';
+// import EmailProvider from 'next-auth/providers/email';
+// import { PrismaAdapter } from '@auth/prisma-adapter';
 import { compare } from 'bcryptjs';
 import { prisma, type UserRole } from '@mental-health/db';
 import { env } from '@mental-health/config';
-import { sendMagicLinkEmail } from './email';
+// import { sendMagicLinkEmail } from './email';
 import { verifyTotpCode } from './totp';
+import { cookies } from 'next/headers';
+import { jwtDecrypt } from 'jose';
 
 const privilegedRoles = new Set(['THERAPIST', 'ADMIN']);
 
@@ -26,37 +28,53 @@ const isExtendedUser = (value: unknown): value is ExtendedUser => typeof value =
 
 const authConfig: NextAuthConfig = {
   secret: env.NEXTAUTH_SECRET,
+  trustHost: true,
+  skipCSRFCheck: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
+  },
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
   },
   pages: {
     signIn: '/login',
     signOut: '/logout',
     error: '/login',
   },
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma), // Removed: incompatible with Credentials + JWT in NextAuth v5 Beta
   providers: [
-    EmailProvider({
-      id: 'email',
-      name: 'Magic Link',
-      from: env.EMAIL_FROM,
-      server: {
-        host: env.EMAIL_SMTP_HOST,
-        port: env.EMAIL_SMTP_PORT,
-        secure: env.EMAIL_SMTP_PORT === 465,
-        auth:
-          env.EMAIL_SMTP_USER && env.EMAIL_SMTP_PASS
-            ? {
-                user: env.EMAIL_SMTP_USER,
-                pass: env.EMAIL_SMTP_PASS,
-              }
-            : undefined,
-      },
-      maxAge: 10 * 60,
-      async sendVerificationRequest({ identifier, url }) {
-        await sendMagicLinkEmail({ email: identifier, url });
-      },
-    }),
+    // EmailProvider - temporarily disabled (requires adapter)
+    // EmailProvider({
+    //   id: 'email',
+    //   name: 'Magic Link',
+    //   from: env.EMAIL_FROM,
+    //   server: {
+    //     host: env.EMAIL_SMTP_HOST,
+    //     port: env.EMAIL_SMTP_PORT,
+    //     secure: env.EMAIL_SMTP_PORT === 465,
+    //     auth:
+    //       env.EMAIL_SMTP_USER && env.EMAIL_SMTP_PASS
+    //         ? {
+    //             user: env.EMAIL_SMTP_USER,
+    //             pass: env.EMAIL_SMTP_PASS,
+    //           }
+    //         : undefined,
+    //   },
+    //   maxAge: 10 * 60,
+    //   async sendVerificationRequest({ identifier, url }) {
+    //     await sendMagicLinkEmail({ email: identifier, url });
+    //   },
+    // }),
     CredentialsProvider({
       name: 'credentials',
       credentials: {
@@ -113,17 +131,8 @@ const authConfig: NextAuthConfig = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (!account) {
-        return true;
-      }
-
-      if (account.provider === 'email' && isExtendedUser(user)) {
-        const role = typeof user.role === 'string' ? user.role : undefined;
-        if (role && privilegedRoles.has(role) && user.twoFASecret) {
-          throw new Error('EMAIL_TWO_FACTOR_DISABLED');
-        }
-      }
-
+      // Allow all sign-ins for now
+      // Note: EmailProvider with 2FA check is disabled
       return true;
     },
     async jwt({ token, user }) {
@@ -178,6 +187,57 @@ const authConfig: NextAuthConfig = {
   },
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+export const { handlers, auth: nextAuthAuth, signIn, signOut } = NextAuth(authConfig);
+
+// Custom auth function that can read our JWE tokens
+export async function auth() {
+  // First try NextAuth's built-in auth
+  try {
+    const session = await nextAuthAuth();
+    if (session) return session;
+  } catch (e) {
+    // NextAuth failed, try custom token
+  }
+
+  // Try to read our custom JWE token
+  try {
+    const cookieName = process.env.NODE_ENV === 'production'
+      ? '__Secure-next-auth.session-token'
+      : 'next-auth.session-token';
+
+    const cookieStore = await cookies();
+    const token = cookieStore.get(cookieName)?.value;
+
+    if (!token || !env.NEXTAUTH_SECRET) {
+      return null;
+    }
+
+    // Use SHA-256 hash of secret to get exactly 32 bytes (Web Crypto API)
+    const encoder = new TextEncoder();
+    const secretBytes = encoder.encode(env.NEXTAUTH_SECRET);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', secretBytes);
+    const secret = new Uint8Array(hashBuffer);
+
+    const { payload } = await jwtDecrypt(token, secret);
+
+    // Convert payload to session format
+    return {
+      user: {
+        id: payload.sub as string,
+        email: payload.email as string,
+        role: payload.role as UserRole,
+        locale: (payload.locale as string) || 'de-AT',
+        twoFAEnabled: Boolean(payload.twoFAEnabled),
+        firstName: payload.firstName as string | null,
+        lastName: payload.lastName as string | null,
+        marketingOptIn: Boolean(payload.marketingOptIn),
+      },
+      expires: new Date((payload.exp as number) * 1000).toISOString(),
+    };
+  } catch (error) {
+    console.error('Auth error:', error);
+    return null;
+  }
+}
 
 export const getSession = () => auth();

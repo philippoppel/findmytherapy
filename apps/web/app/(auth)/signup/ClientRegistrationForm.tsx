@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react'
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react'
 
 import { Button, Input } from '@mental-health/ui'
-import { track } from '../../lib/analytics'
+import { track } from '../../../lib/analytics'
 
 type FormState = {
   firstName: string

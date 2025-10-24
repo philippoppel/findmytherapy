@@ -2,15 +2,24 @@ import type { ComponentType } from 'react';
 
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CalendarDays, Clock3, Euro, Globe2, Languages, MapPin, PencilLine, ShieldCheck, UsersRound } from 'lucide-react';
+import { CalendarDays, Clock3, Euro, Globe2, Languages, MapPin, PencilLine, ShieldCheck, Sparkles, UsersRound } from 'lucide-react';
 
 import { prisma } from '@mental-health/db';
 import { requireTherapist } from '../../../lib/auth-guards';
+import { formatCurrencyInput, joinList } from '../../../lib/therapist/setcard';
+import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';
 
 const fetchTherapistProfile = async (userId: string) => {
   return prisma.therapistProfile.findUnique({
     where: { userId },
     include: {
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+          email: true,
+        },
+      },
       listings: {
         select: {
           plan: true,
@@ -34,18 +43,54 @@ const formatCurrency = (value?: number | null) => {
   }).format(value / 100);
 };
 
-const formatArray = (values?: string[] | null) => {
+const formatListShort = (values?: string[] | null) => {
   if (!values || values.length === 0) {
     return '–';
   }
 
-  return values.join(', ');
+  const display = values.slice(0, 3).join(', ');
+  return values.length > 3 ? `${display} …` : display;
 };
 
 const statusTone: Record<string, string> = {
   VERIFIED: 'bg-success-50 text-success-700 border-success-200',
   PENDING: 'bg-warning-50 text-warning-700 border-warning-200',
   REJECTED: 'bg-danger-50 text-danger-700 border-danger-200',
+};
+
+const buildInitialValues = (profile: NonNullable<Awaited<ReturnType<typeof fetchTherapistProfile>>>): SetcardFormValues => {
+  const fallbackNameParts = [
+    profile.displayName,
+    [profile.user?.firstName, profile.user?.lastName].filter(Boolean).join(' ').trim(),
+    profile.user?.email,
+  ].filter((entry) => typeof entry === 'string' && entry.trim().length > 0) as string[];
+
+  const displayName = fallbackNameParts[0] ?? fallbackNameParts[1] ?? fallbackNameParts[2] ?? '';
+
+  return {
+    displayName,
+    title: profile.title ?? '',
+    headline: profile.headline ?? '',
+    profileImageUrl: profile.profileImageUrl ?? '',
+    videoUrl: profile.videoUrl ?? '',
+    acceptingClients: profile.acceptingClients ?? true,
+    online: profile.online,
+    services: joinList(profile.services ?? []),
+    specialties: joinList(profile.specialties ?? []),
+    modalities: joinList(profile.modalities ?? []),
+    languages: joinList(profile.languages ?? []),
+    approachSummary: profile.approachSummary ?? '',
+    experienceSummary: profile.experienceSummary ?? '',
+    responseTime: profile.responseTime ?? '',
+    availabilityNote: profile.availabilityNote ?? '',
+    pricingNote: profile.pricingNote ?? '',
+    about: profile.about ?? '',
+    city: profile.city ?? '',
+    country: profile.country ?? 'AT',
+    priceMin: formatCurrencyInput(profile.priceMin),
+    priceMax: formatCurrencyInput(profile.priceMax),
+    yearsExperience: typeof profile.yearsExperience === 'number' ? String(profile.yearsExperience) : '',
+  };
 };
 
 export default async function TherapistProfilePage() {
@@ -64,116 +109,78 @@ export default async function TherapistProfilePage() {
       : 'Abgelehnt';
 
   const primaryListing = profile.listings[0];
+  const initialValues = buildInitialValues(profile);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <header className="space-y-2">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center text-sm font-medium text-muted hover:text-default transition-colors"
-        >
-          ← Zurück zum Dashboard
-        </Link>
+    <div className="space-y-8">
+      <header className="space-y-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold text-neutral-950">Therapeut:innen-Profil</h1>
+          <h1 className="text-3xl font-bold text-neutral-900">Therapeut:innen-Profil</h1>
           <span
-            className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold ${statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border-divider'
-              }`}
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${
+              statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
+            }`}
           >
             <ShieldCheck className="h-4 w-4" aria-hidden />
             {statusLabel}
           </span>
         </div>
-        <p className="text-neutral-800">
-          Überprüfen Sie Ihre Profildaten für Klient:innen. Anpassungen nimmt derzeit unser Team für Sie vor.
+        <p className="text-neutral-600">
+          Verwalte deine öffentliche Setcard und sorge dafür, dass Klient:innen jederzeit aktuelle Informationen sehen.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-6">
-        <section className="rounded-xl border border-divider bg-white p-6">
-          <h2 className="text-lg font-semibold text-neutral-950 mb-4 flex items-center gap-2">
-            <PencilLine className="h-5 w-5 text-primary" aria-hidden />
-            Profilrahmendaten
-          </h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <InfoRow label="Lizenzbehörde" value={profile.licenseAuthority ?? '–'} />
-            <InfoRow label="Lizenznummer" value={profile.licenseId ?? '–'} />
-            <InfoRow label="Preisspanne" value={`${formatCurrency(profile.priceMin)} – ${formatCurrency(profile.priceMax)}`} />
-            <InfoRow
-              label="Listing-Plan"
-              value={primaryListing ? `${primaryListing.plan} (${primaryListing.status})` : 'Kein aktives Listing'}
-            />
-          </dl>
-        </section>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <SetcardEditor initialValues={initialValues} />
 
-        <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
-            <UsersRound className="h-5 w-5 text-primary" aria-hidden />
-            Spezialisierungen & Angebot
-          </h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <InfoRow label="Therapie-Schwerpunkte" value={formatArray(profile.specialties)} />
-            <InfoRow label="Modalitäten" value={formatArray(profile.modalities)} />
-            <InfoRow label="Sprachen" value={formatArray(profile.languages)} icon={Languages} />
-            <InfoRow label="Online-Termine" value={profile.online ? 'Ja, online verfügbar' : 'Nur vor Ort'} icon={Globe2} />
-          </dl>
-        </section>
+        <aside className="space-y-6">
+          <section className="rounded-2xl border border-neutral-200 bg-white shadow-sm p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-neutral-900">Profilstatus & Meta</h3>
+            <dl className="grid grid-cols-1 gap-4">
+              <InfoRow
+                label="Status"
+                value={statusLabel}
+                icon={ShieldCheck}
+              />
+              <InfoRow
+                label="Letzte Aktualisierung"
+                value={profile.updatedAt.toLocaleDateString('de-AT')}
+                icon={CalendarDays}
+              />
+              <InfoRow
+                label="Aktives Listing"
+                value={primaryListing ? `${primaryListing.plan} (${primaryListing.status})` : 'Kein aktives Listing'}
+                icon={UsersRound}
+              />
+              <InfoRow
+                label="Preisrange"
+                value={`${formatCurrency(profile.priceMin)} – ${formatCurrency(profile.priceMax)}`}
+                icon={Euro}
+              />
+              <InfoRow
+                label="Antwortzeit"
+                value={profile.responseTime ?? '–'}
+                icon={Clock3}
+              />
+            </dl>
+          </section>
 
-        <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" aria-hidden />
-            Standort & Verfügbarkeit
-          </h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <InfoRow label="Stadt" value={profile.city ?? '–'} />
-            <InfoRow label="Land" value={profile.country ?? '–'} />
-            <InfoRow
-              label="Eingetragen seit"
-              value={profile.createdAt.toLocaleDateString('de-AT')}
-              icon={CalendarDays}
-            />
-            <InfoRow
-              label="Letzte Aktualisierung"
-              value={profile.updatedAt.toLocaleDateString('de-AT')}
-              icon={CalendarDays}
-            />
-          </dl>
-        </section>
-
-        <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
-            <Clock3 className="h-5 w-5 text-primary" aria-hidden />
-            Konditionen & Hinweise
-          </h2>
-          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <InfoRow
-              label="Termin-Hinweis"
-              value={profile.availabilityNote ?? '–'}
-              icon={Clock3}
-            />
-            <InfoRow
-              label="Preishinweis"
-              value={profile.pricingNote ?? '–'}
-              icon={Euro}
-            />
-          </dl>
-        </section>
-
-        <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-neutral-950">Über mich</h2>
-          <p className="text-neutral-800 whitespace-pre-wrap">
-            {profile.about ??
-              'Noch keine Beschreibung hinterlegt. In der finalen Version können Sie hier Ihr therapeutisches Profil ergänzen.'}
-          </p>
-        </section>
-
-        <section className="rounded-xl border border-primary/20 bg-primary-50 p-6 space-y-3">
-          <h2 className="text-lg font-semibold text-primary">Profilbearbeitung</h2>
-          <p className="text-sm text-primary">
-            Derzeit nimmt unser Team Aktualisierungen für Sie vor. In Kürze können Therapeu:innen hier Texte, Preise sowie
-            Sprachen und Schwerpunkte selbst verwalten.
-          </p>
-        </section>
+          <section className="rounded-2xl border border-neutral-200 bg-white shadow-sm p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-neutral-900">Öffentliche Highlights</h3>
+            <dl className="grid grid-cols-1 gap-4">
+              <InfoRow label="Headline" value={profile.headline ?? '–'} icon={PencilLine} />
+              <InfoRow label="Schwerpunkte" value={formatListShort(profile.specialties)} icon={UsersRound} />
+              <InfoRow label="Modalitäten" value={formatListShort(profile.modalities)} icon={Globe2} />
+              <InfoRow label="Sprachen" value={formatListShort(profile.languages)} icon={Languages} />
+              <InfoRow label="Leistungen" value={formatListShort(profile.services)} icon={Sparkles} />
+              <InfoRow
+                label="Ort & Online"
+                value={profile.online ? `${profile.city ?? 'Online'} · Online` : profile.city ?? 'Nur vor Ort'}
+                icon={MapPin}
+              />
+            </dl>
+          </section>
+        </aside>
       </div>
     </div>
   );
@@ -187,10 +194,10 @@ type InfoRowProps = {
 
 function InfoRow({ label, value, icon: Icon }: InfoRowProps) {
   return (
-    <div className="flex flex-col gap-1 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-      <span className="text-xs font-semibold uppercase tracking-wide text-muted">{label}</span>
-      <span className="flex items-center gap-2 text-sm text-default">
-        {Icon ? <Icon className="h-4 w-4 text-neutral-600" aria-hidden /> : null}
+    <div className="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-gradient-to-br from-neutral-50 to-white p-4">
+      <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</span>
+      <span className="flex items-center gap-2 text-sm text-neutral-700 font-medium">
+        {Icon ? <Icon className="h-4 w-4 text-teal-600" aria-hidden /> : null}
         {value}
       </span>
     </div>

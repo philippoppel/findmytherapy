@@ -35,6 +35,7 @@ export type SeedTherapist = {
   lastName: string
   displayName: string
   title: string
+  headline: string
   focus: string[]
   approach: string
   location: string
@@ -43,6 +44,11 @@ export type SeedTherapist = {
   rating: number
   reviews: number
   experience: string
+  yearsExperience: number
+  services: string[]
+  responseTime: string
+  videoUrl?: string | null
+  acceptingClients: boolean
   image: string
   profile: {
     status: TherapistStatus
@@ -75,6 +81,7 @@ export const seedTherapists: SeedTherapist[] = [
     lastName: 'Huber',
     displayName: 'Dr.in Lena Huber',
     title: 'Klinische Psychologin & Gesundheitspsychologin',
+    headline: 'Ressourcen aktivieren und neue Stabilität finden',
     focus: ['Depression', 'Burnout-Prävention', 'Achtsamkeit'],
     approach: 'Integrative Verhaltenstherapie mit Fokus auf Ressourcenarbeit',
     location: 'Wien - Präsenz & Online',
@@ -83,6 +90,11 @@ export const seedTherapists: SeedTherapist[] = [
     rating: 4.9,
     reviews: 54,
     experience: '8 Jahre Praxis',
+    yearsExperience: 8,
+    services: ['Einzeltherapie (50 Min)', 'Online-Session', 'Begleitendes Kurscoaching'],
+    responseTime: 'Antwort innerhalb von 24 Stunden',
+    videoUrl: null,
+    acceptingClients: true,
     image: '/images/therapists/therapy-1.jpg',
     profile: {
       status: 'VERIFIED',
@@ -116,6 +128,7 @@ export const seedTherapists: SeedTherapist[] = [
     lastName: 'Leitner',
     displayName: 'Mag. Tobias Leitner',
     title: 'Psychotherapeut (Verhaltenstherapie)',
+    headline: 'Angst & ADHS strukturiert angehen – hybrid & flexibel',
     focus: ['Angst & Panik', 'Chronischer Stress', 'ADHS bei Erwachsenen'],
     approach: 'Strukturierte Verhaltenstherapie kombiniert mit biofeedbackgestützter Regulation',
     location: 'Graz - Präsenz & Hybrid',
@@ -124,6 +137,11 @@ export const seedTherapists: SeedTherapist[] = [
     rating: 4.8,
     reviews: 41,
     experience: '6 Jahre Praxis',
+    yearsExperience: 6,
+    services: ['Einzeltherapie Präsenz', 'Hybrid-Termine', 'Biofeedback-Training'],
+    responseTime: 'Antwort innerhalb von 36 Stunden',
+    videoUrl: null,
+    acceptingClients: true,
     image: '/images/therapists/therapy-2.jpg',
     profile: {
       status: 'VERIFIED',
@@ -157,6 +175,7 @@ export const seedTherapists: SeedTherapist[] = [
     lastName: 'Eder',
     displayName: 'Dr.in Sara Eder',
     title: 'Kinder- & Jugendpsychiaterin',
+    headline: 'Familiensysteme begleiten – sicher durch herausfordernde Phasen',
     focus: ['Jugendliche 12–18', 'Essstörungen', 'Familienbegleitung'],
     approach: 'Systemische Therapie mit Elternarbeit und digitalen Lerntracks',
     location: 'Linz - Präsenz',
@@ -165,6 +184,11 @@ export const seedTherapists: SeedTherapist[] = [
     rating: 4.95,
     reviews: 37,
     experience: '11 Jahre Praxis',
+    yearsExperience: 11,
+    services: ['Einzeltherapie Jugendliche', 'Elternberatung', 'Familien-Workshops'],
+    responseTime: 'Antwort innerhalb von 48 Stunden',
+    videoUrl: null,
+    acceptingClients: false,
     image: '/images/therapists/therapy-3.jpg',
     profile: {
       status: 'PENDING',
@@ -194,6 +218,7 @@ export const seedTherapists: SeedTherapist[] = [
     lastName: 'Kraus',
     displayName: 'Mag.a Sofia Kraus',
     title: 'Psychotherapeutin (Systemische Familientherapie)',
+    headline: 'Systemische Impulse für Beziehungen & Identität',
     focus: ['Beziehungsdynamiken', 'LGBTQIA+', 'Lebensübergänge'],
     approach: 'Systemische Kurzzeittherapie mit Fokus auf klare Handlungsimpulse',
     location: 'Online',
@@ -202,6 +227,11 @@ export const seedTherapists: SeedTherapist[] = [
     rating: 4.7,
     reviews: 29,
     experience: '5 Jahre Praxis',
+    yearsExperience: 5,
+    services: ['Online-Einzeltherapie', 'Paar- & Beziehungssessions', 'Kurzzeitberatung'],
+    responseTime: 'Antwort am selben Werktag',
+    videoUrl: null,
+    acceptingClients: true,
     image: '/images/therapists/therapy-4.jpg',
     profile: {
       status: 'VERIFIED',

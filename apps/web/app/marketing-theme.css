@@ -1,0 +1,127 @@
+.marketing-theme {
+  color-scheme: light;
+  --color-primary-50: 234 232 255;
+  --color-primary-100: 216 212 255;
+  --color-primary-200: 190 182 255;
+  --color-primary-300: 161 148 255;
+  --color-primary-400: 127 110 255;
+  --color-primary-500: 74 58 255;
+  --color-primary-600: 59 47 230;
+  --color-primary-700: 49 38 194;
+  --color-primary-800: 38 31 153;
+  --color-primary-900: 28 24 115;
+  --color-primary-950: 17 15 77;
+
+  --color-secondary-50: 237 242 243;
+  --color-secondary-100: 215 225 228;
+  --color-secondary-200: 180 201 207;
+  --color-secondary-300: 145 178 187;
+  --color-secondary-400: 107 145 157;
+  --color-secondary-500: 78 118 131;
+  --color-secondary-600: 59 92 104;
+  --color-secondary-700: 47 77 88;
+  --color-secondary-800: 37 61 70;
+  --color-secondary-900: 27 42 48;
+  --color-secondary-950: 16 23 28;
+
+  --color-accent-50: 255 248 235;
+  --color-accent-100: 255 237 196;
+  --color-accent-200: 255 209 138;
+  --color-accent-300: 255 184 82;
+  --color-accent-400: 255 159 26;
+  --color-accent-500: 248 136 7;
+  --color-accent-600: 214 108 5;
+  --color-accent-700: 177 85 7;
+  --color-accent-800: 139 65 8;
+  --color-accent-900: 111 52 9;
+  --color-accent-950: 61 26 2;
+
+  --color-neutral-50: 245 247 250;
+  --color-neutral-100: 238 241 246;
+  --color-neutral-200: 226 231 238;
+  --color-neutral-300: 204 212 222;
+  --color-neutral-400: 179 189 201;
+  --color-neutral-500: 152 166 180;
+  --color-neutral-600: 122 136 151;
+  --color-neutral-700: 96 111 128;
+  --color-neutral-800: 74 86 100;
+  --color-neutral-900: 56 64 75;
+  --color-neutral-950: 31 36 44;
+
+  --on-color-primary: 255 255 255;
+  --on-color-secondary: 234 239 241;
+  --on-color-accent: 61 26 2;
+  --on-color-info: 255 255 255;
+  --on-color-success: 11 34 44;
+  --on-color-warning: 61 26 2;
+  --on-color-danger: 255 255 255;
+
+  --bg: 244 246 252;
+  --surface-bg: 244 246 252;
+  --surface-surface1: 255 255 255;
+  --surface-surface2: 237 242 243;
+  --surface-surface3: 226 231 238;
+  --surface-1: var(--surface-surface1);
+  --surface-2: var(--surface-surface2);
+  --surface-3: var(--surface-surface3);
+  --surface-inverseBg: 24 33 40;
+  --surface-inverseSurface: 32 45 55;
+
+  --token-text-default: 26 27 31;
+  --token-text-muted: 70 74 80;
+  --token-text-subtle: 104 112 120;
+  --token-text-inverse: 255 255 255;
+  --token-text-link: var(--color-primary-500);
+
+  --text: var(--token-text-default);
+  --text-muted: var(--token-text-muted);
+  --text-subtle: var(--token-text-subtle);
+  --link: var(--token-text-link);
+
+  --primary: var(--color-primary-500);
+  --primary-hover: var(--color-primary-600);
+  --primary-active: var(--color-primary-700);
+  --primary-foreground: var(--on-color-primary);
+
+  --secondary: var(--color-secondary-600);
+  --secondary-hover: var(--color-secondary-500);
+  --secondary-active: var(--color-secondary-700);
+  --secondary-foreground: var(--on-color-secondary);
+
+  --accent: var(--color-accent-400);
+  --accent-hover: var(--color-accent-500);
+  --accent-active: var(--color-accent-600);
+  --accent-foreground: var(--on-color-accent);
+
+  --info: var(--color-primary-400);
+  --info-hover: var(--color-primary-500);
+  --info-active: var(--color-primary-600);
+  --info-foreground: var(--on-color-info);
+
+  --success: 22 163 74;
+  --success-hover: 21 128 61;
+  --success-active: 22 101 52;
+  --success-foreground: var(--on-color-success);
+
+  --warning: 251 146 60;
+  --warning-hover: 249 115 22;
+  --warning-active: 234 88 12;
+  --warning-foreground: var(--on-color-warning);
+
+  --danger: 220 38 38;
+  --danger-hover: 185 28 28;
+  --danger-active: 153 27 27;
+  --danger-foreground: var(--on-color-danger);
+
+  --border: 216 223 233;
+  --border-strong: 191 203 215;
+  --divider: 226 231 238;
+  --outline: var(--border-strong);
+
+  --focus-ring-color: var(--color-primary-500);
+  --focus-ring: var(--focus-ring-color);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  --shadow-color: 27 42 48 / 0.18;
+}

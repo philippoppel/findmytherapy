@@ -16,15 +16,17 @@ export default async function SecurityPage() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Sicherheit</h1>
-        <p className="text-gray-600">
+    <div className="max-w-4xl space-y-8">
+      <header className="space-y-3">
+        <h1 className="text-3xl font-bold text-neutral-900">Sicherheit</h1>
+        <p className="text-neutral-600">
           Aktiviere Zwei-Faktor-Authentifizierung (TOTP), um dein Konto zusätzlich zu schützen.
         </p>
       </header>
 
-      <SecuritySettings email={user?.email ?? session.user.email} totpEnabled={Boolean(user?.twoFASecret)} />
+      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
+        <SecuritySettings email={user?.email ?? session.user.email} totpEnabled={Boolean(user?.twoFASecret)} />
+      </div>
     </div>
   );
 }

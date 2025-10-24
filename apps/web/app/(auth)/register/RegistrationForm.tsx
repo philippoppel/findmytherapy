@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 import { Button, Input, Textarea } from '@mental-health/ui'
-import { track } from '../../lib/analytics'
+import { track } from '../../../lib/analytics'
 
 type AccessRole = 'THERAPIST' | 'ORGANISATION' | 'PRIVATE'
 type TherapistFormat = 'ONLINE' | 'PRAESENZ' | 'HYBRID'
