@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@mental-health/db'
+import { prisma, Prisma } from '@mental-health/db'
 
 import { auth } from '../../../../lib/auth'
 import { captureError } from '../../../../lib/monitoring'
 import { setcardPayloadSchema, sanitizeStringArray, safeNullableString, type SetcardPayload } from '../../../../lib/therapist/setcard'
-import type { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
 const profileSelect = {
