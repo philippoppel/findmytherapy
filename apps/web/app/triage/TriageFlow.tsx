@@ -264,8 +264,6 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
     setQuestionIndex(0)
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
-    setPersistState('idle')
-    setPersistError(null)
     setHasPersisted(false)
   }
 
