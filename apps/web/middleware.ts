@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { jwtDecrypt } from 'jose'
+// import { jwtDecrypt } from 'jose' // Temporarily disabled
 
 // Middleware config - runs in Edge Runtime
 export const config = {
