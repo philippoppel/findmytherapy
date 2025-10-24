@@ -21,6 +21,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@mental-health/config": ["./packages-config/src"],
       "@mental-health/ui": ["./packages-ui/src"]
     }
   },

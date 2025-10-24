@@ -1,4 +1,4 @@
-import tokensJson from '../../../../tokens/colors.json';
+import tokensJson from '../../../tokens/colors.json';
 
 export type ColorTokenFile = typeof tokensJson;
 export type ColorPalette = keyof ColorTokenFile['color'];
