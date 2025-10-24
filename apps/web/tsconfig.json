@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@mental-health/ui": ["./packages-ui/src"]
     }
   },
   "include": [
