@@ -1,17 +1,7 @@
 {
-  "version": 2,
+  "buildCommand": "pnpm install && pnpm --filter @mental-health/db db:generate && pnpm --filter web build",
+  "devCommand": "cd apps/web && pnpm dev",
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm vercel-build",
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "apps/web/$1"
-    }
-  ]
+  "framework": "nextjs",
+  "outputDirectory": "apps/web/.next"
 }
