@@ -1,17 +1,5 @@
 {
-  "version": 2,
-  "buildCommand": "cd apps/web && npm install && npm run build",
-  "installCommand": "echo 'Using buildCommand'",
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "apps/web/$1"
-    }
-  ]
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs"
 }
