@@ -84,8 +84,8 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
 
                 <div className="mt-8 space-y-4 border-t border-divider pt-6">
                   <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <span className="text-lg font-bold">6+</span>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <span className="text-base font-bold">6+</span>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-default text-pretty">Monate Wartezeit</p>
@@ -94,8 +94,8 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
                   </div>
 
                   <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <span className="text-lg font-bold">60%</span>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <span className="text-base font-bold">60%</span>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-default text-pretty">Unsicherheit</p>
@@ -104,7 +104,7 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
                   </div>
 
                   <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Check className="h-5 w-5" aria-hidden />
                     </div>
                     <div>
