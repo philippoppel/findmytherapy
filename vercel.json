@@ -1,7 +1,4 @@
 {
-  "buildCommand": "pnpm install && pnpm --filter @mental-health/db db:generate && pnpm --filter web build",
-  "devCommand": "cd apps/web && pnpm dev",
-  "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "outputDirectory": "apps/web/.next"
+  "buildCommand": "pnpm run vercel-build",
+  "installCommand": "pnpm install"
 }
