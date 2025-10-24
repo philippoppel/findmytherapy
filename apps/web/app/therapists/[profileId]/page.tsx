@@ -73,7 +73,7 @@ export default async function TherapistProfilePage({ params }: TherapistProfileP
           id: true,
           title: true,
           slug: true,
-          shortDescription: true,
+          description: true,
         },
       },
     },
