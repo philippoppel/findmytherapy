@@ -293,7 +293,6 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       // For embedded mode, use mock data
       if (embedded) {
         setTimeout(() => {
-          setPersistState('success')
           setHasPersisted(true)
           track('triage_completed', {
             phq9Score,
