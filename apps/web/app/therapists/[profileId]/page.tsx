@@ -241,7 +241,7 @@ export default async function TherapistProfilePage({ params }: TherapistProfileP
                   {profile.courses.map((course) => (
                     <article key={course.id} className="rounded-2xl border border-divider bg-surface-1/80 p-4">
                       <h3 className="text-sm font-semibold text-neutral-900">{course.title}</h3>
-                      <p className="mt-1 text-sm text-muted">{course.shortDescription}</p>
+                      <p className="mt-1 text-sm text-muted">{course.description}</p>
                       <Button asChild variant="ghost" className="mt-3 px-0 text-sm font-semibold text-primary">
                         <Link href={`/courses/${course.slug}`}>Zum Kurs</Link>
                       </Button>
