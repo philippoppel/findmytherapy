@@ -13,18 +13,17 @@
     "build:web": "turbo build --filter=web",
     "test": "turbo test",
     "lint": "turbo lint",
-    "postinstall": "pnpm --filter @mental-health/db db:generate",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
-    "db:push": "pnpm --filter @mental-health/db db:push",
-    "db:migrate": "pnpm --filter @mental-health/db db:migrate",
-    "db:seed": "pnpm --filter @mental-health/db db:seed",
-    "db:studio": "pnpm --filter @mental-health/db db:studio",
+    "db:push": "pnpm --filter web db:push",
+    "db:migrate": "pnpm --filter web db:migrate",
+    "db:seed": "pnpm --filter web db:seed",
+    "db:studio": "pnpm --filter web db:studio",
     "db:init": "pnpm db:push && pnpm db:seed",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
     "e2e": "pnpm --filter web e2e",
     "e2e:ui": "pnpm --filter web e2e:ui",
     "prepare": "husky install",
-    "vercel-build": "pnpm --filter @mental-health/db db:generate && pnpm turbo build --filter=web"
+    "vercel-build": "pnpm turbo build --filter=web"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
