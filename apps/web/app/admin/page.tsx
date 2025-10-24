@@ -1,4 +1,4 @@
-import { prisma, TherapistStatus } from '@mental-health/db';
+import { prisma, TherapistStatus } from '@/lib/prisma';
 import { requireAdmin } from '../../lib/auth-guards';
 import { updateTherapistStatus } from './actions';
 import { Users, Bell, ShieldAlert, TrendingUp } from 'lucide-react';

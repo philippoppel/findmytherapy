@@ -1,6 +1,6 @@
 import 'next-auth';
 import 'next-auth/jwt';
-import type { UserRole } from '@mental-health/db';
+import type { UserRole } from '@/lib/prisma';
 
 declare module 'next-auth' {
   interface Session {

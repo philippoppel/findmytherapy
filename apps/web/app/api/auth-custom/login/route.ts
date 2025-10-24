@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { EncryptJWT } from 'jose';
 import { env } from '@mental-health/config';
 

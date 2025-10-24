@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 // import EmailProvider from 'next-auth/providers/email';
 // import { PrismaAdapter } from '@auth/prisma-adapter';
 import { compare } from 'bcryptjs';
-import { prisma, type UserRole } from '@mental-health/db';
+import { prisma, type UserRole } from '@/lib/prisma';
 import { env } from '@mental-health/config';
 // import { sendMagicLinkEmail } from './email';
 import { verifyTotpCode } from './totp';

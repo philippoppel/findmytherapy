@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CalendarClock, CheckCircle2, Clock, Euro, Globe2, Languages, MapPin, Sparkles, Star } from 'lucide-react'
 
-import { prisma } from '@mental-health/db'
+import { prisma } from '@/lib/prisma'
 import { Button } from '@mental-health/ui'
 import { formatCurrencyInput } from '../../../lib/therapist/setcard'
 

@@ -1,8 +1,8 @@
 import { requireRoles } from '../../../lib/auth-guards';
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { SecuritySettings } from '../../../components/security/totp-settings';
 
-const ALLOWED_ROLES: import('@mental-health/db').UserRole[] = ['THERAPIST', 'ADMIN'];
+const ALLOWED_ROLES: import('@/lib/prisma').UserRole[] = ['THERAPIST', 'ADMIN'];
 
 export default async function SecurityPage() {
   const session = await requireRoles(ALLOWED_ROLES);

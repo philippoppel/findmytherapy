@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { prisma, TherapistStatus } from '@mental-health/db';
+import { prisma, TherapistStatus } from '@/lib/prisma';
 import { requireAdmin } from '../../lib/auth-guards';
 
 const VALID_STATUSES = new Set<TherapistStatus>(['PENDING', 'VERIFIED', 'REJECTED']);

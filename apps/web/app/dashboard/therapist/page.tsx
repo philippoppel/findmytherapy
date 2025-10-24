@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { Users, BookOpen, Calendar, TrendingUp, Settings, CreditCard, Heart } from 'lucide-react';
 

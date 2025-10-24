@@ -3,7 +3,7 @@ import type { ComponentType } from 'react';
 import { notFound } from 'next/navigation';
 import { CalendarDays, Clock3, Euro, Globe2, Languages, MapPin, PencilLine, ShieldCheck, Sparkles, UsersRound } from 'lucide-react';
 
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { formatCurrencyInput, joinList } from '../../../lib/therapist/setcard';
 import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';

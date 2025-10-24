@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma, seedCourses } from '@mental-health/db'
+import { prisma } from '@/lib/prisma'
+import { seedCourses } from '@/lib/seed-data'
 import { z } from 'zod'
 import { captureError } from '../../../lib/monitoring'
 import { auth } from '../../../lib/auth'

@@ -5,7 +5,7 @@ jest.mock('../../lib/auth-guards', () => ({
 const updateMock = jest.fn();
 const revalidateMock = jest.fn();
 
-jest.mock('@mental-health/db', () => ({
+jest.mock('@/lib/prisma', () => ({
   prisma: {
     therapistProfile: {
       update: (...args: unknown[]) => updateMock(...args),

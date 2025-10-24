@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { requireRoles } from '../../../lib/auth-guards';
 import {
   createTotpUri,
@@ -10,7 +10,7 @@ import {
   verifyTotpCode,
 } from '../../../lib/totp';
 
-const ALLOWED_ROLES: import('@mental-health/db').UserRole[] = ['THERAPIST', 'ADMIN'];
+const ALLOWED_ROLES: import('@/lib/prisma').UserRole[] = ['THERAPIST', 'ADMIN'];
 
 export const startTotpSetup = async () => {
   const session = await requireRoles(ALLOWED_ROLES);

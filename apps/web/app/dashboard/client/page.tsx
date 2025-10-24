@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { prisma } from '@mental-health/db';
+import { prisma } from '@/lib/prisma';
 import { ArrowRight, BookOpenCheck, CalendarHeart, CheckCircle2, Compass, Sparkles, TrendingUp } from 'lucide-react';
 
 import { requireClient } from '../../../lib/auth-guards';

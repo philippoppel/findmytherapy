@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from './auth';
-import type { UserRole } from '@mental-health/db';
+import type { UserRole } from '@/lib/prisma';
 
 type RequireRoleOptions = {
   redirectTo?: string;

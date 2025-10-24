@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Award, Briefcase, Clock, MapPin, ShieldCheck, Star } from 'lucide-react'
 
-import type { TherapistStatus } from '@mental-health/db'
+import type { TherapistStatus } from '@/lib/prisma'
 import { Button, cn } from '@mental-health/ui'
 
 const formatOptions = [

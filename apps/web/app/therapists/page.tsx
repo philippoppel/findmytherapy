@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Compass, Sparkles } from 'lucide-react'
 
-import { seedTherapists } from '@mental-health/db'
+import { seedTherapists } from '@/lib/seed-data'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 
 export const metadata: Metadata = {

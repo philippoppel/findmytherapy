@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma, Prisma } from '@mental-health/db'
+import { prisma, Prisma } from '@/lib/prisma'
 
 import { auth } from '../../../../lib/auth'
 import { captureError } from '../../../../lib/monitoring'
