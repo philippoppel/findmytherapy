@@ -69,6 +69,11 @@ function isProtectedRoute(pathname: string): boolean {
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // Temporarily disable JWT verification to isolate the error
+  // TODO: Re-enable once middleware issue is resolved
+  const isLoggedIn = false
+
+  /*
   // Try to get session token from cookie
   let token: any = null;
   const cookieName = process.env.NODE_ENV === 'production'
@@ -94,6 +99,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   const isLoggedIn = !!token
+  */
 
   // Only log for non-API and non-static routes in development
   if (process.env.NODE_ENV === 'development' && !pathname.startsWith('/api/') && !pathname.startsWith('/_next')) {
