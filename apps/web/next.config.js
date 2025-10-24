@@ -4,6 +4,7 @@ const withNextIntl = require('next-intl/plugin')();
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@mental-health/ui', '@mental-health/db', '@mental-health/config'],
+  serverComponentsExternalPackages: ['@prisma/client', '@prisma/engines'],
   // Removed 'standalone' output - not needed for Vercel, causes Prisma issues
   // outputFileTracingRoot: path.join(__dirname, '../../'),
   poweredByHeader: false,
