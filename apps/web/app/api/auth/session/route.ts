@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtDecrypt } from 'jose';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieName = process.env.NODE_ENV === 'production'
       ? '__Secure-next-auth.session-token'

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
 import { prisma } from '@mental-health/db';
-import { SignJWT, EncryptJWT } from 'jose';
+import { EncryptJWT } from 'jose';
 import { env } from '@mental-health/config';
 
 const privilegedRoles = new Set(['THERAPIST', 'ADMIN']);

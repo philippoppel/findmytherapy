@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 const ERROR_MESSAGES: Record<string, string> = {
   INVALID_CREDENTIALS: 'Ungültige E-Mail oder Passwort',
@@ -11,7 +10,6 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('dr.mueller@example.com');
   const [password, setPassword] = useState('Therapist123!');
   const [error, setError] = useState('');

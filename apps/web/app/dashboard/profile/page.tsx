@@ -1,6 +1,5 @@
 import type { ComponentType } from 'react';
 
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CalendarDays, Clock3, Euro, Globe2, Languages, MapPin, PencilLine, ShieldCheck, Sparkles, UsersRound } from 'lucide-react';
 

@@ -85,8 +85,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-30 bg-black/20 backdrop-blur-sm lg:hidden" onClick={() => setIsMobileMenuOpen(false)}>
-            <aside className="absolute left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed inset-0 z-30 bg-black/20 backdrop-blur-sm lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+            onKeyDown={(e) => e.key === 'Escape' && setIsMobileMenuOpen(false)}
+            role="button"
+            tabIndex={0}
+            aria-label="Close menu"
+          >
+            <aside
+              className="absolute left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="navigation"
+            >
               <nav className="space-y-1 p-4">
                 {navigation.map((item) => {
                   const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');

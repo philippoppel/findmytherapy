@@ -130,7 +130,7 @@ const authConfig: NextAuthConfig = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn() {
       // Allow all sign-ins for now
       // Note: EmailProvider with 2FA check is disabled
       return true;

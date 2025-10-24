@@ -4,9 +4,7 @@ import './marketing-theme.css'
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { SessionProvider } from '../components/providers/SessionProvider'
-import { ThemeProvider } from '../components/providers/ThemeProvider'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { ThemeScript } from './components/ThemeScript'
 
 const inter = Inter({ subsets: ['latin'] })
 
