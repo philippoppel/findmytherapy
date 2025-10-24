@@ -1,12 +1,11 @@
 const withNextIntl = require('next-intl/plugin')();
-const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@mental-health/ui', '@mental-health/db', '@mental-health/config'],
-  output: 'standalone',
-  outputFileTracingRoot: path.join(__dirname, '../../'),
+  // Removed 'standalone' output - not needed for Vercel, causes Prisma issues
+  // outputFileTracingRoot: path.join(__dirname, '../../'),
   poweredByHeader: false,
   compress: true,
   // Temporarily disable for deployment
@@ -31,16 +30,6 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@mental-health/ui', 'lucide-react'],
-    outputFileTracingIncludes: {
-      '/api/**/*': [
-        './node_modules/@prisma/client/**/*',
-        './node_modules/.prisma/client/**/*',
-        '../../packages/db/node_modules/@prisma/client/**/*',
-        '../../packages/db/node_modules/.prisma/client/**/*',
-        '../../node_modules/@prisma/client/**/*',
-        '../../node_modules/.prisma/client/**/*',
-      ],
-    },
   },
   async headers() {
     return [
