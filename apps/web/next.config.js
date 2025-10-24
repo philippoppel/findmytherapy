@@ -1,4 +1,5 @@
-const withNextIntl = require('next-intl/plugin')();
+// Temporarily disable next-intl plugin to fix middleware conflict
+// const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -67,4 +68,5 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextIntl(nextConfig);
+// Export directly without next-intl wrapper for now
+module.exports = nextConfig;
