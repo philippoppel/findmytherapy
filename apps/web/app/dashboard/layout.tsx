@@ -93,10 +93,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             tabIndex={0}
             aria-label="Close menu"
           >
-            <aside
+            <div
               className="absolute left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => e.stopPropagation()}
               role="navigation"
             >
               <nav className="space-y-1 p-4">
@@ -127,7 +125,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   Abmelden
                 </button>
               </nav>
-            </aside>
+            </div>
           </div>
         )}
 
