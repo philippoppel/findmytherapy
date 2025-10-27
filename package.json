@@ -5,7 +5,7 @@
   "description": "Mental health platform with therapist directory and courses",
   "engines": {
     "node": ">=20.0.0",
-    "pnpm": ">=8.0.0"
+    "pnpm": ">=6.0.0"
   },
   "scripts": {
     "dev": "turbo dev",
