@@ -19,6 +19,8 @@ const triagePayloadSchema = z.object({
   // Additional context
   supportPreferences: z.array(z.string()).default([]),
   availability: z.array(z.string()).default([]),
+  phq9Item9Score: z.number().int().min(0).max(3).optional().default(0),
+  hasSuicidalIdeation: z.boolean().optional().default(false),
 
   // Risk assessment
   riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH']),
@@ -66,67 +68,96 @@ export async function POST(request: NextRequest) {
     const session = await auth()
     const userId = session?.user?.id
 
+    // Verify user exists in database if userId is provided
+    let validUserId: string | undefined = undefined
+    if (userId) {
+      const userExists = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true },
+      })
+      if (userExists) {
+        validUserId = userId
+      } else {
+        console.warn('[TRIAGE] Session contains userId that does not exist in database:', userId)
+      }
+    }
+
     // Build recommendations based on new data
     const therapistRecommendations = await buildTherapistRecommendations(payload)
     const courseRecommendations = buildCourseRecommendations(payload)
 
+    console.log('[TRIAGE DEBUG] Therapist recommendations:', therapistRecommendations.length)
+    console.log('[TRIAGE DEBUG] Course recommendations:', courseRecommendations.length)
+    console.log('[TRIAGE DEBUG] First therapist:', JSON.stringify(therapistRecommendations[0], null, 2))
+
     let triageSessionId: string | undefined
 
-    // Save to database
-    if (userId) {
-      // Save complete triage session for authenticated users
-      const triageSession = await prisma.triageSession.create({
-        data: {
-          clientId: userId,
-          phq9Answers: payload.phq9Answers,
-          phq9Score: payload.phq9Score,
-          phq9Severity: payload.phq9Severity,
-          gad7Answers: payload.gad7Answers,
-          gad7Score: payload.gad7Score,
-          gad7Severity: payload.gad7Severity,
-          supportPreferences: payload.supportPreferences,
-          availability: payload.availability,
-          riskLevel: payload.riskLevel,
-          requiresEmergency: payload.requiresEmergency,
-          emergencyTriggered: false,
-          recommendedNextStep: determineNextStep(payload),
-        },
-      })
-
-      triageSessionId = triageSession.id
-
-      // Create emergency alert if required
-      if (payload.requiresEmergency) {
-        await prisma.emergencyAlert.create({
+    try {
+      // Save to database
+      if (validUserId) {
+        // Save complete triage session for authenticated users
+        const triageSession = await prisma.triageSession.create({
           data: {
-            clientId: userId,
-            triageSessionId: triageSession.id,
-            severity: 'HIGH',
-            notes: `PHQ-9: ${payload.phq9Score}/27 (${payload.phq9Severity}), GAD-7: ${payload.gad7Score}/21 (${payload.gad7Severity})`,
+            clientId: validUserId,
+            phq9Answers: payload.phq9Answers,
+            phq9Score: payload.phq9Score,
+            phq9Severity: payload.phq9Severity,
+            gad7Answers: payload.gad7Answers,
+            gad7Score: payload.gad7Score,
+            gad7Severity: payload.gad7Severity,
+            supportPreferences: payload.supportPreferences,
+            availability: payload.availability,
+            riskLevel: payload.riskLevel,
+            requiresEmergency: payload.requiresEmergency,
+            emergencyTriggered: false,
+            recommendedNextStep: determineNextStep(payload),
+            meta: {
+              phq9Item9Score: payload.phq9Item9Score,
+              hasSuicidalIdeation: payload.hasSuicidalIdeation,
+            },
           },
         })
 
-        // Mark emergency as triggered
-        await prisma.triageSession.update({
-          where: { id: triageSession.id },
-          data: { emergencyTriggered: true },
+        triageSessionId = triageSession.id
+
+        // Create emergency alert if required
+        if (payload.requiresEmergency) {
+          await prisma.emergencyAlert.create({
+            data: {
+              clientId: validUserId,
+              triageSessionId: triageSession.id,
+              severity: 'HIGH',
+              notes: `PHQ-9: ${payload.phq9Score}/27 (${payload.phq9Severity}), GAD-7: ${payload.gad7Score}/21 (${payload.gad7Severity})${
+                payload.hasSuicidalIdeation ? '; Suizidgedanken (Item 9) bestätigt' : ''
+              }`,
+            },
+          })
+
+          // Mark emergency as triggered
+          await prisma.triageSession.update({
+            where: { id: triageSession.id },
+            data: { emergencyTriggered: true },
+          })
+        }
+      } else {
+        // For anonymous users, save minimal snapshot
+        await prisma.triageSnapshot.create({
+          data: {
+            score: payload.phq9Score + payload.gad7Score,
+            level: payload.riskLevel,
+            mood: payload.phq9Score,
+            motivation: null,
+            anxiety: payload.gad7Score,
+            support: payload.supportPreferences,
+            availability: payload.availability,
+            recommendedTherapists: therapistRecommendations.map((item) => item.id),
+            recommendedCourses: courseRecommendations.map((item) => item.slug),
+          },
         })
       }
-    } else {
-      // For anonymous users, save minimal snapshot
-      await prisma.triageSnapshot.create({
-        data: {
-          score: payload.phq9Score + payload.gad7Score,
-          level: payload.riskLevel,
-          mood: payload.phq9Score,
-          motivation: null,
-          anxiety: payload.gad7Score,
-          support: payload.supportPreferences,
-          availability: payload.availability,
-          recommendedTherapists: therapistRecommendations.map((item) => item.id),
-          recommendedCourses: courseRecommendations.map((item) => item.slug),
-        },
-      })
+    } catch (dbError) {
+      // Log database error but continue to return recommendations
+      console.error('[TRIAGE] Database save error (continuing anyway):', dbError)
     }
 
     return NextResponse.json(
@@ -166,8 +197,14 @@ export async function POST(request: NextRequest) {
 }
 
 function determineNextStep(payload: z.infer<typeof triagePayloadSchema>): 'INFO' | 'COURSE' | 'THERAPIST' {
+  if (payload.hasSuicidalIdeation || payload.requiresEmergency) return 'THERAPIST'
   if (payload.riskLevel === 'HIGH') return 'THERAPIST'
-  if (payload.riskLevel === 'MEDIUM') return 'THERAPIST'
+  if (payload.riskLevel === 'MEDIUM') {
+    if (payload.supportPreferences.includes('course') && !payload.supportPreferences.includes('therapist')) {
+      return 'COURSE'
+    }
+    return 'THERAPIST'
+  }
 
   // For LOW risk, check preferences
   if (payload.supportPreferences.includes('therapist')) return 'THERAPIST'
@@ -179,6 +216,7 @@ function determineNextStep(payload: z.infer<typeof triagePayloadSchema>): 'INFO'
 async function buildTherapistRecommendations(payload: z.infer<typeof triagePayloadSchema>): Promise<TherapistRecommendation[]> {
   const supportSet = new Set(payload.supportPreferences)
   const availabilitySet = new Set(payload.availability.map((item) => item.toLowerCase()))
+  const escalatedNeed = payload.hasSuicidalIdeation || payload.requiresEmergency || payload.riskLevel === 'HIGH'
   const publicTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
@@ -221,6 +259,10 @@ async function buildTherapistRecommendations(payload: z.infer<typeof triagePaylo
 
       // Check support preferences
       if (supportSet.has('therapist')) {
+        score += 2
+      }
+
+      if (escalatedNeed) {
         score += 2
       }
 
@@ -269,6 +311,13 @@ async function buildTherapistRecommendations(payload: z.infer<typeof triagePaylo
       if (supportSet.has('therapist')) {
         highlights.push('Empfohlen für 1:1 Begleitung')
       }
+      if (escalatedNeed) {
+        if (therapist.acceptingClients) {
+          highlights.push('Nimmt neue Klient:innen in Akutsituationen an')
+        } else {
+          highlights.push('Krisenerfahrenes Setting')
+        }
+      }
       if (therapist.responseTime) {
         highlights.push(therapist.responseTime)
       }
@@ -307,7 +356,22 @@ function buildCourseRecommendations(payload: z.infer<typeof triagePayloadSchema>
   const supportSet = new Set(payload.supportPreferences)
   const publishedCourses = seedCourses.filter((course) => course.status === 'PUBLISHED')
 
-  return publishedCourses
+  if (payload.riskLevel === 'HIGH') {
+    if (payload.requiresEmergency || payload.hasSuicidalIdeation) {
+      return []
+    }
+  }
+
+  let relevantCourses = publishedCourses
+
+  if (payload.riskLevel === 'HIGH') {
+    relevantCourses = relevantCourses.filter((course) => {
+      const intensity = course.intensity.toLowerCase()
+      return intensity.includes('begleit') || intensity.includes('coaching') || intensity.includes('stabil')
+    })
+  }
+
+  return relevantCourses
     .map((course) => {
       let score = supportSet.has('course') ? 3 : 1
 
@@ -351,10 +415,13 @@ function buildCourseRecommendations(payload: z.infer<typeof triagePayloadSchema>
         highlights.push('Check-ins mit Care-Team')
       }
       if (payload.riskLevel === 'HIGH') {
-        highlights.push('Strukturierter Fahrplan trotz hoher Belastung')
+        highlights.push('Nur als Ergänzung zur individuellen Therapie nutzen')
       }
       if (payload.riskLevel === 'LOW') {
         highlights.push('Präventiv und ressourcenstärkend')
+      }
+      if (payload.hasSuicidalIdeation) {
+        highlights.push('Begleitangebot – bitte parallel professionelle Hilfe in Anspruch nehmen')
       }
 
       return {

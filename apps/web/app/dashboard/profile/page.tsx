@@ -111,94 +111,121 @@ export default async function TherapistProfilePage() {
   const initialValues = buildInitialValues(profile);
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold text-neutral-900">Therapeut:innen-Profil</h1>
-          <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${
-              statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
-            }`}
-          >
-            <ShieldCheck className="h-4 w-4" aria-hidden />
-            {statusLabel}
-          </span>
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-white">
+      {/* Header Banner */}
+      <header className="bg-white border-b border-neutral-200 px-6 py-6 mb-8 shadow-sm">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+                <ShieldCheck className="h-6 w-6 text-white" aria-hidden />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-neutral-900">Therapeuten-Profil</h1>
+                <p className="text-sm text-neutral-600 mt-0.5">
+                  Verwalte deine öffentliche Setcard
+                </p>
+              </div>
+            </div>
+            <span
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm ${
+                statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
+              }`}
+            >
+              <ShieldCheck className="h-4 w-4" aria-hidden />
+              {statusLabel}
+            </span>
+          </div>
         </div>
-        <p className="text-neutral-600">
-          Verwalte deine öffentliche Setcard und sorge dafür, dass Klient:innen jederzeit aktuelle Informationen sehen.
-        </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <SetcardEditor initialValues={initialValues} />
+      <div className="max-w-7xl mx-auto px-6 pb-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          {/* Hauptformular */}
+          <div className="rounded-2xl border border-neutral-200 bg-white shadow-lg p-6">
+            <SetcardEditor initialValues={initialValues} />
+          </div>
 
-        <aside className="space-y-6">
-          <section className="rounded-2xl border border-neutral-200 bg-white shadow-sm p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-neutral-900">Profilstatus & Meta</h3>
-            <dl className="grid grid-cols-1 gap-4">
-              <InfoRow
-                label="Status"
-                value={statusLabel}
-                icon={ShieldCheck}
-              />
-              <InfoRow
-                label="Letzte Aktualisierung"
-                value={profile.updatedAt.toLocaleDateString('de-AT')}
-                icon={CalendarDays}
-              />
-              <InfoRow
-                label="Aktives Listing"
-                value={primaryListing ? `${primaryListing.plan} (${primaryListing.status})` : 'Kein aktives Listing'}
-                icon={UsersRound}
-              />
-              <InfoRow
-                label="Preisrange"
-                value={`${formatCurrency(profile.priceMin)} – ${formatCurrency(profile.priceMax)}`}
-                icon={Euro}
-              />
-              <InfoRow
-                label="Antwortzeit"
-                value={profile.responseTime ?? '–'}
-                icon={Clock3}
-              />
-            </dl>
-          </section>
+          {/* Sidebar */}
+          <aside className="space-y-6 lg:sticky lg:top-6 lg:h-fit">
+            {/* Quick Stats */}
+            <section className="rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-neutral-50 shadow-sm p-5 space-y-4">
+              <div className="flex items-center gap-2 pb-2 border-b border-neutral-200">
+                <div className="h-8 w-8 rounded-lg bg-teal-100 flex items-center justify-center">
+                  <ShieldCheck className="h-4 w-4 text-teal-700" aria-hidden />
+                </div>
+                <h3 className="text-base font-bold text-neutral-900">Profilstatus</h3>
+              </div>
+              <dl className="space-y-3">
+                <QuickStat
+                  label="Status"
+                  value={statusLabel}
+                  icon={ShieldCheck}
+                />
+                <QuickStat
+                  label="Aktualisiert"
+                  value={profile.updatedAt.toLocaleDateString('de-AT')}
+                  icon={CalendarDays}
+                />
+                <QuickStat
+                  label="Listing"
+                  value={primaryListing ? primaryListing.plan : 'Kein aktives'}
+                  icon={UsersRound}
+                />
+              </dl>
+            </section>
 
-          <section className="rounded-2xl border border-neutral-200 bg-white shadow-sm p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-neutral-900">Öffentliche Highlights</h3>
-            <dl className="grid grid-cols-1 gap-4">
-              <InfoRow label="Headline" value={profile.headline ?? '–'} icon={PencilLine} />
-              <InfoRow label="Schwerpunkte" value={formatListShort(profile.specialties)} icon={UsersRound} />
-              <InfoRow label="Modalitäten" value={formatListShort(profile.modalities)} icon={Globe2} />
-              <InfoRow label="Sprachen" value={formatListShort(profile.languages)} icon={Languages} />
-              <InfoRow label="Leistungen" value={formatListShort(profile.services)} icon={Sparkles} />
-              <InfoRow
-                label="Ort & Online"
-                value={profile.online ? `${profile.city ?? 'Online'} · Online` : profile.city ?? 'Nur vor Ort'}
-                icon={MapPin}
-              />
-            </dl>
-          </section>
-        </aside>
+            {/* Öffentliche Info */}
+            <section className="rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-blue-50/30 shadow-sm p-5 space-y-4">
+              <div className="flex items-center gap-2 pb-2 border-b border-neutral-200">
+                <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <Globe2 className="h-4 w-4 text-blue-700" aria-hidden />
+                </div>
+                <h3 className="text-base font-bold text-neutral-900">Öffentliche Infos</h3>
+              </div>
+              <dl className="space-y-3">
+                <QuickStat
+                  label="Preis"
+                  value={`${formatCurrency(profile.priceMin)} – ${formatCurrency(profile.priceMax)}`}
+                  icon={Euro}
+                />
+                <QuickStat
+                  label="Antwortzeit"
+                  value={profile.responseTime ?? 'Nicht angegeben'}
+                  icon={Clock3}
+                />
+                <QuickStat
+                  label="Standort"
+                  value={profile.online ? `${profile.city ?? 'Online'} + Online` : profile.city ?? 'Nur vor Ort'}
+                  icon={MapPin}
+                />
+              </dl>
+            </section>
+          </aside>
+        </div>
       </div>
     </div>
   );
 }
 
-type InfoRowProps = {
+type QuickStatProps = {
   label: string;
   value: string;
   icon?: ComponentType<{ className?: string }>;
 };
 
-function InfoRow({ label, value, icon: Icon }: InfoRowProps) {
+function QuickStat({ label, value, icon: Icon }: QuickStatProps) {
   return (
-    <div className="flex flex-col gap-1.5 rounded-xl border border-neutral-200 bg-gradient-to-br from-neutral-50 to-white p-4">
-      <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{label}</span>
-      <span className="flex items-center gap-2 text-sm text-neutral-700 font-medium">
-        {Icon ? <Icon className="h-4 w-4 text-teal-600" aria-hidden /> : null}
-        {value}
-      </span>
+    <div className="flex items-start gap-3">
+      {Icon && (
+        <div className="mt-0.5 h-5 w-5 text-neutral-400 shrink-0">
+          <Icon className="h-5 w-5" aria-hidden />
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wide">{label}</div>
+        <div className="text-sm text-neutral-900 font-medium mt-0.5 truncate">{value}</div>
+      </div>
     </div>
   );
 }

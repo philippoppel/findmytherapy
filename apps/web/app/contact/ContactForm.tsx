@@ -77,7 +77,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10 backdrop-blur">
+    <div className="rounded-3xl border border-divider bg-white p-8 shadow-lg">
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
           <PhoneCall className="h-4 w-4" aria-hidden />
@@ -117,7 +117,7 @@ export function ContactForm() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label className="space-y-1 text-sm text-neutral-700" htmlFor="name">
+          <label className="space-y-1 text-sm text-muted" htmlFor="name">
             <span className="font-medium text-default">Name</span>
             <Input
               id="name"
@@ -127,7 +127,7 @@ export function ContactForm() {
               required
             />
           </label>
-          <label className="space-y-1 text-sm text-neutral-700" htmlFor="email">
+          <label className="space-y-1 text-sm text-muted" htmlFor="email">
             <span className="font-medium text-default">E-Mail</span>
             <Input
               id="email"
@@ -141,7 +141,7 @@ export function ContactForm() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_0.65fr]">
-          <label className="space-y-1 text-sm text-neutral-700" htmlFor="phone">
+          <label className="space-y-1 text-sm text-muted" htmlFor="phone">
             <span className="font-medium text-default">Telefon (optional)</span>
             <Input
               id="phone"
@@ -170,7 +170,7 @@ export function ContactForm() {
                     className={`rounded-full border px-3 py-2 font-semibold transition ${
                       isActive
                         ? 'border-primary bg-primary/10 text-primary'
-                        : 'border-divider text-muted hover:border-primary/40 hover:text-primary'
+                        : 'border-divider text-muted hover:border-primary/40 hover:text-primary hover:bg-surface-1'
                     }`}
                   >
                     {slot.label}
@@ -198,8 +198,8 @@ export function ContactForm() {
                   onClick={() => handleSelectChange('topic')(topic.value)}
                   className={`rounded-2xl border px-4 py-3 text-left text-sm transition ${
                     isActive
-                      ? 'border-primary bg-primary/10 text-primary shadow-sm shadow-primary/10'
-                      : 'border-divider text-muted hover:border-primary/40 hover:text-primary'
+                      ? 'border-primary bg-primary/10 text-primary shadow-sm'
+                      : 'border-divider text-muted hover:border-primary/40 hover:text-primary hover:bg-surface-1'
                   }`}
                 >
                   {topic.label}
@@ -209,7 +209,7 @@ export function ContactForm() {
           </div>
         </fieldset>
 
-        <label className="space-y-1 text-sm text-neutral-700" htmlFor="message">
+        <label className="space-y-1 text-sm text-muted" htmlFor="message">
           <span className="font-medium text-default">Nachricht oder Fragen</span>
           <Textarea
             id="message"
@@ -222,20 +222,20 @@ export function ContactForm() {
         </label>
 
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <Button type="submit" className="inline-flex items-center gap-2" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
                 Wird gesendet …
               </>
             ) : (
               <>
                 Abschicken
-                <CalendarPlus className="h-4 w-4" aria-hidden />
+                <CalendarPlus className="ml-2 h-4 w-4" aria-hidden />
               </>
             )}
           </Button>
-          <p className="text-xs text-subtle">
+          <p className="text-xs text-muted">
             Deine Anfrage bleibt vertraulich. Im Livebetrieb erfolgt die Antwort innerhalb von 45 Minuten.
           </p>
         </div>

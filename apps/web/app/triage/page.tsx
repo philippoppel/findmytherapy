@@ -1,12 +1,12 @@
-import type { Metadata } from 'next'
-import { AdaptiveTriageFlow } from './AdaptiveTriageFlow'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Ersteinschätzung – FindMyTherapy',
-  description:
-    'Wissenschaftlich fundierte Ersteinschätzung mit PHQ-9 und GAD-7. Erhalte in wenigen Minuten eine klare Einschätzung deiner mentalen Gesundheit und personalisierte Empfehlungen.',
-}
+import { AdaptiveTriageFlow } from './AdaptiveTriageFlow'
+import { TriageErrorBoundary } from './ErrorBoundary'
 
 export default function TriagePage() {
-  return <AdaptiveTriageFlow />
+  return (
+    <TriageErrorBoundary>
+      <AdaptiveTriageFlow />
+    </TriageErrorBoundary>
+  )
 }

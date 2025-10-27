@@ -62,7 +62,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       if (stored && THEME_CLASSES.includes(stored)) {
         return stored;
       }
-    } catch (error) {
+    } catch {
       return null;
     }
 

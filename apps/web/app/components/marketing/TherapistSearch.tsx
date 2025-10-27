@@ -1,46 +1,25 @@
-'use client'
-
 import { ArrowRight, MapPin, Star, Calendar, Heart } from 'lucide-react'
-import Link from 'next/link'
 import Image from 'next/image'
-import { SectionHeading } from './SectionHeading'
-import { Reveal } from './Reveal'
+import Link from 'next/link'
 
-const featuredTherapists = [
-  {
-    id: 1,
-    name: 'Dr. Sarah Müller',
-    image: '/images/therapists/therapy-1.jpg',
-    specialty: 'Angststörungen & Depression',
-    approach: 'Verhaltenstherapie',
-    location: 'Wien, 1010',
-    rating: 4.9,
-    availability: 'Verfügbar ab nächster Woche',
-    acceptsInsurance: true,
-  },
-  {
-    id: 2,
-    name: 'Mag. Thomas Berger',
-    image: '/images/therapists/therapy-2.jpg',
-    specialty: 'Traumatherapie & PTSD',
-    approach: 'EMDR & Integrative Therapie',
-    location: 'Wien, 1070',
-    rating: 5.0,
-    availability: 'Warteliste verfügbar',
-    acceptsInsurance: true,
-  },
-  {
-    id: 3,
-    name: 'Mag. Lisa Wagner',
-    image: '/images/therapists/therapy-3.jpg',
-    specialty: 'Burnout & Stressmanagement',
-    approach: 'Systemische Therapie',
-    location: 'Online & Wien',
-    rating: 4.8,
-    availability: 'Sofort verfügbar',
-    acceptsInsurance: true,
-  },
-]
+import { prisma } from '@/lib/prisma'
+
+import { Reveal } from './Reveal'
+import { SectionHeading } from './SectionHeading'
+
+type FeaturedTherapistCard = {
+  id: string
+  href: string
+  name: string
+  image: string
+  specialty: string
+  approach: string
+  location: string
+  rating: number
+  reviewCount: number
+  availability: string
+  acceptingClients: boolean
+}
 
 const searchFeatures = [
   {
@@ -63,11 +42,132 @@ const searchFeatures = [
     title: 'Verifiziert',
     description: 'Alle Profile sind von uns geprüft',
   },
+] as const
+
+const fallbackTherapists: FeaturedTherapistCard[] = [
+  {
+    id: 'fallback-1',
+    href: '/therapists',
+    name: 'Dr. Sarah Müller',
+    image: '/images/therapists/therapy-1.jpg',
+    specialty: 'Angststörungen & Depression',
+    approach: 'Verhaltenstherapie',
+    location: 'Wien, 1010',
+    rating: 4.9,
+    reviewCount: 128,
+    availability: 'Verfügbar ab nächster Woche',
+    acceptingClients: true,
+  },
+  {
+    id: 'fallback-2',
+    href: '/therapists',
+    name: 'Mag. Thomas Berger',
+    image: '/images/therapists/therapy-2.jpg',
+    specialty: 'Traumatherapie & PTSD',
+    approach: 'EMDR & Integrative Therapie',
+    location: 'Wien, 1070',
+    rating: 5.0,
+    reviewCount: 92,
+    availability: 'Warteliste verfügbar',
+    acceptingClients: false,
+  },
+  {
+    id: 'fallback-3',
+    href: '/therapists',
+    name: 'Mag. Lisa Wagner',
+    image: '/images/therapists/therapy-3.jpg',
+    specialty: 'Burnout & Stressmanagement',
+    approach: 'Systemische Therapie',
+    location: 'Online & Wien',
+    rating: 4.8,
+    reviewCount: 76,
+    availability: 'Sofort verfügbar',
+    acceptingClients: true,
+  },
 ]
 
-export function TherapistSearch() {
+const fallbackImages = [
+  '/images/therapists/therapy-1.jpg',
+  '/images/therapists/therapy-2.jpg',
+  '/images/therapists/therapy-3.jpg',
+  '/images/therapists/therapy-4.jpg',
+]
+
+function formatLocation(city?: string | null, country?: string | null, online?: boolean) {
+  const parts: string[] = []
+
+  if (city) {
+    parts.push(city)
+  }
+
+  if (online) {
+    parts.push('Online')
+  }
+
+  if (parts.length === 0) {
+    if (country) {
+      return country === 'AT' ? 'Österreichweit' : country
+    }
+
+    return 'Standort auf Anfrage'
+  }
+
+  return parts.join(' · ')
+}
+
+function pickFallbackImage(index: number) {
+  return fallbackImages[index % fallbackImages.length]
+}
+
+export async function TherapistSearch() {
+  const therapists = await prisma.therapistProfile.findMany({
+    where: {
+      isPublic: true,
+      status: 'VERIFIED',
+    },
+    select: {
+      id: true,
+      displayName: true,
+      profileImageUrl: true,
+      specialties: true,
+      approachSummary: true,
+      city: true,
+      country: true,
+      online: true,
+      availabilityNote: true,
+      acceptingClients: true,
+      rating: true,
+      reviewCount: true,
+    },
+    orderBy: [
+      { rating: 'desc' },
+      { updatedAt: 'desc' },
+    ],
+    take: 3,
+  })
+
+  const featuredTherapists =
+    therapists.length > 0
+      ? therapists.map((therapist, index): FeaturedTherapistCard => {
+          const rating = typeof therapist.rating === 'number' ? therapist.rating : 4.8
+          return {
+            id: therapist.id,
+            href: `/therapists/${therapist.id}`,
+            name: therapist.displayName ?? 'Therapeut:in',
+            image: therapist.profileImageUrl ?? pickFallbackImage(index),
+            specialty: therapist.specialties?.[0] ?? 'Psychotherapie',
+            approach: therapist.approachSummary ?? 'Individuelle Begleitung',
+            location: formatLocation(therapist.city, therapist.country, therapist.online),
+            rating,
+            reviewCount: therapist.reviewCount ?? 0,
+            availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
+            acceptingClients: Boolean(therapist.acceptingClients),
+          }
+        })
+      : fallbackTherapists
+
   return (
-    <section id="therapists" className="py-24 bg-gradient-to-b from-white to-surface-1">
+    <section id="therapists" className="bg-gradient-to-b from-white to-surface-1 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
@@ -106,15 +206,18 @@ export function TherapistSearch() {
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-default backdrop-blur">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" aria-hidden />
-                    {therapist.rating}
+                  <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-sm font-semibold text-default shadow-sm backdrop-blur">
+                    <Star className="h-4 w-4 text-yellow-500" aria-hidden />
+                    {therapist.rating.toFixed(1)}
+                    {therapist.reviewCount > 0 ? (
+                      <span className="text-xs text-muted">({therapist.reviewCount})</span>
+                    ) : null}
                   </div>
-                  {therapist.availability === 'Sofort verfügbar' && (
-                    <div className="absolute left-3 top-3 rounded-full bg-green-500/95 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
-                      Sofort verfügbar
+                  {therapist.acceptingClients ? (
+                    <div className="absolute left-3 top-3 rounded-full bg-emerald-500/95 px-3 py-1.5 text-xs font-semibold text-white shadow-sm backdrop-blur">
+                      Freie Kapazitäten
                     </div>
-                  )}
+                  ) : null}
                 </div>
                 <div className="flex flex-1 flex-col gap-4 p-6">
                   <div>
@@ -135,13 +238,17 @@ export function TherapistSearch() {
                       <span>{therapist.availability}</span>
                     </div>
                   </div>
-                  {therapist.acceptsInsurance && (
-                    <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs font-medium text-green-800">
-                      Nimmt Kassenplätze an
+                  {therapist.acceptingClients ? (
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-800">
+                      Nimmt neue Klient:innen an
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
+                      Warteliste auf Anfrage
                     </div>
                   )}
                   <Link
-                    href={`/therapists/${therapist.id}`}
+                    href={therapist.href}
                     className="mt-auto flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-transparent px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/5"
                   >
                     Profil ansehen
@@ -162,9 +269,7 @@ export function TherapistSearch() {
               Alle Therapeut:innen durchsuchen
               <ArrowRight className="h-5 w-5" aria-hidden />
             </Link>
-            <p className="mt-4 text-sm text-muted">
-              Über 150 verifizierte Therapeut:innen in ganz Österreich
-            </p>
+            <p className="mt-4 text-sm text-muted">Über 150 verifizierte Therapeut:innen in ganz Österreich</p>
           </div>
         </Reveal>
       </div>

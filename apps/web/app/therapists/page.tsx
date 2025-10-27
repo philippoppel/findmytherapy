@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Compass, Sparkles } from 'lucide-react'
 
-import { seedTherapists } from '@/lib/seed-data'
+import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 
 export const metadata: Metadata = {
@@ -11,55 +11,74 @@ export const metadata: Metadata = {
     'Finde zertifizierte Therapeut:innen mit klarer Spezialisierung, verfügbaren Terminen und transparenten Therapieschwerpunkten.',
 }
 
-export default function TherapistsPage() {
-  const therapists: TherapistCard[] = seedTherapists
-    .filter((therapist) => therapist.profile.isPublic)
-    .map((therapist) => ({
-      name: therapist.displayName,
-      title: therapist.title,
-      focus: therapist.focus,
-    approach: therapist.approach,
-    location: therapist.location,
-    availability: therapist.availability,
-    languages: therapist.languages,
-    rating: therapist.rating,
-    reviews: therapist.reviews,
-    experience: therapist.experience,
-    image: therapist.image,
-    status: therapist.profile.status,
-      formatTags: deriveFormatTags(therapist.location, therapist.profile.online),
-    }))
+export default async function TherapistsPage() {
+  const profiles = await prisma.therapistProfile.findMany({
+    where: { isPublic: true },
+    include: {
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
+  })
+
+  const therapists: TherapistCard[] = profiles.map((profile) => ({
+    id: profile.id,
+    name: profile.displayName ?? `${profile.user.firstName ?? ''} ${profile.user.lastName ?? ''}`.trim(),
+    title: profile.title ?? 'Psychotherapie',
+    focus: profile.specialties.slice(0, 3),
+    approach: profile.approachSummary ?? 'Integrative Psychotherapie',
+    location: profile.online ? `${profile.city ?? 'Online'} · Online` : profile.city ?? 'Vor Ort',
+    availability: profile.availabilityNote ?? 'Auf Anfrage',
+    languages: profile.languages,
+    rating: profile.rating ?? 0,
+    reviews: profile.reviewCount ?? 0,
+    experience: profile.yearsExperience ? `${profile.yearsExperience} Jahre Praxis` : 'Praxiserfahrung',
+    image: profile.profileImageUrl ?? '/images/therapists/default.jpg',
+    status: profile.status,
+    formatTags: deriveFormatTags(profile.city ?? '', profile.online),
+  }))
 
   return (
-    <div className="bg-surface">
-      <section className="relative overflow-hidden bg-white py-20">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-32 right-[-4rem] h-80 w-80 rounded-full bg-blue-100/30 blur-3xl" />
-          <div className="absolute bottom-[-6rem] left-[-2rem] h-72 w-72 rounded-full bg-blue-50/30 blur-3xl" />
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-12">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+      </div>
+      <section className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-6 flex justify-end">
+          <Link href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
+            Zur Startseite
+          </Link>
         </div>
-
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6 text-center">
-            <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
-              Verlässliche Therapeut:innen - FindMyTherapy Netzwerk
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/10 p-10 shadow-2xl backdrop-blur">
+          <div className="relative space-y-8 text-center md:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
+              <Sparkles className="h-4 w-4" />
+              Kuratiertes Pilotnetzwerk
             </span>
-            <h1 className="text-4xl font-semibold tracking-tight text-default md:text-5xl">
-              Finde die richtige Therapeut:in für deine Situation
-            </h1>
-            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              FindMyTherapy kuratiert Expert:innen mit überprüften Qualifikationen, Spezialisierungen und freien Kapazitäten.
-              Starte mit einer Ersteinschätzung und erhalte maßgeschneiderte Empfehlungen.
-            </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="space-y-4">
+              <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+                Finde die Therapeut:in, die zu deinem Bedarf passt
+              </h1>
+              <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/85 md:mx-0">
+                Unser Care-Team validiert Qualifikationen, Schwerpunkte und Kapazitäten. Starte mit einer Ersteinschätzung und erhalte Empfehlungen, die zu deinen Antworten passen.
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
               <Link
                 href="/triage"
-                className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                prefetch={false}
+                className="inline-flex items-center rounded-full bg-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
                 <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
               </Link>
               <Link
                 href="/contact"
-                className="text-sm font-semibold text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                prefetch={false}
+                className="text-sm font-semibold text-white/70 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
                 Persönliche Beratung anfordern
               </Link>
@@ -68,21 +87,19 @@ export default function TherapistsPage() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="relative mt-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6 rounded-3xl border border-divider bg-white/80 p-8 shadow-md shadow-primary/10 backdrop-blur">
+          <div className="flex flex-col gap-6 rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h2 className="text-left text-3xl font-semibold text-default">
-                  Ausgewählte FindMyTherapy-Therapeut:innen
-                </h2>
-                <p className="mt-2 text-base text-muted">
-                  Detaillierte Profile, transparente Spezialisierungen und aktuelle Verfügbarkeiten – alles an einem Ort.
+                <h2 className="text-3xl font-semibold text-white">Ausgewählte Pilot-Therapeut:innen</h2>
+                <p className="mt-2 text-base text-white/70">
+                  Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails – abgestimmt auf unsere Ersteinschätzung.
                 </p>
               </div>
-              <div className="flex items-center gap-3 rounded-full border border-divider bg-surface-1 px-4 py-2 text-sm text-muted">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span>Kuratiertes Beispiel. Austausch jederzeit möglich.</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/70">
+                <Sparkles className="h-4 w-4 text-teal-400" />
+                Kuratiertes Netzwerk
               </div>
             </div>
             <TherapistDirectory therapists={therapists} />

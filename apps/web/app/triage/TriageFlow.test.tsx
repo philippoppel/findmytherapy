@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { TriageFlow } from './TriageFlow'
 
@@ -59,32 +59,66 @@ describe('TriageFlow', () => {
   it('guides through the flow and shows a recommendation summary', async () => {
     render(<TriageFlow />)
 
-    expect(screen.getByText(/Stimmung & Antrieb/i)).toBeInTheDocument()
+    // Should show disclaimer first
+    expect(screen.getByText(/Wichtiger Hinweis/i)).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: /Mehr als die Hälfte der Tage/i }))
-    expect(await screen.findByText(/Energie & Fokus/i)).toBeInTheDocument()
+    // First PHQ-9 question
+    expect(screen.getByText(/Wenig Interesse oder Freude/i)).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: /^Stark/i }))
-    expect(await screen.findByText(/Innere Anspannung/i)).toBeInTheDocument()
+    // Answer all 9 PHQ-9 questions with low scores (0 = Überhaupt nicht)
+    for (let i = 0; i < 9; i++) {
+      const button = screen.getByRole('button', { name: /Überhaupt nicht/i })
+      fireEvent.click(button)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
 
-    fireEvent.click(screen.getByRole('button', { name: /^Häufig/i }))
-    expect(await screen.findByText(/Was hilft dir gerade am meisten/i)).toBeInTheDocument()
+    // Should now be at GAD-7 section
+    await waitFor(() => {
+      expect(screen.getByText(/Nervosität, Ängstlichkeit oder Anspannung/i)).toBeInTheDocument()
+    }, { timeout: 5000 })
 
-    fireEvent.click(screen.getByRole('button', { name: /1:1 Therapie oder Beratung/i }))
-    fireEvent.click(screen.getByRole('button', { name: /Digitale Programme & Übungen/i }))
+    // Answer all 7 GAD-7 questions with low scores
+    for (let i = 0; i < 7; i++) {
+      const button = screen.getByRole('button', { name: /Überhaupt nicht/i })
+      fireEvent.click(button)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+
+    // Wait for transition to support preferences
+    await new Promise(resolve => setTimeout(resolve, 2500))
+
+    // Should now be at support preferences - check for the buttons
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /1:1 Psychotherapie/i })).toBeInTheDocument()
+    }, { timeout: 5000 })
+
+    fireEvent.click(screen.getByRole('button', { name: /1:1 Psychotherapie/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Digitale Programme & Kurse/i }))
     fireEvent.click(screen.getByRole('button', { name: /^Weiter$/i }))
 
-    expect(await screen.findByText(/Wie flexibel bist du terminlich/i)).toBeInTheDocument()
+    // Wait for transition to availability section
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
+    // Should now be at availability preferences - check for availability button
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Online & Abends/i })).toBeInTheDocument()
+    }, { timeout: 5000 })
+
     fireEvent.click(screen.getByRole('button', { name: /Online & Abends/i }))
     fireEvent.click(screen.getByRole('button', { name: /Hybrid/i }))
     fireEvent.click(screen.getByRole('button', { name: /^Weiter$/i }))
 
-    expect(await screen.findByText(/Deine FindMyTherapy Empfehlung/i)).toBeInTheDocument()
-    expect(screen.getByText(/Score/i)).toBeInTheDocument()
-    expect(await screen.findByText(/Empfohlene Pilot-Therapeut:innen/i)).toBeInTheDocument()
-    expect(screen.getByText(/Dr\.in Lena Huber/i)).toBeInTheDocument()
+    // Should show results
+    await waitFor(() => {
+      expect(screen.getByText(/Deine Ersteinschätzung/i)).toBeInTheDocument()
+    }, { timeout: 5000 })
+
+    // Wait for recommendations to load
+    await waitFor(() => {
+      expect(screen.getByText(/Dr\.in Lena Huber/i)).toBeInTheDocument()
+    }, { timeout: 5000 })
+
     expect(screen.getByText(/Stabil durch den Alltag/i)).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Therapeut:innen ansehen/i })).toBeInTheDocument()
 
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/triage',
@@ -92,5 +126,5 @@ describe('TriageFlow', () => {
         method: 'POST',
       })
     )
-  })
+  }, 30000)
 })

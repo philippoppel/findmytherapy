@@ -37,7 +37,7 @@ export async function GET() {
       },
       expires: new Date((payload.exp as number) * 1000).toISOString(),
     });
-  } catch (error) {
+  } catch {
     // Token is invalid or expired
     return NextResponse.json(null);
   }

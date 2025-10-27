@@ -8,9 +8,17 @@ import { env } from '@mental-health/config';
 // import { sendMagicLinkEmail } from './email';
 import { verifyTotpCode } from './totp';
 import { cookies } from 'next/headers';
-import { jwtDecrypt } from 'jose';
+import { jwtDecrypt, EncryptJWT } from 'jose';
 
 const privilegedRoles = new Set(['THERAPIST', 'ADMIN']);
+
+// Helper function to create consistent 32-byte secret for JWT encryption
+async function getEncryptionSecret(): Promise<Uint8Array> {
+  const encoder = new TextEncoder();
+  const secretBytes = encoder.encode(env.NEXTAUTH_SECRET);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', secretBytes);
+  return new Uint8Array(hashBuffer);
+}
 
 type ExtendedUser = {
   id?: string;
@@ -34,6 +42,36 @@ const authConfig: NextAuthConfig = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
     updateAge: 24 * 60 * 60, // 24 hours
+  },
+  jwt: {
+    // Use custom encode/decode to match our custom login endpoint's encryption
+    encode: async ({ token, secret }) => {
+      if (!token) {
+        throw new Error('No token to encode');
+      }
+
+      const encryptionSecret = await getEncryptionSecret();
+
+      return await new EncryptJWT(token)
+        .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
+        .setIssuedAt()
+        .setExpirationTime('30d')
+        .encrypt(encryptionSecret);
+    },
+    decode: async ({ token, secret }) => {
+      if (!token) {
+        return null;
+      }
+
+      try {
+        const encryptionSecret = await getEncryptionSecret();
+        const { payload } = await jwtDecrypt(token, encryptionSecret);
+        return payload;
+      } catch (error) {
+        console.error('JWT decode error:', error);
+        return null;
+      }
+    },
   },
   cookies: {
     sessionToken: {
@@ -195,7 +233,7 @@ export async function auth() {
   try {
     const session = await nextAuthAuth();
     if (session) return session;
-  } catch (e) {
+  } catch {
     // NextAuth failed, try custom token
   }
 

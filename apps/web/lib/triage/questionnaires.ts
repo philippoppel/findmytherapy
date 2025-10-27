@@ -126,11 +126,11 @@ export const phq9SeverityLabels: Record<PHQ9Severity, string> = {
 }
 
 export const phq9SeverityDescriptions: Record<PHQ9Severity, string> = {
-  minimal: 'Keine oder nur sehr geringe Anzeichen einer Depression. Präventive Maßnahmen und Psychoedukation können hilfreich sein.',
-  mild: 'Leichte depressive Symptome, die im Alltag spürbar sind. Selbsthilfe-Programme, Kurse und regelmäßige Selbstbeobachtung werden empfohlen.',
-  moderate: 'Mittelschwere Symptome, die den Alltag deutlich beeinträchtigen. Professionelle Unterstützung durch Psychotherapie wird empfohlen.',
-  moderately_severe: 'Deutliche Symptome mit erheblicher Beeinträchtigung. Psychotherapie und ggf. psychiatrische Abklärung werden dringend empfohlen.',
-  severe: 'Schwere depressive Symptome mit starker Beeinträchtigung. Dringende professionelle Hilfe erforderlich, ggf. auch medikamentöse Behandlung.',
+  minimal: 'Keine oder nur sehr geringe Anzeichen einer Depression. Psychoedukation, Bewegung und soziale Aktivierung wirken präventiv.',
+  mild: 'Leichte depressive Symptome, die im Alltag spürbar sind. Evidenzbasierte Selbsthilfe und digitale Programme sind laut S3-Leitlinie eine geeignete Erstmaßnahme.',
+  moderate: 'Mittelschwere Symptome, die den Alltag deutlich beeinträchtigen. Die S3-Leitlinie empfiehlt Psychotherapie und eine ärztliche Abklärung weiterer Therapieoptionen.',
+  moderately_severe: 'Ausgeprägte Symptome mit erheblicher Funktionsbeeinträchtigung. Dringend psychotherapeutische und ärztliche Behandlung aufnehmen, ggf. Kombinationstherapie einleiten.',
+  severe: 'Sehr schwere depressive Symptome. Sofort professionelle Hilfe organisieren – Psychotherapie, psychiatrische Behandlung und Krisendienst sind angezeigt.',
 }
 
 /**
@@ -204,10 +204,10 @@ export const gad7SeverityLabels: Record<GAD7Severity, string> = {
 }
 
 export const gad7SeverityDescriptions: Record<GAD7Severity, string> = {
-  minimal: 'Keine oder nur sehr geringe Anzeichen von Angst. Präventive Maßnahmen und Stressmanagement können hilfreich sein.',
-  mild: 'Leichte Angstsymptome, die gelegentlich auftreten. Selbsthilfe-Programme und Entspannungstechniken werden empfohlen.',
-  moderate: 'Mittelschwere Angstsymptome, die den Alltag beeinträchtigen. Professionelle Unterstützung durch Psychotherapie wird empfohlen.',
-  severe: 'Schwere Angstsymptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe erforderlich.',
+  minimal: 'Keine oder nur sehr geringe Angstsymptome. Stressmanagement, Schlafhygiene und Aktivierung stabilisieren die Resilienz.',
+  mild: 'Leichte Angstsymptome, die gelegentlich auftreten. Strukturierte Selbsthilfe und Entspannungsverfahren werden empfohlen.',
+  moderate: 'Mittelschwere Angstsymptome, die Alltag und Lebensqualität beeinträchtigen. Wirksam sind kognitive Verhaltenstherapie und ärztliche Abklärung.',
+  severe: 'Schwere Angstsymptome mit deutlicher Einschränkung. Rasch psychotherapeutische und ärztliche Unterstützung hinzuziehen, ggf. kombinierte Behandlung.',
 }
 
 /**
@@ -215,30 +215,63 @@ export const gad7SeverityDescriptions: Record<GAD7Severity, string> = {
  */
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH'
 
-export function assessRiskLevel(phq9Score: number, gad7Score: number): {
+type RiskAssessmentOptions = {
+  phq9Item9Score?: number
+}
+
+export function assessRiskLevel(
+  phq9Score: number,
+  gad7Score: number,
+  options: RiskAssessmentOptions = {}
+): {
   level: RiskLevel
   requiresEmergency: boolean
   ampelColor: 'green' | 'yellow' | 'red'
+  hasSuicidalIdeation: boolean
 } {
+  const { phq9Item9Score = 0 } = options
   const phq9Severity = calculatePHQ9Severity(phq9Score)
   const gad7Severity = calculateGAD7Severity(gad7Score)
+  const hasSuicidalIdeation = phq9Item9Score >= 1
 
-  // HIGH: severe on either scale OR moderately_severe on PHQ-9
-  if (phq9Severity === 'severe' || gad7Severity === 'severe' || phq9Severity === 'moderately_severe') {
+  const meetsEmergencyCriteria = hasSuicidalIdeation || phq9Score >= 20
+  const needsHighIntensitySupport =
+    phq9Severity === 'moderately_severe' ||
+    phq9Severity === 'severe' ||
+    gad7Severity === 'severe' ||
+    (phq9Severity === 'moderate' && gad7Severity === 'moderate')
+
+  const hasRelevantSymptoms =
+    phq9Severity === 'moderate' ||
+    gad7Severity === 'moderate' ||
+    (phq9Severity === 'mild' && gad7Severity === 'mild') ||
+    (phq9Severity === 'mild' && gad7Severity === 'moderate') ||
+    (phq9Severity === 'moderate' && gad7Severity === 'mild')
+
+  if (meetsEmergencyCriteria) {
     return {
       level: 'HIGH',
       requiresEmergency: true,
       ampelColor: 'red',
+      hasSuicidalIdeation,
     }
   }
 
-  // MEDIUM: moderate on either scale OR mild on both
-  if (phq9Severity === 'moderate' || gad7Severity === 'moderate' ||
-      (phq9Severity === 'mild' && gad7Severity === 'mild')) {
+  if (needsHighIntensitySupport) {
+    return {
+      level: 'HIGH',
+      requiresEmergency: false,
+      ampelColor: 'red',
+      hasSuicidalIdeation,
+    }
+  }
+
+  if (hasRelevantSymptoms) {
     return {
       level: 'MEDIUM',
       requiresEmergency: false,
       ampelColor: 'yellow',
+      hasSuicidalIdeation,
     }
   }
 
@@ -247,6 +280,7 @@ export function assessRiskLevel(phq9Score: number, gad7Score: number): {
     level: 'LOW',
     requiresEmergency: false,
     ampelColor: 'green',
+    hasSuicidalIdeation,
   }
 }
 

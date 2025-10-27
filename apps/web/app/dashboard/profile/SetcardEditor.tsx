@@ -167,21 +167,53 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-      <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-neutral-950">Setcard bearbeiten</h2>
-        <p className="text-sm text-muted">
-          Aktualisiere, was Klient:innen auf deiner Profilseite sehen. Speichere Änderungen, sobald du zufrieden bist.
-        </p>
-        {status === 'success' ? (
-          <Alert variant="success" title="Änderungen gespeichert" description="Deine Setcard wurde aktualisiert." />
-        ) : null}
-        {status === 'error' && errorMessage ? (
-          <Alert variant="danger" title="Speichern fehlgeschlagen" description={errorMessage} />
-        ) : null}
+      {/* Sticky Header mit Speichern-Button */}
+      <div className="sticky top-0 z-10 -mx-6 -mt-6 mb-6 border-b border-neutral-200 bg-white/95 backdrop-blur-sm px-6 py-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl font-bold text-neutral-900">Profil bearbeiten</h2>
+            <p className="text-sm text-neutral-600 mt-1">
+              Aktualisiere deine öffentliche Setcard für Klient:innen
+            </p>
+          </div>
+          <Button type="submit" disabled={status === 'saving' || !isDirty} className="shrink-0">
+            {status === 'saving' ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                Speichern...
+              </>
+            ) : (
+              'Änderungen speichern'
+            )}
+          </Button>
+        </div>
+
+        {/* Status Messages */}
+        {status === 'success' && (
+          <div className="mt-3">
+            <Alert variant="success" title="Erfolgreich gespeichert" description="Deine Änderungen wurden gespeichert." />
+          </div>
+        )}
+        {status === 'error' && errorMessage && (
+          <div className="mt-3">
+            <Alert variant="danger" title="Fehler beim Speichern" description={errorMessage} />
+          </div>
+        )}
       </div>
 
-      <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-        <h3 className="text-base font-semibold text-neutral-900">Öffentliche Darstellung</h3>
+      {/* Öffentliche Darstellung */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-teal-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Öffentliche Darstellung</h3>
+            <p className="text-sm text-neutral-600">Wie du auf deinem Profil erscheinst</p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField id="displayName" label="Angezeigter Name" required>
             <Input {...register('displayName')} placeholder="z. B. Dr.in Lena Huber" />
@@ -208,8 +240,19 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </div>
       </section>
 
-      <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-        <h3 className="text-base font-semibold text-neutral-900">Beschreibung</h3>
+      {/* Beschreibung */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Beschreibung & Über mich</h3>
+            <p className="text-sm text-neutral-600">Deine Arbeitsweise und Erfahrung</p>
+          </div>
+        </div>
         <FormField
           id="approachSummary"
           label="Therapeutischer Ansatz"
@@ -231,8 +274,19 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </FormField>
       </section>
 
-      <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-        <h3 className="text-base font-semibold text-neutral-900">Angebot & Formate</h3>
+      {/* Angebot & Formate */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-purple-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Angebot & Spezialisierungen</h3>
+            <p className="text-sm text-neutral-600">Deine Leistungen und Schwerpunkte</p>
+          </div>
+        </div>
         <FormField
           id="services"
           label="Leistungen"
@@ -262,8 +316,20 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </div>
       </section>
 
-      <section className="rounded-xl border border-divider bg-white p-6 space-y-4">
-        <h3 className="text-base font-semibold text-neutral-900">Rahmendaten</h3>
+      {/* Rahmendaten */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-amber-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Rahmendaten & Preise</h3>
+            <p className="text-sm text-neutral-600">Standort, Preise und Erfahrung</p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField id="city" label="Praxisort">
             <Input {...register('city')} placeholder="z. B. Wien" />
@@ -301,7 +367,8 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </div>
       </section>
 
-      <div className="flex items-center justify-end gap-3">
+      {/* Zusätzlicher Speichern-Button am Ende (optional für lange Formulare) */}
+      <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-200">
         <Button type="submit" disabled={status === 'saving' || !isDirty}>
           {status === 'saving' ? (
             <>

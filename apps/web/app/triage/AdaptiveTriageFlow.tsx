@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
 import { ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, AlertCircle } from 'lucide-react'
 import { Button } from '@mental-health/ui'
 import { track } from '../../lib/analytics'
@@ -264,19 +266,31 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
+    sessionStorage.removeItem('triage-session')
   }
 
   // Calculate final scores
-  const { phq9Score, gad7Score, phq9Severity, gad7Severity, riskLevel, ampelColor, requiresEmergency } = useMemo(() => {
+  const {
+    phq9Score,
+    gad7Score,
+    phq9Severity,
+    gad7Severity,
+    riskLevel,
+    ampelColor,
+    requiresEmergency,
+    phq9Item9Score,
+    hasSuicidalIdeation,
+  } = useMemo(() => {
     const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
     const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
 
     const phq9Total = fullPHQ9Answers.reduce((sum, val) => sum + (val || 0), 0)
     const gad7Total = fullGAD7Answers.reduce((sum, val) => sum + (val || 0), 0)
+    const item9Score = fullPHQ9Answers[8] ?? 0
 
     const phq9Sev = calculatePHQ9Severity(phq9Total)
     const gad7Sev = calculateGAD7Severity(gad7Total)
-    const risk = assessRiskLevel(phq9Total, gad7Total)
+    const risk = assessRiskLevel(phq9Total, gad7Total, { phq9Item9Score: item9Score })
 
     return {
       phq9Score: phq9Total,
@@ -286,6 +300,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       riskLevel: risk.level,
       ampelColor: risk.ampelColor,
       requiresEmergency: risk.requiresEmergency,
+      phq9Item9Score: item9Score,
+      hasSuicidalIdeation: risk.hasSuicidalIdeation,
     }
   }, [answers])
 
@@ -296,7 +312,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       if (embedded) {
         setTimeout(() => {
           setHasPersisted(true)
-          track('triage_completed', { phq9Score, gad7Score, riskLevel, source: 'embedded' })
+          track('triage_completed', {
+            phq9Score,
+            gad7Score,
+            riskLevel,
+            source: 'embedded',
+            requiresEmergency,
+            hasSuicidalIdeation,
+          })
         }, 1000)
         return
       }
@@ -323,6 +346,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
             availability: answers.availability,
             riskLevel,
             requiresEmergency,
+            phq9Item9Score,
+            hasSuicidalIdeation,
           }),
         })
 
@@ -344,6 +369,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           gad7Severity,
           riskLevel,
           requiresEmergency,
+          hasSuicidalIdeation,
           adaptive: true,
         })
       } catch (error) {
@@ -356,7 +382,19 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
         setHasPersisted(true)
       }
     },
-    [answers, phq9Score, gad7Score, phq9Severity, gad7Severity, riskLevel, requiresEmergency, embedded, hasPersisted]
+    [
+      answers,
+      phq9Score,
+      gad7Score,
+      phq9Severity,
+      gad7Severity,
+      riskLevel,
+      requiresEmergency,
+      embedded,
+      hasPersisted,
+      phq9Item9Score,
+      hasSuicidalIdeation,
+    ]
   )
 
   useEffect(() => {
@@ -364,11 +402,72 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     void persistResults()
   }, [showSummary, persistResults])
 
+  // Save session state when showing summary
+  useEffect(() => {
+    if (!showSummary) return
+
+    const sessionState = {
+      answers,
+      recommendations,
+      timestamp: Date.now(),
+    }
+
+    sessionStorage.setItem('triage-session', JSON.stringify(sessionState))
+  }, [showSummary, answers, recommendations])
+
+  // Restore session state on mount
+  useEffect(() => {
+    const savedSession = sessionStorage.getItem('triage-session')
+    if (!savedSession) return
+
+    try {
+      const sessionState = JSON.parse(savedSession)
+
+      // Check if session is less than 24 hours old
+      const age = Date.now() - sessionState.timestamp
+      const maxAge = 24 * 60 * 60 * 1000 // 24 hours
+
+      if (age > maxAge) {
+        sessionStorage.removeItem('triage-session')
+        return
+      }
+
+      // Restore state
+      setAnswers(sessionState.answers)
+      setRecommendations(sessionState.recommendations)
+      setShowSummary(true)
+      setHasPersisted(true)
+    } catch (error) {
+      console.error('Failed to restore triage session', error)
+      sessionStorage.removeItem('triage-session')
+    }
+  }, [])
+
   // Summary view
   if (showSummary) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-950 via-cyan-900 to-blue-950 py-16 text-white">
-        <div className="mx-auto max-w-5xl space-y-6 px-4">
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
+          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-5xl space-y-6 px-4">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <Button
+              variant="ghost"
+              onClick={resetFlow}
+              className="inline-flex items-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Ersteinschätzung wiederholen
+            </Button>
+            <Link
+              href="/"
+              className="text-sm font-medium text-white/70 transition hover:text-white"
+            >
+              Zur Startseite
+            </Link>
+          </div>
           {historicalData.length > 0 && (
             <ProgressChart
               data={[
@@ -388,22 +487,24 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
           {requiresEmergency && <CrisisResources showCareTeamContact={!embedded} />}
 
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-8 shadow-2xl backdrop-blur">
-            <header className="space-y-2">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/85">
-                <CheckCircle2 className="h-4 w-4 text-white" aria-hidden />
-                Deine Ersteinschätzung
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
+            <header className="mb-6 flex items-center justify-between">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
+                  <CheckCircle2 className="h-4 w-4" aria-hidden />
+                  Deine Ersteinschätzung
+                </div>
+                <h3 className="text-3xl font-bold text-white">Empfohlene nächste Schritte</h3>
               </div>
-              <h3 className="text-3xl font-bold text-white">Empfohlene nächste Schritte</h3>
             </header>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/10 p-6">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
                 <h4 className="text-lg font-semibold text-white">PHQ-9: {phq9SeverityLabels[phq9Severity]}</h4>
                 <p className="mt-2 text-sm text-white/70">{phq9SeverityDescriptions[phq9Severity]}</p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/10 p-6">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
                 <h4 className="text-lg font-semibold text-white">GAD-7: {gad7SeverityLabels[gad7Severity]}</h4>
                 <p className="mt-2 text-sm text-white/70">{gad7SeverityDescriptions[gad7Severity]}</p>
               </div>
@@ -411,26 +512,21 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
             {/* Konkrete Therapeuten-Empfehlungen */}
             {riskLevel !== 'LOW' && (
-              <div className="mt-8 rounded-2xl border border-white/15 bg-white/5 p-6">
+              <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-white" />
+                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-teal-400" />
                   <div>
                     <h4 className="text-lg font-bold text-white">Empfehlung: Professionelle Unterstützung</h4>
-                    <p className="mt-2 text-sm text-white/75">
+                    <p className="mt-2 text-sm text-white/70">
                       Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer Therapeut:in zu sprechen.
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-3">
-                      <Button
-                        asChild
-                        size="lg"
-                        variant="outline"
-                        className="border-white/40 bg-white/10 text-white hover:bg-white/20"
-                      >
-                        <a href="/therapists">Therapeut:innen ansehen</a>
+                      <Button asChild size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
+                        <Link href="/therapists">Therapeut:innen ansehen</Link>
                       </Button>
-                      <Button variant="ghost" asChild className="text-white hover:bg-white/15">
-                        <a href="/contact">Hilfe beim Finden</a>
+                      <Button variant="outline" asChild className="border-white/40 text-white hover:bg-white/10">
+                        <Link href="/contact">Hilfe beim Finden</Link>
                       </Button>
                     </div>
                   </div>
@@ -448,65 +544,78 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       className="rounded-2xl border border-white/10 bg-white/10 p-6 shadow-sm backdrop-blur transition hover:bg-white/15"
                     >
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                        <div className="space-y-3">
-                          <div>
-                            <h5 className="text-lg font-bold text-white">{therapist.name}</h5>
-                            <p className="text-sm text-white/70">{therapist.title}</p>
-                            {therapist.headline ? (
-                              <p className="mt-1 text-sm text-white/80">{therapist.headline}</p>
+                        <div className="flex flex-1 gap-4">
+                          {therapist.image && (
+                            <div className="flex-shrink-0">
+                              <Image
+                                src={therapist.image}
+                                alt={therapist.name}
+                                width={120}
+                                height={120}
+                                className="h-24 w-24 rounded-xl object-cover object-center"
+                                sizes="(max-width: 768px) 96px, 120px"
+                                quality={90}
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1 space-y-3">
+                            <div>
+                              <h5 className="text-lg font-bold text-white">{therapist.name}</h5>
+                              <p className="text-sm text-white/70">{therapist.title}</p>
+                              {therapist.headline ? (
+                                <p className="mt-1 text-sm text-white/80">{therapist.headline}</p>
+                              ) : null}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">
+                              <span>{therapist.focus.slice(0, 3).join(' • ')}</span>
+                              <span aria-hidden>•</span>
+                              <span>{therapist.location}</span>
+                              {therapist.languages && therapist.languages.length > 0 ? (
+                                <>
+                                  <span aria-hidden>•</span>
+                                  <span>{therapist.languages.slice(0, 2).join(', ')}</span>
+                                </>
+                              ) : null}
+                            </div>
+                            {therapist.services && therapist.services.length > 0 ? (
+                              <div className="mt-1 flex flex-wrap gap-2">
+                                {therapist.services.slice(0, 3).map((service) => (
+                                  <span
+                                    key={service}
+                                    className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white"
+                                  >
+                                    {service}
+                                  </span>
+                                ))}
+                              </div>
                             ) : null}
-                          </div>
-                          <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">
-                            <span>{therapist.focus.slice(0, 3).join(' • ')}</span>
-                            <span aria-hidden>•</span>
-                            <span>{therapist.location}</span>
-                            {therapist.languages && therapist.languages.length > 0 ? (
-                              <>
-                                <span aria-hidden>•</span>
-                                <span>{therapist.languages.slice(0, 2).join(', ')}</span>
-                              </>
-                            ) : null}
-                          </div>
-                          {therapist.services && therapist.services.length > 0 ? (
-                            <div className="mt-1 flex flex-wrap gap-2">
-                              {therapist.services.slice(0, 3).map((service) => (
-                                <span
-                                  key={service}
-                                  className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white"
-                                >
-                                  {service}
+                            <div className="flex flex-wrap items-center gap-3 text-xs text-white/65">
+                              <span className="font-medium text-white">{therapist.availability}</span>
+                              {therapist.responseTime ? (
+                                <>
+                                  <span aria-hidden>•</span>
+                                  <span>{therapist.responseTime}</span>
+                                </>
+                              ) : null}
+                              <span aria-hidden>•</span>
+                              <span>
+                                {therapist.rating.toFixed(1)} ({therapist.reviews} Bewertungen)
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 text-xs">
+                              {therapist.formatTags.map((tag) => (
+                                <span key={tag} className="rounded-full bg-white/15 px-3 py-1 font-medium text-white/75">
+                                  {tag === 'online' ? 'Online' : tag === 'praesenz' ? 'Vor Ort' : 'Hybrid'}
                                 </span>
                               ))}
                             </div>
-                          ) : null}
-                          <div className="flex flex-wrap items-center gap-3 text-xs text-white/65">
-                            <span className="font-medium text-white">{therapist.availability}</span>
-                            {therapist.responseTime ? (
-                              <>
-                                <span aria-hidden>•</span>
-                                <span>{therapist.responseTime}</span>
-                              </>
-                            ) : null}
-                            <span aria-hidden>•</span>
-                            <span>
-                              {therapist.rating.toFixed(1)} ({therapist.reviews} Bewertungen)
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            {therapist.formatTags.map((tag) => (
-                              <span key={tag} className="rounded-full bg-white/15 px-3 py-1 font-medium text-white/75">
-                                {tag === 'online' ? 'Online' : tag === 'praesenz' ? 'Vor Ort' : 'Hybrid'}
-                              </span>
-                            ))}
                           </div>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                          <Button
-                            asChild
-                            variant="secondary"
-                            className="border-white/20 bg-white/20 text-white hover:bg-white/30"
-                          >
-                            <a href={`/therapists/${therapist.id}`}>Profil ansehen</a>
+                          <Button asChild className="bg-teal-400 text-white hover:bg-teal-300">
+                            <Link href={`/therapists/${therapist.id}?from=triage`}>
+                              Profil ansehen
+                            </Link>
                           </Button>
                           {therapist.acceptingClients === false ? (
                             <span className="text-xs font-medium text-amber-200">Aktuell Warteliste</span>
@@ -530,27 +639,28 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     >
                       <h5 className="text-lg font-bold text-white">{course.title}</h5>
                       <p className="mt-1 text-sm text-white/70">{course.shortDescription}</p>
+                      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-white/65">
+                        <span>{course.duration}</span>
+                        <span aria-hidden>•</span>
+                        <span>{course.format}</span>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {course.outcomes.map((item) => (
+                          <span key={item} className="rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                      <Button variant="outline" size="sm" asChild className="mt-4 border-white/30 bg-white/10 text-white hover:bg-white/20">
+                        <Link href={`/courses/${course.slug}`}>
+                          Demo ansehen
+                        </Link>
+                      </Button>
                     </article>
                   ))}
                 </div>
               </section>
             )}
-
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
-              <Button
-                variant="ghost"
-                onClick={resetFlow}
-                className="inline-flex items-center gap-2 text-white hover:bg-white/10"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Neue Ersteinschätzung
-              </Button>
-              {!embedded && (
-                <Button variant="outline" asChild className="border-white/30 text-white hover:bg-white/15">
-                  <a href="/">Zur Startseite</a>
-                </Button>
-              )}
-            </div>
           </div>
         </div>
       </div>
@@ -569,18 +679,30 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     : { title: 'Deine Präferenzen', description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.' }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-950 via-cyan-900 to-blue-950 py-16">
-      <div className="mx-auto max-w-3xl px-4 text-white">
-        <div className="rounded-3xl border border-white/15 bg-white/10 p-8 shadow-2xl backdrop-blur">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+      </div>
+      <div className="relative mx-auto max-w-3xl px-4">
+        <div className="mb-6 flex justify-end">
+          <Link
+            href="/"
+            className="text-sm font-medium text-white/70 transition hover:text-white"
+          >
+            Zur Startseite
+          </Link>
+        </div>
+        <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
           {/* Progress */}
           <div className="mb-6">
             <div className="mb-2 flex items-center justify-between text-sm text-white/70">
               <span className="font-medium text-white">{phaseInfo.title}</span>
               <span>{progress}%</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
               <motion.div
-                className="h-full rounded-full bg-white"
+                className="h-full rounded-full bg-teal-400"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
@@ -617,8 +739,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             onClick={() => toggleMultipleSelect(option.value, 'support')}
                             className={`rounded-xl border p-4 text-left transition ${
                               selected
-                                ? 'border-white/60 bg-white/20 shadow-lg shadow-white/10'
-                                : 'border-white/20 bg-white/5 hover:border-white/40 hover:bg-white/10'
+                                ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
+                                : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
                             }`}
                           >
                             <p className={`font-semibold ${selected ? 'text-white' : 'text-white/85'}`}>
@@ -645,8 +767,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             onClick={() => toggleMultipleSelect(option.value, 'availability')}
                             className={`rounded-xl border p-4 text-left transition ${
                               selected
-                                ? 'border-white/60 bg-white/20 shadow-lg shadow-white/10'
-                                : 'border-white/20 bg-white/5 hover:border-white/40 hover:bg-white/10'
+                                ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
+                                : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
                             }`}
                           >
                             <p className={`font-semibold ${selected ? 'text-white' : 'text-white/85'}`}>
@@ -664,7 +786,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20">
+                    <Button onClick={goNext} size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -701,8 +823,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           onClick={() => handleScaleAnswer(option.value)}
                           className={`flex w-full items-center justify-between gap-3 rounded-xl border p-4 transition ${
                             isSelected
-                              ? 'border-white/60 bg-white/20 shadow-lg shadow-white/10'
-                              : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/10'
+                              ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
+                              : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-white/10'
                           }`}
                         >
                           <div className="text-left">
@@ -714,7 +836,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           <div
                             className={`flex h-10 w-10 items-center justify-center rounded-full border font-semibold ${
                               isSelected
-                                ? 'border-white bg-white text-teal-700'
+                                ? 'border-teal-400 bg-teal-400 text-white'
                                 : 'border-white/30 bg-white/10 text-white'
                             }`}
                           >
