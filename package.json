@@ -4,8 +4,8 @@
   "private": true,
   "description": "Mental health platform with therapist directory and courses",
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=6.0.0"
+    "node": "20.x",
+    "pnpm": "^9.0.0"
   },
   "scripts": {
     "dev": "turbo dev",
@@ -47,5 +47,5 @@
       "@auth/core": "0.40.0"
     }
   },
-  "packageManager": "pnpm@8.15.0"
+  "packageManager": "pnpm@9.0.0"
 }
