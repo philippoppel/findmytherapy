@@ -23,29 +23,38 @@ export const optionalUrlSchema = z
     message: 'Bitte gib eine vollständige URL an.',
   })
 
+// Helper to transform empty strings to null
+const emptyStringToNull = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess((val) => {
+    if (typeof val === 'string' && val.trim() === '') {
+      return null
+    }
+    return val
+  }, schema)
+
 export const setcardPayloadSchema = z
   .object({
     displayName: z.string().trim().min(3).max(120),
     title: z.string().trim().min(3).max(160),
     headline: z.string().trim().min(10).max(180),
     approachSummary: z.string().trim().min(30).max(1600),
-    experienceSummary: z.string().trim().min(20).max(800),
+    experienceSummary: z.string().trim().min(10).max(800),
     services: stringArraySchema,
-    profileImageUrl: imageUrlSchema.nullish(),
-    videoUrl: optionalUrlSchema.nullish(),
+    profileImageUrl: emptyStringToNull(imageUrlSchema.nullish()),
+    videoUrl: emptyStringToNull(optionalUrlSchema.nullish()),
     acceptingClients: z.boolean(),
     yearsExperience: z.number().int().min(0).max(60).nullish(),
-    responseTime: z.string().trim().min(3).max(160).nullish(),
+    responseTime: emptyStringToNull(z.string().trim().min(3).max(160).nullish()),
     modalities: stringArraySchema,
     specialties: stringArraySchema,
     languages: languagesArraySchema,
     priceMin: z.number().int().min(0).nullish(),
     priceMax: z.number().int().min(0).nullish(),
-    availabilityNote: z.string().trim().max(800).nullish(),
-    pricingNote: z.string().trim().max(800).nullish(),
-    about: z.string().trim().max(2500).nullish(),
-    city: z.string().trim().max(120).nullish(),
-    country: z.string().trim().length(2).nullish(),
+    availabilityNote: emptyStringToNull(z.string().trim().max(800).nullish()),
+    pricingNote: emptyStringToNull(z.string().trim().max(800).nullish()),
+    about: emptyStringToNull(z.string().trim().max(2500).nullish()),
+    city: emptyStringToNull(z.string().trim().max(120).nullish()),
+    country: emptyStringToNull(z.string().trim().length(2).nullish()),
     online: z.boolean(),
   })
   .superRefine((data, ctx) => {
