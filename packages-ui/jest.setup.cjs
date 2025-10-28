@@ -16,6 +16,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Mock IntersectionObserver
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
@@ -27,6 +28,7 @@ global.IntersectionObserver = class IntersectionObserver {
 }
 
 // Mock ResizeObserver
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 global.ResizeObserver = class ResizeObserver {
   constructor() {}
   disconnect() {}
