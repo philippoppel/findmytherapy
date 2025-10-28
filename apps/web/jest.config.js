@@ -15,8 +15,9 @@ const customJestConfig = {
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
-    '<rootDir>/tests/visual/',  // Visual tests run with Playwright
-    '<rootDir>/tests/e2e/'      // E2E tests run with Playwright
+    '<rootDir>/tests/integration/',  // Integration tests run separately with DB
+    '<rootDir>/tests/visual/',       // Visual tests run with Playwright
+    '<rootDir>/tests/e2e/'           // E2E tests run with Playwright
   ],
   collectCoverageFrom: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'lib/**/*.{ts,tsx}'],
 }
