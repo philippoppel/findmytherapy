@@ -245,7 +245,7 @@ export function ClientRegistrationForm() {
             type="email"
             value={form.email}
             onChange={handleChange('email')}
-            placeholder="kunde@findmytherapy.health"
+            placeholder="kunde@findmytherapy.net"
             hasError={Boolean(errors.email)}
             required
             autoComplete="email"

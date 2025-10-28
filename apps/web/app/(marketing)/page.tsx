@@ -42,10 +42,10 @@ export const metadata: Metadata = {
       'Kostenlose Ersteinschätzung mit Ampel-System, persönliches Matching und begleitende Programme – entwickelt für Österreich.',
     type: 'website',
     locale: 'de_AT',
-    url: 'https://findmytherapy.health/',
+    url: 'https://findmytherapy.net/',
   },
   alternates: {
-    canonical: 'https://findmytherapy.health/',
+    canonical: 'https://findmytherapy.net/',
   },
   twitter: {
     card: 'summary_large_image',

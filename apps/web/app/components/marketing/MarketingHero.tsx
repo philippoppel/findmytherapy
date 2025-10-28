@@ -85,51 +85,30 @@ export function MarketingHero({ content }: HeroProps) {
           <dl className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
             {content.metrics.map((metric, index) => (
               <Reveal key={metric.label} delay={600 + index * 100} className="rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-left shadow-sm backdrop-blur sm:rounded-2xl sm:px-4 sm:py-4 md:py-5">
-                <dt className="text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:text-xs">
-                  {metric.label}
-                </dt>
-                <dd className="mt-1.5 text-xl font-semibold text-white sm:mt-2 sm:text-2xl">
+                <dd className="text-xl font-semibold text-white sm:text-2xl">
                   {metric.value}
                 </dd>
+                <dt className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:mt-2 sm:text-xs">
+                  {metric.label}
+                </dt>
               </Reveal>
             ))}
           </dl>
         </div>
 
-        <Reveal delay={200} className="w-full lg:flex-1" variant="scale">
+        <Reveal delay={200} className="hidden w-full md:block lg:flex-1" variant="scale">
           <div className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/10 p-2 shadow-2xl backdrop-blur sm:rounded-3xl sm:p-2.5 md:p-3">
             <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/8 via-white/10 to-transparent" />
-            {/* Mobile Image - Portrait format */}
             <Image
-              src="/images/therapists/therapy-2-mobile.jpg"
+              src="/images/therapists/therapy-1.jpg"
               alt="FindMyTherapy Matching Dashboard"
-              width={600}
-              height={800}
-              className="relative z-10 h-full w-full rounded-xl object-cover md:hidden sm:rounded-[22px]"
-              priority
-            />
-            {/* Desktop/Tablet Image - Landscape format */}
-            <Image
-              src="/images/therapists/therapy-2.jpg"
-              alt="FindMyTherapy Matching Dashboard"
-              width={900}
-              height={600}
-              className="relative z-10 hidden h-full w-full rounded-xl object-cover md:block sm:rounded-[22px]"
+              width={1280}
+              height={853}
+              className="relative z-10 h-full w-full rounded-xl object-cover sm:rounded-[22px]"
               priority
             />
             <div className="absolute -left-6 -top-6 hidden h-24 w-24 rounded-full border border-teal-500/30 bg-teal-500/20 blur-lg sm:block" />
             <div className="absolute -bottom-8 -right-6 hidden h-28 w-28 rounded-full border border-white/20 bg-white/10 blur-xl sm:block" />
-            <div className="absolute top-3 right-3 z-20 flex items-center gap-2 rounded-xl border border-white/20 bg-white/20 px-3 py-2 text-xs font-semibold text-white/85 backdrop-blur sm:top-auto sm:bottom-6 sm:right-6 sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-500/40 text-base font-bold text-white sm:h-8 sm:w-8 sm:text-lg">
-                FM
-              </span>
-              <div>
-                <p className="text-[10px] uppercase tracking-wider text-white/60 sm:text-xs">
-                  Ampel-Triage
-                </p>
-                <p className="text-xs sm:text-sm">Ergebnis: Gelb – Termin empfohlen</p>
-              </div>
-            </div>
           </div>
         </Reveal>
       </div>

@@ -27,10 +27,10 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
           <p className="mt-3 text-lg leading-relaxed text-muted">
             Noch etwas unklar? Schreib uns an{' '}
             <a
-              href="mailto:servus@findmytherapy.health"
+              href="mailto:servus@findmytherapy.net"
               className="font-semibold text-primary underline-offset-4 hover:underline"
             >
-              servus@findmytherapy.health
+              servus@findmytherapy.net
             </a>
             .
           </p>

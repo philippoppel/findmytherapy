@@ -81,10 +81,10 @@ export function TeamSection({ content }: TeamSectionProps) {
               <p className="mt-2 text-pretty">
                 Schreibe uns über das Produkt direkt im Interface oder an{' '}
                 <a
-                  href="mailto:servus@findmytherapy.health"
+                  href="mailto:servus@findmytherapy.net"
                   className="font-semibold text-primary underline-offset-2 hover:underline"
                 >
-                  servus@findmytherapy.health
+                  servus@findmytherapy.net
                 </a>
                 .
               </p>

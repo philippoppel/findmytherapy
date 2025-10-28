@@ -350,7 +350,7 @@ export function RegistrationForm() {
             type="email"
             value={form.email}
             onChange={handleChange('email')}
-            placeholder="kontakt@findmytherapy.health"
+            placeholder="kontakt@findmytherapy.net"
             hasError={Boolean(errors.email)}
             required
           />

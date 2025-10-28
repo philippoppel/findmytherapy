@@ -207,7 +207,7 @@ Für funktionierende Emails:
 ## 🎯 Custom Domain (Optional)
 
 1. Vercel Dashboard → Settings → Domains
-2. Add Domain: `findmytherapy.health`
+2. Add Domain: `findmytherapy.net`
 3. Folge DNS-Anweisungen
 4. Update `NEXTAUTH_URL` und `APP_BASE_URL`
 5. Redeploy

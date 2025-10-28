@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
 
             <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/10 px-5 py-4 text-sm text-primary dark:border-primary/50 dark:bg-primary/20">
               <strong>Sofortige Hilfe?</strong> Ruf uns an unter <strong>+43 720 123456</strong> oder sende eine E-Mail an{' '}
-              <strong>support@findmytherapy.health</strong>
+              <strong>support@findmytherapy.net</strong>
             </div>
           </div>
         </div>

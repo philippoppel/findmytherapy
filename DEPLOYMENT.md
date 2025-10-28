@@ -252,7 +252,7 @@ openssl rand -base64 32
 ## Custom Domain einrichten
 
 1. Gehe zu Vercel Dashboard → Settings → Domains
-2. Füge deine Domain hinzu (z.B. findmytherapy.health)
+2. Füge deine Domain hinzu (z.B. findmytherapy.net)
 3. Folge den DNS-Anweisungen (A Record oder CNAME)
 4. Aktualisiere `NEXTAUTH_URL` und `APP_BASE_URL` in Environment Variables
 5. Redeploy

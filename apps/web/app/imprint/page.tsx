@@ -15,7 +15,7 @@ export default function ImprintPage() {
           Österreich
         </p>
         <p className="mt-4">
-          E-Mail: <a className="underline" href="mailto:servus@findmytherapy.health">servus@findmytherapy.health</a><br />
+          E-Mail: <a className="underline" href="mailto:servus@findmytherapy.net">servus@findmytherapy.net</a><br />
           Telefon: <a className="underline" href="tel:+4319971212">+43 1 997 1212</a>
         </p>
         <p className="mt-4">

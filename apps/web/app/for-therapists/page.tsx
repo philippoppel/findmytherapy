@@ -49,7 +49,7 @@ export default function ForTherapistsPage() {
         <h2 className="text-lg font-semibold text-info-900">Erstgespräch vereinbaren</h2>
         <p className="mt-2">
           In 30 Minuten zeigen wir dir, wie unser Matching funktioniert und wie du deine Profile pflegst. Schreibe uns an{' '}
-          <a className="underline" href="mailto:therapists@findmytherapy.health">therapists@findmytherapy.health</a>.
+          <a className="underline" href="mailto:therapists@findmytherapy.net">therapists@findmytherapy.net</a>.
         </p>
       </section>
     </main>

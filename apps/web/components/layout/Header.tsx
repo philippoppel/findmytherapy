@@ -65,7 +65,7 @@ export function Header() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-3 lg:flex">
             <AuthHeader />
             {!isHome && (
               <Link
@@ -80,7 +80,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="rounded-xl p-2 text-white/80 transition hover:bg-white/10 hover:text-white md:hidden"
+            className="rounded-xl p-2 text-white/80 transition hover:bg-white/10 hover:text-white lg:hidden"
             aria-label="Menü öffnen"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -88,7 +88,7 @@ export function Header() {
         </div>
 
         {isMenuOpen && (
-          <div className="mb-4 mt-2 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/85 shadow-lg backdrop-blur md:hidden">
+          <div className="mb-4 mt-2 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/85 shadow-lg backdrop-blur lg:hidden">
             <div className="space-y-2">
               {navigation.map((item) => (
                 <Link

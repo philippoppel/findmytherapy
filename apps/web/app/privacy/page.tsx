@@ -21,7 +21,7 @@ const sections = [
     id: 'rights',
     title: '4. Deine Rechte',
     body:
-      'Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Anfragen richtest du an privacy@findmytherapy.health.',
+      'Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Anfragen richtest du an privacy@findmytherapy.net.',
   },
 ];
 

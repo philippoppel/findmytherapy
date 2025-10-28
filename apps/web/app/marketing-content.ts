@@ -28,9 +28,9 @@ export const heroContent = {
     href: '#features',
   },
   metrics: [
-    { value: '12k+', label: 'Ersteinschätzungen durchgeführt' },
+    { value: 'PHQ-9 & GAD-7', label: 'Validierte Tests' },
     { value: '< 5 Min.', label: 'bis zu deinem persönlichen Ergebnis' },
-    { value: 'Ampel-Logik', label: 'Klare Handlungsempfehlungen' },
+    { value: 'Ampel-Logik', label: 'Grün • Gelb • Rot' },
   ],
 }
 

@@ -325,7 +325,7 @@ Bei jedem Push/PR laufen automatisch:
 **Production (main):**
 - Automatisch bei Merge in `main`
 - Vercel deployed automatisch
-- Domain: `https://findmytherapy.health`
+- Domain: `https://findmytherapy.net`
 
 **Preview (PRs):**
 - Automatisch für jeden PR

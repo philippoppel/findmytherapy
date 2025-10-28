@@ -42,7 +42,7 @@ export default function TermsPage() {
         <h2 className="text-lg font-semibold text-info-900">Widerruf & Support</h2>
         <p className="mt-2">
           Du kannst digitale Produkte innerhalb von 14 Tagen widerrufen, sofern du noch keine Inhalte abgeschlossen hast. Kontaktiere uns unter{' '}
-          <a className="underline" href="mailto:support@findmytherapy.health">support@findmytherapy.health</a>.
+          <a className="underline" href="mailto:support@findmytherapy.net">support@findmytherapy.net</a>.
         </p>
       </section>
     </main>

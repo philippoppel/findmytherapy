@@ -133,11 +133,11 @@ export function CrisisResources({ showCareTeamContact = true, className = '' }: 
                   <p className="mt-0.5 text-xs text-muted">{contact.description}</p>
                   <p className="mt-1 text-xs text-muted">Verfügbar: {contact.available}</p>
                 </div>
-                <div className="text-right">
+                <div className="flex flex-col items-end gap-2">
                   {contact.number && (
                     <a
                       href={`tel:${contact.number.replace(/\s/g, '')}`}
-                      className="inline-flex items-center gap-1 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-md transition hover:bg-red-600"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-md transition hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                     >
                       <Phone className="h-4 w-4" aria-hidden />
                       {contact.number}
@@ -148,10 +148,10 @@ export function CrisisResources({ showCareTeamContact = true, className = '' }: 
                       href={contact.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                      className="inline-flex items-center gap-1.5 rounded-lg border-2 border-teal-600 bg-white px-3 py-1.5 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
                     >
                       Website
-                      <ExternalLink className="h-3 w-3" aria-hidden />
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                     </a>
                   )}
                 </div>
