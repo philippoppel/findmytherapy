@@ -18,7 +18,7 @@ jest.mock('next-auth/react', () => ({
   signIn: jest.fn(),
 }))
 
-jest.mock('../../lib/analytics', () => ({
+jest.mock('../../../lib/analytics', () => ({
   track: jest.fn(),
 }))
 

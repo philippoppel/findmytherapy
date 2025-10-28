@@ -1,10 +1,10 @@
 'use client'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { RegistrationForm } from './RegistrationForm'
 
-jest.mock('../../lib/analytics', () => ({
+jest.mock('../../../lib/analytics', () => ({
   track: jest.fn(),
 }))
 
@@ -86,5 +86,165 @@ describe('RegistrationForm', () => {
         method: 'POST',
       })
     )
+  })
+
+  it('should render all required form fields for therapist registration', () => {
+    render(<RegistrationForm />)
+
+    expect(screen.getByLabelText(/Vorname/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Nachname/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/^E-Mail$/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Passwort$/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Passwort bestätigen/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Praxisstandort/i)).toBeInTheDocument()
+  })
+
+  it('should show error message when passwords do not match', async () => {
+    render(<RegistrationForm />)
+
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Test' } })
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'User' } })
+    fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/Passwort$/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Passwort bestätigen/i), { target: { value: 'DifferentPassword123!' } })
+    fireEvent.change(screen.getByLabelText(/Praxisstandort/i), { target: { value: 'Wien' } })
+
+    fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Passwörter stimmen nicht überein/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should show error message when password is too short', async () => {
+    render(<RegistrationForm />)
+
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Test' } })
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'User' } })
+    fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/Passwort$/i), { target: { value: 'short' } })
+    fireEvent.change(screen.getByLabelText(/Passwort bestätigen/i), { target: { value: 'short' } })
+    fireEvent.change(screen.getByLabelText(/Praxisstandort/i), { target: { value: 'Wien' } })
+
+    fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/mindestens 8 Zeichen/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should show error message when email is invalid', async () => {
+    render(<RegistrationForm />)
+
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Test' } })
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'User' } })
+    fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'invalid-email' } })
+    fireEvent.change(screen.getByLabelText(/Passwort$/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Passwort bestätigen/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Praxisstandort/i), { target: { value: 'Wien' } })
+
+    fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/gültige E-Mail/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should show error message when required fields are missing', async () => {
+    render(<RegistrationForm />)
+
+    const submitButton = screen.getByRole('button', { name: /Registrierung abschließen/i })
+    fireEvent.click(submitButton)
+
+    // Check that form doesn't submit successfully when required fields are empty
+    await waitFor(() => {
+      expect(fetchMock).not.toHaveBeenCalled()
+    })
+  })
+
+  it('should disable submit button while submitting', async () => {
+    fetchMock.mockImplementation(() => new Promise(() => {})) // Never resolves
+
+    render(<RegistrationForm />)
+
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Test' } })
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'User' } })
+    fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/Passwort$/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Passwort bestätigen/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Praxisstandort/i), { target: { value: 'Wien' } })
+
+    fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+
+    const submitButton = screen.getByRole('button', { name: /Registrierung abschließen/i })
+    fireEvent.click(submitButton)
+
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled()
+    })
+  })
+
+  it('should handle API error responses', async () => {
+    fetchMock.mockResolvedValueOnce(
+      mockFetchResponse({ error: 'Email already exists' }, 400)
+    )
+
+    render(<RegistrationForm />)
+
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Test' } })
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'User' } })
+    fireEvent.change(screen.getByLabelText(/^E-Mail$/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/Passwort$/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Passwort bestätigen/i), { target: { value: 'Password123!' } })
+    fireEvent.change(screen.getByLabelText(/Praxisstandort/i), { target: { value: 'Wien' } })
+
+    fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Ein Fehler ist aufgetreten|Email already exists/i)).toBeInTheDocument()
+    }, { timeout: 3000 })
+  })
+
+  it('should allow selecting multiple specialties', () => {
+    render(<RegistrationForm />)
+
+    const depressionButton = screen.getByRole('button', { name: /Depression & Burnout/i })
+    const anxietyButton = screen.getByRole('button', { name: /Angst & Panik/i })
+
+    fireEvent.click(depressionButton)
+    fireEvent.click(anxietyButton)
+
+    expect(depressionButton.className).toContain('bg-primary')
+    expect(anxietyButton.className).toContain('bg-primary')
+  })
+
+  it('should allow selecting modality format', () => {
+    render(<RegistrationForm />)
+
+    const onlineButton = screen.getByRole('button', { name: /Online/i })
+    fireEvent.click(onlineButton)
+
+    expect(onlineButton.className).toMatch(/bg-(primary|secondary)/)
+  })
+
+  it('should switch between different roles', () => {
+    render(<RegistrationForm />)
+
+    const roleSelect = screen.getByLabelText(/Ich interessiere mich als/i)
+
+    fireEvent.change(roleSelect, { target: { value: 'ORGANISATION' } })
+    expect(screen.getByLabelText(/Unternehmen \/ Organisation/i)).toBeInTheDocument()
+
+    fireEvent.change(roleSelect, { target: { value: 'PRIVATE' } })
+    expect(screen.queryByLabelText(/Praxisstandort/i)).not.toBeInTheDocument()
   })
 })
