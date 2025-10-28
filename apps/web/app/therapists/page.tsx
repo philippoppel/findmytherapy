@@ -5,6 +5,9 @@ import { Compass, Sparkles } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 
+// Force dynamic rendering to prevent database access during build
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Therapeut:innen entdecken – FindMyTherapy',
   description:
