@@ -199,7 +199,7 @@ jobs:
       - name: Run integration tests
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/integration_test_db
-        run: pnpm --filter web test -- tests/integration --coverage
+        run: pnpm --filter web test -- tests/integration --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next" --testEnvironment=node
 
       - name: Upload integration test results
         if: always()
