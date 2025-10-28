@@ -289,7 +289,7 @@ jobs:
           pnpm --filter web build
           pnpm --filter web start &
           sleep 15
-          pnpm e2e -- --grep-invert "@visual"
+          pnpm e2e
 
       - name: Upload E2E test results
         if: always()
