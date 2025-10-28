@@ -89,7 +89,7 @@ jobs:
       - name: Run unit tests
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/test_db
-        run: pnpm --filter web test -- --testPathIgnorePatterns=integration --coverage --passWithNoTests
+        run: pnpm --filter web test -- --coverage --passWithNoTests
 
       - name: Run UI package tests
         run: |
