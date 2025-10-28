@@ -21,6 +21,10 @@ import { AssessmentSection } from '../components/marketing/AssessmentSection'
 import { AssessmentExplainer } from '../components/marketing/AssessmentExplainer'
 import { TherapistSearch } from '../components/marketing/TherapistSearch'
 
+// ISR (Incremental Static Regeneration): Regenerate page every 5 minutes
+// This ensures fast page loads while keeping therapist data relatively fresh
+export const revalidate = 300 // 5 minutes
+
 export const metadata: Metadata = {
   title: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching',
   description:
