@@ -284,6 +284,7 @@ jobs:
           S3_ACCESS_KEY_ID: test-access-key
           S3_SECRET_ACCESS_KEY: test-secret-key
           APP_BASE_URL: http://localhost:3000
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
         run: |
           pnpm --filter web build
           pnpm --filter web start &
@@ -374,6 +375,7 @@ jobs:
           S3_ACCESS_KEY_ID: test-access-key
           S3_SECRET_ACCESS_KEY: test-secret-key
           APP_BASE_URL: http://localhost:3000
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
         run: |
           pnpm --filter web build
           pnpm --filter web start &
