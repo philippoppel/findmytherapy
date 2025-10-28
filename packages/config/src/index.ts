@@ -58,6 +58,43 @@ type Env = z.infer<typeof envSchema>;
 
 let cachedEnv: Env | null = null;
 
+const toBoolean = (value: string | undefined): boolean =>
+  value === 'true' || value === '1';
+
+const buildFallbackEnvInput = (
+  sanitizedEnv: Record<string, string | undefined>,
+  nodeEnv: string
+) => ({
+  NODE_ENV: nodeEnv,
+  DATABASE_URL:
+    sanitizedEnv.DATABASE_URL ?? 'postgresql://postgres:password@localhost:5432/mental_health_dev',
+  REDIS_URL: sanitizedEnv.REDIS_URL ?? 'redis://localhost:6379',
+  NEXTAUTH_URL: sanitizedEnv.NEXTAUTH_URL ?? 'http://localhost:3000',
+  NEXTAUTH_SECRET:
+    sanitizedEnv.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
+  EMAIL_FROM: sanitizedEnv.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
+  EMAIL_PROVIDER_API_KEY: sanitizedEnv.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
+  EMAIL_SMTP_HOST: sanitizedEnv.EMAIL_SMTP_HOST ?? 'localhost',
+  EMAIL_SMTP_PORT: sanitizedEnv.EMAIL_SMTP_PORT ?? '1025',
+  EMAIL_SMTP_USER: sanitizedEnv.EMAIL_SMTP_USER ?? '',
+  EMAIL_SMTP_PASS: sanitizedEnv.EMAIL_SMTP_PASS ?? '',
+  STRIPE_SECRET_KEY: sanitizedEnv.STRIPE_SECRET_KEY ?? 'sk_test_dummy',
+  STRIPE_PUBLISHABLE_KEY: sanitizedEnv.STRIPE_PUBLISHABLE_KEY ?? 'pk_test_dummy',
+  STRIPE_WEBHOOK_SECRET: sanitizedEnv.STRIPE_WEBHOOK_SECRET ?? 'whsec_test_dummy',
+  STRIPE_CONNECT_CLIENT_ID: sanitizedEnv.STRIPE_CONNECT_CLIENT_ID ?? 'ca_test_dummy',
+  STRIPE_PRICE_LISTING_MONTHLY:
+    sanitizedEnv.STRIPE_PRICE_LISTING_MONTHLY ?? 'price_listing_monthly_test',
+  STRIPE_PRICE_LISTING_YEARLY:
+    sanitizedEnv.STRIPE_PRICE_LISTING_YEARLY ?? 'price_listing_yearly_test',
+  STRIPE_TAX_ENABLED: sanitizedEnv.STRIPE_TAX_ENABLED ?? 'false',
+  S3_ENDPOINT: sanitizedEnv.S3_ENDPOINT ?? 'http://localhost:9000',
+  S3_REGION: sanitizedEnv.S3_REGION ?? 'eu-central-1',
+  S3_BUCKET: sanitizedEnv.S3_BUCKET ?? 'mental-health-platform',
+  S3_ACCESS_KEY_ID: sanitizedEnv.S3_ACCESS_KEY_ID ?? 'minio',
+  S3_SECRET_ACCESS_KEY: sanitizedEnv.S3_SECRET_ACCESS_KEY ?? 'minio-secret',
+  APP_BASE_URL: sanitizedEnv.APP_BASE_URL ?? 'http://localhost:3000',
+});
+
 export const loadEnv = (): Env => {
   if (cachedEnv) {
     return cachedEnv;
@@ -84,40 +121,21 @@ export const env = (() => {
   } catch (error) {
     const sanitizedEnv = sanitizeProcessEnv(process.env);
     const nodeEnv = sanitizedEnv.NODE_ENV ?? 'development';
+    const nextPhase = sanitizedEnv.NEXT_PHASE ?? '';
+    const allowIncompleteEnv = toBoolean(sanitizedEnv.ALLOW_INCOMPLETE_ENV);
+    const isBuildPhase =
+      nextPhase === 'phase-production-build' || nextPhase === 'phase-development-build';
 
-    if (nodeEnv !== 'production') {
-      console.warn('[config] Environment not fully configured yet:', (error as Error).message);
-      return envSchema.parse({
-        NODE_ENV: nodeEnv,
-        DATABASE_URL:
-          sanitizedEnv.DATABASE_URL ??
-          'postgresql://postgres:password@localhost:5432/mental_health_dev',
-        REDIS_URL: sanitizedEnv.REDIS_URL ?? 'redis://localhost:6379',
-        NEXTAUTH_URL: sanitizedEnv.NEXTAUTH_URL ?? 'http://localhost:3000',
-        NEXTAUTH_SECRET:
-          sanitizedEnv.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
-        EMAIL_FROM: sanitizedEnv.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
-        EMAIL_PROVIDER_API_KEY: sanitizedEnv.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
-        EMAIL_SMTP_HOST: sanitizedEnv.EMAIL_SMTP_HOST ?? 'localhost',
-        EMAIL_SMTP_PORT: sanitizedEnv.EMAIL_SMTP_PORT ?? '1025',
-        EMAIL_SMTP_USER: sanitizedEnv.EMAIL_SMTP_USER ?? '',
-        EMAIL_SMTP_PASS: sanitizedEnv.EMAIL_SMTP_PASS ?? '',
-        STRIPE_SECRET_KEY: sanitizedEnv.STRIPE_SECRET_KEY ?? 'sk_test_dummy',
-        STRIPE_PUBLISHABLE_KEY: sanitizedEnv.STRIPE_PUBLISHABLE_KEY ?? 'pk_test_dummy',
-        STRIPE_WEBHOOK_SECRET: sanitizedEnv.STRIPE_WEBHOOK_SECRET ?? 'whsec_test_dummy',
-        STRIPE_CONNECT_CLIENT_ID: sanitizedEnv.STRIPE_CONNECT_CLIENT_ID ?? 'ca_test_dummy',
-        STRIPE_PRICE_LISTING_MONTHLY:
-          sanitizedEnv.STRIPE_PRICE_LISTING_MONTHLY ?? 'price_listing_monthly_test',
-        STRIPE_PRICE_LISTING_YEARLY:
-          sanitizedEnv.STRIPE_PRICE_LISTING_YEARLY ?? 'price_listing_yearly_test',
-        STRIPE_TAX_ENABLED: sanitizedEnv.STRIPE_TAX_ENABLED ?? 'false',
-        S3_ENDPOINT: sanitizedEnv.S3_ENDPOINT ?? 'http://localhost:9000',
-        S3_REGION: sanitizedEnv.S3_REGION ?? 'eu-central-1',
-        S3_BUCKET: sanitizedEnv.S3_BUCKET ?? 'mental-health-platform',
-        S3_ACCESS_KEY_ID: sanitizedEnv.S3_ACCESS_KEY_ID ?? 'minio',
-        S3_SECRET_ACCESS_KEY: sanitizedEnv.S3_SECRET_ACCESS_KEY ?? 'minio-secret',
-        APP_BASE_URL: sanitizedEnv.APP_BASE_URL ?? 'http://localhost:3000',
-      });
+    if (nodeEnv !== 'production' || isBuildPhase || allowIncompleteEnv) {
+      const reason =
+        nodeEnv !== 'production'
+          ? '[config] Environment not fully configured yet:'
+          : isBuildPhase
+              ? '[config] NEXT_PHASE indicates build step – using fallback environment values:'
+              : '[config] ALLOW_INCOMPLETE_ENV=1 detected – using fallback environment values:';
+      console.warn(reason, (error as Error).message);
+
+      return envSchema.parse(buildFallbackEnvInput(sanitizedEnv, nodeEnv));
     }
 
     throw error;
