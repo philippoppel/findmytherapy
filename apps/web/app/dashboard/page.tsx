@@ -1,6 +1,9 @@
 import { redirect } from 'next/navigation'
 import { auth } from '../../lib/auth'
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const session = await auth()
 

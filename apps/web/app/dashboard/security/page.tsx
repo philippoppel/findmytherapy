@@ -2,6 +2,9 @@ import { requireRoles } from '../../../lib/auth-guards';
 import { prisma } from '@/lib/prisma';
 import { SecuritySettings } from '../../../components/security/totp-settings';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const ALLOWED_ROLES: import('@/lib/prisma').UserRole[] = ['THERAPIST', 'ADMIN'];
 
 export default async function SecurityPage() {

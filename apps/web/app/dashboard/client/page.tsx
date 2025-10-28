@@ -5,6 +5,9 @@ import { ArrowRight, BookOpenCheck, CalendarHeart, CheckCircle2, Compass, Sparkl
 
 import { requireClient } from '../../../lib/auth-guards';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const formatCurrency = (value: number, currency: string) =>
   new Intl.NumberFormat('de-AT', {
     style: 'currency',

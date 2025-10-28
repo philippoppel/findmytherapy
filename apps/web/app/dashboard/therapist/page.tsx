@@ -4,6 +4,9 @@ import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { Users, BookOpen, Calendar, TrendingUp, Settings, CreditCard, Heart } from 'lucide-react';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const fetchTherapistProfile = async (userId: string) => {
   const profile = await prisma.therapistProfile.findUnique({
     where: { userId },

@@ -8,6 +8,9 @@ import { requireTherapist } from '../../../lib/auth-guards';
 import { formatCurrencyInput, joinList } from '../../../lib/therapist/setcard';
 import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const fetchTherapistProfile = async (userId: string) => {
   return prisma.therapistProfile.findUnique({
     where: { userId },

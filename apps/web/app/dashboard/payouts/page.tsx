@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { CreditCard, Info } from 'lucide-react';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 export default async function PayoutsPage() {
   await requireTherapist();
 

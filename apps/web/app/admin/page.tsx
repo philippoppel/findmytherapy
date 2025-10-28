@@ -3,6 +3,9 @@ import { requireAdmin } from '../../lib/auth-guards';
 import { updateTherapistStatus } from './actions';
 import { Users, Bell, ShieldAlert, TrendingUp } from 'lucide-react';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const fetchAdminData = async () => {
   const [userCount, therapistCount, pendingTherapists, recentAlerts, therapistProfiles] = await Promise.all([
     prisma.user.count(),

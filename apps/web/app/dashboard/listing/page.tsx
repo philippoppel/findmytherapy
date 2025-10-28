@@ -3,6 +3,9 @@ import { requireTherapist } from '../../../lib/auth-guards';
 import { CheckCircle2, TrendingUp, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
+// Force dynamic rendering for auth-protected page
+export const dynamic = 'force-dynamic'
+
 const fetchListingInfo = async (userId: string) => {
   const profile = await prisma.therapistProfile.findUnique({
     where: { userId },
