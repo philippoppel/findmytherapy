@@ -12,7 +12,12 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/$1',
     '^@mental-health/(.*)$': '<rootDir>/../../packages/$1/src',
   },
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/tests/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/tests/visual/',  // Visual tests run with Playwright
+    '<rootDir>/tests/e2e/'      // E2E tests run with Playwright
+  ],
   collectCoverageFrom: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}', 'lib/**/*.{ts,tsx}'],
 }
 
