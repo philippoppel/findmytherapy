@@ -240,6 +240,31 @@ jobs:
     name: Accessibility Tests
     runs-on: ubuntu-latest
     needs: build
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: a11y_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/checkout@v4
 
@@ -258,9 +283,16 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm --filter web exec playwright install --with-deps chromium
 
+      - name: Setup A11Y database
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/a11y_db
+        run: |
+          pnpm db:push
+          pnpm db:seed
+
       - name: Run accessibility tests
         env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/test_db
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/a11y_db
           REDIS_URL: redis://localhost:6379
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: test-secret-key-for-a11y-at-least-32-characters-long

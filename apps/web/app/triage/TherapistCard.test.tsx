@@ -154,17 +154,18 @@ describe('TherapistCard', () => {
       const expandButton = screen.getByRole('button', { name: /alle details anzeigen/i })
       fireEvent.click(expandButton)
 
-      expect(screen.getByText('Online')).toBeInTheDocument()
-      expect(screen.getByText('Hybrid')).toBeInTheDocument()
+      // Check for the expanded details section header
+      expect(screen.getByText(/standort & format/i)).toBeInTheDocument()
+      // Format tags are visible in both collapsed and expanded state, so just check for their presence
+      expect(screen.getAllByText('Online').length).toBeGreaterThan(0)
+      expect(screen.getAllByText('Hybrid').length).toBeGreaterThan(0)
     })
 
     it('should show accepting clients status when expanded', () => {
       render(<TherapistCard therapist={mockTherapist} index={0} />)
 
-      const expandButton = screen.getByRole('button', { name: /alle details anzeigen/i })
-      fireEvent.click(expandButton)
-
-      expect(screen.getByText(/nimmt derzeit neue klient:innen an/i)).toBeInTheDocument()
+      // Accepting clients status is shown in the header, not in expanded details
+      expect(screen.getByText(/nimmt klient:innen auf/i)).toBeInTheDocument()
     })
 
     it('should collapse details when button is clicked again', () => {
@@ -183,40 +184,37 @@ describe('TherapistCard', () => {
   })
 
   describe('Selection Functionality', () => {
-    it('should render selection checkbox when onSelect is provided', () => {
+    it('should render selection button when onSelect is provided', () => {
       const onSelect = jest.fn()
       render(<TherapistCard therapist={mockTherapist} index={0} onSelect={onSelect} />)
 
-      const checkbox = screen.getByRole('button', { name: '' }) // Checkbox button
-      expect(checkbox).toBeInTheDocument()
+      const selectionButton = screen.getByRole('button', { name: /zur gegenüberstellung/i })
+      expect(selectionButton).toBeInTheDocument()
     })
 
-    it('should call onSelect when checkbox is clicked', () => {
+    it('should call onSelect when selection button is clicked', () => {
       const onSelect = jest.fn()
       render(<TherapistCard therapist={mockTherapist} index={0} onSelect={onSelect} />)
 
-      const checkboxes = screen.getAllByRole('button')
-      const selectionCheckbox = checkboxes.find(btn => btn.classList.contains('h-6'))
-
-      fireEvent.click(selectionCheckbox!)
+      const selectionButton = screen.getByRole('button', { name: /zur gegenüberstellung/i })
+      fireEvent.click(selectionButton)
 
       expect(onSelect).toHaveBeenCalledWith('therapist-1')
     })
 
     it('should show selected state when isSelected is true', () => {
       const onSelect = jest.fn()
-      const { container } = render(
+      render(
         <TherapistCard therapist={mockTherapist} index={0} isSelected={true} onSelect={onSelect} />
       )
 
-      expect(container.querySelector('.ring-blue-500')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /zum vergleich hinzugefügt/i })).toBeInTheDocument()
     })
 
-    it('should NOT render selection checkbox when onSelect is not provided', () => {
+    it('should NOT render selection button when onSelect is not provided', () => {
       render(<TherapistCard therapist={mockTherapist} index={0} />)
 
-      const checkboxes = screen.queryAllByRole('button').filter(btn => btn.classList.contains('h-6'))
-      expect(checkboxes).toHaveLength(0)
+      expect(screen.queryByRole('button', { name: /zur gegenüberstellung/i })).not.toBeInTheDocument()
     })
   })
 
@@ -225,7 +223,7 @@ describe('TherapistCard', () => {
       render(<TherapistCard therapist={mockTherapist} index={0} embedded={false} />)
 
       const profileLink = screen.getByRole('link', { name: /profil ansehen/i })
-      expect(profileLink).toHaveAttribute('href', '/therapists/therapist-1')
+      expect(profileLink).toHaveAttribute('href', '/therapists/therapist-1?from=triage')
     })
 
     it('should NOT show profile link when embedded', () => {

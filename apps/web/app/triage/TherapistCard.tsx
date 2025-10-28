@@ -170,7 +170,7 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           {therapist.services && therapist.services.length > 0 ? (
             <div className="flex flex-wrap gap-2 text-xs text-muted">
-              {therapist.services.slice(0, 3).map((service) => (
+              {therapist.services.slice(0, 2).map((service) => (
                 <span key={service} className="rounded-full border border-divider px-3 py-1">
                   {service}
                 </span>

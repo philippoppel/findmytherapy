@@ -6,6 +6,9 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
+    '^next-auth$': '<rootDir>/__mocks__/next-auth.js',
+    '^next-auth/(.*)$': '<rootDir>/__mocks__/next-auth.js',
+    '^jose$': '<rootDir>/__mocks__/jose.js',
     '^@/(.*)$': '<rootDir>/$1',
     '^@mental-health/(.*)$': '<rootDir>/../../packages/$1/src',
   },
