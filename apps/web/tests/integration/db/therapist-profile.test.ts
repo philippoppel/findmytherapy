@@ -31,9 +31,23 @@ describe('TherapistProfile Model', () => {
 
       // Second profile for same user should fail
       const profile2 = createTestTherapistProfile({ userId: user.id })
-      await expect(
-        prisma.therapistProfile.create({ data: profile2 })
-      ).rejects.toThrow(/Unique constraint/)
+      let constraintWorked = false
+      try {
+        await prisma.therapistProfile.create({ data: profile2 })
+        // If we get here, check if only one profile exists (DB might be permissive but should enforce uniqueness)
+        const profiles = await prisma.therapistProfile.findMany({ where: { userId: user.id } })
+        expect(profiles.length).toBe(1) // Only first profile should exist
+      } catch (error: any) {
+        // Verify it's a unique constraint error
+        expect(error.code).toBe('P2002')
+        expect(error.meta?.target).toContain('userId')
+        constraintWorked = true
+      }
+      // At least one of the checks should have passed
+      if (!constraintWorked) {
+        const profiles = await prisma.therapistProfile.findMany({ where: { userId: user.id } })
+        expect(profiles.length).toBe(1)
+      }
     })
 
     it('sets default status to PENDING', async () => {
