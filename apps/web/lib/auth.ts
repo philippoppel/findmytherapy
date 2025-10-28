@@ -45,7 +45,7 @@ const authConfig: NextAuthConfig = {
   },
   jwt: {
     // Use custom encode/decode to match our custom login endpoint's encryption
-    encode: async ({ token, secret }) => {
+    encode: async ({ token, secret: _secret }) => {
       if (!token) {
         throw new Error('No token to encode');
       }
@@ -58,7 +58,7 @@ const authConfig: NextAuthConfig = {
         .setExpirationTime('30d')
         .encrypt(encryptionSecret);
     },
-    decode: async ({ token, secret }) => {
+    decode: async ({ token, secret: _secret }) => {
       if (!token) {
         return null;
       }

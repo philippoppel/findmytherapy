@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 
 import { notFound } from 'next/navigation';
-import { CalendarDays, Clock3, Euro, Globe2, Languages, MapPin, PencilLine, ShieldCheck, Sparkles, UsersRound } from 'lucide-react';
+import { CalendarDays, Clock3, Euro, Globe2, MapPin, ShieldCheck, UsersRound } from 'lucide-react';
 
 import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
@@ -42,14 +42,7 @@ const formatCurrency = (value?: number | null) => {
   }).format(value / 100);
 };
 
-const formatListShort = (values?: string[] | null) => {
-  if (!values || values.length === 0) {
-    return '–';
-  }
-
-  const display = values.slice(0, 3).join(', ');
-  return values.length > 3 ? `${display} …` : display;
-};
+// Removed unused function formatListShort
 
 const statusTone: Record<string, string> = {
   VERIFIED: 'bg-success-50 text-success-700 border-success-200',

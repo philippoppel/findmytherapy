@@ -20,11 +20,12 @@ const statusLabel: Record<TherapistStatus, string> = {
   REJECTED: 'Nicht gelistet',
 }
 
-const statusTone: Record<TherapistStatus, string> = {
-  VERIFIED: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  PENDING: 'bg-amber-100 text-amber-900 border-amber-200',
-  REJECTED: 'bg-red-100 text-red-800 border-red-200',
-}
+// Removed unused variable statusTone
+// const statusTone: Record<TherapistStatus, string> = {
+//   VERIFIED: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+//   PENDING: 'bg-amber-100 text-amber-900 border-amber-200',
+//   REJECTED: 'bg-red-100 text-red-800 border-red-200',
+// }
 
 export type TherapistCard = {
   id: string

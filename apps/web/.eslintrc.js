@@ -1,3 +1,7 @@
 module.exports = {
-  extends: [require.resolve('../../packages/eslint-config'), 'next/core-web-vitals'],
+  extends: ['next/core-web-vitals'],
+  rules: {
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-explicit-any': 'error',
+  },
 };
