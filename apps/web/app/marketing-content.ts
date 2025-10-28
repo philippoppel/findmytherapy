@@ -30,7 +30,7 @@ export const heroContent = {
   metrics: [
     { value: '12k+', label: 'Ersteinschätzungen durchgeführt' },
     { value: '< 5 Min.', label: 'bis zu deinem persönlichen Ergebnis' },
-    { value: 'Ampel-Logik', label: 'Grün • Gelb • Rot mit klaren nächsten Schritten' },
+    { value: 'Ampel-Logik', label: 'Klare Handlungsempfehlungen' },
   ],
 }
 

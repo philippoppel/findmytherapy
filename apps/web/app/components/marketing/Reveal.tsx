@@ -21,10 +21,30 @@ export function Reveal({
 }: RevealProps) {
   const ref = useRef<Element | null>(null)
   const [visible, setVisible] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   useEffect(() => {
     const element = ref.current
     if (!element) return
+
+    // If user prefers reduced motion, show immediately
+    if (prefersReducedMotion) {
+      setVisible(true)
+      return
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -41,7 +61,7 @@ export function Reveal({
     observer.observe(element)
 
     return () => observer.disconnect()
-  }, [])
+  }, [prefersReducedMotion])
 
   const variantClasses =
     variant === 'scale'
@@ -50,21 +70,29 @@ export function Reveal({
 
   const visibleClasses = 'opacity-100 translate-y-0 scale-100'
 
+  // Reduce delay on mobile
+  const effectiveDelay = prefersReducedMotion ? 0 : delay
+
   return (
     <Component
       ref={(node: Element | null) => {
         ref.current = node
       }}
       className={cn(
-        'transition-all duration-1000 will-change-transform',
-        !visible && variantClasses,
+        prefersReducedMotion ? '' : 'transition-all duration-1000 md:duration-1000 will-change-transform motion-reduce:transition-none',
+        !visible && !prefersReducedMotion && variantClasses,
         visible && visibleClasses,
+        prefersReducedMotion && 'opacity-100',
         className,
       )}
-      style={{
-        transitionDelay: `${delay}ms`,
-        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
-      }}
+      style={
+        prefersReducedMotion
+          ? undefined
+          : {
+              transitionDelay: `${effectiveDelay}ms`,
+              transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            }
+      }
     >
       {children}
     </Component>
