@@ -50,6 +50,15 @@ const initialAnswers: Answers = {
   availability: [],
 }
 
+type AssessmentType = 'screening' | 'full'
+
+type ScreeningResult = {
+  phq2Score: number
+  gad2Score: number
+  message: string
+  interpretation: string
+}
+
 type TherapistRecommendation = {
   id: string
   name: string
@@ -106,6 +115,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
+  const [assessmentType, setAssessmentType] = useState<AssessmentType>('screening')
+  const [screeningResult, setScreeningResult] = useState<ScreeningResult | null>(null)
 
   // Calculate adaptive flow
   const adaptiveFlow = useMemo(() => {
@@ -185,14 +196,25 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   }
 
   const checkExpansionNeeded = () => {
-    const { needsFullPHQ9, needsFullGAD7 } = adaptiveFlow
+    const { needsFullPHQ9, needsFullGAD7, phq2Score, gad2Score } = adaptiveFlow
 
     if (needsFullPHQ9 || needsFullGAD7) {
+      // Scores are ≥3, need full assessment
+      setAssessmentType('full')
       setCurrentPhase('expanded')
       setExpandedSections({ phq9: needsFullPHQ9, gad7: needsFullGAD7 })
       setQuestionIndex(0)
     } else {
-      // No expansion needed, go to preferences
+      // Scores are <3, screening is negative
+      // DO NOT pad with zeros - this is scientifically incorrect
+      // Show screening-only result
+      setAssessmentType('screening')
+      setScreeningResult({
+        phq2Score,
+        gad2Score,
+        message: 'Screening unauffällig',
+        interpretation: 'Basierend auf dem validierten Kurzscreening (PHQ-2/GAD-2) zeigen sich aktuell minimale Symptome.',
+      })
       setCurrentPhase('preferences')
       setQuestionIndex(0)
     }
@@ -266,10 +288,12 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
+    setAssessmentType('screening')
+    setScreeningResult(null)
     sessionStorage.removeItem('triage-session')
   }
 
-  // Calculate final scores
+  // Calculate final scores ONLY for full assessment
   const {
     phq9Score,
     gad7Score,
@@ -281,11 +305,29 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     phq9Item9Score,
     hasSuicidalIdeation,
   } = useMemo(() => {
+    // Only calculate full scores if we have full data
+    // For partial expansion: pad the non-expanded side with zeros (scientifically acceptable for negative screening)
     const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
     const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
 
-    const phq9Total = fullPHQ9Answers.reduce((sum, val) => sum + (val || 0), 0)
-    const gad7Total = fullGAD7Answers.reduce((sum, val) => sum + (val || 0), 0)
+    // If this is a screening-only result (no expansion), don't calculate severity
+    // Use minimal values as placeholder (will not be displayed for screening-only)
+    if (assessmentType === 'screening') {
+      return {
+        phq9Score: 0,
+        gad7Score: 0,
+        phq9Severity: 'minimal' as const,
+        gad7Severity: 'minimal' as const,
+        riskLevel: 'LOW' as const,
+        ampelColor: 'green' as const,
+        requiresEmergency: false,
+        phq9Item9Score: 0,
+        hasSuicidalIdeation: false,
+      }
+    }
+
+    const phq9Total = fullPHQ9Answers.reduce((sum, val) => sum + (val ?? 0), 0)
+    const gad7Total = fullGAD7Answers.reduce((sum, val) => sum + (val ?? 0), 0)
     const item9Score = fullPHQ9Answers[8] ?? 0
 
     const phq9Sev = calculatePHQ9Severity(phq9Total)
@@ -303,7 +345,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       phq9Item9Score: item9Score,
       hasSuicidalIdeation: risk.hasSuicidalIdeation,
     }
-  }, [answers])
+  }, [answers, assessmentType])
 
   const persistResults = useCallback(
     async ({ force = false }: { force?: boolean } = {}) => {
@@ -313,70 +355,116 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
         setTimeout(() => {
           setHasPersisted(true)
           track('triage_completed', {
-            phq9Score,
-            gad7Score,
-            riskLevel,
+            assessmentType,
+            phq9Score: assessmentType === 'full' ? phq9Score : undefined,
+            gad7Score: assessmentType === 'full' ? gad7Score : undefined,
+            phq2Score: screeningResult?.phq2Score,
+            gad2Score: screeningResult?.gad2Score,
+            riskLevel: assessmentType === 'full' ? riskLevel : undefined,
             source: 'embedded',
-            requiresEmergency,
-            hasSuicidalIdeation,
+            requiresEmergency: assessmentType === 'full' ? requiresEmergency : false,
+            hasSuicidalIdeation: assessmentType === 'full' ? hasSuicidalIdeation : false,
           })
         }, 1000)
         return
       }
 
       try {
-        const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
-        const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
+        if (assessmentType === 'screening') {
+          // For screening-only: send minimal data
+          const response = await fetch('/api/triage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              assessmentType: 'screening',
+              phq2Answers: answers.phq2,
+              gad2Answers: answers.gad2,
+              phq2Score: screeningResult!.phq2Score,
+              gad2Score: screeningResult!.gad2Score,
+              supportPreferences: answers.support,
+              availability: answers.availability,
+            }),
+          })
 
-        // Pad with zeros if not full questionnaires
-        while (fullPHQ9Answers.length < 9) fullPHQ9Answers.push(0)
-        while (fullGAD7Answers.length < 7) fullGAD7Answers.push(0)
+          const data = await response.json()
 
-        const response = await fetch('/api/triage', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phq9Answers: fullPHQ9Answers,
-            gad7Answers: fullGAD7Answers,
+          if (!response.ok) {
+            throw new Error(data.message || 'Fehler beim Speichern')
+          }
+
+          // Screening-only: no therapist/course recommendations
+          setRecommendations({
+            therapists: [],
+            courses: [],
+          })
+
+          track('triage_completed', {
+            assessmentType: 'screening',
+            phq2Score: screeningResult!.phq2Score,
+            gad2Score: screeningResult!.gad2Score,
+            adaptive: true,
+          })
+        } else {
+          // Full assessment: send complete data
+          const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
+          const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
+
+          // Handle partial expansion: pad with zeros where screening was negative
+          // This is scientifically acceptable because:
+          // - If PHQ-2 <3: screening was negative → padding remaining 7 items with 0 is valid
+          // - If GAD-2 <3: screening was negative → padding remaining 5 items with 0 is valid
+          while (fullPHQ9Answers.length < 9) fullPHQ9Answers.push(0)
+          while (fullGAD7Answers.length < 7) fullGAD7Answers.push(0)
+
+          const response = await fetch('/api/triage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              assessmentType: 'full',
+              phq9Answers: fullPHQ9Answers,
+              gad7Answers: fullGAD7Answers,
+              phq9Score,
+              gad7Score,
+              phq9Severity,
+              gad7Severity,
+              supportPreferences: answers.support,
+              availability: answers.availability,
+              riskLevel,
+              requiresEmergency,
+              phq9Item9Score,
+              hasSuicidalIdeation,
+            }),
+          })
+
+          const data = await response.json()
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Fehler beim Speichern')
+          }
+
+          setRecommendations({
+            therapists: data.recommendations?.therapists || [],
+            courses: data.recommendations?.courses || [],
+          })
+
+          track('triage_completed', {
+            assessmentType: 'full',
             phq9Score,
             gad7Score,
             phq9Severity,
             gad7Severity,
-            supportPreferences: answers.support,
-            availability: answers.availability,
             riskLevel,
             requiresEmergency,
-            phq9Item9Score,
             hasSuicidalIdeation,
-          }),
-        })
-
-        const data = await response.json()
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Fehler beim Speichern')
+            adaptive: true,
+          })
         }
-
-        setRecommendations({
-          therapists: data.recommendations?.therapists || [],
-          courses: data.recommendations?.courses || [],
-        })
-
-        track('triage_completed', {
-          phq9Score,
-          gad7Score,
-          phq9Severity,
-          gad7Severity,
-          riskLevel,
-          requiresEmergency,
-          hasSuicidalIdeation,
-          adaptive: true,
-        })
       } catch (error) {
         console.error('Failed to persist triage results', error)
         track('triage_save_failed', {
           message: error instanceof Error ? error.message : 'unknown',
           adaptive: true,
+          assessmentType,
         })
       } finally {
         setHasPersisted(true)
@@ -384,6 +472,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     },
     [
       answers,
+      assessmentType,
+      screeningResult,
       phq9Score,
       gad7Score,
       phq9Severity,
@@ -445,6 +535,124 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
   // Summary view
   if (showSummary) {
+    // Screening-only summary
+    if (assessmentType === 'screening' && screeningResult) {
+      return (
+        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
+            <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+          </div>
+          <div className="relative mx-auto max-w-3xl space-y-6 px-4">
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <Button
+                variant="ghost"
+                onClick={resetFlow}
+                className="inline-flex items-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Neue Einschätzung
+              </Button>
+              <Link
+                href="/"
+                className="text-sm font-medium text-white/70 transition hover:text-white"
+              >
+                Zur Startseite
+              </Link>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
+              <header className="mb-6">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+                  <CheckCircle2 className="h-4 w-4" aria-hidden />
+                  {screeningResult.message}
+                </div>
+                <h3 className="mt-4 text-3xl font-bold text-white">Dein Screening-Ergebnis</h3>
+                <p className="mt-2 text-white/80">{screeningResult.interpretation}</p>
+              </header>
+
+              <div className="rounded-2xl border border-blue-400/20 bg-blue-500/10 p-6">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-blue-300" />
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-white">Wissenschaftlicher Hinweis</h4>
+                    <p className="mt-2 text-sm text-white/80">
+                      PHQ-2 und GAD-2 sind <strong>validierte Screening-Instrumente</strong> mit hoher Sensitivität (PHQ-2: 83%, GAD-2: 86%).
+                      Da deine Scores unter dem Schwellenwert von 3 liegen, wurde das vollständige Assessment nicht durchgeführt.
+                    </p>
+                    <p className="mt-2 text-sm text-white/80">
+                      <strong>Wichtig:</strong> Ein unauffälliges Screening bedeutet nicht zwingend, dass keine Symptome vorliegen.
+                      Falls du trotzdem Unterstützung suchst oder bestimmte Symptome hast, kannst du das vollständige Assessment durchführen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <h4 className="text-sm font-semibold uppercase tracking-wide text-white/70">PHQ-2 Score</h4>
+                  <p className="mt-2 text-3xl font-bold text-white">{screeningResult.phq2Score}/6</p>
+                  <p className="mt-1 text-sm text-white/60">Unter Schwellenwert (&lt; 3)</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <h4 className="text-sm font-semibold uppercase tracking-wide text-white/70">GAD-2 Score</h4>
+                  <p className="mt-2 text-3xl font-bold text-white">{screeningResult.gad2Score}/6</p>
+                  <p className="mt-1 text-sm text-white/60">Unter Schwellenwert (&lt; 3)</p>
+                </div>
+              </div>
+
+              <div className="mt-8 space-y-4">
+                <h4 className="text-lg font-bold text-white">Empfohlene nächste Schritte</h4>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <ul className="space-y-3 text-sm text-white/80">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+                      <span>Pflege deine mentale Gesundheit präventiv durch Bewegung, soziale Kontakte und Schlafhygiene</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+                      <span>Bei Veränderungen oder erhöhter Belastung: Wiederhole das Screening oder mache das vollständige Assessment</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+                      <span>Nutze Ressourcen wie Psychoedukation oder digitale Programme zur Resilienzstärkung</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    // Reset and force full assessment
+                    setAnswers(initialAnswers)
+                    setCurrentPhase('screening')
+                    setScreeningStep('phq2')
+                    setQuestionIndex(0)
+                    setExpandedSections({ phq9: true, gad7: true })
+                    setShowSummary(false)
+                    setAssessmentType('full')
+                    setScreeningResult(null)
+                    setHasPersisted(false)
+                  }}
+                  className="border-white/30 bg-white/10 text-white hover:bg-white/20"
+                >
+                  Vollständiges Assessment durchführen
+                </Button>
+                {!embedded && (
+                  <Button asChild className="bg-teal-400 text-white hover:bg-teal-300">
+                    <Link href="/courses">Präventive Programme ansehen</Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Full assessment summary
     return (
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">

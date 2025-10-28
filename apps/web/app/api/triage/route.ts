@@ -5,7 +5,10 @@ import { z } from 'zod'
 import { captureError } from '../../../lib/monitoring'
 import { auth } from '../../../lib/auth'
 
-const triagePayloadSchema = z.object({
+// Schema for full assessment (all questions answered)
+const fullTriagePayloadSchema = z.object({
+  assessmentType: z.literal('full'),
+
   // PHQ-9 data (9 items, each 0-3)
   phq9Answers: z.array(z.number().int().min(0).max(3)).length(9),
   phq9Score: z.number().int().min(0).max(27),
@@ -26,6 +29,27 @@ const triagePayloadSchema = z.object({
   riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH']),
   requiresEmergency: z.boolean(),
 })
+
+// Schema for screening-only (PHQ-2/GAD-2 only)
+const screeningOnlyPayloadSchema = z.object({
+  assessmentType: z.literal('screening'),
+
+  // PHQ-2 and GAD-2 data
+  phq2Answers: z.array(z.number().int().min(0).max(3)).length(2),
+  gad2Answers: z.array(z.number().int().min(0).max(3)).length(2),
+  phq2Score: z.number().int().min(0).max(6),
+  gad2Score: z.number().int().min(0).max(6),
+
+  // Additional context
+  supportPreferences: z.array(z.string()).default([]),
+  availability: z.array(z.string()).default([]),
+})
+
+// Union of both schemas
+const triagePayloadSchema = z.discriminatedUnion('assessmentType', [
+  fullTriagePayloadSchema,
+  screeningOnlyPayloadSchema,
+])
 
 type TherapistRecommendation = {
   id: string
@@ -82,7 +106,75 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Build recommendations based on new data
+    // Handle screening-only assessment
+    if (payload.assessmentType === 'screening') {
+      // Validate that scores match answers
+      const calculatedPHQ2 = payload.phq2Answers.reduce((sum, val) => sum + val, 0)
+      const calculatedGAD2 = payload.gad2Answers.reduce((sum, val) => sum + val, 0)
+
+      if (calculatedPHQ2 !== payload.phq2Score || calculatedGAD2 !== payload.gad2Score) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Score mismatch: calculated scores do not match provided scores',
+            details: {
+              phq2: { provided: payload.phq2Score, calculated: calculatedPHQ2 },
+              gad2: { provided: payload.gad2Score, calculated: calculatedGAD2 },
+            },
+          },
+          { status: 400 }
+        )
+      }
+
+      // Validate that both scores are <3 (otherwise should be full assessment)
+      if (payload.phq2Score >= 3 || payload.gad2Score >= 3) {
+        console.warn('[TRIAGE] Screening-only submitted with scores ≥3', {
+          phq2Score: payload.phq2Score,
+          gad2Score: payload.gad2Score,
+        })
+        // Don't fail, but log warning - UX might allow override
+      }
+
+      // For screening-only, we don't persist to database or calculate full scores
+      // Just return minimal recommendations
+      return NextResponse.json(
+        {
+          success: true,
+          assessmentType: 'screening',
+          screeningResult: {
+            phq2Score: payload.phq2Score,
+            gad2Score: payload.gad2Score,
+            message: 'Screening unauffällig - keine weiteren Fragen erforderlich',
+            interpretation: 'Basierend auf dem Kurzscreening (PHQ-2/GAD-2) zeigen sich minimale Symptome.',
+          },
+          recommendations: {
+            therapists: [],
+            courses: [],
+          },
+        },
+        { status: 200 }
+      )
+    }
+
+    // Validate full assessment scores
+    const calculatedPHQ9 = payload.phq9Answers.reduce((sum, val) => sum + val, 0)
+    const calculatedGAD7 = payload.gad7Answers.reduce((sum, val) => sum + val, 0)
+
+    if (calculatedPHQ9 !== payload.phq9Score || calculatedGAD7 !== payload.gad7Score) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Score mismatch: calculated scores do not match provided scores',
+          details: {
+            phq9: { provided: payload.phq9Score, calculated: calculatedPHQ9 },
+            gad7: { provided: payload.gad7Score, calculated: calculatedGAD7 },
+          },
+        },
+        { status: 400 }
+      )
+    }
+
+    // Build recommendations based on new data (full assessment only)
     const therapistRecommendations = await buildTherapistRecommendations(payload)
     const courseRecommendations = buildCourseRecommendations(payload)
 
@@ -196,7 +288,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function determineNextStep(payload: z.infer<typeof triagePayloadSchema>): 'INFO' | 'COURSE' | 'THERAPIST' {
+function determineNextStep(payload: z.infer<typeof fullTriagePayloadSchema>): 'INFO' | 'COURSE' | 'THERAPIST' {
   if (payload.hasSuicidalIdeation || payload.requiresEmergency) return 'THERAPIST'
   if (payload.riskLevel === 'HIGH') return 'THERAPIST'
   if (payload.riskLevel === 'MEDIUM') {
@@ -213,7 +305,7 @@ function determineNextStep(payload: z.infer<typeof triagePayloadSchema>): 'INFO'
   return 'INFO'
 }
 
-async function buildTherapistRecommendations(payload: z.infer<typeof triagePayloadSchema>): Promise<TherapistRecommendation[]> {
+async function buildTherapistRecommendations(payload: z.infer<typeof fullTriagePayloadSchema>): Promise<TherapistRecommendation[]> {
   const supportSet = new Set(payload.supportPreferences)
   const availabilitySet = new Set(payload.availability.map((item) => item.toLowerCase()))
   const escalatedNeed = payload.hasSuicidalIdeation || payload.requiresEmergency || payload.riskLevel === 'HIGH'
@@ -352,7 +444,7 @@ async function buildTherapistRecommendations(payload: z.infer<typeof triagePaylo
     .map(({ score: _score, ...rest }) => rest)
 }
 
-function buildCourseRecommendations(payload: z.infer<typeof triagePayloadSchema>): CourseRecommendation[] {
+function buildCourseRecommendations(payload: z.infer<typeof fullTriagePayloadSchema>): CourseRecommendation[] {
   const supportSet = new Set(payload.supportPreferences)
   const publishedCourses = seedCourses.filter((course) => course.status === 'PUBLISHED')
 

@@ -27,7 +27,7 @@ mental-health-platform/
 
 ## ✅ Voraussetzungen
 - Node.js ≥ 20
-- pnpm ≥ 8
+- pnpm ≥ 9
 - Docker & Docker Compose (für Postgres, Redis, Mailhog)
 - Optional: Stripe CLI, falls du Zahlungs-Flows prototypen möchtest (nicht im MVP genutzt)
 
@@ -108,13 +108,42 @@ git push origin main
 - **Monitoring**: Sentry/OTel nur vorbereitet; aktive Integration erst nach MVP.
 
 ## 🧪 Tests & Qualität
-- `pnpm test` – leichte Jest-Coverage (Triage-Flow, Formulare, UI-Tokens).
-- `pnpm e2e` – Playwright Happy Path für Design-Doku & Accessibility.
-- `pnpm lint`, `pnpm format` – Codequalität vor Pushes sicherstellen.
-- Manuelle QA-Checkliste:
-  - Triagedemo funktioniert durchgängig.
-  - Pilot-Profil lässt sich freischalten und taucht im Verzeichnis auf.
-  - Kontaktformular sendet E-Mail (Mailhog prüfen).
+
+### Test-Befehle
+```bash
+pnpm test              # Unit-Tests (Jest)
+pnpm test --coverage   # Mit Coverage-Report
+pnpm e2e               # E2E-Tests (Playwright)
+pnpm e2e:ui            # E2E-Tests mit UI
+pnpm lint              # ESLint
+pnpm format            # Prettier (check mode)
+```
+
+### CI/CD Pipeline
+Automatische Tests laufen bei jedem Push auf GitHub:
+
+✅ **Linting** - ESLint & Prettier
+✅ **Unit Tests** - Jest mit Coverage
+✅ **Build** - Next.js Production Build
+✅ **E2E Tests** - Playwright mit Chromium
+✅ **Accessibility Tests** - Axe-Core Compliance
+✅ **Security Scan** - npm audit & Dependency Check
+
+Pipeline-Status: ![CI/CD](https://github.com/YOUR_USERNAME/mental-health-platform/workflows/CI%2FCD%20Pipeline/badge.svg)
+
+### Test-Coverage
+- **Triage Flow**: Comprehensive Tests mit wissenschaftlicher Validierung
+- **API Routes**: Unit Tests für kritische Endpoints
+- **Forms**: Registrierung & Kontaktformular
+- **UI Components**: Design-System & Accessibility
+
+Siehe [`docs/KRITISCHE_REVIEW_UND_TESTS.md`](./docs/KRITISCHE_REVIEW_UND_TESTS.md) für Details zu kritischen Bugfixes.
+
+### Manuelle QA-Checkliste
+- Triagedemo funktioniert durchgängig
+- Pilot-Profil lässt sich freischalten und taucht im Verzeichnis auf
+- Kontaktformular sendet E-Mail (Mailhog prüfen)
+- ISR-Caching funktioniert (Therapeuten-Änderungen nach 5 Min sichtbar)
 
 ## 🔐 Sicherheit (MVP-Status)
 - Passwort-Login mit bcrypt-Hashes + Magic Link.
