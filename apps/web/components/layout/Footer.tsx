@@ -10,6 +10,7 @@ export function Footer() {
         { name: 'Kurse entdecken', href: '/courses' },
         { name: 'Blog & Insights', href: '/blog' },
         { name: 'Ersteinschätzung', href: '/triage' },
+        { name: 'Über uns', href: '/about' },
         { name: 'So funktioniert\'s', href: '/how-it-works' },
       ],
     },

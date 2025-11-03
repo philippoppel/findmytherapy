@@ -236,19 +236,19 @@ export const teamContent = {
     'Wir kombinieren psychotherapeutische Expertise, digitale Produktentwicklung und Forschung. Mit Partnerpraxen, Kliniken und Selbsthilfegruppen entwickeln wir FindMyTherapy kontinuierlich weiter.',
   members: [
     {
-      name: 'Selin Matun, BA.pth.',
-      role: 'Psychotherapeutin i.A.u.S.',
-      focus: 'Klinische Qualität & Care-Team',
+      name: 'MMag. Dr. Gregor Studlar BA',
+      role: 'Psychotherapeut – Verhaltenstherapie',
+      focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
     },
     {
-      name: 'Jan Hoppel',
-      role: 'Co-Founder & Product',
-      focus: 'Produktstrategie & Datenschutz',
+      name: 'Thomas Kaufmann',
+      role: 'Psychotherapeut',
+      focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
     },
     {
-      name: 'Petronel Liciu',
-      role: 'Co-Founder & Engineering Lead',
-      focus: 'Matching-Engine & Infrastruktur',
+      name: 'Dipl. Ing. Philipp Oppel',
+      role: 'Full Stack Developer',
+      focus: 'Technische Leitung & Plattformentwicklung',
     },
   ],
   ctas: [
