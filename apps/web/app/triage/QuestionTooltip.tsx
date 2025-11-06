@@ -78,7 +78,7 @@ export function QuestionTooltip({
       {isOpen && (
         <div
           ref={tooltipRef}
-          className="absolute left-0 top-full z-50 mt-2 w-72 rounded-xl border border-divider bg-white p-4 shadow-xl sm:left-auto sm:right-0"
+          className="absolute right-0 top-full z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-xl border border-divider bg-white p-4 shadow-xl sm:left-auto"
           role="tooltip"
         >
           <div className="space-y-2">
@@ -95,7 +95,7 @@ export function QuestionTooltip({
               </div>
             )}
           </div>
-          <div className="absolute -top-2 right-4 h-4 w-4 rotate-45 border-l border-t border-divider bg-white sm:left-auto" />
+          <div className="absolute -top-2 right-4 h-4 w-4 rotate-45 border-l border-t border-divider bg-white" />
         </div>
       )}
     </div>

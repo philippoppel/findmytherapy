@@ -18,45 +18,26 @@ import {
   phq9SeverityDescriptions,
   gad7SeverityLabels,
   gad7SeverityDescriptions,
+  phq9Questions,
+  gad7Questions,
 } from '../../lib/triage/questionnaires'
-import {
-  phq2Questions,
-  gad2Questions,
-  phq9RemainingQuestions,
-  gad7RemainingQuestions,
-  getAdaptiveQuestions,
-  adaptiveScreeningInfo,
-} from '../../lib/triage/adaptive-questionnaires'
 import { QuestionTooltip } from './QuestionTooltip'
 import { AmpelVisualization } from './AmpelVisualization'
 import { CrisisResources } from './CrisisResources'
 import { ProgressChart } from './ProgressChart'
 
 type Answers = {
-  phq2: number[]
-  gad2: number[]
-  phq9Expanded: number[]
-  gad7Expanded: number[]
+  phq9: number[]
+  gad7: number[]
   support: string[]
   availability: string[]
 }
 
 const initialAnswers: Answers = {
-  phq2: [],
-  gad2: [],
-  phq9Expanded: [],
-  gad7Expanded: [],
+  phq9: [],
+  gad7: [],
   support: [],
   availability: [],
-}
-
-type AssessmentType = 'screening' | 'full'
-
-type ScreeningResult = {
-  phq2Score: number
-  gad2Score: number
-  message: string
-  interpretation: string
 }
 
 type TherapistRecommendation = {
@@ -101,12 +82,7 @@ type AdaptiveTriageFlowProps = {
 }
 
 export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: AdaptiveTriageFlowProps = {}) {
-  const [currentPhase, setCurrentPhase] = useState<'screening' | 'expanded' | 'preferences' | 'summary'>('screening')
-  const [screeningStep, setScreeningStep] = useState<'phq2' | 'gad2'>('phq2')
-  const [expandedSections, setExpandedSections] = useState<{
-    phq9: boolean
-    gad7: boolean
-  }>({ phq9: false, gad7: false })
+  const [currentPhase, setCurrentPhase] = useState<'phq9' | 'gad7' | 'preferences'>('phq9')
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>(initialAnswers)
   const [showSummary, setShowSummary] = useState(false)
@@ -115,121 +91,49 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
-  const [assessmentType, setAssessmentType] = useState<AssessmentType>('screening')
-  const [screeningResult, setScreeningResult] = useState<ScreeningResult | null>(null)
-
-  // Calculate adaptive flow
-  const adaptiveFlow = useMemo(() => {
-    return getAdaptiveQuestions(answers.phq2, answers.gad2)
-  }, [answers.phq2, answers.gad2])
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
-    if (currentPhase === 'screening') {
-      return screeningStep === 'phq2' ? phq2Questions : gad2Questions
-    }
-    if (currentPhase === 'expanded') {
-      if (expandedSections.phq9 && !expandedSections.gad7) {
-        return phq9RemainingQuestions
-      }
-      if (expandedSections.gad7) {
-        return gad7RemainingQuestions
-      }
-    }
+    if (currentPhase === 'phq9') return phq9Questions
+    if (currentPhase === 'gad7') return gad7Questions
     return []
-  }, [currentPhase, screeningStep, expandedSections])
+  }, [currentPhase])
 
-  const totalPossibleQuestions = 4 + 7 + 5 + 2 // PHQ-2 + GAD-2 + expanded + preferences
+  // Calculate progress
+  const totalPossibleQuestions = 9 + 7 + 2 // PHQ-9 + GAD-7 + preferences (support + availability)
   const answeredQuestions =
-    answers.phq2.length +
-    answers.gad2.length +
-    answers.phq9Expanded.length +
-    answers.gad7Expanded.length +
+    answers.phq9.length +
+    answers.gad7.length +
     (answers.support.length > 0 ? 1 : 0) +
     (answers.availability.length > 0 ? 1 : 0)
   const progress = Math.round((answeredQuestions / totalPossibleQuestions) * 100)
 
   const handleScaleAnswer = (value: number) => {
-    if (currentPhase === 'screening') {
-      const key = screeningStep === 'phq2' ? 'phq2' : 'gad2'
-      setAnswers((prev) => {
-        const newAnswers = { ...prev }
-        const currentAnswers = [...newAnswers[key]]
-        currentAnswers[questionIndex] = value
-        newAnswers[key] = currentAnswers
-        return newAnswers
-      })
+    const key = currentPhase as 'phq9' | 'gad7'
 
-      setTimeout(() => {
-        if (questionIndex < currentQuestions.length - 1) {
-          setQuestionIndex(questionIndex + 1)
-        } else {
-          // Finished current screening section
-          if (screeningStep === 'phq2') {
-            setScreeningStep('gad2')
-            setQuestionIndex(0)
-          } else {
-            // Finished GAD-2, check if expansion needed
-            checkExpansionNeeded()
-          }
+    setAnswers((prev) => {
+      const newAnswers = { ...prev }
+      const currentAnswers = [...newAnswers[key]]
+      currentAnswers[questionIndex] = value
+      newAnswers[key] = currentAnswers
+      return newAnswers
+    })
+
+    setTimeout(() => {
+      if (questionIndex < currentQuestions.length - 1) {
+        // Move to next question in current section
+        setQuestionIndex(questionIndex + 1)
+      } else {
+        // Finished current section, move to next phase
+        if (currentPhase === 'phq9') {
+          setCurrentPhase('gad7')
+          setQuestionIndex(0)
+        } else if (currentPhase === 'gad7') {
+          setCurrentPhase('preferences')
+          setQuestionIndex(0)
         }
-      }, 300)
-    } else if (currentPhase === 'expanded') {
-      const key = expandedSections.phq9 && !expandedSections.gad7 ? 'phq9Expanded' : 'gad7Expanded'
-      setAnswers((prev) => {
-        const newAnswers = { ...prev }
-        const currentAnswers = [...newAnswers[key]]
-        currentAnswers[questionIndex] = value
-        newAnswers[key] = currentAnswers
-        return newAnswers
-      })
-
-      setTimeout(() => {
-        if (questionIndex < currentQuestions.length - 1) {
-          setQuestionIndex(questionIndex + 1)
-        } else {
-          // Finished current expanded section
-          moveToNextExpandedSection()
-        }
-      }, 300)
-    }
-  }
-
-  const checkExpansionNeeded = () => {
-    const { needsFullPHQ9, needsFullGAD7, phq2Score, gad2Score } = adaptiveFlow
-
-    if (needsFullPHQ9 || needsFullGAD7) {
-      // Scores are ≥3, need full assessment
-      setAssessmentType('full')
-      setCurrentPhase('expanded')
-      setExpandedSections({ phq9: needsFullPHQ9, gad7: needsFullGAD7 })
-      setQuestionIndex(0)
-    } else {
-      // Scores are <3, screening is negative
-      // DO NOT pad with zeros - this is scientifically incorrect
-      // Show screening-only result
-      setAssessmentType('screening')
-      setScreeningResult({
-        phq2Score,
-        gad2Score,
-        message: 'Screening unauffällig',
-        interpretation: 'Basierend auf dem validierten Kurzscreening (PHQ-2/GAD-2) zeigen sich aktuell minimale Symptome.',
-      })
-      setCurrentPhase('preferences')
-      setQuestionIndex(0)
-    }
-  }
-
-  const moveToNextExpandedSection = () => {
-    if (expandedSections.phq9 && expandedSections.gad7) {
-      // Just finished PHQ-9, now do GAD-7
-      setExpandedSections((prev) => ({ ...prev, phq9: false }))
-      setQuestionIndex(0)
-    } else {
-      // Finished all expanded sections
-      setCurrentPhase('preferences')
-      setQuestionIndex(0)
-    }
+      }
+    }, 300)
   }
 
   const toggleMultipleSelect = (option: string, type: 'support' | 'availability') => {
@@ -253,47 +157,31 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   }
 
   const goPrevious = () => {
-    if (currentPhase === 'screening') {
-      if (screeningStep === 'gad2' && questionIndex > 0) {
-        setQuestionIndex(questionIndex - 1)
-      } else if (screeningStep === 'gad2' && questionIndex === 0) {
-        setScreeningStep('phq2')
-        setQuestionIndex(phq2Questions.length - 1)
-      } else if (questionIndex > 0) {
-        setQuestionIndex(questionIndex - 1)
-      }
-    } else if (currentPhase === 'expanded') {
-      if (questionIndex > 0) {
-        setQuestionIndex(questionIndex - 1)
-      }
-    } else if (currentPhase === 'preferences') {
-      // Go back to last expanded section or screening
-      if (expandedSections.phq9 || expandedSections.gad7) {
-        setCurrentPhase('expanded')
-        setQuestionIndex(currentQuestions.length - 1)
-      } else {
-        setCurrentPhase('screening')
-        setScreeningStep('gad2')
-        setQuestionIndex(gad2Questions.length - 1)
+    if (questionIndex > 0) {
+      setQuestionIndex(questionIndex - 1)
+    } else {
+      // At first question of current phase, go to previous phase
+      if (currentPhase === 'gad7') {
+        setCurrentPhase('phq9')
+        setQuestionIndex(phq9Questions.length - 1)
+      } else if (currentPhase === 'preferences') {
+        setCurrentPhase('gad7')
+        setQuestionIndex(gad7Questions.length - 1)
       }
     }
   }
 
   const resetFlow = () => {
     setAnswers(initialAnswers)
-    setCurrentPhase('screening')
-    setScreeningStep('phq2')
+    setCurrentPhase('phq9')
     setQuestionIndex(0)
-    setExpandedSections({ phq9: false, gad7: false })
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
-    setAssessmentType('screening')
-    setScreeningResult(null)
     sessionStorage.removeItem('triage-session')
   }
 
-  // Calculate final scores ONLY for full assessment
+  // Calculate final scores
   const {
     phq9Score,
     gad7Score,
@@ -305,30 +193,9 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     phq9Item9Score,
     hasSuicidalIdeation,
   } = useMemo(() => {
-    // Only calculate full scores if we have full data
-    // For partial expansion: pad the non-expanded side with zeros (scientifically acceptable for negative screening)
-    const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
-    const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
-
-    // If this is a screening-only result (no expansion), don't calculate severity
-    // Use minimal values as placeholder (will not be displayed for screening-only)
-    if (assessmentType === 'screening') {
-      return {
-        phq9Score: 0,
-        gad7Score: 0,
-        phq9Severity: 'minimal' as const,
-        gad7Severity: 'minimal' as const,
-        riskLevel: 'LOW' as const,
-        ampelColor: 'green' as const,
-        requiresEmergency: false,
-        phq9Item9Score: 0,
-        hasSuicidalIdeation: false,
-      }
-    }
-
-    const phq9Total = fullPHQ9Answers.reduce((sum, val) => sum + (val ?? 0), 0)
-    const gad7Total = fullGAD7Answers.reduce((sum, val) => sum + (val ?? 0), 0)
-    const item9Score = fullPHQ9Answers[8] ?? 0
+    const phq9Total = answers.phq9.reduce((sum, val) => sum + (val ?? 0), 0)
+    const gad7Total = answers.gad7.reduce((sum, val) => sum + (val ?? 0), 0)
+    const item9Score = answers.phq9[8] ?? 0
 
     const phq9Sev = calculatePHQ9Severity(phq9Total)
     const gad7Sev = calculateGAD7Severity(gad7Total)
@@ -345,7 +212,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       phq9Item9Score: item9Score,
       hasSuicidalIdeation: risk.hasSuicidalIdeation,
     }
-  }, [answers, assessmentType])
+  }, [answers])
 
   const persistResults = useCallback(
     async ({ force = false }: { force?: boolean } = {}) => {
@@ -355,116 +222,64 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
         setTimeout(() => {
           setHasPersisted(true)
           track('triage_completed', {
-            assessmentType,
-            phq9Score: assessmentType === 'full' ? phq9Score : undefined,
-            gad7Score: assessmentType === 'full' ? gad7Score : undefined,
-            phq2Score: screeningResult?.phq2Score,
-            gad2Score: screeningResult?.gad2Score,
-            riskLevel: assessmentType === 'full' ? riskLevel : undefined,
+            assessmentType: 'full',
+            phq9Score,
+            gad7Score,
+            riskLevel,
             source: 'embedded',
-            requiresEmergency: assessmentType === 'full' ? requiresEmergency : false,
-            hasSuicidalIdeation: assessmentType === 'full' ? hasSuicidalIdeation : false,
+            requiresEmergency,
+            hasSuicidalIdeation,
           })
         }, 1000)
         return
       }
 
       try {
-        if (assessmentType === 'screening') {
-          // For screening-only: send minimal data
-          const response = await fetch('/api/triage', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              assessmentType: 'screening',
-              phq2Answers: answers.phq2,
-              gad2Answers: answers.gad2,
-              phq2Score: screeningResult!.phq2Score,
-              gad2Score: screeningResult!.gad2Score,
-              supportPreferences: answers.support,
-              availability: answers.availability,
-            }),
-          })
-
-          const data = await response.json()
-
-          if (!response.ok) {
-            throw new Error(data.message || 'Fehler beim Speichern')
-          }
-
-          // Screening-only: no therapist/course recommendations
-          setRecommendations({
-            therapists: [],
-            courses: [],
-          })
-
-          track('triage_completed', {
-            assessmentType: 'screening',
-            phq2Score: screeningResult!.phq2Score,
-            gad2Score: screeningResult!.gad2Score,
-            adaptive: true,
-          })
-        } else {
-          // Full assessment: send complete data
-          const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
-          const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
-
-          // Handle partial expansion: pad with zeros where screening was negative
-          // This is scientifically acceptable because:
-          // - If PHQ-2 <3: screening was negative → padding remaining 7 items with 0 is valid
-          // - If GAD-2 <3: screening was negative → padding remaining 5 items with 0 is valid
-          while (fullPHQ9Answers.length < 9) fullPHQ9Answers.push(0)
-          while (fullGAD7Answers.length < 7) fullGAD7Answers.push(0)
-
-          const response = await fetch('/api/triage', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              assessmentType: 'full',
-              phq9Answers: fullPHQ9Answers,
-              gad7Answers: fullGAD7Answers,
-              phq9Score,
-              gad7Score,
-              phq9Severity,
-              gad7Severity,
-              supportPreferences: answers.support,
-              availability: answers.availability,
-              riskLevel,
-              requiresEmergency,
-              phq9Item9Score,
-              hasSuicidalIdeation,
-            }),
-          })
-
-          const data = await response.json()
-
-          if (!response.ok) {
-            throw new Error(data.message || 'Fehler beim Speichern')
-          }
-
-          setRecommendations({
-            therapists: data.recommendations?.therapists || [],
-            courses: data.recommendations?.courses || [],
-          })
-
-          track('triage_completed', {
+        const response = await fetch('/api/triage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             assessmentType: 'full',
+            phq9Answers: answers.phq9,
+            gad7Answers: answers.gad7,
             phq9Score,
             gad7Score,
             phq9Severity,
             gad7Severity,
+            supportPreferences: answers.support,
+            availability: answers.availability,
             riskLevel,
             requiresEmergency,
+            phq9Item9Score,
             hasSuicidalIdeation,
-            adaptive: true,
-          })
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Fehler beim Speichern')
         }
+
+        setRecommendations({
+          therapists: data.recommendations?.therapists || [],
+          courses: data.recommendations?.courses || [],
+        })
+
+        track('triage_completed', {
+          assessmentType: 'full',
+          phq9Score,
+          gad7Score,
+          phq9Severity,
+          gad7Severity,
+          riskLevel,
+          requiresEmergency,
+          hasSuicidalIdeation,
+        })
       } catch (error) {
         console.error('Failed to persist triage results', error)
         track('triage_save_failed', {
           message: error instanceof Error ? error.message : 'unknown',
-          adaptive: true,
-          assessmentType,
         })
       } finally {
         setHasPersisted(true)
@@ -472,8 +287,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     },
     [
       answers,
-      assessmentType,
-      screeningResult,
       phq9Score,
       gad7Score,
       phq9Severity,
@@ -535,123 +348,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
   // Summary view
   if (showSummary) {
-    // Screening-only summary
-    if (assessmentType === 'screening' && screeningResult) {
-      return (
-        <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
-          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-            <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
-          </div>
-          <div className="relative mx-auto max-w-3xl space-y-6 px-4">
-            <div className="mb-4 flex items-center justify-between gap-4">
-              <Button
-                variant="ghost"
-                onClick={resetFlow}
-                className="inline-flex items-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Neue Einschätzung
-              </Button>
-              <Link
-                href="/"
-                className="text-sm font-medium text-white/70 transition hover:text-white"
-              >
-                Zur Startseite
-              </Link>
-            </div>
-
-            <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
-              <header className="mb-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
-                  <CheckCircle2 className="h-4 w-4" aria-hidden />
-                  {screeningResult.message}
-                </div>
-                <h3 className="mt-4 text-3xl font-bold text-white">Dein Screening-Ergebnis</h3>
-                <p className="mt-2 text-white/80">{screeningResult.interpretation}</p>
-              </header>
-
-              <div className="rounded-2xl border border-blue-400/20 bg-blue-500/10 p-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-blue-300" />
-                  <div className="flex-1">
-                    <h4 className="text-lg font-bold text-white">Wissenschaftlicher Hinweis</h4>
-                    <p className="mt-2 text-sm text-white/80">
-                      PHQ-2 und GAD-2 sind <strong>validierte Screening-Instrumente</strong> mit hoher Sensitivität (PHQ-2: 83%, GAD-2: 86%).
-                      Da deine Scores unter dem Schwellenwert von 3 liegen, wurde das vollständige Assessment nicht durchgeführt.
-                    </p>
-                    <p className="mt-2 text-sm text-white/80">
-                      <strong>Wichtig:</strong> Ein unauffälliges Screening bedeutet nicht zwingend, dass keine Symptome vorliegen.
-                      Falls du trotzdem Unterstützung suchst oder bestimmte Symptome hast, kannst du das vollständige Assessment durchführen.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <h4 className="text-sm font-semibold uppercase tracking-wide text-white/70">PHQ-2 Score</h4>
-                  <p className="mt-2 text-3xl font-bold text-white">{screeningResult.phq2Score}/6</p>
-                  <p className="mt-1 text-sm text-white/60">Unter Schwellenwert (&lt; 3)</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <h4 className="text-sm font-semibold uppercase tracking-wide text-white/70">GAD-2 Score</h4>
-                  <p className="mt-2 text-3xl font-bold text-white">{screeningResult.gad2Score}/6</p>
-                  <p className="mt-1 text-sm text-white/60">Unter Schwellenwert (&lt; 3)</p>
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-4">
-                <h4 className="text-lg font-bold text-white">Empfohlene nächste Schritte</h4>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <ul className="space-y-3 text-sm text-white/80">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
-                      <span>Pflege deine mentale Gesundheit präventiv durch Bewegung, soziale Kontakte und Schlafhygiene</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
-                      <span>Bei Veränderungen oder erhöhter Belastung: Wiederhole das Screening oder mache das vollständige Assessment</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
-                      <span>Nutze Ressourcen wie Psychoedukation oder digitale Programme zur Resilienzstärkung</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    // Reset and force full assessment
-                    setAnswers(initialAnswers)
-                    setCurrentPhase('screening')
-                    setScreeningStep('phq2')
-                    setQuestionIndex(0)
-                    setExpandedSections({ phq9: true, gad7: true })
-                    setShowSummary(false)
-                    setAssessmentType('full')
-                    setScreeningResult(null)
-                    setHasPersisted(false)
-                  }}
-                  className="border-white/30 bg-white/10 text-white hover:bg-white/20"
-                >
-                  Vollständiges Assessment durchführen
-                </Button>
-                {!embedded && (
-                  <Button asChild className="bg-teal-400 text-white hover:bg-teal-300">
-                    <Link href="/courses">Präventive Programme ansehen</Link>
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
     // Full assessment summary
     return (
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
@@ -1019,10 +715,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
                   <div className="space-y-3">
                     {standardResponseOptions.map((option) => {
-                      const answerKey = currentPhase === 'screening'
-                        ? (screeningStep === 'phq2' ? 'phq2' : 'gad2')
-                        : (expandedSections.phq9 && !expandedSections.gad7 ? 'phq9Expanded' : 'gad7Expanded')
-                      const isSelected = answers[answerKey][questionIndex] === option.value
+                      const answerKey = currentPhase as 'phq9' | 'gad7'
+                      const isSelected = answers[answerKey]?.[questionIndex] === option.value
 
                       return (
                         <button
@@ -1059,13 +753,15 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     <button
                       type="button"
                       onClick={goPrevious}
-                      disabled={currentPhase === 'screening' && screeningStep === 'phq2' && questionIndex === 0}
+                      disabled={currentPhase === 'phq9' && questionIndex === 0}
                       className="rounded-full border border-white/25 bg-white/10 px-4 py-2 font-medium text-white transition hover:bg-white/15 disabled:opacity-50"
                     >
                       Zurück
                     </button>
                     <span>
-                      Frage {questionIndex + 1} von {currentQuestions.length}
+                      {currentPhase === 'phq9' && `Depression Screening: Frage ${questionIndex + 1} von ${currentQuestions.length}`}
+                      {currentPhase === 'gad7' && `Angst Screening: Frage ${questionIndex + 1} von ${currentQuestions.length}`}
+                      {currentPhase === 'preferences' && 'Deine Präferenzen'}
                     </span>
                   </div>
                 </div>
