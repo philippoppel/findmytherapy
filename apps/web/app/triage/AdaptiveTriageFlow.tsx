@@ -391,14 +391,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
           {requiresEmergency && <CrisisResources showCareTeamContact={!embedded} />}
 
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
-            <header className="mb-6 flex items-center justify-between">
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur sm:p-8">
+            <header className="mb-6">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
                   <CheckCircle2 className="h-4 w-4" aria-hidden />
                   Deine Ersteinschätzung
                 </div>
-                <h3 className="text-3xl font-bold text-white">Empfohlene nächste Schritte</h3>
+                <h3 className="text-2xl font-bold text-white sm:text-3xl">Empfohlene nächste Schritte</h3>
               </div>
             </header>
 
@@ -425,11 +425,11 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer Therapeut:in zu sprechen.
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <Button asChild size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
+                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                      <Button asChild size="lg" className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
                         <Link href="/therapists">Therapeut:innen ansehen</Link>
                       </Button>
-                      <Button variant="outline" asChild className="border-white/40 text-white hover:bg-white/10">
+                      <Button variant="outline" asChild className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
                         <Link href="/contact">Hilfe beim Finden</Link>
                       </Button>
                     </div>
@@ -445,10 +445,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                   {recommendations.therapists.map((therapist) => (
                     <article
                       key={therapist.id}
-                      className="rounded-2xl border border-white/10 bg-white/10 p-6 shadow-sm backdrop-blur transition hover:bg-white/15"
+                      className="rounded-2xl border border-white/10 bg-white/10 p-4 shadow-sm backdrop-blur transition hover:bg-white/15 sm:p-6"
                     >
-                      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                        <div className="flex flex-1 gap-4">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-1 gap-3 sm:gap-4">
                           {therapist.image && (
                             <div className="flex-shrink-0">
                               <Image
@@ -456,13 +456,13 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                                 alt={therapist.name}
                                 width={120}
                                 height={120}
-                                className="h-24 w-24 rounded-xl object-cover object-center"
-                                sizes="(max-width: 768px) 96px, 120px"
+                                className="h-16 w-16 rounded-lg object-cover object-center sm:h-24 sm:w-24 sm:rounded-xl"
+                                sizes="(max-width: 640px) 64px, 96px"
                                 quality={90}
                               />
                             </div>
                           )}
-                          <div className="flex-1 space-y-3">
+                          <div className="flex-1 space-y-2 sm:space-y-3">
                             <div>
                               <h5 className="text-lg font-bold text-white">{therapist.name}</h5>
                               <p className="text-sm text-white/70">{therapist.title}</p>
@@ -515,8 +515,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <Button asChild className="bg-teal-400 text-white hover:bg-teal-300">
+                        <div className="flex flex-col gap-2 sm:items-end">
+                          <Button asChild className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
                             <Link href={`/therapists/${therapist.id}?from=triage`}>
                               Profil ansehen
                             </Link>
@@ -597,10 +597,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
             Zur Startseite
           </Link>
         </div>
-        <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
+        <div className="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur sm:p-8">
           {/* Progress */}
           <div className="mb-6">
-            <div className="mb-2 flex items-center justify-between text-sm text-white/70">
+            <div className="mb-2 flex items-center justify-between text-xs text-white/70 sm:text-sm">
               <span className="font-medium text-white">{phaseInfo.title}</span>
               <span>{progress}%</span>
             </div>
@@ -625,8 +625,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
               {isPreferences ? (
                 <div className="space-y-6">
                   <header>
-                    <h3 className="text-2xl font-bold text-white">Fast geschafft!</h3>
-                    <p className="mt-2 text-white/70">{phaseInfo.description}</p>
+                    <h3 className="text-xl font-bold text-white sm:text-2xl">Fast geschafft!</h3>
+                    <p className="mt-2 text-sm text-white/70 sm:text-base">{phaseInfo.description}</p>
                   </header>
 
                   <div>
@@ -701,8 +701,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                   <header>
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="text-2xl font-bold text-white">{currentQuestion?.text}</h3>
-                        <p className="mt-2 text-sm text-white/70">{phaseInfo.description}</p>
+                        <h3 className="text-lg font-bold text-white sm:text-2xl">{currentQuestion?.text}</h3>
+                        <p className="mt-2 text-xs text-white/70 sm:text-sm">{phaseInfo.description}</p>
                       </div>
                       {currentQuestion && (
                         <QuestionTooltip
@@ -713,7 +713,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     </div>
                   </header>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {standardResponseOptions.map((option) => {
                       const answerKey = currentPhase as 'phq9' | 'gad7'
                       const isSelected = answers[answerKey]?.[questionIndex] === option.value
@@ -723,20 +723,20 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           key={option.value}
                           type="button"
                           onClick={() => handleScaleAnswer(option.value)}
-                          className={`flex w-full items-center justify-between gap-3 rounded-xl border p-4 transition ${
+                          className={`flex w-full items-center justify-between gap-2 rounded-xl border p-3 transition sm:gap-3 sm:p-4 ${
                             isSelected
                               ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
                               : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-white/10'
                           }`}
                         >
                           <div className="text-left">
-                            <p className={`font-semibold ${isSelected ? 'text-white' : 'text-white/85'}`}>
+                            <p className={`text-sm font-semibold sm:text-base ${isSelected ? 'text-white' : 'text-white/85'}`}>
                               {option.label}
                             </p>
-                            <p className="text-sm text-white/70">{option.description}</p>
+                            <p className="text-xs text-white/70 sm:text-sm">{option.description}</p>
                           </div>
                           <div
-                            className={`flex h-10 w-10 items-center justify-center rounded-full border font-semibold ${
+                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold sm:h-10 sm:w-10 ${
                               isSelected
                                 ? 'border-teal-400 bg-teal-400 text-white'
                                 : 'border-white/30 bg-white/10 text-white'
@@ -758,9 +758,19 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     >
                       Zurück
                     </button>
-                    <span>
-                      {currentPhase === 'phq9' && `Depression Screening: Frage ${questionIndex + 1} von ${currentQuestions.length}`}
-                      {currentPhase === 'gad7' && `Angst Screening: Frage ${questionIndex + 1} von ${currentQuestions.length}`}
+                    <span className="text-center">
+                      {currentPhase === 'phq9' && (
+                        <>
+                          <span className="hidden sm:inline">Depression Screening: Frage {questionIndex + 1} von {currentQuestions.length}</span>
+                          <span className="sm:hidden">Depression: {questionIndex + 1}/{currentQuestions.length}</span>
+                        </>
+                      )}
+                      {currentPhase === 'gad7' && (
+                        <>
+                          <span className="hidden sm:inline">Angst Screening: Frage {questionIndex + 1} von {currentQuestions.length}</span>
+                          <span className="sm:hidden">Angst: {questionIndex + 1}/{currentQuestions.length}</span>
+                        </>
+                      )}
                       {currentPhase === 'preferences' && 'Deine Präferenzen'}
                     </span>
                   </div>

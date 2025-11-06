@@ -115,13 +115,13 @@ export function AmpelVisualization({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <div className={`rounded-3xl border-2 ${config.borderColor} ${config.bgColor} p-8`}>
+      <div className={`rounded-3xl border-2 ${config.borderColor} ${config.bgColor} p-4 sm:p-8`}>
         {/* Ampel Grafik */}
         <div className="mx-auto mb-6 flex w-fit flex-col gap-3">
-          <div className="rounded-2xl border-4 border-gray-800 bg-gray-900 p-4 shadow-xl">
+          <div className="rounded-2xl border-4 border-gray-800 bg-gray-900 p-3 shadow-xl sm:p-4">
             {/* Rot */}
             <motion.div
-              className={`mb-3 h-16 w-16 rounded-full border-2 border-gray-700 ${
+              className={`mb-3 h-12 w-12 rounded-full border-2 border-gray-700 sm:h-16 sm:w-16 ${
                 color === 'red' ? 'bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.8)]' : 'bg-gray-800'
               }`}
               initial={{ scale: 0.9 }}
@@ -138,7 +138,7 @@ export function AmpelVisualization({
             />
             {/* Gelb */}
             <motion.div
-              className={`mb-3 h-16 w-16 rounded-full border-2 border-gray-700 ${
+              className={`mb-3 h-12 w-12 rounded-full border-2 border-gray-700 sm:h-16 sm:w-16 ${
                 color === 'yellow' ? 'bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.8)]' : 'bg-gray-800'
               }`}
               initial={{ scale: 0.9 }}
@@ -155,7 +155,7 @@ export function AmpelVisualization({
             />
             {/* Grün */}
             <motion.div
-              className={`h-16 w-16 rounded-full border-2 border-gray-700 ${
+              className={`h-12 w-12 rounded-full border-2 border-gray-700 sm:h-16 sm:w-16 ${
                 color === 'green' ? 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)]' : 'bg-gray-800'
               }`}
               initial={{ scale: 0.9 }}
@@ -175,8 +175,8 @@ export function AmpelVisualization({
 
         {/* Status Label */}
         <div className="mb-4 text-center">
-          <h3 className={`text-2xl font-bold ${config.textColor}`}>{config.label}</h3>
-          <p className={`mt-2 text-sm ${config.textColor} opacity-90`}>{config.description}</p>
+          <h3 className={`text-xl font-bold sm:text-2xl ${config.textColor}`}>{config.label}</h3>
+          <p className={`mt-2 text-xs sm:text-sm ${config.textColor} opacity-90`}>{config.description}</p>
         </div>
 
         {/* Interaktive Details - Ausklappbar */}

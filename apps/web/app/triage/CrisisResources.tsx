@@ -127,17 +127,17 @@ export function CrisisResources({ showCareTeamContact = true, className = '' }: 
         <div className="space-y-2">
           {emergencyContacts.map((contact) => (
             <div key={contact.name} className="rounded-xl border border-red-200 bg-white p-4">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
                   <h5 className="font-semibold text-default">{contact.name}</h5>
                   <p className="mt-0.5 text-xs text-muted">{contact.description}</p>
                   <p className="mt-1 text-xs text-muted">Verfügbar: {contact.available}</p>
                 </div>
-                <div className="flex flex-col items-end gap-2">
+                <div className="flex flex-col gap-2 sm:items-end">
                   {contact.number && (
                     <a
                       href={`tel:${contact.number.replace(/\s/g, '')}`}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-md transition hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-md transition hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 sm:w-auto"
                     >
                       <Phone className="h-4 w-4" aria-hidden />
                       {contact.number}
@@ -148,7 +148,7 @@ export function CrisisResources({ showCareTeamContact = true, className = '' }: 
                       href={contact.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg border-2 border-teal-600 bg-white px-3 py-1.5 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-teal-600 bg-white px-3 py-1.5 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 sm:w-auto"
                     >
                       Website
                       <ExternalLink className="h-3.5 w-3.5" aria-hidden />
