@@ -19,6 +19,11 @@ const therapistSchema = z.object({
   city: z.string().min(1, 'Bitte Stadt angeben'),
   specialties: z.array(z.string()).min(1, 'Mindestens ein Schwerpunkt wählen'),
   modalities: z.array(z.enum(['ONLINE', 'PRAESENZ', 'HYBRID'])).min(1, 'Mindestens ein Format auswählen'),
+  acceptTerms: z.literal(true, {
+    errorMap: () => ({
+      message: 'Bitte bestätige die Nutzungsbedingungen',
+    }),
+  }),
   notes: z.string().optional(),
   availabilityNote: z
     .string()
@@ -101,6 +106,7 @@ export async function POST(request: NextRequest) {
     await queueNotification('therapist-registration', {
       userId: user.id,
       email: user.email,
+      firstName: user.firstName,
       city: validated.city,
       modalities: validated.modalities,
     })

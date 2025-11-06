@@ -22,6 +22,7 @@ type FormState = {
   notes: string
   availabilityNote: string
   pricingNote: string
+  acceptTerms: boolean
 }
 
 type FormErrors = Partial<Record<keyof FormState, string>>
@@ -40,6 +41,7 @@ const initialState: FormState = {
   notes: '',
   availabilityNote: '',
   pricingNote: '',
+  acceptTerms: false,
 }
 
 const roleLabels: Record<AccessRole, string> = {
@@ -102,9 +104,10 @@ export function RegistrationForm() {
   const handleChange =
     (field: keyof FormState) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      const value = event.target.type === 'checkbox' ? (event.target as HTMLInputElement).checked : event.target.value
       setForm((prev) => ({
         ...prev,
-        [field]: event.target.value,
+        [field]: value,
       }))
       setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
@@ -176,6 +179,9 @@ export function RegistrationForm() {
       if (form.modalities.length === 0) {
         nextErrors.modalities = 'Mindestens ein Format auswählen'
       }
+      if (!form.acceptTerms) {
+        nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu'
+      }
     }
 
     return nextErrors
@@ -206,6 +212,7 @@ export function RegistrationForm() {
             city: form.city.trim(),
             specialties: form.specialties,
             modalities: form.modalities,
+            acceptTerms: form.acceptTerms,
             notes: form.notes.trim() || undefined,
             availabilityNote: form.availabilityNote.trim() || undefined,
             pricingNote: form.pricingNote.trim() || undefined,
@@ -274,13 +281,13 @@ export function RegistrationForm() {
   const submitLabel = form.role === 'THERAPIST' ? 'Registrierung abschließen' : 'Zugang anfragen'
 
   return (
-    <aside className="rounded-3xl border border-divider bg-white/90 p-6 shadow-lg shadow-primary/10 backdrop-blur">
-      <header className="space-y-2">
-        <h2 className="text-2xl font-semibold text-default">
-          In drei Schritten zur {form.role === 'THERAPIST' ? 'Pilot-Registrierung' : 'Zugangsfreischaltung'}
+    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
+      <header className="mb-6">
+        <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">
+          {form.role === 'THERAPIST' ? 'Pilot-Registrierung' : 'Zugangsanfrage'}
         </h2>
-        <p className="text-sm leading-relaxed text-muted">
-          Fülle das Formular aus – wir bestätigen den Eingang sofort und melden uns mit den nächsten Schritten.
+        <p className="mt-2 text-sm text-neutral-600">
+          Fülle das Formular aus – wir melden uns werktags innerhalb von 24 Stunden.
         </p>
       </header>
 
@@ -315,7 +322,7 @@ export function RegistrationForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="firstName">
             <span className="font-medium text-default">Vorname</span>
@@ -380,8 +387,8 @@ export function RegistrationForm() {
             <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">Profil-Angaben</h3>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <label className="space-y-1 text-sm text-neutral-700" htmlFor="password">
-                <span className="font-medium text-default">Passwort</span>
+              <div className="space-y-1 text-sm text-neutral-700">
+                <label htmlFor="password" className="font-medium text-default">Passwort</label>
                 <Input
                   id="password"
                   type="password"
@@ -393,9 +400,9 @@ export function RegistrationForm() {
                   autoComplete="new-password"
                 />
                 {errors.password && <span className="text-xs text-red-600">{errors.password}</span>}
-              </label>
-              <label className="space-y-1 text-sm text-neutral-700" htmlFor="confirmPassword">
-                <span className="font-medium text-default">Passwort bestätigen</span>
+              </div>
+              <div className="space-y-1 text-sm text-neutral-700">
+                <label htmlFor="confirmPassword" className="font-medium text-default">Passwort bestätigen</label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -409,7 +416,7 @@ export function RegistrationForm() {
                 {errors.confirmPassword && (
                   <span className="text-xs text-red-600">{errors.confirmPassword}</span>
                 )}
-              </label>
+              </div>
             </div>
 
             <label className="space-y-1 text-sm text-neutral-700" htmlFor="city">
@@ -545,6 +552,32 @@ export function RegistrationForm() {
           {accessSummary}
         </div>
 
+        {form.role === 'THERAPIST' && (
+          <label className="flex items-start gap-3 rounded-2xl border border-divider bg-surface-1/90 p-4 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              checked={form.acceptTerms}
+              onChange={handleChange('acceptTerms')}
+              className="mt-1 h-4 w-4 rounded border border-divider"
+              required
+            />
+            <span>
+              Ich stimme den{' '}
+              <a className="text-primary underline" href="/terms" target="_blank" rel="noopener noreferrer">
+                Nutzungsbedingungen
+              </a>{' '}
+              und der{' '}
+              <a className="text-primary underline" href="/privacy" target="_blank" rel="noopener noreferrer">
+                Datenschutzrichtlinie
+              </a>{' '}
+              zu.
+              {errors.acceptTerms && (
+                <span className="mt-1 block text-xs text-red-600">{errors.acceptTerms}</span>
+              )}
+            </span>
+          </label>
+        )}
+
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
@@ -561,6 +594,6 @@ export function RegistrationForm() {
           Weitergabe deiner Daten.
         </p>
       </form>
-    </aside>
+    </div>
   )
 }
