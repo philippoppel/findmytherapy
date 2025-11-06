@@ -356,18 +356,19 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl space-y-6 px-4">
-          <div className="mb-4 flex items-center justify-between gap-4">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Button
               variant="ghost"
               onClick={resetFlow}
-              className="inline-flex items-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center justify-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
             >
               <RotateCcw className="h-4 w-4" />
-              Ersteinschätzung wiederholen
+              <span className="hidden sm:inline">Ersteinschätzung wiederholen</span>
+              <span className="sm:hidden">Test wiederholen</span>
             </Button>
             <Link
               href="/"
-              className="text-sm font-medium text-white/70 transition hover:text-white"
+              className="text-center text-sm font-medium text-white/70 transition hover:text-white sm:text-left"
             >
               Zur Startseite
             </Link>
@@ -440,7 +441,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
             {recommendations.therapists.length > 0 && (
               <section className="mt-8">
-                <h4 className="mb-4 text-xl font-bold text-white">Passende Therapeut:innen</h4>
+                <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">Passende Therapeut:innen</h4>
                 <div className="space-y-4">
                   {recommendations.therapists.map((therapist) => (
                     <article
@@ -464,10 +465,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           )}
                           <div className="flex-1 space-y-2 sm:space-y-3">
                             <div>
-                              <h5 className="text-lg font-bold text-white">{therapist.name}</h5>
-                              <p className="text-sm text-white/70">{therapist.title}</p>
+                              <h5 className="text-base font-bold text-white sm:text-lg">{therapist.name}</h5>
+                              <p className="text-xs text-white/70 sm:text-sm">{therapist.title}</p>
                               {therapist.headline ? (
-                                <p className="mt-1 text-sm text-white/80">{therapist.headline}</p>
+                                <p className="mt-1 text-xs text-white/80 sm:text-sm">{therapist.headline}</p>
                               ) : null}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">
@@ -534,28 +535,28 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
 
             {recommendations.courses.length > 0 && (
               <section className="mt-8">
-                <h4 className="mb-4 text-xl font-bold text-white">Empfohlene Programme</h4>
+                <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">Empfohlene Programme</h4>
                 <div className="space-y-4">
                   {recommendations.courses.map((course) => (
                     <article
                       key={course.slug}
-                      className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur"
+                      className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur sm:p-6"
                     >
-                      <h5 className="text-lg font-bold text-white">{course.title}</h5>
-                      <p className="mt-1 text-sm text-white/70">{course.shortDescription}</p>
-                      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-white/65">
+                      <h5 className="text-base font-bold text-white sm:text-lg">{course.title}</h5>
+                      <p className="mt-1 text-xs text-white/70 sm:text-sm">{course.shortDescription}</p>
+                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/65 sm:gap-3">
                         <span>{course.duration}</span>
                         <span aria-hidden>•</span>
                         <span>{course.format}</span>
                       </div>
                       <div className="mt-4 flex flex-wrap gap-2">
                         {course.outcomes.map((item) => (
-                          <span key={item} className="rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white">
+                          <span key={item} className="rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium text-white sm:px-3 sm:text-[11px]">
                             {item}
                           </span>
                         ))}
                       </div>
-                      <Button variant="outline" size="sm" asChild className="mt-4 border-white/30 bg-white/10 text-white hover:bg-white/20">
+                      <Button variant="outline" size="sm" asChild className="mt-4 w-full border-white/30 bg-white/10 text-white hover:bg-white/20 sm:w-auto">
                         <Link href={`/courses/${course.slug}`}>
                           Demo ansehen
                         </Link>
@@ -641,16 +642,16 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             key={option.value}
                             type="button"
                             onClick={() => toggleMultipleSelect(option.value, 'support')}
-                            className={`rounded-xl border p-4 text-left transition ${
+                            className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                               selected
                                 ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
                                 : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
                             }`}
                           >
-                            <p className={`font-semibold ${selected ? 'text-white' : 'text-white/85'}`}>
+                            <p className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}>
                               {option.label}
                             </p>
-                            <p className="mt-1 text-sm text-white/70">{option.description}</p>
+                            <p className="mt-1 text-xs text-white/70 sm:text-sm">{option.description}</p>
                           </button>
                         )
                       })}
@@ -669,28 +670,28 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             key={option.value}
                             type="button"
                             onClick={() => toggleMultipleSelect(option.value, 'availability')}
-                            className={`rounded-xl border p-4 text-left transition ${
+                            className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                               selected
                                 ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
                                 : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
                             }`}
                           >
-                            <p className={`font-semibold ${selected ? 'text-white' : 'text-white/85'}`}>
+                            <p className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}>
                               {option.label}
                             </p>
-                            <p className="mt-1 text-sm text-white/70">{option.description}</p>
+                            <p className="mt-1 text-xs text-white/70 sm:text-sm">{option.description}</p>
                           </button>
                         )
                       })}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4">
-                    <Button variant="ghost" onClick={goPrevious} className="text-white hover:bg-white/10">
+                  <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <Button variant="ghost" onClick={goPrevious} className="w-full text-white hover:bg-white/10 sm:w-auto">
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
+                    <Button onClick={goNext} size="lg" className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -749,12 +750,12 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     })}
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 text-sm text-white/70">
+                  <div className="flex items-center justify-between pt-4 text-xs text-white/70 sm:text-sm">
                     <button
                       type="button"
                       onClick={goPrevious}
                       disabled={currentPhase === 'phq9' && questionIndex === 0}
-                      className="rounded-full border border-white/25 bg-white/10 px-4 py-2 font-medium text-white transition hover:bg-white/15 disabled:opacity-50"
+                      className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/15 disabled:opacity-50 sm:px-6"
                     >
                       Zurück
                     </button>
