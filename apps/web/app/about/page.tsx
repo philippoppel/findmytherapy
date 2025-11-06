@@ -3,24 +3,19 @@ import { Award, Compass, HeartHandshake, ShieldCheck, Sparkles, Users2 } from 'l
 
 const teamMembers = [
   {
-    name: 'Mag.a Johanna Schuster',
-    role: 'Gründerin & Clinical Lead',
-    focus: 'Psychotherapeutin (Integrative Therapie) & klinische Produktberaterin',
+    name: 'MMag. Dr. Gregor Studlar BA',
+    role: 'Psychotherapeut – Verhaltenstherapie',
+    focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
   },
   {
-    name: 'DI Fabian Leitgeb',
-    role: 'Co-Founder & Produkt',
-    focus: 'UX Research, Care Journeys & datengetriebene Matching-Modelle',
+    name: 'Thomas Kaufmann',
+    role: 'Psychotherapeut',
+    focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
   },
   {
-    name: 'Dr.in Lara Koller',
-    role: 'Medical Advisor',
-    focus: 'Fachärztin für Psychiatrie - Fokus auf digitale Versorgungsmodelle',
-  },
-  {
-    name: 'Mag. Samuel Rinner',
-    role: 'Leitung Care-Team',
-    focus: 'Psychologischer Berater - Hybrid Care Koordination',
+    name: 'Dipl. Ing. Philipp Oppel',
+    role: 'Full Stack Developer',
+    focus: 'Technische Leitung & Plattformentwicklung',
   },
 ]
 

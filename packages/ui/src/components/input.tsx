@@ -9,7 +9,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, hasError, 'aria-invalid': ariaInvalid, ...props }, ref) => {
+  ({ className, hasError, 'aria-invalid': ariaInvalid, type = 'text', ...props }, ref) => {
     const appliedAriaInvalid = hasError ?? ariaInvalid;
 
     return (
@@ -17,6 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         className={cn('input', className)}
         aria-invalid={appliedAriaInvalid ?? undefined}
+        type={type}
         {...props}
       />
     );
