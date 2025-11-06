@@ -174,10 +174,10 @@ export function ClientRegistrationForm() {
   }
 
   return (
-    <aside className="rounded-3xl border border-divider bg-white/95 p-6 shadow-lg shadow-primary/10 backdrop-blur">
-      <header className="space-y-2 text-center">
-        <h2 className="text-2xl font-semibold text-default">Kostenlosen FindMyTherapy-Zugang erstellen</h2>
-        <p className="text-sm text-muted">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
+      <header className="mb-6">
+        <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">Account erstellen</h2>
+        <p className="mt-2 text-sm text-neutral-600">
           Sichere dir den Zugang zu empfohlenen Programmen, Kursfortschritt und deinem Care-Team.
         </p>
       </header>
@@ -208,7 +208,7 @@ export function ClientRegistrationForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="firstName">
             <span className="font-medium text-default">Vorname</span>
@@ -254,8 +254,8 @@ export function ClientRegistrationForm() {
         </label>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label className="space-y-1 text-sm text-neutral-700" htmlFor="password">
-            <span className="font-medium text-default">Passwort</span>
+          <div className="space-y-1 text-sm text-neutral-700">
+            <label htmlFor="password" className="font-medium text-default">Passwort</label>
             <Input
               id="password"
               type="password"
@@ -267,9 +267,9 @@ export function ClientRegistrationForm() {
               autoComplete="new-password"
             />
             {errors.password && <span className="text-xs text-red-600">{errors.password}</span>}
-          </label>
-          <label className="space-y-1 text-sm text-neutral-700" htmlFor="confirmPassword">
-            <span className="font-medium text-default">Passwort bestätigen</span>
+          </div>
+          <div className="space-y-1 text-sm text-neutral-700">
+            <label htmlFor="confirmPassword" className="font-medium text-default">Passwort bestätigen</label>
             <Input
               id="confirmPassword"
               type="password"
@@ -283,7 +283,7 @@ export function ClientRegistrationForm() {
             {errors.confirmPassword && (
               <span className="text-xs text-red-600">{errors.confirmPassword}</span>
             )}
-          </label>
+          </div>
         </div>
 
         <ul className="space-y-1 rounded-xl border border-divider bg-surface-1/90 p-4 text-xs text-muted">
@@ -352,6 +352,6 @@ export function ClientRegistrationForm() {
           </Link>
         </p>
       </form>
-    </aside>
+    </div>
   )
 }

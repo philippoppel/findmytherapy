@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     await queueNotification('client-registration', {
       userId: user.id,
       email: user.email,
+      firstName: user.firstName,
       marketingOptIn: Boolean(payload.marketingOptIn),
     })
 
