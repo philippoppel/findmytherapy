@@ -7,15 +7,25 @@ type SendMagicLinkParams = {
   url: string;
 };
 
-// Use Resend if API key is available, otherwise fall back to SMTP
-const useResend = Boolean(env.RESEND_API_KEY);
-const resend = useResend ? new Resend(env.RESEND_API_KEY) : null;
+// Helper to check if we should use Resend (evaluated at runtime)
+const shouldUseResend = () => {
+  const hasApiKey = Boolean(process.env.RESEND_API_KEY || env.RESEND_API_KEY);
+  console.log('[email] Checking Resend availability:', {
+    hasApiKey,
+    RESEND_API_KEY_length: process.env.RESEND_API_KEY?.length || 0,
+    isProduction,
+  });
+  return hasApiKey;
+};
 
-if (!isProduction) {
-  console.log('[email] Using Resend:', useResend);
-  console.log('[email] RESEND_API_KEY exists:', Boolean(env.RESEND_API_KEY));
-  console.log('[email] isProduction:', isProduction);
-}
+// Helper to get Resend client (evaluated at runtime)
+const getResendClient = () => {
+  const apiKey = process.env.RESEND_API_KEY || env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY not available');
+  }
+  return new Resend(apiKey);
+};
 
 const resolveTransport = () => {
   const host = env.EMAIL_SMTP_HOST;
@@ -58,7 +68,9 @@ export const sendMagicLinkEmail = async ({ email, url }: SendMagicLinkParams) =>
   const text = `Login-Link für FindMyTherapy\n\nÖffne folgenden Link in deinem Browser, um dich anzumelden:\n${url}\n\nDer Link ist nur für kurze Zeit gültig. Wenn du diese Anmeldung nicht angefordert hast, kannst du diese E-Mail ignorieren.`;
 
   try {
-    if (useResend && resend) {
+    if (shouldUseResend()) {
+      const resend = getResendClient();
+      console.log('[email] Sending via Resend to:', email);
       await resend.emails.send({
         from: env.EMAIL_FROM,
         to: email,
@@ -66,7 +78,9 @@ export const sendMagicLinkEmail = async ({ email, url }: SendMagicLinkParams) =>
         html,
         text,
       });
+      console.log('[email] ✓ Sent via Resend');
     } else {
+      console.log('[email] Sending via SMTP to:', email);
       const transporter = resolveTransport();
       await transporter.sendMail({
         to: email,
@@ -75,6 +89,7 @@ export const sendMagicLinkEmail = async ({ email, url }: SendMagicLinkParams) =>
         html,
         text,
       });
+      console.log('[email] ✓ Sent via SMTP');
     }
   } catch (error) {
     console.error('[email] Failed to send magic link:', error);
@@ -143,7 +158,9 @@ Beste Grüße
 Dein FindMyTherapy Team`;
 
   try {
-    if (useResend && resend) {
+    if (shouldUseResend()) {
+      const resend = getResendClient();
+      console.log('[email] Sending client welcome via Resend to:', email);
       await resend.emails.send({
         from: env.EMAIL_FROM,
         to: email,
@@ -151,7 +168,9 @@ Dein FindMyTherapy Team`;
         html,
         text,
       });
+      console.log('[email] ✓ Sent client welcome via Resend');
     } else {
+      console.log('[email] Sending client welcome via SMTP to:', email);
       const transporter = resolveTransport();
       await transporter.sendMail({
         to: email,
@@ -160,6 +179,7 @@ Dein FindMyTherapy Team`;
         html,
         text,
       });
+      console.log('[email] ✓ Sent client welcome via SMTP');
     }
   } catch (error) {
     console.error('[email] Failed to send client welcome email:', error);
@@ -251,7 +271,9 @@ Beste Grüße
 Dein FindMyTherapy Team`;
 
   try {
-    if (useResend && resend) {
+    if (shouldUseResend()) {
+      const resend = getResendClient();
+      console.log('[email] Sending therapist welcome via Resend to:', email);
       await resend.emails.send({
         from: env.EMAIL_FROM,
         to: email,
@@ -259,7 +281,9 @@ Dein FindMyTherapy Team`;
         html,
         text,
       });
+      console.log('[email] ✓ Sent therapist welcome via Resend');
     } else {
+      console.log('[email] Sending therapist welcome via SMTP to:', email);
       const transporter = resolveTransport();
       await transporter.sendMail({
         to: email,
@@ -268,6 +292,7 @@ Dein FindMyTherapy Team`;
         html,
         text,
       });
+      console.log('[email] ✓ Sent therapist welcome via SMTP');
     }
   } catch (error) {
     console.error('[email] Failed to send therapist welcome email:', error);
