@@ -7,9 +7,15 @@ type SendMagicLinkParams = {
   url: string;
 };
 
-// Use Resend in production, nodemailer for local dev
-const useResend = isProduction && Boolean(env.RESEND_API_KEY);
+// Use Resend if API key is available, otherwise fall back to SMTP
+const useResend = Boolean(env.RESEND_API_KEY);
 const resend = useResend ? new Resend(env.RESEND_API_KEY) : null;
+
+if (!isProduction) {
+  console.log('[email] Using Resend:', useResend);
+  console.log('[email] RESEND_API_KEY exists:', Boolean(env.RESEND_API_KEY));
+  console.log('[email] isProduction:', isProduction);
+}
 
 const resolveTransport = () => {
   const host = env.EMAIL_SMTP_HOST;
