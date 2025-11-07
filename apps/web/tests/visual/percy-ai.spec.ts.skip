@@ -1,0 +1,277 @@
+/**
+ * Percy AI-Powered Visual Testing
+ *
+ * Percy uses AI to intelligently detect visual differences and ignore false positives.
+ * It provides cross-browser visual testing with smart diffing algorithms.
+ *
+ * Setup:
+ * 1. Sign up for free at https://percy.io (5,000 screenshots/month free)
+ * 2. Get your PERCY_TOKEN from the Percy dashboard
+ * 3. Set environment variable: export PERCY_TOKEN=your_token_here
+ * 4. Run tests: pnpm exec percy exec -- playwright test tests/visual/percy-ai.spec.ts
+ *
+ * For Open Source Projects:
+ * - Apply for unlimited free access at https://www.browserstack.com/open-source
+ *
+ * Features:
+ * - AI-powered visual comparisons (not just pixel-by-pixel)
+ * - Automatic baseline management
+ * - Cross-browser testing (Chrome, Firefox, Safari, Edge)
+ * - Responsive testing
+ * - PR integration with visual diffs
+ */
+
+import { test } from '@playwright/test'
+import percySnapshot from '@percy/playwright'
+
+// Test all key pages
+const PAGES_TO_TEST = [
+  { path: '/', name: 'Homepage' },
+  { path: '/about', name: 'About Page' },
+  { path: '/therapists', name: 'Therapists Directory' },
+  { path: '/how-it-works', name: 'How It Works' },
+  { path: '/login', name: 'Login Page' },
+  { path: '/signup', name: 'Signup Page' },
+  { path: '/register', name: 'Register Page' },
+  { path: '/triage', name: 'Triage Flow' },
+]
+
+const VIEWPORTS = {
+  mobile: { width: 375, height: 667 },
+  tablet: { width: 768, height: 1024 },
+  desktop: { width: 1280, height: 720 },
+  wide: { width: 1920, height: 1080 },
+}
+
+test.describe('Percy AI Visual Testing - Desktop', () => {
+  for (const { path, name } of PAGES_TO_TEST) {
+    test(`${name} visual snapshot (desktop)`, async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.desktop)
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+
+      // Percy's AI will analyze this snapshot and compare it to the baseline
+      await percySnapshot(page, `${name} - Desktop`, {
+        widths: [1280, 1920], // Test multiple widths
+        minHeight: 1024,
+        enableJavaScript: true,
+      })
+    })
+  }
+})
+
+test.describe('Percy AI Visual Testing - Mobile', () => {
+  for (const { path, name } of PAGES_TO_TEST) {
+    test(`${name} visual snapshot (mobile)`, async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.mobile)
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+
+      await percySnapshot(page, `${name} - Mobile`, {
+        widths: [375, 414], // iPhone sizes
+        minHeight: 667,
+        enableJavaScript: true,
+      })
+    })
+  }
+})
+
+test.describe('Percy AI Visual Testing - Tablet', () => {
+  for (const { path, name } of PAGES_TO_TEST) {
+    test(`${name} visual snapshot (tablet)`, async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.tablet)
+      await page.goto(path)
+      await page.waitForLoadState('networkidle')
+
+      await percySnapshot(page, `${name} - Tablet`, {
+        widths: [768, 1024], // iPad sizes
+        minHeight: 1024,
+        enableJavaScript: true,
+      })
+    })
+  }
+})
+
+test.describe('Percy AI Visual Testing - Responsive', () => {
+  test('homepage responsive across all breakpoints', async ({ page }) => {
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    // Percy will test all these widths automatically
+    await percySnapshot(page, 'Homepage - All Breakpoints', {
+      widths: [375, 768, 1024, 1280, 1920],
+      minHeight: 1024,
+      enableJavaScript: true,
+    })
+  })
+
+  test('therapists directory responsive', async ({ page }) => {
+    await page.goto('/therapists')
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Therapists Directory - All Breakpoints', {
+      widths: [375, 768, 1024, 1280, 1920],
+      minHeight: 1024,
+      enableJavaScript: true,
+    })
+  })
+
+  test('triage flow responsive', async ({ page }) => {
+    await page.goto('/triage')
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Triage Flow - All Breakpoints', {
+      widths: [375, 768, 1024, 1280, 1920],
+      minHeight: 1024,
+      enableJavaScript: true,
+    })
+  })
+})
+
+test.describe('Percy AI Visual Testing - Component States', () => {
+  test('login form with validation errors', async ({ page }) => {
+    await page.goto('/login')
+    await page.waitForLoadState('networkidle')
+
+    // Baseline - empty form
+    await percySnapshot(page, 'Login Form - Empty', {
+      widths: [375, 1280],
+    })
+
+    // Submit to trigger validation
+    await page.getByRole('button', { name: /anmelden|login/i }).click()
+    await page.waitForTimeout(500)
+
+    // Snapshot with validation errors
+    await percySnapshot(page, 'Login Form - Validation Errors', {
+      widths: [375, 1280],
+    })
+  })
+
+  test('signup form states', async ({ page }) => {
+    await page.goto('/signup')
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Signup Form - Empty', {
+      widths: [375, 1280],
+    })
+
+    // Fill partial form
+    const emailInput = page.locator('input[type="email"]').first()
+    await emailInput.fill('test@example.com')
+
+    await percySnapshot(page, 'Signup Form - Partially Filled', {
+      widths: [375, 1280],
+    })
+  })
+
+  test('therapist cards hover state', async ({ page }) => {
+    await page.goto('/therapists')
+    await page.waitForLoadState('networkidle')
+
+    // Wait for cards to load
+    await page.waitForSelector('[data-testid="therapist-card"], .therapist-card', {
+      timeout: 5000,
+    }).catch(() => {
+      // Cards might not have test IDs yet
+    })
+
+    // Baseline
+    await percySnapshot(page, 'Therapist Cards - Normal State', {
+      widths: [1280],
+    })
+
+    // Hover state
+    const firstCard = page.locator('[data-testid="therapist-card"], .therapist-card').first()
+    await firstCard.hover().catch(() => {})
+    await page.waitForTimeout(300)
+
+    await percySnapshot(page, 'Therapist Cards - Hover State', {
+      widths: [1280],
+    })
+  })
+})
+
+test.describe('Percy AI Visual Testing - Cross-Browser', () => {
+  test('homepage cross-browser comparison', async ({ page }) => {
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    // Percy will automatically test this across Chrome, Firefox, Safari, and Edge
+    await percySnapshot(page, 'Homepage - Cross-Browser', {
+      widths: [375, 1280, 1920],
+      minHeight: 1024,
+      enableJavaScript: true,
+      // Percy will test this in multiple browsers automatically
+    })
+  })
+})
+
+test.describe('Percy AI Visual Testing - Dark Mode (when implemented)', () => {
+  test.skip('homepage dark mode', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' })
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Homepage - Dark Mode', {
+      widths: [375, 1280],
+      minHeight: 1024,
+    })
+  })
+})
+
+test.describe('Percy AI Visual Testing - Localization', () => {
+  test('homepage in English', async ({ page }) => {
+    await page.goto('/', {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    })
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Homepage - English', {
+      widths: [375, 1280],
+    })
+  })
+
+  test('homepage in German', async ({ page }) => {
+    await page.goto('/', {
+      headers: {
+        'Accept-Language': 'de',
+      },
+    })
+    await page.waitForLoadState('networkidle')
+
+    await percySnapshot(page, 'Homepage - German', {
+      widths: [375, 1280],
+    })
+  })
+})
+
+/**
+ * Percy AI Features Explained:
+ *
+ * 1. Smart Diffing: Percy's AI ignores anti-aliasing differences, font rendering
+ *    variations, and other false positives that plague pixel-by-pixel comparison tools.
+ *
+ * 2. Auto-Stabilization: Percy waits for animations and dynamic content to settle
+ *    before capturing snapshots, reducing flaky tests.
+ *
+ * 3. Responsive Testing: Single snapshot call can test multiple widths automatically.
+ *
+ * 4. Cross-Browser: Percy renders your app in real browsers (Chrome, Firefox, Safari, Edge)
+ *    and compares them, catching browser-specific issues.
+ *
+ * 5. Baseline Management: Percy automatically manages baselines per branch, making
+ *    it easy to review visual changes in pull requests.
+ *
+ * 6. GitHub Integration: Visual diffs appear directly in your PRs, making review easy.
+ *
+ * 7. Smart Ignore Regions: You can ignore dynamic content (dates, random IDs) that
+ *    shouldn't fail visual tests.
+ *
+ * Usage Tips:
+ * - Use Percy for comprehensive visual regression testing
+ * - Use Playwright's built-in visual testing for quick, local checks
+ * - Combine Percy with accessibility tests for complete coverage
+ */

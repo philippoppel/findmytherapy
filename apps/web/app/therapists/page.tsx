@@ -74,7 +74,7 @@ export default async function TherapistsPage() {
               <Link
                 href="/triage"
                 prefetch={false}
-                className="inline-flex items-center rounded-full bg-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                className="inline-flex items-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
                 <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
               </Link>

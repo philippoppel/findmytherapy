@@ -249,7 +249,7 @@ export async function TherapistSearch() {
                   )}
                   <Link
                     href={therapist.href}
-                    className="mt-auto flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-transparent px-4 py-2 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/5"
+                    className="mt-auto flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-transparent px-5 py-3 text-sm font-medium text-primary transition-colors hover:border-primary hover:bg-primary/5"
                   >
                     Profil ansehen
                     <ArrowRight className="h-4 w-4" aria-hidden />

@@ -427,7 +427,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                      <Button asChild size="lg" className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
                         <Link href="/therapists">Therapeut:innen ansehen</Link>
                       </Button>
                       <Button variant="outline" asChild className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
@@ -517,7 +517,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:items-end">
-                          <Button asChild className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
+                          <Button asChild className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
                             <Link href={`/therapists/${therapist.id}?from=triage`}>
                               Profil ansehen
                             </Link>
@@ -577,10 +577,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   const isPreferences = currentPhase === 'preferences'
 
   // Get phase info
-  const phaseInfo = currentPhase === 'screening'
-    ? adaptiveScreeningInfo.initial
-    : currentPhase === 'expanded'
-    ? adaptiveScreeningInfo.expanding
+  const phaseInfo = currentPhase === 'phq9'
+    ? { title: 'Depression Screening', description: 'Bitte bewerte, wie oft dich diese Beschwerden in den letzten zwei Wochen beeinträchtigt haben.' }
+    : currentPhase === 'gad7'
+    ? { title: 'Angst Screening', description: 'Bitte bewerte, wie oft du in den letzten zwei Wochen durch folgende Beschwerden beeinträchtigt wurdest.' }
     : { title: 'Deine Präferenzen', description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.' }
 
   return (
@@ -691,7 +691,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" className="w-full bg-teal-400 text-white hover:bg-teal-300 sm:w-auto">
+                    <Button onClick={goNext} size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -739,7 +739,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           <div
                             className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold sm:h-10 sm:w-10 ${
                               isSelected
-                                ? 'border-teal-400 bg-teal-400 text-white'
+                                ? 'border-teal-700 bg-teal-700 text-white'
                                 : 'border-white/30 bg-white/10 text-white'
                             }`}
                           >

@@ -53,7 +53,8 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
                   id={`${tabsId}-mobile-select`}
                   value={activeTab}
                   onChange={(event) => setActiveTab(event.target.value)}
-                  className="w-full rounded-xl border border-transparent bg-white px-4 py-3 text-sm font-semibold text-default shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  style={{ minHeight: '44px', WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
+                  className="w-full rounded-xl border border-transparent bg-white px-4 py-[0.875rem] text-sm font-semibold text-default shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/60"
                 >
                   {tabs.map((tab) => (
                     <option key={tab.value} value={tab.value}>

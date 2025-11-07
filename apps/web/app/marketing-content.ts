@@ -241,7 +241,7 @@ export const teamContent = {
       focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
     },
     {
-      name: 'Thomas Kaufmann',
+      name: 'BA.pth. Thomas Kaufmann',
       role: 'Psychotherapeut',
       focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
     },

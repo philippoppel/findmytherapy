@@ -82,7 +82,7 @@ export function TeamSection({ content }: TeamSectionProps) {
                 Schreibe uns über das Produkt direkt im Interface oder an{' '}
                 <a
                   href="mailto:servus@findmytherapy.net"
-                  className="font-semibold text-primary underline-offset-2 hover:underline"
+                  className="inline-flex min-h-12 items-center gap-1 px-2 py-3 font-semibold text-primary underline-offset-2 hover:underline"
                 >
                   servus@findmytherapy.net
                 </a>

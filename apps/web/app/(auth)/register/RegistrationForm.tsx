@@ -286,7 +286,7 @@ export function RegistrationForm() {
         <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">
           {form.role === 'THERAPIST' ? 'Pilot-Registrierung' : 'Zugangsanfrage'}
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-neutral-800">
           Fülle das Formular aus – wir melden uns werktags innerhalb von 24 Stunden.
         </p>
       </header>
@@ -494,7 +494,7 @@ export function RegistrationForm() {
                   maxLength={500}
                   placeholder="z. B. Erstgespräche ab Juni, Abendtermine Mittwoch & Donnerstag, dringende Slots auf Anfrage …"
                 />
-                <span className="text-xs text-subtle">Optional, max. 500 Zeichen</span>
+                <span className="text-xs text-neutral-900">Optional, max. 500 Zeichen</span>
               </label>
 
               <label className="space-y-1 text-sm text-neutral-700" htmlFor="pricingNote">
@@ -507,7 +507,7 @@ export function RegistrationForm() {
                   maxLength={500}
                   placeholder="z. B. €80–110 pro Einheit, Sozialtarife für Studierende, Firmenabrechnung via FindMyTherapy …"
                 />
-                <span className="text-xs text-subtle">Optional, max. 500 Zeichen</span>
+                <span className="text-xs text-neutral-900">Optional, max. 500 Zeichen</span>
               </label>
             </div>
           </div>
@@ -533,7 +533,7 @@ export function RegistrationForm() {
             <span className="font-medium text-default">
               {form.role === 'THERAPIST' ? 'Was sollen wir über dich wissen?' : 'Worauf sollen wir uns vorbereiten?'}
             </span>
-            <span className="text-xs text-subtle">Optional</span>
+            <span className="text-xs text-neutral-900">Optional</span>
           </div>
           <Textarea
             id="notes"
@@ -589,7 +589,7 @@ export function RegistrationForm() {
           )}
         </Button>
 
-        <p className="text-center text-xs text-subtle">
+        <p className="text-center text-xs text-neutral-800">
           Mit dem Absenden bestätigst du, dass wir dich per E-Mail oder Telefon kontaktieren dürfen. Keine Werbung, keine
           Weitergabe deiner Daten.
         </p>

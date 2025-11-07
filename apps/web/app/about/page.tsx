@@ -8,7 +8,7 @@ const teamMembers = [
     focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
   },
   {
-    name: 'Thomas Kaufmann',
+    name: 'BA.pth. Thomas Kaufmann',
     role: 'Psychotherapeut',
     focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
   },
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <div className="absolute bottom-[-10rem] left-[-2rem] h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center rounded-full bg-primary-100 px-4 py-1 text-sm font-semibold text-primary shadow-sm">
+          <span className="inline-flex items-center rounded-full bg-primary-600 px-4 py-1 text-sm font-semibold text-white shadow-sm">
             FindMyTherapy Story – Unser Weg
           </span>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-default md:text-5xl">
@@ -69,7 +69,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-8 rounded-3xl border border-divider bg-surface-1/85 p-8 shadow-md shadow-primary/10 backdrop-blur">
-              <h2 className="text-3xl font-semibold text-default">Unsere Herangehensweise</h2>
+              <h2 className="text-balance break-words text-3xl font-semibold text-default">Unsere Herangehensweise</h2>
               <p className="text-base leading-relaxed text-muted">
                 FindMyTherapy verbindet klinische Exzellenz mit digitalen Tools. Wir entwickeln Care Journeys, die Menschen dort
                 abholen, wo sie stehen, und sie mit klaren nächsten Schritten begleiten – von der Ersteinschätzung über die

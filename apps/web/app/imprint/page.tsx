@@ -15,8 +15,15 @@ export default function ImprintPage() {
           Österreich
         </p>
         <p className="mt-4">
-          E-Mail: <a className="underline" href="mailto:servus@findmytherapy.net">servus@findmytherapy.net</a><br />
-          Telefon: <a className="underline" href="tel:+4319971212">+43 1 997 1212</a>
+          E-Mail:{' '}
+          <a className="inline-flex min-h-12 items-center gap-1 px-2 py-3 underline" href="mailto:servus@findmytherapy.net">
+            servus@findmytherapy.net
+          </a>
+          <br />
+          Telefon:{' '}
+          <a className="inline-flex min-h-12 items-center gap-1 px-2 py-3 underline" href="tel:+4319971212">
+            +43 1 997 1212
+          </a>
         </p>
         <p className="mt-4">
           Firmenbuchnummer: FN 123456a<br />
@@ -34,4 +41,3 @@ export default function ImprintPage() {
     </main>
   );
 }
-
