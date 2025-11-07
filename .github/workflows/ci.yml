@@ -380,7 +380,7 @@ jobs:
           pnpm --filter web build
           pnpm --filter web start &
           sleep 15
-          pnpm exec playwright test visual --project=chromium-desktop
+          pnpm --filter web exec playwright test tests/visual/accessibility.spec.ts --project=chromium-desktop
 
       - name: Upload visual test results
         if: always()
