@@ -122,7 +122,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-teal-400 text-white py-3 px-4 rounded-xl hover:bg-teal-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold shadow-lg"
+              className="w-full bg-teal-700 text-white py-3 px-4 rounded-xl hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold shadow-lg"
             >
               {isLoading ? 'Lädt...' : 'Anmelden'}
             </button>

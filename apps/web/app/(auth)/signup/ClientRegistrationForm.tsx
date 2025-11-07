@@ -177,7 +177,7 @@ export function ClientRegistrationForm() {
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
       <header className="mb-6">
         <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">Account erstellen</h2>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-neutral-800">
           Sichere dir den Zugang zu empfohlenen Programmen, Kursfortschritt und deinem Care-Team.
         </p>
       </header>
@@ -345,7 +345,7 @@ export function ClientRegistrationForm() {
           )}
         </Button>
 
-        <p className="text-center text-xs text-subtle">
+        <p className="text-center text-xs text-neutral-700">
           Bereits ein Konto?{' '}
           <Link href="/login" className="text-primary underline">
             Hier anmelden

@@ -38,9 +38,10 @@ export function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-transform hover:scale-105"
+            className="group flex items-center gap-2.5 rounded-xl border border-transparent p-1 transition-transform hover:scale-105 focus-visible:border-white/80 focus-visible:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/70 focus-visible:outline-offset-2"
+            aria-label="FindMyTherapy Startseite"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
               <Compass className="h-5 w-5 text-white" aria-hidden />
             </div>
             <div className="hidden flex-col sm:flex">
@@ -70,7 +71,7 @@ export function Header() {
             {!isHome && (
               <Link
                 href="/triage"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-teal-400 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:-translate-y-0.5 hover:bg-teal-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-teal-700 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:-translate-y-0.5 hover:bg-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
               >
                 Kostenlose Ersteinschätzung
               </Link>
@@ -80,7 +81,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="rounded-xl p-2 text-white/80 transition hover:bg-white/10 hover:text-white lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-white/80 transition hover:bg-white/10 hover:text-white lg:hidden"
             aria-label="Menü öffnen"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -105,7 +106,7 @@ export function Header() {
               <AuthHeader />
               <Link
                 href="/triage"
-                className="block rounded-xl bg-teal-400 px-4 py-3 text-center text-sm font-semibold text-white shadow-md shadow-teal-900/30 transition hover:bg-teal-300"
+                className="block rounded-xl bg-teal-700 px-4 py-3 text-center text-sm font-semibold text-white shadow-md shadow-teal-900/30 transition hover:bg-teal-600"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Kostenlose Ersteinschätzung

@@ -51,11 +51,17 @@ export default function HelpPage() {
       <section className="rounded-2xl border border-primary/20 bg-primary-50 p-6 text-sm text-primary">
         <h2 className="text-lg font-semibold text-primary">Direkter Kontakt</h2>
         <p className="mt-2">
-          Schreib uns an <a className="underline" href="mailto:servus@findmytherapy.net">servus@findmytherapy.net</a> oder ruf uns unter{' '}
-          <a className="underline" href="tel:+4319971212">+43 1 997 1212</a> an. Wir sind werktags von 8–18 Uhr für dich erreichbar.
+          Schreib uns an{' '}
+          <a className="inline-flex min-h-12 items-center gap-1 px-2 py-3 underline" href="mailto:servus@findmytherapy.net">
+            servus@findmytherapy.net
+          </a>{' '}
+          oder ruf uns unter{' '}
+          <a className="inline-flex min-h-12 items-center gap-1 px-2 py-3 underline" href="tel:+4319971212">
+            +43 1 997 1212
+          </a>{' '}
+          an. Wir sind werktags von 8–18 Uhr für dich erreichbar.
         </p>
       </section>
     </main>
   );
 }
-

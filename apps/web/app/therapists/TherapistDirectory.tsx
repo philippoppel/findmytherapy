@@ -105,7 +105,7 @@ export function TherapistDirectory({ therapists }: Props) {
                   className={cn(
                     'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
                     isActive
-                      ? 'border-teal-400 bg-teal-400 text-white shadow-sm'
+                      ? 'border-teal-700 bg-teal-700 text-white shadow-sm'
                       : 'border-white/30 text-white/70 hover:border-teal-400/40 hover:text-white hover:bg-white/10',
                   )}
                 >
@@ -128,7 +128,7 @@ export function TherapistDirectory({ therapists }: Props) {
                     className={cn(
                       'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
                       isActive
-                        ? 'border-teal-400 bg-teal-400 text-white shadow-sm'
+                        ? 'border-teal-700 bg-teal-700 text-white shadow-sm'
                         : 'border-white/30 text-white/70 hover:border-teal-400/40 hover:text-white hover:bg-white/10',
                     )}
                   >
@@ -261,7 +261,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </span>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="relative z-10 flex flex-wrap gap-2">
           <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="border-white/40 text-white hover:bg-white/10">
             <Link href="/triage" prefetch={false}>
               Passende Empfehlung erhalten

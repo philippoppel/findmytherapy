@@ -20,10 +20,10 @@ export default function HowItWorksPage() {
   return (
     <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 space-y-12">
       <section className="space-y-6 text-center">
-        <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+        <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">
           So funktioniert&apos;s
         </span>
-        <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">
+        <h1 className="text-balance break-words text-3xl font-bold text-neutral-950 sm:text-4xl">
           In drei Schritten zu deinem passenden Unterstützungsangebot
         </h1>
         <p className="mx-auto max-w-2xl text-base text-neutral-700">
@@ -49,7 +49,7 @@ export default function HowItWorksPage() {
       <section className="grid gap-8 rounded-2xl bg-surface-2 p-8 shadow-inner">
         <header className="space-y-2">
           <h2 className="text-2xl font-semibold text-neutral-950">Unsere Qualitätsstandards</h2>
-          <p className="text-sm text-neutral-700">
+          <p className="text-sm text-neutral-800">
             Wir arbeiten mit approbierten Psychotherapeut:innen, Klinischen Psycholog:innen und zertifizierten Coaches zusammen.
           </p>
         </header>
@@ -71,4 +71,3 @@ export default function HowItWorksPage() {
     </main>
   );
 }
-

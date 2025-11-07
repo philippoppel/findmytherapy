@@ -187,7 +187,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                   ) : null}
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button asChild size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
+                  <Button asChild size="lg" className="bg-teal-700 text-white hover:bg-teal-600">
                     <Link href={contactHref} prefetch={false}>
                       Termin anfragen
                     </Link>
@@ -322,7 +322,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                 Unser Care-Team koordiniert gerne ein Erstgespräch oder beantwortet offene Fragen.
               </p>
               <div className="flex flex-col gap-3">
-                <Button asChild size="lg" className="bg-teal-400 text-white hover:bg-teal-300">
+                <Button asChild size="lg" className="bg-teal-700 text-white hover:bg-teal-600">
                   <Link href={contactHref} prefetch={false}>
                     Nachricht senden
                   </Link>

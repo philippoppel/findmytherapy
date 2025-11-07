@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
-            <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-105">
+            <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-105" aria-label="FindMyTherapy Startseite">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/30">
                 <Compass className="h-5 w-5 text-white" />
               </div>

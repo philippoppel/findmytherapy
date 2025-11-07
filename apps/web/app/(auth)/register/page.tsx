@@ -14,7 +14,7 @@ export default function RegisterPage() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 text-center lg:mb-12">
-          <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1.5 text-sm font-semibold text-primary shadow-sm">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-800 shadow-sm">
             <Users className="h-4 w-4" aria-hidden />
             Zugang anfragen
           </span>
@@ -38,34 +38,30 @@ export default function RegisterPage() {
             {/* Benefits */}
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
               <h2 className="mb-4 text-lg font-semibold text-neutral-900">Deine Vorteile</h2>
-              <dl className="space-y-4">
-                <div className="flex items-start gap-3">
+              <dl>
+                <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
                   <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="font-medium text-neutral-900">DSGVO-konform</dt>
-                    <dd className="mt-1 text-sm text-neutral-600">
-                      Alle Angaben dienen ausschließlich zur Abstimmung deines Zugangs und werden nicht extern geteilt.
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
+                  <span className="font-medium">DSGVO-konform</span>
+                </dt>
+                <dd className="pl-8 pt-2 text-sm text-neutral-700">
+                  Alle Angaben dienen ausschließlich zur Abstimmung deines Zugangs und werden nicht extern geteilt.
+                </dd>
+
+                <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
                   <CalendarCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="font-medium text-neutral-900">Flexible Termine</dt>
-                    <dd className="mt-1 text-sm text-neutral-600">
-                      Wir koordinieren optional einen gemeinsamen Walkthrough oder liefern eine aufgezeichnete Tour.
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
+                  <span className="font-medium">Flexible Termine</span>
+                </dt>
+                <dd className="pl-8 pt-2 text-sm text-neutral-700">
+                  Wir koordinieren optional einen gemeinsamen Walkthrough oder liefern eine aufgezeichnete Tour.
+                </dd>
+
+                <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
                   <HeartHandshake className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="font-medium text-neutral-900">Individuelle Empfehlungen</dt>
-                    <dd className="mt-1 text-sm text-neutral-600">
-                      Wir stimmen Inhalte auf deine Zielgruppe, Use-Cases und vorhandene Infrastruktur ab.
-                    </dd>
-                  </div>
-                </div>
+                  <span className="font-medium">Individuelle Empfehlungen</span>
+                </dt>
+                <dd className="pl-8 pt-2 text-sm text-neutral-700">
+                  Wir stimmen Inhalte auf deine Zielgruppe, Use-Cases und vorhandene Infrastruktur ab.
+                </dd>
               </dl>
             </div>
 

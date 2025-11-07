@@ -28,7 +28,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
             Noch etwas unklar? Schreib uns an{' '}
             <a
               href="mailto:servus@findmytherapy.net"
-              className="font-semibold text-primary underline-offset-4 hover:underline"
+              className="inline-flex min-h-12 items-center gap-1 px-2 py-3 font-semibold text-primary underline-offset-4 hover:underline"
             >
               servus@findmytherapy.net
             </a>

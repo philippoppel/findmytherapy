@@ -15,7 +15,7 @@ export default function ClientSignupPage() {
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 text-center lg:mb-12">
-          <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-1.5 text-sm font-semibold text-primary shadow-sm">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-800 shadow-sm">
             <Sparkles className="h-4 w-4" aria-hidden />
             Dein FindMyTherapy Bereich
           </span>
@@ -39,25 +39,22 @@ export default function ClientSignupPage() {
             {/* Benefits */}
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
               <h2 className="mb-4 text-lg font-semibold text-neutral-900">Was dich erwartet</h2>
-              <dl className="space-y-4">
-                <div className="flex items-start gap-3">
+              <dl>
+                <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
                   <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="font-medium text-neutral-900">Sicher und DSGVO-konform</dt>
-                    <dd className="mt-1 text-sm text-neutral-600">
-                      Deine Angaben bleiben vertraulich. Accounts können jederzeit gelöscht werden.
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
+                  <span className="font-medium">Sicher und DSGVO-konform</span>
+                </dt>
+                <dd className="pl-8 pt-2 text-sm text-neutral-700">
+                  Deine Angaben bleiben vertraulich. Accounts können jederzeit gelöscht werden.
+                </dd>
+
+                <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
                   <HeartHandshake className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="font-medium text-neutral-900">Care-Team inklusive</dt>
-                    <dd className="mt-1 text-sm text-neutral-600">
-                      Du erhältst persönliche Empfehlungen und kannst jederzeit Support anfordern.
-                    </dd>
-                  </div>
-                </div>
+                  <span className="font-medium">Care-Team inklusive</span>
+                </dt>
+                <dd className="pl-8 pt-2 text-sm text-neutral-700">
+                  Du erhältst persönliche Empfehlungen und kannst jederzeit Support anfordern.
+                </dd>
               </dl>
             </div>
 

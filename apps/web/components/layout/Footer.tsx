@@ -52,16 +52,19 @@ export function Footer() {
               FindMyTherapy – Der klare Weg zur richtigen Hilfe. Wir verbinden Therapeut:innen,
               digitale Programme und Erstberatung in einer verlässlichen Plattform.
             </p>
-            <div className="space-y-3 text-sm text-white/75">
-              <div className="flex items-center gap-2">
+            <div className="space-y-2 text-sm text-white/75">
+              <a
+                href="mailto:servus@findmytherapy.net"
+                className="inline-flex h-12 items-center gap-2 px-3 transition hover:text-white"
+              >
                 <Mail className="h-4 w-4 text-white/60" />
                 <span>servus@findmytherapy.net</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </a>
+              <div className="flex items-center gap-2 py-3">
                 <Phone className="h-4 w-4 text-white/60" />
                 <span>+43 X XXX</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 py-3">
                 <MapPin className="h-4 w-4 text-white/60" />
                 <span>Wien, Österreich</span>
               </div>
@@ -74,12 +77,12 @@ export function Footer() {
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-white/60">
                 {section.title}
               </h3>
-              <ul className="space-y-2.5">
+              <ul className="space-y-1">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/70 transition hover:text-white"
+                      className="inline-block px-2 py-3 text-sm text-white/70 transition hover:text-white"
                     >
                       {link.name}
                     </Link>

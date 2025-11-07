@@ -14,6 +14,7 @@ export default function AuthLayout({
           <Link
             href="/"
             className="group flex items-center gap-2.5 transition-transform hover:scale-105"
+            aria-label="FindMyTherapy Startseite"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
               <Compass className="h-5 w-5 text-white" aria-hidden />
