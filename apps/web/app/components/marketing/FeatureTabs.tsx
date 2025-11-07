@@ -26,7 +26,7 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
   const activeContent = tabs.find((tab) => tab.value === activeTab) ?? tabs[0]
 
   return (
-    <section id="features" className="py-24">
+    <section id="features" className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-12 rounded-[2.5rem] border border-divider bg-white p-6 shadow-xl shadow-secondary/10 sm:p-8 md:p-12">
           <div className="flex flex-col gap-6">

@@ -53,7 +53,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
           <table className="w-full">
             <thead className="border-b border-divider bg-surface-1">
               <tr>
-                <th className="sticky left-0 bg-surface-1 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted">
+                <th className="sticky left-0 z-10 bg-surface-1 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted">
                   Kriterium
                 </th>
                 {therapists.map((therapist) => (
@@ -86,7 +86,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
             <tbody className="divide-y divide-divider">
               {/* Rating */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Bewertung
                 </td>
                 {therapists.map((therapist) => (
@@ -110,7 +110,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Erfahrung */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Berufserfahrung
                 </td>
                 {therapists.map((therapist) => (
@@ -124,7 +124,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Schwerpunkte */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Schwerpunkte
                 </td>
                 {therapists.map((therapist) => (
@@ -148,7 +148,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Format */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Format
                 </td>
                 {therapists.map((therapist) => (
@@ -171,7 +171,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Standort */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Standort
                 </td>
                 {therapists.map((therapist) => (
@@ -186,7 +186,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Sprachen */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Sprachen
                 </td>
                 {therapists.map((therapist) => (
@@ -202,7 +202,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
 
               {/* Verfügbarkeit */}
               <tr>
-                <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                   Verfügbarkeit
                 </td>
                 {therapists.map((therapist) => (
@@ -223,7 +223,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
               {/* Services */}
               {therapists.some((t) => t.services && t.services.length > 0) && (
                 <tr>
-                  <td className="sticky left-0 bg-white px-4 py-4 text-sm font-medium text-default">
+                  <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
                     Leistungen
                   </td>
                   {therapists.map((therapist) => (

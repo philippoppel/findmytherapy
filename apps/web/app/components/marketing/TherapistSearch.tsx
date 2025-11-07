@@ -167,7 +167,7 @@ export async function TherapistSearch() {
       : fallbackTherapists
 
   return (
-    <section id="therapists" className="bg-gradient-to-b from-white to-surface-1 py-24">
+    <section id="therapists" className="bg-gradient-to-b from-white to-surface-1 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
@@ -195,7 +195,7 @@ export async function TherapistSearch() {
           ))}
         </div>
 
-        <div className="mb-10 grid gap-6 lg:grid-cols-3">
+        <div className="mb-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredTherapists.map((therapist, index) => (
             <Reveal key={therapist.id} delay={200 + index * 100} variant="scale">
               <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-divider bg-white shadow-lg transition-all hover:shadow-xl">

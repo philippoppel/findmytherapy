@@ -131,7 +131,7 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
         </div>
       )}
 
-      <div className="flex items-center justify-between rounded-lg border border-gray-200 px-4 py-3">
+      <div className="flex flex-col gap-3 rounded-lg border border-gray-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-medium text-gray-900">Aktueller Status</p>
           <p className="text-sm text-gray-600">
@@ -139,12 +139,23 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
           </p>
         </div>
         {totpEnabled ? (
-          <Button variant="danger" size="sm" onClick={handleDisable} disabled={isPending}>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={handleDisable}
+            disabled={isPending}
+            className="self-start sm:self-auto"
+          >
             <ShieldOff className="h-4 w-4 mr-2" />
             Deaktivieren
           </Button>
         ) : (
-          <Button size="sm" onClick={handleStartSetup} disabled={isPending}>
+          <Button
+            size="sm"
+            onClick={handleStartSetup}
+            disabled={isPending}
+            className="self-start sm:self-auto"
+          >
             <Shield className="h-4 w-4 mr-2" />
             Setup starten
           </Button>

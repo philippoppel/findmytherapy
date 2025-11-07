@@ -32,7 +32,7 @@ export function CourseCatalog({ courses }: Props) {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {courses.map((course) => {
         const isExpanded = expandedSlug === course.slug
 

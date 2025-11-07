@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CheckCircle, Clock, MapPin, ShieldCheck, Sparkles, Star } from 'lucide-react'
@@ -51,7 +51,6 @@ type Props = {
 export function TherapistDirectory({ therapists }: Props) {
   const [focusFilter, setFocusFilter] = useState<string | null>(null)
   const [formatFilter, setFormatFilter] = useState<(typeof formatOptions)[number]['id'] | null>(null)
-  const [mounted, setMounted] = useState(false)
 
   const focusOptions = useMemo(() => {
     const values = new Set<string>()
@@ -68,14 +67,6 @@ export function TherapistDirectory({ therapists }: Props) {
   }, [therapists, focusFilter, formatFilter])
 
   const hasFilters = Boolean(focusFilter || formatFilter)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <>
@@ -167,7 +158,7 @@ export function TherapistDirectory({ therapists }: Props) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredTherapists.map((therapist) => (
             <DirectoryCard key={therapist.id} therapist={therapist} />
           ))}
