@@ -11,7 +11,7 @@ interface ContactCtaProps {
 
 export function ContactCta({ content }: ContactCtaProps) {
   return (
-    <section className="py-24">
+    <section className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <Reveal className="relative overflow-hidden rounded-[2.5rem] border border-primary/20 bg-gradient-to-br from-primary/10 via-white to-primary/5 p-10 text-center shadow-2xl shadow-primary/20 md:p-14" variant="scale">
           <div className="absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-primary/15 blur-3xl" aria-hidden />

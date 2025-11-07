@@ -42,6 +42,7 @@ describe('RegistrationForm', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
     fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Ich stimme den/i }))
     fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
 
     expect(await screen.findByText(/Danke für deine Registrierung/i)).toBeInTheDocument()
@@ -182,6 +183,7 @@ describe('RegistrationForm', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
     fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Ich stimme den/i }))
 
     const submitButton = screen.getByRole('button', { name: /Registrierung abschließen/i })
     fireEvent.click(submitButton)
@@ -207,6 +209,7 @@ describe('RegistrationForm', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Depression & Burnout/i }))
     fireEvent.click(screen.getByRole('button', { name: /Online/i }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Ich stimme den/i }))
     fireEvent.click(screen.getByRole('button', { name: /Registrierung abschließen/i }))
 
     await waitFor(() => {

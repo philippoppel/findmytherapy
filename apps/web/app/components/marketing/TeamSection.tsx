@@ -11,7 +11,7 @@ interface TeamSectionProps {
 
 export function TeamSection({ content }: TeamSectionProps) {
   return (
-    <section id="team" className="py-24">
+    <section id="team" className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 rounded-[2.5rem] border border-divider bg-white p-6 shadow-xl shadow-secondary/10 sm:gap-10 sm:p-8 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,0.4fr)] lg:gap-12 lg:p-14">
           <Reveal className="space-y-6">

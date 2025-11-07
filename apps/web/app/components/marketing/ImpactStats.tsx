@@ -25,7 +25,7 @@ export function ImpactStats({
   return (
     <section
       id={id}
-      className={cn('py-20', className)}
+      className={cn('py-16 md:py-20', className)}
       aria-labelledby={title ? `${id ?? 'impact'}-heading` : undefined}
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
