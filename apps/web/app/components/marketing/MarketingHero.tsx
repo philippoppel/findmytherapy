@@ -57,9 +57,10 @@ export function MarketingHero({ content }: HeroProps) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="w-full !border-transparent !bg-teal-400 !py-4 !text-base !font-semibold !text-white shadow-lg shadow-teal-900/20 transition hover:-translate-y-0.5 hover:!bg-teal-300 hover:!text-white focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
+                className="w-full !border-transparent !bg-white !py-4 !text-base !font-semibold shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 hover:!bg-teal-50 focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
+                style={{ color: '#042f2e' }}
               >
-                <Link href={content.primaryCta.href}>
+                <Link href={content.primaryCta.href} style={{ color: 'inherit' }}>
                   {content.primaryCta.label}
                 </Link>
               </Button>
@@ -75,7 +76,7 @@ export function MarketingHero({ content }: HeroProps) {
               </Button>
               <Link
                 href={content.tertiaryCta.href}
-                className="text-center text-sm font-semibold text-teal-200 underline-offset-4 transition hover:text-teal-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950 sm:ml-2"
+                className="inline-block py-3 text-center text-sm font-semibold text-teal-200 underline-offset-4 transition hover:text-teal-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950 sm:ml-2"
               >
                 {content.tertiaryCta.label}
               </Link>
@@ -85,12 +86,12 @@ export function MarketingHero({ content }: HeroProps) {
           <dl className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
             {content.metrics.map((metric, index) => (
               <Reveal key={metric.label} delay={600 + index * 100} className="rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-left shadow-sm backdrop-blur sm:rounded-2xl sm:px-4 sm:py-4 md:py-5">
-                <dd className="text-xl font-semibold text-white sm:text-2xl">
-                  {metric.value}
-                </dd>
-                <dt className="mt-1.5 text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:mt-2 sm:text-xs">
+                <dt className="text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:text-xs">
                   {metric.label}
                 </dt>
+                <dd className="mt-1.5 text-xl font-semibold text-white sm:mt-2 sm:text-2xl">
+                  {metric.value}
+                </dd>
               </Reveal>
             ))}
           </dl>
