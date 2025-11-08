@@ -18,8 +18,6 @@ import {
   phq9SeverityDescriptions,
   gad7SeverityLabels,
   gad7SeverityDescriptions,
-  phq9Questions,
-  gad7Questions,
 } from '../../lib/triage/questionnaires'
 import {
   phq2Questions,
@@ -102,7 +100,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
-  const [showTransition, setShowTransition] = useState(false)
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
@@ -179,26 +176,20 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           if (shouldExpandPHQ9(phq2Score)) {
             // Show transition message, then expand
             setCurrentPhase('phq2-to-gad2')
-            setShowTransition(true)
             setTimeout(() => {
-              setShowTransition(false)
               setCurrentPhase('phq9-expanded')
             }, 2500)
           } else {
             // PHQ-2 score is low, move to GAD-2
             setCurrentPhase('phq2-to-gad2')
-            setShowTransition(true)
             setTimeout(() => {
-              setShowTransition(false)
               setCurrentPhase('gad2')
             }, 2500)
           }
         } else if (currentPhase === 'phq9-expanded') {
           // Finished expanded PHQ-9, move to GAD-2
           setCurrentPhase('phq2-to-gad2')
-          setShowTransition(true)
           setTimeout(() => {
-            setShowTransition(false)
             setCurrentPhase('gad2')
           }, 2500)
         } else if (currentPhase === 'gad2') {
@@ -210,26 +201,20 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           if (shouldExpandGAD7(gad2Score)) {
             // Show transition message, then expand
             setCurrentPhase('gad2-to-preferences')
-            setShowTransition(true)
             setTimeout(() => {
-              setShowTransition(false)
               setCurrentPhase('gad7-expanded')
             }, 2500)
           } else {
             // GAD-2 score is low, move to preferences
             setCurrentPhase('gad2-to-preferences')
-            setShowTransition(true)
             setTimeout(() => {
-              setShowTransition(false)
               setCurrentPhase('preferences')
             }, 2500)
           }
         } else if (currentPhase === 'gad7-expanded') {
           // Finished expanded GAD-7, move to preferences
           setCurrentPhase('gad2-to-preferences')
-          setShowTransition(true)
           setTimeout(() => {
-            setShowTransition(false)
             setCurrentPhase('preferences')
           }, 2500)
         }
@@ -295,7 +280,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     setCurrentPhase('phq2')
     setQuestionIndex(0)
     setShowSummary(false)
-    setShowTransition(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
     sessionStorage.removeItem('triage-session')
@@ -465,6 +449,41 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       sessionStorage.removeItem('triage-session')
     }
   }, [])
+
+  // Get phase info (must be before early return for React Hooks rules)
+  const phaseInfo = useMemo(() => {
+    if (currentPhase === 'phq2') {
+      return {
+        title: adaptiveScreeningInfo.initial.title,
+        description: 'Wir beginnen mit 2 kurzen Fragen zu deiner Stimmung in den letzten zwei Wochen.'
+      }
+    }
+    if (currentPhase === 'phq9-expanded') {
+      return {
+        title: 'Detaillierte Depressions-Einschätzung',
+        description: adaptiveScreeningInfo.expanding.description
+      }
+    }
+    if (currentPhase === 'gad2') {
+      return {
+        title: 'Angst Screening',
+        description: 'Jetzt 2 kurze Fragen zu Angst und Sorgen in den letzten zwei Wochen.'
+      }
+    }
+    if (currentPhase === 'gad7-expanded') {
+      return {
+        title: 'Detaillierte Angst-Einschätzung',
+        description: adaptiveScreeningInfo.expanding.description
+      }
+    }
+    if (currentPhase === 'preferences') {
+      return {
+        title: 'Deine Präferenzen',
+        description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.'
+      }
+    }
+    return { title: '', description: '' }
+  }, [currentPhase])
 
   // Summary view
   if (showSummary) {
@@ -696,41 +715,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   const currentQuestion = currentQuestions[questionIndex]
   const isPreferences = currentPhase === 'preferences'
   const isTransition = currentPhase === 'phq2-to-gad2' || currentPhase === 'gad2-to-preferences'
-
-  // Get phase info
-  const phaseInfo = useMemo(() => {
-    if (currentPhase === 'phq2') {
-      return {
-        title: adaptiveScreeningInfo.initial.title,
-        description: 'Wir beginnen mit 2 kurzen Fragen zu deiner Stimmung in den letzten zwei Wochen.'
-      }
-    }
-    if (currentPhase === 'phq9-expanded') {
-      return {
-        title: 'Detaillierte Depressions-Einschätzung',
-        description: adaptiveScreeningInfo.expanding.description
-      }
-    }
-    if (currentPhase === 'gad2') {
-      return {
-        title: 'Angst Screening',
-        description: 'Jetzt 2 kurze Fragen zu Angst und Sorgen in den letzten zwei Wochen.'
-      }
-    }
-    if (currentPhase === 'gad7-expanded') {
-      return {
-        title: 'Detaillierte Angst-Einschätzung',
-        description: adaptiveScreeningInfo.expanding.description
-      }
-    }
-    if (currentPhase === 'preferences') {
-      return {
-        title: 'Deine Präferenzen',
-        description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.'
-      }
-    }
-    return { title: '', description: '' }
-  }, [currentPhase])
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">

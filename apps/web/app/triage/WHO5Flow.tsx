@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, Info, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, RotateCcw, Info, AlertTriangle } from 'lucide-react'
 import { Button } from '@mental-health/ui'
 import { track } from '../../lib/analytics'
 import {
