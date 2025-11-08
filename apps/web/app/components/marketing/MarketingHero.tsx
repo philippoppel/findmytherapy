@@ -73,12 +73,6 @@ export function MarketingHero({ content }: HeroProps) {
                   {content.secondaryCta.label}
                 </Link>
               </Button>
-              <Link
-                href={content.tertiaryCta.href}
-                className="inline-block py-3 text-center text-sm font-semibold text-teal-200 underline-offset-4 transition hover:text-teal-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950 sm:ml-2"
-              >
-                {content.tertiaryCta.label}
-              </Link>
             </div>
           </Reveal>
 
@@ -100,8 +94,8 @@ export function MarketingHero({ content }: HeroProps) {
           <div className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/10 p-2 shadow-2xl backdrop-blur sm:rounded-3xl sm:p-2.5 md:p-3">
             <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/8 via-white/10 to-transparent" />
             <Image
-              src="/images/therapists/therapy-1.jpg"
-              alt="FindMyTherapy Matching Dashboard"
+              src={content.image.src}
+              alt={content.image.alt}
               width={1280}
               height={853}
               className="relative z-10 h-full w-full rounded-xl object-cover sm:rounded-[22px]"

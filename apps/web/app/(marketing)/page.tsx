@@ -3,16 +3,16 @@ import {
   heroContent,
   impactStats,
   whyContent,
-  featureTabs,
   earlyAccessContent,
   teamContent,
   faqItems,
   contactCta,
+  clientBenefits,
+  therapistBenefits,
 } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
 import { ImpactStats } from '../components/marketing/ImpactStats'
 import { WhySection } from '../components/marketing/WhySection'
-import { FeatureTabs } from '../components/marketing/FeatureTabs'
 import { EarlyAccessSection } from '../components/marketing/EarlyAccessSection'
 import { TeamSection } from '../components/marketing/TeamSection'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
@@ -20,6 +20,8 @@ import { ContactCta } from '../components/marketing/ContactCta'
 import { AssessmentSection } from '../components/marketing/AssessmentSection'
 import { AssessmentExplainer } from '../components/marketing/AssessmentExplainer'
 import { TherapistSearch } from '../components/marketing/TherapistSearch'
+import { ClientBenefits } from '../components/marketing/ClientBenefits'
+import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
 
 // Force dynamic rendering to prevent database access during build
 // Homepage includes dynamic therapist data that requires database connection
@@ -87,11 +89,13 @@ export default function HomePage() {
 
         <AssessmentSection />
 
+        <ClientBenefits content={clientBenefits} />
+
         <TherapistSearch />
 
-        <WhySection content={whyContent} />
+        <TherapistBenefits content={therapistBenefits} />
 
-        <FeatureTabs tabs={featureTabs} />
+        <WhySection content={whyContent} />
 
         <AssessmentExplainer />
 

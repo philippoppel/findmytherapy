@@ -26,7 +26,7 @@ export function Header() {
     ? [
         { label: 'Ersteinschätzung', href: '/triage' },
         { label: 'Therapeut:innen', href: '#therapists' },
-        { label: 'Angebote', href: '#features' },
+        { label: 'Team', href: '#team' },
         { label: 'Blog', href: '/blog' },
         { label: 'FAQ', href: '#faq' },
       ]

@@ -12,99 +12,139 @@ interface TeamSectionProps {
 
 export function TeamSection({ content }: TeamSectionProps) {
   return (
-    <section id="team" className="py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 rounded-[2.5rem] border border-divider bg-white p-6 shadow-xl shadow-secondary/10 sm:gap-10 sm:p-8 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,0.4fr)] lg:gap-12 lg:p-14">
-          <Reveal className="space-y-6">
-            <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+    <section id="team" className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] via-transparent to-secondary/[0.02]" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12 text-center sm:mb-16 lg:mb-20">
+          <Reveal>
+            <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
               Das Team
             </span>
-            <h2 className="text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl">
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="mt-6 text-balance text-3xl font-bold tracking-tight text-default sm:text-4xl lg:text-5xl">
               {content.heading}
             </h2>
-            <p className="text-pretty text-lg leading-relaxed text-muted">
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mx-auto mt-4 max-w-2xl text-balance text-lg leading-relaxed text-muted sm:text-xl">
               {content.description}
             </p>
-
-            <ul className="space-y-5">
-              {content.members.map((member) => (
-                <li
-                  key={member.name}
-                  className="flex gap-4 rounded-2xl border border-divider bg-surface-1 p-4 shadow-sm"
-                >
-                  {member.image && (
-                    <div className="flex-shrink-0">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        width={80}
-                        height={80}
-                        className="rounded-xl object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="flex flex-col gap-1 min-w-0">
-                    <p className="text-base font-semibold text-default">
-                      {member.name}
-                    </p>
-                    <p className="text-sm text-muted">
-                      {member.role}
-                    </p>
-                    <p className="text-sm text-pretty text-subtle">
-                      {member.focus}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <div className="flex flex-wrap gap-3">
-              {content.ctas.map((cta) => (
-                <Button key={cta.href} asChild variant="outline">
-                  <Link href={cta.href}>
-                    {cta.label}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal className="flex flex-col gap-5 rounded-3xl border border-primary/15 bg-white/90 p-5 shadow-lg shadow-primary/10 sm:gap-6 sm:p-6 lg:p-8" variant="scale">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-primary/80">
-              Unser Versprechen
-            </h3>
-            <ul className="space-y-3 text-sm leading-relaxed text-default sm:space-y-4">
-              <li>
-                <div className="rounded-2xl border border-primary/10 bg-primary/5 p-3 text-pretty shadow-sm sm:p-4">
-                  Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.
-                </div>
-              </li>
-              <li>
-                <div className="rounded-2xl border border-primary/10 bg-primary/5 p-3 text-pretty shadow-sm sm:p-4">
-                  Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.
-                </div>
-              </li>
-              <li>
-                <div className="rounded-2xl border border-primary/10 bg-primary/5 p-3 text-pretty shadow-sm sm:p-4">
-                  Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.
-                </div>
-              </li>
-            </ul>
-            <div className="rounded-2xl border border-primary/20 bg-white p-5 text-sm text-muted shadow-sm">
-              <p className="font-semibold text-default text-pretty">Feedback? Immer her damit!</p>
-              <p className="mt-2 text-pretty">
-                Schreibe uns über das Produkt direkt im Interface oder an{' '}
-                <a
-                  href="mailto:servus@findmytherapy.net"
-                  className="inline-flex min-h-12 items-center gap-1 px-2 py-3 font-semibold text-primary underline-offset-2 hover:underline"
-                >
-                  servus@findmytherapy.net
-                </a>
-                .
-              </p>
-            </div>
           </Reveal>
         </div>
+
+        {/* Team Grid - 3 columns on large screens */}
+        <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:mb-16 lg:grid-cols-3 lg:gap-8">
+          {content.members.map((member, index) => (
+            <Reveal
+              key={member.name}
+              delay={0.1 * index}
+              className="group relative"
+            >
+              <div className="relative h-full overflow-hidden rounded-3xl border border-divider bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10">
+                {/* Image */}
+                {member.image && (
+                  <div className="relative h-80 w-full overflow-hidden sm:h-96">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-60" />
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{
+                        objectPosition: member.imagePosition || 'center 20%',
+                        transform: `scale(${member.imageScale || 1})`,
+                      }}
+                    />
+
+                    {/* Name overlay on image */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-xl font-bold tracking-tight sm:text-2xl">
+                        {member.name}
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-white/90 sm:text-base">
+                        {member.role}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="p-6">
+                  <p className="text-sm leading-relaxed text-muted sm:text-base">
+                    {member.focus}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Promise Section - Full width below team */}
+        <Reveal delay={0.3}>
+          <div className="mx-auto max-w-5xl rounded-3xl border border-primary/15 bg-gradient-to-br from-white via-white to-primary/5 p-8 shadow-xl shadow-primary/10 sm:p-10 lg:p-12">
+            <div className="mb-8 text-center">
+              <h3 className="text-2xl font-bold tracking-tight text-default sm:text-3xl">
+                Unser Versprechen
+              </h3>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-3 sm:gap-6">
+              <div className="group relative overflow-hidden rounded-2xl border border-primary/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary to-primary/40 transition-all duration-300 group-hover:w-full" />
+                <p className="text-pretty text-sm leading-relaxed text-default sm:text-base">
+                  Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.
+                </p>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl border border-primary/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary to-primary/40 transition-all duration-300 group-hover:w-full" />
+                <p className="text-pretty text-sm leading-relaxed text-default sm:text-base">
+                  Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.
+                </p>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl border border-primary/10 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary to-primary/40 transition-all duration-300 group-hover:w-full" />
+                <p className="text-pretty text-sm leading-relaxed text-default sm:text-base">
+                  Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.
+                </p>
+              </div>
+            </div>
+
+            {/* Feedback CTA */}
+            <div className="mt-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-white p-6 shadow-sm sm:p-8">
+              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
+                <div className="flex-1">
+                  <p className="text-lg font-bold text-default sm:text-xl">
+                    Feedback? Immer her damit!
+                  </p>
+                  <p className="mt-2 text-pretty text-sm text-muted sm:text-base">
+                    Schreibe uns über das Produkt direkt im Interface oder an{' '}
+                    <a
+                      href="mailto:servus@findmytherapy.net"
+                      className="font-semibold text-primary underline-offset-2 transition-colors hover:underline"
+                    >
+                      servus@findmytherapy.net
+                    </a>
+                  </p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-3 sm:flex-nowrap">
+                  {content.ctas.map((cta) => (
+                    <Button key={cta.href} asChild variant="outline" size="sm">
+                      <Link href={cta.href}>
+                        {cta.label}
+                      </Link>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
