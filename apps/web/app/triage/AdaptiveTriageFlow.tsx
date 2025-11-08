@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, AlertCircle } from 'lucide-react'
+import { ArrowRight, ArrowLeft, CheckCircle2, RotateCcw, AlertCircle, Info } from 'lucide-react'
 import { Button } from '@mental-health/ui'
 import { track } from '../../lib/analytics'
 import {
@@ -100,6 +100,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
+  const [forceFullTest, setForceFullTest] = useState(false)
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
@@ -173,53 +174,53 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           phq2Answers[questionIndex] = value // Include the answer we just gave
           const phq2Score = phq2Answers.reduce((sum, val) => sum + (val ?? 0), 0)
 
-          if (shouldExpandPHQ9(phq2Score)) {
+          if (forceFullTest || shouldExpandPHQ9(phq2Score)) {
             // Show transition message, then expand
             setCurrentPhase('phq2-to-gad2')
             setTimeout(() => {
               setCurrentPhase('phq9-expanded')
-            }, 2500)
+            }, 1000)
           } else {
             // PHQ-2 score is low, move to GAD-2
             setCurrentPhase('phq2-to-gad2')
             setTimeout(() => {
               setCurrentPhase('gad2')
-            }, 2500)
+            }, 1000)
           }
         } else if (currentPhase === 'phq9-expanded') {
           // Finished expanded PHQ-9, move to GAD-2
           setCurrentPhase('phq2-to-gad2')
           setTimeout(() => {
             setCurrentPhase('gad2')
-          }, 2500)
+          }, 1000)
         } else if (currentPhase === 'gad2') {
           // Check if we need to expand to full GAD-7
           const gad2Answers = answers.gad7.slice(0, 2)
           gad2Answers[questionIndex] = value // Include the answer we just gave
           const gad2Score = gad2Answers.reduce((sum, val) => sum + (val ?? 0), 0)
 
-          if (shouldExpandGAD7(gad2Score)) {
+          if (forceFullTest || shouldExpandGAD7(gad2Score)) {
             // Show transition message, then expand
             setCurrentPhase('gad2-to-preferences')
             setTimeout(() => {
               setCurrentPhase('gad7-expanded')
-            }, 2500)
+            }, 1000)
           } else {
             // GAD-2 score is low, move to preferences
             setCurrentPhase('gad2-to-preferences')
             setTimeout(() => {
               setCurrentPhase('preferences')
-            }, 2500)
+            }, 1000)
           }
         } else if (currentPhase === 'gad7-expanded') {
           // Finished expanded GAD-7, move to preferences
           setCurrentPhase('gad2-to-preferences')
           setTimeout(() => {
             setCurrentPhase('preferences')
-          }, 2500)
+          }, 1000)
         }
       }
-    }, 300)
+    }, 200)
   }
 
   const toggleMultipleSelect = (option: string, type: 'support' | 'availability') => {
@@ -275,13 +276,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     }
   }
 
-  const resetFlow = () => {
+  const resetFlow = (fullTest = false) => {
     setAnswers(initialAnswers)
     setCurrentPhase('phq2')
     setQuestionIndex(0)
     setShowSummary(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
+    setForceFullTest(fullTest)
     sessionStorage.removeItem('triage-session')
   }
 
@@ -509,7 +511,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Button
               variant="ghost"
-              onClick={resetFlow}
+              onClick={() => resetFlow(false)}
               className="inline-flex items-center justify-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
             >
               <RotateCcw className="h-4 w-4" />
@@ -552,6 +554,43 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                 <h3 className="text-2xl font-bold text-white sm:text-3xl">Empfohlene nächste Schritte</h3>
               </div>
             </header>
+
+            {/* Hinweis auf verkürzten Test */}
+            {(answers.phq9.length === 2 || answers.gad7.length === 2) && (
+              <div className="mt-6 rounded-2xl border-2 border-amber-400/50 bg-gradient-to-br from-amber-500/15 to-orange-500/15 p-5 shadow-lg sm:p-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/25 ring-2 ring-amber-400/30">
+                    <Info className="h-6 w-6 text-amber-200" />
+                  </div>
+                  <h4 className="text-lg font-bold text-white sm:text-xl">Verkürzte Einschätzung durchgeführt</h4>
+                  <p className="mt-2 max-w-xl text-sm text-white/85 sm:text-base">
+                    {answers.phq9.length === 2 && answers.gad7.length === 2 ? (
+                      <>
+                        Da deine ersten Antworten auf geringe Symptome hindeuten, wurde der Test verkürzt (PHQ-2 und GAD-2).
+                        Ein <strong>ausführlicher Test mit allen Fragen</strong> könnte jedoch detailliertere Erkenntnisse liefern.
+                      </>
+                    ) : answers.phq9.length === 2 ? (
+                      <>
+                        Der Depressions-Teil wurde verkürzt (PHQ-2 statt vollständigem PHQ-9).
+                        Ein <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse liefern.
+                      </>
+                    ) : (
+                      <>
+                        Der Angst-Teil wurde verkürzt (GAD-2 statt vollständigem GAD-7).
+                        Ein <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse liefern.
+                      </>
+                    )}
+                  </p>
+                  <Button
+                    onClick={() => resetFlow(true)}
+                    size="default"
+                    className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600"
+                  >
+                    Ausführlichen Test durchführen
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">

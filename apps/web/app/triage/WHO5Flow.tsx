@@ -140,6 +140,28 @@ export function WHO5Flow() {
               </div>
             </div>
 
+            {/* Hinweis auf Schnelltest */}
+            <div className="mb-6 rounded-2xl border-2 border-amber-400/50 bg-gradient-to-br from-amber-500/15 to-orange-500/15 p-5 shadow-lg sm:p-6">
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/25 ring-2 ring-amber-400/30">
+                  <Info className="h-6 w-6 text-amber-200" />
+                </div>
+                <h4 className="text-lg font-bold text-white sm:text-xl">Schnelltest zur ersten Orientierung</h4>
+                <p className="mt-2 max-w-xl text-sm text-white/85 sm:text-base">
+                  Der WHO-5 ist ein kurzer Screening-Test zur ersten Einschätzung deines allgemeinen Wohlbefindens.
+                  Für eine <strong>detaillierte Analyse deiner psychischen Gesundheit</strong>, insbesondere zu Depressionen und Angststörungen,
+                  empfehlen wir die vollständige Ersteinschätzung mit PHQ-9 und GAD-7.
+                </p>
+                <Button
+                  asChild
+                  size="default"
+                  className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600"
+                >
+                  <Link href="/triage">Vollständige Ersteinschätzung durchführen</Link>
+                </Button>
+              </div>
+            </div>
+
             {/* Severity Info */}
             <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-6">
               <h3 className="text-xl font-semibold text-white">{who5SeverityLabels[severity]}</h3>
