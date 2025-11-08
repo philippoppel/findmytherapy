@@ -21,6 +21,15 @@ import {
   phq9Questions,
   gad7Questions,
 } from '../../lib/triage/questionnaires'
+import {
+  phq2Questions,
+  gad2Questions,
+  phq9RemainingQuestions,
+  gad7RemainingQuestions,
+  shouldExpandPHQ9,
+  shouldExpandGAD7,
+  adaptiveScreeningInfo,
+} from '../../lib/triage/adaptive-questionnaires'
 import { QuestionTooltip } from './QuestionTooltip'
 import { AmpelVisualization } from './AmpelVisualization'
 import { CrisisResources } from './CrisisResources'
@@ -81,8 +90,10 @@ type AdaptiveTriageFlowProps = {
   }>
 }
 
+type Phase = 'phq2' | 'phq9-expanded' | 'phq2-to-gad2' | 'gad2' | 'gad7-expanded' | 'gad2-to-preferences' | 'preferences'
+
 export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: AdaptiveTriageFlowProps = {}) {
-  const [currentPhase, setCurrentPhase] = useState<'phq9' | 'gad7' | 'preferences'>('phq9')
+  const [currentPhase, setCurrentPhase] = useState<Phase>('phq2')
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>(initialAnswers)
   const [showSummary, setShowSummary] = useState(false)
@@ -91,30 +102,62 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
     courses: CourseRecommendation[]
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
+  const [showTransition, setShowTransition] = useState(false)
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
-    if (currentPhase === 'phq9') return phq9Questions
-    if (currentPhase === 'gad7') return gad7Questions
+    if (currentPhase === 'phq2') return phq2Questions
+    if (currentPhase === 'phq9-expanded') return phq9RemainingQuestions
+    if (currentPhase === 'gad2') return gad2Questions
+    if (currentPhase === 'gad7-expanded') return gad7RemainingQuestions
     return []
   }, [currentPhase])
 
-  // Calculate progress
-  const totalPossibleQuestions = 9 + 7 + 2 // PHQ-9 + GAD-7 + preferences (support + availability)
-  const answeredQuestions =
-    answers.phq9.length +
-    answers.gad7.length +
-    (answers.support.length > 0 ? 1 : 0) +
-    (answers.availability.length > 0 ? 1 : 0)
-  const progress = Math.round((answeredQuestions / totalPossibleQuestions) * 100)
+  // Calculate progress dynamically based on adaptive flow
+  const { expectedTotalQuestions, answeredQuestions } = useMemo(() => {
+    const phq2Score = answers.phq9.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)
+    const gad2Score = answers.gad7.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)
+
+    const needsFullPHQ9 = shouldExpandPHQ9(phq2Score)
+    const needsFullGAD7 = shouldExpandGAD7(gad2Score)
+
+    // Calculate expected total based on screening results
+    let expected = 2 + 2 + 2 // PHQ-2 + GAD-2 + preferences (minimum)
+    if (needsFullPHQ9 || currentPhase === 'phq9-expanded' || answers.phq9.length > 2) {
+      expected += 7 // Add remaining PHQ-9 questions
+    }
+    if (needsFullGAD7 || currentPhase === 'gad7-expanded' || answers.gad7.length > 2) {
+      expected += 5 // Add remaining GAD-7 questions
+    }
+
+    const answered =
+      answers.phq9.length +
+      answers.gad7.length +
+      (answers.support.length > 0 ? 1 : 0) +
+      (answers.availability.length > 0 ? 1 : 0)
+
+    return { expectedTotalQuestions: expected, answeredQuestions: answered }
+  }, [answers, currentPhase])
+
+  const progress = Math.round((answeredQuestions / expectedTotalQuestions) * 100)
 
   const handleScaleAnswer = (value: number) => {
-    const key = currentPhase as 'phq9' | 'gad7'
+    // Determine which answer array to update based on phase
+    const isPhqPhase = currentPhase === 'phq2' || currentPhase === 'phq9-expanded'
+    const key = isPhqPhase ? 'phq9' : 'gad7'
+
+    // Calculate the correct index in the full questionnaire array
+    let actualIndex = questionIndex
+    if (currentPhase === 'phq9-expanded') {
+      actualIndex = questionIndex + 2 // Offset by PHQ-2 questions
+    } else if (currentPhase === 'gad7-expanded') {
+      actualIndex = questionIndex + 2 // Offset by GAD-2 questions
+    }
 
     setAnswers((prev) => {
       const newAnswers = { ...prev }
       const currentAnswers = [...newAnswers[key]]
-      currentAnswers[questionIndex] = value
+      currentAnswers[actualIndex] = value
       newAnswers[key] = currentAnswers
       return newAnswers
     })
@@ -124,13 +167,71 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
         // Move to next question in current section
         setQuestionIndex(questionIndex + 1)
       } else {
-        // Finished current section, move to next phase
-        if (currentPhase === 'phq9') {
-          setCurrentPhase('gad7')
-          setQuestionIndex(0)
-        } else if (currentPhase === 'gad7') {
-          setCurrentPhase('preferences')
-          setQuestionIndex(0)
+        // Finished current section, determine next phase
+        setQuestionIndex(0)
+
+        if (currentPhase === 'phq2') {
+          // Check if we need to expand to full PHQ-9
+          const phq2Answers = answers.phq9.slice(0, 2)
+          phq2Answers[questionIndex] = value // Include the answer we just gave
+          const phq2Score = phq2Answers.reduce((sum, val) => sum + (val ?? 0), 0)
+
+          if (shouldExpandPHQ9(phq2Score)) {
+            // Show transition message, then expand
+            setCurrentPhase('phq2-to-gad2')
+            setShowTransition(true)
+            setTimeout(() => {
+              setShowTransition(false)
+              setCurrentPhase('phq9-expanded')
+            }, 2500)
+          } else {
+            // PHQ-2 score is low, move to GAD-2
+            setCurrentPhase('phq2-to-gad2')
+            setShowTransition(true)
+            setTimeout(() => {
+              setShowTransition(false)
+              setCurrentPhase('gad2')
+            }, 2500)
+          }
+        } else if (currentPhase === 'phq9-expanded') {
+          // Finished expanded PHQ-9, move to GAD-2
+          setCurrentPhase('phq2-to-gad2')
+          setShowTransition(true)
+          setTimeout(() => {
+            setShowTransition(false)
+            setCurrentPhase('gad2')
+          }, 2500)
+        } else if (currentPhase === 'gad2') {
+          // Check if we need to expand to full GAD-7
+          const gad2Answers = answers.gad7.slice(0, 2)
+          gad2Answers[questionIndex] = value // Include the answer we just gave
+          const gad2Score = gad2Answers.reduce((sum, val) => sum + (val ?? 0), 0)
+
+          if (shouldExpandGAD7(gad2Score)) {
+            // Show transition message, then expand
+            setCurrentPhase('gad2-to-preferences')
+            setShowTransition(true)
+            setTimeout(() => {
+              setShowTransition(false)
+              setCurrentPhase('gad7-expanded')
+            }, 2500)
+          } else {
+            // GAD-2 score is low, move to preferences
+            setCurrentPhase('gad2-to-preferences')
+            setShowTransition(true)
+            setTimeout(() => {
+              setShowTransition(false)
+              setCurrentPhase('preferences')
+            }, 2500)
+          }
+        } else if (currentPhase === 'gad7-expanded') {
+          // Finished expanded GAD-7, move to preferences
+          setCurrentPhase('gad2-to-preferences')
+          setShowTransition(true)
+          setTimeout(() => {
+            setShowTransition(false)
+            setCurrentPhase('preferences')
+          }, 2500)
         }
       }
     }, 300)
@@ -161,21 +262,40 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       setQuestionIndex(questionIndex - 1)
     } else {
       // At first question of current phase, go to previous phase
-      if (currentPhase === 'gad7') {
-        setCurrentPhase('phq9')
-        setQuestionIndex(phq9Questions.length - 1)
+      if (currentPhase === 'phq9-expanded') {
+        setCurrentPhase('phq2')
+        setQuestionIndex(phq2Questions.length - 1)
+      } else if (currentPhase === 'gad2') {
+        // Go back based on whether PHQ-9 was expanded
+        if (answers.phq9.length > 2) {
+          setCurrentPhase('phq9-expanded')
+          setQuestionIndex(phq9RemainingQuestions.length - 1)
+        } else {
+          setCurrentPhase('phq2')
+          setQuestionIndex(phq2Questions.length - 1)
+        }
+      } else if (currentPhase === 'gad7-expanded') {
+        setCurrentPhase('gad2')
+        setQuestionIndex(gad2Questions.length - 1)
       } else if (currentPhase === 'preferences') {
-        setCurrentPhase('gad7')
-        setQuestionIndex(gad7Questions.length - 1)
+        // Go back based on whether GAD-7 was expanded
+        if (answers.gad7.length > 2) {
+          setCurrentPhase('gad7-expanded')
+          setQuestionIndex(gad7RemainingQuestions.length - 1)
+        } else {
+          setCurrentPhase('gad2')
+          setQuestionIndex(gad2Questions.length - 1)
+        }
       }
     }
   }
 
   const resetFlow = () => {
     setAnswers(initialAnswers)
-    setCurrentPhase('phq9')
+    setCurrentPhase('phq2')
     setQuestionIndex(0)
     setShowSummary(false)
+    setShowTransition(false)
     setRecommendations({ therapists: [], courses: [] })
     setHasPersisted(false)
     sessionStorage.removeItem('triage-session')
@@ -427,7 +547,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                      <Button asChild size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
                         <Link href="/therapists">Therapeut:innen ansehen</Link>
                       </Button>
                       <Button variant="outline" asChild className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
@@ -517,7 +637,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:items-end">
-                          <Button asChild className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                          <Button asChild className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
                             <Link href={`/therapists/${therapist.id}?from=triage`}>
                               Profil ansehen
                             </Link>
@@ -575,13 +695,42 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   // Question flow
   const currentQuestion = currentQuestions[questionIndex]
   const isPreferences = currentPhase === 'preferences'
+  const isTransition = currentPhase === 'phq2-to-gad2' || currentPhase === 'gad2-to-preferences'
 
   // Get phase info
-  const phaseInfo = currentPhase === 'phq9'
-    ? { title: 'Depression Screening', description: 'Bitte bewerte, wie oft dich diese Beschwerden in den letzten zwei Wochen beeinträchtigt haben.' }
-    : currentPhase === 'gad7'
-    ? { title: 'Angst Screening', description: 'Bitte bewerte, wie oft du in den letzten zwei Wochen durch folgende Beschwerden beeinträchtigt wurdest.' }
-    : { title: 'Deine Präferenzen', description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.' }
+  const phaseInfo = useMemo(() => {
+    if (currentPhase === 'phq2') {
+      return {
+        title: adaptiveScreeningInfo.initial.title,
+        description: 'Wir beginnen mit 2 kurzen Fragen zu deiner Stimmung in den letzten zwei Wochen.'
+      }
+    }
+    if (currentPhase === 'phq9-expanded') {
+      return {
+        title: 'Detaillierte Depressions-Einschätzung',
+        description: adaptiveScreeningInfo.expanding.description
+      }
+    }
+    if (currentPhase === 'gad2') {
+      return {
+        title: 'Angst Screening',
+        description: 'Jetzt 2 kurze Fragen zu Angst und Sorgen in den letzten zwei Wochen.'
+      }
+    }
+    if (currentPhase === 'gad7-expanded') {
+      return {
+        title: 'Detaillierte Angst-Einschätzung',
+        description: adaptiveScreeningInfo.expanding.description
+      }
+    }
+    if (currentPhase === 'preferences') {
+      return {
+        title: 'Deine Präferenzen',
+        description: 'Zum Abschluss noch ein paar Fragen zu deinen Wünschen.'
+      }
+    }
+    return { title: '', description: '' }
+  }, [currentPhase])
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
@@ -616,14 +765,88 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div
-              key={`${currentPhase}-${questionIndex}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {isPreferences ? (
+            {isTransition ? (
+              <motion.div
+                key="transition"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                className="flex min-h-[300px] items-center justify-center py-12"
+              >
+                <div className="text-center">
+                  {currentPhase === 'phq2-to-gad2' ? (
+                    <>
+                      {!shouldExpandPHQ9(answers.phq9.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)) ? (
+                        <>
+                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-teal-400" />
+                          <h3 className="text-xl font-bold text-white sm:text-2xl">
+                            {adaptiveScreeningInfo.minimal.title}
+                          </h3>
+                          <p className="mt-2 text-sm text-white/70 sm:text-base">
+                            Deine Antworten deuten auf minimale Depressionssymptome hin.
+                          </p>
+                          <p className="mt-4 text-sm font-medium text-teal-400">
+                            Weiter zum Angst-Screening...
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-amber-400" />
+                          <h3 className="text-xl font-bold text-white sm:text-2xl">
+                            {adaptiveScreeningInfo.expanding.title}
+                          </h3>
+                          <p className="mt-2 text-sm text-white/70 sm:text-base">
+                            {adaptiveScreeningInfo.expanding.description}
+                          </p>
+                          <p className="mt-4 text-sm font-medium text-amber-400">
+                            Zusätzliche Fragen werden gestellt...
+                          </p>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {!shouldExpandGAD7(answers.gad7.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)) ? (
+                        <>
+                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-teal-400" />
+                          <h3 className="text-xl font-bold text-white sm:text-2xl">
+                            {adaptiveScreeningInfo.minimal.title}
+                          </h3>
+                          <p className="mt-2 text-sm text-white/70 sm:text-base">
+                            Deine Antworten deuten auf minimale Angstsymptome hin.
+                          </p>
+                          <p className="mt-4 text-sm font-medium text-teal-400">
+                            Fast geschafft!
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-amber-400" />
+                          <h3 className="text-xl font-bold text-white sm:text-2xl">
+                            {adaptiveScreeningInfo.expanding.title}
+                          </h3>
+                          <p className="mt-2 text-sm text-white/70 sm:text-base">
+                            {adaptiveScreeningInfo.expanding.description}
+                          </p>
+                          <p className="mt-4 text-sm font-medium text-amber-400">
+                            Zusätzliche Fragen werden gestellt...
+                          </p>
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`${currentPhase}-${questionIndex}`}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isPreferences ? (
                 <div className="space-y-6">
                   <header>
                     <h3 className="text-xl font-bold text-white sm:text-2xl">Fast geschafft!</h3>
@@ -691,7 +914,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                    <Button onClick={goNext} size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -754,30 +977,30 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     <button
                       type="button"
                       onClick={goPrevious}
-                      disabled={currentPhase === 'phq9' && questionIndex === 0}
+                      disabled={currentPhase === 'phq2' && questionIndex === 0}
                       className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/15 disabled:opacity-50 sm:px-6"
                     >
                       Zurück
                     </button>
                     <span className="text-center">
-                      {currentPhase === 'phq9' && (
+                      {(currentPhase === 'phq2' || currentPhase === 'phq9-expanded') && (
                         <>
-                          <span className="hidden sm:inline">Depression Screening: Frage {questionIndex + 1} von {currentQuestions.length}</span>
-                          <span className="sm:hidden">Depression: {questionIndex + 1}/{currentQuestions.length}</span>
+                          <span className="hidden sm:inline">Depression: Frage {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)} von {currentPhase === 'phq9-expanded' ? 9 : 2}</span>
+                          <span className="sm:hidden">Depression: {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)}/{currentPhase === 'phq9-expanded' ? 9 : 2}</span>
                         </>
                       )}
-                      {currentPhase === 'gad7' && (
+                      {(currentPhase === 'gad2' || currentPhase === 'gad7-expanded') && (
                         <>
-                          <span className="hidden sm:inline">Angst Screening: Frage {questionIndex + 1} von {currentQuestions.length}</span>
-                          <span className="sm:hidden">Angst: {questionIndex + 1}/{currentQuestions.length}</span>
+                          <span className="hidden sm:inline">Angst: Frage {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)} von {currentPhase === 'gad7-expanded' ? 7 : 2}</span>
+                          <span className="sm:hidden">Angst: {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)}/{currentPhase === 'gad7-expanded' ? 7 : 2}</span>
                         </>
                       )}
-                      {currentPhase === 'preferences' && 'Deine Präferenzen'}
                     </span>
                   </div>
                 </div>
               )}
-            </motion.div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </div>
