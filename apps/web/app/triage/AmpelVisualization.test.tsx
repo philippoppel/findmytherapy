@@ -143,17 +143,17 @@ describe('AmpelVisualization', () => {
     it('should render scoring explainer component', () => {
       render(<AmpelVisualization {...defaultProps} />)
 
-      expect(screen.getByText(/wie wird die ampel berechnet\?/i)).toBeInTheDocument()
+      expect(screen.getByText(/wissenschaftliche grundlagen/i)).toBeInTheDocument()
     })
 
     it('should expand scoring explainer when clicked', () => {
       render(<AmpelVisualization {...defaultProps} />)
 
-      const explainerButton = screen.getByRole('button', { name: /wie wird die ampel berechnet\?/i })
+      const explainerButton = screen.getByRole('button', { name: /wissenschaftliche grundlagen/i })
       fireEvent.click(explainerButton)
 
-      expect(screen.getByText(/phq-9 \(patient health questionnaire\)/i)).toBeInTheDocument()
-      expect(screen.getByText(/gad-7 \(generalized anxiety disorder\)/i)).toBeInTheDocument()
+      expect(screen.getByText(/depressions-screening \(phq-9\)/i)).toBeInTheDocument()
+      expect(screen.getByText(/angst-screening \(gad-7\)/i)).toBeInTheDocument()
     })
   })
 
