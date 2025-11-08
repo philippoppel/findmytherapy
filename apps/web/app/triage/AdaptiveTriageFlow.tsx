@@ -427,10 +427,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                      <Button asChild size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-teal-600 text-white shadow-lg hover:bg-teal-500 sm:w-auto">
                         <Link href="/therapists">Therapeut:innen ansehen</Link>
                       </Button>
-                      <Button variant="outline" asChild className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
+                      <Button variant="outline" asChild className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
                         <Link href="/contact">Hilfe beim Finden</Link>
                       </Button>
                     </div>
@@ -439,11 +439,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
               </div>
             )}
 
-            {recommendations.therapists.length > 0 && (
+            {/* Show therapist recommendations or helpful message */}
+            {riskLevel !== 'LOW' && (
               <section className="mt-8">
-                <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">Passende Therapeut:innen</h4>
-                <div className="space-y-4">
-                  {recommendations.therapists.map((therapist) => (
+                {recommendations.therapists.length > 0 ? (
+                  <>
+                    <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">Passende Therapeut:innen</h4>
+                    <div className="space-y-4">
+                      {recommendations.therapists.map((therapist) => (
                     <article
                       key={therapist.id}
                       className="rounded-2xl border border-white/10 bg-white/10 p-4 shadow-sm backdrop-blur transition hover:bg-white/15 sm:p-6"
@@ -517,7 +520,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:items-end">
-                          <Button asChild className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                          <Button asChild className="w-full bg-teal-600 text-white shadow-lg hover:bg-teal-500 sm:w-auto">
                             <Link href={`/therapists/${therapist.id}?from=triage`}>
                               Profil ansehen
                             </Link>
@@ -529,6 +532,48 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       </div>
                     </article>
                   ))}
+                </div>
+                  </>
+                ) : (
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                    <h4 className="text-lg font-bold text-white">Therapeut:innen verfügbar</h4>
+                    <p className="mt-2 text-sm text-white/70">
+                      Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer Therapeut:in zu sprechen.
+                      Unser Netzwerk wird derzeit aufgebaut. Bitte schau auf unserer Therapeuten-Seite nach verfügbaren
+                      Fachpersonen oder kontaktiere unser Care-Team für eine persönliche Vermittlung.
+                    </p>
+                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                      <Button asChild size="lg" className="w-full bg-teal-600 text-white shadow-lg hover:bg-teal-500 sm:w-auto">
+                        <Link href="/therapists">Zur Therapeuten-Übersicht</Link>
+                      </Button>
+                      <Button variant="outline" asChild className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
+                        <Link href="/contact">Care-Team kontaktieren</Link>
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Show helpful message even for LOW risk if no therapists */}
+            {riskLevel === 'LOW' && recommendations.therapists.length === 0 && (
+              <section className="mt-8">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <h4 className="text-lg font-bold text-white">Deine Optionen</h4>
+                  <p className="mt-2 text-sm text-white/70">
+                    Du kannst unsere Therapeuten-Übersicht durchstöbern oder dir bei Bedarf
+                    Unterstützung durch digitale Programme holen.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <Button asChild size="lg" variant="outline" className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
+                      <Link href="/therapists">Therapeuten durchstöbern</Link>
+                    </Button>
+                    {recommendations.courses.length === 0 && (
+                      <Button asChild size="lg" variant="outline" className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
+                        <Link href="/courses">Programme ansehen</Link>
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </section>
             )}
@@ -556,7 +601,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           </span>
                         ))}
                       </div>
-                      <Button variant="outline" size="sm" asChild className="mt-4 w-full border-white/30 bg-white/10 text-white hover:bg-white/20 sm:w-auto">
+                      <Button variant="outline" size="sm" asChild className="mt-4 w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
                         <Link href={`/courses/${course.slug}`}>
                           Demo ansehen
                         </Link>
@@ -691,7 +736,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" className="w-full bg-teal-700 text-white hover:bg-teal-600 sm:w-auto">
+                    <Button onClick={goNext} size="lg" className="w-full bg-teal-600 text-white shadow-lg hover:bg-teal-500 sm:w-auto">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
