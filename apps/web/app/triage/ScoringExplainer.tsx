@@ -23,8 +23,8 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
             <Info className="h-4 w-4" aria-hidden />
           </div>
           <div>
-            <h4 className="font-semibold text-default">Wie wird die Ampel berechnet?</h4>
-            <p className="text-xs text-muted">Wissenschaftliche Grundlagen der Einschätzung</p>
+            <h4 className="font-semibold text-default">Wissenschaftliche Grundlagen</h4>
+            <p className="text-xs text-muted">Wie Ihre Einschätzung erstellt wird</p>
           </div>
         </div>
         {isExpanded ? (
@@ -36,22 +36,28 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
 
       {isExpanded && (
         <div className="space-y-6 border-t border-divider p-5">
+          {/* Einleitung */}
+          <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-4">
+            <p className="text-sm text-default leading-relaxed">
+              Ihre Einschätzung basiert auf zwei international anerkannten, wissenschaftlich validierten Screening-Instrumenten:
+              dem <strong>PHQ-9</strong> (Depression) und dem <strong>GAD-7</strong> (Angststörungen). Diese werden weltweit
+              in der klinischen Praxis und Forschung eingesetzt.
+            </p>
+          </div>
+
           {/* PHQ-9 Schwellenwerte */}
           <div>
-            <h5 className="text-sm font-semibold text-default">PHQ-9 (Patient Health Questionnaire)</h5>
+            <h5 className="text-sm font-semibold text-default">Depressions-Screening (PHQ-9)</h5>
             <p className="mt-1 text-xs text-muted">
-              Der PHQ-9 besteht aus 9 Fragen, die jeweils mit 0-3 Punkten bewertet werden. Die Gesamtpunktzahl liegt zwischen 0-27.
+              9 Fragen, jeweils bewertet mit 0-3 Punkten (Gesamtskala: 0-27 Punkte)
             </p>
             <div className="mt-3 space-y-2">
               {Object.values(phq9Thresholds).map((threshold) => (
-                <div key={threshold.label} className="flex items-center gap-3">
-                  <div
-                    className={`h-3 w-3 rounded-full bg-${threshold.color}-500 flex-none`}
-                    aria-hidden
-                  />
+                <div key={threshold.label} className="flex items-start gap-3">
+                  <div className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none" aria-hidden />
                   <div className="flex-1 text-xs">
-                    <span className="font-medium text-default">{threshold.label}:</span>{' '}
-                    <span className="text-muted">{threshold.min}-{threshold.max} Punkte</span>
+                    <span className="font-medium text-default">{threshold.label}</span>{' '}
+                    <span className="text-muted">({threshold.min}-{threshold.max} Punkte)</span>
                   </div>
                 </div>
               ))}
@@ -60,20 +66,17 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
 
           {/* GAD-7 Schwellenwerte */}
           <div>
-            <h5 className="text-sm font-semibold text-default">GAD-7 (Generalized Anxiety Disorder)</h5>
+            <h5 className="text-sm font-semibold text-default">Angst-Screening (GAD-7)</h5>
             <p className="mt-1 text-xs text-muted">
-              Der GAD-7 besteht aus 7 Fragen, die jeweils mit 0-3 Punkten bewertet werden. Die Gesamtpunktzahl liegt zwischen 0-21.
+              7 Fragen, jeweils bewertet mit 0-3 Punkten (Gesamtskala: 0-21 Punkte)
             </p>
             <div className="mt-3 space-y-2">
               {Object.values(gad7Thresholds).map((threshold) => (
-                <div key={threshold.label} className="flex items-center gap-3">
-                  <div
-                    className={`h-3 w-3 rounded-full bg-${threshold.color}-500 flex-none`}
-                    aria-hidden
-                  />
+                <div key={threshold.label} className="flex items-start gap-3">
+                  <div className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none" aria-hidden />
                   <div className="flex-1 text-xs">
-                    <span className="font-medium text-default">{threshold.label}:</span>{' '}
-                    <span className="text-muted">{threshold.min}-{threshold.max} Punkte</span>
+                    <span className="font-medium text-default">{threshold.label}</span>{' '}
+                    <span className="text-muted">({threshold.min}-{threshold.max} Punkte)</span>
                   </div>
                 </div>
               ))}
@@ -82,24 +85,27 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
 
           {/* Ampel-Logik */}
           <div className="rounded-xl border border-divider bg-surface-1/90 p-4">
-            <h5 className="text-sm font-semibold text-default">Wie wird die Ampelfarbe bestimmt?</h5>
-            <ul className="mt-2 space-y-2 text-xs text-muted">
+            <h5 className="text-sm font-semibold text-default">Gesamteinschätzung</h5>
+            <p className="mt-1 mb-3 text-xs text-muted">
+              Die Ampelfarbe ergibt sich aus der Kombination beider Screening-Ergebnisse
+            </p>
+            <ul className="space-y-3 text-xs text-muted">
               <li className="flex items-start gap-2">
-                <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-red-500" aria-hidden />
+                <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-emerald-500" aria-hidden />
                 <span>
-                  <strong className="text-red-900">Rot (Hohe Belastung):</strong> Schwere Symptome auf PHQ-9 oder GAD-7, oder mittelschwer bis schwere Depression (PHQ-9 ≥15)
+                  <strong className="text-emerald-900">Grün – Geringe Belastung:</strong> Die Ergebnisse zeigen minimale Symptome in beiden Bereichen. Präventive Maßnahmen und Selbstfürsorge sind empfehlenswert.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-amber-500" aria-hidden />
                 <span>
-                  <strong className="text-amber-900">Gelb (Mittlere Belastung):</strong> Mittelschwere Symptome auf PHQ-9 oder GAD-7, oder leichte Symptome auf beiden Skalen
+                  <strong className="text-amber-900">Gelb – Mittlere Belastung:</strong> Es liegen mittelschwere Symptome vor, die den Alltag beeinträchtigen können. Professionelle Unterstützung wird empfohlen.
                 </span>
               </li>
               <li className="flex items-start gap-2">
-                <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-emerald-500" aria-hidden />
+                <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-red-500" aria-hidden />
                 <span>
-                  <strong className="text-emerald-900">Grün (Geringe Belastung):</strong> Minimale Symptome auf beiden Skalen
+                  <strong className="text-red-900">Rot – Hohe Belastung:</strong> Die Ergebnisse deuten auf schwere Symptome hin, die eine zeitnahe professionelle Behandlung erfordern.
                 </span>
               </li>
             </ul>
@@ -128,9 +134,13 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
           </div>
 
           {/* Disclaimer */}
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-3">
-            <p className="text-xs text-blue-900">
-              <strong>Hinweis:</strong> Diese Fragebögen sind validierte Screening-Instrumente und dienen der Ersteinschätzung. Sie ersetzen keine klinische Diagnose durch qualifizierte Fachpersonen.
+          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+            <h5 className="text-sm font-semibold text-blue-900 mb-2">Wichtiger Hinweis</h5>
+            <p className="text-xs text-blue-900 leading-relaxed">
+              Die Fragebögen PHQ-9 und GAD-7 sind international anerkannte, wissenschaftlich validierte Screening-Instrumente
+              zur Ersteinschätzung psychischer Belastung. Sie dienen als Orientierungshilfe und ersetzen keine professionelle
+              Diagnose. Für eine umfassende Beurteilung und Behandlungsempfehlung ist eine persönliche Einschätzung durch
+              qualifizierte Fachpersonen erforderlich.
             </p>
           </div>
         </div>
