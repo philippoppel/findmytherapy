@@ -7,7 +7,7 @@ export const marketingNavigation = [
   { label: 'PHQ & GAD', href: '#phq-info' },
   { label: 'Early Access', href: '#early-access' },
   { label: 'FAQ', href: '#faq' },
-] as const
+] as const;
 
 export const heroContent = {
   eyebrow: 'Evidenzbasierte Ersteinschätzung & Matching',
@@ -36,25 +36,28 @@ export const heroContent = {
     src: '/images/therapists/therapy-1.jpg',
     alt: 'Professionelle Therapiesitzung – FindMyTherapy verbindet Klient:innen und Therapeut:innen',
   },
-}
+};
 
 export const impactStats = [
   {
     value: 'PHQ-9 & GAD-7',
     emphasis: 'Validierte Fragebögen',
-    description: 'International anerkannte Screening-Tools, die von Therapeut:innen weltweit eingesetzt werden.',
+    description:
+      'International anerkannte Screening-Tools, die von Therapeut:innen weltweit eingesetzt werden.',
   },
   {
     value: 'DSGVO-konform',
     emphasis: '& verschlüsselt',
-    description: 'Deine Daten bleiben sicher in der EU. Volle Kontrolle über deine persönlichen Informationen.',
+    description:
+      'Deine Daten bleiben sicher in der EU. Volle Kontrolle über deine persönlichen Informationen.',
   },
   {
     value: '< 5 Minuten',
     emphasis: 'zu Klarheit',
-    description: 'Von Unsicherheit zu konkreten nächsten Schritten. Evidenzbasiert und wissenschaftlich fundiert.',
+    description:
+      'Von Unsicherheit zu konkreten nächsten Schritten. Evidenzbasiert und wissenschaftlich fundiert.',
   },
-] as const
+] as const;
 
 export const whyContent = {
   id: 'why',
@@ -74,27 +77,38 @@ export const whyContent = {
     src: '/images/therapists/therapy-1.jpg',
     alt: 'Digitale Ersteinschätzung auf dem Tablet',
   },
-}
+};
 
 type FeaturePoint = {
-  title: string
-  description: string
-}
+  title: string;
+  description: string;
+};
 
-export type FeatureIconKey = 'mic' | 'users' | 'video' | 'fileText' | 'sparkles' | 'chart' | 'briefcase' | 'globe' | 'clipboardCheck' | 'trendingUp' | 'dollarSign'
+export type FeatureIconKey =
+  | 'mic'
+  | 'users'
+  | 'video'
+  | 'fileText'
+  | 'sparkles'
+  | 'chart'
+  | 'briefcase'
+  | 'globe'
+  | 'clipboardCheck'
+  | 'trendingUp'
+  | 'dollarSign';
 
 export type FeatureTab = {
-  value: string
-  label: string
-  heading: string
-  description: string
-  icon: FeatureIconKey
-  points: FeaturePoint[]
+  value: string;
+  label: string;
+  heading: string;
+  description: string;
+  icon: FeatureIconKey;
+  points: FeaturePoint[];
   highlights: {
-    title: string
-    items: string[]
-  }
-}
+    title: string;
+    items: string[];
+  };
+};
 
 export const featureTabs: FeatureTab[] = [
   {
@@ -105,9 +119,18 @@ export const featureTabs: FeatureTab[] = [
       'Unsere validierten Fragen ermitteln Belastung, Ressourcen und Handlungsbedarf. Du erhältst sofort dein Ampel-Ergebnis mit konkreten Empfehlungen.',
     icon: 'sparkles',
     points: [
-      { title: 'Validierte Fragebögen', description: 'PHQ-9, GAD-7 und themenspezifische Screening-Module.' },
-      { title: 'Ampellogik', description: 'Grün: Selbsthilfe • Gelb: Terminempfehlung • Rot: Soforthilfe.' },
-      { title: 'Exportierbare Insights', description: 'Teile Ergebnisse mit Therapeut:innen oder vertrauten Personen.' },
+      {
+        title: 'Validierte Fragebögen',
+        description: 'PHQ-9, GAD-7 und themenspezifische Screening-Module.',
+      },
+      {
+        title: 'Ampellogik',
+        description: 'Grün: Selbsthilfe • Gelb: Terminempfehlung • Rot: Soforthilfe.',
+      },
+      {
+        title: 'Exportierbare Insights',
+        description: 'Teile Ergebnisse mit Therapeut:innen oder vertrauten Personen.',
+      },
     ],
     highlights: {
       title: 'Wissenschaftliche Grundlage',
@@ -126,9 +149,18 @@ export const featureTabs: FeatureTab[] = [
       'Wir filtern nach Schwerpunkten, Kapazitäten, Settings und Versicherungsstatus. Du buchst direkt über die Plattform oder lässt dich vom Care-Team begleiten.',
     icon: 'users',
     points: [
-      { title: 'Feinsortierte Profile', description: 'Therapieansatz, Zielgruppen, Sprachen, Barrierefreiheit.' },
-      { title: 'Sofort buchbare Slots', description: 'Online-Kalender und Wartelistenmanagement in Echtzeit.' },
-      { title: 'Care-Team Support', description: 'Menschen helfen dir, wenn du weitere Fragen hast.' },
+      {
+        title: 'Feinsortierte Profile',
+        description: 'Therapieansatz, Zielgruppen, Sprachen, Barrierefreiheit.',
+      },
+      {
+        title: 'Sofort buchbare Slots',
+        description: 'Online-Kalender und Wartelistenmanagement in Echtzeit.',
+      },
+      {
+        title: 'Care-Team Support',
+        description: 'Menschen helfen dir, wenn du weitere Fragen hast.',
+      },
     ],
     highlights: {
       title: 'Qualitätsversprechen',
@@ -147,9 +179,21 @@ export const featureTabs: FeatureTab[] = [
       'Von Psychoedukation bis zu therapeutisch konzipierten Übungen: Zugang zu professionellen Kursen und Mini-Programmen, die von echten Therapeut:innen erstellt wurden. Unterstütze dich selbst zwischen Terminen oder starte direkt mit Selbsthilfe.',
     icon: 'video',
     points: [
-      { title: 'Von echten Therapeut:innen', description: 'Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert.' },
-      { title: 'Kostenlose & Premium-Inhalte', description: 'Kostenlose Schnuppermodule oder Vollprogramme – passend zu deinem Bedarf und Budget.' },
-      { title: 'Flexibel & selbstbestimmt', description: 'Lerne in deinem Tempo, pausiere jederzeit und behalte die volle Kontrolle über deinen Fortschritt.' },
+      {
+        title: 'Von echten Therapeut:innen',
+        description:
+          'Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert.',
+      },
+      {
+        title: 'Kostenlose & Premium-Inhalte',
+        description:
+          'Kostenlose Schnuppermodule oder Vollprogramme – passend zu deinem Bedarf und Budget.',
+      },
+      {
+        title: 'Flexibel & selbstbestimmt',
+        description:
+          'Lerne in deinem Tempo, pausiere jederzeit und behalte die volle Kontrolle über deinen Fortschritt.',
+      },
     ],
     highlights: {
       title: 'Professionell & zugänglich',
@@ -168,9 +212,21 @@ export const featureTabs: FeatureTab[] = [
       'Erhalte VOR dem ersten Termin ein strukturiertes Dossier mit PHQ-9/GAD-7 Scores, Risikoindikatoren und Themenprioritäten. So startest du informiert und sparst wertvolle Zeit.',
     icon: 'clipboardCheck',
     points: [
-      { title: 'Validierte Screening-Daten', description: 'PHQ-9 und GAD-7 Scores bereits vor Session 1 – keine Zeit mit Grundlagen verschwenden.' },
-      { title: 'Risikoindikatoren & Red Flags', description: 'Sofort erkennbar: Suizidalität, Selbstverletzung oder akute Krisensituationen.' },
-      { title: 'Themenprioritäten & Präferenzen', description: 'Heatmap der Belastungsbereiche plus Wunschthemen, Format-Präferenzen und organisatorische Details.' },
+      {
+        title: 'Validierte Screening-Daten',
+        description:
+          'PHQ-9 und GAD-7 Scores bereits vor Session 1 – keine Zeit mit Grundlagen verschwenden.',
+      },
+      {
+        title: 'Risikoindikatoren & Red Flags',
+        description:
+          'Sofort erkennbar: Suizidalität, Selbstverletzung oder akute Krisensituationen.',
+      },
+      {
+        title: 'Themenprioritäten & Präferenzen',
+        description:
+          'Heatmap der Belastungsbereiche plus Wunschthemen, Format-Präferenzen und organisatorische Details.',
+      },
     ],
     highlights: {
       title: 'Double-Sided Data Moat – Nur bei uns',
@@ -189,9 +245,21 @@ export const featureTabs: FeatureTab[] = [
       'Jeder verifizierte Therapeut erhält eine professionelle Microsite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Trust-Badges und Lead-Capture.',
     icon: 'globe',
     points: [
-      { title: 'Automatisch generiert', description: 'Dein Profil aus dem Dashboard wird zur SEO-optimierten Webseite – inklusive Hero, Bio, Spezialisierungen und Verfügbarkeiten.' },
-      { title: 'Trust & Compliance prominent', description: 'Verified Badge, Compliance-PDF-Download und Session-Zero-CTA automatisch eingebunden.' },
-      { title: 'Lead-Capture & Analytics', description: 'Kontaktformular mit direkter CRM-Integration plus Dashboard mit Pageviews, CTA-Klicks und Lead-Conversion.' },
+      {
+        title: 'Automatisch generiert',
+        description:
+          'Dein Profil aus dem Dashboard wird zur SEO-optimierten Webseite – inklusive Hero, Bio, Spezialisierungen und Verfügbarkeiten.',
+      },
+      {
+        title: 'Trust & Compliance prominent',
+        description:
+          'Verified Badge, Compliance-PDF-Download und Session-Zero-CTA automatisch eingebunden.',
+      },
+      {
+        title: 'Lead-Capture & Analytics',
+        description:
+          'Kontaktformular mit direkter CRM-Integration plus Dashboard mit Pageviews, CTA-Klicks und Lead-Conversion.',
+      },
     ],
     highlights: {
       title: 'Spar dir Zeit & Geld',
@@ -210,9 +278,19 @@ export const featureTabs: FeatureTab[] = [
       'Behalte den Überblick über Einheiten, Klient:innen und freigegebene Kurse. Dokumentiere Sitzungen, steuere Freigaben und exportiere Honorarnoten – DSGVO-konform.',
     icon: 'fileText',
     points: [
-      { title: 'Klient:innen-Übersicht', description: 'Dokumentation von Sitzungen, Aufgaben und Check-ins an einem zentralen Ort.' },
-      { title: 'Freigaben steuern', description: 'Teile Kurse, Materialien und Übungen direkt mit deinen Klient:innen.' },
-      { title: 'Abrechnung & Belege', description: 'Exportfunktionen für Honorarnoten und Versicherungsbelege – einfach und übersichtlich.' },
+      {
+        title: 'Klient:innen-Übersicht',
+        description: 'Dokumentation von Sitzungen, Aufgaben und Check-ins an einem zentralen Ort.',
+      },
+      {
+        title: 'Freigaben steuern',
+        description: 'Teile Kurse, Materialien und Übungen direkt mit deinen Klient:innen.',
+      },
+      {
+        title: 'Abrechnung & Belege',
+        description:
+          'Exportfunktionen für Honorarnoten und Versicherungsbelege – einfach und übersichtlich.',
+      },
     ],
     highlights: {
       title: 'Sicher & praktisch',
@@ -231,9 +309,20 @@ export const featureTabs: FeatureTab[] = [
       'Verlaufsdiagramme, Auslastungs-Tracking und exportierbare Reports helfen dir, deine Praxis zu optimieren – natürlich DSGVO-konform und nur mit Zustimmung der Klient:innen.',
     icon: 'chart',
     points: [
-      { title: 'Verlaufsdiagramme', description: 'Symptomentwicklung, Zielerreichung und Feedbackfragen visuell aufbereitet.' },
-      { title: 'Auslastung im Blick', description: 'Freie Slots, Warteliste und Nachfrage nach Themen – für bessere Kapazitätsplanung.' },
-      { title: 'Exportierbar', description: 'Reports für Supervision, Qualitätszirkel und Förderprogramme im CSV- oder PDF-Format.' },
+      {
+        title: 'Verlaufsdiagramme',
+        description: 'Symptomentwicklung, Zielerreichung und Feedbackfragen visuell aufbereitet.',
+      },
+      {
+        title: 'Auslastung im Blick',
+        description:
+          'Freie Slots, Warteliste und Nachfrage nach Themen – für bessere Kapazitätsplanung.',
+      },
+      {
+        title: 'Exportierbar',
+        description:
+          'Reports für Supervision, Qualitätszirkel und Förderprogramme im CSV- oder PDF-Format.',
+      },
     ],
     highlights: {
       title: 'Datenschutz first',
@@ -244,7 +333,7 @@ export const featureTabs: FeatureTab[] = [
       ],
     },
   },
-]
+];
 
 export const earlyAccessContent = {
   eyebrow: 'Early Access',
@@ -254,19 +343,23 @@ export const earlyAccessContent = {
   features: [
     {
       title: 'Kostenloser Zugang zur Beta',
-      description: 'Nutze alle Features kostenlos während der Aufbauphase und hilf uns, die Plattform zu verbessern.',
+      description:
+        'Nutze alle Features kostenlos während der Aufbauphase und hilf uns, die Plattform zu verbessern.',
     },
     {
       title: 'Therapeut:innen-Netzwerk in Aufbau',
-      description: 'Wir arbeiten mit etablierten Praxen und Kliniken zusammen, um ein verifiziertes Netzwerk aufzubauen.',
+      description:
+        'Wir arbeiten mit etablierten Praxen und Kliniken zusammen, um ein verifiziertes Netzwerk aufzubauen.',
     },
     {
       title: 'Dein Feedback zählt',
-      description: 'Als Early-Access-Nutzer:in gestaltest du aktiv mit, wie die Versorgung in Österreich verbessert wird.',
+      description:
+        'Als Early-Access-Nutzer:in gestaltest du aktiv mit, wie die Versorgung in Österreich verbessert wird.',
     },
     {
       title: 'Transparenz vor Marketing',
-      description: 'Wir kommunizieren ehrlich, wo wir stehen und was noch kommt. Keine falschen Versprechungen.',
+      description:
+        'Wir kommunizieren ehrlich, wo wir stehen und was noch kommt. Keine falschen Versprechungen.',
     },
   ],
   mission: {
@@ -274,7 +367,7 @@ export const earlyAccessContent = {
     description:
       'In Österreich warten Menschen durchschnittlich 6+ Monate auf einen Therapieplatz. Viele wissen nicht, ob sie überhaupt professionelle Hilfe benötigen. Mit FindMyTherapy schaffen wir Orientierung und helfen, die Versorgungslücke zu schließen – evidenzbasiert, transparent und gemeinsam mit Expert:innen.',
   },
-} as const
+} as const;
 
 export const teamContent = {
   heading: 'Menschen, die Versorgungslücken schließen wollen.',
@@ -286,7 +379,7 @@ export const teamContent = {
       role: 'Psychotherapeut – Verhaltenstherapie • Founder',
       focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
       image: '/images/team/gregorstudlar.jpg',
-      imagePosition: 'center top',
+      imagePosition: 'center 0%',
       imageScale: 1,
     },
     {
@@ -310,14 +403,14 @@ export const teamContent = {
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/findmytherapy' },
     { label: 'Instagram', href: 'https://www.instagram.com/findmytherapy' },
   ],
-}
+};
 
 export const partnerLogos = [
   { name: 'Austrian Startups', initials: 'AS' },
   { name: 'SFU Wien', initials: 'SFU' },
   { name: 'World Council for Psychotherapy', initials: 'WCP' },
   { name: '104 – Krisenhilfe Wien', initials: '104' },
-] as const
+] as const;
 
 export const faqItems = [
   {
@@ -350,7 +443,7 @@ export const faqItems = [
     answer:
       'Alle Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert. Es gibt kostenlose Schnuppermodule und Premium-Programme zu verschiedenen Themen (z.B. Angst, Depression, Stress). Die Kurse sind günstiger als klassische Therapie und ideal als Ergänzung oder Einstieg in die Selbsthilfe. Du lernst in deinem eigenen Tempo und kannst jederzeit pausieren.',
   },
-] as const
+] as const;
 
 export const clientBenefits = {
   id: 'benefits',
@@ -409,7 +502,7 @@ export const clientBenefits = {
       href: '#therapists',
     },
   },
-} as const
+} as const;
 
 export const therapistBenefits = {
   id: 'therapists',
@@ -481,11 +574,12 @@ export const therapistBenefits = {
       href: '#why',
     },
   },
-} as const
+} as const;
 
 export const contactCta = {
   heading: 'Starte informierter. Wachse sichtbarer. Arbeite effizienter.',
-  subheading: 'Erhalte Session-Zero-Dossiers vor jedem Erstgespräch, eine kostenlose Microsite und Praxisverwaltung in einem. Wir zeigen dir, wie FindMyTherapy deine Praxis transformiert.',
+  subheading:
+    'Erhalte Session-Zero-Dossiers vor jedem Erstgespräch, eine kostenlose Microsite und Praxisverwaltung in einem. Wir zeigen dir, wie FindMyTherapy deine Praxis transformiert.',
   primaryCta: {
     label: 'Demo für Therapeut:innen buchen',
     href: 'mailto:hello@findmytherapy.net?subject=Demo-Anfrage%20%E2%80%93%20FindMyTherapy%20f%C3%BCr%20Therapeut%3Ainnen&body=Sehr%20geehrtes%20FindMyTherapy-Team%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20Demo%20der%20Plattform%20f%C3%BCr%20Therapeut%3Ainnen.%20Ich%20m%C3%B6chte%20mehr%20%C3%BCber%20die%20Session-Zero-Dossiers%2C%20die%20Microsite%20und%20die%20Praxis-Management-Tools%20erfahren.%0A%0AMeine%20Daten%3A%0AName%3A%20%5BIhr%20Name%5D%0APraxis%2FKlinik%3A%20%5BIhre%20Praxis%5D%0ATelefon%3A%20%5BIhre%20Telefonnummer%5D%0AE-Mail%3A%20%5BIhre%20E-Mail-Adresse%5D%0A%0AIch%20freue%20mich%20auf%20Ihre%20R%C3%BCckmeldung.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen',
@@ -494,28 +588,31 @@ export const contactCta = {
     label: 'Infopaket herunterladen',
     href: '/downloads/findmytherapy-infopaket.pdf',
   },
-}
+};
 
 export const testimonialList = [
   {
     id: '1',
-    quote: 'Die Ersteinschätzung hat mir geholfen, meine Situation besser zu verstehen. Die Empfehlungen waren präzise und hilfreich.',
+    quote:
+      'Die Ersteinschätzung hat mir geholfen, meine Situation besser zu verstehen. Die Empfehlungen waren präzise und hilfreich.',
     author: 'Sarah M.',
     role: 'Klientin',
     rating: 5,
   },
   {
     id: '2',
-    quote: 'Als Therapeutin schätze ich die wissenschaftliche Fundierung der Triage. PHQ-9 und GAD-7 sind Gold-Standard.',
+    quote:
+      'Als Therapeutin schätze ich die wissenschaftliche Fundierung der Triage. PHQ-9 und GAD-7 sind Gold-Standard.',
     author: 'Dr. Anna Leitner',
     role: 'Psychotherapeutin',
     rating: 5,
   },
   {
     id: '3',
-    quote: 'Endlich eine Plattform, die Transparenz und Datenschutz ernst nimmt. Die Ampel-Logik ist sofort verständlich.',
+    quote:
+      'Endlich eine Plattform, die Transparenz und Datenschutz ernst nimmt. Die Ampel-Logik ist sofort verständlich.',
     author: 'Michael K.',
     role: 'Klient',
     rating: 5,
   },
-] as const
+] as const;
