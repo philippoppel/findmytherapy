@@ -309,7 +309,8 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
   const supportSet = new Set(payload.supportPreferences)
   const availabilitySet = new Set(payload.availability.map((item) => item.toLowerCase()))
   const escalatedNeed = payload.hasSuicidalIdeation || payload.requiresEmergency || payload.riskLevel === 'HIGH'
-  const publicTherapists = await prisma.therapistProfile.findMany({
+
+  let publicTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
       status: 'VERIFIED',
@@ -336,6 +337,37 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
       profileImageUrl: true,
     },
   })
+
+  // If no verified therapists found, try to find any public therapists
+  if (publicTherapists.length === 0) {
+    console.warn('[TRIAGE] No VERIFIED therapists found, fetching all public therapists')
+    publicTherapists = await prisma.therapistProfile.findMany({
+      where: {
+        isPublic: true,
+      },
+      select: {
+        id: true,
+        displayName: true,
+        title: true,
+        headline: true,
+        specialties: true,
+        services: true,
+        availabilityNote: true,
+        responseTime: true,
+        acceptingClients: true,
+        rating: true,
+        reviewCount: true,
+        online: true,
+        city: true,
+        country: true,
+        modalities: true,
+        experienceSummary: true,
+        yearsExperience: true,
+        languages: true,
+        profileImageUrl: true,
+      },
+    })
+  }
 
   return publicTherapists
     .map((therapist) => {
