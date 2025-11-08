@@ -85,7 +85,8 @@ export const env = (() => {
     const sanitizedEnv = sanitizeProcessEnv(process.env);
     const nodeEnv = sanitizedEnv.NODE_ENV ?? 'development';
 
-    if (nodeEnv !== 'production') {
+    // Allow fallbacks for build time, but warn in production runtime
+    if (nodeEnv !== 'production' || process.env.NEXT_PHASE === 'phase-production-build') {
       console.warn('[config] Environment not fully configured yet:', (error as Error).message);
       return envSchema.parse({
         NODE_ENV: nodeEnv,
