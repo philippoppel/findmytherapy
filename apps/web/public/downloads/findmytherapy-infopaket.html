@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de-AT">
+<head>
+    <meta charset="UTF-8">
+    <title>FindMyTherapy – Infopaket</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #1a202c;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 15mm;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2.5px solid #6366f1;
+        }
+
+        .header h1 {
+            font-size: 26pt;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 3px;
+        }
+
+        .header .tagline {
+            font-size: 10pt;
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10mm;
+        }
+
+        .section {
+            background: #f7fafc;
+            padding: 8px 10px;
+            border-radius: 4px;
+            border-left: 2.5px solid #6366f1;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 8.5pt;
+            font-weight: 700;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+        }
+
+        .section h3 {
+            font-size: 10pt;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .section p {
+            font-size: 8pt;
+            color: #4a5568;
+            line-height: 1.35;
+            margin-bottom: 4px;
+        }
+
+        .section ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .section ul li {
+            font-size: 7.5pt;
+            color: #4a5568;
+            padding: 2px 0 2px 12px;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .section ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #6366f1;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+
+        .ampel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .ampel-item {
+            border: 1.5px solid;
+            border-radius: 3px;
+            padding: 5px 4px;
+            text-align: center;
+        }
+
+        .ampel-item.green { border-color: #48bb78; background: #f0fff4; }
+        .ampel-item.yellow { border-color: #ecc94b; background: #fffff0; }
+        .ampel-item.red { border-color: #f56565; background: #fff5f5; }
+
+        .ampel-item h4 {
+            font-size: 8pt;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .ampel-item p {
+            font-size: 6.5pt;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .footer {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1.5px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .footer .cta {
+            background: #6366f1;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+
+        .footer .cta h3 {
+            font-size: 9pt;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .footer .cta p {
+            font-size: 7pt;
+            margin: 0;
+        }
+
+        .footer .contact {
+            font-size: 7.5pt;
+            color: #4a5568;
+        }
+
+        .mini-feature {
+            margin-bottom: 6px;
+        }
+
+        .mini-feature h4 {
+            font-size: 8.5pt;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 2px;
+        }
+
+        .mini-feature p {
+            font-size: 7.5pt;
+            color: #4a5568;
+            line-height: 1.3;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            body { margin: 0; }
+            .page { margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>FindMyTherapy</h1>
+            <div class="tagline">Evidenzbasierte Ersteinschätzung & Therapeut:innen-Matching für Österreich</div>
+        </div>
+
+        <div class="content">
+            <!-- Left Column -->
+            <div>
+                <div class="section">
+                    <div class="section-title">Mission</div>
+                    <p>6+ Monate Wartezeit auf Therapie in Österreich. FindMyTherapy schafft Orientierung durch validierte Ersteinschätzung und intelligentes Matching.</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Ampel-Triage (PHQ-9, GAD-7, WHO-5)</div>
+                    <p>In unter 5 Minuten von Unsicherheit zu Klarheit:</p>
+                    <div class="ampel">
+                        <div class="ampel-item green">
+                            <h4>Grün</h4>
+                            <p>Selbsthilfe</p>
+                        </div>
+                        <div class="ampel-item yellow">
+                            <h4>Gelb</h4>
+                            <p>Therapie</p>
+                        </div>
+                        <div class="ampel-item red">
+                            <h4>Rot</h4>
+                            <p>Soforthilfe</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Für Klient:innen</div>
+                    <h3>Klarheit finden. Hilfe bekommen.</h3>
+                    <ul>
+                        <li>Kostenlose validierte Ersteinschätzung (PHQ-9, GAD-7, WHO-5)</li>
+                        <li>Matching zu verifizierten Therapeut:innen (Themen, Ort, Budget)</li>
+                        <li>Kurse von Psychotherapeut:innen – günstiger & flexibel</li>
+                        <li>DSGVO-konform, exportierbar für Therapeut:in</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Wissenschaft & Datenschutz</div>
+                    <ul>
+                        <li>International validierte Screening-Tools (PHQ-9, GAD-7, WHO-5)</li>
+                        <li>Entwickelt mit Psychotherapeut:innen</li>
+                        <li>100% DSGVO-konform auf EU-Servern (Österreich)</li>
+                        <li>End-zu-End-Verschlüsselung für sensible Daten</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Wettbewerbsvorteil</div>
+                    <h3>Double-Sided Data Moat</h3>
+                    <p>Einzigartig: Hochwertige Klient:innen-Intake-Daten + verifizierte Therapeut:innen-Profile = bessere Matches & höhere Erfolgsraten.</p>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <div class="section">
+                    <div class="section-title">Für Therapeut:innen</div>
+                    <h3>Informierter starten. Sichtbarer werden.</h3>
+
+                    <div class="mini-feature">
+                        <h4>Session-Zero-Dossier</h4>
+                        <p>PHQ-9/GAD-7 Scores, Risikoindikatoren & Themenprioritäten VOR dem ersten Termin.</p>
+                    </div>
+
+                    <div class="mini-feature">
+                        <h4>Kostenlose Microsite</h4>
+                        <p>SEO-optimierte Website (findmytherapy.com/t/[name]) ohne Wartung. Spare 500-2.000€.</p>
+                    </div>
+
+                    <div class="mini-feature">
+                        <h4>Praxis-Management</h4>
+                        <p>Verwaltung, Dokumentation, Analytics & Abrechnung in einem Dashboard.</p>
+                    </div>
+
+                    <div class="mini-feature">
+                        <h4>Kurse monetarisieren</h4>
+                        <p>Erstelle Online-Kurse und baue passives Einkommen auf. Automatisches Billing.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Key Benefits Therapeut:innen</div>
+                    <ul>
+                        <li>Red Flags & Risikoindikatoren sofort erkennbar</li>
+                        <li>Themenprioritäten als Heatmap visualisiert</li>
+                        <li>Time-to-first-session unter 5 Tagen</li>
+                        <li>Lead-Capture & Analytics inklusive</li>
+                        <li>Verlaufsdiagramme & Auslastungs-Tracking</li>
+                        <li>Exportfunktionen für Honorarnoten</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Key Facts</div>
+                    <ul>
+                        <li>Validierte Fragebögen: PHQ-9, GAD-7, WHO-5</li>
+                        <li>Kostenlose Ersteinschätzung für alle</li>
+                        <li>Time-to-first-session: unter 5 Tagen</li>
+                        <li>Early Access Beta-Phase läuft</li>
+                        <li>Entwickelt in Zusammenarbeit mit Expert:innen</li>
+                        <li>Server-Standort: Österreich (EU)</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Was uns einzigartig macht</div>
+                    <ul>
+                        <li>Einzige Plattform mit bidirektionalem Daten-Vorteil</li>
+                        <li>Intelligentes Matching basierend auf Symptomen</li>
+                        <li>Höhere Match-Qualität = bessere Outcomes</li>
+                        <li>Verifizierte Profile mit echten Kapazitäten</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="cta">
+                <h3>Starte jetzt mit FindMyTherapy</h3>
+                <p>Klient:innen: Kostenlose Ersteinschätzung | Therapeut:innen: Demo buchen</p>
+            </div>
+            <div class="contact">
+                <strong>🌐 findmytherapy.net</strong> • <strong>✉️ hello@findmytherapy.net</strong> • LinkedIn & Instagram: @findmytherapy
+            </div>
+        </div>
+    </div>
+</body>
+</html>

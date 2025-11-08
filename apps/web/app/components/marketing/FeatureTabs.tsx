@@ -3,7 +3,7 @@
 import { useId, useState } from 'react'
 import { cn } from '@mental-health/ui'
 import type { LucideIcon } from 'lucide-react'
-import { BarChart3, FileText, Mic, Sparkles, Users, Video } from 'lucide-react'
+import { BarChart3, Briefcase, ClipboardCheck, DollarSign, FileText, Globe, Mic, Sparkles, TrendingUp, Users, Video } from 'lucide-react'
 import type { FeatureIconKey, FeatureTab } from '../../marketing-content'
 
 const FEATURE_ICON_MAP: Record<FeatureIconKey, LucideIcon> = {
@@ -13,6 +13,11 @@ const FEATURE_ICON_MAP: Record<FeatureIconKey, LucideIcon> = {
   fileText: FileText,
   sparkles: Sparkles,
   chart: BarChart3,
+  briefcase: Briefcase,
+  globe: Globe,
+  clipboardCheck: ClipboardCheck,
+  trendingUp: TrendingUp,
+  dollarSign: DollarSign,
 }
 
 interface FeatureTabsProps {
