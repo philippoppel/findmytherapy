@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@mental-health/ui'
 import type { teamContent } from '../../marketing-content'
 import { Reveal } from './Reveal'
@@ -29,17 +30,30 @@ export function TeamSection({ content }: TeamSectionProps) {
               {content.members.map((member) => (
                 <li
                   key={member.name}
-                  className="flex flex-col gap-1 rounded-2xl border border-divider bg-surface-1 px-5 py-4 shadow-sm"
+                  className="flex gap-4 rounded-2xl border border-divider bg-surface-1 p-4 shadow-sm"
                 >
-                  <p className="text-base font-semibold text-default">
-                    {member.name}
-                  </p>
-                  <p className="text-sm text-muted">
-                    {member.role}
-                  </p>
-                  <p className="text-sm text-pretty text-subtle">
-                    {member.focus}
-                  </p>
+                  {member.image && (
+                    <div className="flex-shrink-0">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        width={80}
+                        height={80}
+                        className="rounded-xl object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <p className="text-base font-semibold text-default">
+                      {member.name}
+                    </p>
+                    <p className="text-sm text-muted">
+                      {member.role}
+                    </p>
+                    <p className="text-sm text-pretty text-subtle">
+                      {member.focus}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ul>

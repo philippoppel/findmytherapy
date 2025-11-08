@@ -339,13 +339,24 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
       }
 
       try {
+        // Ensure arrays are padded to correct length for API validation
+        const paddedPhq9 = [...answers.phq9]
+        while (paddedPhq9.length < 9) {
+          paddedPhq9.push(0)
+        }
+
+        const paddedGad7 = [...answers.gad7]
+        while (paddedGad7.length < 7) {
+          paddedGad7.push(0)
+        }
+
         const response = await fetch('/api/triage', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             assessmentType: 'full',
-            phq9Answers: answers.phq9,
-            gad7Answers: answers.gad7,
+            phq9Answers: paddedPhq9,
+            gad7Answers: paddedGad7,
             phq9Score,
             gad7Score,
             phq9Severity,

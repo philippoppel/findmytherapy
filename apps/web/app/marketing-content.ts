@@ -237,18 +237,21 @@ export const teamContent = {
   members: [
     {
       name: 'MMag. Dr. Gregor Studlar BA',
-      role: 'Psychotherapeut – Verhaltenstherapie',
+      role: 'Psychotherapeut – Verhaltenstherapie • Founder',
       focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
+      image: '/images/team/gregorstudlar.jpg',
     },
     {
-      name: 'Thomas Kaufmann, BA.pth.',
-      role: 'Psychotherapeut',
+      name: 'Thomas Kaufmann, BA pth.',
+      role: 'Psychotherapeut i.A.u.S • Verhaltenstherapie • Founder',
       focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
+      image: '/images/team/thomaskaufmann.jpeg',
     },
     {
       name: 'Dipl. Ing. Philipp Oppel',
       role: 'Full Stack Developer',
       focus: 'Technische Leitung & Plattformentwicklung',
+      image: '/images/team/philippoppel.jpeg',
     },
   ],
   ctas: [
