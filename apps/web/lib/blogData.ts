@@ -816,6 +816,120 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'screening-instrumente-phq9-gad7-who5',
+    title: 'PHQ-9, GAD-7 und WHO-5: Die wichtigsten Screening-Instrumente im Vergleich',
+    excerpt:
+      'Welche Fragebögen nutzen Fachpersonen, um Depression und Angst zu erkennen? Ein evidenzbasierter Vergleich der drei meistverwendeten Screening-Instrumente – inklusive Wirksamkeit, Lizenzierung und praktischer Anwendung.',
+    category: 'Forschung',
+    publishedAt: '2025-11-08',
+    readingTime: '8 Min.',
+    author: 'Team FindMyTherapy',
+    keywords: [
+      'Screening',
+      'PHQ-9',
+      'GAD-7',
+      'WHO-5',
+      'Depression',
+      'Angst',
+      'Diagnostik',
+      'evidenzbasiert',
+      'Primärversorgung',
+    ],
+    sections: [
+      {
+        heading: 'Warum Screening-Instrumente in der Primärversorgung wichtig sind',
+        paragraphs: [
+          'Depression und Angststörungen gehören zu den häufigsten psychischen Erkrankungen: In der Primärversorgung (Hausärzt:innen, Allgemeinmedizin) weisen 20-30% der Patient:innen psychische Beschwerden auf. Dennoch bleiben viele dieser Erkrankungen unerkannt, weil die Symptome nicht immer offensichtlich sind oder Patient:innen sie nicht ansprechen.',
+          'Validierte Screening-Fragebögen können hier helfen: Sie ermöglichen eine schnelle, strukturierte Erfassung von Symptomen und liefern Hinweise darauf, ob eine genauere Diagnostik oder Behandlung notwendig ist. Die drei weltweit am häufigsten eingesetzten Instrumente sind der PHQ-9 für Depression, der GAD-7 für Angst und der WHO-5 für allgemeines Wohlbefinden.',
+        ],
+      },
+      {
+        heading: 'PHQ-9: Der Standard für Depression-Screening',
+        paragraphs: [
+          'Der Patient Health Questionnaire-9 (PHQ-9) ist der am weitesten verbreitete Fragebogen zur Erfassung depressiver Symptome. Er besteht aus 9 Fragen, die sich direkt an den diagnostischen Kriterien für Depression orientieren. Jede Frage wird auf einer Skala von 0 ("überhaupt nicht") bis 3 ("beinahe jeden Tag") beantwortet.',
+          'Eine große Validierungsstudie mit 580 Patient:innen zeigte: Bei einem Cut-off-Wert von ≥10 Punkten erreicht der PHQ-9 eine Sensitivität von 88% (er erkennt 88% der tatsächlichen Depressionen) und eine Spezifität von 88% (er identifiziert 88% der Nicht-Depressiven korrekt). Diese Werte gelten in der Diagnostik als exzellent.',
+        ],
+        list: [
+          'Bearbeitungszeit: 2 Minuten',
+          'Anzahl Items: 9 Fragen',
+          'Lizenzierung: Public Domain – vollständig kostenfrei und ohne Einschränkungen nutzbar',
+          'Einsatzgebiete: Hausarztpraxen, Psychotherapie, digitale Gesundheitsplattformen',
+          'Vorteile: Wissenschaftlich sehr gut validiert, kurz, kostenfrei verfügbar',
+        ],
+      },
+      {
+        heading: 'GAD-7: Angststörungen zuverlässig erkennen',
+        paragraphs: [
+          'Der Generalized Anxiety Disorder-7 (GAD-7) wurde speziell zur Erfassung von Angstsymptomen entwickelt. Mit 7 Fragen deckt er Sorgen, Nervosität, Unruhe und andere typische Angstsymptome ab. Auch hier werden die Items auf einer 4-Punkte-Skala bewertet.',
+          'Die US Preventive Services Task Force empfiehlt den GAD-7 seit 2023 explizit für das Angst-Screening bei Erwachsenen. Eine Meta-Analyse mit über 5.000 Teilnehmer:innen zeigte: Bei einem Cut-off von ≥8 Punkten liegt die Sensitivität bei 83% und die Spezifität bei 84%. Bei einem höheren Cut-off von ≥10 steigt die Spezifität auf 82%, während die Sensitivität auf 89% zunimmt.',
+        ],
+        list: [
+          'Bearbeitungszeit: 1-2 Minuten',
+          'Anzahl Items: 7 Fragen',
+          'Lizenzierung: Public Domain – vollständig kostenfrei und ohne Einschränkungen nutzbar',
+          'Einsatzgebiete: Screening bei Erwachsenen, Verlaufskontrolle in Therapie',
+          'Vorteile: Kurz, präzise, international validiert, kostenlos',
+        ],
+      },
+      {
+        heading: 'WHO-5: Allgemeines Wohlbefinden im Blick',
+        paragraphs: [
+          'Der WHO-5 Well-Being Index erfasst mit nur 5 Fragen das allgemeine psychische Wohlbefinden der letzten zwei Wochen. Anders als PHQ-9 und GAD-7 fragt er nicht nach Symptomen, sondern nach positiven Aspekten wie Lebensfreude, Energie und Interesse.',
+          'Eine systematische Review von 213 Studien bestätigte die Validität des WHO-5 als Screening-Tool für Depression. Bei einem Cut-off von ≤50 (auf einer Skala von 0-100, wobei niedrigere Werte problematischer sind) erreicht der WHO-5 eine Sensitivität von 86% und eine Spezifität von 81%.',
+        ],
+        list: [
+          'Bearbeitungszeit: 1 Minute',
+          'Anzahl Items: 5 Fragen',
+          'Lizenzierung: CC BY-NC-SA 3.0 IGO (seit 2024) – kostenfrei für nicht-kommerzielle Nutzung, kommerzielle Nutzung erfordert WHO-Genehmigung',
+          'Einsatzgebiete: Schnelles Screening, Verlaufsmessung, Forschung',
+          'Vorteile: Sehr kurz, positiv formuliert, kulturübergreifend einsetzbar',
+        ],
+      },
+      {
+        heading: 'Direkter Vergleich: Welches Instrument wann einsetzen?',
+        paragraphs: [
+          'Alle drei Instrumente zeigen ähnlich gute psychometrische Eigenschaften mit Sensitivitäts- und Spezifitätswerten über 80%. Die Unterschiede liegen vor allem im Fokus und in den rechtlichen Rahmenbedingungen.',
+          'Für die Primärversorgung und digitale Plattformen empfiehlt sich die Kombination aus PHQ-9 und GAD-7: Beide decken die häufigsten psychischen Störungen ab, dauern zusammen nur etwa 4 Minuten und sind als Public-Domain-Instrumente rechtlich vollkommen unproblematisch. Der WHO-5 kann als ergänzendes, sehr kurzes Screening-Tool sinnvoll sein, erfordert aber bei kommerzieller Nutzung eine Genehmigung der WHO.',
+        ],
+      },
+      {
+        heading: 'Lizenzierung: Ein oft übersehener Aspekt',
+        paragraphs: [
+          'Ein wichtiger, aber häufig vernachlässigter Faktor bei der Auswahl von Screening-Instrumenten ist die Lizenzierung. Während PHQ-9 und GAD-7 als Public-Domain-Instrumente ohne jede Einschränkung kostenfrei genutzt werden können, gibt es bei anderen etablierten Fragebögen erhebliche Kosten.',
+          'Das Beck Depression Inventory-II (BDI-II) oder das Beck Anxiety Inventory (BAI) beispielsweise müssen von Pearson lizenziert werden und kosten etwa 190 Dollar für ein Starter-Kit plus 3-4 Dollar pro digitaler Auswertung. Der WHO-5 ist für nicht-kommerzielle Anwendungen frei verfügbar, bei kommerzieller Nutzung ist jedoch eine schriftliche Genehmigung der WHO erforderlich.',
+        ],
+        list: [
+          'PHQ-9 und GAD-7: Vollständig frei, keine Kosten, keine Genehmigungen notwendig',
+          'WHO-5: Frei für nicht-kommerzielle Nutzung, Genehmigung bei kommerzieller Verwendung',
+          'BDI-II, BAI, GHQ-12: Lizenzpflichtig mit teils erheblichen Kosten',
+          'Empfehlung: Für Gesundheitsplattformen und Praxen sind PHQ-9 und GAD-7 die beste Wahl',
+        ],
+      },
+      {
+        heading: 'Einsatz in der digitalen Gesundheitsversorgung',
+        paragraphs: [
+          'Screening-Instrumente wie PHQ-9 und GAD-7 eignen sich hervorragend für die digitale Implementierung. Sie können automatisch ausgewertet werden, liefern sofortige Rückmeldung und ermöglichen eine standardisierte Dokumentation.',
+          'Bei FindMyTherapy nutzen wir diese validierten Instrumente als Teil unserer digitalen Ersteinschätzung. Patient:innen erhalten nach dem Ausfüllen eine erste Einordnung ihrer Symptome und Empfehlungen für nächste Schritte – sei es Selbsthilfe, psychosoziale Beratung oder professionelle Psychotherapie.',
+        ],
+      },
+      {
+        heading: 'Wichtiger Hinweis: Screening ersetzt keine Diagnostik',
+        paragraphs: [
+          'So wertvoll Screening-Instrumente sind – sie liefern immer nur Hinweise, keine Diagnosen. Ein erhöhter Score im PHQ-9 bedeutet nicht automatisch, dass eine Depression vorliegt. Und ein unauffälliger Score schließt psychische Probleme nicht sicher aus.',
+          'Screening-Fragebögen sind der erste Schritt: Sie helfen, Auffälligkeiten zu erkennen und den Bedarf für weitere Abklärung zu identifizieren. Die endgültige Diagnose und Behandlungsplanung sollte immer durch qualifizierte Fachpersonen (Psychotherapeut:innen, Psychiater:innen, klinische Psycholog:innen) erfolgen.',
+        ],
+      },
+      {
+        heading: 'Fazit: PHQ-9 und GAD-7 als optimale Kombination',
+        paragraphs: [
+          'Für die Primärversorgung und digitale Gesundheitsanwendungen stellen PHQ-9 und GAD-7 die optimale Lösung dar. Sie vereinen exzellente wissenschaftliche Validierung, praktische Handhabbarkeit (insgesamt etwa 5 Minuten Bearbeitungszeit) und vollständige rechtliche Verfügbarkeit ohne Lizenzkosten.',
+          'Die Kombination beider Instrumente ermöglicht ein umfassendes Screening der beiden häufigsten psychischen Störungen in der Primärversorgung. Der WHO-5 kann als sehr kurzes Zusatzinstrument zur Erfassung des allgemeinen Wohlbefindens in nicht-kommerziellen Settings sinnvoll ergänzt werden.',
+          'Wichtig ist: Diese Instrumente sind Werkzeuge zur Orientierung, nicht zur Selbstdiagnose. Bei Verdacht auf eine psychische Erkrankung sollte immer professionelle Hilfe in Anspruch genommen werden.',
+        ],
+      },
+    ],
+  },
 ]
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
