@@ -57,10 +57,9 @@ export function MarketingHero({ content }: HeroProps) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="w-full !border-transparent !bg-white !py-4 !text-base !font-semibold shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 hover:!bg-teal-50 focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
-                style={{ color: '#042f2e' }}
+                className="w-full !border-transparent !bg-white !py-4 !text-base !font-semibold !text-teal-950 shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 hover:!bg-teal-50 hover:!text-teal-950 focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
               >
-                <Link href={content.primaryCta.href} style={{ color: 'inherit' }}>
+                <Link href={content.primaryCta.href}>
                   {content.primaryCta.label}
                 </Link>
               </Button>
