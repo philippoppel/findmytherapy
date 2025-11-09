@@ -1,8 +1,7 @@
 'use client'
 
-import { ArrowRight, Check, Clock, Shield, Award, TrendingUp, Gift, Heart, Lock, FileCheck } from 'lucide-react'
+import { ArrowRight, Check, Clock, Shield, Award, TrendingUp, Gift, Heart, Lock } from 'lucide-react'
 import Link from 'next/link'
-import { SectionHeading } from './SectionHeading'
 import { Reveal } from './Reveal'
 
 const triageHighlights = [
@@ -51,10 +50,10 @@ export function AssessmentSection() {
           <Reveal className="space-y-6">
             <div className="rounded-3xl border border-divider bg-white p-6 shadow-lg sm:p-8">
               <h3 className="mb-6 text-xl font-semibold text-default sm:text-2xl">
-                So einfach geht's
+                So einfach geht&apos;s
               </h3>
               <p className="mb-6 text-pretty text-base leading-relaxed text-muted">
-                Klick auf "Starten", beantworte ein paar einfache Fragen und erhalte sofort dein Ampel-Ergebnis mit konkreten Empfehlungen. Dauert weniger als 5 Minuten – wissenschaftlich fundiert und vollständig anonym.
+                Klick auf &quot;Starten&quot;, beantworte ein paar einfache Fragen und erhalte sofort dein Ampel-Ergebnis mit konkreten Empfehlungen. Dauert weniger als 5 Minuten – wissenschaftlich fundiert und vollständig anonym.
               </p>
               <ul className="space-y-4">
                 {triageHighlights.map((item) => (

@@ -71,12 +71,16 @@ apps/web/
 ├── lib/chatbot/
 │   ├── types.ts          # TypeScript Definitionen
 │   ├── responses.ts      # Keywords & Response-Datenbank
-│   ├── engine.ts         # Konversationslogik
+│   ├── engine.ts         # Regel-Engine (Krisen, Tests, Therapie)
+│   ├── knowledge-base.ts # Kuratierte Inhalte (Triage, Verzeichnis, etc.)
+│   ├── rag.ts            # Retrieval + Mini-Vektorraum
 │   ├── index.ts          # Public API
 │   └── README.md         # Ausführliche Dokumentation
 │
 └── components/support/
     └── ChatWidget.tsx    # UI-Komponente
+
+app/api/chatbot/rag/route.ts  # Server-Endpunkt für Hybrid-Antworten
 ```
 
 ## 🎨 Anpassungen
@@ -160,6 +164,10 @@ git push
 ```
 
 Vercel deployed automatisch!
+
+## ⚙️ Knowledge Lookup (ohne LLM)
+
+Die Regel-Engine erkennt eigenständig, wenn User:innen nach konkreten Infos fragen („Wie läuft die Ersteinschätzung?“, „Was steht in eurer Datenschutzseite?“). Dann durchsucht sie `apps/web/lib/chatbot/knowledge-base.ts` lokal und baut eine Antwort inklusive Quellenhinweisen (`/triage`, `/privacy`, `/for-therapists`). Kein zusätzlicher Server oder LLM nötig.
 
 ## 📊 Monitoring
 

@@ -22,4 +22,4 @@ export {
 
 export { KEYWORD_PATTERNS, RESPONSE_TEMPLATES, GENERAL_RESPONSES } from './responses'
 
-export type { KeywordPattern, ResponseTemplate, MessageRole } from './types'
+export type { KeywordPattern, ResponseTemplate, MessageRole, KnowledgeReference } from './types'

@@ -30,11 +30,13 @@ Ein regelbasierter, empathischer Chatbot für Erstgespräche in der Mental Healt
 lib/chatbot/
 ├── types.ts           # TypeScript Definitionen
 ├── responses.ts       # Response-Datenbank & Keywords
-├── engine.ts          # Konversationslogik
+├── engine.ts          # Regelbasierte Konversationslogik + Knowledge Lookup
+├── knowledge-base.ts  # Kuratierte Inhalte (Triages, Verzeichnis, Hilfe, Dashboard)
+├── rag.ts             # Retrieval + Vektorisierung für Knowledge Lookup
 └── index.ts           # Public API
 
 components/support/
-└── ChatWidget.tsx     # UI-Komponente
+└── ChatWidget.tsx     # UI-Komponente inkl. deterministischer Antworten
 ```
 
 ### Konversations-Flow
@@ -50,6 +52,15 @@ components/support/
    ↓
 5. Weiterleitung zu Triage oder Krisenressourcen
 ```
+
+### Hybrid-Modus (Regeln + Knowledge)
+
+1. **Regel-Engine** erkennt Krisen, Therapieanfragen oder Assessment-Wünsche (100% lokal).
+2. **Info-/How-To-Fragen** triggern das Knowledge Lookup direkt im Client (kein Backend nötig).
+3. `engine.ts` nutzt `rag.ts`, um passende Einträge aus `knowledge-base.ts` zu suchen.
+4. Antwort + **Quellenhinweise** (z. B. `/triage`, `/therapists`, `/help`) erscheinen direkt im Chat.
+
+Alles bleibt deterministisch, es werden keine externen Modelle oder APIs aufgerufen.
 
 ## Erkannte Themen
 
@@ -294,27 +305,7 @@ Bei Erkennung:
 
 ### Migration zu AI
 
-Falls später ein AI-Modell gewünscht ist:
-
-```typescript
-// Statt regelbasierter Engine:
-async function generateAIResponse(userInput: string, context: ConversationState) {
-  // Option 1: Self-hosted (Datenschutz)
-  const response = await fetch('https://your-ollama-server.com/api/generate', {
-    method: 'POST',
-    body: JSON.stringify({
-      model: 'llama2',
-      prompt: buildPrompt(userInput, context),
-      system: EMPATHY_SYSTEM_PROMPT
-    })
-  })
-
-  // Option 2: Privacy-preserving API
-  // Mit Differential Privacy, kein Logging, etc.
-
-  return response
-}
-```
+Falls später ein AI-Modell gewünscht ist, kann `engine.ts` um einen optionalen LLM-Call erweitert werden (siehe Git History). Standardmäßig bleibt der Chatbot komplett regel- und knowledge-basiert.
 
 ## Support
 

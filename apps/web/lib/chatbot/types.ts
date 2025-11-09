@@ -1,9 +1,16 @@
 /**
  * Chatbot Types
  * Regelbasierter Chatbot für empathische Erstgespräche
+ * 🇦🇹 Deutscher Chatbot für die österreichische Mental Health Platform
  */
 
 export type MessageRole = 'user' | 'assistant'
+
+export interface KnowledgeReference {
+  title: string
+  url: string
+  score?: number
+}
 
 export interface ChatMessage {
   id: string
@@ -14,6 +21,8 @@ export interface ChatMessage {
     suggestedAction?: 'take_assessment' | 'contact_support' | 'crisis_resources'
     detectedTopics?: string[]
     sentiment?: 'positive' | 'neutral' | 'concerning' | 'crisis'
+    requiresKnowledgeBase?: boolean
+    references?: KnowledgeReference[]
   }
 }
 
@@ -21,8 +30,11 @@ export interface ConversationState {
   messages: ChatMessage[]
   currentTopic?: string
   hasOfferedAssessment: boolean
+  assessmentOfferCount: number // Wie oft Assessment angeboten wurde (kann mehrmals sein)
   conversationStage: 'greeting' | 'listening' | 'assessment_offer' | 'closing'
   detectedConcerns: string[]
+  usedResponses: string[] // Verhindert Wiederholungen
+  userMessageCount: number // Zählt User-Messages für besseren Flow
 }
 
 export interface KeywordPattern {

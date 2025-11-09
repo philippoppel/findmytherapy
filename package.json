@@ -48,5 +48,8 @@
       "@auth/core": "0.40.0"
     }
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@9.0.0",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
 }

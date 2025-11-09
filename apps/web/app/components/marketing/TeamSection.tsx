@@ -47,17 +47,14 @@ export function TeamSection({ content }: TeamSectionProps) {
               <div className="relative h-full overflow-hidden rounded-3xl border border-divider bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10">
                 {/* Image */}
                 {member.image && (
-                  <div className="relative h-80 w-full overflow-hidden sm:h-96">
+                  <div className="relative aspect-square w-full overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-60" />
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      style={{
-                        objectPosition: member.imagePosition || 'center 20%',
-                        transform: `scale(${member.imageScale || 1})`,
-                      }}
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
 
                     {/* Name overlay on image */}
