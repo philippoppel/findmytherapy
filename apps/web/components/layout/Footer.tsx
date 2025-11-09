@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Compass, Mail, Phone, MapPin } from 'lucide-react'
+import { Compass, Mail } from 'lucide-react'
 
 export function Footer() {
   const footerLinks = {
