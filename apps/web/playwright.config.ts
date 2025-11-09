@@ -21,32 +21,41 @@ export default defineConfig({
     colorScheme: 'light',
     screenshot: 'only-on-failure',
   },
-  projects: [
-    {
-      name: 'chromium-desktop',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'mobile-safari',
-      use: { ...devices['iPhone 13'] },
-    },
-    {
-      name: 'tablet',
-      use: { ...devices['iPad Pro'] },
-    },
-    {
-      name: 'firefox-desktop',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit-desktop',
-      use: { ...devices['Desktop Safari'] },
-    },
-  ],
+  projects: process.env.CI
+    ? [
+        // In CI, only run chromium to save time and resources
+        {
+          name: 'chromium-desktop',
+          use: { ...devices['Desktop Chrome'] },
+        },
+      ]
+    : [
+        // Locally, run all browsers for comprehensive testing
+        {
+          name: 'chromium-desktop',
+          use: { ...devices['Desktop Chrome'] },
+        },
+        {
+          name: 'mobile-chrome',
+          use: { ...devices['Pixel 5'] },
+        },
+        {
+          name: 'mobile-safari',
+          use: { ...devices['iPhone 13'] },
+        },
+        {
+          name: 'tablet',
+          use: { ...devices['iPad Pro'] },
+        },
+        {
+          name: 'firefox-desktop',
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'webkit-desktop',
+          use: { ...devices['Desktop Safari'] },
+        },
+      ],
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
