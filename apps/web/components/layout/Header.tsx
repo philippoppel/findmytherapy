@@ -44,11 +44,11 @@ export function Header() {
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
               <Compass className="h-5 w-5 text-white" aria-hidden />
             </div>
-            <div className="hidden flex-col sm:flex">
+            <div className="flex flex-col">
               <span className="text-base font-semibold leading-tight text-white">
                 FindMyTherapy
               </span>
-              <span className="text-[10px] font-medium text-teal-200/90">
+              <span className="hidden text-[10px] font-medium text-teal-200/90 sm:block">
                 Mentale Orientierung
               </span>
             </div>
