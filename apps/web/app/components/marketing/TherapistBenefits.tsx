@@ -36,17 +36,14 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
         <div className="grid gap-8 lg:gap-10">
           {content.benefits.map((benefit, index) => {
             const IconComponent = ICON_MAP[benefit.icon]
-            const isEven = index % 2 === 0
 
             return (
               <Reveal
                 key={benefit.title}
-                className={`grid gap-6 rounded-[2.5rem] border border-divider bg-white p-6 shadow-xl shadow-secondary/10 sm:gap-8 sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-12 ${
-                  isEven ? '' : 'lg:grid-flow-dense'
-                }`}
+                className="grid gap-6 rounded-lg border border-divider bg-white p-6 shadow-lg sm:gap-8 sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10"
               >
                 {/* Content Side */}
-                <div className={`space-y-6 ${isEven ? '' : 'lg:col-start-2'}`}>
+                <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary">
                       <IconComponent className="h-7 w-7" aria-hidden />
@@ -66,7 +63,7 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
                   </p>
 
                   {index === 0 && (
-                    <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
+                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
                       <p className="text-sm font-semibold text-primary">
                         🔒 Double-Sided Data Moat – Nur bei uns
                       </p>
@@ -79,11 +76,7 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
                 </div>
 
                 {/* Highlights Side */}
-                <div
-                  className={`rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 shadow-inner shadow-primary/10 ${
-                    isEven ? '' : 'lg:col-start-1 lg:row-start-1'
-                  }`}
-                >
+                <div className="rounded-lg border border-primary/15 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 shadow-sm">
                   <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary/80 sm:text-sm">
                     Die Vorteile im Überblick
                   </h4>

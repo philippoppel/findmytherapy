@@ -13,7 +13,7 @@ interface HeroProps {
 export function MarketingHero({ content }: HeroProps) {
   return (
     <section
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 px-4 py-10 text-white shadow-xl shadow-teal-900/30 sm:rounded-[2.5rem] sm:px-6 sm:py-14 md:py-16 lg:px-10"
+      className="relative overflow-hidden rounded-lg bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 px-4 py-10 text-white shadow-lg sm:px-6 sm:py-14 md:py-16 lg:px-10"
       aria-labelledby="hero-heading"
     >
       <div
@@ -78,7 +78,7 @@ export function MarketingHero({ content }: HeroProps) {
 
           <dl className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
             {content.metrics.map((metric, index) => (
-              <Reveal key={metric.label} delay={600 + index * 100} className="rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-left shadow-sm backdrop-blur sm:rounded-2xl sm:px-4 sm:py-4 md:py-5">
+              <Reveal key={metric.label} delay={600 + index * 100} className="rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-left backdrop-blur sm:px-4 sm:py-4 md:py-5">
                 <dt className="text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:text-xs">
                   {metric.label}
                 </dt>
@@ -91,18 +91,15 @@ export function MarketingHero({ content }: HeroProps) {
         </div>
 
         <Reveal delay={200} className="hidden w-full md:block lg:flex-1" variant="scale">
-          <div className="relative isolate overflow-hidden rounded-2xl border border-white/10 bg-white/10 p-2 shadow-2xl backdrop-blur sm:rounded-3xl sm:p-2.5 md:p-3">
-            <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/8 via-white/10 to-transparent" />
+          <div className="relative isolate overflow-hidden rounded-lg border border-white/10 bg-white/10 p-2 shadow-lg backdrop-blur sm:p-2.5 md:p-3">
             <Image
               src={content.image.src}
               alt={content.image.alt}
               width={1280}
               height={853}
-              className="relative z-10 h-full w-full rounded-xl object-cover sm:rounded-[22px]"
+              className="relative z-10 h-full w-full rounded-lg object-cover"
               priority
             />
-            <div className="absolute -left-6 -top-6 hidden h-24 w-24 rounded-full border border-teal-500/30 bg-teal-500/20 blur-lg sm:block" />
-            <div className="absolute -bottom-8 -right-6 hidden h-28 w-28 rounded-full border border-white/20 bg-white/10 blur-xl sm:block" />
           </div>
         </Reveal>
       </div>
