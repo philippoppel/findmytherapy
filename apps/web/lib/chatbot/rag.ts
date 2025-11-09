@@ -1,10 +1,5 @@
 import { KNOWLEDGE_BASE, type KnowledgeBaseEntry } from './knowledge-base'
 
-interface KnowledgeVector {
-  entry: KnowledgeBaseEntry
-  vector: Map<string, number>
-}
-
 export interface KnowledgeHit {
   entry: KnowledgeBaseEntry
   score: number
