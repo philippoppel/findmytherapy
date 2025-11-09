@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import {
   heroContent,
-  impactStats,
   whyContent,
   earlyAccessContent,
   teamContent,
@@ -11,14 +10,12 @@ import {
   therapistBenefits,
 } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
-import { ImpactStats } from '../components/marketing/ImpactStats'
 import { WhySection } from '../components/marketing/WhySection'
 import { EarlyAccessSection } from '../components/marketing/EarlyAccessSection'
 import { TeamSection } from '../components/marketing/TeamSection'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
 import { AssessmentSection } from '../components/marketing/AssessmentSection'
-import { AssessmentExplainer } from '../components/marketing/AssessmentExplainer'
 import { TherapistSearch } from '../components/marketing/TherapistSearch'
 import { ClientBenefits } from '../components/marketing/ClientBenefits'
 import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
@@ -79,14 +76,6 @@ export default function HomePage() {
           <MarketingHero content={heroContent} />
         </div>
 
-        <ImpactStats
-          id="impact"
-          stats={impactStats}
-          eyebrow="Wissenschaftlich fundiert"
-          title="Transparenz und Qualität von Anfang an"
-          description="FindMyTherapy basiert auf evidenzbasierten Methoden und wird in enger Zusammenarbeit mit Psychotherapeut:innen entwickelt."
-        />
-
         <AssessmentSection />
 
         <ClientBenefits content={clientBenefits} />
@@ -96,8 +85,6 @@ export default function HomePage() {
         <TherapistBenefits content={therapistBenefits} />
 
         <WhySection content={whyContent} />
-
-        <AssessmentExplainer />
 
         <EarlyAccessSection content={earlyAccessContent} />
 
