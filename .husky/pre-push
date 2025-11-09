@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/h"
+
+echo "Running pre-push checks..."
+
+# Get the current branch
+current_branch=$(git branch --show-current)
+
+# Only run tests when pushing to main or develop
+if [ "$current_branch" = "main" ] || [ "$current_branch" = "develop" ]; then
+  echo "Pushing to $current_branch - running tests..."
+
+  # Run linting
+  echo "→ Running lint..."
+  pnpm lint || {
+    echo "✗ Linting failed! Fix errors before pushing."
+    exit 1
+  }
+
+  # Run unit tests (fast)
+  echo "→ Running unit tests..."
+  pnpm --filter web test -- \
+    --testPathIgnorePatterns=integration \
+    --testPathIgnorePatterns=visual \
+    --testPathIgnorePatterns=e2e \
+    --passWithNoTests \
+    --bail || {
+    echo "✗ Unit tests failed! Fix tests before pushing."
+    exit 1
+  }
+
+  # Run build check
+  echo "→ Checking build..."
+  pnpm build || {
+    echo "✗ Build failed! Fix build errors before pushing."
+    exit 1
+  }
+
+  echo "✓ All pre-push checks passed!"
+else
+  echo "Pushing to $current_branch - skipping pre-push checks (only enforced for main/develop)"
+fi
