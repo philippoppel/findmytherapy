@@ -12,7 +12,6 @@ import { captureError } from '@/lib/monitoring'
 import {
   encryptDossierData,
   buildDossierPayload,
-  type DossierPayload,
 } from '@/lib/encryption'
 import { generateSignedDossierURL } from '@/lib/storage'
 
@@ -121,7 +120,7 @@ export async function POST(request: NextRequest) {
     const { encryptedData, keyId } = encryptDossierData(payload)
 
     // Determine risk level
-    let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' = triageSession.riskLevel as any
+    let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' = triageSession.riskLevel as 'LOW' | 'MEDIUM' | 'HIGH'
     if (payload.hasSuicidalIdeation || triageSession.phq9Score >= 20) {
       riskLevel = 'CRITICAL'
     }
@@ -219,7 +218,10 @@ export async function GET(request: NextRequest) {
     const clientId = searchParams.get('clientId')
 
     // Admin can see all, therapists can see their own, clients can see their own
-    let where: any = {}
+    const where: {
+      recommendedTherapists?: { has: string }
+      clientId?: string
+    } = {}
 
     if (session.user.role === 'ADMIN') {
       // Admin can filter by therapist or client

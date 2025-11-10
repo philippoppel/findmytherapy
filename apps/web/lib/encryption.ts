@@ -9,7 +9,6 @@ import crypto from 'crypto'
 
 const ALGORITHM = 'aes-256-gcm'
 const IV_LENGTH = 16
-const AUTH_TAG_LENGTH = 16
 const SALT_LENGTH = 64
 
 /**
@@ -181,7 +180,11 @@ export function buildDossierPayload(
     requiresEmergency: boolean
     supportPreferences: string[]
     availability: string[]
-    meta?: any
+    meta?: {
+      phq9Item9Score?: number
+      hasSuicidalIdeation?: boolean
+      [key: string]: unknown
+    }
     createdAt: Date
   },
   client: {
@@ -252,7 +255,7 @@ export function buildDossierPayload(
   }
 
   // Determine risk level
-  let riskLevel: DossierPayload['riskLevel'] = triageSession.riskLevel as any
+  let riskLevel: DossierPayload['riskLevel'] = triageSession.riskLevel as 'LOW' | 'MEDIUM' | 'HIGH'
   if (hasSuicidalIdeation || triageSession.phq9Score >= 20) {
     riskLevel = 'CRITICAL'
   }

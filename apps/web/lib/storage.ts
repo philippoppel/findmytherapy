@@ -60,8 +60,8 @@ export async function retrieveDossierPDF(
 
     try {
       return await fs.readFile(filepath)
-    } catch (error: any) {
-      if (error.code === 'ENOENT') {
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
         return null
       }
       throw error
@@ -82,8 +82,8 @@ export async function deleteDossierPDF(dossierId: string): Promise<void> {
 
     try {
       await fs.unlink(filepath)
-    } catch (error: any) {
-      if (error.code !== 'ENOENT') {
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
         throw error
       }
     }
