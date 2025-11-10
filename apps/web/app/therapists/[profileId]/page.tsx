@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import {
   Award,
   BadgeCheck,
@@ -104,6 +104,11 @@ export default async function TherapistProfilePage({ params, searchParams }: The
 
   if (!profile || !profile.isPublic) {
     notFound()
+  }
+
+  // Redirect to microsite if available and published
+  if (profile.micrositeSlug && profile.micrositeStatus === 'PUBLISHED') {
+    redirect(`/t/${profile.micrositeSlug}`)
   }
 
   const contactHref = profile.user?.email ? `mailto:${profile.user.email}` : '/contact'

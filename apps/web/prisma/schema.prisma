@@ -79,6 +79,11 @@ enum AlertSeverity {
   CRITICAL
 }
 
+enum MicrositeStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
@@ -188,6 +193,13 @@ model TherapistProfile {
   availabilityNote String?         @db.Text
   pricingNote      String?         @db.Text
   isPublic         Boolean         @default(false)
+
+  // Microsite fields
+  micrositeSlug            String?          @unique
+  micrositeStatus          MicrositeStatus  @default(DRAFT)
+  micrositeBlocks          Json?
+  micrositeLastPublishedAt DateTime?
+
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
@@ -199,6 +211,8 @@ model TherapistProfile {
   therapistMatches Match[] @relation("TherapistMatches")
   appointments     Appointment[]
   versions         TherapistProfileVersion[]
+  micrositeVisits  TherapistMicrositeVisit[]
+  micrositeLeads   TherapistMicrositeLead[]
 
   @@index([status, isPublic])
   @@index([city])
@@ -206,6 +220,8 @@ model TherapistProfile {
   @@index([acceptingClients])
   @@index([rating])
   @@index([deletedAt])
+  @@index([micrositeSlug])
+  @@index([micrositeStatus])
 }
 
 model TherapistProfileVersion {
@@ -508,4 +524,49 @@ model Appointment {
   @@index([clientId])
   @@index([startTime])
   @@index([status])
+}
+
+model TherapistMicrositeVisit {
+  id                 String           @id @default(cuid())
+  therapistProfileId String
+  therapistProfile   TherapistProfile @relation(fields: [therapistProfileId], references: [id], onDelete: Cascade)
+  occurredAt         DateTime         @default(now())
+  source             String?          // referrer URL or source
+  sessionId          String?          // for deduplication
+  userAgent          String?          @db.Text
+  ipAddress          String?
+
+  @@index([therapistProfileId])
+  @@index([occurredAt])
+  @@index([sessionId])
+}
+
+model TherapistMicrositeLead {
+  id                 String           @id @default(cuid())
+  therapistProfileId String
+  therapistProfile   TherapistProfile @relation(fields: [therapistProfileId], references: [id], onDelete: Cascade)
+  name               String
+  email              String
+  phone              String?
+  message            String           @db.Text
+  consent            Boolean          @default(false)
+  status             String           @default("NEW") // NEW, CONTACTED, CONVERTED, DECLINED
+  metadata           Json?            // additional form data
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([therapistProfileId])
+  @@index([status])
+  @@index([email])
+  @@index([createdAt])
+}
+
+model TherapistMicrositeRedirect {
+  id        String   @id @default(cuid())
+  fromSlug  String   @unique
+  toSlug    String
+  createdAt DateTime @default(now())
+
+  @@index([fromSlug])
+  @@index([toSlug])
 }
