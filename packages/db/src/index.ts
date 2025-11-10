@@ -1,6 +1,7 @@
 export * from '@prisma/client';
 export { PrismaClient } from '@prisma/client';
 export * from './seed-data';
+export * from './slug-generator';
 
 import { PrismaClient } from '@prisma/client';
 

@@ -1,0 +1,114 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { captureError } from '@/lib/monitoring';
+import { z } from 'zod';
+
+const leadSchema = z.object({
+  name: z.string().min(2, 'Name muss mindestens 2 Zeichen lang sein').max(100),
+  email: z.string().email('Ungültige E-Mail-Adresse'),
+  phone: z.string().optional(),
+  message: z.string().min(10, 'Nachricht muss mindestens 10 Zeichen lang sein').max(2000),
+  consent: z.boolean().refine((val) => val === true, {
+    message: 'Einwilligung ist erforderlich',
+  }),
+  metadata: z.record(z.any()).optional(),
+});
+
+type LeadInput = z.infer<typeof leadSchema>;
+
+/**
+ * POST /api/microsites/[slug]/leads
+ * Public endpoint to submit a lead/contact request
+ */
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
+  try {
+    const { slug } = params;
+
+    if (!slug) {
+      return NextResponse.json(
+        { success: false, message: 'Slug ist erforderlich' },
+        { status: 400 }
+      );
+    }
+
+    // Find therapist profile
+    const profile = await prisma.therapistProfile.findFirst({
+      where: {
+        micrositeSlug: slug,
+        micrositeStatus: 'PUBLISHED',
+        status: 'VERIFIED',
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        displayName: true,
+        user: {
+          select: {
+            email: true,
+            firstName: true,
+          },
+        },
+      },
+    });
+
+    if (!profile) {
+      return NextResponse.json(
+        { success: false, message: 'Microsite nicht gefunden' },
+        { status: 404 }
+      );
+    }
+
+    // Parse and validate request body
+    const body = await request.json();
+    const validatedData: LeadInput = leadSchema.parse(body);
+
+    // Create lead in database
+    const lead = await prisma.therapistMicrositeLead.create({
+      data: {
+        therapistProfileId: profile.id,
+        name: validatedData.name.trim(),
+        email: validatedData.email.trim().toLowerCase(),
+        phone: validatedData.phone?.trim() || null,
+        message: validatedData.message.trim(),
+        consent: validatedData.consent,
+        metadata: validatedData.metadata || {},
+        status: 'NEW',
+      },
+    });
+
+    // TODO: Send notification email to therapist
+    // TODO: Add to notification queue/inbox
+
+    console.log(`✅ New lead created for ${profile.displayName}: ${lead.id}`);
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Ihre Anfrage wurde erfolgreich gesendet',
+        leadId: lead.id,
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    captureError(error, { location: 'api/microsites/[slug]/leads:post' });
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Validierungsfehler',
+          errors: error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: false, message: 'Anfrage konnte nicht gesendet werden' },
+      { status: 500 }
+    );
+  }
+}
