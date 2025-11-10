@@ -161,6 +161,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
   const [showCrisisBanner, setShowCrisisBanner] = useState(false)
   const [selectedTherapists, setSelectedTherapists] = useState<string[]>([])
   const [showComparison, setShowComparison] = useState(false)
+  const [consentDossierSharing, setConsentDossierSharing] = useState(false)
   const [filters, setFilters] = useState<{
     formats: string[]
     specialties: string[]
@@ -519,6 +520,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             requiresEmergency,
             phq9Item9Score,
             hasSuicidalIdeation,
+            consentDossierSharing,
           }),
         })
 
@@ -564,6 +566,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       hasPersisted,
       phq9Item9Score,
       hasSuicidalIdeation,
+      consentDossierSharing,
     ]
   )
 
@@ -826,6 +829,25 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               <p className="text-sm text-blue-900">
                 <strong>Hinweis:</strong> Diese Ersteinschätzung ist keine medizinische Diagnose und ersetzt keine professionelle Beratung. Bei Fragen oder zur weiteren Abklärung wende dich bitte an qualifizierte Therapeut:innen oder Ärzt:innen.
               </p>
+            </div>
+          </div>
+
+          {/* Consent für Dossier-Sharing */}
+          <div className="mt-4 rounded-xl border border-purple-200 bg-purple-50 p-4">
+            <div className="flex items-start gap-3">
+              <input
+                id="consent-dossier-sharing"
+                type="checkbox"
+                checked={consentDossierSharing}
+                onChange={(e) => setConsentDossierSharing(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-purple-300 text-purple-600 focus:ring-2 focus:ring-purple-500 focus:ring-offset-0 cursor-pointer"
+                aria-describedby="consent-description"
+              />
+              <label htmlFor="consent-dossier-sharing" className="flex-1 cursor-pointer">
+                <p id="consent-description" className="text-sm text-purple-900">
+                  <strong>Verschlüsselte Datenübermittlung:</strong> Ich stimme zu, dass meine Ersteinschätzung verschlüsselt gespeichert und an von mir ausgewählte Therapeut:innen übermittelt werden darf. Die Daten werden nach 7 Tagen automatisch gelöscht.
+                </p>
+              </label>
             </div>
           </div>
 
