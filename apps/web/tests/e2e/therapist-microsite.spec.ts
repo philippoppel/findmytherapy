@@ -33,6 +33,8 @@ test.describe('Therapist Microsite Feature', () => {
         displayName: 'Dr. Test Therapeut',
         title: 'Klinische Psychologin',
         headline: 'Spezialisiert auf Angststörungen und Depression',
+        approachSummary: 'Ich arbeite ressourcenorientiert und lösungsfokussiert mit einem integrativen Ansatz, der verschiedene Therapiemethoden kombiniert.',
+        experienceSummary: 'Über 10 Jahre Erfahrung in der Behandlung von Angststörungen und Depression.',
         specialties: ['Angststörungen', 'Depression', 'Burnout', 'Trauma'],
         modalities: ['Verhaltenstherapie', 'Gesprächstherapie'],
         services: ['Einzeltherapie', 'Paartherapie'],
