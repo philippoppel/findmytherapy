@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function MicrositeDashboardPage() {
-  const router = useRouter();
   const [slug, setSlug] = useState('');
   const [customSlug, setCustomSlug] = useState('');
   const [status, setStatus] = useState<'DRAFT' | 'PUBLISHED'>('DRAFT');

@@ -83,8 +83,9 @@ export function MicrositeContact({
       });
 
       // Track CTA click
-      if (typeof window !== 'undefined' && (window as any).plausible) {
-        (window as any).plausible('Lead Submitted', {
+      if (typeof window !== 'undefined' && 'plausible' in window) {
+        // @ts-expect-error - plausible is injected at runtime
+        window.plausible('Lead Submitted', {
           props: { slug, therapist: therapistName },
         });
       }

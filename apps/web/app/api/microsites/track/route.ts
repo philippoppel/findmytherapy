@@ -17,7 +17,7 @@ const trackingSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { profileId, slug, sessionId, source, userAgent } = trackingSchema.parse(body);
+    const { profileId, sessionId, source, userAgent } = trackingSchema.parse(body);
 
     // Get client IP (with privacy consideration - hash it?)
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip');

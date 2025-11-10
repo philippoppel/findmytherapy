@@ -42,8 +42,9 @@ export function MicrositeAnalytics({ profileId, slug }: MicrositeAnalyticsProps)
         });
 
         // Also track with Plausible if available
-        if (typeof window !== 'undefined' && (window as any).plausible) {
-          (window as any).plausible('Microsite View', {
+        if (typeof window !== 'undefined' && 'plausible' in window) {
+          // @ts-expect-error - plausible is injected at runtime
+          window.plausible('Microsite View', {
             props: { slug, profileId },
           });
         }

@@ -8,7 +8,7 @@ import { captureError } from '@/lib/monitoring';
  * Authenticated endpoint for therapists to preview their microsite
  * (even if not published yet)
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const session = await auth();
 

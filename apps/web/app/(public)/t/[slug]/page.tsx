@@ -250,6 +250,7 @@ export default async function TherapistMicrositePage({
                   <div className="aspect-video">
                     <iframe
                       src={profile.videoUrl}
+                      title={`Video-Vorstellung von ${profile.displayName}`}
                       className="w-full h-full rounded-lg"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
