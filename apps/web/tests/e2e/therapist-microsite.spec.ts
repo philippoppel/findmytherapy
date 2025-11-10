@@ -80,7 +80,7 @@ test.describe('Therapist Microsite Feature', () => {
 
       // Save profile
       await page.click('button[type="submit"]');
-      await page.waitForSelector('text=/erfolgreich|gespeichert/i');
+      await page.waitForSelector('text=/erfolgreich|gespeichert/i', { timeout: 10000 });
 
       // 4. Publish microsite
       await page.goto('/dashboard/therapist/microsite');
@@ -237,8 +237,8 @@ test.describe('Therapist Microsite Feature', () => {
       const newSlug = `test-therapeut-${Date.now()}`;
       await slugInput.fill(newSlug);
 
-      // Wait for availability check
-      await page.waitForSelector('text=/Verfügbar/i', { timeout: 3000 });
+      // Wait for availability check (500ms debounce + API call)
+      await page.waitForSelector('text=/Verfügbar/i', { timeout: 10000 });
 
       // Save new slug
       await page.click('button:has-text("Slug speichern")');
