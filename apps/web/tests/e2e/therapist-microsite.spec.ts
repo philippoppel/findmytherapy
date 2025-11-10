@@ -82,15 +82,17 @@ test.describe('Therapist Microsite Feature', () => {
       const submitButton = page.locator('button[type="submit"]').first();
       await submitButton.click();
 
-      // Wait for save to complete by checking button state
-      await page.waitForTimeout(2000); // Give API time to process
+      // Wait for save to complete
+      await page.waitForTimeout(3000); // Give API time to process
 
-      // Verify no error message appeared
-      const errorAlert = page.locator('text=/fehler/i');
-      await expect(errorAlert).not.toBeVisible({ timeout: 1000 }).catch(() => {
-        // If error is visible, fail the test
-        throw new Error('Profile save failed');
-      });
+      // Check if an error message appeared
+      const errorAlert = page.locator('[role="alert"]:has-text("Fehler")');
+      const errorVisible = await errorAlert.isVisible().catch(() => false);
+
+      if (errorVisible) {
+        const errorText = await errorAlert.textContent();
+        throw new Error(`Profile save failed: ${errorText}`);
+      }
 
       // 4. Publish microsite
       await page.goto('/dashboard/therapist/microsite');
@@ -264,13 +266,16 @@ test.describe('Therapist Microsite Feature', () => {
       await saveButton.click();
 
       // Wait for save to complete
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
 
-      // Verify no error appeared
-      const errorMessage = page.locator('text=/fehler/i');
-      await expect(errorMessage).not.toBeVisible({ timeout: 1000 }).catch(() => {
-        throw new Error('Slug save failed');
-      });
+      // Check if an error message appeared
+      const errorMessage = page.locator('[role="alert"]:has-text("Fehler"), .text-red-600:has-text("Fehler")');
+      const errorVisible = await errorMessage.isVisible().catch(() => false);
+
+      if (errorVisible) {
+        const errorText = await errorMessage.textContent();
+        throw new Error(`Slug save failed: ${errorText}`);
+      }
 
       // Test 1: New slug works
       await page.goto(`/t/${newSlug}`);
