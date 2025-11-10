@@ -5,7 +5,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false pnpm exec eslint . --ext .ts,.tsx",
     "test": "jest",
     "type-check": "tsc --noEmit"
   },
