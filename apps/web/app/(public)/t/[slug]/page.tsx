@@ -14,24 +14,31 @@ export const revalidate = 300;
 
 // Generate static params for published microsites
 export async function generateStaticParams() {
-  const profiles = await prisma.therapistProfile.findMany({
-    where: {
-      micrositeStatus: 'PUBLISHED',
-      status: 'VERIFIED',
-      deletedAt: null,
-      micrositeSlug: { not: null },
-    },
-    select: {
-      micrositeSlug: true,
-    },
-    take: 100, // Limit for build performance
-  });
+  try {
+    const profiles = await prisma.therapistProfile.findMany({
+      where: {
+        micrositeStatus: 'PUBLISHED',
+        status: 'VERIFIED',
+        deletedAt: null,
+        micrositeSlug: { not: null },
+      },
+      select: {
+        micrositeSlug: true,
+      },
+      take: 100, // Limit for build performance
+    });
 
-  return profiles
-    .filter((p) => p.micrositeSlug)
-    .map((profile) => ({
-      slug: profile.micrositeSlug!,
-    }));
+    return profiles
+      .filter((p) => p.micrositeSlug)
+      .map((profile) => ({
+        slug: profile.micrositeSlug!,
+      }));
+  } catch (error) {
+    // If DB is not available during build (e.g., in CI without DB),
+    // return empty array - pages will be generated on-demand via ISR
+    console.warn('Could not generate static params for microsites:', error);
+    return [];
+  }
 }
 
 // Generate metadata for SEO
@@ -40,30 +47,31 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const profile = await prisma.therapistProfile.findFirst({
-    where: {
-      micrositeSlug: params.slug,
-      micrositeStatus: 'PUBLISHED',
-      status: 'VERIFIED',
-      deletedAt: null,
-    },
-    select: {
-      displayName: true,
-      title: true,
-      headline: true,
-      profileImageUrl: true,
-      city: true,
-      country: true,
-      specialties: true,
-      about: true,
-    },
-  });
+  try {
+    const profile = await prisma.therapistProfile.findFirst({
+      where: {
+        micrositeSlug: params.slug,
+        micrositeStatus: 'PUBLISHED',
+        status: 'VERIFIED',
+        deletedAt: null,
+      },
+      select: {
+        displayName: true,
+        title: true,
+        headline: true,
+        profileImageUrl: true,
+        city: true,
+        country: true,
+        specialties: true,
+        about: true,
+      },
+    });
 
-  if (!profile) {
-    return {
-      title: 'Therapeut nicht gefunden',
-    };
-  }
+    if (!profile) {
+      return {
+        title: 'Therapeut nicht gefunden',
+      };
+    }
 
   const title = `${profile.displayName}${profile.title ? ` - ${profile.title}` : ''} | FindMyTherapy`;
   const description =
@@ -79,38 +87,44 @@ export async function generateMetadata({
     profile.displayName,
   ].filter(Boolean);
 
-  return {
-    title,
-    description,
-    keywords: keywords.join(', '),
-    authors: [{ name: profile.displayName }],
-    openGraph: {
+    return {
       title,
       description,
-      type: 'profile',
-      locale: 'de_AT',
-      siteName: 'FindMyTherapy',
-      images: profile.profileImageUrl
-        ? [
-            {
-              url: profile.profileImageUrl,
-              width: 400,
-              height: 400,
-              alt: profile.displayName,
-            },
-          ]
-        : [],
-    },
-    twitter: {
-      card: 'summary',
-      title,
-      description,
-      images: profile.profileImageUrl ? [profile.profileImageUrl] : [],
-    },
-    alternates: {
-      canonical: `/t/${params.slug}`,
-    },
-  };
+      keywords: keywords.join(', '),
+      authors: [{ name: profile.displayName }],
+      openGraph: {
+        title,
+        description,
+        type: 'profile',
+        locale: 'de_AT',
+        siteName: 'FindMyTherapy',
+        images: profile.profileImageUrl
+          ? [
+              {
+                url: profile.profileImageUrl,
+                width: 400,
+                height: 400,
+                alt: profile.displayName,
+              },
+            ]
+          : [],
+      },
+      twitter: {
+        card: 'summary',
+        title,
+        description,
+        images: profile.profileImageUrl ? [profile.profileImageUrl] : [],
+      },
+      alternates: {
+        canonical: `/t/${params.slug}`,
+      },
+    };
+  } catch (error) {
+    console.warn('Could not generate metadata for microsite:', error);
+    return {
+      title: 'Therapeut Profil | FindMyTherapy',
+    };
+  }
 }
 
 export default async function TherapistMicrositePage({
