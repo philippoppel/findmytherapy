@@ -11,11 +11,21 @@ import { createTestClient } from '../../../fixtures/user.factory'
 process.env.DOSSIER_ENCRYPTION_KEY = 'test-encryption-key-for-integration-tests'
 process.env.NEXTAUTH_SECRET = 'test-secret'
 
+// Mock the auth function
+jest.mock('../../../../lib/auth', () => ({
+  auth: jest.fn(),
+}))
+
+import { auth } from '../../../../lib/auth'
+
+const mockAuth = auth as jest.MockedFunction<typeof auth>
+
 describe('POST /api/dossiers - Create Dossier', () => {
   const prisma = getTestDbClient()
 
   beforeEach(async () => {
     await setupDbTest()
+    mockAuth.mockReset()
   })
 
   afterAll(async () => {
@@ -24,6 +34,8 @@ describe('POST /api/dossiers - Create Dossier', () => {
 
   describe('Authentication', () => {
     it('should require authentication', async () => {
+      mockAuth.mockResolvedValue(null)
+
       const request = createMockRequest('/api/dossiers', {
         method: 'POST',
         body: { triageSessionId: 'test-id' },
@@ -44,6 +56,14 @@ describe('POST /api/dossiers - Create Dossier', () => {
       const clientData = await createTestClient()
       const client = await prisma.user.create({ data: clientData })
 
+      mockAuth.mockResolvedValue({
+        user: {
+          id: client.id,
+          email: client.email,
+          role: 'CLIENT',
+        },
+      } as any)
+
       const triageSession = await prisma.triageSession.create({
         data: {
           clientId: client.id,
@@ -63,22 +83,12 @@ describe('POST /api/dossiers - Create Dossier', () => {
 
       // Note: No consent created
 
-      const request = createMockRequest(
-        '/api/dossiers',
-        {
-          method: 'POST',
-          body: {
-            triageSessionId: triageSession.id,
-          },
+      const request = createMockRequest('/api/dossiers', {
+        method: 'POST',
+        body: {
+          triageSessionId: triageSession.id,
         },
-        {
-          user: {
-            id: client.id,
-            email: client.email,
-            role: 'CLIENT',
-          },
-        }
-      )
+      })
 
       const response = await createDossierRoute(request)
       expect(response.status).toBe(403)
@@ -93,6 +103,14 @@ describe('POST /api/dossiers - Create Dossier', () => {
       // Create client and triage session
       const clientData = await createTestClient()
       const client = await prisma.user.create({ data: clientData })
+
+      mockAuth.mockResolvedValue({
+        user: {
+          id: client.id,
+          email: client.email,
+          role: 'CLIENT',
+        },
+      } as any)
 
       const triageSession = await prisma.triageSession.create({
         data: {
@@ -121,23 +139,13 @@ describe('POST /api/dossiers - Create Dossier', () => {
         },
       })
 
-      const request = createMockRequest(
-        '/api/dossiers',
-        {
-          method: 'POST',
-          body: {
-            triageSessionId: triageSession.id,
-            recommendedTherapistIds: [],
-          },
+      const request = createMockRequest('/api/dossiers', {
+        method: 'POST',
+        body: {
+          triageSessionId: triageSession.id,
+          recommendedTherapistIds: [],
         },
-        {
-          user: {
-            id: client.id,
-            email: client.email,
-            role: 'CLIENT',
-          },
-        }
-      )
+      })
 
       const response = await createDossierRoute(request)
       expect(response.status).toBe(201)
@@ -153,6 +161,14 @@ describe('POST /api/dossiers - Create Dossier', () => {
       // Create client, triage, and dossier
       const clientData = await createTestClient()
       const client = await prisma.user.create({ data: clientData })
+
+      mockAuth.mockResolvedValue({
+        user: {
+          id: client.id,
+          email: client.email,
+          role: 'CLIENT',
+        },
+      } as any)
 
       const triageSession = await prisma.triageSession.create({
         data: {
@@ -197,22 +213,12 @@ describe('POST /api/dossiers - Create Dossier', () => {
       })
 
       // Try to create another dossier for the same triage session
-      const request = createMockRequest(
-        '/api/dossiers',
-        {
-          method: 'POST',
-          body: {
-            triageSessionId: triageSession.id,
-          },
+      const request = createMockRequest('/api/dossiers', {
+        method: 'POST',
+        body: {
+          triageSessionId: triageSession.id,
         },
-        {
-          user: {
-            id: client.id,
-            email: client.email,
-            role: 'CLIENT',
-          },
-        }
-      )
+      })
 
       const response = await createDossierRoute(request)
       expect(response.status).toBe(409)
