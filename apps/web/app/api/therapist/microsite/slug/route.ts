@@ -11,6 +11,8 @@ import {
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+
 const slugUpdateSchema = z.object({
   slug: z.string().min(3).max(60),
 });

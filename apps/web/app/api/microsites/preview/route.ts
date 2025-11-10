@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import { captureError } from '@/lib/monitoring';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/microsites/preview
  * Authenticated endpoint for therapists to preview their microsite

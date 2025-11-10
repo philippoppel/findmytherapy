@@ -5,6 +5,8 @@ import { captureError } from '@/lib/monitoring';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+
 const publishSchema = z.object({
   action: z.enum(['publish', 'unpublish']),
 });
