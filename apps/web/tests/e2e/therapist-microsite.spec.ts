@@ -109,7 +109,7 @@ test.describe('Therapist Microsite Feature', () => {
   test.describe('Lead Capture Flow', () => {
     test('should submit lead form and see it in dashboard', async ({ page, context }) => {
       // 1. Ensure microsite is published
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
@@ -190,7 +190,7 @@ test.describe('Therapist Microsite Feature', () => {
       // Now publish
       await page.click('button:has-text("Veröffentlichen")');
       await page.waitForSelector('text=/Veröffentlicht/i');
-      await expect(page.locator('text=/Veröffentlicht/i')).toBeVisible();
+      await expect(page.locator('span:has-text("✓ Veröffentlicht")')).toBeVisible();
 
       // Verify microsite is accessible
       const response = await page.request.get(`/t/${slug}`);
@@ -199,7 +199,7 @@ test.describe('Therapist Microsite Feature', () => {
       // Test 2: Unpublish microsite
       await page.click('button:has-text("Zurückziehen")');
       await page.waitForSelector('text=/Entwurf/i');
-      await expect(page.locator('text=/Entwurf/i')).toBeVisible();
+      await expect(page.locator('span:has-text("Entwurf")').first()).toBeVisible();
 
       // Verify microsite returns 404
       const unpublishedResponse = await page.request.get(`/t/${slug}`);
@@ -257,7 +257,7 @@ test.describe('Therapist Microsite Feature', () => {
   test.describe('Microsite SEO & Structure', () => {
     test('should have proper meta tags and structured data', async ({ page }) => {
       // Login and publish
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
@@ -301,7 +301,7 @@ test.describe('Therapist Microsite Feature', () => {
       await page.setViewportSize({ width: 375, height: 667 });
 
       // Login and get slug
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
