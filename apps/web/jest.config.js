@@ -9,6 +9,7 @@ const customJestConfig = {
     '^next-auth$': '<rootDir>/__mocks__/next-auth.js',
     '^next-auth/(.*)$': '<rootDir>/__mocks__/next-auth.js',
     '^jose$': '<rootDir>/__mocks__/jose.js',
+    '^@prisma/client$': '<rootDir>/tests/mocks/prisma-client.ts',
     '^@/(.*)$': '<rootDir>/$1',
     '^@mental-health/(.*)$': '<rootDir>/../../packages/$1/src',
   },

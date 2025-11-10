@@ -28,6 +28,9 @@ const fullTriagePayloadSchema = z.object({
   // Risk assessment
   riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH']),
   requiresEmergency: z.boolean(),
+
+  // Consent for data sharing
+  consentDossierSharing: z.boolean().optional().default(false),
 })
 
 // Schema for screening-only (PHQ-2/GAD-2 only)
@@ -211,6 +214,27 @@ export async function POST(request: NextRequest) {
         })
 
         triageSessionId = triageSession.id
+
+        // Handle consent for dossier sharing
+        if (payload.consentDossierSharing) {
+          try {
+            await prisma.clientConsent.create({
+              data: {
+                clientId: validUserId,
+                scope: 'DOSSIER_SHARING',
+                status: 'GRANTED',
+                source: 'triage_flow',
+                metadata: {
+                  triageSessionId: triageSession.id,
+                  timestamp: new Date().toISOString(),
+                },
+              },
+            })
+          } catch (consentError) {
+            console.error('[TRIAGE] Failed to save consent:', consentError)
+            // Don't fail the request if consent saving fails
+          }
+        }
 
         // Create emergency alert if required
         if (payload.requiresEmergency) {
