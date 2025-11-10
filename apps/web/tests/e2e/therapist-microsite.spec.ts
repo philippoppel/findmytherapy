@@ -12,7 +12,7 @@ test.describe('Therapist Microsite Feature', () => {
     therapistPassword = 'Test1234!';
 
     const bcrypt = await import('bcryptjs');
-    const hashedPassword = await bcrypt.hash(therapistPassword, 10);
+    const hashedPassword = await bcrypt.default.hash(therapistPassword, 10);
 
     // Create user and profile
     const user = await prisma.user.create({
