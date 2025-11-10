@@ -64,7 +64,7 @@ test.describe('Therapist Microsite Feature', () => {
   test.describe('Profile Edit → Public View Flow', () => {
     test('should update profile and see changes on microsite', async ({ page }) => {
       // 1. Login as therapist
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
@@ -164,7 +164,7 @@ test.describe('Therapist Microsite Feature', () => {
   test.describe('Publishing Workflow', () => {
     test('should toggle between draft and published states', async ({ page }) => {
       // Login
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
@@ -210,7 +210,7 @@ test.describe('Therapist Microsite Feature', () => {
   test.describe('Slug Management', () => {
     test('should update slug and redirect from old URL', async ({ page }) => {
       // Login
-      await page.goto('/auth/login');
+      await page.goto('/login');
       await page.fill('input[name="email"]', therapistEmail);
       await page.fill('input[name="password"]', therapistPassword);
       await page.click('button[type="submit"]');
