@@ -162,7 +162,7 @@ describe('Encryption Utilities', () => {
         id: 'test-triage-id',
         phq9Score: 12,
         phq9Severity: 'moderate',
-        phq9Answers: [1, 1, 1, 1, 1, 2, 2, 2, 1],
+        phq9Answers: [1, 1, 1, 1, 1, 2, 2, 2, 0], // No suicidal ideation (item 9 = 0)
         gad7Score: 9,
         gad7Severity: 'mild',
         gad7Answers: [1, 1, 1, 2, 2, 1, 1],
@@ -171,7 +171,7 @@ describe('Encryption Utilities', () => {
         supportPreferences: ['therapist', 'online'],
         availability: ['mornings', 'online'],
         meta: {
-          phq9Item9Score: 1,
+          phq9Item9Score: 0, // No suicidal ideation
           hasSuicidalIdeation: false,
         },
         createdAt: new Date(),

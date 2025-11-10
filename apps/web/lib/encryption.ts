@@ -89,6 +89,10 @@ export function decryptDossierData<T = unknown>(
     return JSON.parse(decrypted) as T
   } catch (error) {
     console.error('[ENCRYPTION] Error decrypting dossier data:', error)
+    // Re-throw the original error message if it's already our error
+    if (error instanceof Error && error.message === 'Invalid encrypted data format') {
+      throw error
+    }
     throw new Error('Failed to decrypt dossier data')
   }
 }
