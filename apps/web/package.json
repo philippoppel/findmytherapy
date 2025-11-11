@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && npx next build",
-    "vercel-build": "prisma migrate deploy && prisma generate && npx next build",
+    "vercel-build": "npm run db:ensure-columns && prisma migrate deploy && prisma generate && npx next build",
+    "db:ensure-columns": "psql $DATABASE_URL -f ../../scripts/ensure-profile-columns.sql || true",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
