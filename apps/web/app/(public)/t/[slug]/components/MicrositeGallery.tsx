@@ -70,13 +70,12 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
 
       {/* Lightbox */}
       {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+        <button
+          className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4 border-0"
           onClick={closeLightbox}
           onKeyDown={handleKeyDown}
-          tabIndex={0}
-          role="dialog"
-          aria-modal="true"
+          aria-label="Lightbox schließen"
+          type="button"
         >
           {/* Close button */}
           <button
@@ -102,9 +101,12 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
           )}
 
           {/* Image */}
-          <div
-            className="relative max-w-5xl max-h-[80vh] w-full h-full"
+          <button
+            className="relative max-w-5xl max-h-[80vh] w-full h-full border-0 bg-transparent"
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            type="button"
+            aria-label="Bild"
           >
             <Image
               src={images[currentImageIndex]}
@@ -114,7 +116,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
               sizes="100vw"
               priority
             />
-          </div>
+          </button>
 
           {/* Next button */}
           {images.length > 1 && (
@@ -136,7 +138,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
               {currentImageIndex + 1} / {images.length}
             </div>
           )}
-        </div>
+        </button>
       )}
     </>
   );
