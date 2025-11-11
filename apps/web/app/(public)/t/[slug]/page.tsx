@@ -9,7 +9,7 @@ import { MicrositePricing } from './components/MicrositePricing';
 import { MicrositeContact } from './components/MicrositeContact';
 import { MicrositeAnalytics } from './components/MicrositeAnalytics';
 
-// ISR: Revalidate every 5 minutes
+// ISR: Revalidate every 5 minutes (clears cache on new deployment)
 export const revalidate = 300;
 
 // Generate static params for published microsites
@@ -171,10 +171,20 @@ export default async function TherapistMicrositePage({
       videoUrl: true,
       acceptingClients: true,
       yearsExperience: true,
-      rating: true,
-      reviewCount: true,
       responseTime: true,
       availabilityNote: true,
+      // Gallery & Media
+      galleryImages: true,
+      // Social Media
+      socialLinkedin: true,
+      socialInstagram: true,
+      socialFacebook: true,
+      websiteUrl: true,
+      // Additional Info
+      qualifications: true,
+      ageGroups: true,
+      acceptedInsurance: true,
+      privatePractice: true,
       micrositeSlug: true,
       micrositeBlocks: true,
       courses: {
@@ -218,13 +228,6 @@ export default async function TherapistMicrositePage({
     areaServed: profile.online ? 'Online' : profile.city,
     knowsAbout: profile.specialties,
     knowsLanguage: profile.languages,
-    aggregateRating: profile.rating
-      ? {
-          '@type': 'AggregateRating',
-          ratingValue: profile.rating,
-          reviewCount: profile.reviewCount || 0,
-        }
-      : undefined,
   };
 
   return (

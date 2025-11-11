@@ -56,6 +56,18 @@ export const setcardPayloadSchema = z
     city: emptyStringToNull(z.string().trim().max(120).nullish()),
     country: emptyStringToNull(z.string().trim().length(2).nullish()),
     online: z.boolean(),
+    // Gallery
+    galleryImages: z.array(imageUrlSchema).max(5).default([]),
+    // Social Media
+    socialLinkedin: emptyStringToNull(optionalUrlSchema.nullish()),
+    socialInstagram: emptyStringToNull(optionalUrlSchema.nullish()),
+    socialFacebook: emptyStringToNull(optionalUrlSchema.nullish()),
+    websiteUrl: emptyStringToNull(optionalUrlSchema.nullish()),
+    // Additional Info
+    qualifications: z.array(z.string().trim().min(2).max(200)).max(15).default([]),
+    ageGroups: z.array(z.string().trim().min(2).max(100)).max(10).default([]),
+    acceptedInsurance: z.array(z.string().trim().min(2).max(120)).max(12).default([]),
+    privatePractice: z.boolean().default(false),
   })
   .superRefine((data, ctx) => {
     if (data.priceMin != null && data.priceMax != null && data.priceMin > data.priceMax) {

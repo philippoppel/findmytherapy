@@ -8,9 +8,11 @@ interface MicrositeHeroProps {
     profileImageUrl?: string | null;
     city?: string | null;
     country: string;
-    rating?: number | null;
-    reviewCount?: number | null;
     yearsExperience?: number | null;
+    socialLinkedin?: string | null;
+    socialInstagram?: string | null;
+    socialFacebook?: string | null;
+    websiteUrl?: string | null;
   };
 }
 
@@ -73,12 +75,53 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
                   🎓 {profile.yearsExperience} Jahre Erfahrung
                 </span>
               )}
-              {profile.rating && (
-                <span className="flex items-center gap-1">
-                  ⭐ {profile.rating.toFixed(1)} ({profile.reviewCount || 0} Bewertungen)
-                </span>
-              )}
             </div>
+
+            {/* Social Media Links */}
+            {(profile.websiteUrl || profile.socialLinkedin || profile.socialInstagram || profile.socialFacebook) && (
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+                {profile.websiteUrl && (
+                  <a
+                    href={profile.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition border border-gray-200 text-sm"
+                  >
+                    🌐 Website
+                  </a>
+                )}
+                {profile.socialLinkedin && (
+                  <a
+                    href={profile.socialLinkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-blue-600 hover:bg-blue-50 transition border border-blue-200 text-sm"
+                  >
+                    💼 LinkedIn
+                  </a>
+                )}
+                {profile.socialInstagram && (
+                  <a
+                    href={profile.socialInstagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-pink-600 hover:bg-pink-50 transition border border-pink-200 text-sm"
+                  >
+                    📸 Instagram
+                  </a>
+                )}
+                {profile.socialFacebook && (
+                  <a
+                    href={profile.socialFacebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-blue-700 hover:bg-blue-50 transition border border-blue-300 text-sm"
+                  >
+                    👥 Facebook
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

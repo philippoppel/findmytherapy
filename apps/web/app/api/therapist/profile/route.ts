@@ -18,8 +18,6 @@ const profileSelect = {
   videoUrl: true,
   acceptingClients: true,
   yearsExperience: true,
-  rating: true,
-  reviewCount: true,
   responseTime: true,
   modalities: true,
   specialties: true,
@@ -32,6 +30,18 @@ const profileSelect = {
   city: true,
   country: true,
   online: true,
+  // Gallery & Media
+  galleryImages: true,
+  // Social Media
+  socialLinkedin: true,
+  socialInstagram: true,
+  socialFacebook: true,
+  websiteUrl: true,
+  // Additional Info
+  qualifications: true,
+  ageGroups: true,
+  acceptedInsurance: true,
+  privatePractice: true,
   status: true,
   updatedAt: true,
 } as const
@@ -52,8 +62,6 @@ const serializeProfile = (profile: TherapistProfileSetcard) => ({
   videoUrl: profile.videoUrl,
   acceptingClients: profile.acceptingClients,
   yearsExperience: profile.yearsExperience,
-  rating: profile.rating,
-  reviewCount: profile.reviewCount,
   responseTime: profile.responseTime,
   modalities: profile.modalities,
   specialties: profile.specialties,
@@ -66,6 +74,18 @@ const serializeProfile = (profile: TherapistProfileSetcard) => ({
   city: profile.city,
   country: profile.country,
   online: profile.online,
+  // Gallery & Media
+  galleryImages: profile.galleryImages,
+  // Social Media
+  socialLinkedin: profile.socialLinkedin,
+  socialInstagram: profile.socialInstagram,
+  socialFacebook: profile.socialFacebook,
+  websiteUrl: profile.websiteUrl,
+  // Additional Info
+  qualifications: profile.qualifications,
+  ageGroups: profile.ageGroups,
+  acceptedInsurance: profile.acceptedInsurance,
+  privatePractice: profile.privatePractice,
   status: profile.status,
   updatedAt: profile.updatedAt,
 })
@@ -134,6 +154,10 @@ export async function PATCH(request: NextRequest) {
     const cleanedModalities = sanitizeStringArray(payload.modalities)
     const cleanedSpecialties = sanitizeStringArray(payload.specialties)
     const cleanedLanguages = sanitizeStringArray(payload.languages)
+    const cleanedQualifications = sanitizeStringArray(payload.qualifications)
+    const cleanedAgeGroups = sanitizeStringArray(payload.ageGroups)
+    const cleanedAcceptedInsurance = sanitizeStringArray(payload.acceptedInsurance)
+    const cleanedGalleryImages = sanitizeStringArray(payload.galleryImages)
 
     const updatedProfile = await prisma.therapistProfile.update({
       where: { id: existingProfile.id },
@@ -160,6 +184,18 @@ export async function PATCH(request: NextRequest) {
         city: safeNullableString(payload.city),
         country: safeNullableString(payload.country) ?? existingProfile.country,
         online: payload.online,
+        // Gallery & Media
+        galleryImages: cleanedGalleryImages,
+        // Social Media
+        socialLinkedin: safeNullableString(payload.socialLinkedin),
+        socialInstagram: safeNullableString(payload.socialInstagram),
+        socialFacebook: safeNullableString(payload.socialFacebook),
+        websiteUrl: safeNullableString(payload.websiteUrl),
+        // Additional Info
+        qualifications: cleanedQualifications,
+        ageGroups: cleanedAgeGroups,
+        acceptedInsurance: cleanedAcceptedInsurance,
+        privatePractice: payload.privatePractice,
       },
       select: profileSelect,
     })
