@@ -175,18 +175,6 @@ export default async function TherapistMicrositePage({
       availabilityNote: true,
       micrositeSlug: true,
       micrositeBlocks: true,
-      // Gallery & Media
-      galleryImages: true,
-      // Social Media
-      socialLinkedin: true,
-      socialInstagram: true,
-      socialFacebook: true,
-      websiteUrl: true,
-      // Additional Info
-      qualifications: true,
-      ageGroups: true,
-      acceptedInsurance: true,
-      privatePractice: true,
       courses: {
         where: {
           status: 'PUBLISHED',
