@@ -3,8 +3,11 @@ import { notFound, redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { MicrositeHero } from './components/MicrositeHero';
 import { MicrositeAbout } from './components/MicrositeAbout';
+import { MicrositeGallery } from './components/MicrositeGallery';
+import { MicrositeQualifications } from './components/MicrositeQualifications';
 import { MicrositeExpertise } from './components/MicrositeExpertise';
 import { MicrositeServices } from './components/MicrositeServices';
+import { MicrositeCourses } from './components/MicrositeCourses';
 import { MicrositePricing } from './components/MicrositePricing';
 import { MicrositeContact } from './components/MicrositeContact';
 import { MicrositeAnalytics } from './components/MicrositeAnalytics';
@@ -254,11 +257,23 @@ export default async function TherapistMicrositePage({
                 experienceSummary={profile.experienceSummary}
               />
 
+              <MicrositeGallery
+                images={profile.galleryImages || []}
+                therapistName={profile.displayName}
+              />
+
+              <MicrositeQualifications qualifications={profile.qualifications || []} />
+
               <MicrositeExpertise specialties={profile.specialties || []} />
 
               <MicrositeServices
                 services={profile.services || []}
                 modalities={profile.modalities || []}
+              />
+
+              <MicrositeCourses
+                courses={profile.courses}
+                therapistName={profile.displayName}
               />
 
               {profile.videoUrl && (
@@ -277,8 +292,8 @@ export default async function TherapistMicrositePage({
               )}
             </div>
 
-            {/* Sidebar */}
-            <div className="lg:col-span-1 space-y-6">
+            {/* Sidebar - Sticky container */}
+            <div className="lg:col-span-1 space-y-6 sticky top-4 self-start">
               <MicrositePricing
                 priceMin={profile.priceMin}
                 priceMax={profile.priceMax}
@@ -290,6 +305,9 @@ export default async function TherapistMicrositePage({
                 acceptingClients={profile.acceptingClients}
                 responseTime={profile.responseTime}
                 availabilityNote={profile.availabilityNote}
+                ageGroups={profile.ageGroups || []}
+                acceptedInsurance={profile.acceptedInsurance || []}
+                privatePractice={profile.privatePractice}
               />
 
               <MicrositeContact

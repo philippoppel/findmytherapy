@@ -9,6 +9,9 @@ interface MicrositePricingProps {
   acceptingClients: boolean;
   responseTime?: string | null;
   availabilityNote?: string | null;
+  ageGroups?: string[];
+  acceptedInsurance?: string[];
+  privatePractice?: boolean;
 }
 
 export function MicrositePricing({
@@ -22,6 +25,9 @@ export function MicrositePricing({
   acceptingClients,
   responseTime,
   availabilityNote,
+  ageGroups,
+  acceptedInsurance,
+  privatePractice,
 }: MicrositePricingProps) {
   const formatPrice = (cents: number) => {
     return new Intl.NumberFormat('de-AT', {
@@ -31,8 +37,15 @@ export function MicrositePricing({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+    <div className="bg-white rounded-lg shadow-sm p-6">
       <h3 className="text-xl font-semibold mb-4 text-gray-900">Auf einen Blick</h3>
+
+      {privatePractice && (
+        <div className="mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <span>🏥</span>
+          <span>Privatpraxis</span>
+        </div>
+      )}
 
       <dl className="space-y-4">
         {/* Pricing */}
@@ -89,6 +102,42 @@ export function MicrositePricing({
             )}
           </dd>
         </div>
+
+        {/* Age Groups */}
+        {ageGroups && ageGroups.length > 0 && (
+          <div>
+            <dt className="text-sm font-medium text-gray-500 mb-1">Altersgruppen</dt>
+            <dd className="text-gray-900">
+              <div className="flex flex-wrap gap-2">
+                {ageGroups.map((ageGroup, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2.5 py-1 rounded-md text-sm bg-gray-100 text-gray-700"
+                  >
+                    {ageGroup}
+                  </span>
+                ))}
+              </div>
+            </dd>
+          </div>
+        )}
+
+        {/* Accepted Insurance */}
+        {acceptedInsurance && acceptedInsurance.length > 0 && (
+          <div>
+            <dt className="text-sm font-medium text-gray-500 mb-1">Akzeptierte Versicherungen</dt>
+            <dd className="text-gray-900">
+              <ul className="text-sm space-y-1">
+                {acceptedInsurance.map((insurance, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <span className="text-teal-600">✓</span>
+                    <span>{insurance}</span>
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        )}
       </dl>
     </div>
   );
