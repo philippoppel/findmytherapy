@@ -9,7 +9,7 @@ import { MicrositePricing } from './components/MicrositePricing';
 import { MicrositeContact } from './components/MicrositeContact';
 import { MicrositeAnalytics } from './components/MicrositeAnalytics';
 
-// ISR: Revalidate every 5 minutes
+// ISR: Revalidate every 5 minutes (clears cache on new deployment)
 export const revalidate = 300;
 
 // Generate static params for published microsites
