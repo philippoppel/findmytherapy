@@ -86,11 +86,10 @@ export function TherapistFilterModal({
   const activeFilterCount =
     filters.formats.length + filters.specialties.length + filters.languages.length
 
-  if (!isOpen) return null
-
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -255,6 +254,7 @@ export function TherapistFilterModal({
           </div>
         </motion.div>
       </div>
+      )}
     </AnimatePresence>
   )
 }
