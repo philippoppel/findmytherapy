@@ -2,19 +2,44 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutDashboard, Shield, User, LogOut, Menu, X, Compass } from 'lucide-react';
+import { Home, LayoutDashboard, Shield, User, LogOut, Menu, X, Compass, Globe, Mail } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard/therapist', icon: LayoutDashboard },
   { name: 'Profil', href: '/dashboard/profile', icon: User },
+  { name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe },
+  { name: 'Kontaktanfragen', href: '/dashboard/therapist/leads', icon: Mail },
   { name: 'Sicherheit', href: '/dashboard/security', icon: Shield },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [unreadLeadsCount, setUnreadLeadsCount] = useState(0);
+
+  useEffect(() => {
+    // Fetch unread leads count
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await fetch('/api/therapist/leads/unread-count');
+        const data = await response.json();
+        if (data.success) {
+          setUnreadLeadsCount(data.count);
+        }
+      } catch (error) {
+        console.error('Error fetching unread count:', error);
+      }
+    };
+
+    fetchUnreadCount();
+
+    // Poll every 30 seconds for updates
+    const interval = setInterval(fetchUnreadCount, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
@@ -57,11 +82,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <nav className="sticky top-20 space-y-1 p-4">
             {navigation.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+              const showBadge = item.href === '/dashboard/therapist/leads' && unreadLeadsCount > 0;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
+                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition relative ${
                     isActive
                       ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30'
                       : 'text-neutral-700 hover:bg-white hover:shadow-sm'
@@ -69,6 +95,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 >
                   <item.icon className="h-5 w-5" />
                   {item.name}
+                  {showBadge && (
+                    <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                      {unreadLeadsCount > 9 ? '9+' : unreadLeadsCount}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -100,12 +131,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <nav className="space-y-1 p-4">
                 {navigation.map((item) => {
                   const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+                  const showBadge = item.href === '/dashboard/therapist/leads' && unreadLeadsCount > 0;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
+                      className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition relative ${
                         isActive
                           ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30'
                           : 'text-neutral-700 hover:bg-neutral-100'
@@ -113,6 +145,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     >
                       <item.icon className="h-5 w-5" />
                       {item.name}
+                      {showBadge && (
+                        <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                          {unreadLeadsCount > 9 ? '9+' : unreadLeadsCount}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}

@@ -240,7 +240,7 @@ export const featureTabs: FeatureTab[] = [
   {
     value: 'microsite',
     label: 'Deine eigene Microsite',
-    heading: 'LinkedIn++ meets persönliche Website – automatisch & SEO-optimiert.',
+    heading: 'Professionelle Online-Präsenz ohne eigene Website – automatisch erstellt.',
     description:
       'Jeder verifizierte Therapeut erhält eine professionelle Microsite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Trust-Badges und Lead-Capture.',
     icon: 'globe',
@@ -265,7 +265,7 @@ export const featureTabs: FeatureTab[] = [
       title: 'Spar dir Zeit & Geld',
       items: [
         'Keine eigene Website nötig: Spare 500-2.000€ für Entwicklung und laufende Hosting-Kosten.',
-        'SEO inklusive: Profitiere von der Domain Authority von FindMyTherapy und strukturierten Daten (Schema.org).',
+        'Automatisch in Google gefunden: Deine Seite wird optimal für Suchmaschinen aufbereitet – ohne technisches Know-how.',
         'Immer aktuell: Änderungen im Dashboard werden automatisch synchronisiert – keine doppelte Pflege.',
       ],
     },
@@ -521,12 +521,12 @@ export const therapistBenefits = {
     {
       icon: 'globe' as const,
       title: 'Deine eigene Microsite',
-      subtitle: 'LinkedIn++ meets persönliche Website – kostenlos',
+      subtitle: 'Automatisch generierte Website – kostenlos und professionell',
       description:
         'Jeder verifizierte Therapeut erhält automatisch eine SEO-optimierte Microsite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Trust-Badges und Lead-Capture.',
       highlights: [
         'Spare 500-2.000€ für Website-Entwicklung',
-        'SEO-optimiert mit Domain Authority',
+        'Automatisch in Google gefunden werden',
         'Lead-Capture & Analytics inklusive',
         'Automatische Synchronisation mit deinem Dashboard',
       ],

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { Users, BookOpen, Calendar, TrendingUp, Settings, CreditCard, Heart } from 'lucide-react';
+import { TherapistDashboardClient } from './components/TherapistDashboardClient';
+import { GettingStartedWidget } from './components/GettingStartedWidget';
 
 // Force dynamic rendering for auth-protected page
 export const dynamic = 'force-dynamic'
@@ -37,6 +39,12 @@ const fetchTherapistProfile = async (userId: string) => {
           },
         },
       },
+      micrositeLeads: {
+        select: {
+          id: true,
+        },
+        take: 1,
+      },
     },
   });
 
@@ -47,8 +55,19 @@ export default async function TherapistDashboardPage() {
   const session = await requireTherapist();
   const profile = await fetchTherapistProfile(session.user.id);
 
+  // Calculate Getting Started checklist values
+  const profileComplete = Boolean(
+    profile?.headline &&
+    profile?.experienceSummary &&
+    profile?.specialties &&
+    profile.specialties.length >= 3
+  );
+  const micrositePublished = profile?.micrositeStatus === 'PUBLISHED';
+  const hasLeads = (profile?.micrositeLeads?.length ?? 0) > 0;
+
   return (
     <div className="space-y-8">
+      <TherapistDashboardClient />
       <header className="space-y-3">
         <h1 className="text-3xl font-bold text-neutral-900">
           Willkommen zurück, {session.user.firstName || session.user.email}
@@ -91,6 +110,13 @@ export default async function TherapistDashboardPage() {
           <MetricCard icon={CreditCard} label="Ausstehende Auszahlungen" value="€0,00" tone="success" />
         </div>
       </section>
+
+      {/* Getting Started Widget */}
+      <GettingStartedWidget
+        profileComplete={profileComplete}
+        micrositePublished={micrositePublished}
+        hasLeads={hasLeads}
+      />
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6" aria-label="Schnellaktionen und Termine">
         <div className="lg:col-span-2 space-y-6">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Info, X } from 'lucide-react';
 
 export default function MicrositeDashboardPage() {
   const [slug, setSlug] = useState('');
@@ -12,9 +13,13 @@ export default function MicrositeDashboardPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
   const [slugChecking, setSlugChecking] = useState(false);
+  const [infoBannerDismissed, setInfoBannerDismissed] = useState(false);
 
   useEffect(() => {
     fetchMicrositeData();
+    // Check if info banner was dismissed
+    const dismissed = localStorage.getItem('microsite-info-banner-dismissed');
+    setInfoBannerDismissed(dismissed === 'true');
   }, []);
 
   const fetchMicrositeData = async () => {
@@ -134,6 +139,11 @@ export default function MicrositeDashboardPage() {
     }
   };
 
+  const handleDismissInfoBanner = () => {
+    localStorage.setItem('microsite-info-banner-dismissed', 'true');
+    setInfoBannerDismissed(true);
+  };
+
   if (isLoading) {
     return (
       <div className="p-8">
@@ -165,6 +175,44 @@ export default function MicrositeDashboardPage() {
           }`}
         >
           {message.text}
+        </div>
+      )}
+
+      {/* Info Banner */}
+      {!infoBannerDismissed && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-6 relative">
+          <button
+            onClick={handleDismissInfoBanner}
+            className="absolute top-3 right-3 p-1 rounded-full hover:bg-blue-100 transition text-blue-700"
+            aria-label="Banner ausblenden"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
+          <div className="flex gap-4">
+            <div className="flex-shrink-0">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Info className="h-5 w-5 text-blue-600" />
+              </div>
+            </div>
+            <div className="flex-1 pr-8">
+              <h3 className="font-semibold text-blue-900 mb-2">Was ist eine Microsite?</h3>
+              <p className="text-sm text-blue-800 mb-3">
+                Ihre Microsite ist Ihre persönliche, professionelle Webseite auf FindMyTherapy.
+                Sie wird automatisch aus Ihrem Profil generiert und ist unter einer eigenen URL erreichbar
+                (z.B. findmytherapy.com/t/ihr-name).
+              </p>
+              <div className="text-sm text-blue-800">
+                <strong>Vorteile:</strong>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>Automatisch in Suchmaschinen gefunden werden</li>
+                  <li>Professionelles Erscheinungsbild ohne eigene Website</li>
+                  <li>Kontaktformular für potenzielle Klient:innen</li>
+                  <li>Keine Kosten, keine Wartung nötig</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
