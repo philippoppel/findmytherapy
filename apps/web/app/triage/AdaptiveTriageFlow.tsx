@@ -32,7 +32,6 @@ import { QuestionTooltip } from './QuestionTooltip'
 import { AmpelVisualization } from './AmpelVisualization'
 import { CrisisResources } from './CrisisResources'
 import { ProgressChart } from './ProgressChart'
-import { TherapistFilterModal } from './TherapistFilterModal'
 
 type Answers = {
   phq9: number[]
@@ -102,7 +101,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   }>({ therapists: [], courses: [] })
   const [hasPersisted, setHasPersisted] = useState(false)
   const [forceFullTest, setForceFullTest] = useState(false)
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
@@ -140,40 +138,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   }, [answers, currentPhase])
 
   const progress = Math.round((answeredQuestions / expectedTotalQuestions) * 100)
-
-  // Extract available specialties and languages from recommendations
-  const availableSpecialties = useMemo(() => {
-    const specialties = new Set<string>()
-    recommendations.therapists.forEach((therapist) => {
-      therapist.focus.forEach((spec) => specialties.add(spec))
-    })
-    return Array.from(specialties)
-  }, [recommendations.therapists])
-
-  const availableLanguages = useMemo(() => {
-    const languages = new Set<string>()
-    recommendations.therapists.forEach((therapist) => {
-      therapist.languages?.forEach((lang) => languages.add(lang))
-    })
-    return Array.from(languages)
-  }, [recommendations.therapists])
-
-  const handleApplyFilters = (filters: { formats: string[]; specialties: string[]; languages: string[] }) => {
-    // Build query string from filters
-    const params = new URLSearchParams()
-    if (filters.formats.length > 0) {
-      params.set('formats', filters.formats.join(','))
-    }
-    if (filters.specialties.length > 0) {
-      params.set('specialties', filters.specialties.join(','))
-    }
-    if (filters.languages.length > 0) {
-      params.set('languages', filters.languages.join(','))
-    }
-
-    // Redirect to therapists page with filters
-    window.location.href = `/therapists${params.toString() ? `?${params.toString()}` : ''}`
-  }
 
   const handleScaleAnswer = (value: number) => {
     // Determine which answer array to update based on phase
@@ -651,17 +615,9 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer Therapeut:in zu sprechen.
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
-                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <div className="mt-4">
                       <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
-                        <Link href="/therapists">Therapeut:innen ansehen</Link>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={() => setIsFilterModalOpen(true)}
-                        className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto"
-                      >
-                        Erweiterte Filter
+                        <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
                       </Button>
                     </div>
                   </div>
@@ -679,17 +635,9 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     <p className="mt-2 text-sm text-white/70">
                       Auch wenn aktuell keine Symptome vorliegen, kann präventive Begleitung helfen, dein Wohlbefinden zu stärken und Stress vorzubeugen.
                     </p>
-                    <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <div className="mt-4">
                       <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
-                        <Link href="/therapists">Therapeut:innen ansehen</Link>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={() => setIsFilterModalOpen(true)}
-                        className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto"
-                      >
-                        Erweiterte Filter
+                        <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
                       </Button>
                     </div>
                   </div>
@@ -1129,15 +1077,6 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
           </AnimatePresence>
         </div>
       </div>
-
-      {/* Filter Modal */}
-      <TherapistFilterModal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        availableSpecialties={availableSpecialties}
-        availableLanguages={availableLanguages}
-        onApplyFilters={handleApplyFilters}
-      />
     </div>
   )
 }
