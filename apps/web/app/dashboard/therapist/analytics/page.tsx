@@ -175,7 +175,7 @@ export default function AnalyticsPage() {
 
         {/* Simple Bar Chart */}
         <div className="space-y-2">
-          {data.chartData.map((item, index) => {
+          {data.chartData.map((item) => {
             const percentage = (item.views / maxViews) * 100;
             const date = new Date(item.date);
             const isWeekend = date.getDay() === 0 || date.getDay() === 6;
