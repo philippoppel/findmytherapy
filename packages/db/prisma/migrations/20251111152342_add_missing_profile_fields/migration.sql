@@ -1,5 +1,5 @@
 -- AlterTable: Add gallery, social media, and qualification fields to TherapistProfile
--- These fields were added to the schema but migration was missing
+-- Force re-application of these fields since previous migration may not have been applied to production
 
 -- Gallery & Media
 ALTER TABLE "TherapistProfile" ADD COLUMN IF NOT EXISTS "galleryImages" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
