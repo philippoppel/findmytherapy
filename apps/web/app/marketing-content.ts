@@ -21,7 +21,7 @@ export const heroContent = {
   },
   secondaryCta: {
     label: 'Für Therapeut:innen',
-    href: '#therapists',
+    href: '/for-therapists',
   },
   tertiaryCta: {
     label: 'Angebote ansehen',
