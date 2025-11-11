@@ -30,6 +30,22 @@ type SetcardFormValues = {
   priceMin: string
   priceMax: string
   yearsExperience: string
+  // Gallery
+  galleryImage1: string
+  galleryImage2: string
+  galleryImage3: string
+  galleryImage4: string
+  galleryImage5: string
+  // Social Media
+  socialLinkedin: string
+  socialInstagram: string
+  socialFacebook: string
+  websiteUrl: string
+  // Additional Info
+  qualifications: string
+  ageGroups: string
+  acceptedInsurance: string
+  privatePractice: boolean
 }
 
 type SetcardEditorProps = {
@@ -42,7 +58,21 @@ const toPayload = (values: SetcardFormValues): SetcardPayload => {
   const specialties = splitToList(values.specialties)
   const modalities = splitToList(values.modalities)
   const languages = splitToList(values.languages)
+  const qualifications = splitToList(values.qualifications)
+  const ageGroups = splitToList(values.ageGroups)
+  const acceptedInsurance = splitToList(values.acceptedInsurance)
   const parsedYears = values.yearsExperience ? Number.parseInt(values.yearsExperience, 10) : NaN
+
+  // Collect non-empty gallery images
+  const galleryImages = [
+    values.galleryImage1,
+    values.galleryImage2,
+    values.galleryImage3,
+    values.galleryImage4,
+    values.galleryImage5,
+  ]
+    .map(url => url?.trim())
+    .filter(url => url && url.length > 0)
 
   return {
     displayName: values.displayName.trim(),
@@ -67,6 +97,18 @@ const toPayload = (values: SetcardFormValues): SetcardPayload => {
     city: values.city ? values.city.trim() : null,
     country: values.country ? values.country.trim().toUpperCase() : null,
     online: values.online,
+    // Gallery
+    galleryImages,
+    // Social Media
+    socialLinkedin: values.socialLinkedin ? values.socialLinkedin.trim() : null,
+    socialInstagram: values.socialInstagram ? values.socialInstagram.trim() : null,
+    socialFacebook: values.socialFacebook ? values.socialFacebook.trim() : null,
+    websiteUrl: values.websiteUrl ? values.websiteUrl.trim() : null,
+    // Additional Info
+    qualifications,
+    ageGroups,
+    acceptedInsurance,
+    privatePractice: values.privatePractice,
   }
 }
 
@@ -93,6 +135,22 @@ const mapPayloadToFormValues = (payload: SetcardPayload): SetcardFormValues => (
   priceMin: formatCurrencyInput(payload.priceMin),
   priceMax: formatCurrencyInput(payload.priceMax),
   yearsExperience: typeof payload.yearsExperience === 'number' ? String(payload.yearsExperience) : '',
+  // Gallery
+  galleryImage1: payload.galleryImages?.[0] ?? '',
+  galleryImage2: payload.galleryImages?.[1] ?? '',
+  galleryImage3: payload.galleryImages?.[2] ?? '',
+  galleryImage4: payload.galleryImages?.[3] ?? '',
+  galleryImage5: payload.galleryImages?.[4] ?? '',
+  // Social Media
+  socialLinkedin: payload.socialLinkedin ?? '',
+  socialInstagram: payload.socialInstagram ?? '',
+  socialFacebook: payload.socialFacebook ?? '',
+  websiteUrl: payload.websiteUrl ?? '',
+  // Additional Info
+  qualifications: payload.qualifications?.join('\n') ?? '',
+  ageGroups: payload.ageGroups?.join('\n') ?? '',
+  acceptedInsurance: payload.acceptedInsurance?.join('\n') ?? '',
+  privatePractice: payload.privatePractice ?? false,
 })
 
 export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEditorProps) {
@@ -240,6 +298,67 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </div>
       </section>
 
+      {/* Galerie */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-pink-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Galerie</h3>
+            <p className="text-sm text-neutral-600">Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4">
+          <FormField id="galleryImage1" label="Bild 1 (URL)" helperText="Vollständige URL oder relativer Pfad">
+            <Input {...register('galleryImage1')} placeholder="/images/praxis-empfang.jpg" />
+          </FormField>
+          <FormField id="galleryImage2" label="Bild 2 (URL)" helperText="Optional">
+            <Input {...register('galleryImage2')} placeholder="/images/praxis-raum.jpg" />
+          </FormField>
+          <FormField id="galleryImage3" label="Bild 3 (URL)" helperText="Optional">
+            <Input {...register('galleryImage3')} placeholder="/images/praxis-wartebereich.jpg" />
+          </FormField>
+          <FormField id="galleryImage4" label="Bild 4 (URL)" helperText="Optional">
+            <Input {...register('galleryImage4')} placeholder="/images/praxis-aussenansicht.jpg" />
+          </FormField>
+          <FormField id="galleryImage5" label="Bild 5 (URL)" helperText="Optional">
+            <Input {...register('galleryImage5')} placeholder="/images/team.jpg" />
+          </FormField>
+        </div>
+      </section>
+
+      {/* Social Media & Web */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-indigo-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Online-Präsenz & Social Media</h3>
+            <p className="text-sm text-neutral-600">Verlinke deine Website und Social-Media-Profile</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormField id="websiteUrl" label="Website" helperText="Deine Praxis-Website oder persönliche Website">
+            <Input {...register('websiteUrl')} placeholder="https://meine-praxis.at" type="url" />
+          </FormField>
+          <FormField id="socialLinkedin" label="LinkedIn" helperText="Vollständige LinkedIn-Profil-URL">
+            <Input {...register('socialLinkedin')} placeholder="https://linkedin.com/in/..." type="url" />
+          </FormField>
+          <FormField id="socialInstagram" label="Instagram" helperText="Vollständige Instagram-Profil-URL">
+            <Input {...register('socialInstagram')} placeholder="https://instagram.com/..." type="url" />
+          </FormField>
+          <FormField id="socialFacebook" label="Facebook" helperText="Vollständige Facebook-Seiten-URL">
+            <Input {...register('socialFacebook')} placeholder="https://facebook.com/..." type="url" />
+          </FormField>
+        </div>
+      </section>
+
       {/* Beschreibung */}
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
@@ -314,6 +433,50 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             <Textarea rows={2} {...register('pricingNote')} />
           </FormField>
         </div>
+      </section>
+
+      {/* Qualifikationen & Zielgruppen */}
+      <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+          <div className="h-10 w-10 rounded-lg bg-emerald-50 flex items-center justify-center">
+            <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Qualifikationen & Zielgruppen</h3>
+            <p className="text-sm text-neutral-600">Ausbildung, Zertifikate und Zielgruppen</p>
+          </div>
+        </div>
+        <FormField
+          id="qualifications"
+          label="Ausbildung & Qualifikationen"
+          helperText="Eine Qualifikation pro Zeile, z. B. 'Master in Klinischer Psychologie', 'Systemische Familientherapie'"
+        >
+          <Textarea rows={4} {...register('qualifications')} placeholder="Master in Klinischer Psychologie&#10;Systemische Familientherapie&#10;Traumatherapie (EMDR)" />
+        </FormField>
+        <FormField
+          id="ageGroups"
+          label="Zielgruppen / Altersgruppen"
+          helperText="Eine Zielgruppe pro Zeile, z. B. 'Erwachsene', 'Jugendliche', 'Kinder'"
+        >
+          <Textarea rows={3} {...register('ageGroups')} placeholder="Erwachsene&#10;Jugendliche (ab 14 Jahren)&#10;Paare" />
+        </FormField>
+        <FormField
+          id="acceptedInsurance"
+          label="Akzeptierte Versicherungen"
+          helperText="Eine Versicherung pro Zeile, oder 'Alle Kassen', 'Privat'"
+        >
+          <Textarea rows={3} {...register('acceptedInsurance')} placeholder="Alle Kassen&#10;Private Zusatzversicherungen&#10;Selbstzahler" />
+        </FormField>
+        <label className="flex items-center gap-3 rounded-lg border border-divider bg-surface-1 px-4 py-3 text-sm font-medium text-default">
+          <input
+            type="checkbox"
+            className="h-4 w-4 rounded border-divider text-primary focus:ring-primary"
+            {...register('privatePractice')}
+          />
+          Ausschließlich Privatpraxis (keine Kassenleistung)
+        </label>
       </section>
 
       {/* Rahmendaten */}

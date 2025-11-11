@@ -86,6 +86,22 @@ const buildInitialValues = (profile: NonNullable<Awaited<ReturnType<typeof fetch
     priceMin: formatCurrencyInput(profile.priceMin),
     priceMax: formatCurrencyInput(profile.priceMax),
     yearsExperience: typeof profile.yearsExperience === 'number' ? String(profile.yearsExperience) : '',
+    // Gallery
+    galleryImage1: profile.galleryImages?.[0] ?? '',
+    galleryImage2: profile.galleryImages?.[1] ?? '',
+    galleryImage3: profile.galleryImages?.[2] ?? '',
+    galleryImage4: profile.galleryImages?.[3] ?? '',
+    galleryImage5: profile.galleryImages?.[4] ?? '',
+    // Social Media
+    socialLinkedin: profile.socialLinkedin ?? '',
+    socialInstagram: profile.socialInstagram ?? '',
+    socialFacebook: profile.socialFacebook ?? '',
+    websiteUrl: profile.websiteUrl ?? '',
+    // Additional Info
+    qualifications: joinList(profile.qualifications ?? []),
+    ageGroups: joinList(profile.ageGroups ?? []),
+    acceptedInsurance: joinList(profile.acceptedInsurance ?? []),
+    privatePractice: profile.privatePractice ?? false,
   };
 };
 

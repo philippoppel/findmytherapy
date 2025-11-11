@@ -181,8 +181,6 @@ model TherapistProfile {
   videoUrl         String?
   acceptingClients Boolean         @default(true)
   yearsExperience  Int?
-  rating           Float?
-  reviewCount      Int?            @default(0)
   responseTime     String?
   modalities       String[]
   specialties      String[]
@@ -196,6 +194,21 @@ model TherapistProfile {
   availabilityNote String?         @db.Text
   pricingNote      String?         @db.Text
   isPublic         Boolean         @default(false)
+
+  // Gallery & Media
+  galleryImages    String[]        @default([])
+
+  // Social Media & Web Presence
+  socialLinkedin   String?
+  socialInstagram  String?
+  socialFacebook   String?
+  websiteUrl       String?
+
+  // Additional Profile Info
+  qualifications   String[]        @default([])
+  ageGroups        String[]        @default([])
+  acceptedInsurance String[]       @default([])
+  privatePractice  Boolean         @default(false)
 
   // Microsite fields
   micrositeSlug            String?          @unique
@@ -221,7 +234,6 @@ model TherapistProfile {
   @@index([city])
   @@index([country])
   @@index([acceptingClients])
-  @@index([rating])
   @@index([deletedAt])
   @@index([micrositeSlug])
   @@index([micrositeStatus])
