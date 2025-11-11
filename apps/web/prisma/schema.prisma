@@ -194,6 +194,17 @@ model TherapistProfile {
   pricingNote      String?         @db.Text
   isPublic         Boolean         @default(false)
 
+  // Additional profile fields
+  galleryImages    String[]        @default([])
+  socialLinkedin   String?
+  socialInstagram  String?
+  socialFacebook   String?
+  websiteUrl       String?
+  qualifications   String[]        @default([])
+  ageGroups        String[]        @default([])
+  acceptedInsurance String[]       @default([])
+  privatePractice  Boolean         @default(false)
+
   // Microsite fields
   micrositeSlug            String?          @unique
   micrositeStatus          MicrositeStatus  @default(DRAFT)
