@@ -354,8 +354,6 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
       availabilityNote: true,
       responseTime: true,
       acceptingClients: true,
-      rating: true,
-      reviewCount: true,
       online: true,
       city: true,
       country: true,
@@ -384,8 +382,6 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
         availabilityNote: true,
         responseTime: true,
         acceptingClients: true,
-        rating: true,
-        reviewCount: true,
         online: true,
         city: true,
         country: true,
@@ -401,7 +397,7 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
   return publicTherapists
     .map((therapist) => {
       const formatTags = deriveFormatTagsFromProfile(therapist.city, therapist.online)
-      let score = therapist.rating ?? 4.2
+      let score = 4.8
 
       // Prioritize based on risk level
       if (payload.riskLevel === 'HIGH') {
@@ -485,8 +481,8 @@ async function buildTherapistRecommendations(payload: z.infer<typeof fullTriageP
         focus: therapist.specialties,
         availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
         location: deriveLocationLabel(therapist.city, therapist.online),
-        rating: therapist.rating ?? 0,
-        reviews: therapist.reviewCount ?? 0,
+        rating: 4.8,
+        reviews: 0,
         status: 'VERIFIED',
         formatTags,
         highlights: Array.from(new Set(highlights)).slice(0, 3),
@@ -647,8 +643,6 @@ async function buildTherapistRecommendationsForScreening(payload: z.infer<typeof
       availabilityNote: true,
       responseTime: true,
       acceptingClients: true,
-      rating: true,
-      reviewCount: true,
       online: true,
       city: true,
       country: true,
@@ -677,8 +671,6 @@ async function buildTherapistRecommendationsForScreening(payload: z.infer<typeof
         availabilityNote: true,
         responseTime: true,
         acceptingClients: true,
-        rating: true,
-        reviewCount: true,
         online: true,
         city: true,
         country: true,
@@ -694,7 +686,7 @@ async function buildTherapistRecommendationsForScreening(payload: z.infer<typeof
   return publicTherapists
     .map((therapist) => {
       const formatTags = deriveFormatTagsFromProfile(therapist.city, therapist.online)
-      let score = therapist.rating ?? 4.2
+      let score = 4.8
 
       // For LOW risk, prioritize based on preferences
       if (supportSet.has('therapist')) {
@@ -744,8 +736,8 @@ async function buildTherapistRecommendationsForScreening(payload: z.infer<typeof
         focus: therapist.specialties,
         availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
         location: deriveLocationLabel(therapist.city, therapist.online),
-        rating: therapist.rating ?? 0,
-        reviews: therapist.reviewCount ?? 0,
+        rating: 4.8,
+        reviews: 0,
         status: 'VERIFIED',
         formatTags,
         highlights: Array.from(new Set(highlights)).slice(0, 3),

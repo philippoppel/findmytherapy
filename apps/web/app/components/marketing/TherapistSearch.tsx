@@ -136,11 +136,8 @@ export async function TherapistSearch() {
       online: true,
       availabilityNote: true,
       acceptingClients: true,
-      rating: true,
-      reviewCount: true,
     },
     orderBy: [
-      { rating: 'desc' },
       { updatedAt: 'desc' },
     ],
     take: 3,
@@ -149,7 +146,6 @@ export async function TherapistSearch() {
   const featuredTherapists =
     therapists.length > 0
       ? therapists.map((therapist, index): FeaturedTherapistCard => {
-          const rating = typeof therapist.rating === 'number' ? therapist.rating : 4.8
           return {
             id: therapist.id,
             href: `/therapists/${therapist.id}`,
@@ -158,8 +154,8 @@ export async function TherapistSearch() {
             specialty: therapist.specialties?.[0] ?? 'Psychotherapie',
             approach: therapist.approachSummary ?? 'Individuelle Begleitung',
             location: formatLocation(therapist.city, therapist.country, therapist.online),
-            rating,
-            reviewCount: therapist.reviewCount ?? 0,
+            rating: 4.8,
+            reviewCount: 0,
             availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
             acceptingClients: Boolean(therapist.acceptingClients),
           }
