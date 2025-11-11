@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { captureError } from '@/lib/monitoring';
 import { z } from 'zod';
+import { sendEmail } from '@/lib/email/email-service';
+import { generateLeadNotificationEmail } from '@/lib/email/templates/new-lead-notification';
 
 const leadSchema = z.object({
   name: z.string().min(2, 'Name muss mindestens 2 Zeichen lang sein').max(100),
@@ -79,8 +81,31 @@ export async function POST(
       },
     });
 
-    // TODO: Send notification email to therapist
-    // TODO: Add to notification queue/inbox
+    // Send notification email to therapist
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL || 'https://findmytherapy.com';
+    const emailTemplate = generateLeadNotificationEmail({
+      therapistName: profile.displayName || user.firstName || 'Therapeut',
+      therapistEmail: user.email,
+      leadName: lead.name,
+      leadEmail: lead.email,
+      leadPhone: lead.phone || undefined,
+      leadMessage: lead.message,
+      micrositeUrl: `${baseUrl}/t/${profile.micrositeSlug}`,
+      leadsUrl: `${baseUrl}/dashboard/therapist/leads`,
+    });
+
+    // Send email (fire-and-forget, don't block lead creation)
+    sendEmail({
+      to: user.email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+      text: emailTemplate.text,
+      replyTo: lead.email, // Allow therapist to reply directly to lead
+    }).catch((error) => {
+      // Log error but don't fail the API call
+      console.error('Failed to send lead notification email:', error);
+      captureError(error, { location: 'api/microsites/[slug]/leads:email', leadId: lead.id });
+    });
 
     console.log(`✅ New lead created for ${profile.displayName}: ${lead.id}`);
 

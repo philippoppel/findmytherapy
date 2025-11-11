@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma';
 import { requireTherapist } from '../../../lib/auth-guards';
 import { formatCurrencyInput, joinList } from '../../../lib/therapist/setcard';
 import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';
+import { MicrositePreviewButton } from './MicrositePreviewButton';
 
 // Force dynamic rendering for auth-protected page
 export const dynamic = 'force-dynamic'
@@ -123,14 +124,17 @@ export default async function TherapistProfilePage() {
                 </p>
               </div>
             </div>
-            <span
-              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm ${
-                statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
-              }`}
-            >
-              <ShieldCheck className="h-4 w-4" aria-hidden />
-              {statusLabel}
-            </span>
+            <div className="flex items-center gap-3">
+              <MicrositePreviewButton />
+              <span
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm ${
+                  statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
+                }`}
+              >
+                <ShieldCheck className="h-4 w-4" aria-hidden />
+                {statusLabel}
+              </span>
+            </div>
           </div>
         </div>
       </header>

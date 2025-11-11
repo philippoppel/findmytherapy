@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutDashboard, Shield, User, LogOut, Menu, X, Compass, Globe, Mail } from 'lucide-react';
+import { Home, LayoutDashboard, Shield, User, LogOut, Menu, X, Compass, Globe, Mail, BarChart3 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 
@@ -10,6 +10,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard/therapist', icon: LayoutDashboard },
   { name: 'Profil', href: '/dashboard/profile', icon: User },
   { name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe },
+  { name: 'Analytics', href: '/dashboard/therapist/analytics', icon: BarChart3 },
   { name: 'Kontaktanfragen', href: '/dashboard/therapist/leads', icon: Mail },
   { name: 'Sicherheit', href: '/dashboard/security', icon: Shield },
 ];
