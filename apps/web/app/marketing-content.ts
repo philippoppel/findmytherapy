@@ -10,11 +10,11 @@ export const marketingNavigation = [
 ] as const;
 
 export const heroContent = {
-  eyebrow: 'Evidenzbasierte Ersteinschätzung & Matching',
+  eyebrow: 'Evidenzbasierte Ersteinschätzung & Vermittlung',
   title: 'Mentale Gesundheit mit klarer Orientierung.',
   highlight: 'Für Klient:innen, die Hilfe suchen. Für Therapeut:innen, die wirken wollen.',
   description:
-    'Validierte Ampel-Triage (PHQ-9, GAD-7, WHO-5) in unter 5 Minuten – mit Kursen, Therapeut:innen-Matching oder Krisenhilfe. Therapeut:innen erhalten Session-Zero-Dossiers, kostenlose Microsite und professionelle Praxis-Tools. Transparent und DSGVO-konform.',
+    'Validierte Ampel-Ersteinschätzung (PHQ-9, GAD-7, WHO-5) in unter 5 Minuten – mit Kursen, Therapeut:innen-Vermittlung oder Krisenhilfe. Therapeut:innen erhalten Vorberichte fürs Erstgespräch, eine kostenlose Praxis-Webseite und professionelle Praxis-Werkzeuge. Transparent und DSGVO-konform (EU-Datenschutz).',
   primaryCta: {
     label: 'Kostenlose Ersteinschätzung starten',
     href: '/triage',
@@ -30,7 +30,7 @@ export const heroContent = {
   metrics: [
     { value: 'PHQ-9 & GAD-7', label: 'Validierte Tests' },
     { value: '< 5 Min.', label: 'Bis zum Ergebnis' },
-    { value: 'DSGVO-konform', label: 'Daten sicher in der EU' },
+    { value: 'EU-Datenschutz', label: 'DSGVO-konform' },
   ],
   image: {
     src: '/images/therapists/therapy-1.jpg',
@@ -43,11 +43,11 @@ export const impactStats = [
     value: 'PHQ-9 & GAD-7',
     emphasis: 'Validierte Fragebögen',
     description:
-      'International anerkannte Screening-Tools, die von Therapeut:innen weltweit eingesetzt werden.',
+      'International anerkannte Test-Instrumente, die von Therapeut:innen weltweit eingesetzt werden.',
   },
   {
     value: 'DSGVO-konform',
-    emphasis: '& verschlüsselt',
+    emphasis: '(EU-Datenschutz)',
     description:
       'Deine Daten bleiben sicher in der EU. Volle Kontrolle über deine persönlichen Informationen.',
   },
@@ -63,14 +63,14 @@ export const whyContent = {
   id: 'why',
   title: 'Warum Orientierung zählt, bevor der erste Termin stattfindet.',
   description:
-    'Viele Menschen wissen nicht, ob sie einen Termin brauchen, welche Therapieform passt oder wo sie sofort Hilfe bekommen. FindMyTherapy verbindet Screening, Matching und Begleitung – damit Betroffene und Therapeut:innen mit einem gemeinsamen Bild starten.',
+    'Viele Menschen wissen nicht, ob sie einen Termin brauchen, welche Therapieform passt oder wo sie sofort Hilfe bekommen. FindMyTherapy verbindet Ersteinschätzung, Vermittlung und Begleitung – damit Betroffene und Therapeut:innen mit einem gemeinsamen Bild starten.',
   bullets: [
-    'Ampel-Triage mit validierten Fragebögen und Sofort-Empfehlungen für Österreich.',
-    'Kombination aus Kursen, Videos und Psychoedukation – individuell freigeschaltet nach Bedarf.',
+    'Ampel-Ersteinschätzung mit validierten Fragebögen und Sofort-Empfehlungen für Österreich.',
+    'Kombination aus Kursen, Videos und Aufklärung über mentale Gesundheit – individuell freigeschaltet nach Bedarf.',
     'Direkter Draht zu verifizierten Therapeut:innen inklusive Themen-, Standort- und Verfügbarkeitsfilter.',
   ],
   cta: {
-    label: 'Kostenlose Triage testen',
+    label: 'Kostenlose Ersteinschätzung testen',
     href: '/triage',
   },
   image: {
@@ -121,21 +121,21 @@ export const featureTabs: FeatureTab[] = [
     points: [
       {
         title: 'Validierte Fragebögen',
-        description: 'PHQ-9, GAD-7 und themenspezifische Screening-Module.',
+        description: 'PHQ-9, GAD-7 und themenspezifische Test-Bereiche.',
       },
       {
-        title: 'Ampellogik',
+        title: 'Ampel-System',
         description: 'Grün: Selbsthilfe • Gelb: Terminempfehlung • Rot: Soforthilfe.',
       },
       {
-        title: 'Exportierbare Insights',
-        description: 'Teile Ergebnisse mit Therapeut:innen oder vertrauten Personen.',
+        title: 'Exportierbare Ergebnisse',
+        description: 'Teile deine Ergebnisse mit Therapeut:innen oder vertrauten Personen.',
       },
     ],
     highlights: {
       title: 'Wissenschaftliche Grundlage',
       items: [
-        'PHQ-9 und GAD-7 sind international validierte und wissenschaftlich fundierte Screening-Tools.',
+        'PHQ-9 und GAD-7 sind international validierte und wissenschaftlich fundierte Test-Instrumente.',
         'Alle Daten werden DSGVO-konform verschlüsselt und auf Servern in der EU gespeichert.',
         'Du behältst die volle Kontrolle und entscheidest, mit wem du deine Ergebnisse teilst.',
       ],
@@ -143,10 +143,10 @@ export const featureTabs: FeatureTab[] = [
   },
   {
     value: 'matching',
-    label: 'Matching & Termine',
+    label: 'Vermittlung & Termine',
     heading: 'Die richtige Therapeut:in – online oder vor Ort.',
     description:
-      'Wir filtern nach Schwerpunkten, Kapazitäten, Settings und Versicherungsstatus. Du buchst direkt über die Plattform oder lässt dich vom Care-Team begleiten.',
+      'Wir filtern nach Schwerpunkten, Kapazitäten, Angebots-Form (Einzel/Gruppe) und Versicherungsstatus. Du buchst direkt über die Plattform oder kontaktierst Therapeut:innen per Anfrage-Formular.',
     icon: 'users',
     points: [
       {
@@ -154,12 +154,12 @@ export const featureTabs: FeatureTab[] = [
         description: 'Therapieansatz, Zielgruppen, Sprachen, Barrierefreiheit.',
       },
       {
-        title: 'Sofort buchbare Slots',
-        description: 'Online-Kalender und Wartelistenmanagement in Echtzeit.',
+        title: 'Direkte Kontaktaufnahme',
+        description: 'Anfrage-Formulare und Kontaktmöglichkeiten für schnelle Terminvereinbarung.',
       },
       {
-        title: 'Care-Team Support',
-        description: 'Menschen helfen dir, wenn du weitere Fragen hast.',
+        title: 'Support-Team hilft',
+        description: 'Unser Team hilft dir bei Fragen zur Plattform weiter.',
       },
     ],
     highlights: {
@@ -167,7 +167,7 @@ export const featureTabs: FeatureTab[] = [
       items: [
         'Alle Therapeut:innen werden verifiziert und erfüllen die gesetzlichen Anforderungen in Österreich.',
         'Du siehst nur Profile, die aktuell Kapazitäten haben oder auf der Warteliste Plätze anbieten.',
-        'Unser Care-Team unterstützt dich persönlich bei der Suche und bei allen Fragen.',
+        'Unser Support-Team hilft dir bei Fragen zur Plattform und bei der Suche.',
       ],
     },
   },
@@ -176,7 +176,7 @@ export const featureTabs: FeatureTab[] = [
     label: 'Kursbibliothek',
     heading: 'Hochwertige Kurse von Expert:innen – für deine mentale Gesundheit.',
     description:
-      'Von Psychoedukation bis zu therapeutisch konzipierten Übungen: Zugang zu professionellen Kursen und Mini-Programmen, die von echten Therapeut:innen erstellt wurden. Unterstütze dich selbst zwischen Terminen oder starte direkt mit Selbsthilfe.',
+      'Von Aufklärung über mentale Gesundheit bis zu therapeutisch konzipierten Übungen: Zugang zu professionellen Kursen und Mini-Programmen, die von echten Therapeut:innen erstellt wurden. Unterstütze dich selbst zwischen Terminen oder starte direkt mit Selbsthilfe.',
     icon: 'video',
     points: [
       {
@@ -185,9 +185,9 @@ export const featureTabs: FeatureTab[] = [
           'Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert.',
       },
       {
-        title: 'Kostenlose & Premium-Inhalte',
+        title: 'Kostenlose & kostenpflichtige Inhalte',
         description:
-          'Kostenlose Schnuppermodule oder Vollprogramme – passend zu deinem Bedarf und Budget.',
+          'Kostenlose Schnuppermodule oder kostenpflichtige Vollprogramme – passend zu deinem Bedarf und Budget.',
       },
       {
         title: 'Flexibel & selbstbestimmt',
@@ -206,59 +206,59 @@ export const featureTabs: FeatureTab[] = [
   },
   {
     value: 'session-zero',
-    label: 'Session-Zero-Dossier',
-    heading: 'Bereite dich vor dem Erstgespräch optimal vor – mit validierten Daten.',
+    label: 'Erstgespräch-Vorbericht',
+    heading: 'Bereite dich vor dem ersten Termin optimal vor – mit validierten Daten.',
     description:
-      'Erhalte VOR dem ersten Termin ein strukturiertes Dossier mit PHQ-9/GAD-7 Scores, Risikoindikatoren und Themenprioritäten. So startest du informiert und sparst wertvolle Zeit.',
+      'Erhalte VOR dem ersten Termin einen strukturierten Vorbericht mit PHQ-9/GAD-7 Werten, Risikoindikatoren und Themenschwerpunkten. So startest du informiert und sparst wertvolle Zeit.',
     icon: 'clipboardCheck',
     points: [
       {
-        title: 'Validierte Screening-Daten',
+        title: 'Validierte Test-Daten',
         description:
-          'PHQ-9 und GAD-7 Scores bereits vor Session 1 – keine Zeit mit Grundlagen verschwenden.',
+          'PHQ-9 und GAD-7 Werte bereits vor dem ersten Termin – keine Zeit mit Grundlagen verschwenden.',
       },
       {
-        title: 'Risikoindikatoren & Red Flags',
+        title: 'Risikoindikatoren & Warnsignale',
         description:
           'Sofort erkennbar: Suizidalität, Selbstverletzung oder akute Krisensituationen.',
       },
       {
         title: 'Themenprioritäten & Präferenzen',
         description:
-          'Heatmap der Belastungsbereiche plus Wunschthemen, Format-Präferenzen und organisatorische Details.',
+          'Übersicht der Belastungsbereiche plus Wunschthemen, Format-Präferenzen und organisatorische Details.',
       },
     ],
     highlights: {
-      title: 'Double-Sided Data Moat – Nur bei uns',
+      title: 'Einzigartiger Datenvorteil – Nur bei uns',
       items: [
-        'Einzigartiger Datenvorteil: Wir kombinieren hochwertige Klient:innen-Intake-Daten mit verifizierten Therapeut:innen-Profilen.',
-        'Höhere Match-Qualität = weniger Therapieabbrüche und bessere Outcomes von Anfang an.',
-        'Time-to-first-session unter 5 Tagen – von Ersteinschätzung bis zum ersten Termin.',
+        'Bessere Passung: Wir kombinieren hochwertige Klient:innen-Vorabdaten mit verifizierten Therapeut:innen-Profilen.',
+        'Höhere Passgenauigkeit = weniger Therapieabbrüche und bessere Ergebnisse von Anfang an.',
+        'Erste Termine innerhalb von 5 Tagen – von der Ersteinschätzung bis zum ersten Gespräch.',
       ],
     },
   },
   {
     value: 'microsite',
-    label: 'Deine eigene Microsite',
+    label: 'Deine automatische Praxis-Webseite',
     heading: 'Professionelle Online-Präsenz ohne eigene Website – automatisch erstellt.',
     description:
-      'Jeder verifizierte Therapeut erhält eine professionelle Microsite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Trust-Badges und Lead-Capture.',
+      'Jeder verifizierte Therapeut erhält eine professionelle Webseite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Vertrauens-Siegel und Kontaktformular.',
     icon: 'globe',
     points: [
       {
         title: 'Automatisch generiert',
         description:
-          'Dein Profil aus dem Dashboard wird zur SEO-optimierten Webseite – inklusive Hero, Bio, Spezialisierungen und Verfügbarkeiten.',
+          'Dein Profil aus dem Dashboard wird zur für Suchmaschinen optimierten Webseite – mit Titelbild, Biografie, Spezialisierungen und Verfügbarkeiten.',
       },
       {
-        title: 'Trust & Compliance prominent',
+        title: 'Vertrauenswürdig & rechtssicher',
         description:
-          'Verified Badge, Compliance-PDF-Download und Session-Zero-CTA automatisch eingebunden.',
+          'Verifikations-Siegel, DSGVO-Nachweis-PDF zum Download und Erstgespräch-Button automatisch eingebunden.',
       },
       {
-        title: 'Lead-Capture & Analytics',
+        title: 'Kontaktformular & Statistiken',
         description:
-          'Kontaktformular mit direkter CRM-Integration plus Dashboard mit Pageviews, CTA-Klicks und Lead-Conversion.',
+          'Anfrage-Formular mit direkter Dashboard-Anbindung plus Statistiken zu Seitenaufrufen, Klicks und Anfragen.',
       },
     ],
     highlights: {
@@ -273,63 +273,63 @@ export const featureTabs: FeatureTab[] = [
   {
     value: 'portal',
     label: 'Praxisverwaltung',
-    heading: 'Klient:innen, Termine und Dokumentation – alles an einem Ort.',
+    heading: 'Klient:innen, Termine und Kurse – zentral verwalten.',
     description:
-      'Behalte den Überblick über Einheiten, Klient:innen und freigegebene Kurse. Dokumentiere Sitzungen, steuere Freigaben und exportiere Honorarnoten – DSGVO-konform.',
+      'Behalte den Überblick über Termine, Klient:innen und freigegebene Kurse. Steuere Zugriffe und verwalte deine Angebote – DSGVO-konform (EU-Datenschutz).',
     icon: 'fileText',
     points: [
       {
         title: 'Klient:innen-Übersicht',
-        description: 'Dokumentation von Sitzungen, Aufgaben und Check-ins an einem zentralen Ort.',
+        description: 'Verwalte deine Termine und Anfragen an einem zentralen Ort.',
       },
       {
-        title: 'Freigaben steuern',
-        description: 'Teile Kurse, Materialien und Übungen direkt mit deinen Klient:innen.',
+        title: 'Kurs-Freigaben',
+        description: 'Teile Kurse und Materialien gezielt mit deinen Klient:innen.',
       },
       {
-        title: 'Abrechnung & Belege',
+        title: 'Terminverwaltung',
         description:
-          'Exportfunktionen für Honorarnoten und Versicherungsbelege – einfach und übersichtlich.',
+          'Überblick über anstehende Termine und Verfügbarkeiten – strukturiert und übersichtlich.',
       },
     ],
     highlights: {
       title: 'Sicher & praktisch',
       items: [
-        'End-zu-End-Verschlüsselung für alle Nachrichten und Dokumente zwischen dir und deinen Klient:innen.',
-        'Rollenbasierte Zugriffsrechte für Praxisgemeinschaften und Team-Settings.',
-        'Automatische Backups und Versionierung aller Dokumentationen.',
+        'Datenschutz nach EU-Standard (DSGVO) für alle Daten und Anfragen.',
+        'Zentrale Verwaltung aller Termine und Anfragen in einem Dashboard.',
+        'Automatische Synchronisation mit deiner öffentlichen Praxis-Webseite.',
       ],
     },
   },
   {
     value: 'insights',
-    label: 'Praxis-Analytics',
-    heading: 'Datenbasiert arbeiten – für Supervision, Qualität und Wachstum.',
+    label: 'Praxis-Statistiken',
+    heading: 'Verstehe deine Praxis besser – mit Daten und Statistiken.',
     description:
-      'Verlaufsdiagramme, Auslastungs-Tracking und exportierbare Reports helfen dir, deine Praxis zu optimieren – natürlich DSGVO-konform und nur mit Zustimmung der Klient:innen.',
+      'Seitenaufrufe, Anfragen und Terminübersicht helfen dir, deine Praxis besser zu verstehen – natürlich DSGVO-konform (EU-Datenschutz) und anonymisiert.',
     icon: 'chart',
     points: [
       {
-        title: 'Verlaufsdiagramme',
-        description: 'Symptomentwicklung, Zielerreichung und Feedbackfragen visuell aufbereitet.',
+        title: 'Webseiten-Statistiken',
+        description: 'Seitenaufrufe und Klicks auf deiner Praxis-Webseite – verständlich aufbereitet.',
       },
       {
-        title: 'Auslastung im Blick',
+        title: 'Anfragen-Übersicht',
         description:
-          'Freie Slots, Warteliste und Nachfrage nach Themen – für bessere Kapazitätsplanung.',
+          'Anzahl der Anfragen und Interesse an deinen Angeboten – für bessere Planung.',
       },
       {
-        title: 'Exportierbar',
+        title: 'Termin-Dashboard',
         description:
-          'Reports für Supervision, Qualitätszirkel und Förderprogramme im CSV- oder PDF-Format.',
+          'Überblick über anstehende und vergangene Termine – strukturiert und übersichtlich.',
       },
     ],
     highlights: {
-      title: 'Datenschutz first',
+      title: 'Datenschutz zuerst',
       items: [
-        'Alle Analysen sind anonymisiert und aggregiert – keine individuellen Klient:innen-Daten werden offengelegt.',
-        'Klient:innen müssen explizit zustimmen, bevor ihre Daten für Insights verwendet werden.',
-        'Volle DSGVO-Compliance mit Server-Standort in Österreich.',
+        'Alle Statistiken sind anonymisiert – keine persönlichen Daten werden angezeigt.',
+        'Nur aggregierte Zahlen wie Seitenaufrufe und Anfragen-Anzahl.',
+        'Volle DSGVO-Konformität (EU-Datenschutz) mit Server-Standort in der EU.',
       ],
     },
   },
@@ -420,22 +420,22 @@ export const faqItems = [
   {
     question: 'Warum sollte ich mich als Therapeut:in auf FindMyTherapy registrieren?',
     answer:
-      'Du erhältst vier einzigartige Vorteile: (1) Session-Zero-Dossiers mit validierten PHQ-9/GAD-7 Daten VOR dem Erstgespräch – für bessere Vorbereitung und höhere Match-Qualität. (2) Eine automatische, SEO-optimierte Microsite (findmytherapy.com/t/[dein-name]) als deine persönliche Website – ohne Kosten und Wartungsaufwand. (3) Praxisverwaltung, Analytics und Lead-Capture in einem zentralen Dashboard. (4) Kurse erstellen & monetarisieren – baue passives Einkommen mit therapeutisch fundierten Online-Programmen auf. Nach Verifizierung verwaltest du Verfügbarkeit, Angebote und Kurse selbstständig.',
+      'Du erhältst vier einzigartige Vorteile: (1) Erstgespräch-Vorberichte mit validierten PHQ-9/GAD-7 Daten VOR dem ersten Termin – für bessere Vorbereitung und höhere Match-Qualität. (2) Eine automatische, für Suchmaschinen optimierte Praxis-Webseite (findmytherapy.com/t/[dein-name]) – ohne Kosten und Wartungsaufwand. (3) Dashboard mit Anfragen-Verwaltung, Statistiken und Termin-Übersicht. (4) Kurse erstellen & monetarisieren – baue Zusatzeinkommen mit therapeutisch fundierten Online-Programmen auf. Nach Verifizierung verwaltest du Verfügbarkeit, Angebote und Kurse selbstständig.',
   },
   {
     question: 'Kann ich FindMyTherapy auch im Team nutzen?',
     answer:
-      'Ja. Praxisgemeinschaften, Lehrpraxen und Organisationen erhalten gemeinsame Dashboards, Rollenrechte und Exportoptionen. Unser Care-Team unterstützt beim Onboarding und bei der Integration bestehender Prozesse.',
+      'Jede:r Therapeut:in hat ein eigenes Dashboard für ihre/seine Praxis. Für erweiterte Team-Funktionen wie gemeinsame Dashboards kontaktiere uns gerne – wir arbeiten an Lösungen für Praxisgemeinschaften und Organisationen.',
   },
   {
     question: 'Können Therapeut:innen eigene Kurse anbieten und damit Geld verdienen?',
     answer:
-      'Ja! Therapeut:innen können therapeutisch fundierte Online-Kurse und Programme erstellen, die entweder ihren eigenen Klient:innen oder der gesamten Community zur Verfügung stehen. Die Plattform übernimmt automatisches Billing, Umsatztracking und Qualitätssicherung. So kannst du passives Einkommen aufbauen und dein Expertenwissen skalieren.',
+      'Ja! Therapeut:innen können therapeutisch fundierte Online-Kurse und Programme erstellen, die entweder ihren eigenen Klient:innen oder allen Nutzer:innen auf der Plattform zur Verfügung stehen. Die Plattform bietet Kursverwaltung und Qualitätssicherung. So kannst du Zusatzeinkommen aufbauen und dein Expertenwissen skalieren.',
   },
   {
     question: 'Welche Kurse stehen für Klient:innen zur Verfügung?',
     answer:
-      'Alle Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert. Es gibt kostenlose Schnuppermodule und Premium-Programme zu verschiedenen Themen (z.B. Angst, Depression, Stress). Die Kurse sind günstiger als klassische Therapie und ideal als Ergänzung oder Einstieg in die Selbsthilfe. Du lernst in deinem eigenen Tempo und kannst jederzeit pausieren.',
+      'Alle Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert. Es gibt kostenlose Schnuppermodule und kostenpflichtige Vollprogramme zu verschiedenen Themen (z.B. Angst, Depression, Stress). Die Kurse sind günstiger als klassische Therapie und ideal als Ergänzung oder Einstieg in die Selbsthilfe. Du lernst in deinem eigenen Tempo und kannst jederzeit pausieren.',
   },
 ] as const;
 
@@ -451,25 +451,25 @@ export const clientBenefits = {
       title: 'Kostenlose Ersteinschätzung',
       subtitle: 'In weniger als 5 Minuten von Unsicherheit zu Klarheit',
       description:
-        'Unsere validierte Ampel-Triage (PHQ-9, GAD-7, WHO-5) zeigt dir sofort, wo du stehst und welche nächsten Schritte passen – ohne Wartezeit, ohne Kosten.',
+        'Unsere validierte Ampel-Triage (PHQ-9, GAD-7, WHO-5) zeigt dir sofort, wo du stehst und welche nächsten Schritte passen – ohne Wartezeit, ohne Kosten, DSGVO-konform (EU-Datenschutz).',
       highlights: [
-        'Wissenschaftlich validierte Fragebögen (PHQ-9, GAD-7)',
+        'Wissenschaftlich validierte Tests (PHQ-9, GAD-7)',
         'Sofort-Ergebnis mit konkreten Empfehlungen',
-        'Ampel-Logik: Grün • Gelb • Rot',
-        'Exportierbar für deine Therapeut:in',
+        'Ampel-System: Grün • Gelb • Rot',
+        'Ergebnisse für deine Therapeut:in exportierbar',
       ],
     },
     {
       icon: 'users' as const,
       title: 'Passende Therapeut:innen finden',
-      subtitle: 'Matching nach deinen Bedürfnissen – nicht Zufall',
+      subtitle: 'Passung nach deinen Bedürfnissen – nicht Zufall',
       description:
-        'Finde Therapeut:innen, die wirklich zu dir passen: nach Themen, Verfügbarkeit, Standort, Kassenstatus und Settings. Mit verifizierten Profilen und echten Kapazitäten.',
+        'Finde Therapeut:innen, die wirklich zu dir passen: nach Themen, Verfügbarkeit, Standort, Kassenstatus und Angebots-Form. Mit verifizierten Profilen und echten Kapazitäten.',
       highlights: [
         'Alle Therapeut:innen sind verifiziert',
         'Filter nach Themen, Ort, Budget & Verfügbarkeit',
         'Nur Profile mit echten freien Kapazitäten',
-        'Care-Team unterstützt dich persönlich',
+        'Support-Team hilft bei Fragen',
       ],
     },
     {
@@ -503,45 +503,45 @@ export const therapistBenefits = {
   eyebrow: 'Für Therapeut:innen',
   title: 'Starte informierter. Wachse sichtbarer. Arbeite effizienter.',
   description:
-    'FindMyTherapy ist mehr als eine Vermittlungsplattform. Du erhältst Tools, die deine Praxis transformieren – von der Vorbereitung bis zur Sichtbarkeit.',
+    'FindMyTherapy ist mehr als eine Vermittlungsplattform. Du erhältst Werkzeuge, die deine Praxis transformieren – von der Vorbereitung bis zur Sichtbarkeit.',
   benefits: [
     {
       icon: 'clipboardCheck' as const,
-      title: 'Session-Zero-Dossier',
-      subtitle: 'Starte mit validierten Daten ins Erstgespräch',
+      title: 'Erstgespräch-Vorbericht',
+      subtitle: 'Starte mit validierten Daten ins erste Gespräch',
       description:
-        'Erhalte VOR dem ersten Termin ein strukturiertes Dossier mit PHQ-9/GAD-7 Scores, Risikoindikatoren und Themenprioritäten. Spare Zeit und starte informiert.',
+        'Erhalte VOR dem ersten Termin einen strukturierten Vorbericht mit PHQ-9/GAD-7 Werten, Warnsignalen und Themenschwerpunkten. Spare Zeit und starte informiert.',
       highlights: [
-        'Validierte PHQ-9 & GAD-7 Scores vor Session 1',
-        'Red Flags & Risikoindikatoren sofort erkennbar',
-        'Themenprioritäten & Präferenzen als Heatmap',
-        'Time-to-first-session unter 5 Tagen',
+        'Validierte PHQ-9 & GAD-7 Werte vor dem ersten Termin',
+        'Warnsignale & Risikofaktoren sofort erkennbar',
+        'Themenschwerpunkte & Präferenzen übersichtlich',
+        'Erste Termine innerhalb von 5 Tagen möglich',
       ],
     },
     {
       icon: 'globe' as const,
-      title: 'Deine eigene Microsite',
-      subtitle: 'Automatisch generierte Website – kostenlos und professionell',
+      title: 'Deine automatische Praxis-Webseite',
+      subtitle: 'Professionelle Website – kostenlos und automatisch erstellt',
       description:
-        'Jeder verifizierte Therapeut erhält automatisch eine SEO-optimierte Microsite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Trust-Badges und Lead-Capture.',
+        'Jeder verifizierte Therapeut erhält automatisch eine für Suchmaschinen optimierte Webseite (findmytherapy.com/t/[dein-name]) – ohne Kosten, ohne Wartung, mit Vertrauens-Siegel und Kontaktformular.',
       highlights: [
         'Spare 500-2.000€ für Website-Entwicklung',
         'Automatisch in Google gefunden werden',
-        'Lead-Capture & Analytics inklusive',
-        'Automatische Synchronisation mit deinem Dashboard',
+        'Kontaktformular & Statistiken inklusive',
+        'Automatische Aktualisierung aus deinem Dashboard',
       ],
     },
     {
       icon: 'briefcase' as const,
-      title: 'All-in-One Praxis-Management',
-      subtitle: 'Verwaltung, Analytics und Abrechnung in einem',
+      title: 'Digitale Praxis-Tools',
+      subtitle: 'Verwaltung, Statistiken und Übersicht in einem Dashboard',
       description:
-        'Klient:innen-Verwaltung, Dokumentation, Verlaufsdiagramme und Abrechnungs-Exports in einem zentralen Dashboard. DSGVO-konform und mit End-zu-End-Verschlüsselung.',
+        'Anfragen-Verwaltung, Termin-Übersicht und Webseiten-Statistiken in einem zentralen Dashboard. DSGVO-konform (EU-Datenschutz) und sicher.',
       highlights: [
-        'Klient:innen-Übersicht & Dokumentation',
-        'Verlaufsdiagramme & Auslastungs-Tracking',
-        'Abrechnungs-Exports für Honorarnoten',
-        'End-zu-End-Verschlüsselung & EU-Server',
+        'Anfragen & Termine zentral verwalten',
+        'Webseiten-Statistiken & Anfragen-Übersicht',
+        'Kurse erstellen und verwalten',
+        'Datenschutz nach EU-Standard & sichere Server',
       ],
     },
     {
@@ -549,11 +549,11 @@ export const therapistBenefits = {
       title: 'Kurse erstellen & monetarisieren',
       subtitle: 'Baue passives Einkommen mit deinem Expertenwissen auf',
       description:
-        'Erstelle therapeutisch fundierte Online-Kurse und Programme, teile sie mit deinen Klient:innen oder der gesamten Community – und verdiene damit. Automatisches Billing, Tracking und Qualitätssicherung inklusive.',
+        'Erstelle therapeutisch fundierte Online-Kurse und Programme, teile sie mit deinen Klient:innen oder allen Nutzer:innen auf der Plattform. Baue passives Einkommen auf und skaliere dein Expertenwissen.',
       highlights: [
-        'Passive Income durch Online-Kurse & Programme',
-        'Automatisches Billing & Umsatztracking',
-        'Reichweite über die Plattform-Community',
+        'Zusatzeinkommen durch Online-Kurse & Programme',
+        'Kursverwaltung & Fortschritts-Übersicht im Dashboard',
+        'Reichweite über alle Plattform-Nutzer:innen',
         'Therapeutisch geprüft & qualitätsgesichert',
       ],
     },
@@ -561,7 +561,7 @@ export const therapistBenefits = {
   cta: {
     primary: {
       label: 'Demo für Therapeut:innen buchen',
-      href: 'mailto:hello@findmytherapy.net?subject=Demo-Anfrage%20%E2%80%93%20FindMyTherapy%20f%C3%BCr%20Therapeut%3Ainnen&body=Sehr%20geehrtes%20FindMyTherapy-Team%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20Demo%20der%20Plattform%20f%C3%BCr%20Therapeut%3Ainnen.%20Ich%20m%C3%B6chte%20mehr%20%C3%BCber%20die%20Session-Zero-Dossiers%2C%20die%20Microsite%20und%20die%20Praxis-Management-Tools%20erfahren.%0A%0AMeine%20Daten%3A%0AName%3A%20%5BIhr%20Name%5D%0APraxis%2FKlinik%3A%20%5BIhre%20Praxis%5D%0ATelefon%3A%20%5BIhre%20Telefonnummer%5D%0AE-Mail%3A%20%5BIhre%20E-Mail-Adresse%5D%0A%0AIch%20freue%20mich%20auf%20Ihre%20R%C3%BCckmeldung.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen',
+      href: 'mailto:hello@findmytherapy.net?subject=Demo-Anfrage%20%E2%80%93%20FindMyTherapy%20f%C3%BCr%20Therapeut%3Ainnen&body=Sehr%20geehrtes%20FindMyTherapy-Team%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20Demo%20der%20Plattform%20f%C3%BCr%20Therapeut%3Ainnen.%20Ich%20m%C3%B6chte%20mehr%20%C3%BCber%20die%20Erstgespr%C3%A4ch-Vorberichte%2C%20die%20automatische%20Praxis-Webseite%20und%20die%20digitalen%20Praxis-Tools%20erfahren.%0A%0AMeine%20Daten%3A%0AName%3A%20%5BIhr%20Name%5D%0APraxis%2FKlinik%3A%20%5BIhre%20Praxis%5D%0ATelefon%3A%20%5BIhre%20Telefonnummer%5D%0AE-Mail%3A%20%5BIhre%20E-Mail-Adresse%5D%0A%0AIch%20freue%20mich%20auf%20Ihre%20R%C3%BCckmeldung.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen',
     },
     secondary: {
       label: 'Mehr über unsere Features erfahren',
@@ -573,10 +573,10 @@ export const therapistBenefits = {
 export const contactCta = {
   heading: 'Starte informierter. Wachse sichtbarer. Arbeite effizienter.',
   subheading:
-    'Erhalte Session-Zero-Dossiers vor jedem Erstgespräch, eine kostenlose Microsite und Praxisverwaltung in einem. Wir zeigen dir, wie FindMyTherapy deine Praxis transformiert.',
+    'Erhalte Erstgespräch-Vorberichte vor jedem ersten Termin, eine kostenlose Praxis-Webseite und digitale Praxis-Tools in einem Dashboard. Wir zeigen dir, wie FindMyTherapy deine Praxis transformiert.',
   primaryCta: {
     label: 'Demo für Therapeut:innen buchen',
-    href: 'mailto:hello@findmytherapy.net?subject=Demo-Anfrage%20%E2%80%93%20FindMyTherapy%20f%C3%BCr%20Therapeut%3Ainnen&body=Sehr%20geehrtes%20FindMyTherapy-Team%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20Demo%20der%20Plattform%20f%C3%BCr%20Therapeut%3Ainnen.%20Ich%20m%C3%B6chte%20mehr%20%C3%BCber%20die%20Session-Zero-Dossiers%2C%20die%20Microsite%20und%20die%20Praxis-Management-Tools%20erfahren.%0A%0AMeine%20Daten%3A%0AName%3A%20%5BIhr%20Name%5D%0APraxis%2FKlinik%3A%20%5BIhre%20Praxis%5D%0ATelefon%3A%20%5BIhre%20Telefonnummer%5D%0AE-Mail%3A%20%5BIhre%20E-Mail-Adresse%5D%0A%0AIch%20freue%20mich%20auf%20Ihre%20R%C3%BCckmeldung.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen',
+    href: 'mailto:hello@findmytherapy.net?subject=Demo-Anfrage%20%E2%80%93%20FindMyTherapy%20f%C3%BCr%20Therapeut%3Ainnen&body=Sehr%20geehrtes%20FindMyTherapy-Team%2C%0A%0Aich%20interessiere%20mich%20f%C3%BCr%20eine%20Demo%20der%20Plattform%20f%C3%BCr%20Therapeut%3Ainnen.%20Ich%20m%C3%B6chte%20mehr%20%C3%BCber%20die%20Erstgespr%C3%A4ch-Vorberichte%2C%20die%20automatische%20Praxis-Webseite%20und%20die%20digitalen%20Praxis-Tools%20erfahren.%0A%0AMeine%20Daten%3A%0AName%3A%20%5BIhr%20Name%5D%0APraxis%2FKlinik%3A%20%5BIhre%20Praxis%5D%0ATelefon%3A%20%5BIhre%20Telefonnummer%5D%0AE-Mail%3A%20%5BIhre%20E-Mail-Adresse%5D%0A%0AIch%20freue%20mich%20auf%20Ihre%20R%C3%BCckmeldung.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen',
   },
   secondaryCta: {
     label: 'Infopaket herunterladen',
