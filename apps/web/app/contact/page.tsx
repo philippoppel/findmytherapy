@@ -58,7 +58,7 @@ export default function ContactPage() {
 
           {/* Crisis Resources */}
           <div className="mt-12">
-            <CrisisResources showCareTeamContact={false} />
+            <CrisisResources />
           </div>
         </div>
       </div>

@@ -679,7 +679,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
 
         {/* Crisis Resources if HIGH risk */}
         {requiresEmergency && (
-          <CrisisResources showCareTeamContact={!embedded} />
+          <CrisisResources />
         )}
 
         {/* Detailed Results */}

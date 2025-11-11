@@ -302,4 +302,104 @@ test.describe('Adaptive Triage Flow', () => {
     // Verify we moved to next question
     await expect(page.getByText(/Niedergeschlagenheit/i)).toBeVisible()
   })
+
+  test('shows therapist recommendations for LOW risk (green light)', async ({ page }) => {
+    // Navigate to triage
+    await page.goto('/triage')
+    await expect(page).toHaveURL(/\/triage/)
+
+    // PHQ-2 Question 1: "Überhaupt nicht" (score: 0)
+    await expect(page.getByText(/Wenig Interesse oder Freude/i)).toBeVisible()
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+
+    // PHQ-2 Question 2: "Überhaupt nicht" (score: 0)
+    // Total PHQ-2 = 0 (<3, no expansion)
+    await page.waitForTimeout(500)
+    await expect(page.getByText(/Niedergeschlagenheit/i)).toBeVisible({ timeout: 5000 })
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+
+    // Wait for transition to GAD-2
+    await page.waitForTimeout(3500)
+
+    // GAD-2 Question 1: "Überhaupt nicht" (score: 0)
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+
+    // GAD-2 Question 2: "Überhaupt nicht" (score: 0)
+    // Total GAD-2 = 0 (<3, no expansion)
+    await page.waitForTimeout(500)
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+
+    // Wait for transition to preferences
+    await page.waitForTimeout(3500)
+
+    // Select preferences
+    await page.getByRole('button', { name: /1:1 Psychotherapie/i }).click()
+    await page.waitForTimeout(300)
+    await page.getByRole('button', { name: /Online & Abends/i }).click()
+    await page.waitForTimeout(300)
+
+    // Submit
+    await page.getByRole('button', { name: /Ergebnis anzeigen/i }).click()
+
+    // Wait for result page
+    await expect(page.getByRole('heading', { level: 3, name: /Empfohlene nächste Schritte/i })).toBeVisible({ timeout: 15000 })
+
+    // Verify green ampel (low risk)
+    await expect(page.getByText(/Grün – Geringe Belastung/i)).toBeVisible({ timeout: 5000 })
+
+    // Verify preventive support message
+    await expect(page.getByText(/Präventive Unterstützung/i)).toBeVisible({ timeout: 5000 })
+
+    // Verify therapist recommendations are shown
+    await expect(page.getByText(/Therapeut:innen für präventive Begleitung/i).or(page.getByText(/Passende Therapeut:innen/i))).toBeVisible({ timeout: 5000 })
+
+    // Verify "Therapeut:innen ansehen" button exists
+    await expect(page.getByRole('link', { name: /Therapeut:innen ansehen/i }).first()).toBeVisible()
+
+    // Verify "Erweiterte Filter" button exists
+    await expect(page.getByRole('button', { name: /Erweiterte Filter/i }).first()).toBeVisible()
+  })
+
+  test('opens filter modal when "Erweiterte Filter" button is clicked', async ({ page }) => {
+    // Navigate to triage
+    await page.goto('/triage')
+
+    // Complete screening with low scores
+    await expect(page.getByText(/Wenig Interesse oder Freude/i)).toBeVisible()
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+    await page.waitForTimeout(500)
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+    await page.waitForTimeout(3500)
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+    await page.waitForTimeout(500)
+    await page.getByRole('button', { name: /Überhaupt nicht/i }).first().click()
+    await page.waitForTimeout(3500)
+    await page.getByRole('button', { name: /1:1 Psychotherapie/i }).click()
+    await page.waitForTimeout(300)
+    await page.getByRole('button', { name: /Online & Abends/i }).click()
+    await page.waitForTimeout(300)
+    await page.getByRole('button', { name: /Ergebnis anzeigen/i }).click()
+
+    // Wait for result page
+    await expect(page.getByRole('heading', { level: 3, name: /Empfohlene nächste Schritte/i })).toBeVisible({ timeout: 15000 })
+
+    // Click "Erweiterte Filter" button
+    await page.getByRole('button', { name: /Erweiterte Filter/i }).first().click()
+
+    // Verify filter modal opens
+    await expect(page.getByRole('heading', { level: 2, name: /Erweiterte Filter/i })).toBeVisible({ timeout: 3000 })
+    await expect(page.getByText(/Finde die passende Therapeut:in/i)).toBeVisible()
+
+    // Verify filter sections exist
+    await expect(page.getByText(/Format/i).first()).toBeVisible()
+    await expect(page.getByRole('button', { name: /Online/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /Vor Ort/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /Hybrid/i })).toBeVisible()
+
+    // Verify modal can be closed
+    const closeButton = page.getByLabel(/Schließen/i)
+    await closeButton.click()
+    await page.waitForTimeout(500)
+    await expect(page.getByRole('heading', { level: 2, name: /Erweiterte Filter/i })).not.toBeVisible()
+  })
 })

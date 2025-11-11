@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { AlertTriangle, Phone, Heart, Wind, Info, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
-import { Button } from '@mental-health/ui'
 
 type CrisisResourcesProps = {
-  showCareTeamContact?: boolean
   className?: string
 }
 
@@ -76,7 +74,7 @@ const immediateExercises = [
   },
 ]
 
-export function CrisisResources({ showCareTeamContact = true, className = '' }: CrisisResourcesProps) {
+export function CrisisResources({ className = '' }: CrisisResourcesProps) {
   const [expandedExercise, setExpandedExercise] = useState<number | null>(null)
 
   return (
@@ -98,26 +96,6 @@ export function CrisisResources({ showCareTeamContact = true, className = '' }: 
           Telefonseelsorge (142).
         </p>
       </div>
-
-      {/* Care Team Contact */}
-      {showCareTeamContact && (
-        <div className="mb-6 rounded-xl border-2 border-primary/30 bg-white p-5">
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Phone className="h-5 w-5" aria-hidden />
-            </div>
-            <div className="flex-1">
-              <h4 className="font-semibold text-default">FindMyTherapy Care-Team</h4>
-              <p className="mt-1 text-sm text-muted">
-                Wir werden uns innerhalb von 24 Stunden bei dir melden, um die nächsten Schritte zu besprechen.
-              </p>
-              <Button asChild className="mt-3 w-full" size="sm">
-                <a href="/contact">Rückruf anfordern</a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Emergency Contacts */}
       <div className="mb-6">

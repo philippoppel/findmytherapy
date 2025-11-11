@@ -138,8 +138,13 @@ export async function POST(request: NextRequest) {
         // Don't fail, but log warning - UX might allow override
       }
 
-      // For screening-only, we don't persist to database or calculate full scores
-      // Just return minimal recommendations
+      // Build therapist recommendations for LOW risk users based on preferences
+      const therapistRecommendations = await buildTherapistRecommendationsForScreening(payload)
+      const courseRecommendations = buildCourseRecommendationsForScreening(payload)
+
+      console.log('[TRIAGE DEBUG] Screening-only therapist recommendations:', therapistRecommendations.length)
+      console.log('[TRIAGE DEBUG] Screening-only course recommendations:', courseRecommendations.length)
+
       return NextResponse.json(
         {
           success: true,
@@ -147,12 +152,12 @@ export async function POST(request: NextRequest) {
           screeningResult: {
             phq2Score: payload.phq2Score,
             gad2Score: payload.gad2Score,
-            message: 'Screening unauffällig - keine weiteren Fragen erforderlich',
-            interpretation: 'Basierend auf dem Kurzscreening (PHQ-2/GAD-2) zeigen sich minimale Symptome.',
+            message: 'Screening unauffällig - präventive Unterstützung möglich',
+            interpretation: 'Basierend auf dem Kurzscreening (PHQ-2/GAD-2) zeigen sich minimale Symptome. Präventive Unterstützung kann helfen, Ihr Wohlbefinden zu stärken.',
           },
           recommendations: {
-            therapists: [],
-            courses: [],
+            therapists: therapistRecommendations,
+            courses: courseRecommendations,
           },
         },
         { status: 200 }
@@ -621,4 +626,193 @@ function deriveLocationLabel(city: string | null, online: boolean): string {
   }
 
   return 'Ort auf Anfrage'
+}
+
+async function buildTherapistRecommendationsForScreening(payload: z.infer<typeof screeningOnlyPayloadSchema>): Promise<TherapistRecommendation[]> {
+  const supportSet = new Set(payload.supportPreferences)
+  const availabilitySet = new Set(payload.availability.map((item) => item.toLowerCase()))
+
+  let publicTherapists = await prisma.therapistProfile.findMany({
+    where: {
+      isPublic: true,
+      status: 'VERIFIED',
+    },
+    select: {
+      id: true,
+      displayName: true,
+      title: true,
+      headline: true,
+      specialties: true,
+      services: true,
+      availabilityNote: true,
+      responseTime: true,
+      acceptingClients: true,
+      rating: true,
+      reviewCount: true,
+      online: true,
+      city: true,
+      country: true,
+      modalities: true,
+      experienceSummary: true,
+      yearsExperience: true,
+      languages: true,
+      profileImageUrl: true,
+    },
+  })
+
+  // If no verified therapists found, try to find any public therapists
+  if (publicTherapists.length === 0) {
+    console.warn('[TRIAGE] No VERIFIED therapists found, fetching all public therapists')
+    publicTherapists = await prisma.therapistProfile.findMany({
+      where: {
+        isPublic: true,
+      },
+      select: {
+        id: true,
+        displayName: true,
+        title: true,
+        headline: true,
+        specialties: true,
+        services: true,
+        availabilityNote: true,
+        responseTime: true,
+        acceptingClients: true,
+        rating: true,
+        reviewCount: true,
+        online: true,
+        city: true,
+        country: true,
+        modalities: true,
+        experienceSummary: true,
+        yearsExperience: true,
+        languages: true,
+        profileImageUrl: true,
+      },
+    })
+  }
+
+  return publicTherapists
+    .map((therapist) => {
+      const formatTags = deriveFormatTagsFromProfile(therapist.city, therapist.online)
+      let score = therapist.rating ?? 4.2
+
+      // For LOW risk, prioritize based on preferences
+      if (supportSet.has('therapist')) {
+        score += 2
+      }
+
+      if (supportSet.has('checkin')) {
+        score += 1
+      }
+
+      // Availability matching
+      if (therapist.online && availabilitySet.has('online')) {
+        score += 2
+      }
+      if (therapist.online && therapist.city && availabilitySet.has('hybrid')) {
+        score += 1.5
+      }
+      if (therapist.city && availabilitySet.has('praesenz')) {
+        score += 1.5
+      }
+
+      // Build highlights for preventive support
+      const highlights: string[] = []
+      if (therapist.online && availabilitySet.has('online')) {
+        highlights.push('Online verfügbar')
+      }
+      if (therapist.city && therapist.online) {
+        highlights.push('Hybrid angeboten')
+      } else if (therapist.city) {
+        highlights.push(`Praxis in ${therapist.city}`)
+      }
+      highlights.push('Präventive Begleitung')
+      if (therapist.acceptingClients) {
+        highlights.push('Nimmt neue Klient:innen an')
+      }
+      if (therapist.responseTime) {
+        highlights.push(therapist.responseTime)
+      }
+      if (therapist.services.length > 0) {
+        highlights.push(therapist.services[0])
+      }
+
+      return {
+        id: therapist.id,
+        name: therapist.displayName ?? 'Therapeut:in',
+        title: therapist.title ?? '',
+        focus: therapist.specialties,
+        availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
+        location: deriveLocationLabel(therapist.city, therapist.online),
+        rating: therapist.rating ?? 0,
+        reviews: therapist.reviewCount ?? 0,
+        status: 'VERIFIED',
+        formatTags,
+        highlights: Array.from(new Set(highlights)).slice(0, 3),
+        acceptingClients: therapist.acceptingClients,
+        headline: therapist.headline ?? undefined,
+        services: therapist.services.slice(0, 3),
+        responseTime: therapist.responseTime ?? undefined,
+        yearsExperience: therapist.yearsExperience ?? undefined,
+        languages: therapist.languages,
+        image: therapist.profileImageUrl ?? null,
+        score,
+      }
+    })
+    .sort((a, b) => b.score - a.score)
+    .map(({ score: _score, ...rest }) => rest)
+}
+
+function buildCourseRecommendationsForScreening(payload: z.infer<typeof screeningOnlyPayloadSchema>): CourseRecommendation[] {
+  const supportSet = new Set(payload.supportPreferences)
+  const publishedCourses = seedCourses.filter((course) => course.status === 'PUBLISHED')
+
+  // For LOW risk, prioritize preventive and resource-building courses
+  const relevantCourses = publishedCourses.filter((course) => {
+    const focus = course.focus.toLowerCase()
+    const intensity = course.intensity.toLowerCase()
+    // Prefer stress management, self-care, resilience courses
+    return focus.includes('stress') || focus.includes('selbst') || focus.includes('resilienz') || intensity.includes('prävent')
+  })
+
+  return relevantCourses
+    .map((course) => {
+      let score = supportSet.has('course') ? 3 : 1.5
+
+      // Check support preferences
+      if (supportSet.has('checkin') && course.format.toLowerCase().includes('check')) {
+        score += 1.5
+      }
+      if (supportSet.has('group') && course.format.toLowerCase().includes('live')) {
+        score += 1
+      }
+
+      // Build highlights for preventive courses
+      const highlights: string[] = []
+      highlights.push('Präventiv und ressourcenstärkend')
+      if (supportSet.has('course')) {
+        highlights.push('Selbstlern-Inhalte zur Begleitung')
+      }
+      if (course.format.toLowerCase().includes('live')) {
+        highlights.push('Live-Elemente inklusive')
+      }
+      if (course.format.toLowerCase().includes('check')) {
+        highlights.push('Check-ins mit Care-Team')
+      }
+
+      return {
+        slug: course.slug,
+        title: course.title,
+        shortDescription: course.shortDescription,
+        focus: course.focus,
+        duration: course.duration,
+        format: course.format,
+        outcomes: course.outcomes.slice(0, 3),
+        highlights: Array.from(new Set(highlights)).slice(0, 3),
+        score,
+      }
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(({ score: _score, ...rest }) => rest)
 }

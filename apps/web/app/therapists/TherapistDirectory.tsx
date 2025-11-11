@@ -158,7 +158,7 @@ export function TherapistDirectory({ therapists }: Props) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           {filteredTherapists.map((therapist) => (
             <DirectoryCard key={therapist.id} therapist={therapist} />
           ))}
@@ -178,17 +178,17 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
 
   return (
     <Link href={`/therapists/${therapist.id}`} prefetch={false}>
-      <article className="group grid gap-5 rounded-3xl border border-white/10 bg-white/10 p-6 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl">
-        <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
-          <div className="relative h-32 w-32 overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-inner md:h-36 md:w-36">
+      <article className="group flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl sm:p-6">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-inner sm:h-28 sm:w-28 md:h-32 md:w-32">
             <Image
               src={therapist.image}
               alt={`Portrait von ${therapist.name}`}
               width={240}
               height={240}
               className="h-full w-full object-cover object-center"
-              sizes="(max-width: 768px) 160px, 192px"
-              quality={95}
+              sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
+              quality={90}
             />
             <span
               className={cn(
@@ -203,13 +203,13 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </span>
           </div>
 
-          <div className="flex-1 space-y-4 text-center md:text-left">
+          <div className="flex-1 space-y-3 text-center sm:text-left">
             <header className="space-y-1">
-              <h3 className="text-xl font-semibold text-white">{therapist.name}</h3>
+              <h3 className="text-lg font-semibold text-white sm:text-xl">{therapist.name}</h3>
               <p className="text-sm text-white/70">{therapist.title}</p>
             </header>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-white/70 md:justify-start">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-white/70 sm:justify-start">
             <span className="inline-flex items-center gap-1 rounded-full bg-teal-400/20 px-3 py-1 font-semibold text-teal-300">
               <Star className="h-3.5 w-3.5" aria-hidden />
               {therapist.rating.toFixed(1)}
@@ -221,19 +221,20 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </span>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm text-white/70 md:flex-row md:flex-wrap md:items-center md:gap-4">
-            <span className="inline-flex items-center gap-2 text-white">
-              <MapPin className="h-4 w-4 text-teal-400" aria-hidden />
-              {therapist.location}
+          <div className="flex flex-col gap-2 text-sm text-white/70 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+            <span className="inline-flex items-center justify-center gap-2 text-white sm:justify-start">
+              <MapPin className="h-4 w-4 flex-shrink-0 text-teal-400" aria-hidden />
+              <span className="truncate">{therapist.location}</span>
             </span>
-            <span className="inline-flex items-center gap-2">
-              <Clock className="h-4 w-4 text-teal-400" aria-hidden />
-              {therapist.availability}
+            <span className="hidden sm:inline text-white/40" aria-hidden>•</span>
+            <span className="inline-flex items-center justify-center gap-2 sm:justify-start">
+              <Clock className="h-4 w-4 flex-shrink-0 text-teal-400" aria-hidden />
+              <span className="truncate">{therapist.availability}</span>
             </span>
           </div>
 
           {highlightChips.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 md:justify-start">
+            <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
               {highlightChips.map((chip) => (
                 <span
                   key={chip}
@@ -245,14 +246,14 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </div>
           )}
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70 md:text-left">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-white/70 sm:p-4">
             <p className="font-medium text-white">Therapieansatz</p>
             <p className="mt-1 leading-relaxed">{therapist.approach}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 border-t border-white/10 pt-4 text-sm text-white/70 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 border-t border-white/10 pt-4 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           {therapist.formatTags.map((tag) => (
             <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-teal-400/20 px-3 py-1 text-xs font-semibold text-teal-300">
@@ -261,15 +262,15 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </span>
           ))}
         </div>
-        <div className="relative z-10 flex flex-wrap gap-2">
-          <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="border-white/40 text-white hover:bg-white/10">
+        <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
             <Link href="/triage" prefetch={false}>
-              Passende Empfehlung erhalten
+              Passende Empfehlung
             </Link>
           </Button>
-          <Button asChild size="sm" variant="ghost" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="text-white hover:bg-white/10">
+          <Button asChild size="sm" variant="ghost" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full text-white hover:bg-white/10 sm:w-auto">
             <Link href="/contact" prefetch={false}>
-              Kontakt anfragen
+              Kontakt
             </Link>
           </Button>
         </div>
