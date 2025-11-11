@@ -171,12 +171,22 @@ export default async function TherapistMicrositePage({
       videoUrl: true,
       acceptingClients: true,
       yearsExperience: true,
-      rating: true,
-      reviewCount: true,
       responseTime: true,
       availabilityNote: true,
       micrositeSlug: true,
       micrositeBlocks: true,
+      // Gallery & Media
+      galleryImages: true,
+      // Social Media
+      socialLinkedin: true,
+      socialInstagram: true,
+      socialFacebook: true,
+      websiteUrl: true,
+      // Additional Info
+      qualifications: true,
+      ageGroups: true,
+      acceptedInsurance: true,
+      privatePractice: true,
       courses: {
         where: {
           status: 'PUBLISHED',
@@ -218,13 +228,6 @@ export default async function TherapistMicrositePage({
     areaServed: profile.online ? 'Online' : profile.city,
     knowsAbout: profile.specialties,
     knowsLanguage: profile.languages,
-    aggregateRating: profile.rating
-      ? {
-          '@type': 'AggregateRating',
-          ratingValue: profile.rating,
-          reviewCount: profile.reviewCount || 0,
-        }
-      : undefined,
   };
 
   return (
