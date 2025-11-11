@@ -412,8 +412,18 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
       'Danke, dass du dich öffnest. Wie sieht so ein typischer Tag für dich aus? Depression raubt oft Energie und Freude – das ist ein typisches Symptom, kein persönliches Versagen.',
 
       'Das muss schwer sein. Was hilft dir in solchen Momenten, wenn überhaupt was hilft? Selbst kleine Strategien können wichtig sein, aber wenn nichts mehr hilft, ist das ein Zeichen, professionelle Hilfe zu suchen.',
+
+      'Ich verstehe, dass sich das überwältigend anfühlt. Depression betrifft etwa jeden 5. Menschen im Laufe des Lebens – du bist wirklich nicht alleine damit. Wie lange hältst du das schon aus?',
+
+      'Das klingt nach sehr viel innerer Last. Es ist völlig normal, dass du dich so fühlst, wenn Depression im Spiel ist. Das macht dich nicht schwach – ganz im Gegenteil, hier zu sein zeigt Stärke.',
+
+      'Diese Leere und Antriebslosigkeit sind typische Anzeichen einer Depression. Wichtig zu wissen: Das hat nichts mit Faulheit zu tun, sondern ist eine echte Erkrankung, die Behandlung braucht.',
+
+      'Es erfordert Mut, über solche Gefühle zu sprechen. Viele Menschen mit Depression denken zuerst, sie müssten "sich zusammenreißen" – aber Depression funktioniert so nicht. Du brauchst Unterstützung, keine Selbstvorwürfe.',
+
+      'Das hört sich nach einer sehr dunklen Phase an. Depression verzerrt oft unsere Wahrnehmung und lässt alles hoffnungslos erscheinen – aber diese Verzerrung ist Teil der Erkrankung, nicht die Realität.',
     ],
-    followUp: 'Lass uns gemeinsam schauen, wie wir dir helfen können. Eine kurze Ersteinschätzung (PHQ-9) kann zeigen, wie ausgeprägt die Symptome sind und welche Unterstützung am besten passt.\n\n💡 Falls es akut schlimmer wird: Telefonseelsorge 142 (24/7, anonym)',
+    followUp: 'Eine wissenschaftlich validierte Ersteinschätzung (PHQ-9) kann in 2 Minuten zeigen, wie ausgeprägt die depressiven Symptome sind. Das hilft dir und Fachpersonen einzuschätzen, welche Unterstützung jetzt am sinnvollsten ist.\n\n💡 Falls es akut schlimmer wird: Telefonseelsorge 142 (24/7, kostenlos, anonym)',
     suggestedAction: 'take_assessment',
   },
   {
@@ -449,8 +459,16 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
       'Ich verstehe, dass das Angst macht. Was denkst du in solchen Momenten? Angstgedanken wie "Ich sterbe" oder "Ich verliere die Kontrolle" sind typisch bei Panikattacken – aber nur Gedanken, keine Realität.',
 
       'Das klingt nach einer großen Belastung. Wie gehst du aktuell damit um? Angststörungen gehören zu den am besten behandelbaren psychischen Erkrankungen – es gibt Hoffnung.',
+
+      'Angst fühlt sich oft an, als würde etwas Schlimmes passieren – aber das ist der Trick der Angst. Sie schützt dich vor Gefahren, die oft gar nicht real sind. Etwa 15-20% aller Menschen erleben irgendwann eine Angststörung.',
+
+      'Diese körperlichen Reaktionen sind völlig normal bei Angst – dein Körper schaltet in den Kampf-oder-Flucht-Modus. Das Problem ist nur: Es gibt keine echte Bedrohung. Wie oft passiert dir das?',
+
+      'Ich höre, wie belastend das für dich ist. Angst kann sich verselbstständigen und immer mehr Lebensbereiche beeinflussen. Je früher du dir Hilfe holst, desto besser – Angststörungen werden mit Warten nicht besser.',
+
+      'Es ist wichtig zu verstehen: Angst ist behandelbar. Die meisten Menschen mit Angststörungen berichten nach einer Therapie von deutlicher Besserung. Du musst nicht lernen, "damit zu leben" – du kannst lernen, sie zu überwinden.',
     ],
-    followUp: 'Eine Einschätzung mit dem GAD-7-Fragebogen kann helfen rauszufinden, wie stark die Angst ist und welche Hilfe sinnvoll wäre.\n\n💡 Akut-Tipp bei Panik: 4-7-8-Atmung (4 Sekunden einatmen, 7 Sekunden halten, 8 Sekunden ausatmen)',
+    followUp: 'Der GAD-7-Fragebogen (Generalized Anxiety Disorder) ist ein wissenschaftlich validierter Test, der in 2 Minuten zeigt, wie stark deine Angstsymptome sind. Das Ergebnis hilft dir und Therapeut:innen, die richtige Behandlung zu finden.\n\n💡 Akut-Tipp bei Panik: 4-7-8-Atmung (4 Sekunden einatmen, 7 Sekunden halten, 8 Sekunden ausatmen)',
     suggestedAction: 'take_assessment',
   },
   {
@@ -484,14 +502,17 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
   {
     category: 'burnout',
     responses: [
-      'Am Ende deiner Kräfte? Das solltest du ernst nehmen.',
-      'Ausgebrannt zu sein ist mehr als nur müde. Wie lang geht das schon?',
-      'Das klingt nach echtem Burnout. Bist du noch im Job oder schon krankgeschrieben?',
-      'Keine Reserven mehr zu haben ist ein Warnsignal. Was sagen deine Ärzte?',
-      'Total erschöpft sein ist nicht normal. Wann hattest du zuletzt richtige Erholung?',
-      'Das solltest du nicht ignorieren. Hast du schon mit jemandem darüber gesprochen?',
+      'Am Ende deiner Kräfte? Das solltest du ernst nehmen. Burnout entwickelt sich oft über Monate oder Jahre – es ist kein Zeichen von Schwäche, sondern eine echte Erschöpfungserkrankung.',
+      'Ausgebrannt zu sein ist mehr als nur müde. Wie lang geht das schon? Burnout hat drei Hauptkomponenten: emotionale Erschöpfung, Zynismus und reduzierte Leistungsfähigkeit.',
+      'Das klingt nach echtem Burnout. Bist du noch im Job oder schon krankgeschrieben? Wichtig ist: Burnout heilt nicht durch Urlaub – es braucht strukturierte Hilfe und oft Veränderungen.',
+      'Keine Reserven mehr zu haben ist ein Warnsignal. Was sagen deine Ärzte? Dein Körper zeigt dir damit, dass die Belastung zu groß ist.',
+      'Total erschöpft sein ist nicht normal. Wann hattest du zuletzt richtige Erholung? Bei Burnout funktioniert "Durchziehen" nicht mehr – das macht es nur schlimmer.',
+      'Das solltest du nicht ignorieren. Hast du schon mit jemandem darüber gesprochen? Burnout betrifft etwa 13% der Berufstätigen – du bist nicht allein.',
+      'Ich höre, wie ausgelaugt du bist. Burnout entsteht oft durch chronischen Stress ohne ausreichende Erholung. Es ist wichtig, jetzt die Notbremse zu ziehen.',
+      'Diese tiefe Erschöpfung ist ein Hilferuf deines Körpers. Ignorierst du das weiter, kann es zu Depression oder körperlichen Erkrankungen führen. Wie lange hältst du das schon aus?',
+      'Burnout ist keine Modeerkrankung, sondern eine ernsthafte Diagnose. Die gute Nachricht: Mit professioneller Hilfe und Veränderungen ist Erholung möglich.',
     ],
-    followUp: 'Bei Burnout ist\'s wichtig, professionelle Hilfe zu holen. Ein Test kann zeigen, wie ausgeprägt die Symptome sind.',
+    followUp: 'Eine Einschätzung kann zeigen, ob zusätzlich Depression oder Angst eine Rolle spielt – das kommt bei Burnout oft vor und braucht dann spezifische Behandlung.\n\n💡 Erste Hilfe: Schreibe auf, was dir Energie raubt und was dir Energie gibt. Das hilft, Prioritäten neu zu setzen.',
     suggestedAction: 'take_assessment',
   },
 
@@ -519,14 +540,17 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
   {
     category: 'loneliness',
     responses: [
-      'Einsamkeit ist echt schmerzhaft. Bist du viel alleine?',
-      'Niemand sollte sich so alleine fühlen. Seit wann geht\'s dir so?',
-      'Das tut weh. Hast du Kontakt zu Familie oder Freunden?',
-      'Sich ausgeschlossen zu fühlen ist schwer. Was ist passiert?',
-      'Keine sozialen Kontakte zu haben belastet. Wohnst du alleine?',
-      'Das verstehe ich. Gibt es Orte, wo du Menschen treffen könntest?',
+      'Einsamkeit ist echt schmerzhaft. Bist du viel alleine? Chronische Einsamkeit ist nicht nur emotional belastend, sondern hat auch nachweisbare Auswirkungen auf die körperliche Gesundheit.',
+      'Niemand sollte sich so alleine fühlen. Seit wann geht\'s dir so? Es ist wichtig zu unterscheiden: zwischen allein sein (physisch) und sich einsam fühlen (emotional) – man kann beides unabhängig voneinander erleben.',
+      'Das tut weh. Hast du Kontakt zu Familie oder Freunden? Einsamkeit kann entstehen, selbst wenn man von Menschen umgeben ist – wenn echte Verbindung fehlt.',
+      'Sich ausgeschlossen zu fühlen ist schwer. Was ist passiert? Solche Gefühle sind nach Umbrüchen im Leben besonders häufig: nach Umzug, Jobwechsel oder Trennungen.',
+      'Keine sozialen Kontakte zu haben belastet. Wohnst du alleine? Das Wichtigste bei Einsamkeit ist nicht die Anzahl der Kontakte, sondern ihre Qualität – ein echter Freund zählt mehr als zehn oberflächliche Bekanntschaften.',
+      'Das verstehe ich. Gibt es Orte, wo du Menschen treffen könntest? Studien zeigen: Einsamkeit ist genauso schädlich für die Gesundheit wie Rauchen oder Übergewicht.',
+      'Ich höre, wie isoliert du dich fühlst. Viele Menschen – besonders nach der Pandemie – kämpfen mit Einsamkeit. Das macht dich nicht komisch oder unbeliebt.',
+      'Diese Leere ist real und schmerzhaft. Einsamkeit ist kein Charakterfehler, sondern ein Signal deines Körpers, dass du Verbindung brauchst – wie Hunger ein Signal für Nahrung ist.',
+      'Sich unverstanden und allein zu fühlen kann zu Depression führen. Je länger dieser Zustand anhält, desto wichtiger ist es, aktiv etwas zu ändern – auch wenn das schwer fällt.',
     ],
-    followUp: 'Einsamkeit kann zu Depression führen. Lass uns mit einem Test schauen, wie es dir geht.',
+    followUp: 'Ein Test kann zeigen, ob die Einsamkeit bereits zu Depression geführt hat. Das ist wichtig, weil Depression es noch schwerer macht, auf Menschen zuzugehen – ein Teufelskreis, den man durchbrechen sollte.',
     suggestedAction: 'take_assessment',
   },
   {
@@ -547,14 +571,18 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
   {
     category: 'self_worth',
     responses: [
-      'Solche Gedanken über dich selbst sind sehr schmerzhaft. Woher kommen die?',
-      'Diese harten Urteile über dich können auf eine Depression hinweisen. Wie lange fühlst du dich schon so?',
-      'Das sind sehr negative Gedanken über dich. Was ist passiert, dass du so über dich denkst?',
-      'Sich selbst zu hassen ist furchtbar. Warst du schon immer so kritisch mit dir?',
-      'Diese Selbstvorwürfe sind sehr belastend. Gibt es jemanden, der dich unterstützt?',
-      'Sich wertlos zu fühlen tut weh. Was würdest du einem Freund sagen, der so denkt?',
+      'Solche Gedanken über dich selbst sind sehr schmerzhaft. Woher kommen die? Wichtig zu wissen: Diese extreme Selbstkritik ist oft ein Symptom von Depression, nicht die Wahrheit über dich.',
+      'Diese harten Urteile über dich können auf eine Depression hinweisen. Wie lange fühlst du dich schon so? Bei Depression verzerrt sich die Selbstwahrnehmung – du siehst dich dann viel negativer, als du bist.',
+      'Das sind sehr negative Gedanken über dich. Was ist passiert, dass du so über dich denkst? Oft entstehen solche Gedanken durch frühere Erfahrungen oder aktuelle Belastungen.',
+      'Sich selbst zu hassen ist furchtbar. Warst du schon immer so kritisch mit dir? Übermäßige Selbstkritik kann erlernt sein – aber das Gute ist: Man kann auch lernen, mitfühlender mit sich umzugehen.',
+      'Diese Selbstvorwürfe sind sehr belastend. Gibt es jemanden, der dich unterstützt? Manchmal hilft die Perspektive von außen, um zu sehen, dass diese harten Urteile nicht der Realität entsprechen.',
+      'Sich wertlos zu fühlen tut weh. Was würdest du einem Freund sagen, der so denkt? – Oft fällt uns Mitgefühl für andere leichter als für uns selbst.',
+      'Ich höre, wie hart du mit dir ins Gericht gehst. Diese innere Stimme ist oft viel grausamer als jeder Mensch es je zu dir wäre. Sie lügt.',
+      'Solche Gedanken wie "Ich bin ein Versager" sind typisch für Depression. Das bedeutet NICHT, dass sie wahr sind – sondern dass dein Gehirn gerade in einem depressiven Modus arbeitet.',
+      'Dein Wert als Mensch ist nicht abhängig von Leistung, Aussehen oder Erfolg. Das ist schwer zu glauben, wenn Depression oder niedriges Selbstwertgefühl im Spiel sind – aber es stimmt trotzdem.',
+      'Diese Scham und Schuld, die du fühlst, sind oft übertrieben und irrational. Ein Zeichen dafür, dass du professionelle Hilfe brauchst, um da rauszukommen.',
     ],
-    followUp: 'Solche Gedanken solltest du ernst nehmen. Ein Test kann zeigen, ob eine Depression dahintersteckt.',
+    followUp: 'Der PHQ-9 Test misst auch Selbstwertgefühl und Schuldgefühle. Das Ergebnis hilft einzuschätzen, wie stark die Depression ist und ob Therapie jetzt wichtig wäre.\n\n💡 Übung: Sprich mit dir selbst so, wie du mit deinem besten Freund sprechen würdest – freundlich, verständnisvoll, mitfühlend.',
     suggestedAction: 'take_assessment',
   },
 
@@ -658,7 +686,63 @@ export const GENERAL_RESPONSES = {
     'Was geht dir gerade durch den Kopf?',
     'Möchtest du weitersprechen?',
     'Ich bin hier, wenn du reden möchtest.',
+    'Ich verstehe. Was beschäftigt dich noch?',
+    'Mhm, ich höre. Erzähl weiter, wenn du magst.',
+    'Okay. Was denkst du dazu?',
+    'Verstehe. Wie fühlst du dich damit?',
   ],
+  // NEU: Kontextuelle Follow-Ups basierend auf vorherigem Thema
+  contextual_followup: {
+    depression: [
+      'Seit wann fühlst du dich so niedergeschlagen?',
+      'Was macht die Depression für dich am schwersten?',
+      'Hast du schon mal mit jemandem darüber gesprochen?',
+      'Wie sieht ein typischer Tag für dich aus?',
+      'Gibt es Momente, wo es dir etwas besser geht?',
+    ],
+    anxiety: [
+      'In welchen Situationen kommt die Angst besonders stark?',
+      'Wie äußert sich die Angst bei dir körperlich?',
+      'Wie lange dauern die Angstattacken normalerweise?',
+      'Kannst du nachts schlafen oder hält dich die Angst wach?',
+      'Was hilft dir in dem Moment, wenn die Angst kommt?',
+    ],
+    stress: [
+      'Was stresst dich aktuell am meisten?',
+      'Hast du Pausen oder Erholungszeiten im Alltag?',
+      'Wie lange geht diese stressige Phase schon?',
+      'Gibt es etwas, das dir hilft zu entspannen?',
+      'Fühlst du dich von anderen unterstützt oder eher allein damit?',
+    ],
+    loneliness: [
+      'Wie lange fühlst du dich schon so einsam?',
+      'Hast du Menschen in deinem Leben, mit denen du reden könntest?',
+      'Was würdest du dir wünschen in Bezug auf soziale Kontakte?',
+      'Gibt es Orte oder Aktivitäten, wo du Menschen treffen könntest?',
+      'Wie verbringst du normalerweise deine Tage?',
+    ],
+    relationship: [
+      'Wie lange geht der Konflikt schon?',
+      'Könnt ihr noch miteinander sprechen oder ist es komplett verhärtet?',
+      'Was wünschst du dir für die Beziehung?',
+      'Hast du jemanden, mit dem du über die Situation reden kannst?',
+      'Wie geht es dir emotional mit der ganzen Sache?',
+    ],
+    work: [
+      'Was genau macht die Arbeitssituation so belastend?',
+      'Hast du schon versucht, etwas zu verändern?',
+      'Wie wirkt sich das auf dein Privatleben aus?',
+      'Gibt es Unterstützung von Kolleg:innen oder Vorgesetzten?',
+      'Was würde dir helfen, besser mit der Situation umzugehen?',
+    ],
+    sleep: [
+      'Ist es das Einschlafen oder das Durchschlafen, was schwierig ist?',
+      'Wie viele Stunden schläfst du durchschnittlich?',
+      'Was geht dir durch den Kopf, wenn du wach liegst?',
+      'Hast du schon Strategien ausprobiert, die helfen könnten?',
+      'Wie lange hast du schon Schlafprobleme?',
+    ],
+  },
   // Hilfe für Angehörige (dritte Person)
   help_for_others: [
     'Es ist gut, dass du dir Sorgen um diese Person machst. Für Angehörige gibt es auch Unterstützung.',
