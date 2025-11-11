@@ -84,19 +84,19 @@ export async function POST(
     // Send notification email to therapist
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL || 'https://findmytherapy.com';
     const emailTemplate = generateLeadNotificationEmail({
-      therapistName: profile.displayName || user.firstName || 'Therapeut',
-      therapistEmail: user.email,
+      therapistName: profile.displayName || profile.user.firstName || 'Therapeut',
+      therapistEmail: profile.user.email,
       leadName: lead.name,
       leadEmail: lead.email,
       leadPhone: lead.phone || undefined,
       leadMessage: lead.message,
-      micrositeUrl: `${baseUrl}/t/${profile.micrositeSlug}`,
+      micrositeUrl: `${baseUrl}/t/${slug}`,
       leadsUrl: `${baseUrl}/dashboard/therapist/leads`,
     });
 
     // Send email (fire-and-forget, don't block lead creation)
     sendEmail({
-      to: user.email,
+      to: profile.user.email,
       subject: emailTemplate.subject,
       html: emailTemplate.html,
       text: emailTemplate.text,

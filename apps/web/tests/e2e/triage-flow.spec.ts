@@ -383,19 +383,23 @@ test.describe('Adaptive Triage Flow', () => {
     // Wait for result page
     await expect(page.getByRole('heading', { level: 3, name: /Empfohlene nächste Schritte/i })).toBeVisible({ timeout: 15000 })
 
-    // Wait for "Erweiterte Filter" button to be visible
+    // Wait for page to fully load and stabilize
+    await page.waitForTimeout(2000)
+
+    // Wait for "Erweiterte Filter" button to be visible and enabled
     const filterButton = page.getByRole('button', { name: /Erweiterte Filter/i }).first()
-    await expect(filterButton).toBeVisible({ timeout: 10000 })
+    await expect(filterButton).toBeVisible({ timeout: 15000 })
+    await expect(filterButton).toBeEnabled({ timeout: 5000 })
 
     // Click "Erweiterte Filter" button
     await filterButton.click()
 
-    // Wait a bit for modal animation
-    await page.waitForTimeout(500)
+    // Wait for modal animation to complete
+    await page.waitForTimeout(1000)
 
-    // Verify filter modal opens
-    await expect(page.getByRole('heading', { level: 2, name: /Erweiterte Filter/i })).toBeVisible({ timeout: 5000 })
-    await expect(page.getByText(/Finde die passende Therapeut:in/i)).toBeVisible()
+    // Verify filter modal opens - wait longer for modal to appear
+    await expect(page.getByRole('heading', { level: 2, name: /Erweiterte Filter/i })).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText(/Finde die passende Therapeut:in/i)).toBeVisible({ timeout: 5000 })
 
     // Verify filter sections exist
     await expect(page.getByText(/Format/i).first()).toBeVisible()

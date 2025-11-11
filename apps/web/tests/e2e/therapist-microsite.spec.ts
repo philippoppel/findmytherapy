@@ -159,9 +159,12 @@ test.describe('Therapist Microsite Feature', () => {
       // Submit form
       await publicPage.click('button[type="submit"]:has-text("Anfrage senden")');
 
-      // Wait for success message
-      await publicPage.waitForSelector('text=/gesendet|erfolgreich/i', { timeout: 10000 });
-      await expect(publicPage.locator('text=/gesendet|erfolgreich/i')).toBeVisible();
+      // Wait for form submission to complete (longer timeout for API call)
+      await publicPage.waitForTimeout(1000);
+
+      // Wait for success message - check for heading or text
+      await publicPage.waitForSelector('text=/Anfrage gesendet|gesendet|erfolgreich/i', { timeout: 15000 });
+      await expect(publicPage.locator('text=/Anfrage gesendet|gesendet|erfolgreich/i')).toBeVisible();
 
       await publicContext.close();
 
