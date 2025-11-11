@@ -3,7 +3,6 @@ import Link from 'next/link'
 import {
   Users,
   Calendar,
-  TrendingUp,
   FileText,
   Video,
   Award,
