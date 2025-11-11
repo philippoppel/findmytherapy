@@ -178,6 +178,9 @@ importers:
       axe-playwright:
         specifier: ^2.0.0
         version: 2.2.2(playwright@1.56.0)
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       eslint:
         specifier: ^8.56.0
         version: 8.57.1
@@ -278,6 +281,9 @@ importers:
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
     devDependencies:
       '@types/bcryptjs':
         specifier: ^2.4.6
@@ -289,7 +295,7 @@ importers:
         specifier: ^5.8.0
         version: 5.22.0
       tsx:
-        specifier: ^4.7.0
+        specifier: ^4.20.6
         version: 4.20.6
       typescript:
         specifier: ^5.3.0
@@ -3102,6 +3108,10 @@ packages:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
+
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
+    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -8703,6 +8713,8 @@ snapshots:
   domexception@4.0.0:
     dependencies:
       webidl-conversions: 7.0.0
+
+  dotenv@17.2.3: {}
 
   dunder-proto@1.0.1:
     dependencies:
