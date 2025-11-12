@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Home, Calendar, Clock, Tag } from 'lucide-react'
+import { ArrowLeft, Home, Calendar, Clock, Tag, Lightbulb, CheckCircle2 } from 'lucide-react'
 import { blogPosts, getBlogPostBySlug } from '../../../lib/blogData'
 
 type BlogPostPageProps = {
@@ -123,6 +123,26 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </h1>
           <p className="text-xl leading-relaxed text-gray-700">{post.excerpt}</p>
         </header>
+
+        {/* Key Takeaways / Zusammenfassung */}
+        <section className="mt-10 rounded-3xl border-2 border-teal-200/80 bg-gradient-to-br from-teal-50 via-white to-cyan-50/30 p-6 shadow-lg shadow-teal-900/5 sm:p-8">
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-teal-600 shadow-md">
+              <Lightbulb className="h-5 w-5 text-white" aria-hidden />
+            </div>
+            <div className="flex-1 space-y-4">
+              <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">Auf einen Blick</h2>
+              <ul className="space-y-3">
+                {post.summary.map((point, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-teal-600 mt-0.5" aria-hidden />
+                    <span className="text-base leading-relaxed text-gray-700">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
 
         <div className="prose prose-lg prose-gray mt-12 max-w-none">
           <div className="space-y-12">

@@ -8,6 +8,7 @@ export type BlogPost = {
   slug: string
   title: string
   excerpt: string
+  summary: string[]
   category: string
   publishedAt: string
   readingTime: string
@@ -22,6 +23,13 @@ export const blogPosts: BlogPost[] = [
     title: 'Digitale Ersteinschätzung: Wie FindMyTherapy Orientierung schafft',
     excerpt:
       'Vom ersten Fragebogen bis zur Empfehlung: So unterstützt FindMyTherapy Menschen, die einen schnellen Überblick über passende Hilfsangebote suchen.',
+    summary: [
+      'FindMyTherapy bietet einen validierten Fragebogen zur schnellen Ersteinschätzung psychischer Belastungen',
+      'Die Plattform zeigt alle Schritte von der Profilerstellung bis zu personalisierten Empfehlungen',
+      'Screenings wie PHQ-9 liefern sofortige Rückmeldung zur Symptomschwere',
+      'Empfehlungen umfassen passende Formate, digitale Ressourcen und konkrete nächste Schritte',
+      'Das Therapeut:innen-Netzwerk befindet sich im Aufbau – alle Funktionen sind bereits sichtbar',
+    ],
     category: 'Produkt',
     publishedAt: '2025-04-10',
     readingTime: '6 Min.',
@@ -64,6 +72,13 @@ export const blogPosts: BlogPost[] = [
     title: 'Therapeut:innen-Netzwerk im Aufbau: Transparenz von Anfang an',
     excerpt:
       'FindMyTherapy legt offen, wie wir Expert:innen auswählen, welche Qualitätskriterien gelten und wie Zusammenarbeit in der Beta-Phase funktioniert.',
+    summary: [
+      'Alle Therapeut:innen durchlaufen eine strenge Qualifikationsprüfung mit Dokumentenverifikation',
+      'Voraussetzungen: Legislative Zulassung, evidenzbasierte Fortbildungen, transparente Honorarmodelle',
+      'Persönliche Kennenlern-Session vor Aufnahme ins Netzwerk verpflichtend',
+      'Beta-Phase startet mit anonymisierten Beispielprofilen zur Demonstration der Matching-Logik',
+      'Unternehmen können sich bereits für Pilotprogramme mit Dashboard-Zugang eintragen',
+    ],
     category: 'Netzwerk',
     publishedAt: '2025-03-28',
     readingTime: '5 Min.',
@@ -106,6 +121,13 @@ export const blogPosts: BlogPost[] = [
     title: 'Mental Health Benefits für Teams: FindMyTherapy als Baustein',
     excerpt:
       'Warum digitale Ersteinschätzung, On-Demand-Ressourcen und persönliche Betreuung zusammengehören, wenn Unternehmen ihre Teams unterstützen möchten.',
+    summary: [
+      'Mentale Gesundheit wird zur Chefsache – Führungskräfte suchen datenschutzkonforme Lösungen',
+      'FindMyTherapy kombiniert digitale Ersteinschätzung mit personalisierten Empfehlungen für Mitarbeitende',
+      'Self-Service-Dashboard ermöglicht anonymen Zugang ohne HR-Überwachung',
+      'Anonyme Aggregationen geben Entscheider:innen Einblick in Bedarfe ohne Personenbezug',
+      'Pilotprogramm bietet Onboarding-Unterstützung und gemeinsame Impact-Evaluation',
+    ],
     category: 'Arbeitswelt',
     publishedAt: '2025-03-12',
     readingTime: '7 Min.',
@@ -147,6 +169,13 @@ export const blogPosts: BlogPost[] = [
     title: 'Verhaltenstherapie, Tiefenpsychologie & Co: Welche Therapieform passt zu mir?',
     excerpt:
       'Ein evidenzbasierter Überblick über die wichtigsten Psychotherapie-Verfahren in Österreich – mit wissenschaftlichen Fakten zu Wirksamkeit, Dauer und Anwendungsbereichen.',
+    summary: [
+      'Österreich erkennt 23 psychotherapeutische Verfahren in vier Hauptrichtungen an',
+      'KVT (Kognitive Verhaltenstherapie): Goldstandard bei Angst und Depression, 60-80% Erfolgsrate',
+      'Tiefenpsychologie: Fokus auf unbewusste Konflikte, besonders wirksam bei Persönlichkeitsstörungen',
+      'Systemische Therapie: Betrachtet Probleme im Beziehungskontext, ideal für Familien- und Paarkonflikte',
+      'Die therapeutische Beziehung ist oft wichtiger als die spezifische Methode – Erstgespräche nutzen!',
+    ],
     category: 'Wissen',
     publishedAt: '2025-05-15',
     readingTime: '8 Min.',
@@ -232,6 +261,14 @@ export const blogPosts: BlogPost[] = [
     title: 'Wie funktioniert kognitive Verhaltenstherapie? Ein evidenzbasierter Überblick',
     excerpt:
       'Von der ersten Sitzung bis zum Therapieende: Wie KVT arbeitet, welche Techniken zum Einsatz kommen und was die Wissenschaft über ihre Wirksamkeit sagt.',
+    summary: [
+      'KVT ist die am besten erforschte Psychotherapieform mit über 500 randomisierten kontrollierten Studien',
+      'Grundannahme: Unsere Bewertungen von Ereignissen (nicht die Ereignisse selbst) beeinflussen unser Befinden',
+      'Typische Behandlung: 15-25 Sitzungen, strukturiert in vier Phasen von Diagnostik bis Rückfallprophylaxe',
+      'Zentrale Techniken: Kognitive Umstrukturierung, Verhaltensexperimente, Exposition, Problemlösetraining',
+      'Hohe Wirksamkeit bei Angst (70-90%), Depression (d=0.75), PTBS (d=1.42) und Zwangsstörungen (d=1.16)',
+      'Niedrigere Rückfallraten als bei Medikation allein – nachhaltige Wirkung durch Selbsthilfe-Prinzip',
+    ],
     category: 'Wissen',
     publishedAt: '2025-06-02',
     readingTime: '9 Min.',
@@ -326,6 +363,15 @@ export const blogPosts: BlogPost[] = [
     title: '7 wissenschaftlich fundierte Strategien für bessere mentale Gesundheit im Alltag',
     excerpt:
       'Von Bewegung über Schlaf bis soziale Kontakte: Was die Forschung über Prävention und Selbstfürsorge sagt – mit konkreten, umsetzbaren Empfehlungen.',
+    summary: [
+      'In Österreich erfüllt jede vierte Person im Laufe des Lebens Kriterien einer psychischen Störung',
+      'Bewegung reduziert depressive Symptome mit Effektstärke d=0.62 – vergleichbar mit Therapie',
+      'Schlafmangel erhöht Angstsymptome um bis zu 30% – 7-9 Stunden sind optimal',
+      'Schwache soziale Netzwerke erhöhen Depressionsrisiko um 50% – Qualität vor Quantität',
+      'Mediterrane Ernährung zeigt protektive Effekte gegen Depression (d=1.16)',
+      'Achtsamkeitsmeditation reduziert Rückfallrisiko bei Depression um 43%',
+      'Kleine, nachhaltige Veränderungen sind effektiver als radikale Umstellungen',
+    ],
     category: 'Prävention',
     publishedAt: '2025-06-18',
     readingTime: '10 Min.',
@@ -448,6 +494,15 @@ export const blogPosts: BlogPost[] = [
     title: 'Burnout erkennen und vorbeugen: Was die Forschung zeigt',
     excerpt:
       'Wissenschaftliche Erkenntnisse zu Ursachen, Frühwarnsignalen und evidenzbasierten Präventionsstrategien – für Einzelpersonen und Organisationen.',
+    summary: [
+      'WHO definiert Burnout als "Syndrom aufgrund chronischen Stresses am Arbeitsplatz"',
+      '22% der österreichischen Erwerbstätigen berichten arbeitsbezogene psychische Belastungen',
+      'Job-Demands-Resources-Modell: Ungleichgewicht zwischen Anforderungen und Ressourcen führt zu Burnout',
+      'Frühwarnsignale: Chronische Müdigkeit, Zynismus, Konzentrationsprobleme, sozialer Rückzug',
+      'Individuelle Strategien (KVT, Achtsamkeit): Moderate Effekte (d=0.35-0.50)',
+      'Organisationale Interventionen langfristig wirksamer (d=0.54) – Führungskultur entscheidend',
+      'Unbehandeltes Burnout erhöht Risiko für manifeste Depression um das 3-4-fache',
+    ],
     category: 'Prävention',
     publishedAt: '2025-07-05',
     readingTime: '9 Min.',
@@ -554,6 +609,15 @@ export const blogPosts: BlogPost[] = [
     title: 'Mental Health in Österreich: Aktuelle Zahlen und Fakten 2024',
     excerpt:
       'Ein evidenzbasierter Überblick über die Versorgungssituation, Prävalenzen psychischer Erkrankungen und aktuelle Entwicklungen im österreichischen Gesundheitssystem.',
+    summary: [
+      '25% der Erwachsenen erfüllen jährlich Kriterien einer psychischen Störung – COVID erhöhte Zahlen um 40-50%',
+      'Etwa 12.000 Psychotherapeut:innen in Österreich, aber nur 15% mit Kassenverträgen',
+      'Wartezeiten für kassenfinanzierte Therapie: 6-12 Monate, in ländlichen Regionen oft länger',
+      'Suizidrate: 13 pro 100.000 Einwohner – dreimal mehr als Verkehrstote, 75% sind Männer',
+      'Kinder-/Jugendpsychiatrie massiv unterversorgt: 500 Therapieplätze fehlen österreichweit',
+      'Neue Initiative "Gesund aus der Krise": 12 Mio. Euro für kostenlose Therapie für unter 21-Jährige',
+      'Psychische Erkrankungen verursachen jährlich 7 Mrd. Euro Kosten in Österreich',
+    ],
     category: 'Forschung',
     publishedAt: '2025-07-22',
     readingTime: '8 Min.',
@@ -671,6 +735,15 @@ export const blogPosts: BlogPost[] = [
     title: 'Wirksamkeit von Psychotherapie: Was sagen die Studien?',
     excerpt:
       'Ein evidenzbasierter Überblick über Erfolgsraten, Langzeitwirkungen und Vergleiche mit anderen Behandlungsformen – basierend auf aktuellen Meta-Analysen.',
+    summary: [
+      'Meta-Analysen mit über 10.000 Studien belegen: Psychotherapie wirkt eindeutig',
+      'Durchschnittliche Effektstärke d=0.80 – 80% der Therapierten geht es besser als unbehandelten Personen',
+      'Erfolgsraten: 60-75% zeigen klinisch signifikante Verbesserungen',
+      'Langzeitwirkung bei Depression: 60-70% nach 2 Jahren symptomfrei (vs. 30-40% bei Medikation)',
+      'Psychotherapie vs. Medikation: Ähnliche kurzfristige Effekte, nachhaltigere Langzeitwirkung',
+      'Therapeutische Beziehung trägt 30-40% zum Erfolg bei – wichtiger als spezifische Methode',
+      'Non-Response: 20-40% profitieren nicht – bei fehlender Passung Therapeut:in wechseln',
+    ],
     category: 'Forschung',
     publishedAt: '2025-08-10',
     readingTime: '10 Min.',
@@ -821,6 +894,15 @@ export const blogPosts: BlogPost[] = [
     title: 'Psycholog:in, Psychotherapeut:in, Psychiater:in: Wer macht was?',
     excerpt:
       'Ein wissenschaftlich fundierter Überblick über die wichtigsten Berufsgruppen im Bereich mentale Gesundheit – mit Fokus auf Ausbildung, Tätigkeitsfelder und gesetzliche Rahmenbedingungen in Österreich.',
+    summary: [
+      'Psycholog:in: Universitätsstudium (5 Jahre) – keine Behandlungsberechtigung ohne Zusatzausbildung',
+      'Klinische:r Psycholog:in: Psychologiestudium + 2 Jahre postgraduale Ausbildung – Diagnostik und Behandlung',
+      'Psychotherapeut:in: 5-7 Jahre Ausbildung (Propädeutikum + Fachspezifikum + 200h Selbsterfahrung) – eigenständiger Heilberuf',
+      'Psychiater:in: Medizinstudium + 6 Jahre Facharztausbildung – einzige Berufsgruppe mit Verschreibungsberechtigung',
+      'Besonderheit Psychotherapie: Eigenständiger Beruf seit 1990, keine ärztliche Hilfstätigkeit, 23 anerkannte Verfahren',
+      'Seelsorge und Berater:innen: Keine Gesundheitsberufe, nicht zur Behandlung psychischer Störungen berechtigt',
+      'Alle Gesundheitsberufe müssen in offiziellen Listen eingetragen sein – vor Behandlung prüfen!',
+    ],
     category: 'Wissen',
     publishedAt: '2025-09-05',
     readingTime: '11 Min.',
@@ -991,6 +1073,15 @@ export const blogPosts: BlogPost[] = [
     title: 'PHQ-9, GAD-7 und WHO-5: Die wichtigsten Screening-Instrumente im Vergleich',
     excerpt:
       'Welche Fragebögen nutzen Fachpersonen, um Depression und Angst zu erkennen? Ein evidenzbasierter Vergleich der drei meistverwendeten Screening-Instrumente – inklusive Wirksamkeit, Lizenzierung und praktischer Anwendung.',
+    summary: [
+      'PHQ-9 für Depression: 9 Fragen, 2 Minuten, Sensitivität/Spezifität 88% – Public Domain (kostenfrei)',
+      'GAD-7 für Angst: 7 Fragen, 1-2 Minuten, Sensitivität 83-89% – Public Domain (kostenfrei)',
+      'WHO-5 für Wohlbefinden: 5 Fragen, 1 Minute, Sensitivität 86% – CC BY-NC-SA (Genehmigung bei kommerzieller Nutzung)',
+      'Alle drei Instrumente zeigen exzellente psychometrische Eigenschaften (>80% Genauigkeit)',
+      'Optimal für Primärversorgung: Kombination PHQ-9 + GAD-7 (4 Minuten, vollständig lizenzfrei)',
+      'Wichtig: Screening liefert nur Hinweise, keine Diagnosen – professionelle Abklärung notwendig',
+      'Alternative wie BDI-II oder BAI kosten 190$ + 3-4$ pro Auswertung – PHQ-9/GAD-7 daher bevorzugt',
+    ],
     category: 'Forschung',
     publishedAt: '2025-11-08',
     readingTime: '8 Min.',
