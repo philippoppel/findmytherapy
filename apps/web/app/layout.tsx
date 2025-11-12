@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { SessionProvider } from '../components/providers/SessionProvider'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { CookieConsentBanner } from '../components/CookieConsentBanner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             {children}
           </SessionProvider>
         </ErrorBoundary>
+        <CookieConsentBanner />
         <Script id="analytics-placeholder" strategy="lazyOnload">
           {`
             window.findMyTherapyAnalytics = window.findMyTherapyAnalytics || {

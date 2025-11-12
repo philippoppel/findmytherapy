@@ -17,6 +17,7 @@ export function Footer() {
       title: 'Rechtliches',
       links: [
         { name: 'Datenschutz', href: '/privacy' },
+        { name: 'Cookie-Richtlinie', href: '/cookies' },
         { name: 'Impressum', href: '/imprint' },
         { name: 'AGB', href: '/terms' },
       ],

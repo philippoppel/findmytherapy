@@ -38,6 +38,9 @@ import { ProgressChart } from './ProgressChart'
 import { TherapistCard } from './TherapistCard'
 import { TherapistComparison } from './TherapistComparison'
 import { TherapistFilters } from './TherapistFilters'
+import { HealthDataConsentDialog } from '../../components/HealthDataConsentDialog'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 type QuestionSection = {
   id: string
@@ -149,6 +152,12 @@ type NextStepConfig = {
 }
 
 export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlowProps = {}) {
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [hasConsent, setHasConsent] = useState(false)
+  const [showConsentDialog, setShowConsentDialog] = useState(true)
+  const [isCheckingConsent, setIsCheckingConsent] = useState(true)
+
   const [sectionIndex, setSectionIndex] = useState(0)
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>(initialAnswers)
@@ -170,6 +179,55 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
     specialties: [],
     languages: [],
   })
+
+  // Check if user has already given consent (only for logged-in users)
+  useEffect(() => {
+    const checkConsent = async () => {
+      // Anonymous users don't need consent (data not stored with personal info)
+      if (!session?.user?.id) {
+        setIsCheckingConsent(false)
+        setShowConsentDialog(false)
+        setHasConsent(true) // Allow anonymous usage without consent
+        return
+      }
+
+      // For logged-in users, check if consent was already given
+      try {
+        const response = await fetch('/api/consent?scope=DATA_PROCESSING')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.consents && data.consents.length > 0) {
+            setHasConsent(true)
+            setShowConsentDialog(false)
+          } else {
+            // No consent yet, show dialog
+            setShowConsentDialog(true)
+          }
+        }
+      } catch (error) {
+        console.error('Error checking consent:', error)
+        // On error, don't block the user
+        setShowConsentDialog(false)
+        setHasConsent(true)
+      } finally {
+        setIsCheckingConsent(false)
+      }
+    }
+
+    checkConsent()
+  }, [session])
+
+  const handleConsent = () => {
+    setHasConsent(true)
+    setShowConsentDialog(false)
+    track('triage_consent_given', { source: 'triage_flow' })
+  }
+
+  const handleDeclineConsent = () => {
+    track('triage_consent_declined', { source: 'triage_flow' })
+    // Redirect back to home or show message
+    router.push('/')
+  }
 
   const currentSection = questionSections[sectionIndex]
 
@@ -862,6 +920,29 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
   // Question flow
   const currentQuestion = currentQuestions[questionIndex]
   const isMultipleChoice = currentSection.type === 'support' || currentSection.type === 'availability'
+
+  // Show consent dialog first
+  if (showConsentDialog && !hasConsent && !isCheckingConsent) {
+    return (
+      <HealthDataConsentDialog
+        onConsent={handleConsent}
+        onDecline={handleDeclineConsent}
+        source="triage_flow"
+      />
+    )
+  }
+
+  // Show loading while checking consent
+  if (isCheckingConsent) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-teal-200 border-t-teal-600"></div>
+          <p className="text-sm text-gray-600">Wird geladen...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
