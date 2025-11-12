@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import './marketing-theme.css'
 import type { Metadata } from 'next'
@@ -7,7 +7,11 @@ import { SessionProvider } from '../components/providers/SessionProvider'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { CookieConsentBanner } from '../components/CookieConsentBanner'
 
-const inter = Inter({ subsets: ['latin'] })
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-plus-jakarta-sans',
+})
 
 const analyticsConsoleLog = process.env.NODE_ENV !== 'production' ? "console.info('[analytics]', event, payload);" : ''
 
@@ -23,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de-AT" suppressHydrationWarning>
-      <body className={`${inter.className} bg-white`} suppressHydrationWarning>
+      <body className={`${plusJakartaSans.className} bg-white`} suppressHydrationWarning>
         <ErrorBoundary>
           <SessionProvider>
             {children}

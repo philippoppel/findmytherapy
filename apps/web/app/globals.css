@@ -18,6 +18,18 @@
     min-height: 100vh;
     background-color: rgb(var(--bg));
     color: rgb(var(--text));
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  p {
+    line-height: 1.8;
   }
 
   a {

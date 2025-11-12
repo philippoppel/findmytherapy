@@ -63,4 +63,6 @@ Thumbs.db
 
 # Build outputs
 *.tsbuildinfo
-.cache
+.cache# Video files (too large for git)
+apps/web/public/videos/*.mp4
+apps/web/public/videos/*.webm

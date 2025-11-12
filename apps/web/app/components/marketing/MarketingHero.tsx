@@ -13,21 +13,29 @@ interface HeroProps {
 export function MarketingHero({ content }: HeroProps) {
   return (
     <section
-      className="relative overflow-hidden rounded-lg bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 px-4 py-10 text-white shadow-lg sm:px-6 sm:py-14 md:py-16 lg:px-10"
+      className="relative overflow-hidden rounded-2xl shadow-soft-xl"
       aria-labelledby="hero-heading"
     >
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      >
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+      {/* Fullscreen Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="h-full w-full object-cover"
+        >
+          <source src="/videos/hero-therapy.mp4" type="video/mp4" />
+        </video>
+        {/* Overlay for text readability - warm gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-neutral-900/60 to-primary-900/70 backdrop-blur-[2px]" />
       </div>
 
-      <div className="relative mx-auto flex max-w-7xl flex-col gap-6 sm:gap-10 md:gap-12 lg:flex-row lg:items-center lg:gap-20">
-        <div className="w-full lg:max-w-xl">
+      {/* Content over video */}
+      <div className="relative z-10 px-6 py-20 text-white sm:px-8 sm:py-28 md:py-36 lg:px-12 lg:py-44">
+        <div className="mx-auto max-w-4xl text-center">
           <Reveal delay={100}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-white/80 sm:gap-3 sm:px-4 sm:text-xs sm:tracking-[0.28em]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium tracking-wide text-white backdrop-blur-md sm:gap-3 sm:px-6 sm:py-3">
               {content.eyebrow}
             </div>
           </Reveal>
@@ -35,29 +43,25 @@ export function MarketingHero({ content }: HeroProps) {
           <Reveal delay={200}>
             <h1
               id="hero-heading"
-              className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight sm:mt-6 sm:text-4xl lg:text-6xl"
+              className="mt-8 text-balance text-5xl font-semibold leading-tight tracking-tight text-white sm:mt-10 sm:text-6xl lg:text-7xl"
             >
               {content.title}
             </h1>
           </Reveal>
+
           <Reveal delay={300}>
-            <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-white/85 sm:mt-6 sm:text-lg">
+            <p className="mx-auto mt-8 max-w-3xl text-pretty text-xl leading-extra-relaxed text-white/90 sm:mt-10 sm:text-2xl">
               {content.highlight}
             </p>
           </Reveal>
-          <Reveal delay={400}>
-            <p className="mt-3 max-w-xl text-pretty text-sm leading-relaxed text-white/75 sm:text-base">
-              {content.description}
-            </p>
-          </Reveal>
 
-          <Reveal delay={500}>
-            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
+          <Reveal delay={400}>
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:mt-12 sm:flex-row sm:gap-5">
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="w-full !border-transparent !bg-white !py-4 !text-base !font-semibold !text-teal-950 shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 hover:!bg-teal-50 hover:!text-teal-950 focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
+                variant="primary"
+                className="w-full shadow-soft-xl transition hover:-translate-y-0.5 hover:shadow-soft-xl sm:w-auto sm:px-10 sm:py-6 sm:text-lg"
               >
                 <Link href={content.primaryCta.href}>
                   {content.primaryCta.label}
@@ -66,8 +70,7 @@ export function MarketingHero({ content }: HeroProps) {
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="w-full !border-white/50 !py-4 !text-base !font-semibold !text-white hover:!border-white hover:!bg-white/15 hover:!text-white focus-visible:!ring-white/70 focus-visible:!ring-offset-teal-950 sm:w-auto sm:!py-3 md:!text-lg"
+                className="w-full border-2 border-white/30 bg-white/10 text-white shadow-soft backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/20 hover:shadow-soft-lg sm:w-auto sm:px-10 sm:py-6 sm:text-lg"
               >
                 <Link href={content.secondaryCta.href}>
                   {content.secondaryCta.label}
@@ -76,32 +79,21 @@ export function MarketingHero({ content }: HeroProps) {
             </div>
           </Reveal>
 
-          <dl className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
-            {content.metrics.map((metric, index) => (
-              <Reveal key={metric.label} delay={600 + index * 100} className="rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-left backdrop-blur sm:px-4 sm:py-4 md:py-5">
-                <dt className="text-[10px] font-semibold uppercase tracking-wider text-white/60 sm:text-xs">
-                  {metric.label}
-                </dt>
-                <dd className="mt-1.5 text-xl font-semibold text-white sm:mt-2 sm:text-2xl">
-                  {metric.value}
-                </dd>
-              </Reveal>
-            ))}
-          </dl>
+          <Reveal delay={500}>
+            <dl className="mt-16 grid gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-10">
+              {content.metrics.map((metric, index) => (
+                <div key={metric.label} className="text-center">
+                  <dt className="text-sm font-medium tracking-wide text-white/70 sm:text-base">
+                    {metric.label}
+                  </dt>
+                  <dd className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+                    {metric.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
         </div>
-
-        <Reveal delay={200} className="hidden w-full md:block lg:flex-1" variant="scale">
-          <div className="relative isolate overflow-hidden rounded-lg border border-white/10 bg-white/10 p-2 shadow-lg backdrop-blur sm:p-2.5 md:p-3">
-            <Image
-              src={content.image.src}
-              alt={content.image.alt}
-              width={1280}
-              height={853}
-              className="relative z-10 h-full w-full rounded-lg object-cover"
-              priority
-            />
-          </div>
-        </Reveal>
       </div>
     </section>
   )

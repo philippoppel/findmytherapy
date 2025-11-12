@@ -71,6 +71,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: colorConfig,
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
+        '34': '8.5rem',
+        '38': '9.5rem',
+        '42': '10.5rem',
+        '46': '11.5rem',
+      },
+      lineHeight: {
+        'extra-relaxed': '1.8',
+        'super-relaxed': '2',
+      },
+      letterSpacing: {
+        'warm': '0.01em',
+      },
+      fontSize: {
+        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.01em' }],
+        'sm': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
+        'base': ['1rem', { lineHeight: '1.7', letterSpacing: '0.01em' }],
+        'lg': ['1.125rem', { lineHeight: '1.7', letterSpacing: '0.005em' }],
+        'xl': ['1.25rem', { lineHeight: '1.6', letterSpacing: '0em' }],
+        '2xl': ['1.5rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
+        '3xl': ['1.875rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
+        '4xl': ['2.25rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
+        '5xl': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+      },
       ringColor: {
         focus: withOpacity('--focus-ring'),
       },
@@ -79,6 +107,9 @@ const config: Config = {
       },
       boxShadow: {
         focus: `0 0 0 var(--focus-ring-width) rgb(var(--focus-ring))`,
+        'soft': '0 2px 8px rgba(var(--shadow-color))',
+        'soft-lg': '0 4px 16px rgba(var(--shadow-color))',
+        'soft-xl': '0 8px 24px rgba(var(--shadow-color))',
       },
       keyframes: {
         'accordion-down': {

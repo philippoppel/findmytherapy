@@ -21,53 +21,53 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
   return (
     <section id={content.id} className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <Reveal className="mb-12 text-center">
-          <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+        <Reveal className="mb-14 text-center sm:mb-16">
+          <span className="inline-flex items-center rounded-full border border-secondary-200 bg-secondary-50 px-4 py-2 text-xs font-medium tracking-wide text-secondary-800 sm:text-sm">
             {content.eyebrow}
           </span>
-          <h2 className="mt-4 text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl lg:text-5xl">
+          <h2 className="mt-6 text-pretty text-3xl font-semibold tracking-tight text-neutral-900 sm:mt-8 sm:text-4xl lg:text-5xl">
             {content.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-extra-relaxed text-neutral-700 sm:mt-6 sm:text-xl">
             {content.description}
           </p>
         </Reveal>
 
-        <div className="grid gap-8 lg:gap-10">
+        <div className="grid gap-10 lg:gap-12">
           {content.benefits.map((benefit, index) => {
             const IconComponent = ICON_MAP[benefit.icon]
 
             return (
               <Reveal
                 key={benefit.title}
-                className="grid gap-6 rounded-lg border border-divider bg-white p-6 shadow-lg sm:gap-8 sm:p-8 lg:grid-cols-2 lg:gap-12 lg:p-10"
+                className="grid gap-8 rounded-2xl border border-primary-200 bg-white p-8 shadow-soft-lg sm:gap-10 sm:p-10 lg:grid-cols-2 lg:gap-14 lg:p-12"
               >
                 {/* Content Side */}
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                      <IconComponent className="h-7 w-7" aria-hidden />
+                  <div className="flex items-start gap-5">
+                    <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700 shadow-soft">
+                      <IconComponent className="h-8 w-8" aria-hidden />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-balance text-2xl font-semibold text-default sm:text-3xl">
+                      <h3 className="text-balance text-2xl font-semibold text-neutral-900 sm:text-3xl">
                         {benefit.title}
                       </h3>
-                      <p className="mt-1 text-pretty text-sm font-medium text-primary sm:text-base">
+                      <p className="mt-1.5 text-pretty text-sm font-medium text-primary-700 sm:text-base">
                         {benefit.subtitle}
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-pretty text-base leading-relaxed text-muted sm:text-lg">
+                  <p className="text-pretty text-base leading-extra-relaxed text-neutral-600 sm:text-lg">
                     {benefit.description}
                   </p>
 
                   {index === 0 && (
-                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-                      <p className="text-sm font-semibold text-primary">
+                    <div className="rounded-xl border border-secondary-200 bg-secondary-50 p-5 shadow-soft">
+                      <p className="text-sm font-semibold text-secondary-800 sm:text-base">
                         🔒 Double-Sided Data Moat – Nur bei uns
                       </p>
-                      <p className="mt-2 text-sm leading-relaxed text-default">
+                      <p className="mt-2.5 text-sm leading-relaxed text-neutral-700 sm:text-base">
                         Einzigartiger Datenvorteil durch hochwertige Klient:innen-Intake-Daten
                         kombiniert mit verifizierten Therapeut:innen-Profilen.
                       </p>
@@ -76,8 +76,8 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
                 </div>
 
                 {/* Highlights Side */}
-                <div className="rounded-lg border border-primary/15 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 shadow-sm">
-                  <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary/80 sm:text-sm">
+                <div className="rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-transparent p-7 shadow-soft sm:p-8">
+                  <h4 className="mb-5 text-sm font-medium tracking-wide text-neutral-700 sm:text-base">
                     Die Vorteile im Überblick
                   </h4>
                   <ul className="space-y-3">
