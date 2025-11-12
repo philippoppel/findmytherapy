@@ -35,6 +35,10 @@ export interface ConversationState {
   detectedConcerns: string[]
   usedResponses: string[] // Verhindert Wiederholungen
   userMessageCount: number // Zählt User-Messages für besseren Flow
+  // NEU: Context-Tracking für bessere Follow-Ups
+  recentTopics: string[] // Letzte 5 erkannte Topics für Kontext
+  lastUserSentiment?: 'positive' | 'neutral' | 'concerning' | 'crisis' // Sentiment der letzten User-Nachricht
+  concernIntensity?: 'mild' | 'moderate' | 'severe' // Intensität der Sorgen
 }
 
 export interface KeywordPattern {

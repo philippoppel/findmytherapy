@@ -46,6 +46,10 @@ export function ChatWidget() {
               ? persisted.userMessageCount
               : messages.filter((m) => m.role === 'user').length,
           assessmentOfferCount: persisted.assessmentOfferCount ?? 0,
+          // NEU: Context-Tracking (Migration für bestehende Chats)
+          recentTopics: persisted.recentTopics || [],
+          lastUserSentiment: persisted.lastUserSentiment,
+          concernIntensity: persisted.concernIntensity,
         }
 
         setState(migrated)
@@ -77,11 +81,19 @@ export function ChatWidget() {
     setInputValue('')
     setIsTyping(true)
 
-    // Kleine Verzögerung für natürlichere Konversation
-    await new Promise((resolve) => setTimeout(resolve, 500 + Math.random() * 500))
-
     try {
+      // Generiere Response zuerst (ohne State-Update)
       const newState = processUserMessage(userInput, state)
+      const lastMessage = newState.messages[newState.messages.length - 1]
+      const responseLength = lastMessage?.content?.length || 0
+
+      // Realistischere Typing-Verzögerung basierend auf Response-Länge
+      // Basis: 800ms + 20ms pro Zeichen (simuliert ca. 50 WPM Typing-Speed)
+      // Max: 3 Sekunden für sehr lange Responses
+      const typingDelay = Math.min(800 + responseLength * 20, 3000)
+
+      await new Promise((resolve) => setTimeout(resolve, typingDelay))
+
       setState(newState)
     } finally {
       setIsTyping(false)

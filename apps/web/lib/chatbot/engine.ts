@@ -410,7 +410,26 @@ export function generateResponse(
   }
 
   // SPEZIALFALL: Sehr kurze Antwort (ja, okay, hmm)
+  // NEU: Verwende kontextuelle Follow-Ups basierend auf letztem Thema
   if (isShortResponse && userMsgCount > 1) {
+    // Prüfe ob wir ein letztes Thema haben für kontextuellen Follow-Up
+    const lastTopic = state.recentTopics[state.recentTopics.length - 1]
+    const contextualFollowUps = GENERAL_RESPONSES.contextual_followup as Record<string, string[]>
+
+    if (lastTopic && contextualFollowUps[lastTopic]) {
+      // Verwende kontextuelle Follow-Up-Frage
+      const response = randomChoice(contextualFollowUps[lastTopic])
+      return {
+        response,
+        metadata: {
+          detectedTopics: [lastTopic],
+          sentiment: state.lastUserSentiment || 'neutral',
+        },
+        usedResponse: response,
+      }
+    }
+
+    // Fallback: Allgemeine Acknowledgment
     const response = chooseUnusedResponse(
       GENERAL_RESPONSES.acknowledgment_short,
       state.usedResponses
@@ -594,12 +613,48 @@ export function createInitialState(): ConversationState {
     detectedConcerns: [],
     usedResponses: [greeting],
     userMessageCount: 0,
+    // NEU: Context-Tracking
+    recentTopics: [],
+    lastUserSentiment: undefined,
+    concernIntensity: undefined,
   }
+}
+
+/**
+ * Berechnet die Intensität der Sorgen basierend auf erkannten Kategorien
+ */
+function calculateConcernIntensity(
+  detectedCategories: string[],
+  sentiment: ChatMessage['metadata']['sentiment']
+): 'mild' | 'moderate' | 'severe' | undefined {
+  if (sentiment === 'crisis') return 'severe'
+
+  const severeConcerns = ['self_harm', 'violence_others', 'eating_disorder', 'substance_abuse']
+  const moderateConcerns = ['depression', 'anxiety', 'burnout', 'self_worth']
+
+  if (detectedCategories.some((cat) => severeConcerns.includes(cat))) {
+    return 'severe'
+  }
+
+  if (detectedCategories.some((cat) => moderateConcerns.includes(cat))) {
+    return detectedCategories.length >= 2 ? 'severe' : 'moderate'
+  }
+
+  if (detectedCategories.length >= 2) {
+    return 'moderate'
+  }
+
+  if (detectedCategories.length === 1) {
+    return 'mild'
+  }
+
+  return undefined
 }
 
 /**
  * Verarbeitet User-Input und updated den Conversation State
  * OPTIMIERT: Deutsch-Only, verbesserte Krisenerkennung, wiederholbare Assessment-Empfehlung
+ * NEU: Context-Tracking und Intensitätserkennung
  */
 export function processUserMessage(
   userInput: string,
@@ -646,6 +701,18 @@ export function processUserMessage(
     ? [...currentState.usedResponses, usedResponse]
     : currentState.usedResponses
 
+  // NEU: Recent Topics tracken (letzte 5)
+  const newRecentTopics = [
+    ...currentState.recentTopics,
+    ...(metadata?.detectedTopics || []),
+  ].slice(-5)
+
+  // NEU: Intensität berechnen
+  const newConcernIntensity = calculateConcernIntensity(
+    metadata?.detectedTopics || [],
+    metadata?.sentiment
+  )
+
   return {
     messages: [...currentState.messages, userMessage, assistantMessage],
     currentTopic: metadata?.detectedTopics?.[0],
@@ -655,6 +722,10 @@ export function processUserMessage(
     detectedConcerns: newDetectedConcerns,
     usedResponses: newUsedResponses,
     userMessageCount: newUserMessageCount,
+    // NEU: Context-Tracking
+    recentTopics: newRecentTopics,
+    lastUserSentiment: metadata?.sentiment,
+    concernIntensity: newConcernIntensity || currentState.concernIntensity,
   }
 }
 
