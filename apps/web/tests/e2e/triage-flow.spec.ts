@@ -353,11 +353,8 @@ test.describe('Adaptive Triage Flow', () => {
     // Verify therapist recommendations are shown
     await expect(page.getByText(/Therapeut:innen für präventive Begleitung/i).or(page.getByText(/Passende Therapeut:innen/i))).toBeVisible({ timeout: 5000 })
 
-    // Verify "Therapeut:innen ansehen" button exists
-    await expect(page.getByRole('link', { name: /Therapeut:innen ansehen/i }).first()).toBeVisible()
-
-    // Verify "Erweiterte Filter" button exists
-    await expect(page.getByRole('button', { name: /Erweiterte Filter/i }).first()).toBeVisible()
+    // Verify "Alle Therapeut:innen durchsuchen" button exists
+    await expect(page.getByRole('link', { name: /Alle Therapeut:innen durchsuchen/i }).first()).toBeVisible()
   })
 
   test.skip('opens filter modal when "Erweiterte Filter" button is clicked', async ({ page }) => {
