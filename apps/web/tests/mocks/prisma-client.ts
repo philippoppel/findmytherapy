@@ -4,19 +4,19 @@
 
 export const PrismaClient = jest.fn().mockImplementation(() => ({
   user: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    deleteMany: jest.fn(),
+    create: jest.fn().mockResolvedValue({}),
+    findUnique: jest.fn().mockResolvedValue(null),
+    findMany: jest.fn().mockResolvedValue([]),
+    update: jest.fn().mockResolvedValue({}),
+    delete: jest.fn().mockResolvedValue({}),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   triageSession: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    deleteMany: jest.fn(),
+    create: jest.fn().mockResolvedValue({ id: 'test-session-id' }),
+    findUnique: jest.fn().mockResolvedValue(null),
+    findMany: jest.fn().mockResolvedValue([]),
+    update: jest.fn().mockResolvedValue({}),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   sessionZeroDossier: {
     create: jest.fn(),
@@ -37,20 +37,20 @@ export const PrismaClient = jest.fn().mockImplementation(() => ({
     deleteMany: jest.fn(),
   },
   therapistProfile: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    deleteMany: jest.fn(),
+    findUnique: jest.fn().mockResolvedValue(null),
+    findMany: jest.fn().mockResolvedValue([]),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   therapistProfileVersion: {
-    deleteMany: jest.fn(),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   emergencyAlert: {
-    create: jest.fn(),
-    deleteMany: jest.fn(),
+    create: jest.fn().mockResolvedValue({ id: 'test-alert-id' }),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   triageSnapshot: {
-    create: jest.fn(),
-    deleteMany: jest.fn(),
+    create: jest.fn().mockResolvedValue({ id: 'test-snapshot-id' }),
+    deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
   },
   match: {
     deleteMany: jest.fn(),

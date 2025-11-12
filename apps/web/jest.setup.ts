@@ -1,9 +1,15 @@
 import '@testing-library/jest-dom'
 import { TextEncoder, TextDecoder } from 'util'
+import { webcrypto } from 'crypto'
 
 // Mock Web APIs for Next.js
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder as typeof global.TextDecoder
+
+// Mock crypto.subtle for Web Crypto API
+if (!global.crypto) {
+  global.crypto = webcrypto as any
+}
 
 // Mock Request and Response for Next.js API routes
 if (!global.Request) {
@@ -57,7 +63,22 @@ if (!global.Response) {
     }
 
     async json() {
+      if (this._body === undefined || this._body === null) {
+        return null
+      }
       return typeof this._body === 'string' ? JSON.parse(this._body) : this._body
+    }
+
+    static json(data: any, init?: ResponseInit) {
+      const jsonBody = JSON.stringify(data)
+      const response = new this(jsonBody, {
+        ...init,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(init?.headers || {}),
+        },
+      })
+      return response
     }
   } as any
 }

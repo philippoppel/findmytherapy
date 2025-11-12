@@ -54,7 +54,19 @@ module.exports = {
   compactDecrypt: jest.fn(),
   compactVerify: jest.fn(),
   EncryptJWT: jest.fn(),
-  jwtDecrypt: jest.fn(),
+  jwtDecrypt: jest.fn().mockResolvedValue({
+    payload: {
+      sub: 'test-user-id',
+      email: 'test@example.com',
+      role: 'CLIENT',
+      locale: 'de-AT',
+      twoFAEnabled: false,
+      firstName: 'Test',
+      lastName: 'User',
+      marketingOptIn: false,
+      exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now
+    },
+  }),
   jwtVerify: mockJwtVerify,
   SignJWT: MockSignJWT,
 }
