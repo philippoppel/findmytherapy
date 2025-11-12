@@ -63,6 +63,6 @@ Thumbs.db
 
 # Build outputs
 *.tsbuildinfo
-.cache# Video files (too large for git)
-apps/web/public/videos/*.mp4
-apps/web/public/videos/*.webm
+.cache# Video files - Note: hero video is included in repo for Vercel deployment
+# apps/web/public/videos/*.mp4
+# apps/web/public/videos/*.webm
