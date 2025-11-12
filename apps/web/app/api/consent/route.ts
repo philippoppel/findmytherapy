@@ -89,7 +89,11 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const scope = searchParams.get('scope')
 
-    const where: any = {
+    const where: {
+      clientId: string
+      status: string
+      scope?: string
+    } = {
       clientId: session.user.id,
       status: 'GRANTED',
     }
@@ -141,7 +145,11 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const where: any = {
+    const where: {
+      clientId: string
+      id?: string
+      scope?: string
+    } = {
       clientId: session.user.id,
     }
 

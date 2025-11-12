@@ -292,7 +292,7 @@ export default function CookiePolicyPage() {
                   <h4 className="font-semibold text-gray-900">Analytics</h4>
                   <p className="text-sm text-gray-600">Anonyme Besuchsstatistiken</p>
                 </div>
-                <label className="relative inline-flex cursor-pointer items-center">
+                <label className="relative inline-flex cursor-pointer items-center" aria-label="Analytics aktivieren/deaktivieren">
                   <input
                     type="checkbox"
                     checked={preferences.analytics}
@@ -300,6 +300,7 @@ export default function CookiePolicyPage() {
                       setPreferences({ ...preferences, analytics: e.target.checked })
                     }
                     className="peer sr-only"
+                    aria-label="Analytics aktivieren/deaktivieren"
                   />
                   <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                 </label>
@@ -311,7 +312,7 @@ export default function CookiePolicyPage() {
                   <h4 className="font-semibold text-gray-900">Fehlererfassung</h4>
                   <p className="text-sm text-gray-600">Hilft uns, Fehler zu beheben</p>
                 </div>
-                <label className="relative inline-flex cursor-pointer items-center">
+                <label className="relative inline-flex cursor-pointer items-center" aria-label="Fehlererfassung aktivieren/deaktivieren">
                   <input
                     type="checkbox"
                     checked={preferences.errorTracking}
@@ -319,6 +320,7 @@ export default function CookiePolicyPage() {
                       setPreferences({ ...preferences, errorTracking: e.target.checked })
                     }
                     className="peer sr-only"
+                    aria-label="Fehlererfassung aktivieren/deaktivieren"
                   />
                   <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                 </label>

@@ -10,7 +10,6 @@ import {
   rejectAllCookies,
   saveCookieConsent,
   cookieCategoryInfo,
-  type CookieConsent,
 } from '../lib/cookies'
 
 export function CookieConsentBanner() {
@@ -56,6 +55,10 @@ export function CookieConsentBanner() {
       <div
         className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
         onClick={handleClose}
+        onKeyDown={(e) => e.key === 'Escape' && handleClose()}
+        role="button"
+        tabIndex={0}
+        aria-label="Schließen (nur essenziell)"
       />
 
       {/* Banner */}
@@ -150,7 +153,7 @@ export function CookieConsentBanner() {
                     <h3 className="font-semibold text-gray-900">
                       {cookieCategoryInfo.analytics.title}
                     </h3>
-                    <label className="relative inline-flex cursor-pointer items-center">
+                    <label className="relative inline-flex cursor-pointer items-center" aria-label="Analytics aktivieren/deaktivieren">
                       <input
                         type="checkbox"
                         checked={preferences.analytics}
@@ -158,6 +161,7 @@ export function CookieConsentBanner() {
                           setPreferences({ ...preferences, analytics: e.target.checked })
                         }
                         className="peer sr-only"
+                        aria-label="Analytics aktivieren/deaktivieren"
                       />
                       <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
@@ -180,7 +184,7 @@ export function CookieConsentBanner() {
                     <h3 className="font-semibold text-gray-900">
                       {cookieCategoryInfo.errorTracking.title}
                     </h3>
-                    <label className="relative inline-flex cursor-pointer items-center">
+                    <label className="relative inline-flex cursor-pointer items-center" aria-label="Fehlererfassung aktivieren/deaktivieren">
                       <input
                         type="checkbox"
                         checked={preferences.errorTracking}
@@ -188,6 +192,7 @@ export function CookieConsentBanner() {
                           setPreferences({ ...preferences, errorTracking: e.target.checked })
                         }
                         className="peer sr-only"
+                        aria-label="Fehlererfassung aktivieren/deaktivieren"
                       />
                       <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
