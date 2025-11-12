@@ -224,6 +224,62 @@ jobs:
           path: |
             apps/web/coverage/**
 
+  api-integration-tests:
+    name: API Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: api_integration_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/api_integration_test_db
+        run: |
+          pnpm db:push
+          pnpm db:seed
+
+      - name: Run API integration tests
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/api_integration_test_db
+          REDIS_URL: redis://localhost:6379
+          NEXTAUTH_SECRET: test-secret-key-for-api-integration-tests-at-least-32-characters-long
+        run: pnpm --filter web test -- tests/integration/api --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next" --testEnvironment=node
+
+      - name: Upload API integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-integration-test-results
+          path: |
+            apps/web/coverage/**
+
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -395,7 +451,7 @@ jobs:
           pnpm --filter web build
           pnpm --filter web start &
           sleep 15
-          cd apps/web && pnpm exec playwright test tests/visual/accessibility.spec.ts --project=chromium-desktop
+          cd apps/web && pnpm exec playwright test tests/visual --project=chromium-desktop
 
       - name: Upload visual test results
         if: always()
@@ -405,6 +461,50 @@ jobs:
           path: |
             apps/web/test-results
             apps/web/playwright-report
+
+      - name: Comment PR with snapshot update instructions
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = `## 🖼️ Visual Regression Tests Failed
+
+            Visual snapshot tests have detected differences. This could be due to:
+            - Intentional UI changes
+            - Missing snapshots for new features
+            - Unintentional visual regressions
+
+            ### To update snapshots locally:
+
+            1. Pull the latest changes from this PR
+            2. Run the following command:
+               \`\`\`bash
+               cd apps/web
+               pnpm e2e:update-snapshots tests/visual
+               \`\`\`
+            3. Review the updated snapshots in your browser
+            4. Commit and push the updated snapshots:
+               \`\`\`bash
+               git add -A
+               git commit -m "chore: update visual snapshots"
+               git push
+               \`\`\`
+
+            ### To review the differences:
+
+            Download the \`visual-test-results\` artifact from this workflow run to see the diff images.
+
+            ---
+
+            **Note:** Only update snapshots if the visual changes are intentional!`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
 
   security-scan:
     name: Security Scan
