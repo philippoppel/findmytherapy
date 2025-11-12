@@ -67,10 +67,19 @@ describe('POST /api/triage - Contract Tests', () => {
       const userData = await createTestClient()
       const user = await prisma.user.create({ data: userData })
 
+      const phq9Answers = createPhq9Answers(3)
+      const gad7Answers = createGad7Answers(2)
       const requestBody = {
+        assessmentType: 'full' as const,
         clientId: user.id,
-        phq9Answers: createPhq9Answers(3),
-        gad7Answers: createGad7Answers(2),
+        phq9Answers,
+        phq9Score: 3,
+        phq9Severity: 'minimal' as const,
+        gad7Answers,
+        gad7Score: 2,
+        gad7Severity: 'minimal' as const,
+        riskLevel: 'LOW' as const,
+        requiresEmergency: false,
         supportPreferences: ['online', 'therapist'],
         availability: ['mornings', 'online']
       }
@@ -98,10 +107,19 @@ describe('POST /api/triage - Contract Tests', () => {
       const userData = await createTestClient()
       const user = await prisma.user.create({ data: userData })
 
+      const phq9Answers = createPhq9Answers(12)
+      const gad7Answers = createGad7Answers(11)
       const requestBody = {
+        assessmentType: 'full' as const,
         clientId: user.id,
-        phq9Answers: createPhq9Answers(12),
-        gad7Answers: createGad7Answers(11)
+        phq9Answers,
+        phq9Score: 12,
+        phq9Severity: 'moderate' as const,
+        gad7Answers,
+        gad7Score: 11,
+        gad7Severity: 'moderate' as const,
+        riskLevel: 'MEDIUM' as const,
+        requiresEmergency: false
       }
 
       const request = createMockRequest('/api/triage', {
@@ -124,10 +142,19 @@ describe('POST /api/triage - Contract Tests', () => {
       const userData = await createTestClient()
       const user = await prisma.user.create({ data: userData })
 
+      const phq9Answers = createPhq9Answers(22)
+      const gad7Answers = createGad7Answers(18)
       const requestBody = {
+        assessmentType: 'full' as const,
         clientId: user.id,
-        phq9Answers: createPhq9Answers(22),
-        gad7Answers: createGad7Answers(18)
+        phq9Answers,
+        phq9Score: 22,
+        phq9Severity: 'severe' as const,
+        gad7Answers,
+        gad7Score: 18,
+        gad7Severity: 'severe' as const,
+        riskLevel: 'HIGH' as const,
+        requiresEmergency: true
       }
 
       const request = createMockRequest('/api/triage', {
@@ -170,9 +197,16 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: 'non-existent-id',
           phq9Answers: createPhq9Answers(10),
-          gad7Answers: createGad7Answers(8)
+          phq9Score: 10,
+          phq9Severity: 'moderate' as const,
+          gad7Answers: createGad7Answers(8),
+          gad7Score: 8,
+          gad7Severity: 'mild' as const,
+          riskLevel: 'MEDIUM' as const,
+          requiresEmergency: false
         }
       })
 
@@ -193,9 +227,16 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: user.id,
           phq9Answers: createPhq9Answers(10),
-          gad7Answers: createGad7Answers(8)
+          phq9Score: 10,
+          phq9Severity: 'moderate' as const,
+          gad7Answers: createGad7Answers(8),
+          gad7Score: 8,
+          gad7Severity: 'mild' as const,
+          riskLevel: 'MEDIUM' as const,
+          requiresEmergency: false
         }
       })
 

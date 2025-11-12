@@ -95,7 +95,22 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379
+          NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: test-secret-key-for-unit-tests-at-least-32-characters-long
+          EMAIL_FROM: noreply@test.example.com
+          EMAIL_PROVIDER_API_KEY: test-email-api-key
+          STRIPE_SECRET_KEY: sk_test_placeholder
+          STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          STRIPE_WEBHOOK_SECRET: whsec_test_placeholder
+          STRIPE_CONNECT_CLIENT_ID: ca_test_placeholder
+          STRIPE_PRICE_LISTING_MONTHLY: price_test_monthly
+          STRIPE_PRICE_LISTING_YEARLY: price_test_yearly
+          S3_ENDPOINT: https://s3.test.example.com
+          S3_REGION: us-east-1
+          S3_BUCKET: test-bucket
+          S3_ACCESS_KEY_ID: test-access-key
+          S3_SECRET_ACCESS_KEY: test-secret-key
+          APP_BASE_URL: http://localhost:3000
         run: |
           pnpm --filter web test -- \
             --testPathIgnorePatterns=integration \
@@ -214,7 +229,24 @@ jobs:
       - name: Run integration tests
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/integration_test_db
-        run: pnpm --filter web test -- tests/integration/db --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next" --testEnvironment=node
+          REDIS_URL: redis://localhost:6379
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key-for-integration-tests-at-least-32-characters-long
+          EMAIL_FROM: noreply@test.example.com
+          EMAIL_PROVIDER_API_KEY: test-email-api-key
+          STRIPE_SECRET_KEY: sk_test_placeholder
+          STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          STRIPE_WEBHOOK_SECRET: whsec_test_placeholder
+          STRIPE_CONNECT_CLIENT_ID: ca_test_placeholder
+          STRIPE_PRICE_LISTING_MONTHLY: price_test_monthly
+          STRIPE_PRICE_LISTING_YEARLY: price_test_yearly
+          S3_ENDPOINT: https://s3.test.example.com
+          S3_REGION: us-east-1
+          S3_BUCKET: test-bucket
+          S3_ACCESS_KEY_ID: test-access-key
+          S3_SECRET_ACCESS_KEY: test-secret-key
+          APP_BASE_URL: http://localhost:3000
+        run: pnpm --filter web test --  --config jest.integration.config.js tests/integration/db --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next"
 
       - name: Upload integration test results
         if: always()
@@ -269,8 +301,23 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/api_integration_test_db
           REDIS_URL: redis://localhost:6379
+          NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: test-secret-key-for-api-integration-tests-at-least-32-characters-long
-        run: pnpm --filter web test -- tests/integration/api --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next" --testEnvironment=node
+          EMAIL_FROM: noreply@test.example.com
+          EMAIL_PROVIDER_API_KEY: test-email-api-key
+          STRIPE_SECRET_KEY: sk_test_placeholder
+          STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          STRIPE_WEBHOOK_SECRET: whsec_test_placeholder
+          STRIPE_CONNECT_CLIENT_ID: ca_test_placeholder
+          STRIPE_PRICE_LISTING_MONTHLY: price_test_monthly
+          STRIPE_PRICE_LISTING_YEARLY: price_test_yearly
+          S3_ENDPOINT: https://s3.test.example.com
+          S3_REGION: us-east-1
+          S3_BUCKET: test-bucket
+          S3_ACCESS_KEY_ID: test-access-key
+          S3_SECRET_ACCESS_KEY: test-secret-key
+          APP_BASE_URL: http://localhost:3000
+        run: pnpm --filter web test -- --config jest.integration.config.js tests/integration/api --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next"
 
       - name: Upload API integration test results
         if: always()
