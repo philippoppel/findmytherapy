@@ -817,6 +817,176 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
+    slug: 'psychologe-psychotherapeut-psychiater-unterschiede',
+    title: 'Psycholog:in, Psychotherapeut:in, Psychiater:in: Wer macht was?',
+    excerpt:
+      'Ein wissenschaftlich fundierter Überblick über die wichtigsten Berufsgruppen im Bereich mentale Gesundheit – mit Fokus auf Ausbildung, Tätigkeitsfelder und gesetzliche Rahmenbedingungen in Österreich.',
+    category: 'Wissen',
+    publishedAt: '2025-09-05',
+    readingTime: '11 Min.',
+    author: 'Dr. Sarah Weber & Team FindMyTherapy',
+    keywords: [
+      'Psychotherapeut',
+      'Psychologe',
+      'Psychiater',
+      'Seelsorge',
+      'Klinischer Psychologe',
+      'Ausbildung',
+      'Österreich',
+      'Gesundheitsberufe',
+      'Psychotherapiegesetz',
+    ],
+    sections: [
+      {
+        heading: 'Warum die Unterscheidung wichtig ist',
+        paragraphs: [
+          'Wer Unterstützung bei psychischen Belastungen sucht, steht häufig vor der Frage: An wen soll ich mich wenden? Die Begriffe Psycholog:in, Psychotherapeut:in, Psychiater:in und Seelsorger:in werden oft verwechselt oder synonym verwendet – dabei handelt es sich um unterschiedliche Berufsgruppen mit verschiedenen Ausbildungen, Kompetenzen und Behandlungsansätzen.',
+          'Dieser Artikel bietet einen evidenzbasierten Überblick über die wichtigsten Berufsgruppen im Bereich mentale Gesundheit, ihre gesetzlichen Grundlagen in Österreich und ihre jeweiligen Tätigkeitsfelder. Ein besonderer Fokus liegt auf Psychotherapeut:innen und ihrer besonderen Rolle im Gesundheitssystem.',
+        ],
+      },
+      {
+        heading: 'Psycholog:in: Wissenschaft vom Erleben und Verhalten',
+        paragraphs: [
+          'Psycholog:innen haben ein Universitätsstudium der Psychologie absolviert (Bachelor + Master, insgesamt 5 Jahre). Das Studium vermittelt wissenschaftliche Grundlagen zu menschlichem Erleben, Verhalten, Entwicklung, Wahrnehmung, Motivation und sozialen Prozessen.',
+          'Wichtig: Der akademische Titel "Psycholog:in" allein berechtigt nicht zur Behandlung psychischer Störungen. Psycholog:innen arbeiten in vielfältigen Bereichen wie Forschung, Personalwesen, Marktforschung, Schulpsychologie oder Organisationsentwicklung. Für die klinische Tätigkeit (Diagnostik und Behandlung) ist eine Zusatzausbildung erforderlich.',
+        ],
+        list: [
+          'Ausbildung: Universitätsstudium Psychologie (5 Jahre Bachelor + Master)',
+          'Gesetzliche Grundlage: Psychologengesetz 2013 (BGBl. I Nr. 182/2013)',
+          'Tätigkeit: Forschung, Beratung, Diagnostik (bei entsprechender Zusatzausbildung), Organisationspsychologie',
+          'KEINE Berechtigung zur Psychotherapie ohne Zusatzausbildung',
+          'KEINE Berechtigung zur Verschreibung von Medikamenten',
+        ],
+      },
+      {
+        heading: 'Klinische:r Psycholog:in und Gesundheitspsycholog:in',
+        paragraphs: [
+          'Klinische Psycholog:innen haben nach dem Psychologiestudium eine postgraduale Zusatzausbildung absolviert (mindestens 2 Jahre theoretische und praktische Ausbildung). Sie sind berechtigt, psychische Störungen zu diagnostizieren und klinisch-psychologische Behandlungen durchzuführen.',
+          'Die klinisch-psychologische Behandlung unterscheidet sich von Psychotherapie: Sie umfasst psychologische Interventionen wie Training kognitiver Funktionen, Verhaltensmodifikation, Entspannungsverfahren oder neuropsychologische Rehabilitation. Klinische Psycholog:innen arbeiten häufig in Kliniken, Ambulanzen oder Beratungsstellen.',
+        ],
+        list: [
+          'Ausbildung: Psychologiestudium + postgraduale Ausbildung (ca. 1.500 Stunden über 2 Jahre)',
+          'Gesetzliche Grundlage: Psychologengesetz 2013',
+          'Tätigkeiten: Diagnostik (Tests, Screenings, Gutachten), klinisch-psychologische Behandlung, Krisenintervention',
+          'Abgrenzung: Klinisch-psychologische Behandlung ist NICHT gleichbedeutend mit Psychotherapie',
+          'Etwa 6.000 klinische Psycholog:innen in Österreich (Stand 2024)',
+        ],
+      },
+      {
+        heading: 'Psychotherapeut:in: Spezialist:innen für die Behandlung psychischer Störungen',
+        paragraphs: [
+          'Psychotherapeut:innen sind nach österreichischem Recht die primären Expert:innen für die Behandlung psychischer, psychosozialer und psychosomatischer Störungen mittels wissenschaftlich anerkannter psychotherapeutischer Methoden. Die Ausbildung ist im Psychotherapiegesetz 1990 geregelt und zählt zu den anspruchsvollsten im Gesundheitsbereich.',
+          'Die Ausbildung umfasst ein psychotherapeutisches Propädeutikum (theoretische Grundlagen, mindestens 765 Stunden) und ein Fachspezifikum (Spezialisierung auf ein wissenschaftlich anerkanntes Verfahren, mindestens 1.900 Stunden). Zusätzlich sind umfangreiche Selbsterfahrung (mindestens 200 Stunden) und Supervision (mindestens 150 Stunden) verpflichtend. Die Gesamtausbildung dauert in der Regel 5-7 Jahre.',
+        ],
+        list: [
+          'Ausbildung: Propädeutikum (765h) + Fachspezifikum (1.900h) + Selbsterfahrung (200h) + Supervision (150h) = mindestens 5-7 Jahre',
+          'Gesetzliche Grundlage: Psychotherapiegesetz 1990 (BGBl. Nr. 361/1990)',
+          'Voraussetzung: Keine spezifische Vorbildung erforderlich – Quereinsteiger:innen aus allen Berufen möglich',
+          '23 anerkannte psychotherapeutische Verfahren in Österreich (Stand 2024)',
+          'Etwa 12.000 eingetragene Psychotherapeut:innen in Österreich',
+          'KEINE Verschreibung von Medikamenten (außer bei ärztlicher Zusatzausbildung)',
+        ],
+      },
+      {
+        heading: 'Was macht Psychotherapie besonders?',
+        paragraphs: [
+          'Psychotherapeut:innen unterscheiden sich in mehreren Aspekten von anderen Berufsgruppen im mentalen Gesundheitsbereich:',
+        ],
+        list: [
+          'Eigenständiger Heilberuf: Seit 1990 gesetzlich als eigenständiger Beruf (nicht als ärztliche Hilfstätigkeit) anerkannt',
+          'Breite Zugänglichkeit: Keine Verpflichtung zu Vorstudium – Menschen mit unterschiedlichsten beruflichen Hintergründen können Psychotherapeut:in werden',
+          'Intensive Selbsterfahrung: Einziger Gesundheitsberuf mit verpflichtender Lehrtherapie (mind. 200h) – Therapeut:innen arbeiten intensiv an eigenen Themen',
+          'Methodenvielfalt: 23 wissenschaftlich anerkannte Verfahren ermöglichen passgenaue Behandlung verschiedenster Störungsbilder',
+          'Kassenfinanzierung: Psychotherapie ist als Gesundheitsleistung anerkannt, teilweise kassenfinanziert (Vollfinanzierung bei Kassenverträgen, Zuschuss bei Wahltherapeut:innen)',
+          'Verschwiegenheitspflicht: Absolute Verschwiegenheitspflicht nach § 15 Psychotherapiegesetz (gesetzlich strenger als bei anderen Berufen)',
+        ],
+      },
+      {
+        heading: 'Psychiater:in: Medizinische Spezialist:innen',
+        paragraphs: [
+          'Psychiater:innen sind Ärzt:innen mit Facharztausbildung für Psychiatrie und psychotherapeutische Medizin. Nach dem Medizinstudium (6 Jahre) folgt eine Facharztausbildung von mindestens 6 Jahren. Psychiater:innen sind auf die medizinische Diagnostik und Behandlung psychischer Erkrankungen spezialisiert.',
+          'Im Unterschied zu Psychotherapeut:innen liegt der Schwerpunkt auf biologischen Aspekten psychischer Störungen. Psychiater:innen sind berechtigt, Medikamente (Psychopharmaka) zu verschreiben, stationäre Aufnahmen zu veranlassen und bei schweren psychiatrischen Krisen (z.B. Psychosen, akute Suizidalität) einzugreifen.',
+        ],
+        list: [
+          'Ausbildung: Medizinstudium (6 Jahre) + Facharztausbildung Psychiatrie (6 Jahre) = 12 Jahre',
+          'Gesetzliche Grundlage: Ärztegesetz 1998, Ausbildungsordnung für Fachärzt:innen',
+          'Tätigkeiten: Diagnostik, medikamentöse Behandlung, Krisenintervention, stationäre Behandlung',
+          'Verschreibungsberechtigung: JA – einzige Berufsgruppe, die Psychopharmaka verschreiben darf',
+          'Häufig in Kombination: Viele Psychiater:innen haben auch eine Psychotherapieausbildung ("Facharzt für Psychiatrie und psychotherapeutische Medizin")',
+          'Etwa 1.200 Psychiater:innen in Österreich (Stand 2024)',
+        ],
+      },
+      {
+        heading: 'Wann zu wem? Entscheidungshilfe',
+        paragraphs: [
+          'Die Wahl der passenden Berufsgruppe hängt von der Problemstellung ab:',
+        ],
+        list: [
+          'Psychotherapeut:in: Bei psychischen Störungen (Depression, Angst, Trauma, Beziehungsprobleme), Lebenskrisen, psychosomatischen Beschwerden – primäre Anlaufstelle für Gesprächstherapie',
+          'Psychiater:in: Bei Verdacht auf schwere psychische Erkrankungen (Psychosen, bipolare Störung), wenn Medikamente erwogen werden, bei akuten Krisen mit Eigen- oder Fremdgefährdung',
+          'Klinische:r Psycholog:in: Für psychologische Diagnostik (Tests, Gutachten), neuropsychologische Rehabilitation, klinisch-psychologische Behandlung bei spezifischen Symptomen',
+          'Kombination: Häufig arbeiten verschiedene Berufsgruppen zusammen – z.B. Psychotherapie + psychiatrische Medikation bei schweren Depressionen',
+        ],
+      },
+      {
+        heading: 'Seelsorge: Spirituelle Begleitung',
+        paragraphs: [
+          'Seelsorger:innen (meist Geistliche verschiedener Religionsgemeinschaften) bieten spirituelle und existenzielle Begleitung in Lebenskrisen, bei Sinnfragen, Trauer oder ethischen Konflikten. Seelsorge ist keine Psychotherapie und keine medizinische Behandlung, kann aber wertvolle Unterstützung bei religiösen oder spirituellen Anliegen bieten.',
+          'Wichtig: Seelsorger:innen unterliegen zwar der Beichtverschwiegenheit, haben aber keine formale psychotherapeutische Ausbildung. Bei psychischen Störungen sollte immer auch professionelle psychotherapeutische oder psychiatrische Hilfe in Anspruch genommen werden.',
+        ],
+        list: [
+          'Ausbildung: Theologiestudium, pastorale Ausbildung (variiert je nach Konfession)',
+          'Gesetzliche Grundlage: Keine spezifische gesetzliche Regelung als Gesundheitsberuf',
+          'Tätigkeiten: Geistliche Begleitung, Krisenbegleitung, Trauerarbeit, Sinnfragen',
+          'KEINE Behandlung psychischer Störungen im medizinischen Sinne',
+          'Kann ergänzend zu Psychotherapie sinnvoll sein',
+        ],
+      },
+      {
+        heading: 'Weitere Berufsgruppen: Berater:innen, Coaches, Lebensberater:innen',
+        paragraphs: [
+          'Neben den gesetzlich geregelten Gesundheitsberufen gibt es zahlreiche Beratungs- und Coaching-Angebote. Diese Berufe sind in Österreich teilweise gewerblich geregelt (z.B. Lebens- und Sozialberater:innen nach Gewerbeordnung), aber nicht zur Behandlung psychischer Störungen berechtigt.',
+          'Lebens- und Sozialberater:innen (LSB) bieten Unterstützung bei Alltagsproblemen, beruflicher Orientierung, Partnerschaftsfragen oder persönlicher Weiterentwicklung – sie arbeiten präventiv und beratend, nicht therapeutisch. Sobald eine psychische Störung vorliegt, ist eine Überweisung an Psychotherapeut:innen oder Ärzt:innen notwendig.',
+        ],
+        list: [
+          'Ausbildung: Variable, bei LSB mind. 584 Stunden Ausbildung nach Gewerbeordnung',
+          'Gesetzliche Grundlage: Gewerbeordnung (keine Gesundheitsberufe)',
+          'KEINE Behandlung psychischer Störungen erlaubt',
+          'Tätigkeiten: Beratung, Coaching, Prävention, Persönlichkeitsentwicklung',
+          'Abgrenzung zur Psychotherapie gesetzlich vorgeschrieben (§ 119 Abs 2 GewO)',
+        ],
+      },
+      {
+        heading: 'Qualitätssicherung und gesetzliche Rahmenbedingungen',
+        paragraphs: [
+          'In Österreich sind Psychotherapeut:innen, Psycholog:innen und Ärzt:innen gesetzlich streng geregelte Gesundheitsberufe. Alle Berufsausübenden müssen in offiziellen Listen eingetragen sein:',
+        ],
+        list: [
+          'Psychotherapeut:innen: Eintragung im Psychotherapeutenliste des Bundesministeriums (öffentlich einsehbar)',
+          'Psycholog:innen: Eintragung im Gesundheitsberuferegister (GBR)',
+          'Ärzt:innen: Eintragung in der Ärzteliste der Österreichischen Ärztekammer',
+          'Wichtig: Überprüfen Sie vor Behandlungsbeginn die Eintragung Ihrer Therapeut:in/Behandler:in in den offiziellen Listen',
+          'Unseriöse Anbieter:innen nutzen oft schwammige Berufsbezeichnungen ohne gesetzliche Grundlage',
+        ],
+      },
+      {
+        heading: 'Zusammenarbeit im multiprofessionellen Team',
+        paragraphs: [
+          'In der modernen Versorgung psychischer Gesundheit arbeiten verschiedene Berufsgruppen eng zusammen. Besonders bei komplexen Störungsbildern (z.B. schwere Depression mit somatischen Symptomen) hat sich die multiprofessionelle Behandlung als wirksam erwiesen.',
+          'Typische Zusammenarbeit: Psychiater:in für Diagnostik und Medikation, Psychotherapeut:in für Gesprächstherapie, klinische:r Psycholog:in für Diagnostik und begleitende Interventionen, Hausärzt:in für somatische Abklärung. Diese Kooperation ist wissenschaftlich gut belegt und führt zu besseren Behandlungsergebnissen als isolierte Einzelbehandlungen.',
+        ],
+      },
+      {
+        heading: 'Fazit: Psychotherapeut:innen als Kernberufsgruppe',
+        paragraphs: [
+          'Psychotherapeut:innen nehmen eine zentrale Stellung im österreichischen Gesundheitssystem ein: Als eigenständiger, gesetzlich geregelter Heilberuf mit langjähriger, anspruchsvoller Ausbildung sind sie die primären Ansprechpersonen für die Behandlung psychischer, psychosozialer und psychosomatischer Leiden mittels wissenschaftlich fundierter Gesprächstherapie.',
+          'Was Psychotherapie besonders macht: Die Kombination aus wissenschaftlicher Fundierung (23 anerkannte Verfahren mit nachgewiesener Wirksamkeit), intensiver Selbstreflexion (verpflichtende Lehrtherapie), strenger gesetzlicher Regelung (Psychotherapiegesetz seit 1990) und der Fokus auf die therapeutische Beziehung als zentralem Wirkfaktor.',
+          'Für Hilfesuchende bedeutet das: Psychotherapeut:innen bieten einen geschützten, professionellen Rahmen für tiefgreifende Veränderungsprozesse – ohne Medikamente, basierend auf Gespräch, Reflexion und wissenschaftlich geprüften Methoden. Bei Bedarf arbeiten sie eng mit Psychiater:innen, Psycholog:innen und anderen Gesundheitsberufen zusammen, um eine optimale Versorgung zu gewährleisten.',
+        ],
+      },
+    ],
+  },
+  {
     slug: 'screening-instrumente-phq9-gad7-who5',
     title: 'PHQ-9, GAD-7 und WHO-5: Die wichtigsten Screening-Instrumente im Vergleich',
     excerpt:
