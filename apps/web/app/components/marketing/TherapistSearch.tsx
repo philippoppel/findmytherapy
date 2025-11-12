@@ -120,28 +120,47 @@ function pickFallbackImage(index: number) {
 }
 
 export async function TherapistSearch() {
-  const therapists = await prisma.therapistProfile.findMany({
-    where: {
-      isPublic: true,
-      status: 'VERIFIED',
-    },
-    select: {
-      id: true,
-      displayName: true,
-      profileImageUrl: true,
-      specialties: true,
-      approachSummary: true,
-      city: true,
-      country: true,
-      online: true,
-      availabilityNote: true,
-      acceptingClients: true,
-    },
-    orderBy: [
-      { updatedAt: 'desc' },
-    ],
-    take: 3,
-  })
+  let therapists: Array<{
+    id: string
+    displayName: string | null
+    profileImageUrl: string | null
+    specialties: string[]
+    approachSummary: string | null
+    city: string | null
+    country: string | null
+    online: boolean
+    availabilityNote: string | null
+    acceptingClients: boolean
+  }> = []
+
+  try {
+    therapists = await prisma.therapistProfile.findMany({
+      where: {
+        isPublic: true,
+        status: 'VERIFIED',
+      },
+      select: {
+        id: true,
+        displayName: true,
+        profileImageUrl: true,
+        specialties: true,
+        approachSummary: true,
+        city: true,
+        country: true,
+        online: true,
+        availabilityNote: true,
+        acceptingClients: true,
+      },
+      orderBy: [
+        { updatedAt: 'desc' },
+      ],
+      take: 3,
+    })
+  } catch (error) {
+    console.error('[TherapistSearch] Failed to fetch therapists:', error)
+    // Return empty array on DB error - component will show fallback state
+    therapists = []
+  }
 
   const featuredTherapists =
     therapists.length > 0

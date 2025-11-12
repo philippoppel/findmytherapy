@@ -6,6 +6,22 @@ jest.mock('../../lib/analytics', () => ({
   track: jest.fn(),
 }))
 
+// Mock next-auth/react
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(() => ({
+    data: null, // Anonymous user by default
+    status: 'unauthenticated',
+  })),
+}))
+
+// Mock Next.js router
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    refresh: jest.fn(),
+  })),
+}))
+
 describe('TriageFlow', () => {
   const fetchMock = jest.fn()
   const mockRecommendations = {
