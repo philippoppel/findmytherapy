@@ -51,7 +51,7 @@ const ErrorResponseSchema = z.object({
   code: z.string().optional()
 })
 
-describe.skip('POST /api/triage - Contract Tests', () => {
+describe('POST /api/triage - Contract Tests', () => {
   const prisma = getTestDbClient()
 
   beforeEach(async () => {

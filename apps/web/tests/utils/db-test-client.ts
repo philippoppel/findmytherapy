@@ -35,11 +35,6 @@ export async function cleanupDatabase() {
   await client.auditLog.deleteMany()
   await client.emergencyAlert.deleteMany()
 
-  // Dossier-related tables (new)
-  await client.dossierAccessLog.deleteMany()
-  await client.sessionZeroDossier.deleteMany()
-  await client.clientConsent.deleteMany()
-
   await client.triageSession.deleteMany()
   await client.triageSnapshot.deleteMany()
   await client.match.deleteMany()

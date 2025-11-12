@@ -41,7 +41,7 @@ jest.mock('../../../lib/monitoring', () => ({
   captureError: jest.fn(),
 }))
 
-describe.skip('Triage API Route - Comprehensive Tests', () => {
+describe('Triage API Route - Comprehensive Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })

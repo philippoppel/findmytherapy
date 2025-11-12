@@ -10,7 +10,7 @@ jest.unmock('@prisma/client')
 import { getTestDbClient, setupDbTest, teardownDbTest } from '../../utils/db-test-client'
 import { createTestUser, createTestClient, resetEmailCounter } from '../../fixtures/user.factory'
 
-describe.skip('User Model', () => {
+describe('User Model', () => {
   const prisma = getTestDbClient()
 
   beforeEach(async () => {

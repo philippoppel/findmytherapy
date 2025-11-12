@@ -23,7 +23,7 @@ import { auth } from '../../../../lib/auth'
 
 const mockAuth = auth as jest.MockedFunction<typeof auth>
 
-describe.skip('POST /api/dossiers - Create Dossier', () => {
+describe('POST /api/dossiers - Create Dossier', () => {
   const prisma = getTestDbClient()
 
   beforeEach(async () => {

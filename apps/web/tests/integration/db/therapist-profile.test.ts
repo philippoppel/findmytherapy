@@ -11,7 +11,7 @@ import { getTestDbClient, setupDbTest, teardownDbTest } from '../../utils/db-tes
 import { createTestTherapist, resetEmailCounter } from '../../fixtures/user.factory'
 import { createTestTherapistProfile, resetProfileCounter } from '../../fixtures/therapist.factory'
 
-describe.skip('TherapistProfile Model', () => {
+describe('TherapistProfile Model', () => {
   const prisma = getTestDbClient()
 
   beforeEach(async () => {
