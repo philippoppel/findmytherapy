@@ -220,7 +220,7 @@ describe('POST /api/triage - Contract Tests', () => {
   })
 
   describe('HTTP Status Codes', () => {
-    it('returns 200 for valid triage submission', async () => {
+    it('returns 201 for valid triage submission', async () => {
       const userData = await createTestClient()
       const user = await prisma.user.create({ data: userData })
 
@@ -236,12 +236,14 @@ describe('POST /api/triage - Contract Tests', () => {
           gad7Score: 8,
           gad7Severity: 'mild' as const,
           riskLevel: 'MEDIUM' as const,
-          requiresEmergency: false
+          requiresEmergency: false,
+          phq9Item9Score: 0,
+          hasSuicidalIdeation: false
         }
       })
 
       const response = await triageRoute(request)
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(201)
     })
 
     it('returns 400 for invalid request body', async () => {
@@ -292,10 +294,19 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: user.id,
           phq9Answers: createPhq9Answers(10),
-          gad7Answers: createGad7Answers(8)
-          // No supportPreferences or availability
+          phq9Score: 10,
+          phq9Severity: 'moderate' as const,
+          gad7Answers: createGad7Answers(8),
+          gad7Score: 8,
+          gad7Severity: 'mild' as const,
+          riskLevel: 'MEDIUM' as const,
+          requiresEmergency: false,
+          phq9Item9Score: 0,
+          hasSuicidalIdeation: false
+          // No supportPreferences or availability - they're optional
         }
       })
 
@@ -304,7 +315,7 @@ describe('POST /api/triage - Contract Tests', () => {
 
       const result = TriageResultSchema.safeParse(data)
       expect(result.success).toBe(true)
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(201)
     })
 
     it('handles extra fields gracefully', async () => {
@@ -314,15 +325,24 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: user.id,
           phq9Answers: createPhq9Answers(10),
+          phq9Score: 10,
+          phq9Severity: 'moderate' as const,
           gad7Answers: createGad7Answers(8),
+          gad7Score: 8,
+          gad7Severity: 'mild' as const,
+          riskLevel: 'MEDIUM' as const,
+          requiresEmergency: false,
+          phq9Item9Score: 0,
+          hasSuicidalIdeation: false,
           extraField: 'should be ignored'
         }
       })
 
       const response = await triageRoute(request)
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(201)
     })
   })
 
@@ -336,9 +356,18 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: user.id,
           phq9Answers,
-          gad7Answers: createGad7Answers(0)
+          phq9Score: 15,
+          phq9Severity: 'moderately_severe' as const,
+          gad7Answers: createGad7Answers(0),
+          gad7Score: 0,
+          gad7Severity: 'minimal' as const,
+          riskLevel: 'MEDIUM' as const,
+          requiresEmergency: false,
+          phq9Item9Score: 0,
+          hasSuicidalIdeation: false
         }
       })
 
@@ -358,9 +387,18 @@ describe('POST /api/triage - Contract Tests', () => {
       const request = createMockRequest('/api/triage', {
         method: 'POST',
         body: {
+          assessmentType: 'full' as const,
           clientId: user.id,
           phq9Answers: createPhq9Answers(0),
-          gad7Answers
+          phq9Score: 0,
+          phq9Severity: 'minimal' as const,
+          gad7Answers,
+          gad7Score: 9,
+          gad7Severity: 'mild' as const,
+          riskLevel: 'LOW' as const,
+          requiresEmergency: false,
+          phq9Item9Score: 0,
+          hasSuicidalIdeation: false
         }
       })
 

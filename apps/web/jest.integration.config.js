@@ -14,6 +14,8 @@ const customJestConfig = {
     '^next-auth$': '<rootDir>/__mocks__/next-auth.js',
     '^next-auth/(.*)$': '<rootDir>/__mocks__/next-auth.js',
     '^jose$': '<rootDir>/__mocks__/jose.js',
+    '^next/headers$': '<rootDir>/__mocks__/next/headers.js',
+    '^next/server$': '<rootDir>/__mocks__/next/server.js',
     // DO NOT mock Prisma Client for integration tests
     '^@/(.*)$': '<rootDir>/$1',
     '^@mental-health/(.*)$': '<rootDir>/../../packages/$1/src',
