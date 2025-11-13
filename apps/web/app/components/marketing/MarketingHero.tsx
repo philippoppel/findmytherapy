@@ -84,18 +84,20 @@ export function MarketingHero({ content }: HeroProps) {
           </Reveal>
 
           <Reveal delay={500}>
-            <dl className="mt-20 grid gap-10 sm:mt-24 sm:grid-cols-3 sm:gap-12">
-              {content.metrics.map((metric, _index) => (
-                <div key={metric.label} className="text-center">
-                  <dd className="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
-                    {metric.value}
-                  </dd>
-                  <dt className="mt-3 text-base font-medium tracking-wide text-white/80 sm:text-lg">
-                    {metric.label}
-                  </dt>
-                </div>
-              ))}
-            </dl>
+            <div className="mt-20 sm:mt-24">
+              <dl className="mx-auto flex flex-col items-center justify-center gap-12 sm:flex-row sm:gap-16 lg:gap-20">
+                {content.metrics.map((metric, _index) => (
+                  <div key={metric.label} className="flex flex-col items-center text-center">
+                    <dd className="text-5xl font-bold text-white drop-shadow-lg sm:text-6xl lg:text-7xl">
+                      {metric.value}
+                    </dd>
+                    <dt className="mt-4 text-base font-medium tracking-wide text-white/90 sm:text-lg">
+                      {metric.label}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </Reveal>
         </div>
       </div>
