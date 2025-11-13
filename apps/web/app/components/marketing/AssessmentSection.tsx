@@ -55,10 +55,10 @@ const screeningTools = [
 
 export function AssessmentSection() {
   return (
-    <section id="assessment" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-teal-50/30 via-cyan-50/20 to-transparent">
+    <section id="assessment" className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-primary-50/30 via-primary-50/20 to-transparent">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-gradient-to-r from-teal-100 to-cyan-100 px-4 py-2 text-sm font-bold uppercase tracking-wider text-teal-900 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-gradient-to-r from-primary-100 to-primary-200 px-4 py-2 text-sm font-bold uppercase tracking-wider text-primary-900 shadow-sm">
             <Gift className="h-4 w-4" aria-hidden />
             100% Kostenlos
           </div>
@@ -81,8 +81,8 @@ export function AssessmentSection() {
               </p>
               <ul className="space-y-4">
                 {triageHighlights.map((item) => (
-                  <li key={item.title} className="flex items-start gap-4 rounded-lg border border-divider bg-gradient-to-br from-teal-50/50 to-cyan-50/30 p-4 transition hover:shadow-sm sm:p-5">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 text-white">
+                  <li key={item.title} className="flex items-start gap-4 rounded-lg border border-divider bg-gradient-to-br from-primary-50/50 to-primary-100/30 p-4 transition hover:shadow-sm sm:p-5">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 text-white">
                       <item.icon className="h-6 w-6" aria-hidden />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -96,10 +96,10 @@ export function AssessmentSection() {
           </Reveal>
 
           <Reveal variant="scale" className="lg:sticky lg:top-24">
-            <div className="rounded-lg border-2 border-teal-200 bg-gradient-to-br from-teal-50 via-cyan-50 to-teal-50 p-8 shadow-lg">
+            <div className="rounded-lg border-2 border-primary-200 bg-gradient-to-br from-primary-50 via-primary-100 to-primary-50 p-8 shadow-lg">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-600 to-cyan-600 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-md">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-md">
                     <Heart className="h-3.5 w-3.5" aria-hidden />
                     Jetzt starten
                   </div>
@@ -114,8 +114,8 @@ export function AssessmentSection() {
                 <div className="space-y-3">
                   {quickFeatures.map((feature) => (
                     <div key={feature.label} className="flex items-center gap-3 rounded-xl bg-white/80 p-3 shadow-sm backdrop-blur-sm">
-                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-cyan-100 shadow-sm">
-                        <feature.icon className="h-5 w-5 text-teal-700" aria-hidden />
+                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 shadow-sm">
+                        <feature.icon className="h-5 w-5 text-primary-700" aria-hidden />
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-bold text-default">{feature.label}</p>
@@ -127,14 +127,14 @@ export function AssessmentSection() {
 
                 <Link
                   href="/triage"
-                  className="group flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-teal-600 to-cyan-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:from-teal-500 hover:to-cyan-500 hover:shadow-xl"
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:from-primary-500 hover:to-primary-600 hover:shadow-xl"
                 >
                   Ersteinschätzung starten
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden />
                 </Link>
 
-                <div className="rounded-xl bg-teal-100/50 p-3 text-center">
-                  <p className="text-xs font-semibold text-teal-900">
+                <div className="rounded-xl bg-primary-100/50 p-3 text-center">
+                  <p className="text-xs font-semibold text-primary-900">
                     <Shield className="mb-0.5 inline h-3.5 w-3.5" aria-hidden /> Keine Anmeldung erforderlich • Vollständig anonym
                   </p>
                 </div>
