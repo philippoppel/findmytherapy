@@ -179,7 +179,7 @@ export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
 
     // Remove PHQ-9/GAD-7 references from metrics
     filtered.metrics = filtered.metrics.filter(
-      (metric: any) =>
+      (metric) =>
         !metric.value.includes('PHQ') && !metric.value.includes('GAD')
     )
 
