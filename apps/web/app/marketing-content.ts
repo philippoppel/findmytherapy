@@ -610,3 +610,66 @@ export const testimonialList = [
     rating: 5,
   },
 ] as const;
+
+/**
+ * Feature-aware exports
+ * These functions return filtered content based on enabled features
+ */
+import {
+  filterNavigationItems,
+  filterFeatureTabs,
+  filterFAQItems,
+  getFilteredHeroContent,
+  getFilteredWhyContent,
+  getFilteredClientBenefits,
+  getFilteredTherapistBenefits,
+} from '@/lib/content-filters'
+
+/**
+ * Get navigation items with disabled features removed
+ */
+export function getMarketingNavigation() {
+  return filterNavigationItems(marketingNavigation)
+}
+
+/**
+ * Get hero content with feature-aware adjustments
+ */
+export function getHeroContent() {
+  return getFilteredHeroContent(heroContent)
+}
+
+/**
+ * Get why content with feature-aware adjustments
+ */
+export function getWhyContent() {
+  return getFilteredWhyContent(whyContent)
+}
+
+/**
+ * Get feature tabs with disabled features removed
+ */
+export function getFeatureTabs() {
+  return filterFeatureTabs(featureTabs)
+}
+
+/**
+ * Get client benefits with disabled features removed
+ */
+export function getClientBenefits() {
+  return getFilteredClientBenefits(clientBenefits)
+}
+
+/**
+ * Get therapist benefits with disabled features removed
+ */
+export function getTherapistBenefits() {
+  return getFilteredTherapistBenefits(therapistBenefits)
+}
+
+/**
+ * Get FAQ items with disabled feature questions removed
+ */
+export function getFAQItems() {
+  return filterFAQItems(faqItems)
+}

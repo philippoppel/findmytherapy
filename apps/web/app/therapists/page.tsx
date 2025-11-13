@@ -4,6 +4,7 @@ import { Compass, Sparkles } from 'lucide-react'
 
 import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
+import { FEATURES } from '@/lib/features'
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'
@@ -71,13 +72,15 @@ export default async function TherapistsPage() {
               </p>
             </div>
             <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
-              <Link
-                href="/triage"
-                prefetch={false}
-                className="inline-flex items-center rounded-full bg-primary-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-              >
-                <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
-              </Link>
+              {FEATURES.ASSESSMENT && (
+                <Link
+                  href="/triage"
+                  prefetch={false}
+                  className="inline-flex items-center rounded-full bg-primary-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                >
+                  <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
+                </Link>
+              )}
               <Link
                 href="/contact"
                 prefetch={false}

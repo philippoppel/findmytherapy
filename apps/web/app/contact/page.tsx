@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Mail, ArrowLeft } from 'lucide-react'
 import { CrisisResources } from '../triage/CrisisResources'
 import { ChatWidget } from '../../components/support/ChatWidget'
+import { FeatureGate } from '@/components/FeatureGate'
 
 export const metadata: Metadata = {
   title: 'Kontakt – FindMyTherapy',
@@ -62,7 +63,9 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-      <ChatWidget />
+      <FeatureGate feature="CHATBOT">
+        <ChatWidget />
+      </FeatureGate>
     </>
   )
 }

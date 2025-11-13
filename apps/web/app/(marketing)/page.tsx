@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import {
-  heroContent,
-  whyContent,
   earlyAccessContent,
   teamContent,
-  faqItems,
   contactCta,
-  clientBenefits,
-  therapistBenefits,
+  getHeroContent,
+  getWhyContent,
+  getClientBenefits,
+  getTherapistBenefits,
+  getFAQItems,
 } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
 import { WhySection } from '../components/marketing/WhySection'
@@ -19,26 +19,39 @@ import { AssessmentSection } from '../components/marketing/AssessmentSection'
 import { TherapistSearch } from '../components/marketing/TherapistSearch'
 import { ClientBenefits } from '../components/marketing/ClientBenefits'
 import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
+import { FeatureGate } from '@/components/FeatureGate'
+import { FEATURES } from '@/lib/features'
 
 // Force dynamic rendering to prevent database access during build
 // Homepage includes dynamic therapist data that requires database connection
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching',
-  description:
-    'Finde in wenigen Minuten heraus, welche Unterstützung dir guttut. Mit Ampel-Triage, persönlichen Empfehlungen, Kursen und einer Plattform für Therapeut:innen.',
-  keywords: [
-    'digitale Ersteinschätzung',
-    'PHQ-9 Erklärung',
-    'GAD-7 Erklärung',
-    'Therapeut:in finden Österreich',
-    'mentale Gesundheit Matching',
-  ],
+  title: FEATURES.ASSESSMENT
+    ? 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching'
+    : 'FindMyTherapy – Therapeut:innen-Matching & Kurse',
+  description: FEATURES.ASSESSMENT
+    ? 'Finde in wenigen Minuten heraus, welche Unterstützung dir guttut. Mit Ampel-Triage, persönlichen Empfehlungen, Kursen und einer Plattform für Therapeut:innen.'
+    : 'Finde passende Therapeut:innen in Österreich. Mit verifizierten Profilen, persönlichen Empfehlungen und professionellen Kursen.',
+  keywords: FEATURES.ASSESSMENT
+    ? [
+        'digitale Ersteinschätzung',
+        'PHQ-9 Erklärung',
+        'GAD-7 Erklärung',
+        'Therapeut:in finden Österreich',
+        'mentale Gesundheit Matching',
+      ]
+    : [
+        'Therapeut:in finden Österreich',
+        'mentale Gesundheit Matching',
+        'Psychotherapie Österreich',
+        'Online Therapie finden',
+      ],
   openGraph: {
     title: 'FindMyTherapy – Klarheit ab dem ersten Klick.',
-    description:
-      'Kostenlose Ersteinschätzung mit Ampel-System, persönliches Matching und begleitende Programme – entwickelt für Österreich.',
+    description: FEATURES.ASSESSMENT
+      ? 'Kostenlose Ersteinschätzung mit Ampel-System, persönliches Matching und begleitende Programme – entwickelt für Österreich.'
+      : 'Finde passende Therapeut:innen in Österreich. Verifizierte Profile, persönliches Matching und begleitende Programme.',
     type: 'website',
     locale: 'de_AT',
     url: 'https://findmytherapy.net/',
@@ -49,26 +62,34 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'FindMyTherapy – Digitale Orientierung für mentale Gesundheit',
-    description:
-      'Starte die kostenlose Ersteinschätzung, finde passende Therapeut:innen oder sichere Hilfe in Notfällen.',
+    description: FEATURES.ASSESSMENT
+      ? 'Starte die kostenlose Ersteinschätzung, finde passende Therapeut:innen oder sichere Hilfe in Notfällen.'
+      : 'Finde passende Therapeut:innen in Österreich mit verifizierten Profilen und persönlichem Matching.',
     creator: '@findmytherapy',
   },
 }
 
-const faqStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqItems.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
-  })),
-}
-
 export default function HomePage() {
+  // Get filtered content based on enabled features
+  const heroContent = getHeroContent()
+  const whyContent = getWhyContent()
+  const clientBenefits = getClientBenefits()
+  const therapistBenefits = getTherapistBenefits()
+  const faqItems = getFAQItems()
+
+  const faqStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+
   return (
     <div className="marketing-theme bg-surface text-default">
       <main className="flex flex-col gap-6 sm:gap-8 lg:gap-10">
@@ -76,7 +97,9 @@ export default function HomePage() {
           <MarketingHero content={heroContent} />
         </div>
 
-        <AssessmentSection />
+        <FeatureGate feature="ASSESSMENT">
+          <AssessmentSection />
+        </FeatureGate>
 
         <ClientBenefits content={clientBenefits} />
 

@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { Compass, Mail } from 'lucide-react'
+import { FEATURES } from '@/lib/features'
 
 export function Footer() {
   const footerLinks = {
     main: {
       title: 'Navigation',
       links: [
-        { name: 'Ersteinschätzung', href: '/triage' },
+        ...(FEATURES.ASSESSMENT ? [{ name: 'Ersteinschätzung', href: '/triage' }] : []),
         { name: 'Therapeut:innen', href: '/therapists' },
         { name: 'Für Therapeut:innen', href: '/for-therapists' },
         { name: 'FAQ', href: '/help' },

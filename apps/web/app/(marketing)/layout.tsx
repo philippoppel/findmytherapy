@@ -1,6 +1,7 @@
 import { Header } from '../../components/layout/Header'
 import { Footer } from '../../components/layout/Footer'
 import { ChatWidget } from '../../components/support/ChatWidget'
+import { FeatureGate } from '@/components/FeatureGate'
 
 export default function MarketingLayout({
   children,
@@ -14,7 +15,9 @@ export default function MarketingLayout({
         {children}
       </main>
       <Footer />
-      <ChatWidget />
+      <FeatureGate feature="CHATBOT">
+        <ChatWidget />
+      </FeatureGate>
     </div>
   )
 }

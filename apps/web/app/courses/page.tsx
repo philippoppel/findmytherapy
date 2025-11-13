@@ -4,6 +4,7 @@ import { Sparkles, Target } from 'lucide-react'
 
 import { seedCourses } from '@/lib/seed-data'
 import { CourseCatalog, type CourseCard } from './CourseCatalog'
+import { FEATURES } from '@/lib/features'
 
 export const metadata: Metadata = {
   title: 'Programme & Kurse – FindMyTherapy',
@@ -49,12 +50,14 @@ export default function CoursesPage() {
               Wir zeigen, wie Kurse und Hybridprogramme aufgebaut sind: klare Ziele, modulare Struktur, transparente Dauer und Integration ins FindMyTherapy-Sicherheitsnetz.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/triage"
-                className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-              >
-                <Target className="mr-2 h-4 w-4" /> Empfehlung via Ersteinschätzung
-              </Link>
+              {FEATURES.ASSESSMENT && (
+                <Link
+                  href="/triage"
+                  className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                >
+                  <Target className="mr-2 h-4 w-4" /> Empfehlung via Ersteinschätzung
+                </Link>
+              )}
               <Link
                 href="/contact"
                 className="text-sm font-semibold text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"

@@ -7,6 +7,7 @@ import { CheckCircle, Clock, MapPin, ShieldCheck, Sparkles, Star } from 'lucide-
 
 import type { TherapistStatus } from '@/lib/prisma'
 import { Button, cn } from '@mental-health/ui'
+import { FEATURES } from '@/lib/features'
 
 const formatOptions = [
   { id: 'online', label: 'Online' },
@@ -263,11 +264,13 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           ))}
         </div>
         <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-          <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
-            <Link href="/triage" prefetch={false}>
-              Passende Empfehlung
-            </Link>
-          </Button>
+          {FEATURES.ASSESSMENT && (
+            <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
+              <Link href="/triage" prefetch={false}>
+                Passende Empfehlung
+              </Link>
+            </Button>
+          )}
           <Button asChild size="sm" variant="ghost" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full text-white hover:bg-white/10 sm:w-auto">
             <Link href="/contact" prefetch={false}>
               Kontakt

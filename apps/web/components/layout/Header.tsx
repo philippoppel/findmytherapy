@@ -4,10 +4,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Compass, Menu, X } from 'lucide-react'
-import { marketingNavigation } from '../../app/marketing-content'
+import { getMarketingNavigation } from '../../app/marketing-content'
 import { AuthHeader } from './AuthHeader'
+import { FEATURES } from '@/lib/features'
+import { filterNavigationItems } from '@/lib/content-filters'
 
-const appNavigation = [
+const baseAppNavigation = [
   { label: 'Therapeut:innen', href: '/therapists' },
   { label: 'Kurse', href: '/courses' },
   { label: 'Blog', href: '/blog' },
@@ -19,18 +21,22 @@ export function Header() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isHome = pathname === '/'
+
+  // Get filtered navigation based on enabled features
+  const marketingNavigation = getMarketingNavigation()
+  const appNavigation = filterNavigationItems(baseAppNavigation)
   const navigation = isHome ? marketingNavigation : appNavigation
 
   // Auf der Homepage nur die wichtigsten Links zeigen
-  const desktopNavigation = isHome
-    ? [
-        { label: 'Ersteinschätzung', href: '/triage' },
-        { label: 'Therapeut:innen', href: '#therapists' },
-        { label: 'Team', href: '#team' },
-        { label: 'Blog', href: '/blog' },
-        { label: 'FAQ', href: '#faq' },
-      ]
-    : navigation
+  const baseDesktopNavigation = [
+    ...(FEATURES.ASSESSMENT ? [{ label: 'Ersteinschätzung', href: '/triage' }] : []),
+    { label: 'Therapeut:innen', href: '#therapists' },
+    { label: 'Team', href: '#team' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'FAQ', href: '#faq' },
+  ]
+
+  const desktopNavigation = isHome ? baseDesktopNavigation : navigation
 
   return (
     <header className="sticky top-0 z-50 border-b border-primary-200/50 bg-white/95 text-neutral-900 shadow-sm backdrop-blur-xl">
@@ -68,7 +74,7 @@ export function Header() {
 
           <div className="hidden items-center gap-4 lg:flex">
             <AuthHeader />
-            {!isHome && (
+            {!isHome && FEATURES.ASSESSMENT && (
               <Link
                 href="/triage"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
@@ -104,13 +110,15 @@ export function Header() {
             </div>
             <div className="space-y-3 border-t border-primary-200 pt-4">
               <AuthHeader />
-              <Link
-                href="/triage"
-                className="block rounded-xl bg-primary-600 px-4 py-3 text-center text-sm font-medium text-white shadow-soft transition hover:bg-primary-700"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Kostenlose Ersteinschätzung
-              </Link>
+              {FEATURES.ASSESSMENT && (
+                <Link
+                  href="/triage"
+                  className="block rounded-xl bg-primary-600 px-4 py-3 text-center text-sm font-medium text-white shadow-soft transition hover:bg-primary-700"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Kostenlose Ersteinschätzung
+                </Link>
+              )}
             </div>
           </div>
         )}

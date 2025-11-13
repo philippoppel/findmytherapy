@@ -26,6 +26,7 @@ import { prisma } from '@/lib/prisma'
 import { Button } from '@mental-health/ui'
 import { formatCurrencyInput } from '../../../lib/therapist/setcard'
 import { BackButton } from './BackButton'
+import { FEATURES } from '@/lib/features'
 
 type TherapistProfilePageProps = {
   params: {
@@ -247,11 +248,13 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                     Termin anfragen
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm">
-                  <Link href="/triage" prefetch={false}>
-                    Ersteinschätzung starten
-                  </Link>
-                </Button>
+                {FEATURES.ASSESSMENT && (
+                  <Button asChild size="lg" variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm">
+                    <Link href="/triage" prefetch={false}>
+                      Ersteinschätzung starten
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
 

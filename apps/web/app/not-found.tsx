@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Home, ArrowLeft, Search } from 'lucide-react'
+import { FEATURES } from '@/lib/features'
 
 export default function NotFound() {
   return (
@@ -53,18 +54,20 @@ export default function NotFound() {
         <div className="mt-16 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-primary-100/50 to-white p-8 shadow-xl shadow-primary-900/10">
           <h3 className="text-lg font-bold text-gray-900">Beliebte Seiten</h3>
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Link
-              href="/triage"
-              className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 text-left transition hover:border-primary-300 hover:shadow-md"
-            >
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600 transition group-hover:bg-primary-200">
-                <ArrowLeft className="h-5 w-5 rotate-180" />
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900">Ersteinschätzung</p>
-                <p className="text-sm text-gray-600">Kostenloser Test starten</p>
-              </div>
-            </Link>
+            {FEATURES.ASSESSMENT && (
+              <Link
+                href="/triage"
+                className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4 text-left transition hover:border-primary-300 hover:shadow-md"
+              >
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600 transition group-hover:bg-primary-200">
+                  <ArrowLeft className="h-5 w-5 rotate-180" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">Ersteinschätzung</p>
+                  <p className="text-sm text-gray-600">Kostenloser Test starten</p>
+                </div>
+              </Link>
+            )}
 
             <Link
               href="/contact"

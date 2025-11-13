@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { BookOpenCheck, CalendarClock, ChevronDown, ChevronUp, Layers3, Play } from 'lucide-react'
 
 import { Button, cn } from '@mental-health/ui'
+import { FEATURES } from '@/lib/features'
 
 export type CourseCard = {
   slug: string
@@ -115,9 +116,11 @@ export function CourseCatalog({ courses }: Props) {
                     </>
                   )}
                 </Button>
-                <Button asChild>
-                  <Link href="/triage">Passenden Kurs empfehlen lassen</Link>
-                </Button>
+                {FEATURES.ASSESSMENT && (
+                  <Button asChild>
+                    <Link href="/triage">Passenden Kurs empfehlen lassen</Link>
+                  </Button>
+                )}
                 <Button asChild variant="ghost">
                   <Link href="/contact">Beratungsgespräch vereinbaren</Link>
                 </Button>
