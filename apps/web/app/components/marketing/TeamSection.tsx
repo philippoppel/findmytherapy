@@ -14,13 +14,13 @@ export function TeamSection({ content }: TeamSectionProps) {
   return (
     <section id="team" className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
       {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] via-transparent to-secondary/[0.02]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] via-transparent to-primary/[0.03]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-14 text-center sm:mb-16 lg:mb-20">
           <Reveal>
-            <span className="inline-flex items-center rounded-full border border-secondary-200 bg-secondary-50 px-4 py-2 text-xs font-medium tracking-wide text-secondary-800 sm:text-sm">
+            <span className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-4 py-2 text-xs font-medium tracking-wide text-primary-800 sm:text-sm">
               Das Team
             </span>
           </Reveal>
@@ -113,7 +113,7 @@ export function TeamSection({ content }: TeamSectionProps) {
             </div>
 
             {/* Feedback CTA */}
-            <div className="mt-8 rounded-2xl border border-secondary-200 bg-gradient-to-br from-secondary-50 to-white p-6 shadow-soft sm:p-8">
+            <div className="mt-8 rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 shadow-soft sm:p-8">
               <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
                 <div className="flex-1">
                   <p className="text-lg font-bold text-default sm:text-xl">

@@ -13,18 +13,18 @@
   --color-primary-900: 74 63 46;
   --color-primary-950: 43 38 29;
 
-  /* Secondary: Soft Pastel Blue */
-  --color-secondary-50: 240 247 250;
-  --color-secondary-100: 227 240 245;
-  --color-secondary-200: 201 228 237;
-  --color-secondary-300: 163 212 227;
-  --color-secondary-400: 123 192 214;
-  --color-secondary-500: 94 172 198;
-  --color-secondary-600: 74 141 166;
-  --color-secondary-700: 60 113 134;
-  --color-secondary-800: 47 90 107;
-  --color-secondary-900: 36 70 84;
-  --color-secondary-950: 22 42 50;
+  /* Secondary: Warm Terracotta/Coral - Harmonizes with beige primary */
+  --color-secondary-50: 252 248 246;
+  --color-secondary-100: 249 241 237;
+  --color-secondary-200: 243 227 218;
+  --color-secondary-300: 232 199 180;
+  --color-secondary-400: 220 171 142;
+  --color-secondary-500: 208 143 104;
+  --color-secondary-600: 186 115 76;
+  --color-secondary-700: 164 87 48;
+  --color-secondary-800: 132 70 38;
+  --color-secondary-900: 100 53 29;
+  --color-secondary-950: 68 36 20;
 
   --color-accent-50: 255 248 235;
   --color-accent-100: 255 237 196;
@@ -75,7 +75,7 @@
   --token-text-muted: var(--color-neutral-700);
   --token-text-subtle: var(--color-neutral-600);
   --token-text-inverse: 255 255 255;
-  --token-text-link: var(--color-secondary-600);
+  --token-text-link: var(--color-primary-600);
 
   --text: var(--token-text-default);
   --text-muted: var(--token-text-muted);
@@ -123,7 +123,7 @@
   --divider: 235 227 213;
   --outline: var(--border-strong);
 
-  --focus-ring-color: var(--color-secondary-500);
+  --focus-ring-color: var(--color-primary-500);
   --focus-ring: var(--focus-ring-color);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;

@@ -38,10 +38,10 @@ export function Header() {
         <div className="flex h-18 items-center justify-between gap-4">
           <Link
             href="/"
-            className="group flex items-center gap-3 rounded-xl border border-transparent p-1.5 transition-transform hover:scale-105 focus-visible:border-secondary-300 focus-visible:bg-secondary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-400 focus-visible:outline-offset-2"
+            className="group flex items-center gap-3 rounded-xl border border-transparent p-1.5 transition-transform hover:scale-105 focus-visible:border-primary-300 focus-visible:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-400 focus-visible:outline-offset-2"
             aria-label="FindMyTherapy Startseite"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-secondary-400 shadow-soft">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 shadow-soft">
               <Compass className="h-5 w-5 text-white" aria-hidden />
             </div>
             <div className="flex flex-col">
@@ -59,7 +59,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-400 focus-visible:ring-offset-2"
+                className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
               >
                 {item.label}
               </Link>
@@ -71,7 +71,7 @@ export function Header() {
             {!isHome && (
               <Link
                 href="/triage"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-400 focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
               >
                 Kostenlose Ersteinschätzung
               </Link>

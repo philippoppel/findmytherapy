@@ -19,7 +19,7 @@ export function WhySection({ content }: WhySectionProps) {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
-          <Reveal className="relative order-2 overflow-hidden rounded-3xl bg-gradient-to-br from-secondary-900/90 via-secondary-800/90 to-secondary-900/90 shadow-xl lg:order-1" variant="scale">
+          <Reveal className="relative order-2 overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/90 via-secondary-800/90 to-primary-900/90 shadow-xl lg:order-1" variant="scale">
             <div className="absolute inset-0">
               <Image
                 src={content.image.src}
