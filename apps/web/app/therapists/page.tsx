@@ -26,7 +26,9 @@ export default async function TherapistsPage() {
   const profiles = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
-      status: 'VERIFIED',
+      status: {
+        in: ['VERIFIED', 'PENDING'],
+      },
     },
     include: {
       user: {
