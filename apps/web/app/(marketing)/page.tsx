@@ -40,6 +40,11 @@ export const metadata: Metadata = {
         'GAD-7 Erklärung',
         'Therapeut:in finden Österreich',
         'mentale Gesundheit Matching',
+        'Psychotherapeut Wien',
+        'Online Therapie Österreich',
+        'Depression Test',
+        'Angststörung Test',
+        'Therapeutensuche',
       ]
     : [
         'Therapeut:in finden Österreich',
@@ -55,6 +60,15 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'de_AT',
     url: 'https://findmytherapy.net/',
+    siteName: 'FindMyTherapy',
+    images: [
+      {
+        url: 'https://findmytherapy.net/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching für Österreich',
+      },
+    ],
   },
   alternates: {
     canonical: 'https://findmytherapy.net/',
@@ -66,6 +80,8 @@ export const metadata: Metadata = {
       ? 'Starte die kostenlose Ersteinschätzung, finde passende Therapeut:innen oder sichere Hilfe in Notfällen.'
       : 'Finde passende Therapeut:innen in Österreich mit verifizierten Profilen und persönlichem Matching.',
     creator: '@findmytherapy',
+    site: '@findmytherapy',
+    images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
 }
 
@@ -78,6 +94,7 @@ export default function HomePage() {
   const faqItems = getFAQItems()
   const contactCta = getContactCta()
 
+  // Structured Data for SEO
   const faqStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -89,6 +106,102 @@ export default function HomePage() {
         text: faq.answer,
       },
     })),
+  }
+
+  const organizationStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'FindMyTherapy',
+    url: 'https://findmytherapy.net',
+    logo: 'https://findmytherapy.net/images/logo.png',
+    description:
+      'FindMyTherapy ist eine evidenzbasierte Plattform für mentale Gesundheit in Österreich. Wir bieten digitale Ersteinschätzung mit validierten Fragebögen (PHQ-9, GAD-7), Therapeuten-Matching und therapeutisch fundierte Online-Kurse.',
+    foundingDate: '2024',
+    areaServed: {
+      '@type': 'Country',
+      name: 'Österreich',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'hello@findmytherapy.net',
+      availableLanguage: ['de', 'de-AT'],
+    },
+    sameAs: [
+      'https://www.linkedin.com/company/findmytherapy',
+      'https://www.instagram.com/findmytherapy',
+    ],
+  }
+
+  const websiteStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'FindMyTherapy',
+    url: 'https://findmytherapy.net',
+    description:
+      'Digitale Ersteinschätzung & Therapeut:innen-Matching für mentale Gesundheit in Österreich',
+    inLanguage: 'de-AT',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://findmytherapy.net/therapists?search={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }
+
+  const medicalWebPageStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    name: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching',
+    description:
+      'Kostenlose Ersteinschätzung mit validierten Fragebögen (PHQ-9, GAD-7), Therapeuten-Vermittlung und therapeutisch fundierte Online-Kurse für mentale Gesundheit in Österreich.',
+    url: 'https://findmytherapy.net',
+    inLanguage: 'de-AT',
+    isPartOf: {
+      '@type': 'WebSite',
+      url: 'https://findmytherapy.net',
+    },
+    about: {
+      '@type': 'MedicalCondition',
+      name: 'Mental Health',
+    },
+    audience: {
+      '@type': 'PeopleAudience',
+      geographicArea: {
+        '@type': 'Country',
+        name: 'Österreich',
+      },
+    },
+    specialty: 'Psychotherapy',
+  }
+
+  const videoObjectStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: 'FindMyTherapy – Professionelle Therapiesitzung',
+    description:
+      'Entdecke FindMyTherapy: Die Plattform für digitale Ersteinschätzung und Therapeuten-Matching in Österreich. Mit validierten Fragebögen und professioneller Unterstützung.',
+    thumbnailUrl: 'https://findmytherapy.net/images/therapists/therapy-1.jpg',
+    contentUrl: 'https://findmytherapy.net/videos/hero-therapy.mp4',
+    uploadDate: '2024-01-01',
+    duration: 'PT30S',
+    inLanguage: 'de-AT',
+    about: 'Mentale Gesundheit und Psychotherapie in Österreich',
+  }
+
+  const breadcrumbListStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://findmytherapy.net',
+      },
+    ],
   }
 
   return (
@@ -119,6 +232,27 @@ export default function HomePage() {
         <ContactCta content={contactCta} />
       </main>
 
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObjectStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListStructuredData) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}

@@ -24,8 +24,12 @@ export function MarketingHero({ content }: HeroProps) {
           playsInline
           poster="/images/therapists/therapy-1.jpg"
           className="h-full w-full object-cover"
+          title="FindMyTherapy – Professionelle Therapiesitzung, Mentale Gesundheit in Österreich"
+          aria-label="Hintergrundvideo zeigt eine professionelle Therapiesitzung"
         >
           <source src="/videos/hero-therapy.mp4" type="video/mp4" />
+          Ihr Browser unterstützt keine HTML5-Videos. Besuchen Sie FindMyTherapy für digitale
+          Ersteinschätzung und Therapeuten-Matching.
         </video>
         {/* Overlay for text readability - warm gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-neutral-900/60 to-primary-900/70 backdrop-blur-[2px]" />

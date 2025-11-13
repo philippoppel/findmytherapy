@@ -17,9 +17,36 @@ import { getAvailabilityMeta } from './availability'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Therapeut:innen entdecken – FindMyTherapy',
+  title: 'Therapeut:innen finden in Österreich – FindMyTherapy',
   description:
-    'Finde zertifizierte Therapeut:innen mit klarer Spezialisierung, verfügbaren Terminen und transparenten Therapieschwerpunkten.',
+    'Finde zertifizierte Psychotherapeut:innen in Österreich mit klarer Spezialisierung, verfügbaren Terminen und transparenten Therapieschwerpunkten. Verifizierte Profile, Online und Vor-Ort-Termine.',
+  keywords: [
+    'Therapeut finden Österreich',
+    'Psychotherapeut Wien',
+    'Online Therapie Österreich',
+    'Psychotherapie Termine',
+    'Therapeutensuche',
+    'Kassenplatz Therapie',
+    'verifizierte Therapeuten',
+  ],
+  openGraph: {
+    title: 'Therapeut:innen finden in Österreich – Verifizierte Profile',
+    description:
+      'Entdecke zertifizierte Psychotherapeut:innen mit verfügbaren Terminen. Online und vor Ort in Wien, Graz, Linz und ganz Österreich.',
+    type: 'website',
+    url: 'https://findmytherapy.net/therapists',
+    locale: 'de_AT',
+    siteName: 'FindMyTherapy',
+  },
+  alternates: {
+    canonical: 'https://findmytherapy.net/therapists',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Therapeut:innen finden in Österreich',
+    description:
+      'Zertifizierte Psychotherapeut:innen mit verfügbaren Terminen. Transparent, verifiziert, DSGVO-konform.',
+  },
 }
 
 export default async function TherapistsPage() {
