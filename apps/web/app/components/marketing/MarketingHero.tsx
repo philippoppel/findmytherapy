@@ -16,30 +16,18 @@ export function MarketingHero({ content }: HeroProps) {
       className="relative overflow-hidden rounded-2xl shadow-soft-xl"
       aria-labelledby="hero-heading"
     >
-      {/* Fullscreen Video Background - Desktop Only (saves mobile data) */}
-      <div className="absolute inset-0 z-0 hidden lg:block">
+      {/* Fullscreen Video Background - All Devices */}
+      <div className="absolute inset-0 z-0">
         <video
           autoPlay
           muted
           loop
           playsInline
+          poster="/images/therapists/therapy-1.jpg"
           className="h-full w-full object-cover"
         >
           <source src="/videos/hero-therapy.mp4" type="video/mp4" />
         </video>
-        {/* Overlay for text readability - warm gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-neutral-900/60 to-primary-900/70 backdrop-blur-[2px]" />
-      </div>
-
-      {/* Static Image Background - Mobile & Tablet (faster loading) */}
-      <div className="absolute inset-0 z-0 lg:hidden">
-        <Image
-          src="/images/therapists/therapy-1.jpg"
-          alt="Therapy session"
-          fill
-          className="object-cover"
-          priority
-        />
         {/* Overlay for text readability - warm gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-neutral-900/60 to-primary-900/70 backdrop-blur-[2px]" />
       </div>
