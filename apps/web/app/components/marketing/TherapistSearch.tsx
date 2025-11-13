@@ -279,7 +279,7 @@ export async function TherapistSearch() {
           <div className="text-center">
             <Link
               href="/therapists"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-600 to-cyan-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:-translate-y-0.5 hover:from-teal-500 hover:to-cyan-500"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-primary-900/20 transition hover:-translate-y-0.5 hover:from-primary-500 hover:to-primary-600"
             >
               Alle Therapeut:innen durchsuchen
               <ArrowRight className="h-5 w-5" aria-hidden />
