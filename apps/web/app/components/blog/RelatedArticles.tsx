@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { BlogPost } from '@/lib/blogData'
-import { Badge } from '@repo/ui/components/badge'
+import { Badge } from '@mental-health/ui'
 
 interface RelatedArticlesProps {
   currentPost: BlogPost
@@ -89,7 +89,7 @@ export function RelatedArticles({
 
             {/* Category Badge */}
             <Badge
-              variant="secondary"
+              variant="neutral"
               className="self-start mb-3 text-xs font-medium"
             >
               {post.category}

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@repo/ui/components/badge'
+import { Badge } from '@mental-health/ui'
 import { SectionHeading } from '../marketing/SectionHeading'
 
 export function BlogFeatureSection() {
@@ -134,7 +134,7 @@ export function BlogFeatureSection() {
                 )}
 
                 <div className="flex-1 min-w-0">
-                  <Badge variant="secondary" className="mb-2 text-xs">
+                  <Badge variant="neutral" className="mb-2 text-xs">
                     {post.category}
                   </Badge>
 

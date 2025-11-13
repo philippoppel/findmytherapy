@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@repo/ui/components/badge'
+import { Badge } from '@mental-health/ui'
 
 type TagPageProps = {
   params: {
@@ -98,7 +98,7 @@ export default function TagPage({ params }: TagPageProps) {
 
         {/* Tag Header */}
         <div className="mb-12">
-          <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+          <Badge variant="neutral" className="mb-4 text-lg px-4 py-2">
             #{tagName}
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -131,7 +131,7 @@ export default function TagPage({ params }: TagPageProps) {
               )}
 
               <div className="p-6 flex flex-col flex-grow">
-                <Badge variant="secondary" className="self-start mb-3">
+                <Badge variant="neutral" className="self-start mb-3">
                   {post.category}
                 </Badge>
 

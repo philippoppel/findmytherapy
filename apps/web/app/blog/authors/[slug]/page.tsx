@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getAllAuthors } from '@/lib/authors'
 import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@repo/ui/components/badge'
+import { Badge } from '@mental-health/ui'
 
 type AuthorPageProps = {
   params: {
@@ -114,7 +114,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
               {/* Expertise Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
                 {author.expertise.map((skill) => (
-                  <Badge key={skill} variant="secondary">
+                  <Badge key={skill} variant="neutral">
                     {skill}
                   </Badge>
                 ))}
@@ -217,7 +217,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
                   )}
 
                   <div className="p-6 flex flex-col flex-grow">
-                    <Badge variant="secondary" className="self-start mb-3">
+                    <Badge variant="neutral" className="self-start mb-3">
                       {post.category}
                     </Badge>
 

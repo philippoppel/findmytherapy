@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@repo/ui/components/badge'
+import { Badge } from '@mental-health/ui'
 
 type CategoryPageProps = {
   params: {
@@ -93,7 +93,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
         {/* Category Header */}
         <div className="mb-12">
-          <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+          <Badge variant="neutral" className="mb-4 text-lg px-4 py-2">
             {categoryName}
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
