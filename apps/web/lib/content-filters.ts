@@ -30,6 +30,39 @@ type FAQItem = {
   answer: string
 }
 
+type HeroContent = {
+  eyebrow: string
+  title: string
+  highlight: string
+  description: string
+  primaryCta: { label: string; href: string }
+  secondaryCta: { label: string; href: string }
+  tertiaryCta: { label: string; href: string }
+  metrics: Array<{ value: string; label: string }>
+  image: { src: string; alt: string }
+}
+
+type WhyContent = {
+  id: string
+  title: string
+  description: string
+  bullets: string[]
+  cta: { label: string; href: string }
+  image: { src: string; alt: string }
+}
+
+type BenefitsContent = {
+  id: string
+  eyebrow: string
+  title: string
+  description: string
+  benefits: readonly Benefit[]
+  cta: {
+    primary: { label: string; href: string }
+    secondary: { label: string; href: string }
+  }
+}
+
 /**
  * Filters navigation items based on enabled features
  * Removes links to disabled features
@@ -134,7 +167,7 @@ export function filterFAQItems(items: readonly FAQItem[]): FAQItem[] {
  * Gets hero content with feature-aware adjustments
  * Modifies CTAs, metrics, and description based on enabled features
  */
-export function getFilteredHeroContent(heroContent: any) {
+export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
   const filtered = { ...heroContent }
 
   // Adjust primary CTA if assessment is disabled
@@ -170,7 +203,7 @@ export function getFilteredHeroContent(heroContent: any) {
 /**
  * Gets why section content with feature-aware adjustments
  */
-export function getFilteredWhyContent(whyContent: any) {
+export function getFilteredWhyContent(whyContent: WhyContent): WhyContent {
   const filtered = { ...whyContent }
 
   if (!FEATURES.ASSESSMENT) {
@@ -200,7 +233,7 @@ export function getFilteredWhyContent(whyContent: any) {
 /**
  * Gets client benefits content with filtered benefits and adjusted CTAs
  */
-export function getFilteredClientBenefits(clientBenefits: any) {
+export function getFilteredClientBenefits(clientBenefits: BenefitsContent): BenefitsContent {
   const filtered = { ...clientBenefits }
 
   // Filter benefits
@@ -226,7 +259,7 @@ export function getFilteredClientBenefits(clientBenefits: any) {
 /**
  * Gets therapist benefits content with filtered benefits
  */
-export function getFilteredTherapistBenefits(therapistBenefits: any) {
+export function getFilteredTherapistBenefits(therapistBenefits: BenefitsContent): BenefitsContent {
   const filtered = { ...therapistBenefits }
 
   // Filter benefits
@@ -241,11 +274,11 @@ export function getFilteredTherapistBenefits(therapistBenefits: any) {
  */
 export function getFilteredMarketingContent(content: {
   navigation: readonly NavigationItem[]
-  heroContent: any
-  whyContent: any
+  heroContent: HeroContent
+  whyContent: WhyContent
   featureTabs: readonly FeatureTab[]
-  clientBenefits: any
-  therapistBenefits: any
+  clientBenefits: BenefitsContent
+  therapistBenefits: BenefitsContent
   faqItems: readonly FAQItem[]
 }) {
   return {

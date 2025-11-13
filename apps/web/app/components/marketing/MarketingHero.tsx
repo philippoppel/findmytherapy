@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { Button } from '@mental-health/ui'
 import type { heroContent } from '../../marketing-content'
 import { Reveal } from './Reveal'
@@ -82,7 +81,7 @@ export function MarketingHero({ content }: HeroProps) {
 
           <Reveal delay={500}>
             <dl className="mt-16 grid gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-10">
-              {content.metrics.map((metric, index) => (
+              {content.metrics.map((metric, _index) => (
                 <div key={metric.label} className="text-center">
                   <dt className="text-sm font-medium tracking-wide text-white/70 sm:text-base">
                     {metric.label}
