@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { SlidersHorizontal } from 'lucide-react'
 import { TherapistCard } from './TherapistCard'
@@ -265,8 +265,16 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
     setDisplayCount((prev) => prev + 12)
   }, [])
 
-  // Scroll to top when filters change
+  // Track if this is the initial render
+  const isInitialMount = useRef(true)
+
+  // Scroll to top when filters change (but not on initial mount)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+
     const resultsSection = document.getElementById('therapist-results')
     if (resultsSection) {
       resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })

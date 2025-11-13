@@ -30,7 +30,7 @@ export const heroContent = {
   metrics: [
     { value: 'PHQ-9 & GAD-7', label: 'Validierte Tests' },
     { value: '< 5 Min.', label: 'Bis zum Ergebnis' },
-    { value: 'EU-Datenschutz', label: 'DSGVO-konform' },
+    { value: '100% DSGVO', label: 'EU-Datenschutz' },
   ],
   image: {
     src: '/images/therapists/therapy-1.jpg',

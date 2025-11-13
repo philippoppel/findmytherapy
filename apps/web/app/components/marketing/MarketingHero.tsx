@@ -32,14 +32,14 @@ export function MarketingHero({ content }: HeroProps) {
           Ersteinschätzung und Therapeuten-Matching.
         </video>
         {/* Overlay for text readability - warm gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/75 via-neutral-900/60 to-primary-900/70 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/80 via-neutral-900/70 to-primary-900/75 backdrop-blur-sm" />
       </div>
 
       {/* Content over video */}
-      <div className="relative z-10 px-6 py-20 text-white sm:px-8 sm:py-28 md:py-36 lg:px-12 lg:py-44">
-        <div className="mx-auto max-w-4xl text-center">
+      <div className="relative z-10 px-6 py-24 text-white sm:px-8 sm:py-32 md:py-40 lg:px-12 lg:py-52">
+        <div className="mx-auto max-w-5xl text-center">
           <Reveal delay={100}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium tracking-wide text-white backdrop-blur-md sm:gap-3 sm:px-6 sm:py-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/15 px-6 py-3 text-sm font-semibold tracking-wide text-white shadow-lg backdrop-blur-md sm:gap-3 sm:px-7 sm:py-3.5 sm:text-base">
               {content.eyebrow}
             </div>
           </Reveal>
@@ -47,25 +47,25 @@ export function MarketingHero({ content }: HeroProps) {
           <Reveal delay={200}>
             <h1
               id="hero-heading"
-              className="mt-8 text-balance text-5xl font-semibold leading-tight tracking-tight text-white sm:mt-10 sm:text-6xl lg:text-7xl"
+              className="mt-10 text-balance text-5xl font-bold leading-tight tracking-tight text-white drop-shadow-lg sm:mt-12 sm:text-7xl lg:text-8xl"
             >
               {content.title}
             </h1>
           </Reveal>
 
           <Reveal delay={300}>
-            <p className="mx-auto mt-8 max-w-3xl text-pretty text-xl leading-extra-relaxed text-white/90 sm:mt-10 sm:text-2xl">
+            <p className="mx-auto mt-10 max-w-3xl text-pretty text-xl leading-relaxed text-white drop-shadow-md sm:mt-12 sm:text-2xl lg:text-3xl">
               {content.highlight}
             </p>
           </Reveal>
 
           <Reveal delay={400}>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:mt-12 sm:flex-row sm:gap-5">
+            <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:mt-14 sm:flex-row sm:gap-6">
               <Button
                 asChild
                 size="lg"
                 variant="primary"
-                className="w-full shadow-soft-xl transition hover:-translate-y-0.5 hover:shadow-soft-xl sm:w-auto sm:px-10 sm:py-6 sm:text-lg"
+                className="w-full shadow-2xl transition-all hover:-translate-y-1 hover:scale-105 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
               >
                 <Link href={content.primaryCta.href}>
                   {content.primaryCta.label}
@@ -74,7 +74,7 @@ export function MarketingHero({ content }: HeroProps) {
               <Button
                 asChild
                 size="lg"
-                className="w-full border-2 border-white/30 bg-white/10 text-white shadow-soft backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/20 hover:shadow-soft-lg sm:w-auto sm:px-10 sm:py-6 sm:text-lg"
+                className="w-full border-2 border-white/40 bg-white/15 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-white/50 hover:bg-white/25 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
               >
                 <Link href={content.secondaryCta.href}>
                   {content.secondaryCta.label}
@@ -84,15 +84,15 @@ export function MarketingHero({ content }: HeroProps) {
           </Reveal>
 
           <Reveal delay={500}>
-            <dl className="mt-16 grid gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-10">
+            <dl className="mt-20 grid gap-10 sm:mt-24 sm:grid-cols-3 sm:gap-12">
               {content.metrics.map((metric, _index) => (
                 <div key={metric.label} className="text-center">
-                  <dt className="text-sm font-medium tracking-wide text-white/70 sm:text-base">
-                    {metric.label}
-                  </dt>
-                  <dd className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+                  <dd className="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
                     {metric.value}
                   </dd>
+                  <dt className="mt-3 text-base font-medium tracking-wide text-white/80 sm:text-lg">
+                    {metric.label}
+                  </dt>
                 </div>
               ))}
             </dl>
