@@ -61,6 +61,8 @@ export type SeedTherapist = {
     languages: string[]
     online: boolean
     city: string
+    latitude?: number | null
+    longitude?: number | null
     country: string
     about: string
     availabilityNote: string
@@ -107,6 +109,8 @@ export const seedTherapists: SeedTherapist[] = [
       languages: ['de-AT', 'en'],
       online: true,
       city: 'Wien',
+      latitude: 48.2082,
+      longitude: 16.3738,
       country: 'AT',
       about:
         'Fokussiert auf ressourcenorientierte Verhaltenstherapie mit Achtsamkeitsintegration. Langjährige Erfahrung mit Führungskräften und Personen in beruflichen Belastungssituationen.',
@@ -154,6 +158,8 @@ export const seedTherapists: SeedTherapist[] = [
       languages: ['de-AT'],
       online: true,
       city: 'Graz',
+      latitude: 47.0707,
+      longitude: 15.4395,
       country: 'AT',
       about:
         'Begleitet Klient:innen mit Angst- und Aufmerksamkeitsstörungen. Kombiniert strukturierte Verhaltenstherapie mit neuropsychologischen Methoden und Biofeedback.',
@@ -201,6 +207,8 @@ export const seedTherapists: SeedTherapist[] = [
       languages: ['de-AT', 'tr'],
       online: false,
       city: 'Linz',
+      latitude: 48.3069,
+      longitude: 14.2858,
       country: 'AT',
       about:
         'Verbindet kinder- und jugendpsychiatrische Expertise mit systemischer Elternarbeit. Entwickelt digitale Lerntracks zur Familienintegration.',
@@ -244,6 +252,8 @@ export const seedTherapists: SeedTherapist[] = [
       languages: ['de-AT', 'es'],
       online: true,
       city: 'Online',
+      latitude: null,
+      longitude: null,
       country: 'AT',
       about:
         'Arbeitet mit systemischen Kurzzeitinterventionen und fokussiert auf Beziehungen sowie LGBTQIA+-affirmative Begleitung.',

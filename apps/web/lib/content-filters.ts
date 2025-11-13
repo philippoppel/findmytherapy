@@ -71,8 +71,8 @@ export function filterNavigationItems(
   items: readonly NavigationItem[]
 ): NavigationItem[] {
   return items.filter((item) => {
-    // Remove triage/assessment link if feature is disabled
-    if (!FEATURES.ASSESSMENT && item.href === '/triage') {
+    // Remove triage/assessment links if feature is disabled
+    if (!FEATURES.ASSESSMENT && (item.href === '/triage' || item.href === '#phq-info')) {
       return false
     }
     return true
@@ -172,15 +172,20 @@ export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
 
   // Adjust primary CTA if assessment is disabled
   if (!FEATURES.ASSESSMENT) {
+    // Update eyebrow to remove assessment reference
+    filtered.eyebrow = 'Therapeut:innen-Vermittlung & Begleitung'
+
     filtered.primaryCta = {
       label: 'Therapeut:innen finden',
       href: '/therapists',
     }
 
-    // Remove PHQ-9/GAD-7 references from metrics
+    // Remove assessment-related metrics (PHQ-9/GAD-7 and "< 5 Min.")
     filtered.metrics = filtered.metrics.filter(
       (metric) =>
-        !metric.value.includes('PHQ') && !metric.value.includes('GAD')
+        !metric.value.includes('PHQ') &&
+        !metric.value.includes('GAD') &&
+        metric.label !== 'Bis zum Ergebnis'
     )
 
     // Adjust description to remove assessment references
@@ -264,6 +269,37 @@ export function getFilteredTherapistBenefits(therapistBenefits: BenefitsContent)
 
   // Filter benefits
   filtered.benefits = filterTherapistBenefits(therapistBenefits.benefits)
+
+  return filtered
+}
+
+type ContactCta = {
+  heading: string
+  subheading: string
+  primaryCta: { label: string; href: string }
+  secondaryCta: { label: string; href: string }
+}
+
+/**
+ * Gets contact CTA content with feature-aware adjustments
+ */
+export function getFilteredContactCta(contactCta: ContactCta): ContactCta {
+  const filtered = { ...contactCta }
+
+  if (!FEATURES.ASSESSMENT) {
+    // Remove reference to "Erstgespräch-Vorberichte" which requires assessment
+    filtered.subheading = filtered.subheading
+      .replace(/Erhalte Erstgespräch-Vorberichte vor jedem ersten Termin, /, '')
+      .replace(/eine kostenlose Praxis-Webseite und /, 'Eine kostenlose Praxis-Webseite, ')
+  }
+
+  if (!FEATURES.MICROSITE) {
+    // Remove reference to microsite
+    filtered.subheading = filtered.subheading
+      .replace(/, eine kostenlose Praxis-Webseite/, '')
+      .replace(/eine kostenlose Praxis-Webseite und /, '')
+      .replace(/Eine kostenlose Praxis-Webseite, /, '')
+  }
 
   return filtered
 }

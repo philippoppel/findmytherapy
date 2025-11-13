@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import {
   earlyAccessContent,
   teamContent,
-  contactCta,
   getHeroContent,
   getWhyContent,
   getClientBenefits,
   getTherapistBenefits,
   getFAQItems,
+  getContactCta,
 } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
 import { WhySection } from '../components/marketing/WhySection'
@@ -76,6 +76,7 @@ export default function HomePage() {
   const clientBenefits = getClientBenefits()
   const therapistBenefits = getTherapistBenefits()
   const faqItems = getFAQItems()
+  const contactCta = getContactCta()
 
   const faqStructuredData = {
     '@context': 'https://schema.org',

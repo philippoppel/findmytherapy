@@ -108,6 +108,8 @@ async function main() {
             languages: therapist.profile.languages,
             online: therapist.profile.online,
             city: therapist.profile.city,
+            latitude: therapist.profile.latitude ?? null,
+            longitude: therapist.profile.longitude ?? null,
             country: therapist.profile.country,
             about: therapist.profile.about,
             availabilityNote: therapist.profile.availabilityNote,

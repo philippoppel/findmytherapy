@@ -188,6 +188,8 @@ model TherapistProfile {
   languages        String[]
   online           Boolean         @default(false)
   city             String?
+  latitude         Float?
+  longitude        Float?
   country          String          @default("AT")
   about            String?         @db.Text
   availabilityNote String?         @db.Text
@@ -227,6 +229,7 @@ model TherapistProfile {
 
   @@index([status, isPublic])
   @@index([city])
+  @@index([latitude, longitude])
   @@index([country])
   @@index([acceptingClients])
   @@index([rating])

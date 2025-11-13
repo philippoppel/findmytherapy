@@ -1,18 +1,36 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, type MouseEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CheckCircle, Clock, MapPin, ShieldCheck, Sparkles, Star } from 'lucide-react'
+import { CheckCircle, Clock, LocateFixed, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
 
 import type { TherapistStatus } from '@/lib/prisma'
 import { Button, cn } from '@mental-health/ui'
 import { FEATURES } from '@/lib/features'
+import {
+  type Coordinates,
+  normalizeLocationValue,
+  resolveCoordinatesFromSearch,
+} from './location-data'
 
 const formatOptions = [
   { id: 'online', label: 'Online' },
   { id: 'praesenz', label: 'Vor Ort' },
   { id: 'hybrid', label: 'Hybrid' },
+] as const
+
+const DEFAULT_NEARBY_RADIUS = 50
+const RADIUS_OPTIONS = [25, 50, 75, 120] as const
+const EARTH_RADIUS_KM = 6371
+
+const gradientPalette = [
+  'from-rose-500 via-fuchsia-500 to-indigo-500',
+  'from-sky-500 via-cyan-500 to-emerald-500',
+  'from-amber-500 via-orange-500 to-rose-500',
+  'from-indigo-500 via-purple-500 to-pink-500',
+  'from-emerald-500 via-teal-500 to-sky-500',
+  'from-blue-500 via-slate-500 to-slate-800',
 ] as const
 
 const statusLabel: Record<TherapistStatus, string> = {
@@ -35,7 +53,10 @@ export type TherapistCard = {
   focus: string[]
   approach: string
   location: string
+  city: string | null
+  coordinates: Coordinates | null
   availability: string
+  availabilityRank: number
   languages: string[]
   rating: number
   reviews: number
@@ -44,6 +65,8 @@ export type TherapistCard = {
   initials: string
   status: TherapistStatus
   formatTags: Array<'online' | 'praesenz' | 'hybrid'>
+  distanceInKm?: number
+  locationTokens: string[]
 }
 
 type Props = {
@@ -53,6 +76,12 @@ type Props = {
 export function TherapistDirectory({ therapists }: Props) {
   const [focusFilter, setFocusFilter] = useState<string | null>(null)
   const [formatFilter, setFormatFilter] = useState<(typeof formatOptions)[number]['id'] | null>(null)
+  const [locationFilter, setLocationFilter] = useState('')
+  const [nearbyOnly, setNearbyOnly] = useState(false)
+  const [maxDistance, setMaxDistance] = useState<number>(DEFAULT_NEARBY_RADIUS)
+  const [userLocation, setUserLocation] = useState<Coordinates | null>(null)
+  const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [geoError, setGeoError] = useState<string | null>(null)
 
   const focusOptions = useMemo(() => {
     const values = new Set<string>()
@@ -60,15 +89,122 @@ export function TherapistDirectory({ therapists }: Props) {
     return Array.from(values).sort((a, b) => a.localeCompare(b, 'de-AT'))
   }, [therapists])
 
+  const cityOptions = useMemo(() => {
+    const values = new Set<string>()
+    therapists.forEach((therapist) => {
+      if (therapist.city) {
+        values.add(therapist.city)
+      }
+    })
+    return Array.from(values).sort((a, b) => a.localeCompare(b, 'de-AT'))
+  }, [therapists])
+
+  const normalizedLocationFilter = normalizeLocationValue(locationFilter)
+  const manualLocationCoordinates = useMemo(() => {
+    if (!normalizedLocationFilter) {
+      return null
+    }
+    return resolveCoordinatesFromSearch(normalizedLocationFilter)
+  }, [normalizedLocationFilter])
+  const proximityOrigin = userLocation ?? manualLocationCoordinates
+
+  const therapistsWithDistances = useMemo(() => {
+    if (!proximityOrigin) {
+      return therapists
+    }
+    return therapists.map((therapist) => {
+      if (!therapist.coordinates) {
+        return { ...therapist, distanceInKm: undefined }
+      }
+      return {
+        ...therapist,
+        distanceInKm: calculateDistanceKm(proximityOrigin, therapist.coordinates),
+      }
+    })
+  }, [proximityOrigin, therapists])
+
   const filteredTherapists = useMemo(() => {
-    return therapists.filter((therapist) => {
+    return therapistsWithDistances.filter((therapist) => {
       const matchesFocus = focusFilter ? therapist.focus.includes(focusFilter) : true
       const matchesFormat = formatFilter ? therapist.formatTags.includes(formatFilter) : true
-      return matchesFocus && matchesFormat
+      const matchesLocation = normalizedLocationFilter
+        ? therapist.locationTokens.some((token) => token.includes(normalizedLocationFilter))
+        : true
+      const matchesNearby =
+        !nearbyOnly || !proximityOrigin
+          ? true
+          : typeof therapist.distanceInKm === 'number' && therapist.distanceInKm <= maxDistance
+      return matchesFocus && matchesFormat && matchesLocation && matchesNearby
     })
-  }, [therapists, focusFilter, formatFilter])
+  }, [
+    focusFilter,
+    formatFilter,
+    maxDistance,
+    nearbyOnly,
+    normalizedLocationFilter,
+    proximityOrigin,
+    therapistsWithDistances,
+  ])
 
-  const hasFilters = Boolean(focusFilter || formatFilter)
+  const sortedTherapists = useMemo(() => {
+    const next = [...filteredTherapists]
+    next.sort((a, b) => compareTherapists(a, b))
+    return next
+  }, [filteredTherapists])
+
+  const activeFilterLabels: string[] = []
+  if (focusFilter) activeFilterLabels.push(`Fokus „${focusFilter}“`)
+  if (formatFilter) {
+    const formatLabel = formatOptions.find((option) => option.id === formatFilter)?.label ?? formatFilter
+    activeFilterLabels.push(`Format „${formatLabel}“`)
+  }
+  if (locationFilter.trim()) {
+    activeFilterLabels.push(`Ort „${locationFilter.trim()}“`)
+  }
+  if (nearbyOnly) {
+    activeFilterLabels.push(`Umkreis ${maxDistance} km`)
+  }
+
+  const hasFilters = activeFilterLabels.length > 0
+
+  const handleResetFilters = useCallback(() => {
+    setFocusFilter(null)
+    setFormatFilter(null)
+    setLocationFilter('')
+    setNearbyOnly(false)
+    setMaxDistance(DEFAULT_NEARBY_RADIUS)
+  }, [])
+
+  const handleUseLocation = useCallback(() => {
+    if (typeof window === 'undefined' || !('geolocation' in navigator)) {
+      setGeoStatus('error')
+      setGeoError('Standortfreigabe wird von diesem Browser nicht unterstützt.')
+      return
+    }
+
+    setGeoStatus('loading')
+    setGeoError(null)
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
+        setGeoStatus('idle')
+        setNearbyOnly(true)
+      },
+      (error) => {
+        setGeoStatus('error')
+        setGeoError(error.message || 'Standort konnte nicht ermittelt werden.')
+      },
+      {
+        maximumAge: 1000 * 60 * 5,
+        timeout: 1000 * 15,
+        enableHighAccuracy: false,
+      },
+    )
+  }, [])
 
   return (
     <>
@@ -82,15 +218,7 @@ export function TherapistDirectory({ therapists }: Props) {
               </p>
             </div>
             {hasFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setFocusFilter(null)
-                  setFormatFilter(null)
-                }}
-                className="text-white hover:bg-white/10"
-              >
+              <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-white hover:bg-white/10">
                 Filter zurücksetzen
               </Button>
             )}
@@ -141,19 +269,93 @@ export function TherapistDirectory({ therapists }: Props) {
             </div>
           </div>
 
+          <div className="mt-6 space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Standort</p>
+            <div className="flex flex-col gap-3 md:flex-row">
+              <div className="flex-1">
+                <label htmlFor="therapist-location-filter" className="sr-only">
+                  Ort eingeben
+                </label>
+                <input
+                  id="therapist-location-filter"
+                  list="therapist-city-options"
+                  value={locationFilter}
+                  onChange={(event) => setLocationFilter(event.target.value)}
+                  placeholder="z. B. Wien oder 1100"
+                  className="w-full rounded-2xl border border-white/20 bg-black/20 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                />
+                <datalist id="therapist-city-options">
+                  {cityOptions.map((city) => (
+                    <option key={city} value={city} />
+                  ))}
+                </datalist>
+              </div>
+              <Button
+                type="button"
+                onClick={handleUseLocation}
+                disabled={geoStatus === 'loading'}
+                className="w-full rounded-2xl border border-white/20 bg-white/10 text-sm font-semibold text-white hover:bg-white/20 md:w-auto"
+              >
+                {geoStatus === 'loading' ? 'Standort wird ermittelt...' : 'Standort verwenden'}
+              </Button>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-xs text-white/70">
+              <button
+                type="button"
+                onClick={() => {
+                  if (!nearbyOnly && !proximityOrigin) {
+                    handleUseLocation()
+                  }
+                  setNearbyOnly((prev) => !prev)
+                }}
+                className={cn(
+                  'inline-flex items-center gap-2 rounded-full border px-3 py-1 font-semibold transition',
+                  nearbyOnly
+                    ? 'border-primary-500 bg-primary-500/20 text-primary-200'
+                    : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white',
+                )}
+              >
+                <LocateFixed className="h-3.5 w-3.5" aria-hidden />
+                Nur in meiner Nähe
+              </button>
+              {nearbyOnly && (
+                <select
+                  value={maxDistance}
+                  onChange={(event) => setMaxDistance(Number(event.target.value))}
+                  disabled={!proximityOrigin}
+                  className="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-white focus:border-primary-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {RADIUS_OPTIONS.map((radius) => (
+                    <option key={radius} value={radius}>
+                      {radius} km
+                    </option>
+                  ))}
+                </select>
+              )}
+              {proximityOrigin && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-white/70">
+                  <MapPin className="h-3.5 w-3.5 text-primary-400" aria-hidden />
+                  Standort aktiv
+                </span>
+              )}
+            </div>
+            {geoStatus === 'error' && geoError && <p className="text-xs text-rose-200">{geoError}</p>}
+            {nearbyOnly && !proximityOrigin && (
+              <p className="text-xs text-amber-200">
+                Um den Umkreisfilter zu nutzen, gib einen Ort ein oder erlaube die Standortabfrage.
+              </p>
+            )}
+          </div>
+
           {hasFilters && (
             <p className="mt-4 text-xs text-white/60">
-              Aktive Filter: {focusFilter ? `Fokus „${focusFilter}"` : 'kein Fokus'}
-              {' · '}
-              {formatFilter
-                ? `Format „${formatOptions.find((option) => option.id === formatFilter)?.label ?? formatFilter}"`
-                : 'alle Formate'}
+              Aktive Filter: {activeFilterLabels.join(' · ')}
             </p>
           )}
         </div>
       </div>
 
-      {filteredTherapists.length === 0 ? (
+      {sortedTherapists.length === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-sm text-white/70 backdrop-blur">
           <p>
             Keine Profile gefunden. Passe die Filter an oder kontaktiere das Care-Team für eine individuelle Empfehlung.
@@ -161,7 +363,7 @@ export function TherapistDirectory({ therapists }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          {filteredTherapists.map((therapist) => (
+          {sortedTherapists.map((therapist) => (
             <DirectoryCard key={therapist.id} therapist={therapist} />
           ))}
         </div>
@@ -176,7 +378,9 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
     therapist.focus[1],
     therapist.availability,
     therapist.languages.slice(0, 2).join(', '),
+    typeof therapist.distanceInKm === 'number' ? `~${Math.max(1, Math.round(therapist.distanceInKm))} km entfernt` : null,
   ].filter(Boolean) as string[]
+  const gradientClass = getGradientClass(therapist.id)
 
   return (
     <Link href={`/therapists/${therapist.id}`} prefetch={false}>
@@ -187,15 +391,25 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
               <Image
                 src={therapist.image}
                 alt={`Portrait von ${therapist.name}`}
-                width={240}
-                height={240}
-                className="h-full w-full object-cover object-center"
+                width={320}
+                height={320}
+                className="h-full w-full object-cover object-center brightness-[0.95] contrast-[1.05]"
                 sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
                 quality={90}
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-3xl font-semibold uppercase text-white sm:text-4xl">
-                <span>{therapist.initials}</span>
+              <div
+                className={cn(
+                  'relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl text-3xl font-semibold uppercase text-white sm:text-4xl',
+                  gradientClass,
+                  'bg-gradient-to-br',
+                )}
+              >
+                <div className="absolute inset-0 opacity-50" aria-hidden>
+                  <div className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-white/20 blur-3xl" />
+                  <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white/20 blur-3xl" />
+                </div>
+                <span className="relative">{therapist.initials}</span>
               </div>
             )}
             <span
@@ -218,11 +432,6 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </header>
 
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-white/70 sm:justify-start">
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary-400/20 px-3 py-1 font-semibold text-primary-300">
-              <Star className="h-3.5 w-3.5" aria-hidden />
-              {therapist.rating.toFixed(1)}
-              <span className="text-primary-400/60">({therapist.reviews})</span>
-            </span>
             <span className="inline-flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-white/70">
               <Sparkles className="h-3.5 w-3.5 text-primary-400" aria-hidden />
               {therapist.experience}
@@ -239,6 +448,17 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
               <Clock className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
               <span className="truncate">{therapist.availability}</span>
             </span>
+            {typeof therapist.distanceInKm === 'number' && (
+              <>
+                <span className="hidden sm:inline text-white/40" aria-hidden>•</span>
+                <span className="inline-flex items-center justify-center gap-2 sm:justify-start">
+                  <LocateFixed className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
+                  <span className="truncate">
+                    ~{Math.max(1, Math.round(therapist.distanceInKm))} km entfernt
+                  </span>
+                </span>
+              </>
+            )}
           </div>
 
           {highlightChips.length > 0 && (
@@ -272,13 +492,13 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
         </div>
         <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           {FEATURES.ASSESSMENT && (
-            <Button asChild size="sm" variant="outline" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
+            <Button asChild size="sm" variant="outline" onClick={(e: MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
               <Link href="/triage" prefetch={false}>
                 Passende Empfehlung
               </Link>
             </Button>
           )}
-          <Button asChild size="sm" variant="ghost" onClick={(e: React.MouseEvent) => e.stopPropagation()} className="w-full text-white hover:bg-white/10 sm:w-auto">
+          <Button asChild size="sm" variant="ghost" onClick={(e: MouseEvent) => e.stopPropagation()} className="w-full text-white hover:bg-white/10 sm:w-auto">
             <Link href="/contact" prefetch={false}>
               Kontakt
             </Link>
@@ -288,4 +508,68 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
     </article>
     </Link>
   )
+}
+
+function getGradientClass(id: string) {
+  const index = Math.abs(hashString(id)) % gradientPalette.length
+  return gradientPalette[index]
+}
+
+function hashString(value: string) {
+  let hash = 0
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash << 5) - hash + value.charCodeAt(i)
+    hash |= 0
+  }
+  return hash
+}
+
+function calculateDistanceKm(a: Coordinates, b: Coordinates) {
+  const latDistance = degreesToRadians(b.lat - a.lat)
+  const lngDistance = degreesToRadians(b.lng - a.lng)
+  const normalizedLatA = degreesToRadians(a.lat)
+  const normalizedLatB = degreesToRadians(b.lat)
+
+  const sinLat = Math.sin(latDistance / 2)
+  const sinLng = Math.sin(lngDistance / 2)
+
+  const haversine =
+    sinLat * sinLat + sinLng * sinLng * Math.cos(normalizedLatA) * Math.cos(normalizedLatB)
+  const c = 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine))
+  const distance = EARTH_RADIUS_KM * c
+  return Math.round(distance * 10) / 10
+}
+
+function degreesToRadians(degrees: number) {
+  return (degrees * Math.PI) / 180
+}
+
+const STATUS_PRIORITY: Record<TherapistStatus, number> = {
+  VERIFIED: 0,
+  PENDING: 1,
+  REJECTED: 2,
+}
+
+function compareTherapists(a: TherapistCard, b: TherapistCard) {
+  const distanceA = typeof a.distanceInKm === 'number' ? a.distanceInKm : null
+  const distanceB = typeof b.distanceInKm === 'number' ? b.distanceInKm : null
+
+  if (distanceA !== null || distanceB !== null) {
+    if (distanceA === null) return 1
+    if (distanceB === null) return -1
+    if (distanceA !== distanceB) {
+      return distanceA - distanceB
+    }
+  }
+
+  if (a.availabilityRank !== b.availabilityRank) {
+    return a.availabilityRank - b.availabilityRank
+  }
+
+  const statusDiff = STATUS_PRIORITY[a.status] - STATUS_PRIORITY[b.status]
+  if (statusDiff !== 0) {
+    return statusDiff
+  }
+
+  return a.name.localeCompare(b.name, 'de-AT')
 }

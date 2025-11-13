@@ -623,6 +623,7 @@ import {
   getFilteredWhyContent,
   getFilteredClientBenefits,
   getFilteredTherapistBenefits,
+  getFilteredContactCta,
 } from '@/lib/content-filters'
 
 /**
@@ -672,4 +673,11 @@ export function getTherapistBenefits() {
  */
 export function getFAQItems() {
   return filterFAQItems(faqItems)
+}
+
+/**
+ * Get contact CTA with feature-aware adjustments
+ */
+export function getContactCta() {
+  return getFilteredContactCta(contactCta)
 }

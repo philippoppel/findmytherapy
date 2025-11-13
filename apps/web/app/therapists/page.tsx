@@ -5,6 +5,13 @@ import { Compass, Sparkles } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 import { FEATURES } from '@/lib/features'
+import {
+  buildLocationTokens,
+  getCityCoordinates,
+  PLACEHOLDER_IMAGE_KEYWORDS,
+  type Coordinates,
+} from './location-data'
+import { getAvailabilityMeta } from './availability'
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'
@@ -28,23 +35,39 @@ export default async function TherapistsPage() {
     },
   })
 
-  const therapists: TherapistCard[] = profiles.map((profile) => ({
-    id: profile.id,
-    name: profile.displayName ?? `${profile.user.firstName ?? ''} ${profile.user.lastName ?? ''}`.trim(),
-    title: profile.title ?? 'Psychotherapie',
-    focus: profile.specialties.slice(0, 3),
-    approach: profile.approachSummary ?? 'Integrative Psychotherapie',
-    location: profile.online ? `${profile.city ?? 'Online'} · Online` : profile.city ?? 'Vor Ort',
-    availability: formatAvailability(profile.availabilityNote, profile.acceptingClients),
-    languages: profile.languages,
-    rating: profile.rating ?? 0,
-    reviews: profile.reviewCount ?? 0,
-    experience: profile.yearsExperience ? `${profile.yearsExperience} Jahre Praxis` : 'Praxiserfahrung',
-    image: getProfileImage(profile),
-    initials: getInitials(profile.displayName ?? `${profile.user.firstName ?? ''} ${profile.user.lastName ?? ''}`),
-    status: profile.status,
-    formatTags: deriveFormatTags(profile.city ?? '', profile.online),
-  }))
+  const therapists: TherapistCard[] = profiles.map((profile) => {
+    const displayName = profile.displayName ?? `${profile.user.firstName ?? ''} ${profile.user.lastName ?? ''}`.trim()
+    const city = profile.city?.trim() || null
+    const locationLabel = buildLocationLabel(city, profile.online)
+    const coordinates: Coordinates | null =
+      profile.latitude != null && profile.longitude != null
+        ? { lat: profile.latitude, lng: profile.longitude }
+        : getCityCoordinates(city)
+
+    const availabilityMeta = getAvailabilityMeta(profile.availabilityNote, profile.acceptingClients)
+
+    return {
+      id: profile.id,
+      name: displayName,
+      title: profile.title ?? 'Psychotherapie',
+      focus: profile.specialties.slice(0, 3),
+      approach: profile.approachSummary ?? 'Integrative Psychotherapie',
+      location: locationLabel,
+      city,
+      coordinates,
+      availability: availabilityMeta.label,
+      availabilityRank: availabilityMeta.rank,
+      languages: profile.languages,
+      rating: profile.rating ?? 0,
+      reviews: profile.reviewCount ?? 0,
+      experience: profile.yearsExperience ? `${profile.yearsExperience} Jahre Praxis` : 'Praxiserfahrung',
+      image: getProfileImage(profile),
+      initials: getInitials(displayName),
+      status: profile.status,
+      formatTags: deriveFormatTags(profile.city ?? '', profile.online),
+      locationTokens: buildLocationTokens(city, locationLabel),
+    }
+  })
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-12">
@@ -140,39 +163,15 @@ function deriveFormatTags(location: string, online: boolean): TherapistCard['for
 
 function getProfileImage(profile: { profileImageUrl?: string | null }) {
   const candidate = profile.profileImageUrl?.trim()
-  if (candidate && !candidate.endsWith('default.jpg')) {
-    return candidate
-  }
-  return null
-}
-
-function formatAvailability(
-  note: string | null | undefined,
-  acceptingClients: boolean,
-) {
-  if (!note) {
-    return acceptingClients ? 'Aktuell verfügbar' : 'Kapazität auf Anfrage'
+  if (!candidate || candidate.endsWith('default.jpg')) {
+    return null
   }
 
-  const registerPhoneMatch = note.match(/Telefon lt\. Register:\s*([0-9A-Za-z+()/\s-]+)/i)
-  if (note.includes('Psychotherapie-Verzeichnis')) {
-    if (registerPhoneMatch) {
-      return `Telefon laut Register: ${registerPhoneMatch[1].trim()}`
-    }
-    return 'Kontakt laut Gesundheitsministerium'
+  if (PLACEHOLDER_IMAGE_KEYWORDS.some((placeholder) => candidate.includes(placeholder))) {
+    return null
   }
 
-  const sanitized = note
-    .replace(/Eintragung seit [0-9.-]+/i, '')
-    .replace(/Telefon lt\. Register:\s*[0-9A-Za-z+()/\s-]+/i, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-
-  if (sanitized) {
-    return sanitized
-  }
-
-  return acceptingClients ? 'Aktuell verfügbar' : 'Kapazität auf Anfrage'
+  return candidate
 }
 
 function getInitials(name: string) {
@@ -184,4 +183,17 @@ function getInitials(name: string) {
   const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
   const initials = `${first}${last}`.toUpperCase()
   return initials || '??'
+}
+
+function buildLocationLabel(city: string | null, online: boolean) {
+  if (!city && online) {
+    return 'Online'
+  }
+  if (!city) {
+    return 'Vor Ort'
+  }
+  if (online) {
+    return `${city} · Online`
+  }
+  return city
 }
