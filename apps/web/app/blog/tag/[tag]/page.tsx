@@ -102,7 +102,7 @@ export default function TagPage({ params }: TagPageProps) {
             #{tagName}
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Artikel zu "{tagName}"
+            Artikel zu &ldquo;{tagName}&rdquo;
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
             {tagPosts.length}{' '}

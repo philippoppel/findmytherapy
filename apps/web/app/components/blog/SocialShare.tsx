@@ -12,16 +12,13 @@ interface SocialShareProps {
 export function SocialShare({
   url,
   title,
-  description,
+  description: _description,
   className = '',
 }: SocialShareProps) {
   const [copied, setCopied] = useState(false)
 
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
-  const encodedDescription = description
-    ? encodeURIComponent(description)
-    : encodedTitle
 
   const shareLinks = {
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
