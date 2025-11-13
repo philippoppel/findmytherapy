@@ -107,8 +107,8 @@ export default async function TherapistProfilePage({ params, searchParams }: The
     notFound()
   }
 
-  // Redirect to microsite if available and published
-  if (profile.micrositeSlug && profile.micrositeStatus === 'PUBLISHED') {
+  // Redirect to microsite if available and published (only for verified profiles)
+  if (profile.micrositeSlug && profile.micrositeStatus === 'PUBLISHED' && profile.status === 'VERIFIED') {
     redirect(`/t/${profile.micrositeSlug}`)
   }
 

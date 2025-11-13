@@ -24,7 +24,10 @@ export const metadata: Metadata = {
 
 export default async function TherapistsPage() {
   const profiles = await prisma.therapistProfile.findMany({
-    where: { isPublic: true },
+    where: {
+      isPublic: true,
+      status: 'VERIFIED',
+    },
     include: {
       user: {
         select: {

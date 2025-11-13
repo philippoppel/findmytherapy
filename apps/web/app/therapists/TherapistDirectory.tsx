@@ -269,82 +269,103 @@ export function TherapistDirectory({ therapists }: Props) {
             </div>
           </div>
 
-          <div className="mt-6 space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Standort</p>
-            <div className="flex flex-col gap-3 md:flex-row">
-              <div className="flex-1">
-                <label htmlFor="therapist-location-filter" className="sr-only">
-                  Ort eingeben
-                </label>
-                <input
-                  id="therapist-location-filter"
-                  list="therapist-city-options"
-                  value={locationFilter}
-                  onChange={(event) => setLocationFilter(event.target.value)}
-                  placeholder="z. B. Wien oder 1100"
-                  className="w-full rounded-2xl border border-white/20 bg-black/20 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
-                />
-                <datalist id="therapist-city-options">
-                  {cityOptions.map((city) => (
-                    <option key={city} value={city} />
-                  ))}
-                </datalist>
-              </div>
-              <Button
-                type="button"
-                onClick={handleUseLocation}
-                disabled={geoStatus === 'loading'}
-                className="w-full rounded-2xl border border-white/20 bg-white/10 text-sm font-semibold text-white hover:bg-white/20 md:w-auto"
-              >
-                {geoStatus === 'loading' ? 'Standort wird ermittelt...' : 'Standort verwenden'}
-              </Button>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-white/70">
-              <button
-                type="button"
-                onClick={() => {
-                  if (!nearbyOnly && !proximityOrigin) {
-                    handleUseLocation()
-                  }
-                  setNearbyOnly((prev) => !prev)
-                }}
-                className={cn(
-                  'inline-flex items-center gap-2 rounded-full border px-3 py-1 font-semibold transition',
-                  nearbyOnly
-                    ? 'border-primary-500 bg-primary-500/20 text-primary-200'
-                    : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white',
-                )}
-              >
-                <LocateFixed className="h-3.5 w-3.5" aria-hidden />
-                Nur in meiner Nähe
-              </button>
-              {nearbyOnly && (
-                <select
-                  value={maxDistance}
-                  onChange={(event) => setMaxDistance(Number(event.target.value))}
-                  disabled={!proximityOrigin}
-                  className="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-white focus:border-primary-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {RADIUS_OPTIONS.map((radius) => (
-                    <option key={radius} value={radius}>
-                      {radius} km
-                    </option>
-                  ))}
-                </select>
-              )}
+          <div className="mt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold uppercase tracking-wide text-primary-400 flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                Standortbasierte Suche
+              </p>
               {proximityOrigin && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-white/70">
-                  <MapPin className="h-3.5 w-3.5 text-primary-400" aria-hidden />
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/20 border border-primary-500/30 px-3 py-1 text-xs font-semibold text-primary-200">
+                  <LocateFixed className="h-3 w-3" aria-hidden />
                   Standort aktiv
                 </span>
               )}
             </div>
-            {geoStatus === 'error' && geoError && <p className="text-xs text-rose-200">{geoError}</p>}
-            {nearbyOnly && !proximityOrigin && (
-              <p className="text-xs text-amber-200">
-                Um den Umkreisfilter zu nutzen, gib einen Ort ein oder erlaube die Standortabfrage.
+
+            <div className="rounded-2xl border-2 border-primary-500/30 bg-primary-500/5 p-4 space-y-3">
+              <p className="text-sm text-white/80">
+                Finde Therapeut:innen in deiner Nähe
               </p>
-            )}
+
+              <div className="flex flex-col gap-3 md:flex-row">
+                <div className="flex-1">
+                  <label htmlFor="therapist-location-filter" className="sr-only">
+                    Ort eingeben
+                  </label>
+                  <input
+                    id="therapist-location-filter"
+                    list="therapist-city-options"
+                    value={locationFilter}
+                    onChange={(event) => setLocationFilter(event.target.value)}
+                    placeholder="z. B. Wien oder 1100"
+                    className="w-full rounded-2xl border border-white/30 bg-white/10 px-4 py-2.5 text-sm text-white placeholder:text-white/50 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur"
+                  />
+                  <datalist id="therapist-city-options">
+                    {cityOptions.map((city) => (
+                      <option key={city} value={city} />
+                    ))}
+                  </datalist>
+                </div>
+                <Button
+                  type="button"
+                  onClick={handleUseLocation}
+                  disabled={geoStatus === 'loading'}
+                  className="w-full rounded-2xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-500 disabled:opacity-50 md:w-auto shadow-lg"
+                >
+                  <LocateFixed className="mr-2 h-4 w-4" />
+                  {geoStatus === 'loading' ? 'Wird ermittelt...' : 'Mein Standort'}
+                </Button>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!nearbyOnly && !proximityOrigin) {
+                      handleUseLocation()
+                    }
+                    setNearbyOnly((prev) => !prev)
+                  }}
+                  className={cn(
+                    'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition',
+                    nearbyOnly
+                      ? 'border-primary-400 bg-primary-500/30 text-white shadow-sm'
+                      : 'border-white/30 bg-white/5 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white',
+                  )}
+                >
+                  <LocateFixed className="h-4 w-4" aria-hidden />
+                  Nur in meiner Nähe
+                </button>
+                {nearbyOnly && (
+                  <select
+                    value={maxDistance}
+                    onChange={(event) => setMaxDistance(Number(event.target.value))}
+                    disabled={!proximityOrigin}
+                    className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white focus:border-primary-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-40 backdrop-blur"
+                  >
+                    {RADIUS_OPTIONS.map((radius) => (
+                      <option key={radius} value={radius}>
+                        Umkreis: {radius} km
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              {geoStatus === 'error' && geoError && (
+                <p className="text-xs text-rose-200 flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-rose-200" />
+                  {geoError}
+                </p>
+              )}
+              {nearbyOnly && !proximityOrigin && (
+                <p className="text-xs text-amber-200 flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-amber-200" />
+                  Um den Umkreisfilter zu nutzen, gib einen Ort ein oder erlaube die Standortabfrage.
+                </p>
+              )}
+            </div>
           </div>
 
           {hasFilters && (
