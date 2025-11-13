@@ -9,18 +9,6 @@ interface TherapistCardPremiumProps {
   therapist: TherapistWithListing
 }
 
-const fallbackImages = [
-  '/images/therapists/therapy-1.jpg',
-  '/images/therapists/therapy-2.jpg',
-  '/images/therapists/therapy-3.jpg',
-  '/images/therapists/therapy-4.jpg',
-]
-
-function pickFallbackImage(id: string) {
-  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return fallbackImages[index % fallbackImages.length]
-}
-
 function formatLocation(city?: string | null, online?: boolean) {
   const parts: string[] = []
   if (city) parts.push(city)
@@ -39,8 +27,8 @@ function formatPrice(min?: number | null, max?: number | null) {
 }
 
 export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
-  const imageUrl = therapist.profileImageUrl || pickFallbackImage(therapist.id)
   const name = therapist.displayName || 'Therapeut:in'
+  const initials = getInitials(name)
   const specialty = therapist.specialties[0] || 'Psychotherapie'
   const approach = therapist.approachSummary || therapist.modalities[0] || 'Individuelle Begleitung'
   const location = formatLocation(therapist.city, therapist.online)
@@ -69,14 +57,20 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
 
           {/* Image Section - Larger than standard */}
           <div className="relative h-56 w-full overflow-hidden rounded-t-3xl">
-            <Image
-              src={imageUrl}
-              alt={`${name} - ${specialty}`}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              priority
-            />
+            {therapist.profileImageUrl ? (
+              <Image
+                src={therapist.profileImageUrl}
+                alt={`${name} - ${specialty}`}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 text-5xl font-semibold uppercase text-white">
+                <span>{initials}</span>
+              </div>
+            )}
 
             {/* Gold Glow Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-amber-900/20 via-transparent to-transparent" />
@@ -167,4 +161,13 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
       </article>
     </Link>
   )
+}
+
+function getInitials(name: string) {
+  if (!name) return '??'
+  const parts = name.trim().split(/\s+/)
+  const first = parts[0]?.[0] ?? ''
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+  const initials = `${first}${last}`.toUpperCase()
+  return initials || '??'
 }

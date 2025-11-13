@@ -9,18 +9,6 @@ interface TherapistCardProps {
   therapist: TherapistWithListing
 }
 
-const fallbackImages = [
-  '/images/therapists/therapy-1.jpg',
-  '/images/therapists/therapy-2.jpg',
-  '/images/therapists/therapy-3.jpg',
-  '/images/therapists/therapy-4.jpg',
-]
-
-function pickFallbackImage(id: string) {
-  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return fallbackImages[index % fallbackImages.length]
-}
-
 function formatLocation(city?: string | null, online?: boolean) {
   const parts: string[] = []
   if (city) parts.push(city)
@@ -39,8 +27,8 @@ function formatPrice(min?: number | null, max?: number | null) {
 }
 
 export function TherapistCard({ therapist }: TherapistCardProps) {
-  const imageUrl = therapist.profileImageUrl || pickFallbackImage(therapist.id)
   const name = therapist.displayName || 'Therapeut:in'
+  const initials = getInitials(name)
   const specialty = therapist.specialties[0] || 'Psychotherapie'
   const approach = therapist.approachSummary || therapist.modalities[0] || 'Individuelle Begleitung'
   const location = formatLocation(therapist.city, therapist.online)
@@ -53,13 +41,19 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
       <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
         {/* Image Section */}
         <div className="relative h-48 w-full overflow-hidden">
-          <Image
-            src={imageUrl}
-            alt={`${name} - ${specialty}`}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
+          {therapist.profileImageUrl ? (
+            <Image
+              src={therapist.profileImageUrl}
+              alt={`${name} - ${specialty}`}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-4xl font-semibold uppercase text-white">
+              <span>{initials}</span>
+            </div>
+          )}
 
           {/* Rating Badge */}
           {rating > 0 && (
@@ -127,4 +121,13 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
       </article>
     </Link>
   )
+}
+
+function getInitials(name: string) {
+  if (!name) return '??'
+  const parts = name.trim().split(/\s+/)
+  const first = parts[0]?.[0] ?? ''
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+  const initials = `${first}${last}`.toUpperCase()
+  return initials || '??'
 }
