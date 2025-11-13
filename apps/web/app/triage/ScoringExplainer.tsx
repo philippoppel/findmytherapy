@@ -19,7 +19,7 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
         className="flex w-full items-center justify-between gap-3 p-5 text-left transition hover:bg-surface-1/50"
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-blue-100 text-blue-600">
+          <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary-100 text-primary-600">
             <Info className="h-4 w-4" aria-hidden />
           </div>
           <div>
@@ -37,7 +37,7 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
       {isExpanded && (
         <div className="space-y-6 border-t border-divider p-5">
           {/* Einleitung */}
-          <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-4">
+          <div className="rounded-xl border border-primary-100 bg-primary-50/50 p-4">
             <p className="text-sm text-default leading-relaxed">
               Ihre Einschätzung basiert auf zwei international anerkannten, wissenschaftlich validierten Screening-Instrumenten:
               dem <strong>PHQ-9</strong> (Depression) und dem <strong>GAD-7</strong> (Angststörungen). Diese werden weltweit
@@ -134,9 +134,9 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
           </div>
 
           {/* Disclaimer */}
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-            <h5 className="text-sm font-semibold text-blue-900 mb-2">Wichtiger Hinweis</h5>
-            <p className="text-xs text-blue-900 leading-relaxed">
+          <div className="rounded-xl border border-primary-200 bg-primary-50 p-4">
+            <h5 className="text-sm font-semibold text-primary-900 mb-2">Wichtiger Hinweis</h5>
+            <p className="text-xs text-primary-900 leading-relaxed">
               Die Fragebögen PHQ-9 und GAD-7 sind international anerkannte, wissenschaftlich validierte Screening-Instrumente
               zur Ersteinschätzung psychischer Belastung. Sie dienen als Orientierungshilfe und ersetzen keine professionelle
               Diagnose. Für eine umfassende Beurteilung und Behandlungsempfehlung ist eine persönliche Einschätzung durch

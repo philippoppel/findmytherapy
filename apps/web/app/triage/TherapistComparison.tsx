@@ -157,7 +157,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                       {therapist.formatTags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800"
+                          className="rounded-full bg-primary-100 px-2 py-1 text-xs font-medium text-primary-800"
                         >
                           {tag === 'online' && 'Online'}
                           {tag === 'praesenz' && 'Präsenz'}

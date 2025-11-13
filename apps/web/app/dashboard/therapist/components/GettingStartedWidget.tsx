@@ -70,17 +70,17 @@ export function GettingStartedWidget({
   }
 
   return (
-    <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-200 rounded-2xl p-6 shadow-lg relative">
+    <div className="bg-gradient-to-br from-primary-50 to-primary-100 border-2 border-primary-200 rounded-2xl p-6 shadow-lg relative">
       <button
         onClick={handleDismiss}
-        className="absolute top-4 right-4 p-1 rounded-full hover:bg-teal-100 transition text-teal-700"
+        className="absolute top-4 right-4 p-1 rounded-full hover:bg-primary-100 transition text-primary-700"
         aria-label="Widget ausblenden"
       >
         <X className="h-4 w-4" />
       </button>
 
       <div className="flex items-start gap-4">
-        <div className="p-3 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl shadow-lg shadow-teal-500/30">
+        <div className="p-3 bg-gradient-to-br from-primary-500 to-primary-1000 rounded-xl shadow-lg shadow-primary-500/30">
           <Rocket className="h-6 w-6 text-white" />
         </div>
 
@@ -98,11 +98,11 @@ export function GettingStartedWidget({
               <span className="text-sm font-medium text-gray-700">
                 Fortschritt: {completedCount} von {totalCount}
               </span>
-              <span className="text-sm font-bold text-teal-600">{progress}%</span>
+              <span className="text-sm font-bold text-primary-600">{progress}%</span>
             </div>
-            <div className="h-3 bg-white rounded-full overflow-hidden border border-teal-200">
+            <div className="h-3 bg-white rounded-full overflow-hidden border border-primary-200">
               <div
-                className="h-full bg-gradient-to-r from-teal-500 to-cyan-500 transition-all duration-500 ease-out"
+                className="h-full bg-gradient-to-r from-primary-500 to-primary-1000 transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -121,7 +121,7 @@ export function GettingStartedWidget({
               >
                 <div className="flex-shrink-0 mt-0.5">
                   {item.completed ? (
-                    <CheckCircle className="h-5 w-5 text-teal-600" />
+                    <CheckCircle className="h-5 w-5 text-primary-600" />
                   ) : (
                     <Circle className="h-5 w-5 text-gray-400" />
                   )}
@@ -139,7 +139,7 @@ export function GettingStartedWidget({
                 {!item.completed && item.link && (
                   <Link
                     href={item.link}
-                    className="flex-shrink-0 px-3 py-1.5 text-sm font-medium text-teal-700 hover:text-teal-800 hover:bg-teal-100 rounded-md transition flex items-center gap-1"
+                    className="flex-shrink-0 px-3 py-1.5 text-sm font-medium text-primary-700 hover:text-primary-800 hover:bg-primary-100 rounded-md transition flex items-center gap-1"
                   >
                     Los
                     <ExternalLink className="h-3 w-3" />

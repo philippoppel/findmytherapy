@@ -14,7 +14,7 @@ export function MicrositeExpertise({ specialties }: MicrositeExpertiseProps) {
         {specialties.map((specialty) => (
           <span
             key={specialty}
-            className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-teal-100 text-teal-800 hover:bg-teal-200 transition-colors"
+            className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors"
           >
             {specialty}
           </span>

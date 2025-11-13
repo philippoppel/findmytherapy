@@ -502,10 +502,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   if (showSummary) {
     // Full assessment summary
     return (
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl space-y-6 px-4">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -608,7 +608,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
             {riskLevel !== 'LOW' && (
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-teal-400" />
+                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
                   <div>
                     <h4 className="text-lg font-bold text-white">Empfehlung: Professionelle Unterstützung</h4>
                     <p className="mt-2 text-sm text-white/70">
@@ -616,7 +616,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Wir können dich dabei unterstützen, schnell einen Termin zu finden.
                     </p>
                     <div className="mt-4">
-                      <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                         <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
                       </Button>
                     </div>
@@ -629,14 +629,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
             {riskLevel === 'LOW' && (
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-start gap-3">
-                  <Heart className="mt-1 h-6 w-6 flex-shrink-0 text-teal-400" />
+                  <Heart className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
                   <div>
                     <h4 className="text-lg font-bold text-white">Präventive Unterstützung</h4>
                     <p className="mt-2 text-sm text-white/70">
                       Auch wenn aktuell keine Symptome vorliegen, kann präventive Begleitung helfen, dein Wohlbefinden zu stärken und Stress vorzubeugen.
                     </p>
                     <div className="mt-4">
-                      <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                         <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
                       </Button>
                     </div>
@@ -727,7 +727,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 sm:items-end">
-                          <Button asChild className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                          <Button asChild className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                             <Link href={`/therapists/${therapist.id}?from=triage`}>
                               Profil ansehen
                             </Link>
@@ -750,7 +750,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       Fachpersonen oder kontaktiere unser Care-Team für eine persönliche Vermittlung.
                     </p>
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                      <Button asChild size="lg" className="w-full bg-teal-600 text-white shadow-lg hover:bg-teal-500 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-primary-600 text-white shadow-lg hover:bg-primary-500 sm:w-auto">
                         <Link href="/therapists">Zur Therapeuten-Übersicht</Link>
                       </Button>
                       <Button variant="outline" asChild className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto">
@@ -806,10 +806,10 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
   const isTransition = currentPhase === 'phq2-to-gad2' || currentPhase === 'gad2-to-preferences'
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
       </div>
       <div className="relative mx-auto max-w-3xl px-4">
         <div className="mb-6 flex justify-end">
@@ -829,7 +829,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
               <motion.div
-                className="h-full rounded-full bg-teal-400"
+                className="h-full rounded-full bg-primary-400"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
@@ -852,14 +852,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     <>
                       {!shouldExpandPHQ9(answers.phq9.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)) ? (
                         <>
-                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-teal-400" />
+                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-primary-400" />
                           <h3 className="text-xl font-bold text-white sm:text-2xl">
                             {adaptiveScreeningInfo.minimal.title}
                           </h3>
                           <p className="mt-2 text-sm text-white/70 sm:text-base">
                             Deine Antworten deuten auf minimale Depressionssymptome hin.
                           </p>
-                          <p className="mt-4 text-sm font-medium text-teal-400">
+                          <p className="mt-4 text-sm font-medium text-primary-400">
                             Weiter zum Angst-Screening...
                           </p>
                         </>
@@ -882,14 +882,14 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                     <>
                       {!shouldExpandGAD7(answers.gad7.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0)) ? (
                         <>
-                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-teal-400" />
+                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-primary-400" />
                           <h3 className="text-xl font-bold text-white sm:text-2xl">
                             {adaptiveScreeningInfo.minimal.title}
                           </h3>
                           <p className="mt-2 text-sm text-white/70 sm:text-base">
                             Deine Antworten deuten auf minimale Angstsymptome hin.
                           </p>
-                          <p className="mt-4 text-sm font-medium text-teal-400">
+                          <p className="mt-4 text-sm font-medium text-primary-400">
                             Fast geschafft!
                           </p>
                         </>
@@ -940,8 +940,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             onClick={() => toggleMultipleSelect(option.value, 'support')}
                             className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                               selected
-                                ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
-                                : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
+                                ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
+                                : 'border-white/20 bg-white/5 hover:border-primary-400/40 hover:bg-white/10'
                             }`}
                           >
                             <p className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}>
@@ -968,8 +968,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                             onClick={() => toggleMultipleSelect(option.value, 'availability')}
                             className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                               selected
-                                ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
-                                : 'border-white/20 bg-white/5 hover:border-teal-400/40 hover:bg-white/10'
+                                ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
+                                : 'border-white/20 bg-white/5 hover:border-primary-400/40 hover:bg-white/10'
                             }`}
                           >
                             <p className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}>
@@ -987,7 +987,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Zurück
                     </Button>
-                    <Button onClick={goNext} size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                    <Button onClick={goNext} size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                       Ergebnis anzeigen
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -1022,8 +1022,8 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           onClick={() => handleScaleAnswer(option.value)}
                           className={`flex w-full items-center justify-between gap-2 rounded-xl border p-3 transition sm:gap-3 sm:p-4 ${
                             isSelected
-                              ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
-                              : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-white/10'
+                              ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
+                              : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-primary-400/40 hover:bg-white/10'
                           }`}
                         >
                           <div className="text-left">
@@ -1035,7 +1035,7 @@ export function AdaptiveTriageFlow({ embedded = false, historicalData = [] }: Ad
                           <div
                             className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold sm:h-10 sm:w-10 ${
                               isSelected
-                                ? 'border-teal-700 bg-teal-700 text-white'
+                                ? 'border-primary-700 bg-primary-700 text-white'
                                 : 'border-white/30 bg-white/10 text-white'
                             }`}
                           >

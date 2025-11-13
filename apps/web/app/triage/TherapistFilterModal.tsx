@@ -104,7 +104,7 @@ export function TherapistFilterModal({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-teal-900/95 to-cyan-900/95 shadow-2xl backdrop-blur-xl"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-primary-900/95 to-primary-950/95 shadow-2xl backdrop-blur-xl"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 p-6">
@@ -146,7 +146,7 @@ export function TherapistFilterModal({
                       onClick={() => toggleFilter('formats', option.value)}
                       className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                         filters.formats.includes(option.value)
-                          ? 'border-teal-400 bg-teal-400 text-teal-950'
+                          ? 'border-primary-400 bg-primary-400 text-primary-950'
                           : 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20'
                       }`}
                     >
@@ -173,7 +173,7 @@ export function TherapistFilterModal({
                         onClick={() => toggleFilter('specialties', specialty)}
                         className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                           filters.specialties.includes(specialty)
-                            ? 'border-teal-400 bg-teal-400 text-teal-950'
+                            ? 'border-primary-400 bg-primary-400 text-primary-950'
                             : 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20'
                         }`}
                       >
@@ -201,7 +201,7 @@ export function TherapistFilterModal({
                         onClick={() => toggleFilter('languages', language)}
                         className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                           filters.languages.includes(language)
-                            ? 'border-teal-400 bg-teal-400 text-teal-950'
+                            ? 'border-primary-400 bg-primary-400 text-primary-950'
                             : 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20'
                         }`}
                       >
@@ -245,7 +245,7 @@ export function TherapistFilterModal({
               </Button>
               <Button
                 onClick={handleApply}
-                className="bg-teal-600 text-white shadow-lg hover:bg-teal-500"
+                className="bg-primary-600 text-white shadow-lg hover:bg-primary-500"
               >
                 <Search className="mr-2 h-4 w-4" aria-hidden />
                 Anwenden

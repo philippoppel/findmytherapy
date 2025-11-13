@@ -130,7 +130,7 @@ export default async function TherapistProfilePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+              <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg">
                 <ShieldCheck className="h-6 w-6 text-white" aria-hidden />
               </div>
               <div>
@@ -167,8 +167,8 @@ export default async function TherapistProfilePage() {
             {/* Quick Stats */}
             <section className="rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-neutral-50 shadow-sm p-5 space-y-4">
               <div className="flex items-center gap-2 pb-2 border-b border-neutral-200">
-                <div className="h-8 w-8 rounded-lg bg-teal-100 flex items-center justify-center">
-                  <ShieldCheck className="h-4 w-4 text-teal-700" aria-hidden />
+                <div className="h-8 w-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                  <ShieldCheck className="h-4 w-4 text-primary-700" aria-hidden />
                 </div>
                 <h3 className="text-base font-bold text-neutral-900">Profilstatus</h3>
               </div>
@@ -192,10 +192,10 @@ export default async function TherapistProfilePage() {
             </section>
 
             {/* Öffentliche Info */}
-            <section className="rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-blue-50/30 shadow-sm p-5 space-y-4">
+            <section className="rounded-2xl border border-neutral-200 bg-gradient-to-br from-white to-primary-50/30 shadow-sm p-5 space-y-4">
               <div className="flex items-center gap-2 pb-2 border-b border-neutral-200">
-                <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <Globe2 className="h-4 w-4 text-blue-700" aria-hidden />
+                <div className="h-8 w-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                  <Globe2 className="h-4 w-4 text-primary-700" aria-hidden />
                 </div>
                 <h3 className="text-base font-bold text-neutral-900">Öffentliche Infos</h3>
               </div>

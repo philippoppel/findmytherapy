@@ -41,7 +41,7 @@ export function MicrositePricing({
       <h3 className="text-xl font-semibold mb-4 text-gray-900">Auf einen Blick</h3>
 
       {privatePractice && (
-        <div className="mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">
+        <div className="mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200">
           <span>🏥</span>
           <span>Privatpraxis</span>
         </div>
@@ -68,7 +68,7 @@ export function MicrositePricing({
           <dt className="text-sm font-medium text-gray-500 mb-1">Standort</dt>
           <dd className="text-gray-900">
             {city ? `${city}, ${country}` : country}
-            {online && <span className="block text-sm text-teal-600">+ Online möglich</span>}
+            {online && <span className="block text-sm text-primary-600">+ Online möglich</span>}
           </dd>
         </div>
 
@@ -130,7 +130,7 @@ export function MicrositePricing({
               <ul className="text-sm space-y-1">
                 {acceptedInsurance.map((insurance, index) => (
                   <li key={index} className="flex items-center gap-2">
-                    <span className="text-teal-600">✓</span>
+                    <span className="text-primary-600">✓</span>
                     <span>{insurance}</span>
                   </li>
                 ))}

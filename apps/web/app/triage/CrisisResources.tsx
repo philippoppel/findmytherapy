@@ -126,7 +126,7 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
                       href={contact.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-teal-600 bg-white px-3 py-1.5 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 sm:w-auto"
+                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-primary-600 bg-white px-3 py-1.5 text-sm font-semibold text-primary-700 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto"
                     >
                       Website
                       <ExternalLink className="h-3.5 w-3.5" aria-hidden />

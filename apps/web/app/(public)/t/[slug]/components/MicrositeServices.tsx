@@ -18,7 +18,7 @@ export function MicrositeServices({ services, modalities }: MicrositeServicesPro
           <ul className="space-y-2">
             {services.map((service) => (
               <li key={service} className="flex items-start gap-2 text-gray-700">
-                <span className="text-teal-600 mt-1">✓</span>
+                <span className="text-primary-600 mt-1">✓</span>
                 <span>{service}</span>
               </li>
             ))}

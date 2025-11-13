@@ -37,7 +37,7 @@ export function MicrositeOnboardingModal() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header with gradient */}
-        <div className="bg-gradient-to-r from-teal-500 to-cyan-500 p-6 text-white">
+        <div className="bg-gradient-to-r from-primary-500 to-primary-1000 p-6 text-white">
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition"
@@ -52,7 +52,7 @@ export function MicrositeOnboardingModal() {
             </div>
             <div>
               <h2 className="text-2xl font-bold">Willkommen bei FindMyTherapy!</h2>
-              <p className="text-teal-100 text-sm">Ihre professionelle Online-Präsenz ist bereit</p>
+              <p className="text-primary-100 text-sm">Ihre professionelle Online-Präsenz ist bereit</p>
             </div>
           </div>
         </div>
@@ -72,22 +72,22 @@ export function MicrositeOnboardingModal() {
 
           {/* Benefits Grid */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <div className="p-4 bg-teal-50 rounded-lg">
-              <CheckCircle className="h-6 w-6 text-teal-600 mb-2" />
+            <div className="p-4 bg-primary-50 rounded-lg">
+              <CheckCircle className="h-6 w-6 text-primary-600 mb-2" />
               <h4 className="font-medium text-gray-900 mb-1">Professionelle Website</h4>
               <p className="text-sm text-gray-600">
                 Automatisch generiert aus Ihrem Profil
               </p>
             </div>
-            <div className="p-4 bg-cyan-50 rounded-lg">
-              <CheckCircle className="h-6 w-6 text-cyan-600 mb-2" />
+            <div className="p-4 bg-primary-100 rounded-lg">
+              <CheckCircle className="h-6 w-6 text-primary-700 mb-2" />
               <h4 className="font-medium text-gray-900 mb-1">Kontaktformular</h4>
               <p className="text-sm text-gray-600">
                 Potenzielle Klient:innen können Sie direkt erreichen
               </p>
             </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <CheckCircle className="h-6 w-6 text-blue-600 mb-2" />
+            <div className="p-4 bg-primary-50 rounded-lg">
+              <CheckCircle className="h-6 w-6 text-primary-600 mb-2" />
               <h4 className="font-medium text-gray-900 mb-1">Suchmaschinen-Optimierung</h4>
               <p className="text-sm text-gray-600">
                 Werden Sie automatisch in Google gefunden
@@ -102,7 +102,7 @@ export function MicrositeOnboardingModal() {
             </h4>
             <ol className="space-y-3">
               <li className="flex gap-3">
-                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-teal-600 text-white rounded-full text-sm font-medium">
+                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-primary-600 text-white rounded-full text-sm font-medium">
                   1
                 </span>
                 <div>
@@ -113,7 +113,7 @@ export function MicrositeOnboardingModal() {
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-teal-600 text-white rounded-full text-sm font-medium">
+                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-primary-600 text-white rounded-full text-sm font-medium">
                   2
                 </span>
                 <div>
@@ -124,7 +124,7 @@ export function MicrositeOnboardingModal() {
                 </div>
               </li>
               <li className="flex gap-3">
-                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-teal-600 text-white rounded-full text-sm font-medium">
+                <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-primary-600 text-white rounded-full text-sm font-medium">
                   3
                 </span>
                 <div>
@@ -142,7 +142,7 @@ export function MicrositeOnboardingModal() {
             <Link
               href="/dashboard/therapist/microsite"
               onClick={handleGetStarted}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium rounded-lg hover:from-teal-600 hover:to-cyan-600 transition shadow-lg shadow-teal-500/30"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-1000 text-white font-medium rounded-lg hover:from-primary-600 hover:to-primary-700 transition shadow-lg shadow-primary-500/30"
             >
               Zur Microsite
               <ExternalLink className="h-4 w-4" />
@@ -161,7 +161,7 @@ export function MicrositeOnboardingModal() {
               type="checkbox"
               checked={dontShowAgain}
               onChange={(e) => setDontShowAgain(e.target.checked)}
-              className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+              className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
             />
             Nicht mehr anzeigen
           </label>

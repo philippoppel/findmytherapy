@@ -7,7 +7,7 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-teal-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-50 via-primary-50 to-primary-100">
       {/* Minimal Header */}
       <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -16,7 +16,7 @@ export default function AuthLayout({
             className="group flex items-center gap-2.5 transition-transform hover:scale-105"
             aria-label="FindMyTherapy Startseite"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/40">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000 shadow-lg shadow-primary-500/40">
               <Compass className="h-5 w-5 text-white" aria-hidden />
             </div>
             <div className="flex flex-col">

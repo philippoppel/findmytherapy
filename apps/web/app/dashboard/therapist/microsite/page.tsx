@@ -180,10 +180,10 @@ export default function MicrositeDashboardPage() {
 
       {/* Info Banner */}
       {!infoBannerDismissed && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-6 relative">
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-5 mb-6 relative">
           <button
             onClick={handleDismissInfoBanner}
-            className="absolute top-3 right-3 p-1 rounded-full hover:bg-blue-100 transition text-blue-700"
+            className="absolute top-3 right-3 p-1 rounded-full hover:bg-primary-100 transition text-primary-700"
             aria-label="Banner ausblenden"
           >
             <X className="h-4 w-4" />
@@ -191,18 +191,18 @@ export default function MicrositeDashboardPage() {
 
           <div className="flex gap-4">
             <div className="flex-shrink-0">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Info className="h-5 w-5 text-blue-600" />
+              <div className="p-2 bg-primary-100 rounded-lg">
+                <Info className="h-5 w-5 text-primary-600" />
               </div>
             </div>
             <div className="flex-1 pr-8">
-              <h3 className="font-semibold text-blue-900 mb-2">Was ist eine Microsite?</h3>
-              <p className="text-sm text-blue-800 mb-3">
+              <h3 className="font-semibold text-primary-900 mb-2">Was ist eine Microsite?</h3>
+              <p className="text-sm text-primary-800 mb-3">
                 Ihre Microsite ist Ihre persönliche, professionelle Webseite auf FindMyTherapy.
                 Sie wird automatisch aus Ihrem Profil generiert und ist unter einer eigenen URL erreichbar
                 (z.B. findmytherapy.com/t/ihr-name).
               </p>
-              <div className="text-sm text-blue-800">
+              <div className="text-sm text-primary-800">
                 <strong>Vorteile:</strong>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li>Automatisch in Suchmaschinen gefunden werden</li>
@@ -245,7 +245,7 @@ export default function MicrositeDashboardPage() {
             className={`px-4 py-2 rounded-md font-medium ${
               status === 'PUBLISHED'
                 ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                : 'bg-teal-600 text-white hover:bg-teal-700'
+                : 'bg-primary-600 text-white hover:bg-primary-700'
             } disabled:opacity-50 transition-colors`}
           >
             {isPublishing
@@ -278,7 +278,7 @@ export default function MicrositeDashboardPage() {
               id="slug"
               value={customSlug}
               onChange={(e) => handleSlugChange(e.target.value.toLowerCase())}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="ihr-name"
             />
           </div>
@@ -300,7 +300,7 @@ export default function MicrositeDashboardPage() {
               href={micrositeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-600 hover:text-teal-700 font-medium break-all"
+              className="text-primary-600 hover:text-primary-700 font-medium break-all"
             >
               {micrositeUrl}
             </a>
@@ -315,7 +315,7 @@ export default function MicrositeDashboardPage() {
             slugAvailable === false ||
             customSlug.length < 3
           }
-          className="px-4 py-2 bg-teal-600 text-white rounded-md font-medium hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSaving ? 'Speichert...' : 'Slug speichern'}
         </button>
@@ -327,7 +327,7 @@ export default function MicrositeDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <a
             href="/dashboard/profile"
-            className="p-4 border border-gray-200 rounded-md hover:border-teal-500 hover:bg-teal-50 transition-colors"
+            className="p-4 border border-gray-200 rounded-md hover:border-primary-500 hover:bg-primary-50 transition-colors"
           >
             <h3 className="font-medium text-gray-900 mb-1">Profil bearbeiten</h3>
             <p className="text-sm text-gray-600">
@@ -336,7 +336,7 @@ export default function MicrositeDashboardPage() {
           </a>
           <a
             href="/dashboard/therapist/leads"
-            className="p-4 border border-gray-200 rounded-md hover:border-teal-500 hover:bg-teal-50 transition-colors"
+            className="p-4 border border-gray-200 rounded-md hover:border-primary-500 hover:bg-primary-50 transition-colors"
           >
             <h3 className="font-medium text-gray-900 mb-1">Anfragen</h3>
             <p className="text-sm text-gray-600">

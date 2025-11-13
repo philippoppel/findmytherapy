@@ -112,8 +112,8 @@ export default function AnalyticsPage() {
         {/* Total Views */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-blue-100 rounded-lg">
-              <Eye className="h-6 w-6 text-blue-600" />
+            <div className="p-3 bg-primary-100 rounded-lg">
+              <Eye className="h-6 w-6 text-primary-600" />
             </div>
             <span className="text-sm text-gray-500">{data.periods.last30Days.views} (30d)</span>
           </div>
@@ -124,8 +124,8 @@ export default function AnalyticsPage() {
         {/* Total Leads */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-teal-100 rounded-lg">
-              <Users className="h-6 w-6 text-teal-600" />
+            <div className="p-3 bg-primary-100 rounded-lg">
+              <Users className="h-6 w-6 text-primary-600" />
             </div>
             <span className="text-sm text-gray-500">{data.periods.last30Days.leads} (30d)</span>
           </div>
@@ -148,7 +148,7 @@ export default function AnalyticsPage() {
           <h3 className="text-2xl font-bold text-gray-900">{data.overview.newLeadsCount}</h3>
           <p className="text-sm text-gray-600 mt-1">Neue Anfragen</p>
           {data.overview.newLeadsCount > 0 && (
-            <Link href="/dashboard/therapist/leads" className="text-xs text-teal-600 hover:text-teal-700 mt-2 inline-block">
+            <Link href="/dashboard/therapist/leads" className="text-xs text-primary-600 hover:text-primary-700 mt-2 inline-block">
               Anfragen ansehen →
             </Link>
           )}
@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
                     className={`h-full rounded-full transition-all ${
                       isWeekend
                         ? 'bg-gradient-to-r from-gray-300 to-gray-400'
-                        : 'bg-gradient-to-r from-teal-500 to-cyan-500'
+                        : 'bg-gradient-to-r from-primary-500 to-primary-1000'
                     }`}
                     style={{ width: `${Math.max(percentage, item.views > 0 ? 5 : 0)}%` }}
                   />
@@ -218,7 +218,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link
           href="/dashboard/therapist/microsite"
-          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-teal-500 hover:shadow-md transition"
+          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-md transition"
         >
           <h3 className="font-semibold text-gray-900 mb-2">Microsite verwalten</h3>
           <p className="text-sm text-gray-600">Slug anpassen, veröffentlichen oder zurückziehen</p>
@@ -226,7 +226,7 @@ export default function AnalyticsPage() {
 
         <Link
           href="/dashboard/therapist/leads"
-          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-teal-500 hover:shadow-md transition"
+          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-md transition"
         >
           <h3 className="font-semibold text-gray-900 mb-2">Kontaktanfragen</h3>
           <p className="text-sm text-gray-600">Verwalten Sie Ihre Anfragen und markieren Sie den Status</p>
@@ -234,7 +234,7 @@ export default function AnalyticsPage() {
 
         <Link
           href="/dashboard/profile"
-          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-teal-500 hover:shadow-md transition"
+          className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-md transition"
         >
           <h3 className="font-semibold text-gray-900 mb-2">Profil bearbeiten</h3>
           <p className="text-sm text-gray-600">Aktualisieren Sie Ihre Informationen auf der Microsite</p>

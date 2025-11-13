@@ -73,13 +73,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <article className="min-h-screen bg-gradient-to-b from-teal-950/5 via-cyan-950/5 to-teal-950/5 py-12 sm:py-16">
+    <article className="min-h-screen bg-gradient-to-b from-primary-950/5 via-primary-950/5 to-primary-950/5 py-12 sm:py-16">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-sm font-medium text-gray-600">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 transition hover:text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-1.5 transition hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <Home className="h-4 w-4" aria-hidden />
             Home
@@ -87,7 +87,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           <span className="text-gray-400">/</span>
           <Link
             href="/blog"
-            className="transition hover:text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            className="transition hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             Blog
           </Link>
@@ -97,7 +97,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
         <Link
           href="/blog"
-          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-teal-700 transition hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary-700 transition hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
           Alle Artikel
@@ -105,7 +105,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
         <header className="mt-8 space-y-6">
           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-            <span className="inline-flex items-center gap-2 rounded-full bg-teal-100 px-3 py-1 text-teal-800 ring-1 ring-inset ring-teal-600/20">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-primary-800 ring-1 ring-inset ring-primary-600/20">
               <Tag className="h-4 w-4" aria-hidden />
               {post.category}
             </span>
@@ -125,9 +125,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </header>
 
         {/* Key Takeaways / Zusammenfassung */}
-        <section className="mt-10 rounded-3xl border-2 border-teal-200/80 bg-gradient-to-br from-teal-50 via-white to-cyan-50/30 p-6 shadow-lg shadow-teal-900/5 sm:p-8">
+        <section className="mt-10 rounded-3xl border-2 border-primary-200/80 bg-gradient-to-br from-primary-50 via-white to-primary-100/30 p-6 shadow-lg shadow-primary-900/5 sm:p-8">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-teal-600 shadow-md">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-600 shadow-md">
               <Lightbulb className="h-5 w-5 text-white" aria-hidden />
             </div>
             <div className="flex-1 space-y-4">
@@ -135,7 +135,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <ul className="space-y-3">
                 {post.summary.map((point, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-teal-600 mt-0.5" aria-hidden />
+                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600 mt-0.5" aria-hidden />
                     <span className="text-base leading-relaxed text-gray-700">{point}</span>
                   </li>
                 ))}
@@ -160,7 +160,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   <ul className="space-y-2 text-lg text-gray-700">
                     {section.list.map((item) => (
                       <li key={item} className="flex items-start gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-teal-600" />
+                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -171,7 +171,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </div>
 
-        <footer className="mt-16 rounded-3xl border border-teal-200/60 bg-gradient-to-br from-teal-50 via-cyan-50/50 to-white p-8 shadow-xl shadow-teal-900/10 sm:p-10">
+        <footer className="mt-16 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-primary-100/50 to-white p-8 shadow-xl shadow-primary-900/10 sm:p-10">
           <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">Lust auf mehr Einblicke?</h3>
           <p className="mt-4 text-lg leading-relaxed text-gray-700">
             Unser Netzwerk befindet sich im Aufbau – wir zeigen dir bereits heute, wie FindMyTherapy Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
@@ -179,13 +179,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-primary-900/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               Gespräch vereinbaren
             </Link>
             <Link
               href="/triage"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-teal-600 bg-white px-6 py-3 text-base font-semibold text-teal-700 transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary-600 bg-white px-6 py-3 text-base font-semibold text-primary-700 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               Ersteinschätzung testen
             </Link>

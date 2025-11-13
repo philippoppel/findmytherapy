@@ -26,7 +26,7 @@ export default async function DashboardPage() {
 
   // Fallback for unknown roles
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-primary-50 to-primary-100">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-neutral-200 bg-white p-8 shadow-xl">
           <div className="mb-8">
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
             </p>
           </div>
 
-          <div className="space-y-4 rounded-2xl bg-gradient-to-br from-teal-50 to-cyan-50 p-6">
+          <div className="space-y-4 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 p-6">
             <h2 className="text-xl font-semibold text-neutral-900">
               Deine Session-Daten
             </h2>

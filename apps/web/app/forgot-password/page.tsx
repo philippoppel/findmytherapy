@@ -14,8 +14,8 @@ export default function ForgotPasswordPage() {
     <div className="bg-surface">
       <section className="relative overflow-hidden py-16">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-36 right-[-6rem] h-96 w-96 rounded-full bg-blue-50/30 blur-3xl" />
-          <div className="absolute bottom-[-8rem] left-[-4rem] h-80 w-80 rounded-full bg-blue-50/30 blur-3xl" />
+          <div className="absolute -top-36 right-[-6rem] h-96 w-96 rounded-full bg-primary-50/30 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-[-4rem] h-80 w-80 rounded-full bg-primary-50/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">

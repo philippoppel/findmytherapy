@@ -122,11 +122,11 @@ const stats = [
 
 export default function ForTherapistsPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950">
       {/* Background decorations */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
       </div>
 
       {/* Hero Section */}
@@ -157,7 +157,7 @@ export default function ForTherapistsPage() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <a
                   href="mailto:therapists@findmytherapy.net?subject=Erstgespräch%20vereinbaren"
-                  className="inline-flex items-center gap-2 rounded-full bg-teal-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-teal-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                 >
                   <Mail className="h-5 w-5" />
                   Erstgespräch vereinbaren
@@ -176,7 +176,7 @@ export default function ForTherapistsPage() {
               <div className="grid grid-cols-2 gap-4 pt-8 sm:grid-cols-4">
                 {stats.map((stat) => (
                   <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <div className="text-2xl font-bold text-teal-300">{stat.value}</div>
+                    <div className="text-2xl font-bold text-primary-300">{stat.value}</div>
                     <div className="mt-1 text-sm text-white/70">{stat.label}</div>
                   </div>
                 ))}
@@ -202,8 +202,8 @@ export default function ForTherapistsPage() {
                 key={benefit.title}
                 className="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-teal-500/20">
-                  <benefit.icon className="h-6 w-6 text-teal-300" />
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20">
+                  <benefit.icon className="h-6 w-6 text-primary-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-white">{benefit.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/70">{benefit.description}</p>
@@ -216,10 +216,10 @@ export default function ForTherapistsPage() {
       {/* Infopaket Download - Prominent */}
       <section className="relative px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="rounded-3xl border-2 border-teal-400/50 bg-gradient-to-br from-teal-900/80 to-cyan-900/80 p-8 shadow-2xl backdrop-blur sm:p-12">
+          <div className="rounded-3xl border-2 border-primary-400/50 bg-gradient-to-br from-primary-900/80 to-primary-950/80 p-8 shadow-2xl backdrop-blur sm:p-12">
             <div className="flex flex-col items-center text-center">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-teal-400/20 ring-2 ring-teal-400/30">
-                <Download className="h-8 w-8 text-teal-300" />
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-400/20 ring-2 ring-primary-400/30">
+                <Download className="h-8 w-8 text-primary-300" />
               </div>
               <h2 className="text-3xl font-bold text-white sm:text-4xl">
                 Alles Wichtige auf einen Blick
@@ -232,7 +232,7 @@ export default function ForTherapistsPage() {
                 <a
                   href="/downloads/findmytherapy-infopaket.pdf"
                   download
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-teal-900 shadow-lg transition hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-primary-900 shadow-lg transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                 >
                   <Download className="h-5 w-5" />
                   PDF herunterladen (2.4 MB)
@@ -269,8 +269,8 @@ export default function ForTherapistsPage() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500/20">
-                    <CheckCircle2 className="h-5 w-5 text-teal-300" />
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-500/20">
+                    <CheckCircle2 className="h-5 w-5 text-primary-300" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
@@ -299,12 +299,12 @@ export default function ForTherapistsPage() {
                 key={tier.name}
                 className={`rounded-3xl border p-8 shadow-2xl backdrop-blur ${
                   tier.highlighted
-                    ? 'border-teal-400/50 bg-white/15 ring-2 ring-teal-400/20'
+                    ? 'border-primary-400/50 bg-white/15 ring-2 ring-primary-400/20'
                     : 'border-white/10 bg-white/10'
                 }`}
               >
                 {tier.highlighted && (
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-teal-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-300">
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-300">
                     <Award className="h-4 w-4" />
                     Empfohlen
                   </div>
@@ -318,7 +318,7 @@ export default function ForTherapistsPage() {
                 <ul className="mt-8 space-y-4">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-teal-400" />
+                      <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-400" />
                       <span className="text-sm text-white/85">{feature}</span>
                     </li>
                   ))}
@@ -328,7 +328,7 @@ export default function ForTherapistsPage() {
                   href={tier.href}
                   className={`mt-8 flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-base font-semibold shadow-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 ${
                     tier.highlighted
-                      ? 'bg-teal-600 text-white hover:bg-teal-500'
+                      ? 'bg-primary-600 text-white hover:bg-primary-500'
                       : 'border-2 border-white/60 bg-white/10 text-white hover:border-white hover:bg-white/20'
                   }`}
                 >
@@ -355,7 +355,7 @@ export default function ForTherapistsPage() {
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
                 href="mailto:therapists@findmytherapy.net?subject=Erstgespräch%20vereinbaren"
-                className="inline-flex items-center gap-2 rounded-full bg-teal-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-teal-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
                 <Mail className="h-5 w-5" />
                 therapists@findmytherapy.net

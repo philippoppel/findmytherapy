@@ -48,8 +48,8 @@ export default function AboutPage() {
     <div className="bg-surface">
       <section className="relative overflow-hidden bg-white py-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-blue-100/30 blur-3xl" />
-          <div className="absolute bottom-[-10rem] left-[-2rem] h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
+          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-primary-100/30 blur-3xl" />
+          <div className="absolute bottom-[-10rem] left-[-2rem] h-80 w-80 rounded-full bg-primary-100/50 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center rounded-full bg-primary-600 px-4 py-1 text-sm font-semibold text-white shadow-sm">
@@ -113,7 +113,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-blue-50 via-surface-1 to-blue-50 py-16">
+      <section className="bg-gradient-to-r from-primary-50 via-surface-1 to-primary-50 py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl space-y-3">

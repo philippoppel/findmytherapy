@@ -18,7 +18,7 @@ interface MicrositeHeroProps {
 
 export function MicrositeHero({ profile }: MicrositeHeroProps) {
   return (
-    <section className="bg-gradient-to-br from-teal-50 to-blue-50 py-16">
+    <section className="bg-gradient-to-br from-primary-50 to-primary-50 py-16">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Profile Image */}
@@ -34,8 +34,8 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
                 />
               </div>
             ) : (
-              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full bg-teal-200 flex items-center justify-center shadow-lg border-4 border-white">
-                <span className="text-5xl font-bold text-teal-700">
+              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full bg-primary-200 flex items-center justify-center shadow-lg border-4 border-white">
+                <span className="text-5xl font-bold text-primary-700">
                   {profile.displayName.charAt(0)}
                 </span>
               </div>
@@ -48,7 +48,7 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
                 {profile.displayName}
               </h1>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
                 ✓ Verifiziert
               </span>
             </div>
@@ -95,7 +95,7 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
                     href={profile.socialLinkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-blue-600 hover:bg-blue-50 transition border border-blue-200 text-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-primary-600 hover:bg-primary-50 transition border border-primary-200 text-sm"
                   >
                     💼 LinkedIn
                   </a>
@@ -115,7 +115,7 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
                     href={profile.socialFacebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-blue-700 hover:bg-blue-50 transition border border-blue-300 text-sm"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-primary-700 hover:bg-primary-50 transition border border-primary-300 text-sm"
                   >
                     👥 Facebook
                   </a>

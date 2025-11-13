@@ -116,20 +116,20 @@ export default async function TherapistProfilePage({ params, searchParams }: The
   const fromTriage = searchParams?.from === 'triage'
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-teal-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50/30">
       {/* Navigation */}
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {fromTriage ? (
-              <BackButton className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors">
+              <BackButton className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">
                 ← Zurück zu deinen Empfehlungen
               </BackButton>
             ) : (
               <Link
                 href="/therapists"
                 prefetch={false}
-                className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors"
+                className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
               >
                 ← Zurück zur Übersicht
               </Link>
@@ -137,7 +137,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             <Link
               href="/"
               prefetch={false}
-              className="text-sm font-medium text-slate-600 hover:text-teal-600 transition-colors"
+              className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
             >
               Zur Startseite
             </Link>
@@ -146,10 +146,10 @@ export default async function TherapistProfilePage({ params, searchParams }: The
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-800 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-500/30 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-1000/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-500/30 rounded-full blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
@@ -170,14 +170,14 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                         quality={95}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-teal-400 to-cyan-500 text-5xl font-bold text-white">
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-400 to-primary-1000 text-5xl font-bold text-white">
                         {profile.displayName?.charAt(0) ?? 'T'}
                       </div>
                     )}
                   </div>
                   {profile.status === 'VERIFIED' && (
                     <div className="absolute -bottom-2 -right-2 bg-white rounded-full p-2 shadow-lg">
-                      <BadgeCheck className="h-6 w-6 text-teal-600" />
+                      <BadgeCheck className="h-6 w-6 text-primary-600" />
                     </div>
                   )}
                 </div>
@@ -196,7 +196,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                         </div>
                       )}
                     </div>
-                    <p className="text-lg md:text-xl text-teal-100 font-medium mb-3">
+                    <p className="text-lg md:text-xl text-primary-100 font-medium mb-3">
                       {profile.title ?? 'Psychotherapie'}
                     </p>
                     {profile.headline && (
@@ -209,14 +209,14 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                   {/* Key Stats */}
                   <div className="flex flex-wrap gap-4 text-sm">
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg">
-                      <MapPin className="h-4 w-4 text-teal-200" />
+                      <MapPin className="h-4 w-4 text-primary-200" />
                       <span className="text-white/90">
                         {profile.online ? `${profile.city ?? 'Online'} + Online` : profile.city ?? 'Vor Ort'}
                       </span>
                     </div>
                     {experience && (
                       <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg">
-                        <Briefcase className="h-4 w-4 text-teal-200" />
+                        <Briefcase className="h-4 w-4 text-primary-200" />
                         <span className="text-white/90">{experience} Erfahrung</span>
                       </div>
                     )}
@@ -241,7 +241,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-white text-teal-700 hover:bg-teal-50 font-semibold shadow-lg">
+                <Button asChild size="lg" className="bg-white text-primary-700 hover:bg-primary-50 font-semibold shadow-lg">
                   <Link href={contactHref} prefetch={false}>
                     <MessageCircle className="h-5 w-5 mr-2" />
                     Termin anfragen
@@ -265,15 +265,15 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                 <div className="space-y-4">
                   <div className="text-sm text-white/90 space-y-2">
                     <div className="flex items-start gap-2">
-                      <Clock className="h-4 w-4 mt-0.5 shrink-0 text-teal-200" />
+                      <Clock className="h-4 w-4 mt-0.5 shrink-0 text-primary-200" />
                       <span>{profile.responseTime ?? 'Antwort innerhalb von 48 Stunden'}</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Euro className="h-4 w-4 mt-0.5 shrink-0 text-teal-200" />
+                      <Euro className="h-4 w-4 mt-0.5 shrink-0 text-primary-200" />
                       <span>{formatCurrencyRange(profile.priceMin, profile.priceMax)} pro Einheit</span>
                     </div>
                   </div>
-                  <Button asChild className="w-full bg-white text-teal-700 hover:bg-teal-50 font-semibold">
+                  <Button asChild className="w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold">
                     <Link href={contactHref} prefetch={false}>
                       Jetzt Kontakt aufnehmen
                     </Link>
@@ -297,7 +297,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {profile.about && (
               <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                  <Heart className="h-6 w-6 text-teal-600" />
+                  <Heart className="h-6 w-6 text-primary-600" />
                   Über mich
                 </h2>
                 <p className="text-slate-700 leading-relaxed whitespace-pre-wrap text-base">
@@ -309,14 +309,14 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {/* Approach & Experience */}
             <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                <Sparkles className="h-6 w-6 text-teal-600" />
+                <Sparkles className="h-6 w-6 text-primary-600" />
                 Mein therapeutischer Ansatz
               </h2>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-teal-100 flex items-center justify-center">
-                      <GraduationCap className="h-4 w-4 text-teal-700" />
+                    <div className="h-8 w-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                      <GraduationCap className="h-4 w-4 text-primary-700" />
                     </div>
                     Therapeutischer Ansatz
                   </h3>
@@ -326,8 +326,8 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                 </div>
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-cyan-100 flex items-center justify-center">
-                      <Users className="h-4 w-4 text-cyan-700" />
+                    <div className="h-8 w-8 rounded-lg bg-primary-200 flex items-center justify-center">
+                      <Users className="h-4 w-4 text-primary-800" />
                     </div>
                     Zielgruppen & Erfahrung
                   </h3>
@@ -341,7 +341,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {/* Specialties & Modalities */}
             <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                <BookOpen className="h-6 w-6 text-teal-600" />
+                <BookOpen className="h-6 w-6 text-primary-600" />
                 Schwerpunkte & Methoden
               </h2>
               <div className="space-y-6">
@@ -354,7 +354,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                       {profile.specialties.map((specialty) => (
                         <span
                           key={specialty}
-                          className="px-4 py-2 bg-teal-50 text-teal-700 rounded-full text-sm font-medium border border-teal-200"
+                          className="px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium border border-primary-200"
                         >
                           {specialty}
                         </span>
@@ -371,7 +371,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                       {profile.modalities.map((modality) => (
                         <span
                           key={modality}
-                          className="px-4 py-2 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200"
+                          className="px-4 py-2 bg-primary-100 text-primary-800 rounded-full text-sm font-medium border border-primary-300"
                         >
                           {modality}
                         </span>
@@ -386,13 +386,13 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {profile.services.length > 0 && (
               <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                  <CheckCircle2 className="h-6 w-6 text-teal-600" />
+                  <CheckCircle2 className="h-6 w-6 text-primary-600" />
                   Angebotene Leistungen
                 </h2>
                 <ul className="grid gap-3 md:grid-cols-2">
                   {profile.services.map((service) => (
                     <li key={service} className="flex items-start gap-3 text-slate-700">
-                      <CheckCircle2 className="h-5 w-5 text-teal-600 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h-5 w-5 text-primary-600 shrink-0 mt-0.5" />
                       <span>{service}</span>
                     </li>
                   ))}
@@ -404,18 +404,18 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {profile.courses.length > 0 && (
               <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                  <BookOpen className="h-6 w-6 text-teal-600" />
+                  <BookOpen className="h-6 w-6 text-primary-600" />
                   Programme & Kurse
                 </h2>
                 <div className="grid gap-6 md:grid-cols-2">
                   {profile.courses.map((course) => (
                     <article
                       key={course.id}
-                      className="border border-slate-200 rounded-xl p-6 hover:border-teal-300 hover:shadow-md transition-all"
+                      className="border border-slate-200 rounded-xl p-6 hover:border-primary-300 hover:shadow-md transition-all"
                     >
                       <h3 className="font-bold text-slate-900 mb-2">{course.title}</h3>
                       <p className="text-sm text-slate-600 mb-4">{course.description}</p>
-                      <Button asChild variant="outline" size="sm" className="text-teal-600 border-teal-600 hover:bg-teal-50">
+                      <Button asChild variant="outline" size="sm" className="text-primary-600 border-primary-600 hover:bg-primary-50">
                         <Link href={`/courses/${course.slug}`} prefetch={false}>
                           Mehr erfahren →
                         </Link>
@@ -432,7 +432,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             {/* Credentials Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
               <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <Award className="h-5 w-5 text-teal-600" />
+                <Award className="h-5 w-5 text-primary-600" />
                 Qualifikationen
               </h3>
               <dl className="space-y-4 text-sm">
@@ -464,15 +464,15 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             </div>
 
             {/* Pricing & Availability */}
-            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl border border-teal-200 p-6">
+            <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl border border-primary-200 p-6">
               <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-teal-600" />
+                <Calendar className="h-5 w-5 text-primary-600" />
                 Konditionen
               </h3>
               <dl className="space-y-4 text-sm">
                 <div>
                   <dt className="font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Euro className="h-4 w-4 text-teal-600" />
+                    <Euro className="h-4 w-4 text-primary-600" />
                     Honorar pro Sitzung
                   </dt>
                   <dd className="text-slate-900 font-bold text-lg">
@@ -484,7 +484,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                 </div>
                 <div>
                   <dt className="font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-teal-600" />
+                    <Clock className="h-4 w-4 text-primary-600" />
                     Antwortzeit
                   </dt>
                   <dd className="text-slate-900">{profile.responseTime ?? 'Innerhalb von 48 Stunden'}</dd>
@@ -492,7 +492,7 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                 {profile.availabilityNote && (
                   <div>
                     <dt className="font-medium text-slate-700 mb-1 flex items-center gap-2">
-                      <CalendarClock className="h-4 w-4 text-teal-600" />
+                      <CalendarClock className="h-4 w-4 text-primary-600" />
                       Verfügbarkeit
                     </dt>
                     <dd className="text-slate-900">{profile.availabilityNote}</dd>
@@ -502,12 +502,12 @@ export default async function TherapistProfilePage({ params, searchParams }: The
             </div>
 
             {/* CTA Card */}
-            <div className="bg-gradient-to-br from-teal-600 to-cyan-700 rounded-2xl p-6 text-white">
+            <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
               <h3 className="font-bold text-lg mb-2">Bereit für den ersten Schritt?</h3>
-              <p className="text-teal-100 text-sm mb-4">
+              <p className="text-primary-100 text-sm mb-4">
                 Kontaktieren Sie mich für ein unverbindliches Erstgespräch.
               </p>
-              <Button asChild className="w-full bg-white text-teal-700 hover:bg-teal-50 font-semibold">
+              <Button asChild className="w-full bg-white text-primary-700 hover:bg-primary-50 font-semibold">
                 <Link href={contactHref} prefetch={false}>
                   <MessageCircle className="h-4 w-4 mr-2" />
                   Termin anfragen

@@ -74,7 +74,7 @@ export function TherapistDirectory({ therapists }: Props) {
         <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-teal-400">Fokus</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Fokus</p>
               <p className="text-sm text-white/70">
                 Wähle Schwerpunkte, um passende Therapeut:innen angezeigt zu bekommen.
               </p>
@@ -105,8 +105,8 @@ export function TherapistDirectory({ therapists }: Props) {
                   className={cn(
                     'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
                     isActive
-                      ? 'border-teal-700 bg-teal-700 text-white shadow-sm'
-                      : 'border-white/30 text-white/70 hover:border-teal-400/40 hover:text-white hover:bg-white/10',
+                      ? 'border-primary-700 bg-primary-700 text-white shadow-sm'
+                      : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white hover:bg-white/10',
                   )}
                 >
                   {option}
@@ -116,7 +116,7 @@ export function TherapistDirectory({ therapists }: Props) {
           </div>
 
           <div className="mt-6 space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-teal-400">Format</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Format</p>
             <div className="flex flex-wrap gap-2">
               {formatOptions.map((option) => {
                 const isActive = formatFilter === option.id
@@ -128,8 +128,8 @@ export function TherapistDirectory({ therapists }: Props) {
                     className={cn(
                       'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
                       isActive
-                        ? 'border-teal-700 bg-teal-700 text-white shadow-sm'
-                        : 'border-white/30 text-white/70 hover:border-teal-400/40 hover:text-white hover:bg-white/10',
+                        ? 'border-primary-700 bg-primary-700 text-white shadow-sm'
+                        : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white hover:bg-white/10',
                     )}
                   >
                     {option.label}
@@ -210,25 +210,25 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             </header>
 
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-white/70 sm:justify-start">
-            <span className="inline-flex items-center gap-1 rounded-full bg-teal-400/20 px-3 py-1 font-semibold text-teal-300">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-400/20 px-3 py-1 font-semibold text-primary-300">
               <Star className="h-3.5 w-3.5" aria-hidden />
               {therapist.rating.toFixed(1)}
-              <span className="text-teal-400/60">({therapist.reviews})</span>
+              <span className="text-primary-400/60">({therapist.reviews})</span>
             </span>
             <span className="inline-flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-white/70">
-              <Sparkles className="h-3.5 w-3.5 text-teal-400" aria-hidden />
+              <Sparkles className="h-3.5 w-3.5 text-primary-400" aria-hidden />
               {therapist.experience}
             </span>
           </div>
 
           <div className="flex flex-col gap-2 text-sm text-white/70 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
             <span className="inline-flex items-center justify-center gap-2 text-white sm:justify-start">
-              <MapPin className="h-4 w-4 flex-shrink-0 text-teal-400" aria-hidden />
+              <MapPin className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
               <span className="truncate">{therapist.location}</span>
             </span>
             <span className="hidden sm:inline text-white/40" aria-hidden>•</span>
             <span className="inline-flex items-center justify-center gap-2 sm:justify-start">
-              <Clock className="h-4 w-4 flex-shrink-0 text-teal-400" aria-hidden />
+              <Clock className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
               <span className="truncate">{therapist.availability}</span>
             </span>
           </div>
@@ -256,7 +256,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
       <div className="flex flex-col gap-3 border-t border-white/10 pt-4 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           {therapist.formatTags.map((tag) => (
-            <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-teal-400/20 px-3 py-1 text-xs font-semibold text-teal-300">
+            <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-primary-400/20 px-3 py-1 text-xs font-semibold text-primary-300">
               <CheckCircle className="h-3 w-3" aria-hidden />
               {formatOptions.find((option) => option.id === tag)?.label ?? tag}
             </span>

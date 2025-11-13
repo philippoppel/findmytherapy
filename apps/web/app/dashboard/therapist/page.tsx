@@ -217,16 +217,16 @@ export default async function TherapistDashboardPage() {
             </nav>
           </div>
 
-          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl border border-teal-200 p-6">
-            <h3 className="text-lg font-semibold text-teal-900 mb-2">Listing-Status</h3>
-            <p className="text-sm text-teal-700 mb-4">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl border border-primary-200 p-6">
+            <h3 className="text-lg font-semibold text-primary-900 mb-2">Listing-Status</h3>
+            <p className="text-sm text-primary-700 mb-4">
               {profile?.listings[0]?.status === 'ACTIVE'
                 ? 'Ihr Auftritt ist aktiv und wird Klient:innen angezeigt.'
                 : 'Ihr Listing ist derzeit nicht aktiv.'}
             </p>
             <a
               href="/dashboard/listing"
-              className="inline-flex items-center justify-center w-full bg-teal-600 text-white py-2.5 px-4 rounded-xl hover:bg-teal-700 transition-colors font-medium shadow-sm"
+              className="inline-flex items-center justify-center w-full bg-primary-600 text-white py-2.5 px-4 rounded-xl hover:bg-primary-700 transition-colors font-medium shadow-sm"
             >
               Listing verwalten
             </a>
@@ -245,9 +245,9 @@ type MetricCardProps = {
 };
 
 const toneStyles: Record<MetricCardProps['tone'], string> = {
-  info: 'bg-blue-100 text-blue-600',
+  info: 'bg-primary-100 text-primary-600',
   accent: 'bg-purple-100 text-purple-600',
-  primary: 'bg-teal-100 text-teal-600',
+  primary: 'bg-primary-100 text-primary-600',
   success: 'bg-green-100 text-green-600',
 };
 
@@ -277,9 +277,9 @@ function QuickAction({ href, icon: Icon, label }: QuickActionProps) {
   return (
     <a
       href={href}
-      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-50 transition-all border border-transparent hover:border-neutral-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
+      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-50 transition-all border border-transparent hover:border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
     >
-      <Icon className="h-5 w-5 text-teal-600" />
+      <Icon className="h-5 w-5 text-primary-600" />
       <span className="text-sm font-medium text-neutral-700">{label}</span>
     </a>
   );

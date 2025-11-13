@@ -33,8 +33,8 @@ export default function CoursesPage() {
     <div className="bg-surface">
       <section className="relative overflow-hidden bg-white py-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-blue-50/30 blur-3xl" />
-          <div className="absolute bottom-[-8rem] left-[-3rem] h-72 w-72 rounded-full bg-blue-100/30 blur-3xl" />
+          <div className="absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-primary-50/30 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-[-3rem] h-72 w-72 rounded-full bg-primary-100/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

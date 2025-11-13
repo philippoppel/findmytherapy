@@ -878,10 +878,10 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           )}
 
           {/* Disclaimer auf Ergebnisseite */}
-          <div className="mt-6 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4">
-            <Info className="h-5 w-5 flex-none text-blue-600" aria-hidden />
+          <div className="mt-6 flex items-start gap-3 rounded-xl border border-primary-200 bg-primary-50 p-4">
+            <Info className="h-5 w-5 flex-none text-primary-600" aria-hidden />
             <div className="flex-1">
-              <p className="text-sm text-blue-900">
+              <p className="text-sm text-primary-900">
                 <strong>Hinweis:</strong> Diese Ersteinschätzung ist keine medizinische Diagnose und ersetzt keine professionelle Beratung. Bei Fragen oder zur weiteren Abklärung wende dich bitte an qualifizierte Therapeut:innen oder Ärzt:innen.
               </p>
             </div>
@@ -937,7 +937,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-teal-200 border-t-teal-600"></div>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600"></div>
           <p className="text-sm text-gray-600">Wird geladen...</p>
         </div>
       </div>
@@ -948,14 +948,14 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
     <div className="space-y-6">
       {/* Disclaimer - Nur am Anfang des Quiz */}
       {sectionIndex === 0 && questionIndex === 0 && (
-        <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+        <div className="rounded-2xl border border-primary-200 bg-primary-50 p-4">
           <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-blue-500 text-white">
+            <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary-500 text-white">
               <Info className="h-4 w-4" aria-hidden />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-semibold text-blue-900">Wichtiger Hinweis</h4>
-              <p className="mt-1 text-xs text-blue-800">
+              <h4 className="text-sm font-semibold text-primary-900">Wichtiger Hinweis</h4>
+              <p className="mt-1 text-xs text-primary-800">
                 Diese Ersteinschätzung ist <strong>keine medizinische Diagnose</strong>, sondern dient zur Orientierung. Die Ergebnisse ersetzen keine professionelle Beratung durch Therapeut:innen oder Ärzt:innen.
               </p>
             </div>

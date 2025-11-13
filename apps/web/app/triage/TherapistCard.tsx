@@ -48,7 +48,7 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
     <article
       className={`group grid gap-6 rounded-3xl border bg-white/95 p-6 shadow-lg shadow-primary/10 transition hover:-translate-y-1 hover:shadow-xl md:grid-cols-[auto,1fr] ${
         index === 0 ? 'border-primary/30 ring-2 ring-primary/15' : 'border-divider'
-      } ${isSelected ? 'ring-2 ring-blue-400' : ''}`}
+      } ${isSelected ? 'ring-2 ring-primary-400' : ''}`}
     >
       <div className="flex flex-col items-center gap-3 md:items-start">
         <div className="relative h-36 w-36 overflow-hidden rounded-3xl border border-primary/20 bg-surface-1 shadow-inner md:h-40 md:w-40">
@@ -80,8 +80,8 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
             onClick={() => onSelect(therapist.id)}
             className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
               isSelected
-                ? 'border-blue-500 bg-blue-500 text-white shadow-sm'
-                : 'border-divider bg-white text-muted hover:border-blue-300 hover:text-blue-600'
+                ? 'border-primary-500 bg-primary-500 text-white shadow-sm'
+                : 'border-divider bg-white text-muted hover:border-primary-300 hover:text-primary-600'
             }`}
           >
             {isSelected ? <CheckCircle className="h-4 w-4" /> : null}
@@ -259,7 +259,7 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
                 </h5>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {therapist.formatTags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+                    <span key={tag} className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-800">
                       {renderFormatTag(tag)}
                     </span>
                   ))}

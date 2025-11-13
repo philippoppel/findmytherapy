@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-b from-teal-950/5 via-cyan-950/5 to-teal-950/5 py-12 sm:py-16">
+      <div className="min-h-screen bg-gradient-to-b from-primary-950/5 via-primary-950/5 to-primary-950/5 py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           {/* Back Navigation */}
           <Link
             href="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-teal-700 transition hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-primary-700 transition hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <ArrowLeft className="h-4 w-4" />
             Zurück zur Startseite
@@ -38,7 +38,7 @@ export default function ContactPage() {
           {/* Email Contact */}
           <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-teal-100 text-teal-600">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600">
                 <Mail className="h-6 w-6" />
               </div>
               <div className="flex-1">
@@ -48,7 +48,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href="mailto:care@findmytherapy.net"
-                  className="mt-4 inline-block text-lg font-semibold text-teal-600 transition hover:text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+                  className="mt-4 inline-block text-lg font-semibold text-primary-600 transition hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   care@findmytherapy.net
                 </a>

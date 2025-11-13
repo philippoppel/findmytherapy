@@ -47,13 +47,13 @@ export function QuestionTooltip({
 
   if (variant === 'inline') {
     return (
-      <div className={`rounded-lg border border-blue-200 bg-blue-50 p-3 ${className}`}>
+      <div className={`rounded-lg border border-primary-200 bg-primary-50 p-3 ${className}`}>
         <div className="flex items-start gap-2">
-          <Info className="mt-0.5 h-4 w-4 flex-none text-blue-600" aria-hidden />
+          <Info className="mt-0.5 h-4 w-4 flex-none text-primary-600" aria-hidden />
           <div className="flex-1 text-sm">
-            {helpText && <p className="text-blue-900">{helpText}</p>}
+            {helpText && <p className="text-primary-900">{helpText}</p>}
             {scientificContext && (
-              <p className="mt-1 text-xs text-blue-700">
+              <p className="mt-1 text-xs text-primary-700">
                 <span className="font-semibold">Hintergrund:</span> {scientificContext}
               </p>
             )}
@@ -69,7 +69,7 @@ export function QuestionTooltip({
         ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
+        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-950"
         aria-label="Mehr Informationen"
       >
         <HelpCircle className="h-4 w-4 text-white" aria-hidden />

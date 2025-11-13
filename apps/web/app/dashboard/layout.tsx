@@ -43,9 +43,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-primary-50 to-primary-100">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-teal-200 bg-white/80 backdrop-blur-lg">
+      <header className="sticky top-0 z-40 border-b border-primary-200 bg-white/80 backdrop-blur-lg">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <button
@@ -55,21 +55,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
             <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-105" aria-label="FindMyTherapy Startseite">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 shadow-lg shadow-teal-500/30">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000 shadow-lg shadow-primary-500/30">
                 <Compass className="h-5 w-5 text-white" />
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-semibold leading-tight text-neutral-900">
                   FindMyTherapy
                 </span>
-                <span className="text-[10px] font-medium text-teal-600">Dashboard</span>
+                <span className="text-[10px] font-medium text-primary-600">Dashboard</span>
               </div>
             </Link>
           </div>
 
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-full border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-700 transition hover:bg-teal-50"
+            className="flex items-center gap-2 rounded-full border border-primary-200 bg-white px-4 py-2 text-sm font-medium text-primary-700 transition hover:bg-primary-50"
           >
             <Home className="h-4 w-4" />
             <span className="hidden sm:inline">Zur Homepage</span>
@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   href={item.href}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition relative ${
                     isActive
-                      ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-1000 text-white shadow-lg shadow-primary-500/30'
                       : 'text-neutral-700 hover:bg-white hover:shadow-sm'
                   }`}
                 >
@@ -140,7 +140,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition relative ${
                         isActive
-                          ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30'
+                          ? 'bg-gradient-to-r from-primary-500 to-primary-1000 text-white shadow-lg shadow-primary-500/30'
                           : 'text-neutral-700 hover:bg-neutral-100'
                       }`}
                     >

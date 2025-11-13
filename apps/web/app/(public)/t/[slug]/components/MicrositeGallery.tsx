@@ -52,7 +52,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
             <button
               key={index}
               onClick={() => openLightbox(index)}
-              className="relative aspect-square overflow-hidden rounded-lg group cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="relative aspect-square overflow-hidden rounded-lg group cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <Image
                 src={imageUrl}

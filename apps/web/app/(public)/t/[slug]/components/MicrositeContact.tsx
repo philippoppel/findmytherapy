@@ -132,7 +132,7 @@ export function MicrositeContact({
           </p>
           <button
             onClick={() => setSubmitStatus('idle')}
-            className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+            className="text-sm text-primary-600 hover:text-primary-700 font-medium"
           >
             Weitere Anfrage senden
           </button>
@@ -165,7 +165,7 @@ export function MicrositeContact({
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className={`w-full px-3 py-2 border ${
               errors.name ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
             disabled={isSubmitting}
           />
           {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
@@ -182,7 +182,7 @@ export function MicrositeContact({
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             className={`w-full px-3 py-2 border ${
               errors.email ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
             disabled={isSubmitting}
           />
           {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -197,7 +197,7 @@ export function MicrositeContact({
             id="phone"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             disabled={isSubmitting}
           />
         </div>
@@ -213,7 +213,7 @@ export function MicrositeContact({
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
             className={`w-full px-3 py-2 border ${
               errors.message ? 'border-red-500' : 'border-gray-300'
-            } rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500`}
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
             placeholder="Beschreiben Sie kurz Ihr Anliegen..."
             disabled={isSubmitting}
           />
@@ -226,12 +226,12 @@ export function MicrositeContact({
               type="checkbox"
               checked={formData.consent}
               onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
-              className="mt-1 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+              className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               disabled={isSubmitting}
             />
             <span className="text-sm text-gray-600">
               Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
-              <a href="/privacy" className="text-teal-600 hover:text-teal-700 underline">
+              <a href="/privacy" className="text-primary-600 hover:text-primary-700 underline">
                 Datenschutzerklärung
               </a>{' '}
               zu. *
@@ -251,7 +251,7 @@ export function MicrositeContact({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-teal-600 text-white py-3 px-4 rounded-md font-medium hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting ? 'Sende...' : 'Anfrage senden'}
         </button>

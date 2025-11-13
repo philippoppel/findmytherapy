@@ -45,10 +45,10 @@ export default async function TherapistsPage() {
   }))
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-12">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-12">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
       </div>
       <section className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex justify-end">
@@ -74,7 +74,7 @@ export default async function TherapistsPage() {
               <Link
                 href="/triage"
                 prefetch={false}
-                className="inline-flex items-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                className="inline-flex items-center rounded-full bg-primary-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
               >
                 <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
               </Link>
@@ -101,7 +101,7 @@ export default async function TherapistsPage() {
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/70">
-                <Sparkles className="h-4 w-4 text-teal-400" />
+                <Sparkles className="h-4 w-4 text-primary-400" />
                 Kuratiertes Netzwerk
               </div>
             </div>

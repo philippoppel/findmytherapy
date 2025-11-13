@@ -106,8 +106,8 @@ export class TriageErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoun
             </div>
 
             {/* Help Text */}
-            <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4">
-              <p className="text-xs text-blue-900">
+            <div className="mt-6 rounded-xl border border-primary-200 bg-primary-50 p-4">
+              <p className="text-xs text-primary-900">
                 <strong>Tipp:</strong> Wenn das Problem weiterhin besteht, versuche die Seite in einem privaten/Inkognito-Fenster zu öffnen oder deinen Browser-Cache zu leeren.
               </p>
             </div>

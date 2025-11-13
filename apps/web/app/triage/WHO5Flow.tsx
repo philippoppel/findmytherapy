@@ -81,10 +81,10 @@ export function WHO5Flow() {
   // Summary view
   if (showSummary) {
     return (
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-4xl space-y-6 px-4">
@@ -174,7 +174,7 @@ export function WHO5Flow() {
                 {recommendations.shouldSeekHelp ? (
                   <AlertTriangle className="mt-1 h-6 w-6 flex-shrink-0 text-amber-400" />
                 ) : (
-                  <Info className="mt-1 h-6 w-6 flex-shrink-0 text-teal-400" />
+                  <Info className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
                 )}
                 <div className="flex-1">
                   <h4 className="text-lg font-bold text-white">Empfohlene nächste Schritte</h4>
@@ -182,12 +182,12 @@ export function WHO5Flow() {
 
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     {recommendations.shouldDoFullScreening && (
-                      <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                         <Link href="/triage">Vollständige Ersteinschätzung</Link>
                       </Button>
                     )}
                     {recommendations.shouldSeekHelp && (
-                      <Button asChild size="lg" className="w-full bg-teal-900 text-white hover:bg-teal-800 sm:w-auto">
+                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
                         <Link href="/therapists">Therapeut:innen finden</Link>
                       </Button>
                     )}
@@ -244,10 +244,10 @@ export function WHO5Flow() {
 
   // Question flow
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950 py-16">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-teal-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-cyan-500/25 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
+        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-3xl px-4">
@@ -274,7 +274,7 @@ export function WHO5Flow() {
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
               <motion.div
-                className="h-full rounded-full bg-teal-400"
+                className="h-full rounded-full bg-primary-400"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
@@ -322,8 +322,8 @@ export function WHO5Flow() {
                       onClick={() => handleAnswer(option.value)}
                       className={`flex w-full items-center justify-between gap-2 rounded-xl border p-3 transition sm:gap-3 sm:p-4 ${
                         isSelected
-                          ? 'border-teal-400/60 bg-teal-400/20 shadow-lg shadow-teal-500/20'
-                          : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-white/10'
+                          ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
+                          : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-primary-400/40 hover:bg-white/10'
                       }`}
                     >
                       <div className="text-left">
@@ -337,7 +337,7 @@ export function WHO5Flow() {
                       <div
                         className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold sm:h-10 sm:w-10 ${
                           isSelected
-                            ? 'border-teal-700 bg-teal-700 text-white'
+                            ? 'border-primary-700 bg-primary-700 text-white'
                             : 'border-white/30 bg-white/10 text-white'
                         }`}
                       >

@@ -50,7 +50,7 @@ export default function CookiePolicyPage() {
         {/* Header */}
         <header className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000">
               <Cookie className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -121,7 +121,7 @@ export default function CookiePolicyPage() {
                 <h3 className="text-xl font-semibold text-neutral-950">
                   {cookieCategoryInfo.essential.title}
                 </h3>
-                <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-700">
+                <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700">
                   Immer aktiv
                 </span>
               </div>
@@ -162,7 +162,7 @@ export default function CookiePolicyPage() {
                 <h3 className="text-xl font-semibold text-neutral-950">
                   {cookieCategoryInfo.analytics.title}
                 </h3>
-                <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+                <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700">
                   Optional
                 </span>
               </div>
@@ -191,7 +191,7 @@ export default function CookiePolicyPage() {
               </table>
             </div>
             <div className="mt-4 space-y-2">
-              <div className="rounded-lg bg-blue-50 p-4 text-xs text-blue-900">
+              <div className="rounded-lg bg-primary-50 p-4 text-xs text-primary-900">
                 <strong>Datenschutz-Hinweis:</strong> Plausible Analytics ist ein datenschutzfreundliches Tool,
                 das keine Cookies setzt und keine personenbezogenen Daten speichert. Es erfüllt die DSGVO-Anforderungen
                 und benötigt theoretisch keine Einwilligung, wir fragen dennoch aus Transparenzgründen.
@@ -210,7 +210,7 @@ export default function CookiePolicyPage() {
                 <h3 className="text-xl font-semibold text-neutral-950">
                   {cookieCategoryInfo.errorTracking.title}
                 </h3>
-                <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+                <span className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700">
                   Optional
                 </span>
               </div>
@@ -254,14 +254,14 @@ export default function CookiePolicyPage() {
         {/* Manage Cookies */}
         <section id="manage-cookies" className="space-y-4 rounded-2xl border border-divider bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3">
-            <Settings className="h-6 w-6 text-teal-600" />
+            <Settings className="h-6 w-6 text-primary-600" />
             <h2 className="text-2xl font-semibold text-neutral-950">
               Cookie-Einstellungen verwalten
             </h2>
           </div>
 
           {currentConsent && (
-            <div className="mb-6 rounded-lg bg-teal-50 p-4 text-sm text-teal-900">
+            <div className="mb-6 rounded-lg bg-primary-50 p-4 text-sm text-primary-900">
               <strong>Ihre aktuellen Einstellungen:</strong>
               <ul className="mt-2 space-y-1">
                 <li>✅ Essenziell: Immer aktiv</li>
@@ -283,7 +283,7 @@ export default function CookiePolicyPage() {
                   <h4 className="font-semibold text-gray-900">Essenziell</h4>
                   <p className="text-sm text-gray-600">Technisch notwendig, immer aktiv</p>
                 </div>
-                <div className="text-teal-600 font-semibold">Immer an</div>
+                <div className="text-primary-600 font-semibold">Immer an</div>
               </div>
 
               {/* Analytics toggle */}
@@ -302,7 +302,7 @@ export default function CookiePolicyPage() {
                     className="peer sr-only"
                     aria-label="Analytics aktivieren/deaktivieren"
                   />
-                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
                 </label>
               </div>
 
@@ -322,7 +322,7 @@ export default function CookiePolicyPage() {
                     className="peer sr-only"
                     aria-label="Fehlererfassung aktivieren/deaktivieren"
                   />
-                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
                 </label>
               </div>
             </div>
@@ -330,7 +330,7 @@ export default function CookiePolicyPage() {
             <div className="flex gap-3">
               <Button
                 onClick={handleSave}
-                className="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
+                className="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 {saved ? 'Gespeichert!' : 'Einstellungen speichern'}
@@ -394,25 +394,25 @@ export default function CookiePolicyPage() {
         </section>
 
         {/* Contact */}
-        <section className="rounded-2xl border border-teal-200 bg-teal-50 p-6">
-          <h2 className="mb-3 text-xl font-semibold text-teal-950">Fragen zu Cookies?</h2>
-          <p className="mb-4 text-sm text-teal-900">
+        <section className="rounded-2xl border border-primary-200 bg-primary-50 p-6">
+          <h2 className="mb-3 text-xl font-semibold text-primary-950">Fragen zu Cookies?</h2>
+          <p className="mb-4 text-sm text-primary-900">
             Bei Fragen zu unserer Cookie-Nutzung kontaktieren Sie uns:
           </p>
-          <div className="space-y-2 text-sm text-teal-900">
+          <div className="space-y-2 text-sm text-primary-900">
             <p>
               <strong>E-Mail:</strong>{' '}
-              <a href="mailto:privacy@findmytherapy.net" className="underline hover:text-teal-700">
+              <a href="mailto:privacy@findmytherapy.net" className="underline hover:text-primary-700">
                 privacy@findmytherapy.net
               </a>
             </p>
             <p>
               <strong>Weitere Infos:</strong>{' '}
-              <Link href="/privacy" className="underline hover:text-teal-700">
+              <Link href="/privacy" className="underline hover:text-primary-700">
                 Datenschutzerklärung
               </Link>
               {' | '}
-              <Link href="/imprint" className="underline hover:text-teal-700">
+              <Link href="/imprint" className="underline hover:text-primary-700">
                 Impressum
               </Link>
             </p>
