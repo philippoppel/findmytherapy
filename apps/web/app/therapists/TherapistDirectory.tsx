@@ -40,7 +40,8 @@ export type TherapistCard = {
   rating: number
   reviews: number
   experience: string
-  image: string
+  image: string | null
+  initials: string
   status: TherapistStatus
   formatTags: Array<'online' | 'praesenz' | 'hybrid'>
 }
@@ -182,15 +183,21 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
       <article className="group flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl sm:p-6">
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
           <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-inner sm:h-28 sm:w-28 md:h-32 md:w-32">
-            <Image
-              src={therapist.image}
-              alt={`Portrait von ${therapist.name}`}
-              width={240}
-              height={240}
-              className="h-full w-full object-cover object-center"
-              sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
-              quality={90}
-            />
+            {therapist.image ? (
+              <Image
+                src={therapist.image}
+                alt={`Portrait von ${therapist.name}`}
+                width={240}
+                height={240}
+                className="h-full w-full object-cover object-center"
+                sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
+                quality={90}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-3xl font-semibold uppercase text-white sm:text-4xl">
+                <span>{therapist.initials}</span>
+              </div>
+            )}
             <span
               className={cn(
                 'absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-wide',

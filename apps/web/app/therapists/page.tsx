@@ -6,13 +6,6 @@ import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 import { FEATURES } from '@/lib/features'
 
-const FALLBACK_IMAGES = [
-  '/images/therapists/therapy-1.jpg',
-  '/images/therapists/therapy-2.jpg',
-  '/images/therapists/therapy-3.jpg',
-  '/images/therapists/therapy-4.jpg',
-]
-
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'
 
@@ -48,6 +41,7 @@ export default async function TherapistsPage() {
     reviews: profile.reviewCount ?? 0,
     experience: profile.yearsExperience ? `${profile.yearsExperience} Jahre Praxis` : 'Praxiserfahrung',
     image: getProfileImage(profile),
+    initials: getInitials(profile.displayName ?? `${profile.user.firstName ?? ''} ${profile.user.lastName ?? ''}`),
     status: profile.status,
     formatTags: deriveFormatTags(profile.city ?? '', profile.online),
   }))
@@ -144,15 +138,12 @@ function deriveFormatTags(location: string, online: boolean): TherapistCard['for
   return Array.from(tags)
 }
 
-function getProfileImage(profile: { id: string; profileImageUrl?: string | null }) {
+function getProfileImage(profile: { profileImageUrl?: string | null }) {
   const candidate = profile.profileImageUrl?.trim()
   if (candidate && !candidate.endsWith('default.jpg')) {
     return candidate
   }
-  const index = profile.id
-    .split('')
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
+  return null
 }
 
 function formatAvailability(
@@ -182,4 +173,15 @@ function formatAvailability(
   }
 
   return acceptingClients ? 'Aktuell verfügbar' : 'Kapazität auf Anfrage'
+}
+
+function getInitials(name: string) {
+  if (!name) {
+    return '??'
+  }
+  const parts = name.trim().split(/\s+/)
+  const first = parts[0]?.[0] ?? ''
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : ''
+  const initials = `${first}${last}`.toUpperCase()
+  return initials || '??'
 }
