@@ -421,16 +421,26 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             ) : (
               <div
                 className={cn(
-                  'relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl text-3xl font-semibold uppercase text-white sm:text-4xl',
+                  'relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl',
                   gradientClass,
                   'bg-gradient-to-br',
                 )}
               >
-                <div className="absolute inset-0 opacity-50" aria-hidden>
-                  <div className="absolute -left-6 -top-6 h-20 w-20 rounded-full bg-white/20 blur-3xl" />
-                  <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white/20 blur-3xl" />
+                {/* Enhanced decorative background pattern */}
+                <div className="absolute inset-0 opacity-20" aria-hidden>
+                  <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-white blur-3xl" />
+                  <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white blur-3xl" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-20 w-20 rounded-full bg-white/50 blur-2xl" />
                 </div>
-                <span className="relative">{therapist.initials}</span>
+                {/* Professional initials display */}
+                <div className="relative flex flex-col items-center justify-center">
+                  <span className="text-3xl sm:text-4xl font-bold text-white mb-0.5">
+                    {therapist.initials}
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] text-white/70 font-medium uppercase tracking-widest">
+                    Therapeut:in
+                  </span>
+                </div>
               </div>
             )}
             <span

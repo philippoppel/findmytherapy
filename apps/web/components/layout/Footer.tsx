@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Compass, Mail } from 'lucide-react'
+import { Compass, Mail, ShieldCheck, Lock, Award, Users } from 'lucide-react'
 import { FEATURES } from '@/lib/features'
 
 export function Footer() {
@@ -73,6 +73,47 @@ export function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* Trust Badges Section */}
+        <div className="mt-12 border-t border-white/10 pt-8">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {/* Verified Therapists */}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h4 className="mb-1 text-sm font-semibold text-white">Geprüfte Therapeut:innen</h4>
+              <p className="text-xs text-white/60">Alle Profile werden verifiziert</p>
+            </div>
+
+            {/* Data Protection */}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                <Lock className="h-6 w-6" />
+              </div>
+              <h4 className="mb-1 text-sm font-semibold text-white">DSGVO-konform</h4>
+              <p className="text-xs text-white/60">Deine Daten sind sicher</p>
+            </div>
+
+            {/* Quality Standards */}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                <Award className="h-6 w-6" />
+              </div>
+              <h4 className="mb-1 text-sm font-semibold text-white">Qualitätsstandards</h4>
+              <p className="text-xs text-white/60">Höchste professionelle Standards</p>
+            </div>
+
+            {/* Austrian Focus */}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20 text-primary-300">
+                <Users className="h-6 w-6" />
+              </div>
+              <h4 className="mb-1 text-sm font-semibold text-white">Österreich-Fokus</h4>
+              <p className="text-xs text-white/60">Spezialisiert auf den österreichischen Markt</p>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Section */}

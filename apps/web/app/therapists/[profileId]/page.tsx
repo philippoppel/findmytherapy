@@ -171,8 +171,23 @@ export default async function TherapistProfilePage({ params, searchParams }: The
                         quality={95}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-400 to-primary-1000 text-5xl font-bold text-white">
-                        {profile.displayName?.charAt(0) ?? 'T'}
+                      <div className="relative flex h-full w-full items-center justify-center bg-gradient-to-br from-primary-400 via-primary-600 to-primary-800 overflow-hidden">
+                        {/* Decorative background pattern */}
+                        <div className="absolute inset-0 opacity-10">
+                          <div className="absolute top-0 left-0 w-20 h-20 bg-white rounded-full blur-2xl" />
+                          <div className="absolute bottom-0 right-0 w-20 h-20 bg-white rounded-full blur-2xl" />
+                        </div>
+                        {/* Initial with professional styling */}
+                        <div className="relative flex flex-col items-center justify-center">
+                          <div className="text-5xl md:text-6xl font-bold text-white mb-1">
+                            {profile.displayName?.charAt(0)?.toUpperCase() ?? 'T'}
+                          </div>
+                          {profile.title && (
+                            <div className="text-[10px] md:text-xs text-white/80 font-medium uppercase tracking-wider">
+                              Therapeut:in
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>
