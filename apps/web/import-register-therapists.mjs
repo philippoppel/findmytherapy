@@ -286,7 +286,7 @@ function mapRow(row) {
       displayName,
       title,
       headline: locations.city ? `Psychotherapie in ${locations.city}` : 'Psychotherapie in Österreich',
-      profileImageUrl: '/images/therapists/default.jpg',
+      profileImageUrl: null,
       approachSummary,
       experienceSummary,
       services,

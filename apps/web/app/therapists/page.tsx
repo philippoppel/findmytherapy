@@ -6,6 +6,13 @@ import { prisma } from '@/lib/prisma'
 import { TherapistDirectory, type TherapistCard } from './TherapistDirectory'
 import { FEATURES } from '@/lib/features'
 
+const FALLBACK_IMAGES = [
+  '/images/therapists/therapy-1.jpg',
+  '/images/therapists/therapy-2.jpg',
+  '/images/therapists/therapy-3.jpg',
+  '/images/therapists/therapy-4.jpg',
+]
+
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'
 
@@ -35,12 +42,12 @@ export default async function TherapistsPage() {
     focus: profile.specialties.slice(0, 3),
     approach: profile.approachSummary ?? 'Integrative Psychotherapie',
     location: profile.online ? `${profile.city ?? 'Online'} · Online` : profile.city ?? 'Vor Ort',
-    availability: profile.availabilityNote ?? 'Auf Anfrage',
+    availability: formatAvailability(profile.availabilityNote, profile.acceptingClients),
     languages: profile.languages,
     rating: profile.rating ?? 0,
     reviews: profile.reviewCount ?? 0,
     experience: profile.yearsExperience ? `${profile.yearsExperience} Jahre Praxis` : 'Praxiserfahrung',
-    image: profile.profileImageUrl ?? '/images/therapists/default.jpg',
+    image: getProfileImage(profile),
     status: profile.status,
     formatTags: deriveFormatTags(profile.city ?? '', profile.online),
   }))
@@ -135,4 +142,44 @@ function deriveFormatTags(location: string, online: boolean): TherapistCard['for
   }
 
   return Array.from(tags)
+}
+
+function getProfileImage(profile: { id: string; profileImageUrl?: string | null }) {
+  const candidate = profile.profileImageUrl?.trim()
+  if (candidate && !candidate.endsWith('default.jpg')) {
+    return candidate
+  }
+  const index = profile.id
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
+}
+
+function formatAvailability(
+  note: string | null | undefined,
+  acceptingClients: boolean,
+) {
+  if (!note) {
+    return acceptingClients ? 'Aktuell verfügbar' : 'Kapazität auf Anfrage'
+  }
+
+  const registerPhoneMatch = note.match(/Telefon lt\. Register:\s*([0-9A-Za-z+()/\s-]+)/i)
+  if (note.includes('Psychotherapie-Verzeichnis')) {
+    if (registerPhoneMatch) {
+      return `Telefon laut Register: ${registerPhoneMatch[1].trim()}`
+    }
+    return 'Kontakt laut Gesundheitsministerium'
+  }
+
+  const sanitized = note
+    .replace(/Eintragung seit [0-9.-]+/i, '')
+    .replace(/Telefon lt\. Register:\s*[0-9A-Za-z+()/\s-]+/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  if (sanitized) {
+    return sanitized
+  }
+
+  return acceptingClients ? 'Aktuell verfügbar' : 'Kapazität auf Anfrage'
 }
