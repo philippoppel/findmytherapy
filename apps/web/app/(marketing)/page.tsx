@@ -16,7 +16,7 @@ import { TeamSection } from '../components/marketing/TeamSection'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
 import { AssessmentSection } from '../components/marketing/AssessmentSection'
-import { TherapistSearch } from '../components/marketing/TherapistSearch'
+import { TherapistSearchSection } from '../components/therapist-search/TherapistSearchSection'
 import { ClientBenefits } from '../components/marketing/ClientBenefits'
 import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
 import { FeatureGate } from '@/components/FeatureGate'
@@ -103,7 +103,7 @@ export default function HomePage() {
 
         <ClientBenefits content={clientBenefits} />
 
-        <TherapistSearch />
+        <TherapistSearchSection />
 
         <TherapistBenefits content={therapistBenefits} />
 

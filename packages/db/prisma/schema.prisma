@@ -210,6 +210,10 @@ model TherapistProfile {
   acceptedInsurance String[]       @default([])
   privatePractice  Boolean         @default(false)
 
+  // Rating & Reviews
+  rating           Float?          @default(0)
+  reviewCount      Int             @default(0)
+
   // Microsite fields
   micrositeSlug            String?          @unique
   micrositeStatus          MicrositeStatus  @default(DRAFT)
