@@ -66,7 +66,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'team-findmytherapy',
     tags: ['PHQ-9', 'GAD-7', 'Assessment', 'Screening', 'Digitale Gesundheit'],
     featuredImage: {
-      src: '/images/blog/assessment-digital.jpg',
+      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Person füllt digitalen Fragebogen zur mentalen Gesundheit auf Tablet aus',
       width: 1200,
       height: 630,
@@ -124,7 +124,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'team-findmytherapy',
     tags: ['Qualitätssicherung', 'Therapeutennetzwerk', 'Verifizierung', 'Österreich'],
     featuredImage: {
-      src: '/images/blog/network-quality.jpg',
+      src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Vertrauensvolle Zusammenarbeit im Therapeutennetzwerk mit Qualitätsstandards',
       width: 1200,
       height: 630,
@@ -182,7 +182,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'team-findmytherapy',
     tags: ['Employee Wellbeing', 'EAP', 'Corporate Benefits', 'HR'],
     featuredImage: {
-      src: '/images/blog/workplace-wellbeing.jpg',
+      src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Team im Büro diskutiert Mental Health Benefits und Mitarbeiterwohlbefinden',
       width: 1200,
       height: 630,
@@ -1266,7 +1266,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'team-findmytherapy',
     tags: ['Panikattacken', 'Akuthilfe', 'Atemtechnik', 'Grounding', 'Angst', 'Notfall'],
     featuredImage: {
-      src: '/images/blog/panic-attack-help.jpg',
+      src: 'https://images.unsplash.com/photo-1462219184706-54e0a4f62348?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Person wendet Atemtechnik bei Panikattacke an – Sofort-Hilfe Strategien',
       width: 1200,
       height: 630,

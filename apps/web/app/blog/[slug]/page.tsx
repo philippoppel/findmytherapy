@@ -17,6 +17,12 @@ type BlogPostPageProps = {
 }
 
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'long' })
+const buildImageUrl = (src?: string) => {
+  if (!src) {
+    return undefined
+  }
+  return src.startsWith('http') ? src : `https://findmytherapy.net${src}`
+}
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -34,9 +40,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   }
 
   const canonicalUrl = `https://findmytherapy.net/blog/${post.slug}`
-  const imageUrl = post.featuredImage
-    ? `https://findmytherapy.net${post.featuredImage.src}`
-    : 'https://findmytherapy.net/og-image.jpg'
+  const imageUrl = buildImageUrl(post.featuredImage?.src) ?? 'https://findmytherapy.net/og-image.jpg'
 
   return {
     title: `${post.title} | FindMyTherapy Blog`,
@@ -96,9 +100,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.featuredImage
-      ? `https://findmytherapy.net${post.featuredImage.src}`
-      : undefined,
+    image: buildImageUrl(post.featuredImage?.src),
     author: author
       ? {
           '@type': 'Person',
