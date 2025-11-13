@@ -11,7 +11,6 @@ import { SortDropdown } from './SortDropdown'
 import { ActiveFilters } from './ActiveFilters'
 import { AdvancedFilterModal } from './AdvancedFilterModal'
 import type { TherapistWithListing, FilterState, SortOption } from './types'
-import { initialFilters } from './types'
 
 interface TherapistGridProps {
   therapists: TherapistWithListing[]
