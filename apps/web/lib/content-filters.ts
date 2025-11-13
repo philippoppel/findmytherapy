@@ -180,13 +180,12 @@ export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
       href: '/therapists',
     }
 
-    // Remove assessment-related metrics (PHQ-9/GAD-7 and "< 5 Min.")
-    filtered.metrics = filtered.metrics.filter(
-      (metric) =>
-        !metric.value.includes('PHQ') &&
-        !metric.value.includes('GAD') &&
-        metric.label !== 'Bis zum Ergebnis'
-    )
+    // Replace assessment-related metrics with therapist-focused metrics
+    filtered.metrics = [
+      { value: 'Verifiziert', label: 'Alle Profile geprüft' },
+      { value: 'Transparent', label: 'Klare Spezialisierungen' },
+      { value: '100% DSGVO', label: 'EU-Datenschutz' },
+    ]
 
     // Adjust description to remove assessment references
     filtered.description = filtered.description
