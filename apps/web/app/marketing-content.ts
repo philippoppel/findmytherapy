@@ -1,11 +1,9 @@
 export const marketingNavigation = [
-  { label: 'Warum', href: '#why' },
+  { label: 'Ratgeber', href: '/blog' },
   { label: 'Ersteinschätzung', href: '/triage' },
   { label: 'Vorteile', href: '#benefits' },
   { label: 'Therapeut:innen', href: '#therapists' },
-  { label: 'Team', href: '#team' },
-  { label: 'PHQ & GAD', href: '#phq-info' },
-  { label: 'Early Access', href: '#early-access' },
+  { label: 'Über uns', href: '/about' },
   { label: 'FAQ', href: '#faq' },
 ] as const;
 
@@ -26,6 +24,10 @@ export const heroContent = {
   tertiaryCta: {
     label: 'Angebote ansehen',
     href: '#features',
+  },
+  emergencyCta: {
+    label: 'Sofort-Hilfe bei Panikattacken',
+    href: '/blog/akuthilfe-panikattacken',
   },
   metrics: [
     { value: 'PHQ-9 & GAD-7', label: 'Validierte Tests' },

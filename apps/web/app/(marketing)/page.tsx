@@ -1,24 +1,19 @@
 import type { Metadata } from 'next'
 import {
-  earlyAccessContent,
-  teamContent,
   getHeroContent,
-  getWhyContent,
   getClientBenefits,
   getTherapistBenefits,
   getFAQItems,
   getContactCta,
 } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
-import { WhySection } from '../components/marketing/WhySection'
-import { EarlyAccessSection } from '../components/marketing/EarlyAccessSection'
-import { TeamSection } from '../components/marketing/TeamSection'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
 import { AssessmentSection } from '../components/marketing/AssessmentSection'
 import { TherapistSearchSection } from '../components/therapist-search/TherapistSearchSection'
 import { ClientBenefits } from '../components/marketing/ClientBenefits'
 import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
+import { BlogFeatureSection } from '../components/blog/BlogFeatureSection'
 import { FeatureGate } from '@/components/FeatureGate'
 import { FEATURES } from '@/lib/features'
 
@@ -88,7 +83,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   // Get filtered content based on enabled features
   const heroContent = getHeroContent()
-  const whyContent = getWhyContent()
   const clientBenefits = getClientBenefits()
   const therapistBenefits = getTherapistBenefits()
   const faqItems = getFAQItems()
@@ -211,6 +205,9 @@ export default function HomePage() {
           <MarketingHero content={heroContent} />
         </div>
 
+        {/* Blog Feature Section - Verified knowledge from experts */}
+        <BlogFeatureSection />
+
         <FeatureGate feature="ASSESSMENT">
           <AssessmentSection />
         </FeatureGate>
@@ -220,12 +217,6 @@ export default function HomePage() {
         <TherapistSearchSection />
 
         <TherapistBenefits content={therapistBenefits} />
-
-        <WhySection content={whyContent} />
-
-        <EarlyAccessSection content={earlyAccessContent} />
-
-        <TeamSection content={teamContent} />
 
         <FaqAccordion items={faqItems} />
 

@@ -4,6 +4,30 @@ export type BlogPostSection = {
   list?: string[]
 }
 
+export type Author = {
+  id: string
+  name: string
+  slug: string
+  title: string
+  credentials: string
+  bio: string
+  avatar: string
+  email?: string
+  social?: {
+    linkedin?: string
+    twitter?: string
+    website?: string
+  }
+  expertise: string[]
+}
+
+export type FeaturedImage = {
+  src: string
+  alt: string
+  width: number
+  height: number
+}
+
 export type BlogPost = {
   slug: string
   title: string
@@ -11,10 +35,15 @@ export type BlogPost = {
   summary: string[]
   category: string
   publishedAt: string
+  updatedAt?: string
   readingTime: string
-  author: string
+  author: string // Legacy - display name
+  authorId: string // Link to Author profile
   keywords: string[]
+  tags: string[]
+  featuredImage: FeaturedImage
   sections: BlogPostSection[]
+  relatedPosts?: string[] // Slugs of related posts
 }
 
 export const blogPosts: BlogPost[] = [
@@ -34,12 +63,21 @@ export const blogPosts: BlogPost[] = [
     publishedAt: '2025-04-10',
     readingTime: '6 Min.',
     author: 'Team FindMyTherapy',
+    authorId: 'team-findmytherapy',
+    tags: ['PHQ-9', 'GAD-7', 'Assessment', 'Screening', 'Digitale Gesundheit'],
+    featuredImage: {
+      src: '/images/blog/assessment-digital.jpg',
+      alt: 'Person füllt digitalen Fragebogen zur mentalen Gesundheit auf Tablet aus',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'digitale Ersteinschätzung',
       'mentale Gesundheit',
       'Therapie finden',
       'Produkt-Einblick',
     ],
+    relatedPosts: ['therapeuten-netzwerk-aufbau-transparenz', 'therapieformen-vergleich'],
     sections: [
       {
         heading: 'Warum eine strukturierte Ersteinschätzung wichtig ist',
@@ -83,12 +121,21 @@ export const blogPosts: BlogPost[] = [
     publishedAt: '2025-03-28',
     readingTime: '5 Min.',
     author: 'Team FindMyTherapy',
+    authorId: 'team-findmytherapy',
+    tags: ['Qualitätssicherung', 'Therapeutennetzwerk', 'Verifizierung', 'Österreich'],
+    featuredImage: {
+      src: '/images/blog/network-quality.jpg',
+      alt: 'Vertrauensvolle Zusammenarbeit im Therapeutennetzwerk mit Qualitätsstandards',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Therapeut:innen Netzwerk',
       'Qualitätskriterien',
       'mentale Gesundheit Österreich',
       'Beta-Plattform',
     ],
+    relatedPosts: ['digitale-ersteinschaetzung-mental-health', 'therapieformen-vergleich'],
     sections: [
       {
         heading: 'Qualitätskriterien vor der Aufnahme',
@@ -132,12 +179,21 @@ export const blogPosts: BlogPost[] = [
     publishedAt: '2025-03-12',
     readingTime: '7 Min.',
     author: 'Team FindMyTherapy',
+    authorId: 'team-findmytherapy',
+    tags: ['Employee Wellbeing', 'EAP', 'Corporate Benefits', 'HR'],
+    featuredImage: {
+      src: '/images/blog/workplace-wellbeing.jpg',
+      alt: 'Team im Büro diskutiert Mental Health Benefits und Mitarbeiterwohlbefinden',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Mental Health Benefits',
       'Arbeitswelt',
       'Employee Assistance Program',
       'Ressourcen für Teams',
     ],
+    relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
     sections: [
       {
         heading: 'Herausforderungen in Unternehmen',
@@ -1187,6 +1243,148 @@ export const blogPosts: BlogPost[] = [
           'Für die Primärversorgung und digitale Gesundheitsanwendungen stellen PHQ-9 und GAD-7 die optimale Lösung dar. Sie vereinen exzellente wissenschaftliche Validierung, praktische Handhabbarkeit (insgesamt etwa 5 Minuten Bearbeitungszeit) und vollständige rechtliche Verfügbarkeit ohne Lizenzkosten.',
           'Die Kombination beider Instrumente ermöglicht ein umfassendes Screening der beiden häufigsten psychischen Störungen in der Primärversorgung. Der WHO-5 kann als sehr kurzes Zusatzinstrument zur Erfassung des allgemeinen Wohlbefindens in nicht-kommerziellen Settings sinnvoll ergänzt werden.',
           'Wichtig ist: Diese Instrumente sind Werkzeuge zur Orientierung, nicht zur Selbstdiagnose. Bei Verdacht auf eine psychische Erkrankung sollte immer professionelle Hilfe in Anspruch genommen werden.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'akuthilfe-panikattacken',
+    title: 'Sofort-Hilfe bei Panikattacken: 7 evidenzbasierte Strategien',
+    excerpt:
+      'Was tun, wenn eine Panikattacke kommt? Bewährte Techniken von Psychotherapeut:innen für akute Situationen – wissenschaftlich fundiert und sofort anwendbar.',
+    summary: [
+      'Panikattacken sind intensive Angstreaktionen, die meist 5-20 Minuten dauern und von selbst abklingen',
+      'Die 4-7-8 Atemtechnik aktiviert den Parasympathikus und reduziert körperliche Symptome nachweislich',
+      'Grounding-Techniken (5-4-3-2-1 Methode) helfen, sich zu verankern und Dissoziation zu verhindern',
+      'Akzeptanz statt Kampf: Das Annehmen der Attacke verkürzt deren Dauer signifikant',
+      'Bei häufigen Panikattacken ist professionelle Hilfe wichtig – KVT zeigt 80% Erfolgsrate',
+    ],
+    category: 'Akuthilfe',
+    publishedAt: '2025-01-15',
+    readingTime: '7 Min.',
+    author: 'Team FindMyTherapy',
+    authorId: 'team-findmytherapy',
+    tags: ['Panikattacken', 'Akuthilfe', 'Atemtechnik', 'Grounding', 'Angst', 'Notfall'],
+    featuredImage: {
+      src: '/images/blog/panic-attack-help.jpg',
+      alt: 'Person wendet Atemtechnik bei Panikattacke an – Sofort-Hilfe Strategien',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Panikattacke Hilfe',
+      'Panikattacke was tun',
+      'Atemtechnik Angst',
+      'Grounding Techniken',
+      'Akuthilfe Panik',
+      'Panikattacke stoppen',
+    ],
+    relatedPosts: ['kognitive-verhaltenstherapie-erklaert', 'mental-health-strategien-alltag'],
+    sections: [
+      {
+        heading: 'Was passiert bei einer Panikattacke?',
+        paragraphs: [
+          'Eine Panikattacke ist eine plötzliche Episode intensiver Angst, die körperliche Symptome wie Herzrasen, Atemnot, Schwindel, Zittern und das Gefühl drohender Gefahr auslöst. Wichtig zu wissen: Panikattacken sind nicht gefährlich, auch wenn sie sich so anfühlen.',
+          'Die Symptome entstehen durch eine Überaktivierung des Sympathikus (Kampf-oder-Flucht-Reaktion). Der Körper schüttet Stresshormone wie Adrenalin aus, obwohl keine reale Bedrohung vorliegt. Eine Panikattacke dauert typischerweise 5-20 Minuten und klingt von selbst ab.',
+        ],
+      },
+      {
+        heading: '1. Die 4-7-8 Atemtechnik (Sofortige Beruhigung)',
+        paragraphs: [
+          'Diese von Dr. Andrew Weil entwickelte Technik aktiviert den Parasympathikus und wirkt dem "Kampf-oder-Flucht"-Modus entgegen. Studien zeigen signifikante Reduktion von Angstsymptomen bereits nach 2-3 Minuten.',
+        ],
+        list: [
+          '4 Sekunden durch die Nase einatmen',
+          '7 Sekunden Atem anhalten',
+          '8 Sekunden durch den Mund ausatmen (mit hörbarem "Whoosh"-Geräusch)',
+          '4-6 Zyklen wiederholen',
+        ],
+      },
+      {
+        heading: '2. 5-4-3-2-1 Grounding-Technik (Verankerung im Hier und Jetzt)',
+        paragraphs: [
+          'Diese sensorische Technik hilft, sich aus der Angstspirale zu lösen und im gegenwärtigen Moment zu verankern. Besonders wirksam bei Derealisation oder Depersonalisation während einer Panikattacke.',
+        ],
+        list: [
+          '5 Dinge SEHEN: Benenne 5 Dinge, die du siehst (Farben, Formen, Gegenstände)',
+          '4 Dinge HÖREN: Konzentriere dich auf 4 Geräusche in deiner Umgebung',
+          '3 Dinge FÜHLEN: Spüre 3 Texturen oder Temperaturen (z.B. Stuhl, Kleidung, Boden)',
+          '2 Dinge RIECHEN: Nimm 2 Gerüche wahr (oder stelle dir 2 Lieblingsgerüche vor)',
+          '1 Ding SCHMECKEN: Schmecke etwas (Kaugummi, Wasser) oder stelle es dir vor',
+        ],
+      },
+      {
+        heading: '3. Akzeptanz statt Kampf',
+        paragraphs: [
+          'Paradoxerweise verkürzt das Akzeptieren der Panikattacke deren Dauer. Der Versuch, die Symptome zu bekämpfen, verstärkt die Angst und verlängert die Episode. Sage dir innerlich:',
+          '"Das ist eine Panikattacke. Sie ist unangenehm, aber nicht gefährlich. Sie wird von selbst vorbeigehen. Ich lasse sie zu."',
+          'Diese Akzeptanz-Haltung ist ein Kernprinzip der Akzeptanz- und Commitment-Therapie (ACT) und wird durch zahlreiche Studien gestützt.',
+        ],
+      },
+      {
+        heading: '4. Progressive Muskelentspannung (PMR)',
+        paragraphs: [
+          'Nach Edmund Jacobson: Bewusstes Anspannen und Entspannen einzelner Muskelgruppen reduziert körperliche Anspannung und durchbricht den Angstkreislauf.',
+        ],
+        list: [
+          'Fäuste 5 Sekunden fest ballen, dann loslassen',
+          'Schultern zu den Ohren ziehen, halten, fallen lassen',
+          'Gesichtsmuskeln anspannen (Augen zukneifen, Stirn runzeln), entspannen',
+          'Jede Muskelgruppe 2-3 Mal wiederholen',
+        ],
+      },
+      {
+        heading: '5. Kaltes Wasser (Vagusnerv-Stimulation)',
+        paragraphs: [
+          'Der Tauchreflex (Dive Reflex) verlangsamt den Herzschlag und beruhigt das Nervensystem. Wissenschaftlich gut dokumentierte Methode zur schnellen Sympathikus-Dämpfung.',
+        ],
+        list: [
+          'Kaltes Wasser ins Gesicht spritzen oder Eiswürfel auf die Stirn legen',
+          'Kaltes Wasser trinken',
+          'Alternative: Hände unter kaltes Wasser halten',
+        ],
+      },
+      {
+        heading: '6. Bewegung (Stresshormone abbauen)',
+        paragraphs: [
+          'Moderate Bewegung hilft, überschüssiges Adrenalin und Cortisol abzubauen. Wichtig: Keine intensive Anstrengung, sondern sanfte Aktivität.',
+        ],
+        list: [
+          'Auf der Stelle gehen oder leicht hüpfen',
+          'Arme schwingen',
+          'Sanftes Dehnen',
+          'Langsamer Spaziergang (wenn möglich)',
+        ],
+      },
+      {
+        heading: '7. Selbstgespräche (Kognitive Umstrukturierung)',
+        paragraphs: [
+          'Erinnere dich an Fakten, die der Angst entgegenwirken. Diese Technik stammt aus der Kognitiven Verhaltenstherapie (KVT):',
+        ],
+        list: [
+          '"Ich hatte schon X Panikattacken – keine war gefährlich"',
+          '"Das ist mein Körper, der überreagiert. Kein Herzinfarkt, keine Lebensgefahr"',
+          '"In 10-15 Minuten wird es vorbei sein"',
+          '"Ich kann das aushalten"',
+        ],
+      },
+      {
+        heading: 'Wann professionelle Hilfe suchen?',
+        paragraphs: [
+          'Wenn Panikattacken wiederholt auftreten, ist eine Panikstörung möglich. Professionelle Psychotherapie – insbesondere Kognitive Verhaltenstherapie (KVT) – zeigt Erfolgsraten von 70-90% bei Panikstörungen.',
+          'Suche Hilfe, wenn: Panikattacken häufiger als 1-2x pro Monat auftreten, du bestimmte Orte/Situationen meidest (Agoraphobie), die Angst vor der nächsten Attacke deinen Alltag einschränkt, oder du Substanzen zur Bewältigung nutzt.',
+        ],
+      },
+      {
+        heading: 'Notfallnummern Österreich',
+        paragraphs: [
+          'Bei akuter Krise stehen rund um die Uhr kostenlose Helplines zur Verfügung:',
+        ],
+        list: [
+          'Telefonseelsorge: 142 (24/7, anonym, kostenlos)',
+          'Psychiatrische Soforthilfe (PSD Wien): 01 31330',
+          'Rat auf Draht (für Jugendliche): 147',
+          'Kriseninterventionszentrum Wien: 01 406 95 95',
         ],
       },
     ],

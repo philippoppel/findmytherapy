@@ -60,26 +60,57 @@ export function MarketingHero({ content }: HeroProps) {
           </Reveal>
 
           <Reveal delay={400}>
-            <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:mt-14 sm:flex-row sm:gap-6">
-              <Button
-                asChild
-                size="lg"
-                variant="primary"
-                className="w-full shadow-2xl transition-all hover:-translate-y-1 hover:scale-105 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
-              >
-                <Link href={content.primaryCta.href}>
-                  {content.primaryCta.label}
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                className="w-full border-2 border-white/40 bg-white/15 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-white/50 hover:bg-white/25 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
-              >
-                <Link href={content.secondaryCta.href}>
-                  {content.secondaryCta.label}
-                </Link>
-              </Button>
+            <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:mt-14 sm:gap-6">
+              <div className="flex flex-col items-center gap-5 sm:flex-row sm:gap-6">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="primary"
+                  className="w-full shadow-2xl transition-all hover:-translate-y-1 hover:scale-105 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
+                >
+                  <Link href={content.primaryCta.href}>
+                    {content.primaryCta.label}
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full border-2 border-white/40 bg-white/15 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-white/50 hover:bg-white/25 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
+                >
+                  <Link href={content.secondaryCta.href}>
+                    {content.secondaryCta.label}
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Emergency CTA - Prominent for immediate help */}
+              {content.emergencyCta && (
+                <div className="w-full sm:w-auto">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full border-2 border-red-400/60 bg-red-500/20 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-red-400/80 hover:bg-red-500/30 hover:shadow-2xl sm:px-10 sm:py-6 sm:text-lg"
+                  >
+                    <Link href={content.emergencyCta.href} className="flex items-center justify-center gap-2">
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
+                      </svg>
+                      {content.emergencyCta.label}
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </Reveal>
 
