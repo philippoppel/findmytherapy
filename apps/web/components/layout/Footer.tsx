@@ -25,7 +25,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative mt-auto border-t border-white/10 bg-gradient-to-br from-teal-950 via-cyan-900 to-blue-950 text-white">
+    <footer className="relative mt-auto border-t border-primary-200/20 bg-gradient-to-br from-neutral-900 via-neutral-800 to-primary-950 text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand Section */}
