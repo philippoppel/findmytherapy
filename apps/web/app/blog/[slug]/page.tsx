@@ -113,7 +113,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
-    keywords: [...post.keywords, ...post.tags],
+    keywords: [...post.keywords, ...(post.tags || [])],
     articleSection: post.category,
     wordCount: post.sections.reduce(
       (acc, section) =>
