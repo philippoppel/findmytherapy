@@ -34,7 +34,7 @@ export function QuickFilters({ filters, onFiltersChange }: QuickFiltersProps) {
   ]
 
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div className="flex items-center gap-2 sm:gap-3 min-w-max sm:min-w-0 sm:flex-wrap">
       {/* Format Filters */}
       {formatButtons.map((button) => {
         const Icon = button.icon
@@ -44,15 +44,15 @@ export function QuickFilters({ filters, onFiltersChange }: QuickFiltersProps) {
             key={button.id}
             type="button"
             onClick={() => toggleFormat(button.id)}
-            className={`flex items-center gap-2 rounded-full border-2 px-4 py-2.5 text-sm font-medium transition-all sm:px-5 sm:py-3 sm:text-base ${
+            className={`flex items-center gap-1.5 rounded-xl border-2 px-3.5 py-2.5 text-sm font-medium transition-all touch-manipulation whitespace-nowrap ${
               isActive
-                ? 'border-primary-500 bg-primary-500 text-white shadow-md'
-                : 'border-neutral-200 bg-white text-neutral-700 hover:border-primary-300 hover:bg-primary-50'
+                ? 'border-teal-500 bg-teal-500 text-white shadow-sm'
+                : 'border-neutral-200 bg-white text-neutral-700 hover:border-teal-300 hover:bg-teal-50'
             }`}
             aria-pressed={isActive}
           >
-            <Icon className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
-            {button.label}
+            <Icon className="h-4 w-4" aria-hidden />
+            <span className="hidden sm:inline">{button.label}</span>
           </button>
         )
       })}
@@ -61,15 +61,16 @@ export function QuickFilters({ filters, onFiltersChange }: QuickFiltersProps) {
       <button
         type="button"
         onClick={toggleAcceptingClients}
-        className={`flex items-center gap-2 rounded-full border-2 px-4 py-2.5 text-sm font-medium transition-all sm:px-5 sm:py-3 sm:text-base ${
+        className={`flex items-center gap-1.5 rounded-xl border-2 px-3.5 py-2.5 text-sm font-medium transition-all touch-manipulation whitespace-nowrap ${
           filters.acceptingClients === true
-            ? 'border-emerald-500 bg-emerald-500 text-white shadow-md'
-            : 'border-neutral-200 bg-white text-neutral-700 hover:border-emerald-300 hover:bg-emerald-50'
+            ? 'border-teal-500 bg-teal-500 text-white shadow-sm'
+            : 'border-neutral-200 bg-white text-neutral-700 hover:border-teal-300 hover:bg-teal-50'
         }`}
         aria-pressed={filters.acceptingClients === true}
       >
-        <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
-        Nimmt Klienten an
+        <CheckCircle2 className="h-4 w-4" aria-hidden />
+        <span className="hidden sm:inline">Nimmt Klienten an</span>
+        <span className="sm:hidden">Verfügbar</span>
       </button>
     </div>
   )

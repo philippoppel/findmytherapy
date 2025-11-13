@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { SlidersHorizontal } from 'lucide-react'
 import { TherapistCard } from './TherapistCard'
 import { TherapistCardPremium } from './TherapistCardPremium'
@@ -16,11 +17,70 @@ interface TherapistGridProps {
   therapists: TherapistWithListing[]
 }
 
+// Helper functions for URL state
+function filtersToSearchParams(filters: FilterState, sortBy: SortOption): URLSearchParams {
+  const params = new URLSearchParams()
+
+  if (filters.searchQuery) params.set('q', filters.searchQuery)
+  if (filters.formats.length > 0) params.set('formats', filters.formats.join(','))
+  if (filters.acceptingClients) params.set('accepting', 'true')
+  if (filters.location) params.set('location', filters.location)
+  if (filters.specialties.length > 0) params.set('specialties', filters.specialties.join(','))
+  if (filters.languages.length > 0) params.set('languages', filters.languages.join(','))
+  if (filters.modalities.length > 0) params.set('modalities', filters.modalities.join(','))
+  if (filters.insurance.length > 0) params.set('insurance', filters.insurance.join(','))
+  if (filters.ageGroups.length > 0) params.set('ageGroups', filters.ageGroups.join(','))
+  if (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 250) {
+    params.set('priceMin', filters.priceRange[0].toString())
+    params.set('priceMax', filters.priceRange[1].toString())
+  }
+  if (sortBy !== 'recommended') params.set('sort', sortBy)
+
+  return params
+}
+
+function searchParamsToFilters(params: URLSearchParams): { filters: FilterState; sortBy: SortOption } {
+  return {
+    filters: {
+      searchQuery: params.get('q') || '',
+      formats: params.get('formats')?.split(',').filter(Boolean) as FilterState['formats'] || [],
+      acceptingClients: params.get('accepting') === 'true' ? true : null,
+      location: params.get('location') || '',
+      specialties: params.get('specialties')?.split(',').filter(Boolean) || [],
+      languages: params.get('languages')?.split(',').filter(Boolean) || [],
+      modalities: params.get('modalities')?.split(',').filter(Boolean) || [],
+      insurance: params.get('insurance')?.split(',').filter(Boolean) || [],
+      ageGroups: params.get('ageGroups')?.split(',').filter(Boolean) || [],
+      priceRange: [
+        parseInt(params.get('priceMin') || '0', 10),
+        parseInt(params.get('priceMax') || '250', 10),
+      ],
+    },
+    sortBy: (params.get('sort') as SortOption) || 'recommended',
+  }
+}
+
 export function TherapistGrid({ therapists }: TherapistGridProps) {
-  const [filters, setFilters] = useState<FilterState>(initialFilters)
-  const [sortBy, setSortBy] = useState<SortOption>('recommended')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // Initialize from URL params
+  const initialState = useMemo(() => {
+    return searchParamsToFilters(searchParams)
+  }, [searchParams])
+
+  const [filters, setFilters] = useState<FilterState>(initialState.filters)
+  const [sortBy, setSortBy] = useState<SortOption>(initialState.sortBy)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [displayCount, setDisplayCount] = useState(12)
+
+  // Sync filters to URL
+  useEffect(() => {
+    const params = filtersToSearchParams(filters, sortBy)
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
+    router.replace(newUrl, { scroll: false })
+  }, [filters, sortBy, pathname, router])
 
   // Extract unique options from therapists
   const availableOptions = useMemo(() => {
@@ -225,19 +285,25 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
       </div>
 
       {/* Quick Filters + Sort + Advanced */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <QuickFilters filters={filters} onFiltersChange={handleFiltersChange} />
+      <div className="flex flex-col gap-4">
+        {/* Quick Filters - Horizontal scroll on mobile */}
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <QuickFilters filters={filters} onFiltersChange={handleFiltersChange} />
+        </div>
 
-        <div className="flex items-center gap-3">
+        {/* Sort + Advanced Filters */}
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 rounded-full border-2 border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:border-primary-300 hover:bg-primary-50 sm:px-5 sm:py-3 sm:text-base"
+            className="flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border-2 border-neutral-200 bg-white px-4 py-3 text-sm font-medium text-neutral-700 transition-all hover:border-teal-300 hover:bg-teal-50"
           >
-            <SlidersHorizontal className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
-            Erweiterte Filter
+            <SlidersHorizontal className="h-4 w-4" aria-hidden />
+            <span className="sm:inline">Filter</span>
           </button>
-          <SortDropdown value={sortBy} onChange={setSortBy} />
+          <div className="flex-1 sm:flex-none">
+            <SortDropdown value={sortBy} onChange={setSortBy} />
+          </div>
         </div>
       </div>
 
@@ -253,7 +319,7 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
       {/* Therapist Grid */}
       {displayedTherapists.length > 0 ? (
         <>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
             {displayedTherapists.map((therapist) => {
               const isPremium =
                 therapist.listings.find((l) => l.status === 'ACTIVE')?.plan === 'PRO_PLUS'
@@ -267,11 +333,11 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
 
           {/* Load More */}
           {displayCount < filteredAndSortedTherapists.length && (
-            <div className="text-center">
+            <div className="text-center pt-4">
               <button
                 type="button"
                 onClick={handleLoadMore}
-                className="rounded-full border-2 border-primary-300 bg-white px-8 py-3 font-semibold text-primary-700 transition-all hover:border-primary-400 hover:bg-primary-50"
+                className="rounded-xl border-2 border-teal-200 bg-white px-6 py-3 text-sm font-semibold text-teal-700 transition-all hover:border-teal-300 hover:bg-teal-50 sm:px-8"
               >
                 Mehr laden ({filteredAndSortedTherapists.length - displayCount} weitere)
               </button>
@@ -279,11 +345,11 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
           )}
         </>
       ) : (
-        <div className="rounded-3xl border-2 border-dashed border-neutral-200 bg-neutral-50 px-8 py-16 text-center">
+        <div className="rounded-2xl border-2 border-dashed border-neutral-200 bg-neutral-50 px-6 py-12 text-center sm:px-8 sm:py-16">
           <p className="text-lg font-semibold text-neutral-900">
             Keine Therapeut:innen gefunden
           </p>
-          <p className="mt-2 text-neutral-600">
+          <p className="mt-2 text-sm text-neutral-600 sm:text-base">
             Versuche andere Suchbegriffe oder Filter
           </p>
         </div>

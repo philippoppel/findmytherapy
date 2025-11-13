@@ -38,14 +38,15 @@ export function ActiveFilters({ filters, onFiltersChange, resultCount }: ActiveF
 
   if (activeFilterCount === 0) {
     return (
-      <div className="text-center text-sm text-neutral-600 py-2">
-        <span className="font-medium">{resultCount}</span> Therapeut:innen gefunden
+      <div className="text-center text-sm text-neutral-600 py-2 sm:py-3">
+        <span className="font-semibold text-lg text-neutral-900">{resultCount}</span>
+        <span className="ml-1.5">Therapeut:innen gefunden</span>
       </div>
     )
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 sm:space-y-4">
       <div className="flex flex-wrap items-center gap-2">
         {/* Search Query */}
         {filters.searchQuery && (
@@ -129,14 +130,15 @@ export function ActiveFilters({ filters, onFiltersChange, resultCount }: ActiveF
         <button
           type="button"
           onClick={handleClearAll}
-          className="rounded-full border-2 border-neutral-300 bg-white px-4 py-1.5 text-sm font-medium text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
+          className="rounded-xl border-2 border-neutral-300 bg-white px-4 py-1.5 text-sm font-semibold text-neutral-700 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-700"
         >
           Alle löschen
         </button>
       </div>
 
-      <div className="text-center text-sm text-neutral-600">
-        <span className="font-medium">{resultCount}</span> Therapeut:innen gefunden
+      <div className="text-center text-sm text-neutral-600 py-1">
+        <span className="font-semibold text-lg text-neutral-900">{resultCount}</span>
+        <span className="ml-1.5">Therapeut:innen gefunden</span>
       </div>
     </div>
   )
@@ -147,7 +149,8 @@ function FilterPill({ label, onRemove }: { label: string; onRemove: () => void }
     <button
       type="button"
       onClick={onRemove}
-      className="flex items-center gap-1.5 rounded-full border border-primary-300 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-100"
+      className="flex items-center gap-1.5 rounded-xl border-2 border-teal-200 bg-teal-50 px-3 py-1.5 text-sm font-medium text-teal-700 transition-colors hover:border-teal-300 hover:bg-teal-100 hover:text-teal-800"
+      aria-label={`Filter "${label}" entfernen`}
     >
       <span>{label}</span>
       <X className="h-3.5 w-3.5" aria-hidden />
