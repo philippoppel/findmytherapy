@@ -98,6 +98,14 @@ export function useTherapistFiltering({
       return therapists
     }
 
+    const withoutCoords = therapists.filter(t => !t.coordinates)
+    if (withoutCoords.length > 0 && process.env.NODE_ENV === 'development') {
+      console.warn(
+        `⚠️ ${withoutCoords.length} therapist(s) missing coordinates:`,
+        withoutCoords.map(t => ({ id: t.id, name: t.name, city: t.city }))
+      )
+    }
+
     return therapists.map((therapist) => {
       if (!therapist.coordinates) {
         return { ...therapist, distanceInKm: undefined }
