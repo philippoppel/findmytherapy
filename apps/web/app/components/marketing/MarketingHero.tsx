@@ -37,21 +37,6 @@ export function MarketingHero({ content }: HeroProps) {
     mouseY.set(50)
   }
 
-  const floatingInsights = [
-    {
-      title: 'Validierte Tests',
-      value: content.metrics[0]?.value ?? 'PHQ-9 & GAD-7',
-      position: 'top-12 right-8',
-      delay: 0,
-    },
-    {
-      title: 'Ergebnis in Minuten',
-      value: content.metrics[1]?.value ?? '< 5 Min.',
-      position: 'bottom-16 left-10',
-      delay: 0.7,
-    },
-  ]
-
   const floatingOrbs = [
     { position: 'top-[-10%] left-1/4 h-56 w-56 bg-primary-500/25', duration: 16, delay: 0 },
     { position: 'bottom-[-18%] right-1/4 h-64 w-64 bg-secondary-400/20', duration: 18, delay: 0.4 },
@@ -105,18 +90,6 @@ export function MarketingHero({ content }: HeroProps) {
               animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.9, 1.1, 0.9], y: [0, -14, 0] }}
               transition={{ duration: orb.duration, delay: orb.delay, repeat: Infinity, ease: 'easeInOut' }}
             />
-          ))}
-          {floatingInsights.map((badge) => (
-            <motion.div
-              key={badge.title}
-              aria-hidden
-              className={`pointer-events-none absolute z-[4] hidden rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-left text-white backdrop-blur-md lg:block ${badge.position}`}
-              animate={{ y: [0, -12, 0], opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 10, delay: badge.delay, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/80">{badge.title}</p>
-              <p className="mt-1 text-xl font-bold">{badge.value}</p>
-            </motion.div>
           ))}
         </>
       )}

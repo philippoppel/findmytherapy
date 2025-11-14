@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import Link from 'next/link'
 import { FeaturedTherapistsClient } from './FeaturedTherapistsClient'
 import type { TherapistWithListing } from '../therapist-search/types'
 

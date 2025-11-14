@@ -5,14 +5,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CheckCircle, Clock, LocateFixed, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
 
-import type { TherapistStatus } from '@/lib/prisma'
 import { Button, cn } from '@mental-health/ui'
 import { FEATURES } from '@/lib/features'
 import {
-  type Coordinates,
   normalizeLocationValue,
   resolveCoordinatesFromSearch,
 } from './location-data'
+import type { TherapistCard } from './types'
 
 const formatOptions = [
   { id: 'online', label: 'Online' },
@@ -33,11 +32,11 @@ const gradientPalette = [
   'from-blue-500 via-slate-500 to-slate-800',
 ] as const
 
-const statusLabel: Record<TherapistStatus, string> = {
+const statusLabel = {
   VERIFIED: 'Pilot (verifiziert)',
   PENDING: 'Pilot (in Prüfung)',
   REJECTED: 'Nicht gelistet',
-}
+} as const
 
 // Removed unused variable statusTone
 // const statusTone: Record<TherapistStatus, string> = {
@@ -45,29 +44,6 @@ const statusLabel: Record<TherapistStatus, string> = {
 //   PENDING: 'bg-amber-100 text-amber-900 border-amber-200',
 //   REJECTED: 'bg-red-100 text-red-800 border-red-200',
 // }
-
-export type TherapistCard = {
-  id: string
-  name: string
-  title: string
-  focus: string[]
-  approach: string
-  location: string
-  city: string | null
-  coordinates: Coordinates | null
-  availability: string
-  availabilityRank: number
-  languages: string[]
-  rating: number
-  reviews: number
-  experience: string
-  image: string | null
-  initials: string
-  status: TherapistStatus
-  formatTags: Array<'online' | 'praesenz' | 'hybrid'>
-  distanceInKm?: number
-  locationTokens: string[]
-}
 
 type Props = {
   therapists: TherapistCard[]

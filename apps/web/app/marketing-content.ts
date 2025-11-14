@@ -2,7 +2,7 @@ export const marketingNavigation = [
   { label: 'Ratgeber', href: '/blog' },
   { label: 'Ersteinschätzung', href: '/triage' },
   { label: 'Vorteile', href: '#benefits' },
-  { label: 'Therapeut:innen', href: '#therapists' },
+  { label: 'Therapeut:innen', href: '#therapist-search' },
   { label: 'Über uns', href: '/about' },
   { label: 'FAQ', href: '#faq' },
 ] as const;
@@ -19,7 +19,7 @@ export const heroContent = {
   },
   secondaryCta: {
     label: 'Therapeut:in finden',
-    href: '/therapists',
+    href: '#therapist-search',
   },
   tertiaryCta: {
     label: 'Für Therapeut:innen',
@@ -495,7 +495,7 @@ export const clientBenefits = {
     },
     secondary: {
       label: 'Therapeut:innen durchsuchen',
-      href: '#therapists',
+      href: '#therapist-search',
     },
   },
 } as const;

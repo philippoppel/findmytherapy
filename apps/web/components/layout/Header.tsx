@@ -30,7 +30,7 @@ export function Header() {
   // Auf der Homepage nur die wichtigsten Links zeigen
   const baseDesktopNavigation = [
     ...(FEATURES.ASSESSMENT ? [{ label: 'Ersteinschätzung', href: '/triage' }] : []),
-    { label: 'Therapeut:innen', href: '#therapists' },
+    { label: 'Therapeut:innen', href: '#therapist-search' },
     { label: 'Team', href: '#team' },
     { label: 'Blog', href: '/blog' },
     { label: 'FAQ', href: '#faq' },
