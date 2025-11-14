@@ -5,7 +5,7 @@ import { Button } from '@mental-health/ui'
 import { Sparkles, Users, Video, CheckCircle2 } from 'lucide-react'
 import type { clientBenefits } from '../../marketing-content'
 import { Reveal } from './Reveal'
-import { InteractiveCard } from './InteractiveCard'
+import { InteractiveCard } from '../InteractiveCard'
 
 interface ClientBenefitsProps {
   content: typeof clientBenefits

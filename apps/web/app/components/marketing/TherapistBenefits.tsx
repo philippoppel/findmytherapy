@@ -5,7 +5,7 @@ import { Button } from '@mental-health/ui'
 import { Briefcase, ClipboardCheck, Globe, TrendingUp, CheckCircle2 } from 'lucide-react'
 import type { therapistBenefits } from '../../marketing-content'
 import { Reveal } from './Reveal'
-import { InteractiveCard } from './InteractiveCard'
+import { InteractiveCard } from '../InteractiveCard'
 
 interface TherapistBenefitsProps {
   content: typeof therapistBenefits

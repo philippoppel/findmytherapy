@@ -3,6 +3,8 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { SlidersHorizontal } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+
 import { TherapistCard } from './TherapistCard'
 import { TherapistCardPremium } from './TherapistCardPremium'
 import { SearchBar } from './SearchBar'
@@ -10,6 +12,7 @@ import { QuickFilters } from './QuickFilters'
 import { SortDropdown } from './SortDropdown'
 import { ActiveFilters } from './ActiveFilters'
 import { AdvancedFilterModal } from './AdvancedFilterModal'
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 import type { TherapistWithListing, FilterState, SortOption } from './types'
 
 interface TherapistGridProps {
@@ -63,6 +66,7 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   // Initialize from URL params
   const initialState = useMemo(() => {
@@ -327,15 +331,36 @@ export function TherapistGrid({ therapists }: TherapistGridProps) {
       {displayedTherapists.length > 0 ? (
         <>
           <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
-            {displayedTherapists.map((therapist) => {
-              const isPremium =
-                therapist.listings.find((l) => l.status === 'ACTIVE')?.plan === 'PRO_PLUS'
-              return isPremium ? (
-                <TherapistCardPremium key={therapist.id} therapist={therapist} />
-              ) : (
-                <TherapistCard key={therapist.id} therapist={therapist} />
-              )
-            })}
+            <AnimatePresence mode="popLayout">
+              {displayedTherapists.map((therapist, index) => {
+                const isPremium =
+                  therapist.listings.find((l) => l.status === 'ACTIVE')?.plan === 'PRO_PLUS'
+                const card = isPremium ? (
+                  <TherapistCardPremium therapist={therapist} />
+                ) : (
+                  <TherapistCard therapist={therapist} />
+                )
+
+                const baseTransition = {
+                  duration: 0.45,
+                  ease: 'easeOut',
+                  delay: prefersReducedMotion ? 0 : index * 0.03,
+                }
+
+                return (
+                  <motion.div
+                    key={therapist.id}
+                    layout
+                    initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
+                    animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                    exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -24 }}
+                    transition={baseTransition}
+                  >
+                    {card}
+                  </motion.div>
+                )
+              })}
+            </AnimatePresence>
           </div>
 
           {/* Load More */}

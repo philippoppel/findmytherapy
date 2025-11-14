@@ -7,7 +7,7 @@ import { ArrowRight } from 'lucide-react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Button, cn } from '@mental-health/ui'
 import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from './usePrefersReducedMotion'
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 
 type JourneyStep = {
   phase: string

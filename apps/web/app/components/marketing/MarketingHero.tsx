@@ -6,7 +6,7 @@ import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-mot
 import { Button } from '@mental-health/ui'
 import type { heroContent } from '../../marketing-content'
 import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from './usePrefersReducedMotion'
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 
 interface HeroProps {
   content: typeof heroContent
