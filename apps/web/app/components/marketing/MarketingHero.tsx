@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
 import { Button } from '@mental-health/ui'
@@ -50,15 +51,27 @@ export function MarketingHero({ content }: HeroProps) {
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
     >
-      {/* Fullscreen Video Background - All Devices */}
+      {/* Background - Poster on Mobile, Video on Desktop/Tablet */}
       <div className="absolute inset-0 z-0">
+        {/* Mobile: Static poster image only */}
+        <div className="absolute inset-0 md:hidden">
+          <Image
+            src="/images/therapists/therapy-1.jpg"
+            alt="Professionelle Therapiesitzung - FindMyTherapy Österreich"
+            fill
+            className="object-cover"
+            priority
+            quality={85}
+          />
+        </div>
+        {/* Desktop/Tablet: Video background */}
         <video
           autoPlay
           muted
           loop
           playsInline
           poster="/images/therapists/therapy-1.jpg"
-          className="h-full w-full object-cover"
+          className="hidden h-full w-full object-cover md:block"
           title="FindMyTherapy – Professionelle Therapiesitzung, Mentale Gesundheit in Österreich"
           aria-label="Hintergrundvideo zeigt eine professionelle Therapiesitzung"
         >

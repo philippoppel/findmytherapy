@@ -188,13 +188,15 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
                   className="block h-full overflow-hidden rounded-3xl border border-neutral-200/60 bg-white/95 shadow-lg transition-all hover:border-teal-200"
                 >
                   {/* Image */}
-                  <div className="relative h-56 w-full overflow-hidden bg-neutral-50">
+                  <div className="relative aspect-square w-full overflow-hidden bg-neutral-50 sm:aspect-[4/3]">
                     {therapist.profileImageUrl ? (
                       <Image
                         src={therapist.profileImageUrl}
-                        alt={therapist.displayName || 'Therapeut:in'}
+                        alt={`Profilbild von ${therapist.displayName || 'Therapeut:in'}${therapist.specialties[0] ? `, spezialisiert auf ${therapist.specialties[0]}` : ''}`}
                         fill
-                        className="object-cover transition-transform duration-700 hover:scale-110"
+                        className="object-cover object-center transition-transform duration-700 hover:scale-110"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        quality={80}
                       />
                     ) : (
                       <PlaceholderImage

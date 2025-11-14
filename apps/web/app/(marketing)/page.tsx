@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getHeroContent, getFAQItems, getContactCta } from '../marketing-content'
+import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
@@ -7,8 +7,8 @@ import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
 import { AboutSection } from '../components/marketing/AboutSection'
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection'
 
-// Force dynamic rendering to prevent database access during build
-export const dynamic = 'force-dynamic'
+// ISR: Revalidate every 5 minutes for better performance while keeping content fresh
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'FindMyTherapy – SEO-optimierte Therapeuten-Profile & Expert:innen-Wissen',
@@ -172,6 +172,22 @@ export default function HomePage() {
     ],
   }
 
+  // Team Members Person Structured Data
+  const teamMembersStructuredData = teamContent.members.map((member) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: member.name,
+    jobTitle: member.role,
+    description: member.focus,
+    image: `https://findmytherapy.net${member.image}`,
+    worksFor: {
+      '@type': 'Organization',
+      name: 'FindMyTherapy',
+      url: 'https://findmytherapy.net',
+    },
+    url: 'https://findmytherapy.net',
+  }))
+
   return (
     <div className="marketing-theme bg-surface text-default">
       <main className="flex flex-col">
@@ -221,6 +237,14 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListStructuredData) }}
       />
+      {/* Team Members Person Schemas */}
+      {teamMembersStructuredData.map((member, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(member) }}
+        />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}

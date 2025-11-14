@@ -108,13 +108,13 @@ export function AboutSection() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   whileHover={!prefersReducedMotion ? { translateY: -6, scale: 1.02 } : {}}
                 >
-                  <div className="relative mb-4 h-48 overflow-hidden rounded-2xl bg-neutral-100">
+                  <div className="relative mb-4 aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-100">
                     <Image
                       src={member.image}
-                      alt={member.name}
+                      alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
                       fill
-                      className="object-cover"
-                      sizes="(min-width: 1024px) 240px, 100vw"
+                      className="object-cover object-top"
+                      sizes="(min-width: 1024px) 240px, (min-width: 640px) 50vw, 100vw"
                       priority={index === 0}
                     />
                     {!prefersReducedMotion && (

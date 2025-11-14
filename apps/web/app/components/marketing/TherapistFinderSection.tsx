@@ -40,6 +40,31 @@ export async function TherapistFinderSection() {
 
   const stats = buildStats(therapists)
 
+  // ItemList Structured Data for Therapist Directory
+  const therapistListStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Verifizierte Therapeut:innen auf FindMyTherapy',
+    description: 'Liste von verifizierten Psychotherapeut:innen in Österreich',
+    numberOfItems: therapists.length,
+    itemListElement: therapists.slice(0, 20).map((therapist, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Person',
+        name: therapist.name,
+        jobTitle: therapist.title || 'Psychotherapeut:in',
+        description: therapist.focus.join(', '),
+        address: therapist.city ? {
+          '@type': 'PostalAddress',
+          addressLocality: therapist.city,
+          addressCountry: 'AT',
+        } : undefined,
+        url: `https://findmytherapy.net/therapists/${therapist.id}`,
+      },
+    })),
+  }
+
   return (
     <section
       id="therapist-search"
@@ -110,6 +135,12 @@ export async function TherapistFinderSection() {
           </div>
         </Reveal>
       </div>
+
+      {/* Structured Data for Therapist Directory */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(therapistListStructuredData) }}
+      />
     </section>
   )
 }

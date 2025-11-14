@@ -484,11 +484,15 @@ export function TherapistDirectory({ therapists }: Props) {
             tabIndex={-1}
           />
 
-          {/* Slide-over Panel */}
-          <div className="absolute inset-y-0 right-0 w-full max-w-md bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl">
+          {/* Bottom Sheet (Mobile) / Side Panel (Tablet) */}
+          <div className="absolute inset-x-0 bottom-0 max-h-[85vh] w-full rounded-t-3xl bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl md:inset-y-0 md:left-auto md:right-0 md:max-h-none md:w-full md:max-w-md md:rounded-none">
             <div className="flex h-full flex-col">
+              {/* Drag Handle (Mobile only) */}
+              <div className="flex justify-center pt-3 pb-2 md:hidden">
+                <div className="h-1.5 w-12 rounded-full bg-white/30" />
+              </div>
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-white/10 p-4">
+              <div className="flex items-center justify-between border-b border-white/10 p-4 md:pt-4">
                 <div className="flex items-center gap-2">
                   <SlidersHorizontal className="h-5 w-5 text-primary-400" />
                   <h2 className="text-lg font-semibold text-white">Filter</h2>
@@ -589,15 +593,15 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
     <Link href={`/therapists/${therapist.id}`} prefetch={false} className="group">
       <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 sm:rounded-3xl">
         {/* Image Section */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-neutral-900 to-black sm:aspect-[4/3]">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-neutral-900 to-black">
           {therapist.image ? (
             <Image
               src={therapist.image}
-              alt={`Portrait von ${therapist.name}`}
+              alt={`Profilbild von ${therapist.name}${therapist.focus[0] ? `, spezialisiert auf ${therapist.focus[0]}` : ''}`}
               fill
               className="object-cover object-center brightness-[0.95] contrast-[1.05] transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
-              quality={85}
+              quality={75}
             />
           ) : (
             <div
