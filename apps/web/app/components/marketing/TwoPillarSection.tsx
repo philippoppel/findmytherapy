@@ -110,11 +110,11 @@ export function TwoPillarSection() {
         </Reveal>
 
         {/* Two Pillars Grid */}
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left Pillar: Knowledge Hub */}
-          <Reveal className="flex" delay={100}>
+          <Reveal className="flex min-w-0" delay={100}>
             <motion.div
-              className="group flex-1 rounded-3xl border border-secondary-200/60 bg-gradient-to-br from-white via-secondary-50/20 to-white p-6 shadow-xl shadow-secondary-500/5 sm:p-8 lg:p-10"
+              className="group flex-1 min-w-0 rounded-3xl border border-secondary-200/60 bg-gradient-to-br from-white via-secondary-50/20 to-white p-6 shadow-xl shadow-secondary-500/5 sm:p-8 lg:p-10"
               whileHover={
                 !prefersReducedMotion
                   ? {
@@ -134,9 +134,9 @@ export function TwoPillarSection() {
           </Reveal>
 
           {/* Right Pillar: Therapist SEO Showcase */}
-          <Reveal className="flex" delay={200}>
+          <Reveal className="flex min-w-0" delay={200}>
             <motion.div
-              className="group flex-1 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-white via-primary-50/20 to-white p-6 shadow-xl shadow-primary-500/5 sm:p-8 lg:p-10"
+              className="group flex-1 min-w-0 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-white via-primary-50/20 to-white p-6 shadow-xl shadow-primary-500/5 sm:p-8 lg:p-10"
               whileHover={
                 !prefersReducedMotion
                   ? {

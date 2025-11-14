@@ -397,7 +397,7 @@ export const teamContent = {
     {
       name: 'Hannes Freudenthaler',
       role: 'Unternehmer & Marketing-Spezialist',
-      focus: 'Skaliert Marken & Webpräsenzen – Growth, Content & Sichtbarkeit für die Plattform',
+      focus: 'Skaliert Marken & Webpräsenzen – Growth, Content & Sichtbarkeit',
       image: '/images/team/hannesfreudenthaler.jpeg',
     },
   ],

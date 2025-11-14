@@ -99,10 +99,18 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       setThemeState(event.matches ? 'theme-dark' : 'theme-light');
     };
 
-    media.addEventListener('change', handleChange);
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', handleChange);
+    } else if (typeof media.addListener === 'function') {
+      media.addListener(handleChange);
+    }
     setIsReady(true);
     return () => {
-      media.removeEventListener('change', handleChange);
+      if (typeof media.removeEventListener === 'function') {
+        media.removeEventListener('change', handleChange);
+      } else if (typeof media.removeListener === 'function') {
+        media.removeListener(handleChange);
+      }
     };
   }, []);
 

@@ -3,7 +3,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react'
 import type { TherapistCard } from '../../therapists/types'
-import { useTherapistFiltering, type FormatFilter } from '../../hooks/useTherapistFiltering'
+import {
+  useTherapistFiltering,
+  type FormatFilter,
+  type TherapistFilters,
+} from '../../hooks/useTherapistFiltering'
+import type { Coordinates } from '../../therapists/location-data'
 import { LocationInput } from './LocationInput'
 import { SpecializationFilters } from './SpecializationFilters'
 
@@ -73,27 +78,15 @@ export function UnifiedTherapistSearch({
     return count
   }
 
-  const AdvancedFiltersContent = () => (
-    <div className="space-y-6">
-      {/* Location Filter */}
-      <LocationInput
-        value={filters.location}
-        onChange={setLocation}
-        onCoordinatesChange={setUserLocation}
-        nearbyOnly={filters.nearbyOnly}
-        onNearbyOnlyChange={setNearbyOnly}
-        radius={filters.radius}
-        onRadiusChange={setRadius}
-      />
-
-      {/* Specialization Filter */}
-      <SpecializationFilters
-        availableSpecializations={availableSpecializations}
-        selectedSpecializations={filters.specializations}
-        onChange={setSpecializations}
-      />
-    </div>
-  )
+  const advancedFiltersProps: AdvancedFiltersContentProps = {
+    filters,
+    availableSpecializations,
+    onLocationChange: setLocation,
+    onCoordinatesChange: setUserLocation,
+    onNearbyOnlyChange: setNearbyOnly,
+    onRadiusChange: setRadius,
+    onSpecializationsChange: setSpecializations,
+  }
 
   return (
     <div className={className}>
@@ -163,7 +156,7 @@ export function UnifiedTherapistSearch({
 
         {showAdvancedFilters && (
           <div className="mt-4 rounded-xl border border-white/20 bg-white/5 p-4 backdrop-blur">
-            <AdvancedFiltersContent />
+            <AdvancedFiltersContent {...advancedFiltersProps} />
           </div>
         )}
       </div>
@@ -224,7 +217,7 @@ export function UnifiedTherapistSearch({
 
               {/* Content - Scrollable */}
               <div className="flex-1 overflow-y-auto p-4">
-                <AdvancedFiltersContent />
+                <AdvancedFiltersContent {...advancedFiltersProps} />
               </div>
 
               {/* Footer */}
@@ -293,6 +286,46 @@ export function UnifiedTherapistSearch({
         <span className="font-semibold text-white">{filteredTherapists.length}</span> von{' '}
         {totalCount} {totalCount === 1 ? 'Profil' : 'Profile'}
       </div>
+    </div>
+  )
+}
+
+type AdvancedFiltersContentProps = {
+  filters: TherapistFilters
+  availableSpecializations: string[]
+  onLocationChange: (value: string) => void
+  onCoordinatesChange: (coords: Coordinates | null) => void
+  onNearbyOnlyChange: (nearbyOnly: boolean) => void
+  onRadiusChange: (radius: number) => void
+  onSpecializationsChange: (specializations: Set<string>) => void
+}
+
+function AdvancedFiltersContent({
+  filters,
+  availableSpecializations,
+  onLocationChange,
+  onCoordinatesChange,
+  onNearbyOnlyChange,
+  onRadiusChange,
+  onSpecializationsChange,
+}: AdvancedFiltersContentProps) {
+  return (
+    <div className="space-y-6">
+      <LocationInput
+        value={filters.location}
+        onChange={onLocationChange}
+        onCoordinatesChange={onCoordinatesChange}
+        nearbyOnly={filters.nearbyOnly}
+        onNearbyOnlyChange={onNearbyOnlyChange}
+        radius={filters.radius}
+        onRadiusChange={onRadiusChange}
+      />
+
+      <SpecializationFilters
+        availableSpecializations={availableSpecializations}
+        selectedSpecializations={filters.specializations}
+        onChange={onSpecializationsChange}
+      />
     </div>
   )
 }
