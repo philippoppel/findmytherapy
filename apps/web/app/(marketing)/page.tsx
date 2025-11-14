@@ -7,8 +7,8 @@ import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
 import { AboutSection } from '../components/marketing/AboutSection'
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection'
 
-// ISR: Revalidate every 5 minutes for better performance while keeping content fresh
-export const revalidate = 300
+// Force dynamic rendering to prevent database access during build
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'FindMyTherapy – SEO-optimierte Therapeuten-Profile & Expert:innen-Wissen',
