@@ -135,8 +135,8 @@ export function AboutSection() {
                       priority={index === 0}
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/75 via-neutral-900/10 to-transparent" />
-                  <div className="absolute inset-x-6 bottom-6">
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/4 bg-gradient-to-t from-neutral-900/90 via-neutral-900/35 to-transparent" />
+                  <div className="absolute inset-x-6 bottom-6 z-10">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
                       Founder Team
                     </p>
