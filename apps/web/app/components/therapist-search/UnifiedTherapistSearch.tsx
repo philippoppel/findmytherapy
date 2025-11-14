@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react'
 import type { TherapistCard } from '../../therapists/types'
 import { useTherapistFiltering, type FormatFilter } from '../../hooks/useTherapistFiltering'
@@ -27,6 +27,13 @@ export function UnifiedTherapistSearch({
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
 
+  // Use ref to keep callback stable across renders
+  const onFilteredResultsRef = useRef(onFilteredResults)
+
+  useEffect(() => {
+    onFilteredResultsRef.current = onFilteredResults
+  }, [onFilteredResults])
+
   const {
     filters,
     setSearchQuery,
@@ -45,8 +52,8 @@ export function UnifiedTherapistSearch({
 
   // Update parent with filtered results
   useEffect(() => {
-    onFilteredResults(filteredTherapists)
-  }, [filteredTherapists, onFilteredResults])
+    onFilteredResultsRef.current(filteredTherapists)
+  }, [filteredTherapists])
 
   const handleFormatToggle = (format: FormatFilter) => {
     const newFormats = new Set(filters.formats)
