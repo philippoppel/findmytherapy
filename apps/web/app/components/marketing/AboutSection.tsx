@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Reveal } from './Reveal'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { teamContent } from '../../marketing-content'
 
 export function AboutSection() {
   const prefersReducedMotion = usePrefersReducedMotion()
@@ -17,14 +18,6 @@ export function AboutSection() {
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%'])
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
-
-  const team = [
-    {
-      name: 'Das FindMyTherapy Team',
-      role: 'Expert:innen für mentale Gesundheit',
-      image: '/images/therapists/therapy-1.jpg',
-    },
-  ]
 
   const values = [
     {
@@ -94,53 +87,56 @@ export function AboutSection() {
             </div>
           </div>
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
-            Wer wir sind
+            {teamContent.heading}
           </h2>
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-neutral-600 sm:text-xl">
-            FindMyTherapy wurde entwickelt, um Menschen in schwierigen Zeiten den Zugang zu
-            professioneller Hilfe zu erleichtern. Mit Expertise, Empathie und modernster Technologie.
+            {teamContent.description}
           </p>
         </Reveal>
 
-        {/* Team Image Grid */}
-        <div className="mb-20 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
+        {/* Team Members */}
+        <div className="mb-20 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-16">
           <Reveal delay={100}>
-            <motion.div
-              className="relative"
-              whileHover={!prefersReducedMotion ? { scale: 1.02 } : {}}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
-                <Image
-                  src="/images/therapists/therapy-1.jpg"
-                  alt="FindMyTherapy Team - Expert:innen für mentale Gesundheit"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {!prefersReducedMotion && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-primary-500/20 via-transparent to-secondary-500/20"
-                    animate={{ opacity: [0.3, 0.5, 0.3] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                  />
-                )}
-              </div>
-              {/* Floating badge */}
-              <motion.div
-                className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-2xl border border-neutral-200/60 bg-white/95 px-6 py-4 shadow-xl backdrop-blur-sm"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ scale: 1.05, y: -4 }}
-              >
-                <p className="text-center text-sm font-medium text-neutral-600">
-                  Entwickelt in Wien
-                </p>
-                <p className="text-center text-xl font-bold text-primary-700">🇦🇹 Österreich</p>
-              </motion.div>
-            </motion.div>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {teamContent.members.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  className="group rounded-3xl border border-neutral-200/60 bg-white/95 p-4 shadow-xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={!prefersReducedMotion ? { translateY: -6, scale: 1.02 } : {}}
+                >
+                  <div className="relative mb-4 h-48 overflow-hidden rounded-2xl bg-neutral-100">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 240px, 100vw"
+                      priority={index === 0}
+                    />
+                    {!prefersReducedMotion && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
+                        initial={{ opacity: 0.4 }}
+                        whileHover={{ opacity: 0.6 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary-600">
+                      Founder Team
+                    </p>
+                    <p className="mt-2 text-xl font-bold text-neutral-900">{member.name}</p>
+                    <p className="text-sm font-medium text-neutral-600">{member.role}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-neutral-600">{member.focus}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </Reveal>
 
           <Reveal delay={200}>

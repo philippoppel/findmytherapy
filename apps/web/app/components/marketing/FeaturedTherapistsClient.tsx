@@ -30,11 +30,8 @@ function formatLocation(city?: string | null, online?: boolean) {
 export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapistsClientProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
-
-  // Safety check - should never happen but just in case
-  if (!therapists || !Array.isArray(therapists) || therapists.length === 0) {
-    return null
-  }
+  const safeTherapists = Array.isArray(therapists) ? therapists : []
+  const hasTherapists = safeTherapists.length > 0
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -43,6 +40,10 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+
+  if (!hasTherapists) {
+    return null
+  }
 
   return (
     <section ref={sectionRef} className="relative">
@@ -158,7 +159,7 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
 
         {/* Therapists Grid */}
         <div className="mb-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {therapists.map((therapist, index) => (
+          {safeTherapists.map((therapist, index) => (
             <motion.div
               key={therapist.id}
               initial={{ opacity: 0, y: 30 }}

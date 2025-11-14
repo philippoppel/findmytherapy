@@ -6,7 +6,6 @@ import { ContactCta } from '../components/marketing/ContactCta'
 import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
 import { AboutSection } from '../components/marketing/AboutSection'
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection'
-import { FEATURES } from '@/lib/features'
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'

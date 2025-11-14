@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState, type MouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CheckCircle, Clock, LocateFixed, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
@@ -22,6 +22,8 @@ const formatOptions = [
 const DEFAULT_NEARBY_RADIUS = 50
 const RADIUS_OPTIONS = [25, 50, 75, 120] as const
 const EARTH_RADIUS_KM = 6371
+const INITIAL_VISIBLE_COUNT = 24
+const LOAD_MORE_INCREMENT = 24
 
 const gradientPalette = [
   'from-rose-500 via-fuchsia-500 to-indigo-500',
@@ -58,6 +60,7 @@ export function TherapistDirectory({ therapists }: Props) {
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null)
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [geoError, setGeoError] = useState<string | null>(null)
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
 
   const focusOptions = useMemo(() => {
     const values = new Set<string>()
@@ -127,6 +130,25 @@ export function TherapistDirectory({ therapists }: Props) {
     next.sort((a, b) => compareTherapists(a, b))
     return next
   }, [filteredTherapists])
+
+  const totalResults = sortedTherapists.length
+  const visibleTherapists = useMemo(
+    () => sortedTherapists.slice(0, Math.min(visibleCount, totalResults)),
+    [sortedTherapists, totalResults, visibleCount],
+  )
+  const canLoadMore = visibleCount < totalResults
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT)
+  }, [
+    focusFilter,
+    formatFilter,
+    normalizedLocationFilter,
+    nearbyOnly,
+    maxDistance,
+    proximityOrigin,
+    therapists,
+  ])
 
   const activeFilterLabels: string[] = []
   if (focusFilter) activeFilterLabels.push(`Fokus „${focusFilter}“`)
@@ -352,18 +374,34 @@ export function TherapistDirectory({ therapists }: Props) {
         </div>
       </div>
 
-      {sortedTherapists.length === 0 ? (
+      {totalResults === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-sm text-white/70 backdrop-blur">
           <p>
             Keine Profile gefunden. Passe die Filter an oder kontaktiere das Care-Team für eine individuelle Empfehlung.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-          {sortedTherapists.map((therapist) => (
-            <DirectoryCard key={therapist.id} therapist={therapist} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {visibleTherapists.map((therapist) => (
+              <DirectoryCard key={therapist.id} therapist={therapist} />
+            ))}
+          </div>
+          {canLoadMore && (
+            <div className="mt-8 flex justify-center">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  setVisibleCount((current) => Math.min(current + LOAD_MORE_INCREMENT, totalResults))
+                }
+                className="rounded-full border-white/40 px-6 py-2 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Mehr Ergebnisse laden ({totalResults - visibleCount})
+              </Button>
+            </div>
+          )}
+        </>
       )}
     </>
   )

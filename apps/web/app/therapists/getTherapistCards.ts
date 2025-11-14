@@ -20,7 +20,28 @@ export async function getTherapistCards(): Promise<TherapistCard[]> {
         in: ['VERIFIED', 'PENDING'],
       },
     },
-    include: {
+    orderBy: [
+      { status: 'asc' },
+      { updatedAt: 'desc' },
+    ],
+    select: {
+      id: true,
+      displayName: true,
+      title: true,
+      specialties: true,
+      approachSummary: true,
+      city: true,
+      online: true,
+      latitude: true,
+      longitude: true,
+      availabilityNote: true,
+      acceptingClients: true,
+      languages: true,
+      rating: true,
+      reviewCount: true,
+      yearsExperience: true,
+      profileImageUrl: true,
+      status: true,
       user: {
         select: {
           firstName: true,

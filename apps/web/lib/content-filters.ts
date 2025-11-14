@@ -175,11 +175,6 @@ export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
     // Update eyebrow to remove assessment reference
     filtered.eyebrow = 'Therapeut:innen-Vermittlung & Begleitung'
 
-    filtered.primaryCta = {
-      label: 'Therapeut:innen finden',
-      href: '/therapists',
-    }
-
     // Replace assessment-related metrics with therapist-focused metrics
     filtered.metrics = [
       { value: 'Verifiziert', label: 'Alle Profile geprüft' },
