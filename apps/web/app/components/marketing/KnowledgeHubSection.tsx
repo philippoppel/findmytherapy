@@ -10,114 +10,236 @@ import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 
 export function KnowledgeHubSection() {
   const prefersReducedMotion = usePrefersReducedMotion()
-  const recentPosts = blogPosts.slice(0, 3)
+  const featuredPost = blogPosts[0]
+  const heroImage = featuredPost?.featuredImage
+  const highlightedPosts = blogPosts.slice(1, 5)
+  const quickReadPosts = blogPosts.slice(5, 11)
+  const highlightPoints = [
+    'Evidenzbasierte Selbsttests',
+    'Konkrete Schritt-für-Schritt-Anleitungen',
+    'Neue Artikel fast jede Woche',
+  ]
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <div className="mb-4 flex justify-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-secondary-100 px-4 py-2 text-sm font-medium text-secondary-800">
-            <BookOpenIcon />
-            <span>Wissen & Soforthilfe</span>
-          </div>
-        </div>
-        <h2 className="mb-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
-          Gratis Expert:innen-Wissen
-        </h2>
-        <p className="mx-auto max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">
-          Von anerkannten Psychotherapeut:innen. Evidenzbasierte Informationen für
-          sofortige Hilfe – vielleicht erspart es dir einen Besuch.
-        </p>
-      </div>
-
-      {/* Blog Posts Grid with stagger animation */}
-      <div className="mb-8 flex-1 space-y-4">
-        {recentPosts.map((post, index) => (
-          <motion.div
-            key={post.slug}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{
-              duration: 0.5,
-              delay: index * 0.1,
-              ease: [0.21, 0.47, 0.32, 0.98],
-            }}
-          >
-            <InteractiveCard className="group border border-secondary-100/60 bg-white/95 p-0 transition-all hover:border-secondary-300/80 hover:shadow-lg hover:shadow-secondary-200/50">
-              <Link
-                href={`/blog/${post.slug}`}
-                className="flex items-stretch gap-4 p-5 focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/40"
-              >
-              {post.featuredImage && (
-                <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-24">
-                  <Image
-                    src={post.featuredImage.src}
-                    alt={post.featuredImage.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  {!prefersReducedMotion && (
-                    <motion.div
-                      aria-hidden
-                      className="absolute inset-0 bg-gradient-to-br from-secondary-400/20 to-transparent mix-blend-screen"
-                      animate={{ opacity: [0.3, 0.5, 0.3] }}
-                      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                  )}
-                </div>
-              )}
-
-              <div className="flex flex-1 flex-col gap-2">
-                <Badge variant="neutral" className="w-fit text-xs">
-                  {post.category}
-                </Badge>
-                <h3 className="text-base font-semibold leading-tight text-neutral-900 transition-colors group-hover:text-secondary-600 sm:text-lg">
-                  {post.title}
+    <div className="flex h-full flex-col gap-8">
+      <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* Hero */}
+        <motion.div
+          className="relative overflow-hidden rounded-3xl border border-secondary-200/60 bg-secondary-900 text-white shadow-2xl shadow-secondary-700/20"
+          whileHover={
+            !prefersReducedMotion
+              ? { scale: 1.01, boxShadow: '0 25px 60px -20px rgba(107, 33, 168, 0.45)' }
+              : {}
+          }
+          transition={{ duration: 0.4 }}
+        >
+          {heroImage && (
+            <div className="absolute inset-0">
+              <Image
+                src={heroImage.src}
+                alt={heroImage.alt}
+                fill
+                className="object-cover opacity-50"
+                priority
+              />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-br from-secondary-900/80 via-secondary-800/75 to-primary-900/80" />
+          <div className="relative flex h-full flex-col justify-between gap-6 p-6 sm:p-8">
+            <div className="space-y-4">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-secondary-50 backdrop-blur-sm">
+                <BookOpenIcon />
+                Gratis Expert:innen-Wissen
+              </span>
+              <div>
+                <h3 className="text-2xl font-semibold sm:text-3xl">
+                  {featuredPost?.title ?? 'Unser Blog für akute Fragen'}
                 </h3>
-                <div className="flex items-center gap-3 text-xs text-neutral-500">
-                  <span className="flex items-center gap-1">
-                    <ClockIcon />
-                    {post.readingTime}
-                  </span>
-                </div>
+                <p className="mt-3 text-sm leading-relaxed text-secondary-100 sm:text-base">
+                  {featuredPost?.excerpt ??
+                    'Von Psychotherapeut:innen kuratierte Inhalte, damit du sofort konkrete Hilfe bekommst.'}
+                </p>
               </div>
-            </Link>
-          </InteractiveCard>
-          </motion.div>
-        ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white/90 px-5 py-2.5 text-sm font-semibold text-secondary-900 transition hover:bg-white"
+              >
+                Alle Artikel entdecken
+                <ArrowIcon />
+              </Link>
+              {featuredPost && (
+                <Link
+                  href={`/blog/${featuredPost.slug}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/40 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:border-white hover:bg-white/10"
+                >
+                  Beliebter Artikel
+                </Link>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Value props */}
+        <motion.div
+          className="rounded-3xl border border-secondary-100/60 bg-white/90 p-6 shadow-lg shadow-secondary-500/10 sm:p-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <p className="text-sm font-semibold uppercase tracking-wide text-secondary-700">
+            Warum unser Blog wirkt
+          </p>
+          <ul className="mt-5 space-y-3 text-sm leading-relaxed text-neutral-600">
+            {highlightPoints.map((point) => (
+              <li key={point} className="flex items-start gap-2">
+                <CheckCircleIcon className="mt-0.5 h-4 w-4 text-secondary-500" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 grid gap-4 rounded-2xl bg-secondary-50/60 p-4 sm:grid-cols-2">
+            {[
+              { label: 'Artikel online', value: `${blogPosts.length}+` },
+              { label: 'Autor:innen & Therapeut:innen', value: '12' },
+              { label: 'Kosten', value: '0 €' },
+              { label: 'Lesedauer', value: '~7 Min.' },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="text-xs uppercase tracking-wide text-secondary-600">{stat.label}</p>
+                <p className="text-xl font-semibold text-secondary-900">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {['Akuthilfe', 'Selbstfürsorge', 'Arbeitswelt', 'Therapieformen', 'Diagnostik'].map((topic) => (
+              <span
+                key={topic}
+                className="inline-flex items-center rounded-full bg-secondary-100/80 px-3 py-1 text-xs font-semibold text-secondary-800"
+              >
+                {topic}
+              </span>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      {/* Highlights with stagger */}
+      {/* Blog feed */}
+      <div className="space-y-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-700">Neu im Ratgeber</p>
+            <p className="text-base text-neutral-600">
+              Mehr Kontext, mehr Handlungsempfehlungen – endlich verständlich erklärt.
+            </p>
+          </div>
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-secondary-700 underline-offset-4 hover:underline"
+          >
+            Alle ansehen
+            <ArrowIcon />
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {highlightedPosts.map((post, index) => (
+            <motion.div
+              key={post.slug}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: [0.21, 0.47, 0.32, 0.98],
+              }}
+            >
+              <InteractiveCard className="group h-full border border-secondary-100/60 bg-white/95 p-0 transition-all hover:border-secondary-300/80 hover:shadow-lg hover:shadow-secondary-200/50">
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="flex h-full flex-col gap-4 p-5 focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary/40 sm:flex-row"
+                >
+                  {post.featuredImage && (
+                    <div className="relative h-40 w-full overflow-hidden rounded-2xl sm:h-24 sm:w-24">
+                      <Image
+                        src={post.featuredImage.src}
+                        alt={post.featuredImage.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {!prefersReducedMotion && (
+                        <motion.div
+                          aria-hidden
+                          className="absolute inset-0 bg-gradient-to-br from-secondary-400/20 to-transparent mix-blend-screen"
+                          animate={{ opacity: [0.3, 0.5, 0.3] }}
+                          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex flex-1 flex-col gap-3">
+                    <Badge variant="neutral" className="w-fit text-xs">
+                      {post.category}
+                    </Badge>
+                    <h3 className="text-base font-semibold leading-tight text-neutral-900 transition-colors group-hover:text-secondary-600 sm:text-lg">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-neutral-600 line-clamp-2">{post.excerpt}</p>
+                    <div className="mt-auto flex items-center gap-3 text-xs text-neutral-500">
+                      <span className="flex items-center gap-1">
+                        <ClockIcon />
+                        {post.readingTime}
+                      </span>
+                      <span>{new Date(post.publishedAt).toLocaleDateString('de-DE', { month: 'short', day: 'numeric' })}</span>
+                    </div>
+                  </div>
+                </Link>
+              </InteractiveCard>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick reads carousel */}
       <motion.div
-        className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-secondary-50/50 p-6"
-        initial={{ opacity: 0, y: 20 }}
+        className="rounded-3xl border border-secondary-100/60 bg-secondary-50/60 p-5 sm:p-6"
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        {[
-          { title: 'Echte Expert:innen', subtitle: 'Anerkannte Therapeut:innen', delay: 0.5 },
-          { title: 'Sofort verfügbar', subtitle: 'Keine Wartezeit', delay: 0.6 },
-          { title: 'Evidenzbasiert', subtitle: 'Wissenschaftlich fundiert', delay: 0.7 },
-          { title: '100% kostenlos', subtitle: 'Frei zugänglich', delay: 0.8 },
-        ].map((item) => (
-          <motion.div
-            key={item.title}
-            className="flex items-start gap-2.5"
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: item.delay }}
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-800">Schnell weiterlesen</p>
+            <p className="text-sm text-secondary-700">Diese Themen werden gerade besonders oft gesucht.</p>
+          </div>
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 rounded-full border border-secondary-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-secondary-700 transition hover:border-secondary-300"
           >
-            <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary-600" />
-            <div>
-              <p className="text-sm font-semibold leading-tight text-neutral-900">{item.title}</p>
-              <p className="mt-1 text-xs leading-snug text-neutral-600">{item.subtitle}</p>
-            </div>
-          </motion.div>
-        ))}
+            Zum Ratgeber
+            <ArrowIcon />
+          </Link>
+        </div>
+        <div className="-mx-1 mt-4 flex gap-3 overflow-x-auto pb-2 pt-1">
+          {quickReadPosts.map((post) => (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group relative min-w-[220px] flex-1 rounded-2xl bg-white/90 px-4 py-3 text-left shadow-sm ring-1 ring-secondary-100 transition hover:-translate-y-1 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary-400"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-secondary-600">{post.category}</p>
+              <p className="mt-1 text-sm font-semibold text-neutral-900 line-clamp-2">{post.title}</p>
+              <div className="mt-2 flex items-center gap-2 text-xs text-neutral-500">
+                <ClockIcon />
+                {post.readingTime}
+              </div>
+            </Link>
+          ))}
+        </div>
       </motion.div>
 
       {/* CTA with animation */}

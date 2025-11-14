@@ -2,7 +2,6 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Reveal } from './Reveal'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
@@ -45,12 +44,6 @@ export function AboutSection() {
       description: 'Basierend auf evidenzbasierten Methoden und aktueller Forschung.',
       color: 'secondary',
     },
-  ]
-  const mosaicLayout = [
-    'xl:col-span-5 xl:row-span-2',
-    'xl:col-span-3',
-    'xl:col-span-4 xl:row-span-2',
-    'xl:col-span-4',
   ]
   const missionHighlights = [
     'Psychotherapeutische Expertise & klinische Erfahrung',
@@ -114,15 +107,11 @@ export function AboutSection() {
         {/* Team Members */}
         <div className="mb-20 space-y-16">
           <Reveal delay={100}>
-            <div className="grid auto-rows-[260px] gap-4 sm:auto-rows-[320px] sm:grid-cols-2 xl:auto-rows-[220px] xl:grid-cols-12 xl:gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {teamContent.members.map((member, index) => (
                 <motion.article
                   key={member.name}
-                  className={clsx(
-                    'group relative col-span-12 overflow-hidden rounded-[32px] border border-white/40 bg-neutral-900/5 shadow-2xl shadow-primary-900/5 backdrop-blur',
-                    'sm:col-span-1',
-                    mosaicLayout[index % mosaicLayout.length],
-                  )}
+                  className="group relative overflow-hidden rounded-[32px] border border-white/40 bg-neutral-900/5 shadow-2xl shadow-primary-900/5 backdrop-blur"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -136,14 +125,16 @@ export function AboutSection() {
                         }
                   }
                 >
-                  <Image
-                    src={member.image}
-                    alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
-                    priority={index === 0}
-                  />
+                  <div className="relative aspect-[3/4] w-full">
+                    <Image
+                      src={member.image}
+                      alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
+                      fill
+                      sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/75 via-neutral-900/10 to-transparent" />
                   <div className="absolute inset-x-6 bottom-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
