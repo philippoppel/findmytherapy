@@ -4,9 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import type { TherapistCard } from './types'
 import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch'
+
+// Utility function to merge classNames
+function cn(...classes: (string | undefined | null | false)[]): string {
+  return classes.filter(Boolean).join(' ')
+}
 
 const INITIAL_VISIBLE_COUNT = 12
 const LOAD_MORE_COUNT = 12
