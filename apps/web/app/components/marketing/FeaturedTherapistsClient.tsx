@@ -31,6 +31,11 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
   const prefersReducedMotion = usePrefersReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
 
+  // Safety check - should never happen but just in case
+  if (!therapists || !Array.isArray(therapists) || therapists.length === 0) {
+    return null
+  }
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
