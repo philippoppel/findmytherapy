@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { MapPin, LocateFixed, Loader2 } from 'lucide-react'
 import type { Coordinates } from '../../therapists/location-data'
 import { validateLocationInput } from '../../therapists/location-data'
+import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 
 export type LocationInputProps = {
   value: string
@@ -35,16 +36,19 @@ export function LocationInput({
   const [locationError, setLocationError] = useState<string>('')
   const [suggestions, setSuggestions] = useState<string[]>([])
 
-  // Validate location input when it changes
+  // Debounce location input to prevent validation on every keystroke
+  const debouncedValue = useDebouncedValue(value, 500)
+
+  // Validate location input when debounced value changes
   useEffect(() => {
-    if (!value.trim()) {
+    if (!debouncedValue.trim()) {
       setLocationError('')
       setSuggestions([])
       onCoordinatesChange(null)
       return
     }
 
-    const result = validateLocationInput(value)
+    const result = validateLocationInput(debouncedValue)
 
     if (result.valid) {
       setLocationError('')
@@ -55,7 +59,7 @@ export function LocationInput({
       setSuggestions(result.suggestions)
       onCoordinatesChange(null)
     }
-  }, [value, onCoordinatesChange])
+  }, [debouncedValue, onCoordinatesChange])
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
