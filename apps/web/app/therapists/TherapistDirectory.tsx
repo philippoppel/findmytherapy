@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CheckCircle, Clock, LocateFixed, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
+import { CheckCircle, Clock, LocateFixed, MapPin, ShieldCheck, Sparkles, SlidersHorizontal, X } from 'lucide-react'
 
 import { Button, cn } from '@mental-health/ui'
 import { FEATURES } from '@/lib/features'
@@ -61,6 +61,30 @@ export function TherapistDirectory({ therapists }: Props) {
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [geoError, setGeoError] = useState<string | null>(null)
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFilterModalOpen) {
+        setIsFilterModalOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isFilterModalOpen])
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isFilterModalOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isFilterModalOpen])
 
   const focusOptions = useMemo(() => {
     const values = new Set<string>()
@@ -204,353 +228,528 @@ export function TherapistDirectory({ therapists }: Props) {
     )
   }, [])
 
-  return (
-    <>
-      <div className="space-y-6">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Fokus</p>
-              <p className="text-sm text-white/70">
-                Wähle Schwerpunkte, um passende Therapeut:innen angezeigt zu bekommen.
-              </p>
-            </div>
-            {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={handleResetFilters} className="text-white hover:bg-white/10">
-                Filter zurücksetzen
-              </Button>
-            )}
+  // Filter content component that can be used in both modal and inline
+  const FilterContent = () => (
+    <div className="space-y-6">
+      {/* Focus Filter */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-primary-300">Spezialisierung</p>
+            <p className="text-xs text-white/60">Wähle relevante Schwerpunkte</p>
           </div>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {focusOptions.map((option) => {
-              const isActive = focusFilter === option
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setFocusFilter(isActive ? null : option)}
-                  className={cn(
-                    'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
-                    isActive
-                      ? 'border-primary-700 bg-primary-700 text-white shadow-sm'
-                      : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white hover:bg-white/10',
-                  )}
-                >
-                  {option}
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="mt-6 space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary-400">Format</p>
-            <div className="flex flex-wrap gap-2">
-              {formatOptions.map((option) => {
-                const isActive = formatFilter === option.id
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => setFormatFilter(isActive ? null : option.id)}
-                    className={cn(
-                      'rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2',
-                      isActive
-                        ? 'border-primary-700 bg-primary-700 text-white shadow-sm'
-                        : 'border-white/30 text-white/70 hover:border-primary-400/40 hover:text-white hover:bg-white/10',
-                    )}
-                  >
-                    {option.label}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div className="mt-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold uppercase tracking-wide text-primary-400 flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                Standortbasierte Suche
-              </p>
-              {proximityOrigin && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/20 border border-primary-500/30 px-3 py-1 text-xs font-semibold text-primary-200">
-                  <LocateFixed className="h-3 w-3" aria-hidden />
-                  Standort aktiv
-                </span>
-              )}
-            </div>
-
-            <div className="rounded-2xl border-2 border-primary-500/30 bg-primary-500/5 p-4 space-y-3">
-              <p className="text-sm text-white/80">
-                Finde Therapeut:innen in deiner Nähe
-              </p>
-
-              <div className="flex flex-col gap-3 md:flex-row">
-                <div className="flex-1">
-                  <label htmlFor="therapist-location-filter" className="sr-only">
-                    Ort eingeben
-                  </label>
-                  <input
-                    id="therapist-location-filter"
-                    list="therapist-city-options"
-                    value={locationFilter}
-                    onChange={(event) => setLocationFilter(event.target.value)}
-                    placeholder="z. B. Wien oder 1100"
-                    className="w-full rounded-2xl border border-white/30 bg-white/10 px-4 py-2.5 text-sm text-white placeholder:text-white/50 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur"
-                  />
-                  <datalist id="therapist-city-options">
-                    {cityOptions.map((city) => (
-                      <option key={city} value={city} />
-                    ))}
-                  </datalist>
-                </div>
-                <Button
-                  type="button"
-                  onClick={handleUseLocation}
-                  disabled={geoStatus === 'loading'}
-                  className="w-full rounded-2xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-500 disabled:opacity-50 md:w-auto shadow-lg"
-                >
-                  <LocateFixed className="mr-2 h-4 w-4" />
-                  {geoStatus === 'loading' ? 'Wird ermittelt...' : 'Mein Standort'}
-                </Button>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!nearbyOnly && !proximityOrigin) {
-                      handleUseLocation()
-                    }
-                    setNearbyOnly((prev) => !prev)
-                  }}
-                  className={cn(
-                    'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition',
-                    nearbyOnly
-                      ? 'border-primary-400 bg-primary-500/30 text-white shadow-sm'
-                      : 'border-white/30 bg-white/5 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white',
-                  )}
-                >
-                  <LocateFixed className="h-4 w-4" aria-hidden />
-                  Nur in meiner Nähe
-                </button>
-                {nearbyOnly && (
-                  <select
-                    value={maxDistance}
-                    onChange={(event) => setMaxDistance(Number(event.target.value))}
-                    disabled={!proximityOrigin}
-                    className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white focus:border-primary-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-40 backdrop-blur"
-                  >
-                    {RADIUS_OPTIONS.map((radius) => (
-                      <option key={radius} value={radius}>
-                        Umkreis: {radius} km
-                      </option>
-                    ))}
-                  </select>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {focusOptions.map((option) => {
+            const isActive = focusFilter === option
+            return (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFocusFilter(isActive ? null : option)}
+                className={cn(
+                  'min-h-[44px] rounded-xl border px-4 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+                  isActive
+                    ? 'border-primary-500 bg-primary-600 text-white shadow-md shadow-primary-900/50 scale-105'
+                    : 'border-white/25 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95',
                 )}
-              </div>
-
-              {geoStatus === 'error' && geoError && (
-                <p className="text-xs text-rose-200 flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-rose-200" />
-                  {geoError}
-                </p>
-              )}
-              {nearbyOnly && !proximityOrigin && (
-                <p className="text-xs text-amber-200 flex items-center gap-2">
-                  <span className="h-1 w-1 rounded-full bg-amber-200" />
-                  Um den Umkreisfilter zu nutzen, gib einen Ort ein oder erlaube die Standortabfrage.
-                </p>
-              )}
-            </div>
-          </div>
-
-          {hasFilters && (
-            <p className="mt-4 text-xs text-white/60">
-              Aktive Filter: {activeFilterLabels.join(' · ')}
-            </p>
-          )}
+              >
+                {option}
+              </button>
+            )
+          })}
         </div>
       </div>
 
-      {totalResults === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center text-sm text-white/70 backdrop-blur">
-          <p>
-            Keine Profile gefunden. Passe die Filter an oder kontaktiere das Care-Team für eine individuelle Empfehlung.
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-            {visibleTherapists.map((therapist) => (
-              <DirectoryCard key={therapist.id} therapist={therapist} />
-            ))}
-          </div>
-          {canLoadMore && (
-            <div className="mt-8 flex justify-center">
-              <Button
+      {/* Format Filter */}
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-primary-300">Format</p>
+        <div className="grid grid-cols-3 gap-3">
+          {formatOptions.map((option) => {
+            const isActive = formatFilter === option.id
+            return (
+              <button
+                key={option.id}
                 type="button"
-                variant="outline"
-                onClick={() =>
-                  setVisibleCount((current) => Math.min(current + LOAD_MORE_INCREMENT, totalResults))
-                }
-                className="rounded-full border-white/40 px-6 py-2 text-sm font-semibold text-white hover:bg-white/10"
+                onClick={() => setFormatFilter(isActive ? null : option.id)}
+                className={cn(
+                  'min-h-[44px] rounded-xl border px-4 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
+                  isActive
+                    ? 'border-primary-500 bg-primary-600 text-white shadow-md shadow-primary-900/50 scale-105'
+                    : 'border-white/25 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95',
+                )}
               >
-                Mehr Ergebnisse laden ({totalResults - visibleCount})
-              </Button>
+                {option.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Location Filter */}
+      <div className="space-y-3 rounded-2xl border border-primary-500/20 bg-primary-500/5 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-primary-400" />
+            <p className="text-sm font-semibold text-primary-300">Standort</p>
+          </div>
+          {proximityOrigin && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-500/30 border border-primary-400/40 px-2.5 py-1 text-xs font-semibold text-primary-200">
+              <LocateFixed className="h-3 w-3" aria-hidden />
+              Aktiv
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+            <div className="flex-1">
+              <label htmlFor="therapist-location-filter" className="sr-only">
+                Ort oder PLZ eingeben
+              </label>
+              <input
+                id="therapist-location-filter"
+                list="therapist-city-options"
+                value={locationFilter}
+                onChange={(event) => setLocationFilter(event.target.value)}
+                placeholder="Wien, 1010, ..."
+                className="w-full min-h-[44px] rounded-xl border border-white/30 bg-white/10 px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur transition-colors"
+              />
+              <datalist id="therapist-city-options">
+                {cityOptions.map((city) => (
+                  <option key={city} value={city} />
+                ))}
+              </datalist>
+            </div>
+            <Button
+              type="button"
+              onClick={handleUseLocation}
+              disabled={geoStatus === 'loading'}
+              className="min-h-[44px] rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-500 disabled:opacity-50 shadow-lg transition-all hover:scale-105 active:scale-95"
+            >
+              <LocateFixed className="mr-2 h-4 w-4" />
+              {geoStatus === 'loading' ? 'Lädt...' : 'Mein Standort'}
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => {
+                if (!nearbyOnly && !proximityOrigin) {
+                  handleUseLocation()
+                }
+                setNearbyOnly((prev) => !prev)
+              }}
+              className={cn(
+                'w-full min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200',
+                nearbyOnly
+                  ? 'border-primary-400 bg-primary-500/30 text-white shadow-md scale-105'
+                  : 'border-white/25 bg-white/5 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95',
+              )}
+            >
+              <LocateFixed className="h-4 w-4" aria-hidden />
+              Nur in meiner Nähe
+            </button>
+
+            {nearbyOnly && (
+              <div className="space-y-2">
+                <p className="text-xs text-white/70">Umkreis auswählen:</p>
+                <div className="grid grid-cols-4 gap-2">
+                  {RADIUS_OPTIONS.map((radius) => (
+                    <button
+                      key={radius}
+                      type="button"
+                      onClick={() => setMaxDistance(radius)}
+                      disabled={!proximityOrigin}
+                      className={cn(
+                        'min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40',
+                        maxDistance === radius
+                          ? 'border-primary-400 bg-primary-500/30 text-white shadow-md scale-105'
+                          : 'border-white/25 text-white/80 hover:border-primary-400/50 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95',
+                      )}
+                    >
+                      {radius}km
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {geoStatus === 'error' && geoError && (
+            <div className="flex items-start gap-2 rounded-lg bg-rose-500/10 border border-rose-500/30 p-3">
+              <span className="mt-0.5 h-2 w-2 flex-shrink-0 rounded-full bg-rose-400" />
+              <p className="text-xs text-rose-200">{geoError}</p>
             </div>
           )}
-        </>
+          {nearbyOnly && !proximityOrigin && (
+            <div className="flex items-start gap-2 rounded-lg bg-amber-500/10 border border-amber-500/30 p-3">
+              <span className="mt-0.5 h-2 w-2 flex-shrink-0 rounded-full bg-amber-400" />
+              <p className="text-xs text-amber-200">
+                Gib einen Ort ein oder aktiviere deinen Standort.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
+  return (
+    <>
+      {/* Active Filters & Filter Button (Mobile) */}
+      <div className="space-y-4">
+        {/* Active Filter Chips */}
+        {hasFilters && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium text-white/60">Aktiv:</span>
+            {focusFilter && (
+              <button
+                onClick={() => setFocusFilter(null)}
+                className="group inline-flex min-h-[36px] items-center gap-2 rounded-full border border-primary-500/40 bg-primary-600/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-primary-600/50 hover:scale-105 active:scale-95"
+              >
+                {focusFilter}
+                <X className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+              </button>
+            )}
+            {formatFilter && (
+              <button
+                onClick={() => setFormatFilter(null)}
+                className="group inline-flex min-h-[36px] items-center gap-2 rounded-full border border-primary-500/40 bg-primary-600/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-primary-600/50 hover:scale-105 active:scale-95"
+              >
+                {formatOptions.find((o) => o.id === formatFilter)?.label}
+                <X className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+              </button>
+            )}
+            {locationFilter.trim() && (
+              <button
+                onClick={() => setLocationFilter('')}
+                className="group inline-flex min-h-[36px] items-center gap-2 rounded-full border border-primary-500/40 bg-primary-600/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-primary-600/50 hover:scale-105 active:scale-95"
+              >
+                {locationFilter.trim()}
+                <X className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+              </button>
+            )}
+            {nearbyOnly && (
+              <button
+                onClick={() => setNearbyOnly(false)}
+                className="group inline-flex min-h-[36px] items-center gap-2 rounded-full border border-primary-500/40 bg-primary-600/30 px-3 py-1.5 text-xs font-semibold text-white transition-all hover:bg-primary-600/50 hover:scale-105 active:scale-95"
+              >
+                {maxDistance}km Umkreis
+                <X className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+              </button>
+            )}
+            <button
+              onClick={handleResetFilters}
+              className="min-h-[36px] text-xs font-medium text-white/60 hover:text-white underline underline-offset-2 transition-colors"
+            >
+              Alle zurücksetzen
+            </button>
+          </div>
+        )}
+
+        {/* Filter Section - Mobile: Button + Modal, Desktop: Inline */}
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsFilterModalOpen(true)}
+            className="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur transition-all hover:bg-white/15 hover:scale-105 active:scale-95"
+          >
+            <SlidersHorizontal className="h-5 w-5" />
+            Filter anpassen
+            {hasFilters && (
+              <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-500 text-xs font-bold">
+                {activeFilterLabels.length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Desktop Inline Filters */}
+        <div className="hidden lg:block rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur">
+          <FilterContent />
+        </div>
+      </div>
+
+      {/* Mobile Filter Modal */}
+      {isFilterModalOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm cursor-default"
+            onClick={() => setIsFilterModalOpen(false)}
+            aria-label="Schließen"
+            tabIndex={-1}
+          />
+
+          {/* Slide-over Panel */}
+          <div className="absolute inset-y-0 right-0 w-full max-w-md bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl">
+            <div className="flex h-full flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-white/10 p-4">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="h-5 w-5 text-primary-400" />
+                  <h2 className="text-lg font-semibold text-white">Filter</h2>
+                </div>
+                <button
+                  onClick={() => setIsFilterModalOpen(false)}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-all hover:bg-white/10 hover:text-white hover:scale-110 active:scale-95"
+                  aria-label="Schließen"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Content - Scrollable */}
+              <div className="flex-1 overflow-y-auto p-4">
+                <FilterContent />
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-white/10 p-4">
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleResetFilters}
+                    variant="outline"
+                    className="flex-1 min-h-[48px] rounded-xl border-white/30 text-white hover:bg-white/10"
+                  >
+                    Zurücksetzen
+                  </Button>
+                  <Button
+                    onClick={() => setIsFilterModalOpen(false)}
+                    className="flex-1 min-h-[48px] rounded-xl bg-primary-600 text-white hover:bg-primary-500"
+                  >
+                    Anzeigen ({totalResults})
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
+
+      {/* Results */}
+      <div className="mt-8">
+        {totalResults === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur">
+            <p className="text-sm text-white/70">
+              Keine Profile gefunden. Passe die Filter an oder kontaktiere das Care-Team für eine individuelle Empfehlung.
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Results Count */}
+            <div className="mb-6 flex items-center justify-between">
+              <p className="text-sm text-white/70">
+                <span className="font-semibold text-white">{totalResults}</span> {totalResults === 1 ? 'Profil gefunden' : 'Profile gefunden'}
+              </p>
+            </div>
+
+            {/* Therapist Grid */}
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3 2xl:grid-cols-4">
+              {visibleTherapists.map((therapist) => (
+                <DirectoryCard key={therapist.id} therapist={therapist} />
+              ))}
+            </div>
+
+            {/* Load More */}
+            {canLoadMore && (
+              <div className="mt-8 flex justify-center">
+                <Button
+                  type="button"
+                  onClick={() =>
+                    setVisibleCount((current) => Math.min(current + LOAD_MORE_INCREMENT, totalResults))
+                  }
+                  className="min-h-[48px] rounded-2xl border border-white/30 bg-white/10 px-8 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur transition-all hover:bg-white/15 hover:scale-105 active:scale-95"
+                >
+                  Mehr laden
+                  <span className="ml-2 text-white/60">
+                    ({totalResults - visibleCount} weitere)
+                  </span>
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </>
   )
 }
 
 function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
-  const highlightChips = [
-    therapist.focus[0],
-    therapist.focus[1],
-    therapist.availability,
-    therapist.languages.slice(0, 2).join(', '),
-    typeof therapist.distanceInKm === 'number' ? `~${Math.max(1, Math.round(therapist.distanceInKm))} km entfernt` : null,
-  ].filter(Boolean) as string[]
   const gradientClass = getGradientClass(therapist.id)
+  const primaryFocus = therapist.focus.slice(0, 3)
+  const distance = typeof therapist.distanceInKm === 'number'
+    ? `${Math.max(1, Math.round(therapist.distanceInKm))} km`
+    : null
 
   return (
-    <Link href={`/therapists/${therapist.id}`} prefetch={false}>
-      <article className="group flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl sm:p-6">
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-inner sm:h-28 sm:w-28 md:h-32 md:w-32">
-            {therapist.image ? (
-              <Image
-                src={therapist.image}
-                alt={`Portrait von ${therapist.name}`}
-                width={320}
-                height={320}
-                className="h-full w-full object-cover object-center brightness-[0.95] contrast-[1.05]"
-                sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
-                quality={90}
-              />
-            ) : (
-              <div
-                className={cn(
-                  'relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl',
-                  gradientClass,
-                  'bg-gradient-to-br',
-                )}
-              >
-                {/* Enhanced decorative background pattern */}
-                <div className="absolute inset-0 opacity-20" aria-hidden>
-                  <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-white blur-3xl" />
-                  <div className="absolute bottom-0 right-0 h-32 w-32 rounded-full bg-white blur-3xl" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-20 w-20 rounded-full bg-white/50 blur-2xl" />
-                </div>
-                {/* Professional initials display */}
-                <div className="relative flex flex-col items-center justify-center">
-                  <span className="text-3xl sm:text-4xl font-bold text-white mb-0.5">
-                    {therapist.initials}
-                  </span>
-                  <span className="text-[9px] sm:text-[10px] text-white/70 font-medium uppercase tracking-widest">
-                    Therapeut:in
-                  </span>
-                </div>
-              </div>
-            )}
-            <span
+    <Link href={`/therapists/${therapist.id}`} prefetch={false} className="group">
+      <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 sm:rounded-3xl">
+        {/* Image Section */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-neutral-900 to-black sm:aspect-[4/3]">
+          {therapist.image ? (
+            <Image
+              src={therapist.image}
+              alt={`Portrait von ${therapist.name}`}
+              fill
+              className="object-cover object-center brightness-[0.95] contrast-[1.05] transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
+              quality={85}
+            />
+          ) : (
+            <div
               className={cn(
-                'absolute left-3 top-3 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-wide',
-                therapist.status === 'VERIFIED' ? 'border-emerald-400/50 bg-emerald-400/20 text-emerald-200' :
-                therapist.status === 'PENDING' ? 'border-amber-400/50 bg-amber-400/20 text-amber-200' :
-                'border-red-400/50 bg-red-400/20 text-red-200',
+                'relative flex h-full w-full items-center justify-center',
+                gradientClass,
+                'bg-gradient-to-br',
               )}
             >
-              <ShieldCheck className="h-3 w-3" aria-hidden />
-              {statusLabel[therapist.status]}
-            </span>
-          </div>
-
-          <div className="flex-1 space-y-3 text-center sm:text-left">
-            <header className="space-y-1">
-              <h3 className="text-lg font-semibold text-white sm:text-xl">{therapist.name}</h3>
-              <p className="text-sm text-white/70">{therapist.title}</p>
-            </header>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-white/70 sm:justify-start">
-            <span className="inline-flex items-center gap-1 rounded-full border border-white/20 px-3 py-1 text-white/70">
-              <Sparkles className="h-3.5 w-3.5 text-primary-400" aria-hidden />
-              {therapist.experience}
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-2 text-sm text-white/70 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-            <span className="inline-flex items-center justify-center gap-2 text-white sm:justify-start">
-              <MapPin className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
-              <span className="truncate">{therapist.location}</span>
-            </span>
-            <span className="hidden sm:inline text-white/40" aria-hidden>•</span>
-            <span className="inline-flex items-center justify-center gap-2 sm:justify-start">
-              <Clock className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
-              <span className="truncate">{therapist.availability}</span>
-            </span>
-            {typeof therapist.distanceInKm === 'number' && (
-              <>
-                <span className="hidden sm:inline text-white/40" aria-hidden>•</span>
-                <span className="inline-flex items-center justify-center gap-2 sm:justify-start">
-                  <LocateFixed className="h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
-                  <span className="truncate">
-                    ~{Math.max(1, Math.round(therapist.distanceInKm))} km entfernt
-                  </span>
+              {/* Decorative background */}
+              <div className="absolute inset-0 opacity-20" aria-hidden>
+                <div className="absolute -left-10 -top-10 h-32 w-32 rounded-full bg-white blur-3xl" />
+                <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-24 w-24 rounded-full bg-white/50 blur-2xl" />
+              </div>
+              {/* Initials */}
+              <div className="relative flex flex-col items-center justify-center">
+                <span className="text-5xl font-bold text-white sm:text-6xl md:text-7xl">
+                  {therapist.initials}
                 </span>
-              </>
-            )}
-          </div>
-
-          {highlightChips.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-              {highlightChips.map((chip) => (
-                <span
-                  key={chip}
-                  className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-white/70"
-                >
-                  {chip}
+                <span className="mt-1 text-xs font-medium uppercase tracking-wider text-white/70 sm:text-sm">
+                  Therapeut:in
                 </span>
-              ))}
+              </div>
             </div>
           )}
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sm text-white/70 sm:p-4">
-            <p className="font-medium text-white">Therapieansatz</p>
-            <p className="mt-1 leading-relaxed">{therapist.approach}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3 border-t border-white/10 pt-4 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          {therapist.formatTags.map((tag) => (
-            <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-primary-400/20 px-3 py-1 text-xs font-semibold text-primary-300">
-              <CheckCircle className="h-3 w-3" aria-hidden />
-              {formatOptions.find((option) => option.id === tag)?.label ?? tag}
+          {/* Status Badge - Top Left */}
+          <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+            <span
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide shadow-lg backdrop-blur-sm sm:px-3 sm:py-2',
+                therapist.status === 'VERIFIED'
+                  ? 'border-emerald-400/60 bg-emerald-500/30 text-emerald-100'
+                  : therapist.status === 'PENDING'
+                  ? 'border-amber-400/60 bg-amber-500/30 text-amber-100'
+                  : 'border-red-400/60 bg-red-500/30 text-red-100',
+              )}
+            >
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
+              <span className="hidden sm:inline">{statusLabel[therapist.status]}</span>
             </span>
-          ))}
+          </div>
+
+          {/* Distance Badge - Top Right */}
+          {distance && (
+            <div className="absolute right-3 top-3 sm:right-4 sm:top-4">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary-400/60 bg-primary-500/30 px-2.5 py-1.5 text-xs font-semibold text-primary-100 shadow-lg backdrop-blur-sm sm:px-3 sm:py-2">
+                <LocateFixed className="h-3.5 w-3.5" aria-hidden />
+                {distance}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-          {FEATURES.ASSESSMENT && (
-            <Button asChild size="sm" variant="outline" onClick={(e: MouseEvent) => e.stopPropagation()} className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto">
-              <Link href="/triage" prefetch={false}>
-                Passende Empfehlung
+
+        {/* Content Section */}
+        <div className="flex flex-1 flex-col gap-4 p-4 sm:gap-5 sm:p-5 lg:p-6">
+          {/* Header */}
+          <div className="space-y-2">
+            <h3 className="line-clamp-2 text-lg font-bold text-white sm:text-xl lg:text-2xl">
+              {therapist.name}
+            </h3>
+            <p className="line-clamp-1 text-sm text-white/70 sm:text-base">
+              {therapist.title}
+            </p>
+          </div>
+
+          {/* Experience Badge */}
+          <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-3 py-2 text-sm font-medium text-white/90">
+            <Sparkles className="h-4 w-4 text-primary-400" aria-hidden />
+            {therapist.experience}
+          </div>
+
+          {/* Quick Info */}
+          <div className="flex flex-col gap-2.5 text-sm">
+            <div className="flex items-start gap-2.5">
+              <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
+              <span className="line-clamp-2 text-white/80">{therapist.location}</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <Clock className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
+              <span className="line-clamp-1 text-white/80">{therapist.availability}</span>
+            </div>
+          </div>
+
+          {/* Focus Areas */}
+          {primaryFocus.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary-300">
+                Schwerpunkte
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {primaryFocus.map((focus) => (
+                  <span
+                    key={focus}
+                    className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-white/80"
+                  >
+                    {focus}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Approach */}
+          <div className="flex-1 space-y-2 rounded-xl border border-white/10 bg-white/5 p-3 sm:p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary-300">
+              Therapieansatz
+            </p>
+            <p className="line-clamp-3 text-sm leading-relaxed text-white/80">
+              {therapist.approach}
+            </p>
+          </div>
+
+          {/* Format Tags */}
+          <div className="flex flex-wrap gap-2">
+            {therapist.formatTags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary-500/20 px-3 py-1.5 text-xs font-semibold text-primary-300"
+              >
+                <CheckCircle className="h-3.5 w-3.5" aria-hidden />
+                {formatOptions.find((option) => option.id === tag)?.label ?? tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-2 border-t border-white/10 pt-4 sm:flex-row sm:pt-5">
+            {FEATURES.ASSESSMENT && (
+              <Button
+                asChild
+                onClick={(e: MouseEvent) => e.stopPropagation()}
+                className="flex-1 min-h-[44px] rounded-xl border border-white/30 bg-white/10 text-sm font-semibold text-white transition-all hover:bg-white/15 hover:scale-105 active:scale-95"
+              >
+                <Link href="/triage" prefetch={false}>
+                  Empfehlung
+                </Link>
+              </Button>
+            )}
+            <Button
+              asChild
+              onClick={(e: MouseEvent) => e.stopPropagation()}
+              className="flex-1 min-h-[44px] rounded-xl bg-primary-600 text-sm font-semibold text-white transition-all hover:bg-primary-500 hover:scale-105 active:scale-95"
+            >
+              <Link href="/contact" prefetch={false}>
+                Kontaktieren
               </Link>
             </Button>
-          )}
-          <Button asChild size="sm" variant="ghost" onClick={(e: MouseEvent) => e.stopPropagation()} className="w-full text-white hover:bg-white/10 sm:w-auto">
-            <Link href="/contact" prefetch={false}>
-              Kontakt
-            </Link>
-          </Button>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
     </Link>
   )
 }

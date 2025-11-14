@@ -394,6 +394,12 @@ export const teamContent = {
       focus: 'Technische Leitung & Plattformentwicklung',
       image: '/images/team/philippoppel.jpeg',
     },
+    {
+      name: 'Hannes Freudenthaler',
+      role: 'Unternehmer & Marketing-Spezialist',
+      focus: 'Skaliert Marken & Webpräsenzen – Growth, Content & Sichtbarkeit für die Plattform',
+      image: '/images/team/hannesfreudenthaler.jpeg',
+    },
   ],
   ctas: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/findmytherapy' },
