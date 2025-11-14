@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react'
@@ -45,6 +45,11 @@ export type TherapistDirectoryProps = {
 export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
   const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(therapists)
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
+
+  // Reset visible count when filtered results change
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT)
+  }, [filteredTherapists.length])
 
   const visibleTherapists = filteredTherapists.slice(0, visibleCount)
   const hasMore = visibleCount < filteredTherapists.length
