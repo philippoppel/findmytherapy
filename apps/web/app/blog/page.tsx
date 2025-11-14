@@ -151,9 +151,10 @@ export default function BlogPage() {
   const essentialArticles = restPosts.slice(0, 6)
 
   return (
-    <div className="min-h-screen bg-slate-950/5 pb-16 pt-10 sm:pb-24 sm:pt-16">
-      <div className="mx-auto flex max-w-6xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
-        <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 px-6 py-14 text-white shadow-2xl shadow-primary-950/40 sm:px-12 sm:py-20">
+    <div className="marketing-theme bg-surface text-default">
+      <div className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
+        <div className="mx-auto flex max-w-6xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
+          <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 px-6 py-14 text-white shadow-2xl shadow-primary-950/40 sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-56 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
           <div className="pointer-events-none absolute -right-16 top-10 hidden h-40 w-40 rounded-full bg-white/15 blur-2xl sm:block" />
 
@@ -225,7 +226,7 @@ export default function BlogPage() {
               aria-hidden
             />
             <div className="relative z-10 grid gap-6 bg-gradient-to-br from-white via-white/90 to-primary-50 p-8 sm:p-10">
-              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+              <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
                 <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-primary-800">
                   <Tag className="h-4 w-4" aria-hidden />
                   {featuredPost.category}
@@ -240,14 +241,14 @@ export default function BlogPage() {
                 </span>
               </div>
               <div className="space-y-4">
-                <h3 className="text-pretty text-3xl font-semibold text-gray-900 sm:text-4xl">
+                <h3 className="text-pretty text-3xl font-semibold text-neutral-900 sm:text-4xl">
                   <Link href={`/blog/${featuredPost.slug}`} className="transition hover:text-primary-700">
                     {featuredPost.title}
                   </Link>
                 </h3>
-                <p className="text-base leading-relaxed text-gray-700">{featuredPost.excerpt}</p>
+                <p className="text-base leading-relaxed text-neutral-700">{featuredPost.excerpt}</p>
               </div>
-              <div className="flex flex-col gap-5 rounded-2xl border border-primary-100/70 bg-white/80 p-5 text-sm text-gray-700 md:flex-row md:items-start md:gap-6">
+              <div className="flex flex-col gap-5 rounded-2xl border border-primary-100/70 bg-white/80 p-5 text-sm text-neutral-700 md:flex-row md:items-start md:gap-6">
                 <div className="flex-1 space-y-3">
                   <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">
                     Was du mitnimmst
@@ -264,8 +265,8 @@ export default function BlogPage() {
                 <div className="flex flex-1 flex-col gap-3 rounded-2xl bg-primary-900/5 p-4">
                   <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">Autor:in</span>
                   <div>
-                    <p className="text-base font-semibold text-gray-900">{featuredPost.author}</p>
-                    <p className="text-sm text-gray-600">FindMyTherapy Redaktion</p>
+                    <p className="text-base font-semibold text-neutral-900">{featuredPost.author}</p>
+                    <p className="text-sm text-neutral-600">FindMyTherapy Redaktion</p>
                   </div>
                 </div>
               </div>
@@ -291,7 +292,7 @@ export default function BlogPage() {
           <div className="space-y-6 rounded-3xl border border-primary-100/60 bg-white p-8 shadow-xl shadow-primary-900/5">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Wofür wir stehen</p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-lg font-semibold text-neutral-900">
                 Journalistisches Storytelling trifft medizinische Prüfung und Produkttransparenz.
               </p>
             </div>
@@ -299,12 +300,12 @@ export default function BlogPage() {
               {topicHighlights.map((topic) => (
                 <div key={topic.title} className="rounded-2xl border border-primary-100/60 bg-primary-50/70 p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">{topic.tag}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-gray-900">{topic.title}</h3>
-                  <p className="mt-1 text-sm text-gray-600">{topic.description}</p>
+                  <h3 className="mt-2 text-lg font-semibold text-neutral-900">{topic.title}</h3>
+                  <p className="mt-1 text-sm text-neutral-600">{topic.description}</p>
                 </div>
               ))}
             </div>
-            <div className="rounded-2xl border border-dashed border-primary-200/80 bg-primary-50/30 p-5 text-sm text-gray-700">
+            <div className="rounded-2xl border border-dashed border-primary-200/80 bg-primary-50/30 p-5 text-sm text-neutral-700">
               Du möchtest Updates automatisch erhalten? <br />
               <Link href="/contact" className="font-semibold text-primary-900">
                 Kontakt aufnehmen →
@@ -317,7 +318,7 @@ export default function BlogPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Themenbereiche</p>
-              <h2 id="category-navigation" className="text-2xl font-semibold text-gray-900 sm:text-3xl">
+              <h2 id="category-navigation" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
                 Navigiere durch unsere Fokusfelder
               </h2>
             </div>
@@ -347,7 +348,7 @@ export default function BlogPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Aktuell</p>
-              <h2 id="latest-articles" className="text-2xl font-semibold text-gray-900 sm:text-3xl">
+              <h2 id="latest-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
                 Essentielle Artikel für einen schnellen Überblick
               </h2>
             </div>
@@ -360,10 +361,10 @@ export default function BlogPage() {
             {essentialArticles.map((post) => (
               <article
                 key={post.slug}
-                className="group flex h-full flex-col justify-between rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/10 transition hover:-translate-y-1 hover:shadow-xl"
+                className="group flex h-full flex-col justify-between rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/10 transition hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="space-y-4">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-neutral-500">
                     <span className="rounded-full bg-primary-50 px-3 py-1 text-primary-900">{post.category}</span>
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" aria-hidden />
@@ -374,14 +375,14 @@ export default function BlogPage() {
                       {post.readingTime}
                     </span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">
+                  <h3 className="text-xl font-semibold text-neutral-900">
                     <Link href={`/blog/${post.slug}`} className="transition group-hover:text-primary-700">
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="text-sm leading-relaxed text-gray-600">{post.excerpt}</p>
+                  <p className="text-sm leading-relaxed text-neutral-600">{post.excerpt}</p>
                 </div>
-                <div className="mt-6 border-t border-slate-100 pt-4">
+                <div className="mt-6 border-t border-neutral-100 pt-4">
                   <Link
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
@@ -398,7 +399,7 @@ export default function BlogPage() {
         <section aria-labelledby="category-deep-dives" className="space-y-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Deep Dives</p>
-            <h2 id="category-deep-dives" className="text-2xl font-semibold text-gray-900 sm:text-3xl">
+            <h2 id="category-deep-dives" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
               Kuration pro Themenwelt
             </h2>
           </div>
@@ -407,12 +408,12 @@ export default function BlogPage() {
               posts.length === 0 ? null : (
                 <div
                   key={category}
-                  className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5 sm:p-8"
+                  className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5 sm:p-8"
                 >
-                  <div className="flex flex-col gap-3 border-b border-slate-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-3 border-b border-neutral-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Kategorie</p>
-                      <h3 className="text-xl font-semibold text-gray-900">{category}</h3>
+                      <h3 className="text-xl font-semibold text-neutral-900">{category}</h3>
                     </div>
                     <Link
                       href={`/blog/category/${categoryToSlug(category)}`}
@@ -428,12 +429,12 @@ export default function BlogPage() {
                         <div className="text-xs font-semibold text-primary-700">
                           {dateFormatter.format(new Date(post.publishedAt))} · {post.readingTime}
                         </div>
-                        <h4 className="text-lg font-semibold text-slate-900">
+                        <h4 className="text-lg font-semibold text-neutral-900">
                           <Link href={`/blog/${post.slug}`} className="transition hover:text-primary-700">
                             {post.title}
                           </Link>
                         </h4>
-                        <p className="text-sm text-slate-600">{post.summary[0]}</p>
+                        <p className="text-sm text-neutral-600">{post.summary[0]}</p>
                         <div className="mt-auto pt-2">
                           <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-primary-900">
                             Mehr erfahren →
@@ -450,7 +451,7 @@ export default function BlogPage() {
 
         <section
           aria-labelledby="newsletter-cta"
-          className="relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-primary-900 via-primary-700 to-indigo-700 px-6 py-12 text-white shadow-2xl shadow-primary-900/40 sm:px-10"
+          className="relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-primary-900 via-primary-700 to-secondary-700 px-6 py-12 text-white shadow-2xl shadow-primary-900/40 sm:px-10"
         >
           <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-1/2 bg-[radial-gradient(circle_at_top,_#ffffff33,_transparent)] opacity-70" />
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -468,23 +469,23 @@ export default function BlogPage() {
           </div>
         </section>
 
-        <section aria-labelledby="blog-faq" className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5 sm:p-8">
+        <section aria-labelledby="blog-faq" className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">FAQ</p>
-          <h2 id="blog-faq" className="mt-2 text-2xl font-semibold text-gray-900 sm:text-3xl">
+          <h2 id="blog-faq" className="mt-2 text-2xl font-semibold text-neutral-900 sm:text-3xl">
             Häufige Fragen zum Blog
           </h2>
           <div className="mt-8 space-y-6">
             {blogFaq.map((item) => (
-              <div key={item.question} className="rounded-2xl border border-slate-100 bg-slate-50/80 p-5">
-                <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
-                <p className="mt-2 text-sm text-gray-600">{item.answer}</p>
+              <div key={item.question} className="rounded-2xl border border-neutral-100 bg-neutral-50/80 p-5">
+                <h3 className="text-lg font-semibold text-neutral-900">{item.question}</h3>
+                <p className="mt-2 text-sm text-neutral-600">{item.answer}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section aria-labelledby="seo-copy" className="space-y-4 text-sm leading-relaxed text-gray-600">
-          <h2 id="seo-copy" className="text-base font-semibold text-gray-900">
+        <section aria-labelledby="seo-copy" className="space-y-4 text-sm leading-relaxed text-neutral-600">
+          <h2 id="seo-copy" className="text-base font-semibold text-neutral-900">
             Warum der FindMyTherapy Blog relevant für SEO & Vertrauen ist
           </h2>
           <p>
@@ -511,5 +512,6 @@ export default function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
       />
     </div>
+  </div>
   )
 }

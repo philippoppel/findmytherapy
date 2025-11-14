@@ -77,23 +77,24 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-950/5 pb-16 pt-10 sm:pb-24 sm:pt-16">
-      <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
-        <nav className="text-sm text-slate-500">
+    <div className="marketing-theme bg-surface text-default">
+      <div className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
+        <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
+        <nav className="text-sm text-neutral-500">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="font-semibold text-primary-900">
                 Home
               </Link>
             </li>
-            <li className="text-slate-400">/</li>
+            <li className="text-neutral-400">/</li>
             <li>
               <Link href="/blog" className="font-semibold text-primary-900">
                 Blog
               </Link>
             </li>
-            <li className="text-slate-400">/</li>
-            <li className="font-medium text-slate-700">{categoryName}</li>
+            <li className="text-neutral-400">/</li>
+            <li className="font-medium text-neutral-700">{categoryName}</li>
           </ol>
         </nav>
 
@@ -138,7 +139,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Highlights</p>
-              <h2 id="highlighted-articles" className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+              <h2 id="highlighted-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
                 Top-Beiträge dieser Kategorie
               </h2>
             </div>
@@ -150,9 +151,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {highlightPosts.map((post) => (
               <article
                 key={post.slug}
-                className="group flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/10 transition hover:-translate-y-1 hover:shadow-xl"
+                className="group flex flex-col gap-4 rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/10 transition hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-neutral-500">
                   <span className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 text-primary-900">
                     <Tag className="h-3.5 w-3.5" aria-hidden />
                     {post.category}
@@ -167,12 +168,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   </span>
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-xl font-semibold text-slate-900">
+                  <h3 className="text-xl font-semibold text-neutral-900">
                     <Link href={`/blog/${post.slug}`} className="transition group-hover:text-primary-700">
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-slate-600">{post.excerpt}</p>
+                  <p className="text-sm text-neutral-600">{post.excerpt}</p>
                 </div>
                 <div className="mt-auto pt-3">
                   <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-primary-900">
@@ -188,7 +189,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <section aria-labelledby="more-articles" className="space-y-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Weitere Einblicke</p>
-              <h2 id="more-articles" className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+              <h2 id="more-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
                 Mehr Lesestoff aus {categoryName}
               </h2>
             </div>
@@ -196,9 +197,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               {remainingPosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm shadow-primary-900/5 transition hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-lg"
+                  className="rounded-3xl border border-neutral-200 bg-white/80 p-5 shadow-sm shadow-primary-900/5 transition hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-lg"
                 >
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
                     <span>{dateFormatter.format(new Date(post.publishedAt))}</span>
                     <span>•</span>
                     <span>{post.readingTime}</span>
@@ -210,12 +211,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   </div>
                   <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
+                      <h3 className="text-lg font-semibold text-neutral-900">
                         <Link href={`/blog/${post.slug}`} className="transition hover:text-primary-700">
                           {post.title}
                         </Link>
                       </h3>
-                      <p className="text-sm text-slate-600">{post.summary[0]}</p>
+                      <p className="text-sm text-neutral-600">{post.summary[0]}</p>
                     </div>
                     <Link href={`/blog/${post.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900">
                       Mehr erfahren
@@ -232,7 +233,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Verwandte Tags</p>
-              <h2 id="related-tags" className="text-2xl font-semibold text-slate-900 sm:text-3xl">
+              <h2 id="related-tags" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
                 Weitere Blickwinkel entdecken
               </h2>
             </div>
@@ -242,7 +243,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             </Link>
           </div>
           <div className="flex flex-wrap gap-3">
-            {relatedTags.length === 0 && <span className="text-sm text-slate-500">Noch keine Tags vorhanden.</span>}
+            {relatedTags.length === 0 && <span className="text-sm text-neutral-500">Noch keine Tags vorhanden.</span>}
             {relatedTags.map((tag) => (
               <Link
                 key={tag}
@@ -256,9 +257,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </section>
 
-        <section aria-labelledby="all-categories" className="rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-lg shadow-primary-900/5 sm:p-8">
+        <section aria-labelledby="all-categories" className="rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-lg shadow-primary-900/5 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Alle Kategorien</p>
-          <h2 id="all-categories" className="mt-2 text-2xl font-semibold text-slate-900">
+          <h2 id="all-categories" className="mt-2 text-2xl font-semibold text-neutral-900">
             Wechsel den Fokus
           </h2>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -271,7 +272,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   className={`rounded-full border px-5 py-2 text-sm font-semibold transition ${
                     slug === categorySlug
                       ? 'border-primary-300 bg-primary-50 text-primary-900'
-                      : 'border-slate-200 bg-white hover:border-primary-200 hover:text-primary-900'
+                      : 'border-neutral-200 bg-white hover:border-primary-200 hover:text-primary-900'
                   }`}
                 >
                   {category}
@@ -283,7 +284,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
         <section
           aria-labelledby="category-contact"
-          className="relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-primary-900 via-primary-700 to-indigo-700 px-6 py-10 text-white shadow-2xl shadow-primary-900/50 sm:px-10"
+          className="relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-primary-900 via-secondary-700 to-secondary-900 px-6 py-10 text-white shadow-2xl shadow-primary-900/50 sm:px-10"
         >
           <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-1/2 bg-[radial-gradient(circle_at_top,_#ffffff22,_transparent)] opacity-70" />
           <div className="relative z-10 grid gap-8 lg:grid-cols-2">
@@ -303,6 +304,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             <NewsletterForm variant="topic" className="w-full" />
           </div>
         </section>
+        </div>
       </div>
     </div>
   )

@@ -132,9 +132,10 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <article className="min-h-screen bg-slate-950/5 pb-16 pt-10 sm:pb-24 sm:pt-16">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
-        <nav className="text-sm text-slate-500">
+    <div className="marketing-theme bg-surface text-default">
+      <article className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+        <nav className="text-sm text-neutral-500">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="inline-flex items-center gap-1.5 font-semibold text-primary-900">
@@ -142,14 +143,14 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 Home
               </Link>
             </li>
-            <li className="text-slate-400">/</li>
+            <li className="text-neutral-400">/</li>
             <li>
               <Link href="/blog" className="font-semibold text-primary-900">
                 Blog
               </Link>
             </li>
-            <li className="text-slate-400">/</li>
-            <li className="font-medium text-slate-700">{post.title}</li>
+            <li className="text-neutral-400">/</li>
+            <li className="font-medium text-neutral-700">{post.title}</li>
           </ol>
         </nav>
 
@@ -161,7 +162,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           Zur Übersicht
         </Link>
 
-        <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-950 via-primary-800 to-indigo-900 px-6 py-10 text-white shadow-2xl shadow-primary-950/50 sm:px-12 sm:py-14">
+        <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-950 via-secondary-800 to-secondary-900 px-6 py-10 text-white shadow-2xl shadow-primary-950/50 sm:px-12 sm:py-14">
           {post.featuredImage && (
             <div
               className="absolute inset-0 opacity-30"
@@ -236,13 +237,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="flex-1 space-y-4">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Auf einen Blick</p>
-                    <h2 className="text-2xl font-semibold text-slate-900">Key-Takeaways</h2>
+                    <h2 className="text-2xl font-semibold text-neutral-900">Key-Takeaways</h2>
                   </div>
                   <ul className="space-y-3">
                     {post.summary.map((point) => (
                       <li key={point} className="flex items-start gap-3">
                         <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600" aria-hidden />
-                        <span className="text-base leading-relaxed text-slate-700">{point}</span>
+                        <span className="text-base leading-relaxed text-neutral-700">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -250,25 +251,25 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </section>
 
-            <section className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+            <section className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
               <TableOfContents sections={post.sections} />
             </section>
 
-            <div className="prose prose-lg prose-slate mt-4 max-w-none">
+            <div className="prose prose-lg prose-neutral mt-4 max-w-none">
               <div className="space-y-12">
                 {post.sections.map((section) => {
                   const sectionId = slugify(section.heading)
                   return (
                     <section key={section.heading} id={sectionId} className="space-y-4 scroll-mt-24">
-                      <h2 className="text-3xl font-bold text-slate-900">{section.heading}</h2>
-                      <div className="space-y-4 text-lg leading-relaxed text-slate-700">
+                      <h2 className="text-3xl font-bold text-neutral-900">{section.heading}</h2>
+                      <div className="space-y-4 text-lg leading-relaxed text-neutral-700">
                         {section.paragraphs.map((paragraph) => (
                           <p key={paragraph}>{paragraph}</p>
                         ))}
                       </div>
                       {section.list && (
-                        <ul className="space-y-2 text-lg text-slate-700">
+                        <ul className="space-y-2 text-lg text-neutral-700">
                           {section.list.map((item) => (
                             <li key={item} className="flex items-start gap-3">
                               <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
@@ -288,20 +289,20 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           <aside className="space-y-6">
-            <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+            <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Artikel-Insights</p>
-              <h3 className="mt-2 text-xl font-semibold text-slate-900">Metadaten & Tags</h3>
-              <dl className="mt-4 space-y-3 text-sm text-slate-600">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="mt-2 text-xl font-semibold text-neutral-900">Metadaten & Tags</h3>
+              <dl className="mt-4 space-y-3 text-sm text-neutral-600">
+                <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                   <dt>Veröffentlicht</dt>
                   <dd className="font-semibold">{dateFormatter.format(publishedDate)}</dd>
                 </div>
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                   <dt>Lesedauer</dt>
                   <dd className="font-semibold">{post.readingTime}</dd>
                 </div>
                 {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                     <dt>Zuletzt aktualisiert</dt>
                     <dd className="font-semibold">{dateFormatter.format(updatedDate)}</dd>
                   </div>
@@ -321,12 +322,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                     </Link>
                   ))}
                   {(!post.tags || post.tags.length === 0) && (
-                    <span className="text-sm text-slate-400">Noch keine Tags.</span>
+                    <span className="text-sm text-neutral-400">Noch keine Tags.</span>
                   )}
                 </div>
               </div>
-              <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-                <p className="text-sm font-semibold text-slate-900">Teilen</p>
+              <div className="mt-4 rounded-2xl border border-neutral-100 bg-neutral-50/80 p-4">
+                <p className="text-sm font-semibold text-neutral-900">Teilen</p>
                 <SocialShare url={postUrl} title={post.title} description={post.excerpt} className="mt-3" />
               </div>
             </div>
@@ -344,22 +345,22 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </section>
 
-            <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
-              <h3 className="text-lg font-semibold text-slate-900">Mehr aus {post.category}</h3>
-              <p className="mt-2 text-sm text-slate-600">
+            <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+              <h3 className="text-lg font-semibold text-neutral-900">Mehr aus {post.category}</h3>
+              <p className="mt-2 text-sm text-neutral-600">
                 Entdecke weitere Artikel aus dem Bereich {post.category} oder folge den Tags, um Updates zu erhalten.
               </p>
               <div className="mt-4 flex flex-col gap-3">
                 <Link
                   href={`/blog/category/${slugify(post.category)}`}
-                  className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
+                  className="inline-flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
                 >
                   Alle Artikel dieser Kategorie
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
+                  className="inline-flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
                 >
                   Persönliches Gespräch
                   <ArrowRight className="h-4 w-4" aria-hidden />
@@ -372,5 +373,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
     </article>
+  </div>
   )
 }
