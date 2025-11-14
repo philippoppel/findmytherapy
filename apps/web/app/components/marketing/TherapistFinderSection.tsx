@@ -1,6 +1,6 @@
 import { Sparkles, Search, Users } from 'lucide-react'
 
-import { TherapistDirectory } from '../../therapists/TherapistDirectory'
+import { TherapistDirectory } from '../../therapists/TherapistDirectorySimplified'
 import { getTherapistCards } from '../../therapists/getTherapistCards'
 import type { TherapistCard } from '../../therapists/types'
 import { Reveal } from './Reveal'

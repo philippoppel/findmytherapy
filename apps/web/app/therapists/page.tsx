@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Compass, Sparkles } from 'lucide-react'
 
-import { TherapistDirectory } from './TherapistDirectory'
+import { TherapistDirectory } from './TherapistDirectorySimplified'
 import { FEATURES } from '@/lib/features'
 import { getTherapistCards } from './getTherapistCards'
 

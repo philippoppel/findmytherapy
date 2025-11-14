@@ -3,18 +3,53 @@ export type Coordinates = {
   lng: number
 }
 
+export type LocationValidationResult =
+  | { valid: true; coordinates: Coordinates; normalized: string }
+  | { valid: false; error: string; suggestions: string[] }
+
 export const PLACEHOLDER_IMAGE_KEYWORDS = ['/images/therapists/therapy-']
 
 const CITY_KEY_SYNONYMS: Record<string, string> = {
+  // Wien variants
   vienna: 'wien',
+  vien: 'wien',
+  wein: 'wien',
+  wienn: 'wien',
+
+  // St. Pölten variants
   'sankt polten': 'st polten',
   'sankt-poelten': 'st polten',
   'st. polten': 'st polten',
   'st polten': 'st polten',
   'st polten land': 'st polten',
+  'st poelten': 'st polten',
+  'sankt polten': 'st polten',
+  'stpolten': 'st polten',
+
+  // Steyr variants
   'steyr land': 'steyr',
+  'steyr-land': 'steyr',
+
+  // Innsbruck variants
   innsbruckstadt: 'innsbruck',
+  ibk: 'innsbruck',
+
+  // Klosterneuburg variants
   'klosterneuburg': 'klosterneuburg',
+  klosternbg: 'klosterneuburg',
+
+  // Wiener Neustadt variants
+  'wr neustadt': 'wiener neustadt',
+  'wr. neustadt': 'wiener neustadt',
+  'wienerneustadt': 'wiener neustadt',
+
+  // Mödling variants
+  moedling: 'modling',
+  mödling: 'modling',
+
+  // Bruck variants
+  'bruck': 'bruck an der mur',
+  'bruck/mur': 'bruck an der mur',
 }
 
 const CITY_COORDINATES: Record<string, Coordinates> = {
@@ -178,4 +213,106 @@ export function buildLocationTokens(city?: string | null, locationLabel?: string
   }
 
   return Array.from(tokens).filter(Boolean)
+}
+
+/**
+ * Calculates Levenshtein distance for fuzzy matching
+ */
+function levenshteinDistance(a: string, b: string): number {
+  const matrix: number[][] = []
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i]
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1]
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1,     // deletion
+        )
+      }
+    }
+  }
+
+  return matrix[b.length][a.length]
+}
+
+/**
+ * Finds similar city names using fuzzy matching
+ * @param input - User input that wasn't recognized
+ * @param maxSuggestions - Maximum number of suggestions to return
+ * @returns Array of similar city names
+ */
+export function findSimilarCities(input: string, maxSuggestions: number = 3): string[] {
+  const normalized = normalizeLocationValue(input)
+  if (!normalized || normalized.length < 2) {
+    return []
+  }
+
+  // Get all available city names
+  const allCities = Object.keys(CITY_COORDINATES).filter(city => city !== 'online')
+
+  // Calculate distances and sort
+  const distances = allCities.map(city => ({
+    city,
+    distance: levenshteinDistance(normalized, city),
+    startsWithSame: city.startsWith(normalized.charAt(0)),
+  }))
+
+  // Sort by: 1) distance, 2) same starting letter
+  distances.sort((a, b) => {
+    if (a.distance !== b.distance) return a.distance - b.distance
+    if (a.startsWithSame !== b.startsWithSame) return a.startsWithSame ? -1 : 1
+    return 0
+  })
+
+  // Return top suggestions with reasonable distance
+  return distances
+    .filter(d => d.distance <= 3) // Max 3 character differences
+    .slice(0, maxSuggestions)
+    .map(d => d.city)
+}
+
+/**
+ * Validates location input and returns coordinates or error with suggestions
+ * @param input - User input (city name or postal code)
+ * @returns Validation result with coordinates or error + suggestions
+ */
+export function validateLocationInput(input?: string | null): LocationValidationResult {
+  if (!input || !input.trim()) {
+    return {
+      valid: false,
+      error: 'Bitte gib eine Stadt oder Postleitzahl ein',
+      suggestions: [],
+    }
+  }
+
+  const normalized = normalizeLocationValue(input)
+  const coordinates = resolveCoordinatesFromSearch(input)
+
+  if (coordinates) {
+    return {
+      valid: true,
+      coordinates,
+      normalized,
+    }
+  }
+
+  // Location not found - provide suggestions
+  const suggestions = findSimilarCities(input)
+
+  return {
+    valid: false,
+    error: 'Standort nicht erkannt',
+    suggestions,
+  }
 }
