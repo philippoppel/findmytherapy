@@ -54,12 +54,16 @@ export function LocationInput({
       setLocationError('')
       setSuggestions([])
       onCoordinatesChange(result.coordinates)
+      // Auto-enable nearby filter when valid location is entered
+      if (!nearbyOnly) {
+        onNearbyOnlyChange(true)
+      }
     } else {
       setLocationError(result.error)
       setSuggestions(result.suggestions)
       onCoordinatesChange(null)
     }
-  }, [debouncedValue, onCoordinatesChange])
+  }, [debouncedValue, onCoordinatesChange, nearbyOnly, onNearbyOnlyChange])
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
@@ -154,14 +158,14 @@ export function LocationInput({
       </div>
 
       {/* Location Error + Suggestions */}
-      {locationError && nearbyOnly && (
-        <div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 p-3">
-          <p className="text-xs text-red-200" id="location-error">
+      {locationError && value.trim() && (
+        <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
+          <p className="text-xs text-amber-200" id="location-error">
             <span className="font-semibold">⚠️ {locationError}</span>
           </p>
           {suggestions.length > 0 && (
             <div className="mt-2">
-              <p className="mb-1.5 text-xs text-red-200/80">Meintest du:</p>
+              <p className="mb-1.5 text-xs text-amber-200/80">Meintest du:</p>
               <div className="flex flex-wrap gap-1.5">
                 {suggestions.map((suggestion) => (
                   <button
@@ -175,6 +179,11 @@ export function LocationInput({
                 ))}
               </div>
             </div>
+          )}
+          {!nearbyOnly && (
+            <p className="mt-2 text-xs text-amber-200/70">
+              💡 Aktiviere "Nur in meiner Nähe" um nach Standort zu filtern
+            </p>
           )}
         </div>
       )}
