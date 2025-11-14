@@ -4,6 +4,8 @@ import { MarketingHero } from '../components/marketing/MarketingHero'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
 import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
+import { AboutSection } from '../components/marketing/AboutSection'
+import { FeaturedTherapistsSection } from '../components/marketing/FeaturedTherapistsSection'
 import { FEATURES } from '@/lib/features'
 
 // Force dynamic rendering to prevent database access during build
@@ -181,6 +183,12 @@ export default function HomePage() {
 
         {/* Two Pillar Section - Knowledge Hub & Therapist SEO Showcase */}
         <TwoPillarSection />
+
+        {/* About Section - Who we are & Trust */}
+        <AboutSection />
+
+        {/* Featured Therapists Section */}
+        <FeaturedTherapistsSection />
 
         {/* FAQ Section */}
         <div className="px-4 sm:px-6 lg:px-8">

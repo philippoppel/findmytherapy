@@ -410,34 +410,34 @@ export const partnerLogos = [
 
 export const faqItems = [
   {
-    question: 'Wie funktioniert die Ampel-Triage?',
+    question: 'Was kostet FindMyTherapy?',
     answer:
-      'Wir kombinieren validierte Fragebögen mit weiteren Kontextfragen. Aus den Antworten ergibt sich eine Ampel-Einschätzung: Grün (Selbsthilfe & Kurse), Gelb (Therapieempfehlung) oder Rot (Krisenhinweise). Jede Stufe enthält konkrete nächste Schritte.',
+      'Die Ersteinschätzung, unser Blog und Kurs-Schnuppermodule sind kostenlos. Kosten entstehen nur, wenn du eine Therapie buchst oder einen Kurs kaufst – die Honorare werden transparent pro Therapeut:in bzw. Kurs angezeigt und direkt mit ihnen abgerechnet. Therapeut:innen sprechen ihr Abo nach der Verifizierung mit uns ab und zahlen erst, wenn ihre Microsite live ist.',
   },
   {
-    question: 'Sind meine Angaben sicher?',
+    question: 'Wie läuft die Ersteinschätzung ab und was bekomme ich danach?',
     answer:
-      'Ja. Alle Daten werden verschlüsselt auf Servern in der EU gespeichert. Therapeut:innen sehen deine Triage-Ergebnisse nur, wenn du sie aktiv freigibst. Für Notfälle gilt: Wir zeigen dir Nummern und Ressourcen, ohne Daten weiterzuleiten.',
+      'Du beantwortest validierte PHQ-9/GAD-7-Fragen plus kurze Kontextabfragen. Daraus ergibt sich dein Ampel-Ergebnis: Grün (Selbsthilfe-Tipps & Kurse), Gelb (Therapieempfehlung) oder Rot (Krisenhinweis mit Soforthilfe). Du erhältst sofort konkrete Handlungsempfehlungen und kannst dein Ergebnis als PDF speichern oder mit einer Therapeut:in teilen.',
   },
   {
-    question: 'Warum sollte ich mich als Therapeut:in auf FindMyTherapy registrieren?',
+    question: 'Wie schnell komme ich zu einer passenden Therapeut:in?',
     answer:
-      'Du erhältst vier einzigartige Vorteile: (1) Erstgespräch-Vorberichte mit validierten PHQ-9/GAD-7 Daten VOR dem ersten Termin – für bessere Vorbereitung und höhere Match-Qualität. (2) Eine automatische, für Suchmaschinen optimierte Praxis-Webseite (findmytherapy.com/t/[dein-name]) – ohne Kosten und Wartungsaufwand. (3) Dashboard mit Anfragen-Verwaltung, Statistiken und Termin-Übersicht. (4) Kurse erstellen & monetarisieren – baue Zusatzeinkommen mit therapeutisch fundierten Online-Programmen auf. Nach Verifizierung verwaltest du Verfügbarkeit, Angebote und Kurse selbstständig.',
+      'Unsere Profile zeigen nur verifizierte Therapeut:innen mit echten Kapazitäten. Du filterst nach Thema, Standort, Versicherungsstatus, Format (online/vor Ort) und buchst direkt oder sendest eine Anfrage. Viele Termine sind innerhalb weniger Tage verfügbar – unser Support hilft dir bei Fragen zur Suche.',
   },
   {
-    question: 'Kann ich FindMyTherapy auch im Team nutzen?',
+    question: 'Sind meine Angaben sicher und wer sieht sie?',
     answer:
-      'Jede:r Therapeut:in hat ein eigenes Dashboard für ihre/seine Praxis. Für erweiterte Team-Funktionen wie gemeinsame Dashboards kontaktiere uns gerne – wir arbeiten an Lösungen für Praxisgemeinschaften und Organisationen.',
+      'Ja. Alle Daten werden verschlüsselt und DSGVO-konform auf Servern in der EU gespeichert. Du entscheidest, ob und mit wem du deine Ergebnisse teilst. Therapeut:innen sehen deine Ersteinschätzung nur, wenn du sie freigibst; ansonsten bleibt alles privat.',
   },
   {
-    question: 'Können Therapeut:innen eigene Kurse anbieten und damit Geld verdienen?',
+    question: 'Ich brauche sofort Hilfe – kann FindMyTherapy unterstützen?',
     answer:
-      'Ja! Therapeut:innen können therapeutisch fundierte Online-Kurse und Programme erstellen, die entweder ihren eigenen Klient:innen oder allen Nutzer:innen auf der Plattform zur Verfügung stehen. Die Plattform bietet Kursverwaltung und Qualitätssicherung. So kannst du Zusatzeinkommen aufbauen und dein Expertenwissen skalieren.',
+      'Bei akuter Krise ersetze dich FindMyTherapy nicht den Notruf. In der Rot-Stufe der Ersteinschätzung zeigen wir dir sofort österreichische Krisen-Hotlines und medizinische Sofortkontakte. Parallel kannst du passende Therapeut:innen oder Online-Kurse auswählen, sobald es dir möglich ist.',
   },
   {
-    question: 'Welche Kurse stehen für Klient:innen zur Verfügung?',
+    question: 'Welche Vorteile habe ich als Therapeut:in?',
     answer:
-      'Alle Kurse werden von verifizierten Psychotherapeut:innen erstellt und sind therapeutisch fundiert. Es gibt kostenlose Schnuppermodule und kostenpflichtige Vollprogramme zu verschiedenen Themen (z.B. Angst, Depression, Stress). Die Kurse sind günstiger als klassische Therapie und ideal als Ergänzung oder Einstieg in die Selbsthilfe. Du lernst in deinem eigenen Tempo und kannst jederzeit pausieren.',
+      'Du startest mit validierten Vorberichten (PHQ-9/GAD-7) ins Erstgespräch, bekommst eine SEO-optimierte Microsite unter findmytherapy.com/t/[dein-name], verwaltest Leads im Dashboard und kannst eigene Kurse erstellen und monetarisieren. Nach Verifizierung steuerst du Verfügbarkeiten, Honorare und Kursangebote selbstständig.',
   },
 ] as const;
 
