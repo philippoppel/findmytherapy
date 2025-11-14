@@ -197,7 +197,8 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
                       />
                     ) : (
                       <PlaceholderImage
-                        name={therapist.displayName || 'T'}
+                        therapistId={therapist.id}
+                        displayName={therapist.displayName || undefined}
                         className="h-full w-full"
                       />
                     )}
