@@ -91,7 +91,6 @@ export function useTherapistFiltering({
 
   // Debounce expensive inputs
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
-  const debouncedLocation = useDebouncedValue(location, 500) // Longer for location lookup
 
   // Calculate distances (only when user location changes)
   const therapistsWithDistances = useMemo(() => {
