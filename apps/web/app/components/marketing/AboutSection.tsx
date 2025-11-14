@@ -135,14 +135,24 @@ export function AboutSection() {
                       priority={index === 0}
                     />
                   </div>
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/4 bg-gradient-to-t from-neutral-900/90 via-neutral-900/35 to-transparent" />
-                  <div className="absolute inset-x-6 bottom-6 z-10">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 top-1/3 z-[1] bg-gradient-to-t from-neutral-900/90 via-neutral-900/35 to-transparent" />
+                  <div className="absolute inset-x-4 bottom-4 z-10 rounded-2xl bg-neutral-900/70 p-4 backdrop-blur-sm shadow-lg shadow-neutral-900/30">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-white/60">
                       Founder Team
                     </p>
-                    <p className="mt-2 text-2xl font-semibold text-white">{member.name}</p>
-                    <p className="text-sm font-medium text-white/80">{member.role}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-white/75">{member.focus}</p>
+                    <p className="mt-2 text-xl font-semibold text-white">{member.name}</p>
+                    <p className="text-sm font-medium text-white/85">{member.role}</p>
+                    <p
+                      className="mt-2 text-sm leading-relaxed text-white/80"
+                      style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {member.focus}
+                    </p>
                   </div>
                 </motion.article>
               ))}
