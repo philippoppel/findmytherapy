@@ -52,7 +52,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjRmNiIvPjwvc3ZnPg=="
             />
           ) : (
-            <PlaceholderImage therapistId={therapist.id} />
+            <PlaceholderImage therapistId={therapist.id} displayName={therapist.displayName} />
           )}
 
           {/* Rating Badge */}

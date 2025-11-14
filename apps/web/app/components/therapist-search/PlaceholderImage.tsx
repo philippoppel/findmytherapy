@@ -2,124 +2,121 @@
 
 interface PlaceholderImageProps {
   therapistId: string
+  displayName?: string
   className?: string
 }
 
-// 6 abstract, calming illustration patterns for therapist placeholders
-const illustrations = [
-  // 1. Gentle Waves
+// Professional gradient color schemes for therapist avatars
+const gradients = [
   {
-    id: 'waves',
-    viewBox: '0 0 200 200',
-    gradient: ['#E0F2FE', '#BAE6FD', '#7DD3FC'], // soft sky blue
-    paths: [
-      'M0,100 Q50,80 100,100 T200,100 L200,200 L0,200 Z',
-      'M0,130 Q50,110 100,130 T200,130 L200,200 L0,200 Z',
-      'M0,160 Q50,140 100,160 T200,160 L200,200 L0,200 Z',
-    ],
+    id: 'ocean',
+    from: '#0EA5E9', // sky-500
+    to: '#0284C7', // sky-600
+    text: '#FFFFFF',
   },
-  // 2. Abstract Leaves
   {
-    id: 'leaves',
-    viewBox: '0 0 200 200',
-    gradient: ['#D1FAE5', '#A7F3D0', '#6EE7B7'], // soft green
-    paths: [
-      'M100,50 Q120,70 140,100 Q120,130 100,150 Q80,130 60,100 Q80,70 100,50 Z',
-      'M60,80 Q75,95 90,120 Q75,145 60,160 Q45,145 30,120 Q45,95 60,80 Z',
-      'M140,80 Q155,95 170,120 Q155,145 140,160 Q125,145 110,120 Q125,95 140,80 Z',
-    ],
+    id: 'forest',
+    from: '#10B981', // emerald-500
+    to: '#059669', // emerald-600
+    text: '#FFFFFF',
   },
-  // 3. Circular Ripples
   {
-    id: 'ripples',
-    viewBox: '0 0 200 200',
-    gradient: ['#FCE7F3', '#FBCFE8', '#F9A8D4'], // soft pink
-    paths: [
-      'M100,100 m-20,0 a20,20 0 1,0 40,0 a20,20 0 1,0 -40,0',
-      'M100,100 m-45,0 a45,45 0 1,0 90,0 a45,45 0 1,0 -90,0',
-      'M100,100 m-70,0 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0',
-    ],
+    id: 'sunset',
+    from: '#F59E0B', // amber-500
+    to: '#D97706', // amber-600
+    text: '#FFFFFF',
   },
-  // 4. Geometric Mountains
   {
-    id: 'mountains',
-    viewBox: '0 0 200 200',
-    gradient: ['#E0E7FF', '#C7D2FE', '#A5B4FC'], // soft lavender
-    paths: [
-      'M0,200 L50,120 L100,140 L150,90 L200,130 L200,200 Z',
-      'M0,200 L40,150 L90,170 L140,130 L180,160 L200,200 Z',
-      'M20,200 L70,160 L120,180 L170,150 L200,200 Z',
-    ],
+    id: 'lavender',
+    from: '#8B5CF6', // violet-500
+    to: '#7C3AED', // violet-600
+    text: '#FFFFFF',
   },
-  // 5. Abstract Petals
   {
-    id: 'petals',
-    viewBox: '0 0 200 200',
-    gradient: ['#FEF3C7', '#FDE68A', '#FCD34D'], // soft yellow
-    paths: [
-      'M100,100 Q80,60 100,40 Q120,60 100,100 Z',
-      'M100,100 Q140,80 160,100 Q140,120 100,100 Z',
-      'M100,100 Q120,140 100,160 Q80,140 100,100 Z',
-      'M100,100 Q60,120 40,100 Q60,80 100,100 Z',
-    ],
+    id: 'rose',
+    from: '#EC4899', // pink-500
+    to: '#DB2777', // pink-600
+    text: '#FFFFFF',
   },
-  // 6. Flowing Lines
   {
-    id: 'flow',
-    viewBox: '0 0 200 200',
-    gradient: ['#DBEAFE', '#BFDBFE', '#93C5FD'], // soft blue
-    paths: [
-      'M0,60 Q50,40 100,60 T200,60',
-      'M0,100 Q50,80 100,100 T200,100',
-      'M0,140 Q50,120 100,140 T200,140',
-      'M0,180 Q50,160 100,180 T200,180',
-    ],
+    id: 'slate',
+    from: '#64748B', // slate-500
+    to: '#475569', // slate-600
+    text: '#FFFFFF',
+  },
+  {
+    id: 'teal',
+    from: '#14B8A6', // teal-500
+    to: '#0D9488', // teal-600
+    text: '#FFFFFF',
+  },
+  {
+    id: 'indigo',
+    from: '#6366F1', // indigo-500
+    to: '#4F46E5', // indigo-600
+    text: '#FFFFFF',
   },
 ]
 
-// Hash function to consistently select an illustration based on ID
-function getIllustrationIndex(id: string): number {
+// Hash function to consistently select a gradient based on ID
+function getGradientIndex(id: string): number {
   let hash = 0
   for (let i = 0; i < id.length; i++) {
     hash = (hash << 5) - hash + id.charCodeAt(i)
     hash = hash & hash
   }
-  return Math.abs(hash) % illustrations.length
+  return Math.abs(hash) % gradients.length
 }
 
-export function PlaceholderImage({ therapistId, className = '' }: PlaceholderImageProps) {
-  const index = getIllustrationIndex(therapistId)
-  const illustration = illustrations[index]
+// Extract initials from display name
+function getInitials(name?: string): string {
+  if (!name) return 'T'
+
+  const parts = name.trim().split(/\s+/)
+
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase()
+  }
+
+  // For multiple names, take first letter of first and last name
+  const firstInitial = parts[0].charAt(0).toUpperCase()
+  const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase()
+
+  return `${firstInitial}${lastInitial}`
+}
+
+export function PlaceholderImage({ therapistId, displayName, className = '' }: PlaceholderImageProps) {
+  const index = getGradientIndex(therapistId)
+  const gradient = gradients[index]
+  const initials = getInitials(displayName)
 
   return (
-    <div className={`flex h-full w-full items-center justify-center overflow-hidden ${className}`}>
-      <svg
-        viewBox={illustration.viewBox}
-        className="h-full w-full"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Therapeut Placeholder"
+    <div
+      className={`flex h-full w-full items-center justify-center overflow-hidden ${className}`}
+      style={{
+        background: `linear-gradient(135deg, ${gradient.from} 0%, ${gradient.to} 100%)`,
+      }}
+    >
+      {/* Subtle decorative pattern in background */}
+      <div className="absolute inset-0 opacity-10">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id={`pattern-${therapistId}`} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="20" cy="20" r="2" fill="white" opacity="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#pattern-${therapistId})`} />
+        </svg>
+      </div>
+
+      {/* Large initials */}
+      <span
+        className="relative z-10 select-none text-6xl font-bold tracking-tight"
+        style={{ color: gradient.text }}
+        aria-label={`Initials for ${displayName || 'Therapeut'}`}
       >
-        <defs>
-          <linearGradient id={`gradient-${therapistId}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={illustration.gradient[0]} />
-            <stop offset="50%" stopColor={illustration.gradient[1]} />
-            <stop offset="100%" stopColor={illustration.gradient[2]} />
-          </linearGradient>
-        </defs>
-        <rect width="200" height="200" fill={`url(#gradient-${therapistId})`} />
-        {illustration.paths.map((path, idx) => (
-          <path
-            key={idx}
-            d={path}
-            fill="white"
-            fillOpacity={0.15 + idx * 0.1}
-            stroke="white"
-            strokeWidth="0.5"
-            strokeOpacity={0.3}
-          />
-        ))}
-      </svg>
+        {initials}
+      </span>
     </div>
   )
 }

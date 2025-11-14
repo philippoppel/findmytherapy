@@ -2,13 +2,25 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Home, Calendar, Clock, Tag, Lightbulb, CheckCircle2 } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Home,
+  Calendar,
+  Clock,
+  Tag as TagIcon,
+  Lightbulb,
+  CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+} from 'lucide-react'
 import { blogPosts, getBlogPostBySlug } from '../../../lib/blogData'
 import { getAuthorById } from '../../../lib/authors'
 import { AuthorBio } from '@/app/components/blog/AuthorBio'
 import { RelatedArticles } from '@/app/components/blog/RelatedArticles'
 import { SocialShare } from '@/app/components/blog/SocialShare'
 import { TableOfContents } from '@/app/components/blog/TableOfContents'
+import { NewsletterForm } from '@/app/components/forms/NewsletterForm'
 
 type BlogPostPageProps = {
   params: {
@@ -17,26 +29,28 @@ type BlogPostPageProps = {
 }
 
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'long' })
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-')
+    .trim()
+
 const buildImageUrl = (src?: string) => {
-  if (!src) {
-    return undefined
-  }
+  if (!src) return undefined
   return src.startsWith('http') ? src : `https://findmytherapy.net${src}`
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }))
+  return blogPosts.map((post) => ({ slug: post.slug }))
 }
 
 export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const post = getBlogPostBySlug(params.slug)
 
   if (!post) {
-    return {
-      title: 'FindMyTherapy Blog',
-    }
+    return { title: 'FindMyTherapy Blog' }
   }
 
   const canonicalUrl = `https://findmytherapy.net/blog/${post.slug}`
@@ -46,9 +60,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
     title: `${post.title} | FindMyTherapy Blog`,
     description: post.excerpt,
     keywords: post.keywords,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -74,18 +86,8 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   }
 }
 
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/--+/g, '-')
-    .trim()
-}
-
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPostBySlug(params.slug)
-
   if (!post) {
     notFound()
   }
@@ -120,11 +122,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     wordCount: post.sections.reduce(
       (acc, section) =>
         acc +
-        section.paragraphs.reduce(
-          (pAcc, p) => pAcc + p.split(' ').length,
-          0
-        ),
-      0
+        section.paragraphs.reduce((pAcc, paragraph) => pAcc + paragraph.split(' ').length, 0),
+      0,
     ),
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -133,160 +132,242 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <article className="min-h-screen bg-gradient-to-b from-primary-950/5 via-primary-950/5 to-primary-950/5 py-12 sm:py-16">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-sm font-medium text-gray-600">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 transition hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-          >
-            <Home className="h-4 w-4" aria-hidden />
-            Home
-          </Link>
-          <span className="text-gray-400">/</span>
-          <Link
-            href="/blog"
-            className="transition hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-          >
-            Blog
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-900">{post.title}</span>
+    <article className="min-h-screen bg-slate-950/5 pb-16 pt-10 sm:pb-24 sm:pt-16">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+        <nav className="text-sm text-slate-500">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link href="/" className="inline-flex items-center gap-1.5 font-semibold text-primary-900">
+                <Home className="h-4 w-4" aria-hidden />
+                Home
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li>
+              <Link href="/blog" className="font-semibold text-primary-900">
+                Blog
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li className="font-medium text-slate-700">{post.title}</li>
+          </ol>
         </nav>
 
         <Link
           href="/blog"
-          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary-700 transition hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
-          Alle Artikel
+          Zur Übersicht
         </Link>
 
-        <header className="mt-8 space-y-6">
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-primary-800 ring-1 ring-inset ring-primary-600/20">
-              <Tag className="h-4 w-4" aria-hidden />
-              {post.category}
-            </span>
-            <span className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" aria-hidden />
-              {dateFormatter.format(publishedDate)}
-            </span>
-            {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
-              <span className="flex items-center gap-2 text-gray-500">
-                <Clock className="h-4 w-4" aria-hidden />
-                Aktualisiert: {dateFormatter.format(updatedDate)}
-              </span>
+        <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-950 via-primary-800 to-indigo-900 px-6 py-10 text-white shadow-2xl shadow-primary-950/50 sm:px-12 sm:py-14">
+          {post.featuredImage && (
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                backgroundImage: `url(${post.featuredImage.src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              aria-hidden
+            />
+          )}
+          <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-64 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
+          <div className="relative z-10 grid gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center gap-3 text-sm font-semibold uppercase tracking-widest text-white/80">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5">
+                  <Sparkles className="h-4 w-4" aria-hidden />
+                  Insights
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1.5">
+                  <ShieldCheck className="h-4 w-4" aria-hidden />
+                  Evidenzbasiert
+                </span>
+              </div>
+              <div className="space-y-4">
+                <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
+                  {post.category}
+                </p>
+                <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+                  {post.title}
+                </h1>
+                <p className="text-lg text-white/90">{post.excerpt}</p>
+              </div>
+              <div className="flex flex-wrap gap-3 text-sm text-white/75">
+                <span className="inline-flex items-center gap-2">
+                  <Calendar className="h-4 w-4" aria-hidden />
+                  {dateFormatter.format(publishedDate)}
+                </span>
+                {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
+                  <span className="inline-flex items-center gap-2">
+                    <Clock className="h-4 w-4" aria-hidden />
+                    Aktualisiert: {dateFormatter.format(updatedDate)}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-2">
+                  <Clock className="h-4 w-4" aria-hidden />
+                  {post.readingTime}
+                </span>
+              </div>
+            </div>
+            {post.featuredImage && (
+              <div className="relative h-72 w-full overflow-hidden rounded-3xl border border-white/20 shadow-2xl">
+                <Image
+                  src={post.featuredImage.src}
+                  alt={post.featuredImage.alt}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
             )}
-            <span className="flex items-center gap-2">
-              <Clock className="h-4 w-4" aria-hidden />
-              {post.readingTime}
-            </span>
           </div>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight text-gray-900 sm:text-5xl dark:text-white">
-            {post.title}
-          </h1>
-          <p className="text-xl leading-relaxed text-gray-700 dark:text-gray-300">{post.excerpt}</p>
-
-          {/* Social Share Buttons */}
-          <SocialShare url={postUrl} title={post.title} description={post.excerpt} />
         </header>
 
-        {/* Featured Image */}
-        {post.featuredImage && (
-          <div className="mt-10 relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
-            <Image
-              src={post.featuredImage.src}
-              alt={post.featuredImage.alt}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Key Takeaways / Zusammenfassung */}
-        <section className="mt-10 rounded-3xl border-2 border-primary-200/80 bg-gradient-to-br from-primary-50 via-white to-primary-100/30 p-6 shadow-lg shadow-primary-900/5 sm:p-8 dark:from-primary-950/30 dark:via-gray-900 dark:to-primary-950/20 dark:border-primary-900">
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-600 shadow-md">
-              <Lightbulb className="h-5 w-5 text-white" aria-hidden />
-            </div>
-            <div className="flex-1 space-y-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">Auf einen Blick</h2>
-              <ul className="space-y-3">
-                {post.summary.map((point, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600 mt-0.5" aria-hidden />
-                    <span className="text-base leading-relaxed text-gray-700 dark:text-gray-300">{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Table of Contents */}
-        <div className="mt-8">
-          <TableOfContents sections={post.sections} />
-        </div>
-
-        <div className="prose prose-lg prose-gray dark:prose-invert mt-12 max-w-none">
-          <div className="space-y-12">
-            {post.sections.map((section) => {
-              const sectionId = slugify(section.heading)
-              return (
-                <section key={section.heading} id={sectionId} className="space-y-4 scroll-mt-20">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {section.heading}
-                  </h2>
-                  <div className="space-y-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                    {section.paragraphs.map((paragraph, idx) => (
-                      <p key={idx}>{paragraph}</p>
-                    ))}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,2fr),minmax(0,0.85fr)]">
+          <div className="space-y-10">
+            <section className="rounded-3xl border border-primary-100/70 bg-white p-6 shadow-lg shadow-primary-900/5 sm:p-8">
+              <div className="flex items-start gap-3">
+                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg">
+                  <Lightbulb className="h-5 w-5" aria-hidden />
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Auf einen Blick</p>
+                    <h2 className="text-2xl font-semibold text-slate-900">Key-Takeaways</h2>
                   </div>
-                  {section.list && (
-                    <ul className="space-y-2 text-lg text-gray-700 dark:text-gray-300">
-                      {section.list.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <ul className="space-y-3">
+                    {post.summary.map((point) => (
+                      <li key={point} className="flex items-start gap-3">
+                        <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600" aria-hidden />
+                        <span className="text-base leading-relaxed text-slate-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
+              <TableOfContents sections={post.sections} />
+            </section>
+
+            <div className="prose prose-lg prose-slate mt-4 max-w-none">
+              <div className="space-y-12">
+                {post.sections.map((section) => {
+                  const sectionId = slugify(section.heading)
+                  return (
+                    <section key={section.heading} id={sectionId} className="space-y-4 scroll-mt-24">
+                      <h2 className="text-3xl font-bold text-slate-900">{section.heading}</h2>
+                      <div className="space-y-4 text-lg leading-relaxed text-slate-700">
+                        {section.paragraphs.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                      </div>
+                      {section.list && (
+                        <ul className="space-y-2 text-lg text-slate-700">
+                          {section.list.map((item) => (
+                            <li key={item} className="flex items-start gap-3">
+                              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </section>
+                  )
+                })}
+              </div>
+            </div>
+
+            {author && <AuthorBio author={author} />}
+            <RelatedArticles currentPost={post} allPosts={blogPosts} />
+          </div>
+
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Artikel-Insights</p>
+              <h3 className="mt-2 text-xl font-semibold text-slate-900">Metadaten & Tags</h3>
+              <dl className="mt-4 space-y-3 text-sm text-slate-600">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <dt>Veröffentlicht</dt>
+                  <dd className="font-semibold">{dateFormatter.format(publishedDate)}</dd>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <dt>Lesedauer</dt>
+                  <dd className="font-semibold">{post.readingTime}</dd>
+                </div>
+                {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <dt>Zuletzt aktualisiert</dt>
+                    <dd className="font-semibold">{dateFormatter.format(updatedDate)}</dd>
+                  </div>
+                )}
+              </dl>
+              <div className="mt-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Tags</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {(post.tags || []).map((tag) => (
+                    <Link
+                      key={tag}
+                      href={`/blog/tag/${slugify(tag)}`}
+                      className="inline-flex items-center gap-1 rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-900"
+                    >
+                      <TagIcon className="h-3.5 w-3.5" aria-hidden />
+                      {tag}
+                    </Link>
+                  ))}
+                  {(!post.tags || post.tags.length === 0) && (
+                    <span className="text-sm text-slate-400">Noch keine Tags.</span>
                   )}
-                </section>
-              )
-            })}
-          </div>
+                </div>
+              </div>
+              <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                <p className="text-sm font-semibold text-slate-900">Teilen</p>
+                <SocialShare url={postUrl} title={post.title} description={post.excerpt} className="mt-3" />
+              </div>
+            </div>
+
+            <section className="rounded-3xl border border-white/20 bg-gradient-to-br from-primary-900 via-primary-700 to-indigo-700 p-5 shadow-2xl shadow-primary-900/30">
+              <NewsletterForm
+                variant="topic"
+                className="border-white/20 bg-white/5"
+                title="Themenwunsch oder Feedback?"
+                description="Schreib uns kurz, welche zusätzlichen Infos, Formatideen oder Interviews du dir wünschst. Wir melden uns persönlich."
+              />
+              <div className="mt-4 flex gap-2 text-xs text-white/80">
+                <span className="rounded-full border border-white/30 px-3 py-1">Antwort &lt; 24h</span>
+                <span className="rounded-full border border-white/30 px-3 py-1">DSGVO-konform</span>
+              </div>
+            </section>
+
+            <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+              <h3 className="text-lg font-semibold text-slate-900">Mehr aus {post.category}</h3>
+              <p className="mt-2 text-sm text-slate-600">
+                Entdecke weitere Artikel aus dem Bereich {post.category} oder folge den Tags, um Updates zu erhalten.
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <Link
+                  href={`/blog/category/${slugify(post.category)}`}
+                  className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
+                >
+                  Alle Artikel dieser Kategorie
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:border-primary-200"
+                >
+                  Persönliches Gespräch
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </div>
+          </aside>
         </div>
-
-        {/* Author Bio */}
-        {author && <AuthorBio author={author} />}
-
-        {/* Related Articles */}
-        <RelatedArticles currentPost={post} allPosts={blogPosts} />
-
-        <footer className="mt-16 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-primary-100/50 to-white p-8 shadow-xl shadow-primary-900/10 sm:p-10 dark:from-primary-950/30 dark:via-gray-900 dark:to-primary-950/20 dark:border-primary-900">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">Lust auf mehr Einblicke?</h3>
-          <p className="mt-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-            Unser Netzwerk befindet sich im Aufbau – wir zeigen dir bereits heute, wie FindMyTherapy Menschen mit passender Unterstützung verbindet. Lass uns wissen, welche Fragen offen sind.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-primary-900/20 transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-            >
-              Gespräch vereinbaren
-            </Link>
-            <Link
-              href="/triage"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary-600 bg-white dark:bg-gray-900 px-6 py-3 text-base font-semibold text-primary-700 dark:text-primary-400 transition hover:bg-primary-50 dark:hover:bg-primary-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-            >
-              Ersteinschätzung testen
-            </Link>
-          </div>
-        </footer>
       </div>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
