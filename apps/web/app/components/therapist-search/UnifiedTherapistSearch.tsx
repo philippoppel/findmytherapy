@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react'
 import type { TherapistCard } from '../../therapists/types'
 import {
@@ -31,6 +32,7 @@ export function UnifiedTherapistSearch({
 }: UnifiedTherapistSearchProps) {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   // Use ref to keep callback stable across renders
   const onFilteredResultsRef = useRef(onFilteredResults)
@@ -39,12 +41,19 @@ export function UnifiedTherapistSearch({
     onFilteredResultsRef.current = onFilteredResults
   }, [onFilteredResults])
 
+  // Client-side only mounting
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isFilterModalOpen) {
       document.body.style.overflow = 'hidden'
+      console.log('🔍 Mobile filter modal opened')
     } else {
       document.body.style.overflow = ''
+      console.log('🔍 Mobile filter modal closed')
     }
     return () => {
       document.body.style.overflow = ''
@@ -174,11 +183,15 @@ export function UnifiedTherapistSearch({
       </div>
 
       {/* Advanced Filters Button (Mobile - Opens Modal) */}
-      <div className="lg:hidden">
+      <div className="block lg:hidden">
         <button
           type="button"
-          onClick={() => setIsFilterModalOpen(true)}
-          className="flex w-full items-center justify-between rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-white/15 min-h-[44px]"
+          onClick={() => {
+            console.log('🔍 Mobile filter button clicked')
+            setIsFilterModalOpen(true)
+          }}
+          className="flex w-full items-center justify-between rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-white/15 active:bg-white/20 min-h-[44px]"
+          aria-label="Erweiterte Filter öffnen"
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
@@ -193,61 +206,66 @@ export function UnifiedTherapistSearch({
       </div>
 
       {/* Mobile Filter Modal (Bottom Sheet) */}
-      {isFilterModalOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
-            onClick={() => setIsFilterModalOpen(false)}
-            aria-hidden="true"
-          />
+      {mounted && isFilterModalOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-[9999] lg:hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-200"
+              onClick={() => setIsFilterModalOpen(false)}
+              aria-hidden="true"
+            />
 
-          {/* Bottom Sheet */}
-          <div className="absolute inset-x-0 bottom-0 max-h-[85vh] w-full rounded-t-3xl bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl animate-in slide-in-from-bottom duration-300">
-            <div className="flex h-full flex-col">
-              {/* Drag Handle */}
-              <div
-                className="flex justify-center pt-3 pb-2 cursor-pointer touch-none"
-                onClick={() => setIsFilterModalOpen(false)}
-              >
-                <div className="h-1.5 w-12 rounded-full bg-white/30" />
-              </div>
-
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-white/10 p-4">
-                <div className="flex items-center gap-2">
-                  <SlidersHorizontal className="h-5 w-5 text-primary-400" aria-hidden="true" />
-                  <h2 id="modal-title" className="text-lg font-semibold text-white">Erweiterte Filter</h2>
+            {/* Bottom Sheet */}
+            <div
+              className="absolute inset-x-0 bottom-0 max-h-[85vh] w-full rounded-t-3xl bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl transition-transform duration-300 ease-out"
+              style={{ transform: 'translateY(0)' }}
+            >
+              <div className="flex h-full flex-col">
+                {/* Drag Handle */}
+                <div
+                  className="flex justify-center pt-3 pb-2 cursor-pointer touch-none"
+                  onClick={() => setIsFilterModalOpen(false)}
+                >
+                  <div className="h-1.5 w-12 rounded-full bg-white/30" />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setIsFilterModalOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-all hover:bg-white/10 hover:text-white hover:scale-110 active:scale-95"
-                  aria-label="Filter schließen"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
 
-              {/* Content - Scrollable */}
-              <div className="flex-1 overflow-y-auto overscroll-contain p-4" style={{ WebkitOverflowScrolling: 'touch' }}>
-                <AdvancedFiltersContent {...advancedFiltersProps} />
-              </div>
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-white/10 p-4">
+                  <div className="flex items-center gap-2">
+                    <SlidersHorizontal className="h-5 w-5 text-primary-400" aria-hidden="true" />
+                    <h2 id="modal-title" className="text-lg font-semibold text-white">Erweiterte Filter</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsFilterModalOpen(false)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-all hover:bg-white/10 hover:text-white hover:scale-110 active:scale-95"
+                    aria-label="Filter schließen"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
 
-              {/* Footer */}
-              <div className="border-t border-white/10 p-4 bg-gradient-to-t from-black/50 to-transparent">
-                <button
-                  type="button"
-                  onClick={() => setIsFilterModalOpen(false)}
-                  className="w-full min-h-[48px] rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white hover:bg-primary-500 active:bg-primary-700 transition-colors shadow-lg"
-                >
-                  Ergebnisse anzeigen ({filteredTherapists.length})
-                </button>
+                {/* Content - Scrollable */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+                  <AdvancedFiltersContent {...advancedFiltersProps} />
+                </div>
+
+                {/* Footer */}
+                <div className="border-t border-white/10 p-4 bg-gradient-to-t from-black/50 to-transparent">
+                  <button
+                    type="button"
+                    onClick={() => setIsFilterModalOpen(false)}
+                    className="w-full min-h-[48px] rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white hover:bg-primary-500 active:bg-primary-700 transition-colors shadow-lg"
+                  >
+                    Ergebnisse anzeigen ({filteredTherapists.length})
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
