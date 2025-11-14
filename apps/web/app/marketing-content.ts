@@ -8,35 +8,35 @@ export const marketingNavigation = [
 ] as const;
 
 export const heroContent = {
-  eyebrow: 'Evidenzbasierte Ersteinschätzung & Vermittlung',
-  title: 'Mentale Gesundheit mit klarer Orientierung.',
-  highlight: 'Für Klient:innen, die Hilfe suchen. Für Therapeut:innen, die wirken wollen.',
+  eyebrow: 'Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile',
+  title: 'Zwei Wege zu mentaler Gesundheit.',
+  highlight: 'Sofortige Hilfe durch Wissen. Professionelle Begleitung durch Expert:innen.',
   description:
-    'Validierte Ampel-Ersteinschätzung (PHQ-9, GAD-7, WHO-5) in unter 5 Minuten – mit Kursen, Therapeut:innen-Vermittlung oder Krisenhilfe. Therapeut:innen erhalten Vorberichte fürs Erstgespräch, eine kostenlose Praxis-Webseite und professionelle Praxis-Werkzeuge. Transparent und DSGVO-konform (EU-Datenschutz).',
+    'Entdecke gratis Ratgeber von anerkannten Psychotherapeut:innen für sofortige Hilfe. Oder finde verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites. Therapeut:innen erhalten individuelle Microsites und maximale Online-Sichtbarkeit durch unsere SEO-Expert:innen. Transparent und DSGVO-konform (EU-Datenschutz).',
   primaryCta: {
-    label: 'Kostenlose Ersteinschätzung starten',
-    href: '/triage',
+    label: 'Gratis Wissen entdecken',
+    href: '/blog',
   },
   secondaryCta: {
-    label: 'Für Therapeut:innen',
-    href: '/for-therapists',
+    label: 'Therapeut:in finden',
+    href: '/therapists',
   },
   tertiaryCta: {
-    label: 'Angebote ansehen',
-    href: '#features',
+    label: 'Für Therapeut:innen',
+    href: '/for-therapists',
   },
   emergencyCta: {
     label: 'Sofort-Hilfe bei Panikattacken',
     href: '/blog/akuthilfe-panikattacken',
   },
   metrics: [
-    { value: 'PHQ-9 & GAD-7', label: 'Validierte Tests' },
-    { value: '< 5 Min.', label: 'Bis zum Ergebnis' },
+    { value: 'Gratis', label: 'Expert:innen-Wissen' },
+    { value: 'SEO-optimiert', label: 'Therapeuten-Profile' },
     { value: '100% DSGVO', label: 'EU-Datenschutz' },
   ],
   image: {
     src: '/images/therapists/therapy-1.jpg',
-    alt: 'Professionelle Therapiesitzung – FindMyTherapy verbindet Klient:innen und Therapeut:innen',
+    alt: 'Professionelle Therapiesitzung – FindMyTherapy verbindet Wissen und Therapeut:innen',
   },
 };
 

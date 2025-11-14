@@ -1,58 +1,33 @@
 import type { Metadata } from 'next'
-import {
-  getHeroContent,
-  getClientBenefits,
-  getTherapistBenefits,
-  getFAQItems,
-  getContactCta,
-} from '../marketing-content'
+import { getHeroContent, getFAQItems, getContactCta } from '../marketing-content'
 import { MarketingHero } from '../components/marketing/MarketingHero'
 import { FaqAccordion } from '../components/marketing/FaqAccordion'
 import { ContactCta } from '../components/marketing/ContactCta'
-import { AssessmentSection } from '../components/marketing/AssessmentSection'
-import { TherapistSearchSection } from '../components/therapist-search/TherapistSearchSection'
-import { ClientBenefits } from '../components/marketing/ClientBenefits'
-import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
-import { BlogFeatureSection } from '../components/blog/BlogFeatureSection'
-import { JourneyShowcase } from '../components/marketing/JourneyShowcase'
-import { FeatureGate } from '@/components/FeatureGate'
+import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
 import { FEATURES } from '@/lib/features'
 
 // Force dynamic rendering to prevent database access during build
-// Homepage includes dynamic therapist data that requires database connection
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: FEATURES.ASSESSMENT
-    ? 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching'
-    : 'FindMyTherapy – Therapeut:innen-Matching & Kurse',
-  description: FEATURES.ASSESSMENT
-    ? 'Finde in wenigen Minuten heraus, welche Unterstützung dir guttut. Mit Ampel-Triage, persönlichen Empfehlungen, Kursen und einer Plattform für Therapeut:innen.'
-    : 'Finde passende Therapeut:innen in Österreich. Mit verifizierten Profilen, persönlichen Empfehlungen und professionellen Kursen.',
-  keywords: FEATURES.ASSESSMENT
-    ? [
-        'digitale Ersteinschätzung',
-        'PHQ-9 Erklärung',
-        'GAD-7 Erklärung',
-        'Therapeut:in finden Österreich',
-        'mentale Gesundheit Matching',
-        'Psychotherapeut Wien',
-        'Online Therapie Österreich',
-        'Depression Test',
-        'Angststörung Test',
-        'Therapeutensuche',
-      ]
-    : [
-        'Therapeut:in finden Österreich',
-        'mentale Gesundheit Matching',
-        'Psychotherapie Österreich',
-        'Online Therapie finden',
-      ],
+  title: 'FindMyTherapy – SEO-optimierte Therapeuten-Profile & Expert:innen-Wissen',
+  description:
+    'Entdecke gratis Wissen von anerkannten Psychotherapeut:innen für Soforthilfe. Finde verifizierte Therapeut:innen mit SEO-optimierten Profilen. Zwei Wege zu mentaler Gesundheit.',
+  keywords: [
+    'Therapeut:in finden Österreich',
+    'Psychotherapeut SEO',
+    'mentale Gesundheit Wissen',
+    'Psychotherapie Artikel',
+    'Therapeuten-Microsite',
+    'Online Therapie Österreich',
+    'Psychotherapeut Profil',
+    'Therapeutensuche',
+    'Psychologie Ratgeber',
+  ],
   openGraph: {
-    title: 'FindMyTherapy – Klarheit ab dem ersten Klick.',
-    description: FEATURES.ASSESSMENT
-      ? 'Kostenlose Ersteinschätzung mit Ampel-System, persönliches Matching und begleitende Programme – entwickelt für Österreich.'
-      : 'Finde passende Therapeut:innen in Österreich. Verifizierte Profile, persönliches Matching und begleitende Programme.',
+    title: 'FindMyTherapy – Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile',
+    description:
+      'Gratis Wissen von Psychotherapeut:innen für Soforthilfe. Verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites.',
     type: 'website',
     locale: 'de_AT',
     url: 'https://findmytherapy.net/',
@@ -62,7 +37,7 @@ export const metadata: Metadata = {
         url: 'https://findmytherapy.net/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching für Österreich',
+        alt: 'FindMyTherapy – Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile für Österreich',
       },
     ],
   },
@@ -71,10 +46,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FindMyTherapy – Digitale Orientierung für mentale Gesundheit',
-    description: FEATURES.ASSESSMENT
-      ? 'Starte die kostenlose Ersteinschätzung, finde passende Therapeut:innen oder sichere Hilfe in Notfällen.'
-      : 'Finde passende Therapeut:innen in Österreich mit verifizierten Profilen und persönlichem Matching.',
+    title: 'FindMyTherapy – Wissen & Therapeut:innen-Matching',
+    description:
+      'Gratis Expert:innen-Wissen für Soforthilfe. Finde verifizierte Therapeut:innen mit SEO-optimierten Profilen.',
     creator: '@findmytherapy',
     site: '@findmytherapy',
     images: ['https://findmytherapy.net/images/og-image.jpg'],
@@ -82,10 +56,8 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
-  // Get filtered content based on enabled features
+  // Get content for simplified homepage
   const heroContent = getHeroContent()
-  const clientBenefits = getClientBenefits()
-  const therapistBenefits = getTherapistBenefits()
   const faqItems = getFAQItems()
   const contactCta = getContactCta()
 
@@ -110,7 +82,7 @@ export default function HomePage() {
     url: 'https://findmytherapy.net',
     logo: 'https://findmytherapy.net/images/logo.png',
     description:
-      'FindMyTherapy ist eine evidenzbasierte Plattform für mentale Gesundheit in Österreich. Wir bieten digitale Ersteinschätzung mit validierten Fragebögen (PHQ-9, GAD-7), Therapeuten-Matching und therapeutisch fundierte Online-Kurse.',
+      'FindMyTherapy ist eine evidenzbasierte Plattform für mentale Gesundheit in Österreich. Wir bieten gratis Wissen von anerkannten Psychotherapeut:innen und SEO-optimierte Therapeuten-Profile mit individuellen Microsites.',
     foundingDate: '2024',
     areaServed: {
       '@type': 'Country',
@@ -134,7 +106,7 @@ export default function HomePage() {
     name: 'FindMyTherapy',
     url: 'https://findmytherapy.net',
     description:
-      'Digitale Ersteinschätzung & Therapeut:innen-Matching für mentale Gesundheit in Österreich',
+      'Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile für mentale Gesundheit in Österreich',
     inLanguage: 'de-AT',
     potentialAction: {
       '@type': 'SearchAction',
@@ -149,9 +121,9 @@ export default function HomePage() {
   const medicalWebPageStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'MedicalWebPage',
-    name: 'FindMyTherapy – Digitale Ersteinschätzung & Therapeut:innen-Matching',
+    name: 'FindMyTherapy – Expert:innen-Wissen & Therapeuten-Matching',
     description:
-      'Kostenlose Ersteinschätzung mit validierten Fragebögen (PHQ-9, GAD-7), Therapeuten-Vermittlung und therapeutisch fundierte Online-Kurse für mentale Gesundheit in Österreich.',
+      'Gratis Wissen von anerkannten Psychotherapeut:innen für Soforthilfe. Finde verifizierte Therapeut:innen mit SEO-optimierten Profilen und individuellen Microsites.',
     url: 'https://findmytherapy.net',
     inLanguage: 'de-AT',
     isPartOf: {
@@ -177,7 +149,7 @@ export default function HomePage() {
     '@type': 'VideoObject',
     name: 'FindMyTherapy – Professionelle Therapiesitzung',
     description:
-      'Entdecke FindMyTherapy: Die Plattform für digitale Ersteinschätzung und Therapeuten-Matching in Österreich. Mit validierten Fragebögen und professioneller Unterstützung.',
+      'Entdecke FindMyTherapy: Die Plattform für Expert:innen-Wissen und Therapeuten-Matching in Österreich. Mit gratis Ratgebern von anerkannten Psychotherapeut:innen.',
     thumbnailUrl: 'https://findmytherapy.net/images/therapists/therapy-1.jpg',
     contentUrl: 'https://findmytherapy.net/videos/hero-therapy.mp4',
     uploadDate: '2024-01-01',
@@ -201,29 +173,24 @@ export default function HomePage() {
 
   return (
     <div className="marketing-theme bg-surface text-default">
-      <main className="flex flex-col gap-6 sm:gap-8 lg:gap-10">
+      <main className="flex flex-col">
+        {/* Hero Section */}
         <div className="px-3 pt-6 sm:px-4 sm:pt-10 lg:px-8">
           <MarketingHero content={heroContent} />
         </div>
 
-        {/* Blog Feature Section - Verified knowledge from experts */}
-        <BlogFeatureSection />
+        {/* Two Pillar Section - Knowledge Hub & Therapist SEO Showcase */}
+        <TwoPillarSection />
 
-        <FeatureGate feature="ASSESSMENT">
-          <AssessmentSection />
-        </FeatureGate>
+        {/* FAQ Section */}
+        <div className="px-4 sm:px-6 lg:px-8">
+          <FaqAccordion items={faqItems} />
+        </div>
 
-        <ClientBenefits content={clientBenefits} />
-
-        <JourneyShowcase />
-
-        <TherapistSearchSection />
-
-        <TherapistBenefits content={therapistBenefits} />
-
-        <FaqAccordion items={faqItems} />
-
-        <ContactCta content={contactCta} />
+        {/* Contact CTA */}
+        <div className="px-4 sm:px-6 lg:px-8">
+          <ContactCta content={contactCta} />
+        </div>
       </main>
 
       {/* Structured Data for SEO */}
