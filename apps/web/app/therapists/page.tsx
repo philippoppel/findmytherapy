@@ -46,69 +46,81 @@ export default async function TherapistsPage() {
   const therapists = await getTherapistCards()
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-12">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
-      </div>
-      <section className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-6 flex justify-end">
-          <Link href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
-            Zur Startseite
-          </Link>
+    <div className="marketing-theme bg-surface text-default">
+      <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute left-1/2 top-12 h-72 w-72 -translate-x-1/2 rounded-full bg-primary-100/40 blur-3xl" />
+          <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-secondary-100/50 blur-3xl" />
         </div>
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/10 p-10 shadow-2xl backdrop-blur">
-          <div className="relative space-y-8 text-center md:text-left">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
-              <Sparkles className="h-4 w-4" />
-              Kuratiertes Pilotnetzwerk
-            </span>
-            <div className="space-y-4">
-              <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
-                Finde die Therapeut:in, die zu deinem Bedarf passt
-              </h1>
-              <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/85 md:mx-0">
-                Unser Care-Team validiert Qualifikationen, Schwerpunkte und Kapazitäten. Starte mit einer Ersteinschätzung und erhalte Empfehlungen, die zu deinen Antworten passen.
-              </p>
+        <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10">
+          <div className="flex justify-end">
+            <Link href="/" className="text-sm font-medium text-link transition hover:underline">
+              Zur Startseite
+            </Link>
+          </div>
+          <div className="relative overflow-hidden rounded-3xl border border-divider bg-surface-1/95 p-8 shadow-soft-xl sm:p-12">
+            <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden>
+              <div className="absolute -left-10 top-10 h-24 w-24 rounded-full bg-primary-200/60 blur-3xl" />
+              <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-secondary-200/60 blur-3xl" />
             </div>
-            <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
-              {FEATURES.ASSESSMENT && (
+            <div className="relative space-y-8 text-center md:text-left">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-800">
+                <Sparkles className="h-4 w-4" />
+                Kuratiertes Pilotnetzwerk
+              </span>
+              <div className="space-y-4">
+                <h1 className="text-4xl font-semibold tracking-tight text-neutral-950 md:text-5xl">
+                  Finde die Therapeut:in, die zu deinem Bedarf passt
+                </h1>
+                <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted md:mx-0">
+                  Unser Care-Team validiert Qualifikationen, Schwerpunktsetzung und Kapazitäten. Starte mit einer Ersteinschätzung und erhalte Vorschläge, die zu deinen Antworten passen.
+                </p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
+                {FEATURES.ASSESSMENT && (
+                  <Link
+                    href="/triage"
+                    prefetch={false}
+                    className="inline-flex items-center rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-soft-lg transition hover:-translate-y-0.5 hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  >
+                    <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
+                  </Link>
+                )}
                 <Link
-                  href="/triage"
+                  href="/contact"
                   prefetch={false}
-                  className="inline-flex items-center rounded-full bg-primary-700 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                  className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
-                  <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
+                  Persönliche Beratung anfordern
                 </Link>
-              )}
-              <Link
-                href="/contact"
-                prefetch={false}
-                className="text-sm font-semibold text-white/70 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-              >
-                Persönliche Beratung anfordern
-              </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative mt-16">
+      <section className="relative pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6 rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
+          <div className="theme-dark relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-950 via-primary-950 to-neutral-900 p-8 shadow-soft-xl sm:p-10">
+            <div className="pointer-events-none absolute inset-0" aria-hidden>
+              <div className="absolute left-0 top-0 h-40 w-40 -translate-x-1/3 -translate-y-1/3 rounded-full bg-primary-400/40 blur-3xl" />
+              <div className="absolute bottom-0 right-0 h-48 w-48 translate-x-1/3 translate-y-1/3 rounded-full bg-secondary-400/40 blur-3xl" />
+            </div>
+            <div className="relative flex flex-wrap items-center justify-between gap-6 pb-8">
+              <div className="max-w-2xl space-y-3">
                 <h2 className="text-3xl font-semibold text-white">Ausgewählte Pilot-Therapeut:innen</h2>
-                <p className="mt-2 text-base text-white/70">
+                <p className="text-base text-white/80">
                   Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails – abgestimmt auf unsere Ersteinschätzung.
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/70">
-                <Sparkles className="h-4 w-4 text-primary-400" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/80">
+                <Sparkles className="h-4 w-4 text-primary-200" />
                 Kuratiertes Netzwerk
               </div>
             </div>
-            <TherapistDirectory therapists={therapists} />
+            <div className="relative">
+              <TherapistDirectory therapists={therapists} />
+            </div>
           </div>
         </div>
       </section>

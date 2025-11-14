@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-b from-primary-950/5 via-primary-950/5 to-primary-950/5 py-12 sm:py-16">
+    <div className="marketing-theme bg-surface text-default">
+      <div className="min-h-screen bg-surface py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           {/* Back Navigation */}
           <Link
@@ -28,23 +28,23 @@ export default function ContactPage() {
 
           {/* Header */}
           <div className="mb-12 text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight text-neutral-950 sm:text-5xl">
               Kontakt
             </h1>
-            <p className="mt-4 text-lg text-gray-700">
+            <p className="mt-4 text-lg text-muted">
               Wir sind für dich da – per E-Mail, Chat oder in akuten Notfällen
             </p>
           </div>
 
           {/* Email Contact */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md">
+          <div className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600">
                 <Mail className="h-6 w-6" />
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-900">E-Mail</h2>
-                <p className="mt-2 text-gray-700">
+                <h2 className="text-xl font-bold text-neutral-950">E-Mail</h2>
+                <p className="mt-2 text-muted">
                   Schreib uns eine E-Mail und wir melden uns innerhalb von 24 Stunden bei dir.
                 </p>
                 <a
@@ -66,6 +66,6 @@ export default function ContactPage() {
       <FeatureGate feature="CHATBOT">
         <ChatWidget />
       </FeatureGate>
-    </>
+    </div>
   )
 }

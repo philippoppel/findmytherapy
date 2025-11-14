@@ -23,7 +23,8 @@ const faqs = [
 
 export default function HelpPage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 space-y-12">
+    <div className="marketing-theme bg-surface text-default">
+    <main className="mx-auto max-w-3xl space-y-12 px-4 py-16 sm:px-6 lg:px-8">
       <header className="space-y-4 text-center">
         <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
           Hilfe & FAQ
@@ -40,15 +41,15 @@ export default function HelpPage() {
         </h2>
         <ul className="space-y-4">
           {faqs.map((faq) => (
-            <li key={faq.question} className="rounded-2xl border border-divider bg-white p-6 shadow-sm shadow-primary/10">
-              <h3 className="text-lg font-semibold text-neutral-950">{faq.question}</h3>
-              <p className="mt-2 text-sm text-neutral-700">{faq.answer}</p>
-            </li>
+              <li key={faq.question} className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
+                <h3 className="text-lg font-semibold text-neutral-950">{faq.question}</h3>
+                <p className="mt-2 text-sm text-neutral-700">{faq.answer}</p>
+              </li>
           ))}
         </ul>
       </section>
 
-      <section className="rounded-2xl border border-primary/20 bg-primary-50 p-6 text-sm text-primary">
+      <section className="rounded-2xl border border-primary/20 bg-primary-50/80 p-6 text-sm text-primary">
         <h2 className="text-lg font-semibold text-primary">Direkter Kontakt</h2>
         <p className="mt-2">
           Schreib uns an{' '}
@@ -63,5 +64,6 @@ export default function HelpPage() {
         </p>
       </section>
     </main>
+    </div>
   );
 }

@@ -23,7 +23,8 @@ const clauses = [
 
 export default function TermsPage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 space-y-10">
+    <div className="marketing-theme bg-surface text-default">
+    <main className="mx-auto max-w-3xl space-y-10 px-4 py-16 sm:px-6 lg:px-8">
       <header className="space-y-3">
         <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">Allgemeine Geschäftsbedingungen</h1>
         <p className="text-sm text-neutral-700">Stand: {new Date().getFullYear()}</p>
@@ -31,7 +32,7 @@ export default function TermsPage() {
 
       <section className="space-y-6">
         {clauses.map((clause) => (
-          <article key={clause.title} className="rounded-2xl border border-divider bg-white p-6 shadow-sm">
+          <article key={clause.title} className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
             <h2 className="text-lg font-semibold text-neutral-950">{clause.title}</h2>
             <p className="mt-2 text-sm text-neutral-800 leading-relaxed">{clause.body}</p>
           </article>
@@ -46,6 +47,6 @@ export default function TermsPage() {
         </p>
       </section>
     </main>
+    </div>
   );
 }
-

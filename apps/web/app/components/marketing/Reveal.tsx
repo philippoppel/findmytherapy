@@ -55,10 +55,17 @@ export function Reveal({
       return
     }
 
+    if (typeof window === 'undefined' || typeof window.IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+
+    let hasIntersected = false
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            hasIntersected = true
             setVisible(true)
             observer.disconnect()
           }
@@ -69,7 +76,16 @@ export function Reveal({
 
     observer.observe(element)
 
-    return () => observer.disconnect()
+    const fallbackTimer = window.setTimeout(() => {
+      if (!hasIntersected) {
+        setVisible(true)
+      }
+    }, 2000)
+
+    return () => {
+      observer.disconnect()
+      window.clearTimeout(fallbackTimer)
+    }
   }, [prefersReducedMotion])
 
   const variantClasses =

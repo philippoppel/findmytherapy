@@ -45,8 +45,9 @@ export default function CookiePolicyPage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="space-y-10">
+    <div className="marketing-theme bg-surface text-default">
+      <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="space-y-10">
         {/* Header */}
         <header className="space-y-4">
           <div className="flex items-center gap-3">
@@ -69,7 +70,7 @@ export default function CookiePolicyPage() {
         </header>
 
         {/* Quick Navigation */}
-        <nav className="rounded-2xl border border-divider bg-white p-6 shadow-sm">
+        <nav className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
           <h2 className="mb-4 text-lg font-semibold text-neutral-950">Schnellnavigation</h2>
           <ul className="space-y-2 text-sm">
             <li>
@@ -96,7 +97,7 @@ export default function CookiePolicyPage() {
         </nav>
 
         {/* What are cookies */}
-        <section id="what-are-cookies" className="space-y-4 rounded-2xl border border-divider bg-white p-6 shadow-sm">
+        <section id="what-are-cookies" className="space-y-4 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
           <h2 className="text-2xl font-semibold text-neutral-950">Was sind Cookies?</h2>
           <div className="space-y-3 text-sm leading-relaxed text-neutral-700">
             <p>
@@ -115,7 +116,7 @@ export default function CookiePolicyPage() {
           <h2 className="text-2xl font-semibold text-neutral-950">Cookie-Kategorien im Detail</h2>
 
           {/* Essential Cookies */}
-          <div className="rounded-2xl border border-divider bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
             <div className="mb-4 flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <h3 className="text-xl font-semibold text-neutral-950">
@@ -131,32 +132,32 @@ export default function CookiePolicyPage() {
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-gray-200 bg-gray-50">
+                <thead className="border-b border-divider bg-surface-2">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Cookie-Name</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Zweck</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Gültigkeit</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Cookie-Name</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Zweck</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Gültigkeit</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {cookieCategoryInfo.essential.cookies.map((cookie) => (
-                    <tr key={cookie.name} className="hover:bg-gray-50">
+                    <tr key={cookie.name} className="hover:bg-surface-2/60">
                       <td className="px-4 py-3 font-mono text-xs">{cookie.name}</td>
-                      <td className="px-4 py-3 text-gray-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-gray-600">{cookie.duration}</td>
+                      <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
+                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 rounded-lg bg-gray-50 p-4 text-xs text-gray-600">
+            <div className="mt-4 rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
               <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse).
               Diese Cookies sind technisch notwendig für die Grundfunktionen der Website und benötigen keine Einwilligung.
             </div>
           </div>
 
           {/* Analytics Cookies */}
-          <div className="rounded-2xl border border-divider bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
             <div className="mb-4 flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <h3 className="text-xl font-semibold text-neutral-950">
@@ -172,19 +173,19 @@ export default function CookiePolicyPage() {
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-gray-200 bg-gray-50">
+                <thead className="border-b border-divider bg-surface-2">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Dienst</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Zweck</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Details</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Dienst</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Zweck</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Details</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {cookieCategoryInfo.analytics.cookies.map((cookie) => (
-                    <tr key={cookie.name} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-semibold text-gray-900">{cookie.name}</td>
-                      <td className="px-4 py-3 text-gray-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-gray-600">{cookie.duration}</td>
+                    <tr key={cookie.name} className="hover:bg-surface-2/60">
+                      <td className="px-4 py-3 font-semibold text-neutral-900">{cookie.name}</td>
+                      <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
+                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -196,7 +197,7 @@ export default function CookiePolicyPage() {
                 das keine Cookies setzt und keine personenbezogenen Daten speichert. Es erfüllt die DSGVO-Anforderungen
                 und benötigt theoretisch keine Einwilligung, wir fragen dennoch aus Transparenzgründen.
               </div>
-              <div className="rounded-lg bg-gray-50 p-4 text-xs text-gray-600">
+              <div className="rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
                 <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
                 Diese Cookies werden nur mit Ihrer ausdrücklichen Zustimmung aktiviert.
               </div>
@@ -204,7 +205,7 @@ export default function CookiePolicyPage() {
           </div>
 
           {/* Error Tracking */}
-          <div className="rounded-2xl border border-divider bg-white p-6 shadow-sm">
+          <div className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
             <div className="mb-4 flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <h3 className="text-xl font-semibold text-neutral-950">
@@ -220,19 +221,19 @@ export default function CookiePolicyPage() {
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-gray-200 bg-gray-50">
+                <thead className="border-b border-divider bg-surface-2">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Dienst</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Zweck</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700">Details</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Dienst</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Zweck</th>
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-700">Details</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {cookieCategoryInfo.errorTracking.cookies.map((cookie) => (
-                    <tr key={cookie.name} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-semibold text-gray-900">{cookie.name}</td>
-                      <td className="px-4 py-3 text-gray-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-gray-600">{cookie.duration}</td>
+                    <tr key={cookie.name} className="hover:bg-surface-2/60">
+                      <td className="px-4 py-3 font-semibold text-neutral-900">{cookie.name}</td>
+                      <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
+                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -243,7 +244,7 @@ export default function CookiePolicyPage() {
                 <strong>Hinweis:</strong> Sentry erfasst technische Fehlerberichte, die möglicherweise
                 IP-Adressen und Browser-Informationen enthalten. Sensible Daten werden automatisch entfernt.
               </div>
-              <div className="rounded-lg bg-gray-50 p-4 text-xs text-gray-600">
+              <div className="rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
                 <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
                 Diese Cookies werden nur mit Ihrer ausdrücklichen Zustimmung aktiviert.
               </div>
@@ -252,7 +253,7 @@ export default function CookiePolicyPage() {
         </section>
 
         {/* Manage Cookies */}
-        <section id="manage-cookies" className="space-y-4 rounded-2xl border border-divider bg-white p-6 shadow-sm">
+        <section id="manage-cookies" className="space-y-4 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
           <div className="flex items-center gap-3">
             <Settings className="h-6 w-6 text-primary-600" />
             <h2 className="text-2xl font-semibold text-neutral-950">
@@ -278,19 +279,19 @@ export default function CookiePolicyPage() {
 
             <div className="space-y-3">
               {/* Essential - always on */}
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-2 p-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900">Essenziell</h4>
-                  <p className="text-sm text-gray-600">Technisch notwendig, immer aktiv</p>
+                  <h4 className="font-semibold text-neutral-900">Essenziell</h4>
+                  <p className="text-sm text-neutral-600">Technisch notwendig, immer aktiv</p>
                 </div>
                 <div className="text-primary-600 font-semibold">Immer an</div>
               </div>
 
               {/* Analytics toggle */}
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4">
+              <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-1 p-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900">Analytics</h4>
-                  <p className="text-sm text-gray-600">Anonyme Besuchsstatistiken</p>
+                  <h4 className="font-semibold text-neutral-900">Analytics</h4>
+                  <p className="text-sm text-neutral-600">Anonyme Besuchsstatistiken</p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center" aria-label="Analytics aktivieren/deaktivieren">
                   <input
@@ -302,15 +303,15 @@ export default function CookiePolicyPage() {
                     className="peer sr-only"
                     aria-label="Analytics aktivieren/deaktivieren"
                   />
-                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-surface-2 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
                 </label>
               </div>
 
               {/* Error tracking toggle */}
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4">
+              <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-1 p-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900">Fehlererfassung</h4>
-                  <p className="text-sm text-gray-600">Hilft uns, Fehler zu beheben</p>
+                  <h4 className="font-semibold text-neutral-900">Fehlererfassung</h4>
+                  <p className="text-sm text-neutral-600">Hilft uns, Fehler zu beheben</p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center" aria-label="Fehlererfassung aktivieren/deaktivieren">
                   <input
@@ -322,7 +323,7 @@ export default function CookiePolicyPage() {
                     className="peer sr-only"
                     aria-label="Fehlererfassung aktivieren/deaktivieren"
                   />
-                  <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-surface-2 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300"></div>
                 </label>
               </div>
             </div>
@@ -340,7 +341,7 @@ export default function CookiePolicyPage() {
         </section>
 
         {/* Third Party */}
-        <section id="third-party" className="space-y-4 rounded-2xl border border-divider bg-white p-6 shadow-sm">
+        <section id="third-party" className="space-y-4 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
           <h2 className="text-2xl font-semibold text-neutral-950">Drittanbieter-Cookies</h2>
           <div className="space-y-3 text-sm leading-relaxed text-neutral-700">
             <p>
@@ -366,7 +367,7 @@ export default function CookiePolicyPage() {
         </section>
 
         {/* Browser Controls */}
-        <section className="space-y-4 rounded-2xl border border-divider bg-white p-6 shadow-sm">
+        <section className="space-y-4 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
           <h2 className="text-2xl font-semibold text-neutral-950">Browser-Einstellungen</h2>
           <div className="space-y-3 text-sm leading-relaxed text-neutral-700">
             <p>
@@ -419,6 +420,7 @@ export default function CookiePolicyPage() {
           </div>
         </section>
       </div>
-    </main>
+      </main>
+    </div>
   )
 }
