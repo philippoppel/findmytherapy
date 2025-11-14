@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
+import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Reveal } from './Reveal'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
@@ -44,6 +45,22 @@ export function AboutSection() {
       description: 'Basierend auf evidenzbasierten Methoden und aktueller Forschung.',
       color: 'secondary',
     },
+  ]
+  const mosaicLayout = [
+    'xl:col-span-5 xl:row-span-2',
+    'xl:col-span-3',
+    'xl:col-span-4 xl:row-span-2',
+    'xl:col-span-4',
+  ]
+  const missionHighlights = [
+    'Psychotherapeutische Expertise & klinische Erfahrung',
+    'Digitale Produktentwicklung & Forschung verbunden',
+    'Partnerschaften mit Praxen, Kliniken & Selbsthilfegruppen',
+  ]
+  const trustBadges = [
+    { label: 'PHQ-9 & GAD-7 validiert', description: 'Evidenzbasierte Ersteinschätzung' },
+    { label: 'DSGVO-Konform (EU)', description: 'Transparenter Umgang mit Daten' },
+    { label: 'Partner:innen aus Praxis & Forschung', description: 'Gemeinsam mit der Community' },
   ]
 
   return (
@@ -95,104 +112,128 @@ export function AboutSection() {
         </Reveal>
 
         {/* Team Members */}
-        <div className="mb-20 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-16">
+        <div className="mb-20 space-y-16">
           <Reveal delay={100}>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid auto-rows-[260px] gap-4 sm:auto-rows-[320px] sm:grid-cols-2 xl:auto-rows-[220px] xl:grid-cols-12 xl:gap-6">
               {teamContent.members.map((member, index) => (
-                <motion.div
+                <motion.article
                   key={member.name}
-                  className="group rounded-3xl border border-neutral-200/60 bg-white/95 p-4 shadow-xl"
-                  initial={{ opacity: 0, y: 20 }}
+                  className={clsx(
+                    'group relative col-span-12 overflow-hidden rounded-[32px] border border-white/40 bg-neutral-900/5 shadow-2xl shadow-primary-900/5 backdrop-blur',
+                    'sm:col-span-1',
+                    mosaicLayout[index % mosaicLayout.length],
+                  )}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={!prefersReducedMotion ? { translateY: -6, scale: 1.02 } : {}}
+                  transition={{ duration: 0.7, delay: index * 0.1 }}
+                  whileHover={
+                    prefersReducedMotion
+                      ? {}
+                      : {
+                          scale: 1.02,
+                          y: -6,
+                        }
+                  }
                 >
-                  <div className="relative mb-4 aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-100">
-                    <Image
-                      src={member.image}
-                      alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
-                      fill
-                      className="object-cover object-top"
-                      sizes="(min-width: 1024px) 240px, (min-width: 640px) 50vw, 100vw"
-                      priority={index === 0}
-                    />
-                    {!prefersReducedMotion && (
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                        initial={{ opacity: 0.4 }}
-                        whileHover={{ opacity: 0.6 }}
-                        transition={{ duration: 0.4 }}
-                      />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary-600">
+                  <Image
+                    src={member.image}
+                    alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
+                    fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover"
+                    priority={index === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/75 via-neutral-900/10 to-transparent" />
+                  <div className="absolute inset-x-6 bottom-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
                       Founder Team
                     </p>
-                    <p className="mt-2 text-xl font-bold text-neutral-900">{member.name}</p>
-                    <p className="text-sm font-medium text-neutral-600">{member.role}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-neutral-600">{member.focus}</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">{member.name}</p>
+                    <p className="text-sm font-medium text-white/80">{member.role}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-white/75">{member.focus}</p>
                   </div>
-                </motion.div>
+                </motion.article>
               ))}
             </div>
           </Reveal>
 
-          <Reveal delay={200}>
-            <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
+          <div className="grid gap-6 lg:grid-cols-3">
+            <Reveal delay={150}>
+              <div className="h-full rounded-3xl border border-neutral-200/70 bg-white/95 p-8 shadow-xl">
+                <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-sm font-medium text-primary-700">
+                  <SparklesIcon className="h-4 w-4 text-primary-500" /> Unsere Mission
+                </p>
                 <h3 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
-                  Unsere Mission
+                  Jede:r soll Zugang zu qualifizierter Unterstützung bekommen.
                 </h3>
-                <p className="mb-4 text-lg leading-relaxed text-neutral-600">
-                  Wir glauben, dass jede:r Zugang zu qualifizierter psychologischer Unterstützung
-                  haben sollte - transparent, sicher und auf Augenhöhe.
+                <p className="mb-6 text-base leading-relaxed text-neutral-600 sm:text-lg">
+                  Wir verbinden evidenzbasiertes Wissen mit verifizierten Therapeut:innen und
+                  einer Plattform, die Orientierung schafft – vom ersten Symptom bis zum Termin.
                 </p>
-                <p className="text-lg leading-relaxed text-neutral-600">
-                  Deshalb verbinden wir evidenzbasiertes Wissen mit modernster Technologie, um die
-                  Suche nach dem:der richtigen Therapeut:in zu vereinfachen.
-                </p>
-              </motion.div>
+                <ul className="space-y-3">
+                  {missionHighlights.map((highlight) => (
+                    <li key={highlight} className="flex items-start gap-3 text-sm text-neutral-600">
+                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-100 text-xs font-semibold text-primary-700">
+                        ✓
+                      </span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
 
-              <motion.div
-                className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                {[
-                  { label: 'Verifizierte Therapeut:innen', icon: '✓' },
-                  { label: 'EU-Datenschutz', icon: '🔒' },
-                  { label: 'Wissenschaftlich fundiert', icon: '📚' },
-                ].map((badge, index) => (
-                  <motion.div
-                    key={badge.label}
-                    className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50/50 px-4 py-2 text-sm font-medium text-primary-800"
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.3 + index * 0.1,
-                      type: 'spring',
-                      stiffness: 200,
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <span>{badge.icon}</span>
-                    <span>{badge.label}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </Reveal>
+            <Reveal delay={200}>
+              <div className="h-full rounded-3xl border border-neutral-200/70 bg-gradient-to-br from-secondary-50 via-white to-primary-50 p-8 shadow-xl shadow-secondary-200/40">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-secondary-600">
+                  Vertrauen
+                </p>
+                <div className="space-y-5">
+                  {trustBadges.map((badge, index) => (
+                    <motion.div
+                      key={badge.label}
+                      className="rounded-2xl border border-white/70 bg-white/70 p-4"
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.1 * index }}
+                    >
+                      <p className="text-base font-semibold text-neutral-900">{badge.label}</p>
+                      <p className="text-sm text-neutral-600">{badge.description}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={250}>
+              <div className="h-full rounded-3xl border border-neutral-800/80 bg-neutral-900 p-8 text-white shadow-2xl shadow-neutral-900/40">
+                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-white/60">
+                  Lass uns verbinden
+                </p>
+                <p className="mb-6 text-2xl font-bold">
+                  Wir tauschen uns regelmäßig mit Partner:innen aus Praxis & Forschung aus.
+                </p>
+                <p className="mb-6 text-sm text-white/80">
+                  Schreibe uns, wenn du mitgestalten möchtest – egal ob Therapeut:in, Kooperationspartner
+                  oder Institution.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {teamContent.ctas?.map((cta) => (
+                    <a
+                      key={cta.href}
+                      href={cta.href}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:border-white hover:bg-white/10"
+                    >
+                      <span>{cta.label}</span>
+                      <ArrowUpRightIcon className="h-4 w-4" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
 
         {/* Values Grid */}
@@ -291,6 +332,19 @@ function SparklesIcon({ className }: { className?: string }) {
         strokeLinejoin="round"
         strokeWidth={2}
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+      />
+    </svg>
+  )
+}
+
+function ArrowUpRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 7l-10 10m0-10h10v10"
       />
     </svg>
   )
