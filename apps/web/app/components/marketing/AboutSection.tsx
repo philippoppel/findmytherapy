@@ -107,11 +107,11 @@ export function AboutSection() {
         {/* Team Members */}
         <div className="mb-20 space-y-16">
           <Reveal delay={100}>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {teamContent.members.map((member, index) => (
                 <motion.article
                   key={member.name}
-                  className="group relative overflow-hidden rounded-[32px] border border-white/40 bg-neutral-900/5 shadow-2xl shadow-primary-900/5 backdrop-blur"
+                  className="group overflow-hidden rounded-[32px] border border-white/40 bg-white shadow-2xl shadow-primary-900/5"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -125,7 +125,7 @@ export function AboutSection() {
                         }
                   }
                 >
-                  <div className="relative aspect-[3/4] w-full">
+                  <div className="relative aspect-[3/4] w-full overflow-hidden">
                     <Image
                       src={member.image}
                       alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
@@ -135,15 +135,14 @@ export function AboutSection() {
                       priority={index === 0}
                     />
                   </div>
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 top-1/3 z-[1] bg-gradient-to-t from-neutral-900/90 via-neutral-900/35 to-transparent" />
-                  <div className="absolute inset-x-4 bottom-4 z-10 rounded-2xl bg-neutral-900/70 p-4 backdrop-blur-sm shadow-lg shadow-neutral-900/30">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-white/60">
+                  <div className="border-t border-neutral-200 bg-white p-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-primary-600">
                       Founder Team
                     </p>
-                    <p className="mt-2 text-xl font-semibold text-white">{member.name}</p>
-                    <p className="text-sm font-medium text-white/85">{member.role}</p>
+                    <p className="mt-2 text-xl font-semibold text-neutral-900">{member.name}</p>
+                    <p className="text-sm font-medium text-neutral-600">{member.role}</p>
                     <p
-                      className="mt-2 text-sm leading-relaxed text-white/80"
+                      className="mt-2 text-sm leading-relaxed text-neutral-600"
                       style={{
                         display: '-webkit-box',
                         WebkitLineClamp: 3,

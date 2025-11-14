@@ -10,10 +10,7 @@ import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 
 export function KnowledgeHubSection() {
   const prefersReducedMotion = usePrefersReducedMotion()
-  const heroPost = blogPosts[0]
-  const highlightPosts = blogPosts.slice(1, 4)
-  const listPosts = blogPosts.slice(4, 10)
-  const quickReadPosts = blogPosts.slice(10, 17)
+  const highlightPosts = blogPosts.slice(0, 4)
   const valueProps = [
     'Soforthilfe von erfahrenen Therapeut:innen',
     'Konkrete Übungen und Schritt-für-Schritt-Pläne',
@@ -22,7 +19,7 @@ export function KnowledgeHubSection() {
   ]
 
   return (
-    <div className="flex h-full flex-col gap-8">
+    <div className="flex h-full flex-col gap-6">
       {/* Section hero */}
       <div className="rounded-3xl border border-secondary-100/70 bg-gradient-to-br from-white via-secondary-50 to-secondary-100/30 p-6 shadow-lg shadow-secondary-200/70 sm:p-8">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -38,104 +35,31 @@ export function KnowledgeHubSection() {
             <ArrowIcon />
           </Link>
         </div>
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-          <div className="flex-1">
-            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-600">Ratgeber & Stories</p>
-            <h2 className="mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">
-              Soforthilfe zum Nachlesen – kostenlos und fundiert
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-neutral-600 sm:text-lg">
-              Unser Blog liefert dir verständliche Antworten rund um mentale Gesundheit – von Akutsituationen bis Prävention.
-              Jede Seite ist von Expert:innen geprüft und direkt umsetzbar.
-            </p>
-          </div>
-          <ul className="flex-1 space-y-3 rounded-2xl bg-white/80 p-4 text-sm text-neutral-700 shadow-sm">
-            {valueProps.map((point) => (
-              <li key={point} className="flex items-start gap-2">
-                <CheckCircleIcon className="mt-1 h-4 w-4 text-secondary-500" />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <h2 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
+          Soforthilfe zum Nachlesen
+        </h2>
+        <p className="mb-6 text-base leading-relaxed text-neutral-600">
+          Unser Blog liefert dir verständliche Antworten rund um mentale Gesundheit – von Akutsituationen bis Prävention. Jede Seite ist von Expert:innen geprüft.
+        </p>
+        <ul className="space-y-3 text-sm text-neutral-700">
+          {valueProps.map((point) => (
+            <li key={point} className="flex items-start gap-2">
+              <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-shrink-0 text-secondary-500" />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      {/* Featured hero */}
-      {heroPost && (
-        <motion.div
-          className="overflow-hidden rounded-3xl border border-secondary-200/60 bg-white shadow-xl shadow-secondary-200/50"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <Link
-            href={`/blog/${heroPost.slug}`}
-            className="flex flex-col gap-4 lg:flex-row"
-          >
-            {heroPost.featuredImage && (
-              <div className="relative h-60 w-full flex-shrink-0 lg:h-auto lg:w-2/5">
-                <Image
-                  src={heroPost.featuredImage.src}
-                  alt={heroPost.featuredImage.alt}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {!prefersReducedMotion && (
-                  <motion.div
-                    aria-hidden
-                    className="absolute inset-0 bg-gradient-to-br from-secondary-500/50 to-transparent"
-                    animate={{ opacity: [0.3, 0.55, 0.3] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                  />
-                )}
-              </div>
-            )}
-            <div className="flex flex-1 flex-col gap-4 p-6 lg:p-8">
-              <div>
-                <Badge variant="neutral" className="mb-3 w-fit text-xs">
-                  {heroPost.category}
-                </Badge>
-                <h3 className="text-2xl font-semibold text-neutral-900">{heroPost.title}</h3>
-                <p className="mt-3 text-base text-neutral-600">{heroPost.excerpt}</p>
-              </div>
-              <div className="mt-auto flex flex-wrap items-center gap-4 text-sm text-neutral-500">
-                <span className="flex items-center gap-1">
-                  <ClockIcon />
-                  {heroPost.readingTime}
-                </span>
-                <span>
-                  {new Date(heroPost.publishedAt).toLocaleDateString('de-DE', {
-                    day: '2-digit',
-                    month: 'long',
-                  })}
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-secondary-400/70 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-secondary-700">
-                  Beliebter Artikel
-                </span>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
-      )}
 
       {/* Highlight cards */}
       <div className="space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-700">Neu im Ratgeber</p>
-            <p className="text-sm text-neutral-600 sm:text-base">
-              Frisch veröffentlichte Artikel mit klaren Handlungsempfehlungen.
-            </p>
-          </div>
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-secondary-700 underline-offset-4 hover:underline"
-          >
-            Alle ansehen
-            <ArrowIcon />
-          </Link>
+        <div>
+          <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-secondary-700">
+            Beliebte Artikel
+          </p>
+          <p className="text-sm text-neutral-600">
+            Frisch veröffentlichte Artikel mit klaren Handlungsempfehlungen.
+          </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {highlightPosts.map((post, index) => (
@@ -178,10 +102,10 @@ export function KnowledgeHubSection() {
                     <span className="h-1 w-1 rounded-full bg-secondary-300" />
                     <span>{post.readingTime}</span>
                   </div>
-                  <h3 className="mt-3 text-lg font-semibold leading-tight text-neutral-900 transition-colors group-hover:text-secondary-700">
+                  <h3 className="mt-3 text-base font-semibold leading-tight text-neutral-900 transition-colors group-hover:text-secondary-700">
                     {post.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-sm text-neutral-600 line-clamp-3">{post.excerpt}</p>
+                  <p className="mt-2 flex-1 text-sm text-neutral-600 line-clamp-2">{post.excerpt}</p>
                   <span className="mt-4 text-xs font-semibold uppercase tracking-wide text-secondary-500">
                     Jetzt lesen →
                   </span>
@@ -192,79 +116,9 @@ export function KnowledgeHubSection() {
         </div>
       </div>
 
-      {/* Extended list */}
-      {listPosts.length > 0 && (
-        <div className="rounded-3xl border border-secondary-100/60 bg-white/80 p-4 shadow-sm sm:p-6">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-secondary-800">Noch mehr Expert:innen-Wissen</p>
-          <div className="space-y-3">
-            {listPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="group flex flex-col gap-1 rounded-2xl px-3 py-2 transition hover:bg-secondary-50/70"
-              >
-                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-secondary-600">
-                  <span>{post.category}</span>
-                  <span className="h-1 w-1 rounded-full bg-secondary-300" />
-                  <span>{post.readingTime}</span>
-                  <span className="h-1 w-1 rounded-full bg-secondary-300" />
-                  <span>
-                    {new Date(post.publishedAt).toLocaleDateString('de-DE', {
-                      day: '2-digit',
-                      month: 'short',
-                    })}
-                  </span>
-                </div>
-                <p className="text-base font-semibold text-neutral-900 transition group-hover:text-secondary-700">
-                  {post.title}
-                </p>
-                <p className="text-sm text-neutral-600 line-clamp-2">{post.excerpt}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Quick reads */}
-      {quickReadPosts.length > 0 && (
-        <motion.div
-          className="rounded-3xl border border-secondary-100/60 bg-secondary-50/70 p-5 sm:p-6"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-        >
-          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-800">Schnell weiterlesen</p>
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 rounded-full border border-secondary-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wide text-secondary-700 transition hover:border-secondary-300"
-            >
-              Zum Ratgeber
-              <ArrowIcon />
-            </Link>
-          </div>
-          <div className="-mx-1 flex gap-3 overflow-x-auto pb-2 pt-1">
-            {quickReadPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                className="min-w-[200px] rounded-2xl bg-white px-4 py-3 text-left text-sm shadow-sm ring-1 ring-secondary-100 transition hover:-translate-y-1 hover:shadow-md"
-              >
-                <p className="text-xs font-semibold uppercase tracking-wide text-secondary-600">{post.category}</p>
-                <p className="mt-1 font-semibold text-neutral-900 line-clamp-2">{post.title}</p>
-                <div className="mt-2 flex items-center gap-2 text-xs text-neutral-500">
-                  <ClockIcon />
-                  {post.readingTime}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
       {/* CTA */}
       <motion.div
+        className="mt-auto"
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

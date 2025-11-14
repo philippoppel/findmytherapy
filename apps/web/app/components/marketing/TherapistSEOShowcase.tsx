@@ -9,21 +9,20 @@ export function TherapistSEOShowcase() {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col gap-6">
       {/* Header */}
-      <div className="mb-8 text-center">
-        <div className="mb-4 flex justify-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-800">
+      <div className="rounded-3xl border border-primary-100/70 bg-gradient-to-br from-white via-primary-50 to-primary-100/30 p-6 shadow-lg shadow-primary-200/70 sm:p-8">
+        <div className="mb-5 flex justify-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-primary-50">
             <SparklesIcon />
             <span>Für Therapeut:innen</span>
           </div>
         </div>
-        <h2 className="mb-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+        <h2 className="mb-4 text-center text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
           SEO-optimierte Präsenz
         </h2>
-        <p className="mx-auto max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">
-          Professionelle Microsites für jede:n Therapeut:in. Von SEO-Expert:innen
-          optimiert für maximale Sichtbarkeit.
+        <p className="text-center text-base leading-relaxed text-neutral-600">
+          Professionelle Microsites für jede:n Therapeut:in. Von SEO-Expert:innen optimiert für maximale Sichtbarkeit.
         </p>
       </div>
 
@@ -34,7 +33,7 @@ export function TherapistSEOShowcase() {
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       >
-        <InteractiveCard className="group mb-6 border border-primary-100/60 bg-white/95 p-6 hover:border-primary-200 hover:shadow-xl hover:shadow-primary-200/30">
+        <InteractiveCard className="group border border-primary-100/60 bg-white/95 p-6 hover:border-primary-200 hover:shadow-xl hover:shadow-primary-200/30">
           <motion.div
             className="mb-4 flex items-center gap-3"
             initial={{ x: -20, opacity: 0 }}
@@ -122,7 +121,7 @@ export function TherapistSEOShowcase() {
       </motion.div>
 
       {/* SEO Features Grid with stagger */}
-      <div className="mb-6 space-y-3">
+      <div className="space-y-3">
         {[
           {
             icon: SearchIcon,
@@ -175,7 +174,7 @@ export function TherapistSEOShowcase() {
 
       {/* Stats with stagger animation */}
       <motion.div
-        className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-primary-50/50 p-6"
+        className="grid grid-cols-2 gap-4 rounded-2xl bg-primary-50/50 p-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -218,6 +217,7 @@ export function TherapistSEOShowcase() {
 
       {/* CTA with enhanced animation */}
       <motion.div
+        className="mt-auto"
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}

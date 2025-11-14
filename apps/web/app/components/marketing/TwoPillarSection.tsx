@@ -6,10 +6,12 @@ import { Reveal } from './Reveal'
 import { KnowledgeHubSection } from './KnowledgeHubSection'
 import { TherapistSEOShowcase } from './TherapistSEOShowcase'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { useAnchorNavigation } from '../useAnchorNavigation'
 
 export function TwoPillarSection() {
   const prefersReducedMotion = usePrefersReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
+  const handleAnchorNavigation = useAnchorNavigation()
 
   // Scroll-based animations
   const { scrollYProgress } = useScroll({
@@ -199,6 +201,7 @@ export function TwoPillarSection() {
               </motion.a>
               <motion.a
                 href="#therapist-search"
+                onClick={(event) => handleAnchorNavigation(event, '#therapist-search')}
                 className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors hover:bg-primary-700"
                 whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 40px -12px rgba(59, 130, 246, 0.4)' }}
                 whileTap={{ scale: 0.95 }}

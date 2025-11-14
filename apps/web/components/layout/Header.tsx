@@ -8,6 +8,7 @@ import { getMarketingNavigation } from '../../app/marketing-content'
 import { AuthHeader } from './AuthHeader'
 import { FEATURES } from '@/lib/features'
 import { filterNavigationItems } from '@/lib/content-filters'
+import { useAnchorNavigation } from '@/app/components/useAnchorNavigation'
 
 const baseAppNavigation = [
   { label: 'Therapeut:innen', href: '/therapists' },
@@ -21,6 +22,7 @@ export function Header() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isHome = pathname === '/'
+  const handleAnchorNavigation = useAnchorNavigation()
 
   // Get filtered navigation based on enabled features
   const marketingNavigation = getMarketingNavigation()
@@ -61,15 +63,19 @@ export function Header() {
           </Link>
 
           <div className="hidden flex-1 items-center justify-center gap-1.5 lg:flex">
-            {desktopNavigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {desktopNavigation.map((item) => {
+              const isAnchor = item.href.startsWith('#')
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={(event) => isAnchor && handleAnchorNavigation(event, item.href)}
+                  className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
           </div>
 
           <div className="hidden items-center gap-4 lg:flex">
@@ -97,16 +103,24 @@ export function Header() {
         {isMenuOpen && (
           <div className="mb-4 mt-2 space-y-4 rounded-2xl border border-primary-200 bg-white/95 p-5 text-sm text-neutral-900 shadow-soft-lg backdrop-blur lg:hidden">
             <div className="space-y-1.5">
-              {navigation.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navigation.map((item) => {
+                const isAnchor = item.href.startsWith('#')
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
+                    onClick={(event) => {
+                      if (isAnchor) {
+                        handleAnchorNavigation(event, item.href)
+                      }
+                      setIsMenuOpen(false)
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
             </div>
             <div className="space-y-3 border-t border-primary-200 pt-4">
               <AuthHeader />
