@@ -105,7 +105,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
 
   return (
     <Link href={`/therapists/${therapist.id}`} prefetch={false} className="group">
-      <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 sm:rounded-3xl">
+      <article className="relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 sm:min-h-[450px] sm:rounded-3xl">
         {/* Image Section */}
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-neutral-900 to-black">
           {therapist.image ? (
@@ -144,10 +144,10 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           )}
 
           {/* Status Badge - Top Left */}
-          <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+          <div className="absolute left-2 top-2 sm:left-3 sm:top-3">
             <span
               className={cn(
-                'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide shadow-lg backdrop-blur-sm sm:px-3 sm:py-2',
+                'inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide shadow-lg backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs',
                 therapist.status === 'VERIFIED'
                   ? 'border-emerald-400/60 bg-emerald-500/30 text-emerald-100'
                   : therapist.status === 'PENDING'
@@ -155,46 +155,44 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
                   : 'border-red-400/60 bg-red-500/30 text-red-100',
               )}
             >
-              <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
+              <ShieldCheck className="h-3 w-3 flex-shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden />
               <span className="hidden sm:inline">{statusLabel[therapist.status]}</span>
             </span>
           </div>
 
           {/* Distance Badge - Top Right */}
           {distance && (
-            <div className="absolute right-3 top-3 sm:right-4 sm:top-4">
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary-400/60 bg-primary-500/30 px-2.5 py-1.5 text-xs font-semibold text-primary-100 shadow-lg backdrop-blur-sm sm:px-3 sm:py-2">
-                <LocateFixed className="h-3.5 w-3.5" aria-hidden />
-                {distance}
+            <div className="absolute right-2 top-2 sm:right-3 sm:top-3">
+              <span className="inline-flex items-center gap-1 rounded-lg border border-primary-400/60 bg-primary-500/30 px-2 py-1 text-[10px] font-semibold text-primary-100 shadow-lg backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs">
+                <LocateFixed className="h-3 w-3 flex-shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden />
+                <span className="whitespace-nowrap">{distance}</span>
               </span>
             </div>
           )}
         </div>
 
         {/* Content Section */}
-        <div className="flex flex-1 flex-col gap-4 p-4 sm:gap-5 sm:p-5 lg:p-6">
+        <div className="flex flex-1 flex-col gap-3 p-4 sm:gap-4 sm:p-5 lg:p-6">
           {/* Header */}
-          <div className="space-y-2">
-            <h3 className="line-clamp-2 text-lg font-bold text-white sm:text-xl lg:text-2xl">
+          <div className="space-y-1.5">
+            <h3 className="line-clamp-2 text-base font-bold leading-tight text-white sm:text-lg lg:text-xl">
               {therapist.name}
             </h3>
-            <p className="line-clamp-1 text-sm text-white/70 sm:text-base">
+            <p className="line-clamp-2 text-xs text-white/70 sm:text-sm">
               {therapist.title}
             </p>
           </div>
 
           {/* Experience Badge */}
-          <div className="inline-flex w-fit items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-3 py-2 text-sm font-medium text-white/90">
-            <Sparkles className="h-4 w-4 text-primary-400" aria-hidden />
-            {therapist.experience}
+          <div className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/90 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm">
+            <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4" aria-hidden />
+            <span className="line-clamp-1">{therapist.experience}</span>
           </div>
 
           {/* Quick Info */}
-          <div className="flex flex-col gap-2.5 text-sm">
-            <div className="flex items-start gap-2.5">
-              <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary-400" aria-hidden />
-              <span className="line-clamp-2 text-white/80">{therapist.location}</span>
-            </div>
+          <div className="flex items-start gap-2">
+            <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4" aria-hidden />
+            <span className="line-clamp-2 text-xs text-white/80 sm:text-sm">{therapist.location}</span>
           </div>
 
           {/* Focus Areas */}
@@ -206,7 +204,8 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
               {primaryFocus.map((focus, index) => (
                 <span
                   key={index}
-                  className="inline-block rounded-lg border border-primary-400/30 bg-primary-500/10 px-2.5 py-1 text-xs font-medium text-primary-200"
+                  className="inline-block max-w-full truncate rounded-lg border border-primary-400/30 bg-primary-500/10 px-2 py-1 text-xs font-medium leading-tight text-primary-200"
+                  title={focus}
                 >
                   {focus}
                 </span>
@@ -215,12 +214,12 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           </div>
 
           {/* Availability */}
-          <div className="mt-auto border-t border-white/10 pt-4">
-            <div className="flex items-center justify-between text-xs">
+          <div className="mt-auto border-t border-white/10 pt-3">
+            <div className="flex items-center justify-between gap-2 text-xs">
               <span className="text-white/60">Verfügbarkeit</span>
               <span
                 className={cn(
-                  'font-semibold',
+                  'truncate text-right font-semibold',
                   therapist.availabilityRank <= 2
                     ? 'text-emerald-400'
                     : therapist.availabilityRank <= 4
