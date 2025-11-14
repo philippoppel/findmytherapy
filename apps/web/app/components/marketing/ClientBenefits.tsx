@@ -5,6 +5,7 @@ import { Button } from '@mental-health/ui'
 import { Sparkles, Users, Video, CheckCircle2 } from 'lucide-react'
 import type { clientBenefits } from '../../marketing-content'
 import { Reveal } from './Reveal'
+import { InteractiveCard } from './InteractiveCard'
 
 interface ClientBenefitsProps {
   content: typeof clientBenefits
@@ -39,7 +40,8 @@ export function ClientBenefits({ content }: ClientBenefitsProps) {
             return (
               <Reveal
                 key={benefit.title}
-                className="grid gap-8 rounded-2xl border border-primary-200 bg-white p-8 shadow-soft-lg sm:gap-10 sm:p-10 lg:grid-cols-2 lg:gap-14 lg:p-12"
+                as={InteractiveCard}
+                className="grid gap-8 border border-primary-100/60 bg-white/95 p-8 sm:gap-10 sm:p-10 lg:grid-cols-2 lg:gap-14 lg:p-12"
               >
                 {/* Content Side */}
                 <div className="space-y-6">

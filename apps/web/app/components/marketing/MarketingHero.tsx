@@ -1,19 +1,69 @@
 'use client'
 
 import Link from 'next/link'
+import { useRef } from 'react'
+import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
 import { Button } from '@mental-health/ui'
 import type { heroContent } from '../../marketing-content'
 import { Reveal } from './Reveal'
+import { usePrefersReducedMotion } from './usePrefersReducedMotion'
 
 interface HeroProps {
   content: typeof heroContent
 }
 
 export function MarketingHero({ content }: HeroProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+  const heroRef = useRef<HTMLDivElement | null>(null)
+  const mouseX = useMotionValue(50)
+  const mouseY = useMotionValue(50)
+  const smoothX = useSpring(mouseX, { stiffness: 110, damping: 26, mass: 0.6 })
+  const smoothY = useSpring(mouseY, { stiffness: 110, damping: 26, mass: 0.6 })
+  const spotlight = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(255,255,255,0.28), transparent 60%)`
+  const accentGlow = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(56,189,248,0.28), transparent 65%)`
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return
+    const bounds = heroRef.current?.getBoundingClientRect()
+    if (!bounds) return
+    const relativeX = ((event.clientX - bounds.left) / bounds.width) * 100
+    const relativeY = ((event.clientY - bounds.top) / bounds.height) * 100
+    mouseX.set(relativeX)
+    mouseY.set(relativeY)
+  }
+
+  const resetPointer = () => {
+    mouseX.set(50)
+    mouseY.set(50)
+  }
+
+  const floatingInsights = [
+    {
+      title: 'Validierte Tests',
+      value: content.metrics[0]?.value ?? 'PHQ-9 & GAD-7',
+      position: 'top-12 right-8',
+      delay: 0,
+    },
+    {
+      title: 'Ergebnis in Minuten',
+      value: content.metrics[1]?.value ?? '< 5 Min.',
+      position: 'bottom-16 left-10',
+      delay: 0.7,
+    },
+  ]
+
+  const floatingOrbs = [
+    { position: 'top-[-10%] left-1/4 h-56 w-56 bg-primary-500/25', duration: 16, delay: 0 },
+    { position: 'bottom-[-18%] right-1/4 h-64 w-64 bg-secondary-400/20', duration: 18, delay: 0.4 },
+  ]
+
   return (
     <section
+      ref={heroRef}
       className="relative overflow-hidden rounded-2xl shadow-soft-xl"
       aria-labelledby="hero-heading"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetPointer}
     >
       {/* Fullscreen Video Background - All Devices */}
       <div className="absolute inset-0 z-0">
@@ -32,8 +82,44 @@ export function MarketingHero({ content }: HeroProps) {
           Ersteinschätzung und Therapeuten-Matching.
         </video>
         {/* Overlay for text readability - warm gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/80 via-neutral-900/70 to-primary-900/75 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/80 via-neutral-900/70 to-primary-900/75 backdrop-blur-[2px]" />
       </div>
+
+      {!prefersReducedMotion && (
+        <>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1] opacity-60"
+            style={{ background: accentGlow }}
+          />
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[2] opacity-80 mix-blend-screen"
+            style={{ background: spotlight }}
+          />
+          {floatingOrbs.map((orb) => (
+            <motion.span
+              key={orb.position}
+              aria-hidden
+              className={`pointer-events-none absolute z-[3] rounded-full blur-3xl ${orb.position}`}
+              animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.9, 1.1, 0.9], y: [0, -14, 0] }}
+              transition={{ duration: orb.duration, delay: orb.delay, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          ))}
+          {floatingInsights.map((badge) => (
+            <motion.div
+              key={badge.title}
+              aria-hidden
+              className={`pointer-events-none absolute z-[4] hidden rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-left text-white backdrop-blur-md lg:block ${badge.position}`}
+              animate={{ y: [0, -12, 0], opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 10, delay: badge.delay, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/80">{badge.title}</p>
+              <p className="mt-1 text-xl font-bold">{badge.value}</p>
+            </motion.div>
+          ))}
+        </>
+      )}
 
       {/* Content over video */}
       <div className="relative z-10 px-6 py-24 text-white sm:px-8 sm:py-32 md:py-40 lg:px-12 lg:py-52">
@@ -116,16 +202,25 @@ export function MarketingHero({ content }: HeroProps) {
 
           <Reveal delay={500}>
             <div className="mt-20 sm:mt-24">
-              <dl className="mx-auto flex flex-col items-center justify-center gap-12 sm:flex-row sm:gap-16 lg:gap-20">
-                {content.metrics.map((metric, _index) => (
-                  <div key={metric.label} className="flex flex-col items-center text-center">
-                    <dd className="text-5xl font-bold text-white drop-shadow-lg sm:text-6xl lg:text-7xl">
+              <dl className="mx-auto flex flex-col items-center justify-center gap-8 sm:flex-row sm:gap-10 lg:gap-12">
+                {content.metrics.map((metric) => (
+                  <motion.div
+                    key={metric.label}
+                    className="flex w-full max-w-sm flex-col items-center rounded-2xl border border-white/20 bg-white/10 px-8 py-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur"
+                    whileHover={
+                      prefersReducedMotion
+                        ? undefined
+                        : { y: -8, scale: 1.03 }
+                    }
+                    transition={{ type: 'spring', stiffness: 140, damping: 18 }}
+                  >
+                    <dd className="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
                       {metric.value}
                     </dd>
-                    <dt className="mt-4 text-base font-medium tracking-wide text-white/90 sm:text-lg">
+                    <dt className="mt-3 text-base font-medium tracking-wide text-white/85 sm:text-lg">
                       {metric.label}
                     </dt>
-                  </div>
+                  </motion.div>
                 ))}
               </dl>
             </div>

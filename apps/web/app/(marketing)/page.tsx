@@ -14,6 +14,7 @@ import { TherapistSearchSection } from '../components/therapist-search/Therapist
 import { ClientBenefits } from '../components/marketing/ClientBenefits'
 import { TherapistBenefits } from '../components/marketing/TherapistBenefits'
 import { BlogFeatureSection } from '../components/blog/BlogFeatureSection'
+import { JourneyShowcase } from '../components/marketing/JourneyShowcase'
 import { FeatureGate } from '@/components/FeatureGate'
 import { FEATURES } from '@/lib/features'
 
@@ -213,6 +214,8 @@ export default function HomePage() {
         </FeatureGate>
 
         <ClientBenefits content={clientBenefits} />
+
+        <JourneyShowcase />
 
         <TherapistSearchSection />
 
