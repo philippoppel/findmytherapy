@@ -69,7 +69,6 @@ export function TherapistMap({
     zoom,
   })
   const [selectedTherapist, setSelectedTherapist] = useState<TherapistMapMarker | null>(null)
-  const [hoveredTherapist, setHoveredTherapist] = useState<string | null>(null)
 
   // Convert therapists to GeoJSON for clustering
   const geojsonData = useMemo((): FeatureCollection<Point> => {
@@ -127,7 +126,7 @@ export function TherapistMap({
     )
   }, [therapists])
 
-  const handleMarkerClick = (therapist: TherapistMapMarker) => {
+  const handleMarkerClick = useCallback((therapist: TherapistMapMarker) => {
     setSelectedTherapist(therapist)
     onMarkerClick?.(therapist)
 
@@ -138,7 +137,7 @@ export function TherapistMap({
       latitude: therapist.latitude,
       zoom: Math.max(prev.zoom, 11),
     }))
-  }
+  }, [onMarkerClick])
 
   // Handle cluster click - zoom into cluster
   const handleClusterClick = useCallback((clusterId: number, longitude: number, latitude: number) => {
@@ -161,16 +160,22 @@ export function TherapistMap({
   }, [])
 
   // Handle point click in clustering mode
-  const handlePointClick = useCallback((feature: any) => {
+  const handlePointClick = useCallback((feature: { properties: { id: string } }) => {
     const therapistId = feature.properties.id
     const therapist = therapists.find(t => t.id === therapistId)
     if (therapist) {
       handleMarkerClick(therapist)
     }
-  }, [therapists])
+  }, [therapists, handleMarkerClick])
 
   // Map click handler for clusters and points
-  const onMapClick = useCallback((event: any) => {
+  const onMapClick = useCallback((event: {
+    features?: Array<{
+      layer: { id: string }
+      properties: { cluster_id?: number; id?: string }
+      geometry: { coordinates: [number, number] }
+    }>
+  }) => {
     const features = event.features
     if (!features || features.length === 0) return
 
@@ -179,13 +184,13 @@ export function TherapistMap({
     if (feature.layer.id === 'clusters') {
       // Clicked on a cluster
       handleClusterClick(
-        feature.properties.cluster_id,
+        feature.properties.cluster_id!,
         feature.geometry.coordinates[0],
         feature.geometry.coordinates[1]
       )
     } else if (feature.layer.id === 'unclustered-point') {
       // Clicked on an individual point
-      handlePointClick(feature)
+      handlePointClick(feature as { properties: { id: string } })
     }
   }, [handleClusterClick, handlePointClick])
 
@@ -288,15 +293,6 @@ export function TherapistMap({
         attributionControl={false}
         interactiveLayerIds={enableClustering ? ['clusters', 'unclustered-point'] : undefined}
         onClick={enableClustering ? onMapClick : undefined}
-        onMouseEnter={enableClustering ? (e) => {
-          if (e.features && e.features.length > 0) {
-            const feature = e.features[0]
-            if (feature.layer.id === 'unclustered-point') {
-              setHoveredTherapist(feature.properties.id)
-            }
-          }
-        } : undefined}
-        onMouseLeave={enableClustering ? () => setHoveredTherapist(null) : undefined}
         cursor={enableClustering ? 'pointer' : 'grab'}
       >
         {/* Navigation Controls */}
