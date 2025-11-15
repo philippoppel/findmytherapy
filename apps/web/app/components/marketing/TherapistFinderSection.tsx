@@ -34,8 +34,8 @@ function buildStats(therapists: TherapistCard[]) {
 } */
 
 export async function TherapistFinderSection() {
-  // Load initial batch of 100 therapists for fast initial render
-  const { therapists, total } = await getTherapistCards({ limit: 100, offset: 0 })
+  // Load initial batch of 10 therapists for ultra-fast initial render
+  const { therapists, total } = await getTherapistCards({ limit: 10, offset: 0 })
 
   if (!therapists.length) {
     return null

@@ -182,31 +182,29 @@ export function TherapistDirectoryWithMap({
 
       {/* Main Content Area */}
       <div className="relative">
-        {/* Desktop: Split View */}
-        {view === 'split' && (
-          <div className="hidden md:grid md:grid-cols-2 md:gap-6 lg:gap-8">
-            {/* Map */}
-            <div className="sticky top-4 h-[calc(100vh-200px)] min-h-[500px] rounded-2xl overflow-hidden border border-white/10">
-              <TherapistMap
-                therapists={mapMarkers}
-                center={mapCenter}
-                zoom={mapMarkers.length > 0 ? 10 : 7}
-                radius={searchRadius}
-                onMarkerClick={handleMarkerClick}
-                showRadiusCircle={!!searchRadius}
-                className="h-full w-full"
-              />
-            </div>
-
-            {/* List */}
-            <div>
-              <TherapistListView
-                therapists={filteredTherapists}
-                selectedId={selectedTherapistId}
-              />
-            </div>
+        {/* Desktop: Split View - ALWAYS show on desktop */}
+        <div className="hidden md:grid md:grid-cols-2 md:gap-6 lg:gap-8">
+          {/* Map */}
+          <div className="sticky top-4 h-[calc(100vh-200px)] min-h-[600px] rounded-2xl overflow-hidden border border-white/10 bg-gray-900">
+            <TherapistMap
+              therapists={mapMarkers}
+              center={mapCenter}
+              zoom={mapMarkers.length > 0 ? 10 : 7}
+              radius={searchRadius}
+              onMarkerClick={handleMarkerClick}
+              showRadiusCircle={!!searchRadius}
+              className="h-full w-full"
+            />
           </div>
-        )}
+
+          {/* List */}
+          <div>
+            <TherapistListView
+              therapists={filteredTherapists}
+              selectedId={selectedTherapistId}
+            />
+          </div>
+        </div>
 
         {/* Mobile: Map View */}
         {view === 'map' && (
