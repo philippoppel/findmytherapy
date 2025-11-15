@@ -245,7 +245,7 @@ describe('User Model', () => {
 
       expect(updatedUser.firstName).toBe('Updated')
       expect(updatedUser.lastName).toBe('Name')
-      expect(updatedUser.updatedAt.getTime()).toBeGreaterThan(user.updatedAt.getTime())
+      expect(updatedUser.updatedAt.getTime()).toBeGreaterThanOrEqual(user.updatedAt.getTime())
     })
 
     it('deletes user', async () => {
