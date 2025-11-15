@@ -19,18 +19,23 @@ import { TherapistMap, type TherapistMapMarker } from '../map/TherapistMap'
 
 export type TherapistDirectoryWithMapProps = {
   therapists: TherapistCard[]
+  totalCount: number
   defaultView?: 'split' | 'map' | 'list'
 }
 
 export function TherapistDirectoryWithMap({
-  therapists,
+  therapists: initialTherapists,
+  totalCount,
   defaultView = 'split',
 }: TherapistDirectoryWithMapProps) {
-  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(therapists)
+  const [allTherapists, setAllTherapists] = useState<TherapistCard[]>(initialTherapists)
+  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(initialTherapists)
   const [view, setView] = useState<'split' | 'map' | 'list'>(defaultView)
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | undefined>()
   const [searchRadius] = useState<number | undefined>() // TODO: Implement radius filter
   const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(allTherapists.length < totalCount)
 
   // Convert therapist cards to map markers
   const mapMarkers: TherapistMapMarker[] = useMemo(() => {
@@ -83,11 +88,31 @@ export function TherapistDirectoryWithMap({
     }
   }
 
+  const loadMore = async () => {
+    if (isLoadingMore || !hasMore) return
+
+    setIsLoadingMore(true)
+    try {
+      const response = await fetch(
+        `/api/therapists?limit=50&offset=${allTherapists.length}`
+      )
+      if (!response.ok) throw new Error('Failed to load more therapists')
+
+      const data = await response.json()
+      setAllTherapists(prev => [...prev, ...data.therapists])
+      setHasMore(data.hasMore)
+    } catch (error) {
+      console.error('Error loading more therapists:', error)
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }
+
   return (
     <div className="w-full">
       {/* Unified Search & Filters */}
       <UnifiedTherapistSearch
-        therapists={therapists}
+        therapists={allTherapists}
         onFilteredResults={(filtered) => setFilteredTherapists(filtered)}
         className="mb-6"
       />
@@ -256,6 +281,22 @@ export function TherapistDirectoryWithMap({
                 Alle Filter zurücksetzen
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Load More Button */}
+        {filteredTherapists.length > 0 && hasMore && (
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <div className="text-sm text-white/60">
+              {allTherapists.length} von {totalCount} Therapeut:innen geladen
+            </div>
+            <button
+              onClick={loadMore}
+              disabled={isLoadingMore}
+              className="rounded-xl bg-primary-600 px-8 py-3 text-sm font-semibold text-white hover:bg-primary-500 active:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            >
+              {isLoadingMore ? 'Lädt...' : 'Mehr anzeigen'}
+            </button>
           </div>
         )}
       </div>

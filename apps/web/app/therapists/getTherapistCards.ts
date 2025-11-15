@@ -12,51 +12,80 @@ type TherapistProfileWithUser = Awaited<
   ReturnType<typeof prisma.therapistProfile.findMany>
 >[number]
 
-export async function getTherapistCards(): Promise<TherapistCard[]> {
-  const profiles = await prisma.therapistProfile.findMany({
-    where: {
-      isPublic: true,
-      status: {
-        in: ['VERIFIED', 'PENDING'],
-      },
-    },
-    orderBy: [
-      { status: 'asc' },
-      { updatedAt: 'desc' },
-    ],
-    select: {
-      id: true,
-      displayName: true,
-      title: true,
-      specialties: true,
-      approachSummary: true,
-      city: true,
-      online: true,
-      latitude: true,
-      longitude: true,
-      availabilityNote: true,
-      acceptingClients: true,
-      languages: true,
-      rating: true,
-      reviewCount: true,
-      yearsExperience: true,
-      profileImageUrl: true,
-      status: true,
-      priceMin: true,
-      priceMax: true,
-      acceptedInsurance: true,
-      ageGroups: true,
-      modalities: true,
-      user: {
-        select: {
-          firstName: true,
-          lastName: true,
-        },
-      },
-    },
-  })
+export type GetTherapistCardsOptions = {
+  limit?: number
+  offset?: number
+}
 
-  return profiles.map(transformProfileToCard)
+export type GetTherapistCardsResult = {
+  therapists: TherapistCard[]
+  total: number
+}
+
+export async function getTherapistCards(
+  options?: GetTherapistCardsOptions
+): Promise<GetTherapistCardsResult> {
+  const { limit, offset } = options || {}
+
+  const where = {
+    isPublic: true,
+    status: {
+      in: ['VERIFIED', 'PENDING'],
+    },
+  } as const
+
+  const orderBy = [
+    { status: 'asc' },
+    { updatedAt: 'desc' },
+  ] as const
+
+  const select = {
+    id: true,
+    displayName: true,
+    title: true,
+    specialties: true,
+    approachSummary: true,
+    city: true,
+    online: true,
+    latitude: true,
+    longitude: true,
+    availabilityNote: true,
+    acceptingClients: true,
+    languages: true,
+    rating: true,
+    reviewCount: true,
+    yearsExperience: true,
+    profileImageUrl: true,
+    status: true,
+    priceMin: true,
+    priceMax: true,
+    acceptedInsurance: true,
+    ageGroups: true,
+    modalities: true,
+    user: {
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    },
+  } as const
+
+  // Get total count and profiles in parallel
+  const [total, profiles] = await Promise.all([
+    prisma.therapistProfile.count({ where }),
+    prisma.therapistProfile.findMany({
+      where,
+      orderBy,
+      select,
+      ...(limit !== undefined && { take: limit }),
+      ...(offset !== undefined && { skip: offset }),
+    }),
+  ])
+
+  return {
+    therapists: profiles.map(transformProfileToCard),
+    total,
+  }
 }
 
 function transformProfileToCard(profile: TherapistProfileWithUser): TherapistCard {

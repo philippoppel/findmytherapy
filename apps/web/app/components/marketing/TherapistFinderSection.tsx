@@ -34,7 +34,8 @@ function buildStats(therapists: TherapistCard[]) {
 } */
 
 export async function TherapistFinderSection() {
-  const therapists = await getTherapistCards()
+  // Load initial batch of 100 therapists for fast initial render
+  const { therapists, total } = await getTherapistCards({ limit: 100, offset: 0 })
 
   if (!therapists.length) {
     return null
@@ -48,7 +49,7 @@ export async function TherapistFinderSection() {
     '@type': 'ItemList',
     name: 'Verifizierte Therapeut:innen auf FindMyTherapy',
     description: 'Liste von verifizierten Psychotherapeut:innen in Österreich',
-    numberOfItems: therapists.length,
+    numberOfItems: total,
     itemListElement: therapists.slice(0, 20).map((therapist, index) => ({
       '@type': 'ListItem',
       position: index + 1,
@@ -113,7 +114,11 @@ export async function TherapistFinderSection() {
             </div>
 
             {/* Directory Component with Map */}
-            <TherapistDirectoryWithMap therapists={therapists} defaultView="split" />
+            <TherapistDirectoryWithMap
+              therapists={therapists}
+              totalCount={total}
+              defaultView="split"
+            />
           </div>
         </Reveal>
       </div>
