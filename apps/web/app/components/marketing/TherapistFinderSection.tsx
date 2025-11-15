@@ -1,6 +1,6 @@
 import { Sparkles, Users } from 'lucide-react'
 
-import { TherapistDirectoryWithMap } from '../therapist-search/TherapistDirectoryWithMap'
+import { TherapistDirectory } from '../../therapists/TherapistDirectorySimplified'
 import { getTherapistCards } from '../../therapists/getTherapistCards'
 // import type { TherapistCard } from '../../therapists/types'
 import { Reveal } from './Reveal'
@@ -34,8 +34,8 @@ function buildStats(therapists: TherapistCard[]) {
 } */
 
 export async function TherapistFinderSection() {
-  // Load initial batch of 10 therapists for ultra-fast initial render
-  const { therapists, total } = await getTherapistCards({ limit: 10, offset: 0 })
+  // Load all therapists for proper filtering
+  const { therapists, total } = await getTherapistCards()
 
   if (!therapists.length) {
     return null
@@ -87,18 +87,13 @@ export async function TherapistFinderSection() {
             Direkt hier suchen
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-8">
-            <div className="space-y-4">
-              <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
-                Passende Therapeut:innen
-              </h2>
-              <p className="mx-auto max-w-3xl text-pretty text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 lg:text-xl">
-                Filtere nach Themen, Standort, Format oder Sprache
-              </p>
-            </div>
-
-            <div className="mx-auto lg:mx-0 rounded-2xl border border-white/20 bg-white/10 px-5 py-4 shadow-lg backdrop-blur-sm lg:mt-2">
-            </div>
+          <div className="space-y-4">
+            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
+              Passende Therapeut:innen
+            </h2>
+            <p className="mx-auto max-w-3xl text-pretty text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 lg:text-xl">
+              Filtere nach Themen, Standort, Format oder Sprache
+            </p>
           </div>
         </Reveal>
 
@@ -113,12 +108,8 @@ export async function TherapistFinderSection() {
               </span>
             </div>
 
-            {/* Directory Component with Map */}
-            <TherapistDirectoryWithMap
-              therapists={therapists}
-              totalCount={total}
-              defaultView="split"
-            />
+            {/* Directory Component */}
+            <TherapistDirectory therapists={therapists} />
           </div>
         </Reveal>
       </div>
