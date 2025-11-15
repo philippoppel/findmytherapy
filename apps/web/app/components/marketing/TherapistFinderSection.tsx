@@ -1,10 +1,12 @@
-import { Sparkles, Search, Users } from 'lucide-react'
+import { Sparkles, Users } from 'lucide-react'
 
-import { TherapistDirectory } from '../../therapists/TherapistDirectorySimplified'
+import { TherapistDirectoryWithMap } from '../therapist-search/TherapistDirectoryWithMap'
 import { getTherapistCards } from '../../therapists/getTherapistCards'
-import type { TherapistCard } from '../../therapists/types'
+// import type { TherapistCard } from '../../therapists/types'
 import { Reveal } from './Reveal'
 
+// Commented out for now - can be used later for stats display
+/* import type { TherapistCard } from '../../therapists/types'
 function buildStats(therapists: TherapistCard[]) {
   const accepting = therapists.filter((therapist) =>
     therapist.availabilityRank <= 2 || therapist.availability.toLowerCase().includes('frei')
@@ -29,7 +31,7 @@ function buildStats(therapists: TherapistCard[]) {
       description: 'Suche vor Ort oder remote',
     },
   ]
-}
+} */
 
 export async function TherapistFinderSection() {
   const therapists = await getTherapistCards()
@@ -38,7 +40,7 @@ export async function TherapistFinderSection() {
     return null
   }
 
-  const stats = buildStats(therapists)
+  // const stats = buildStats(therapists) // TODO: Use stats for display if needed
 
   // ItemList Structured Data for Therapist Directory
   const therapistListStructuredData = {
@@ -87,36 +89,16 @@ export async function TherapistFinderSection() {
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-8">
             <div className="space-y-4">
               <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
-                Passende Therapeut:innen ohne Seitenwechsel
+                Passende Therapeut:innen
               </h2>
               <p className="mx-auto max-w-3xl text-pretty text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 lg:text-xl">
-                Filtere nach Themen, Standort, Format oder Sprache – die komplette Suche reagiert in Echtzeit.
+                Filtere nach Themen, Standort, Format oder Sprache
               </p>
             </div>
 
             <div className="mx-auto lg:mx-0 rounded-2xl border border-white/20 bg-white/10 px-5 py-4 shadow-lg backdrop-blur-sm lg:mt-2">
-              <div className="flex items-center gap-3 text-sm font-semibold text-white sm:text-base">
-                <Search className="h-5 w-5 text-primary-300" />
-                <span className="whitespace-nowrap">Keine neue Seite</span>
-              </div>
             </div>
           </div>
-        </Reveal>
-
-        {/* Stats Grid */}
-        <Reveal className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5 lg:gap-6">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="group rounded-2xl border border-white/15 bg-white/5 p-5 text-center shadow-lg backdrop-blur transition-all duration-300 hover:border-white/25 hover:bg-white/10 hover:shadow-xl sm:p-6 lg:rounded-3xl lg:p-7"
-            >
-              <p className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">{stat.value}</p>
-              <p className="mt-2 text-sm font-semibold text-white/80 sm:text-base lg:mt-3">{stat.label}</p>
-              <p className="mt-2 text-xs font-medium uppercase tracking-wider text-white/50 sm:text-sm">
-                {stat.description}
-              </p>
-            </div>
-          ))}
         </Reveal>
 
         {/* Search Section */}
@@ -130,8 +112,8 @@ export async function TherapistFinderSection() {
               </span>
             </div>
 
-            {/* Directory Component */}
-            <TherapistDirectory therapists={therapists} />
+            {/* Directory Component with Map */}
+            <TherapistDirectoryWithMap therapists={therapists} defaultView="split" />
           </div>
         </Reveal>
       </div>

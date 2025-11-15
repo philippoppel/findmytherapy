@@ -182,7 +182,7 @@ export function LocationInput({
           )}
           {!nearbyOnly && (
             <p className="mt-2 text-xs text-amber-200/70">
-              💡 Aktiviere "Nur in meiner Nähe" um nach Standort zu filtern
+              💡 Aktiviere &ldquo;Nur in meiner Nähe&rdquo; um nach Standort zu filtern
             </p>
           )}
         </div>

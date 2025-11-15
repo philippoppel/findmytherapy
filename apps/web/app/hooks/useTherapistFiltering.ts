@@ -5,6 +5,15 @@ import { useDebouncedValue } from './useDebouncedValue'
 
 export type FormatFilter = 'online' | 'praesenz' | 'hybrid'
 
+export type SortOption =
+  | 'relevance'
+  | 'distance'
+  | 'price-low'
+  | 'price-high'
+  | 'experience'
+  | 'rating'
+  | 'availability'
+
 export type TherapistFilters = {
   searchQuery: string
   location: string
@@ -13,6 +22,11 @@ export type TherapistFilters = {
   formats: Set<FormatFilter>
   specializations: Set<string>
   userLocation: Coordinates | null
+  languages: Set<string>
+  priceRange: { min: number; max: number } | null // in euros
+  acceptsInsurance: boolean
+  insuranceProviders: Set<string>
+  sortBy: SortOption
 }
 
 export type UseTherapistFilteringOptions = {
@@ -30,6 +44,11 @@ export type UseTherapistFilteringReturn = {
   setFormats: (formats: Set<FormatFilter>) => void
   setSpecializations: (specializations: Set<string>) => void
   setUserLocation: (location: Coordinates | null) => void
+  setLanguages: (languages: Set<string>) => void
+  setPriceRange: (range: { min: number; max: number } | null) => void
+  setAcceptsInsurance: (accepts: boolean) => void
+  setInsuranceProviders: (providers: Set<string>) => void
+  setSortBy: (sortBy: SortOption) => void
   resetFilters: () => void
 
   // Results
@@ -39,6 +58,9 @@ export type UseTherapistFilteringReturn = {
 
   // Stats
   availableSpecializations: string[]
+  availableLanguages: string[]
+  availableInsuranceProviders: string[]
+  priceRangeStats: { min: number; max: number } | null
 }
 
 const EARTH_RADIUS_KM = 6371
@@ -88,6 +110,19 @@ export function useTherapistFiltering({
   const [userLocation, setUserLocation] = useState<Coordinates | null>(
     initialFilters?.userLocation ?? null
   )
+  const [languages, setLanguages] = useState<Set<string>>(
+    initialFilters?.languages ?? new Set()
+  )
+  const [priceRange, setPriceRange] = useState<{ min: number; max: number } | null>(
+    initialFilters?.priceRange ?? null
+  )
+  const [acceptsInsurance, setAcceptsInsurance] = useState(
+    initialFilters?.acceptsInsurance ?? false
+  )
+  const [insuranceProviders, setInsuranceProviders] = useState<Set<string>>(
+    initialFilters?.insuranceProviders ?? new Set()
+  )
+  const [sortBy, setSortBy] = useState<SortOption>(initialFilters?.sortBy ?? 'relevance')
 
   // Debounce expensive inputs
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300)
@@ -169,6 +204,53 @@ export function useTherapistFiltering({
         }
       }
 
+      // 5. Language filter
+      if (languages.size > 0) {
+        const hasMatchingLanguage = therapist.languages.some((lang) =>
+          languages.has(lang)
+        )
+        if (!hasMatchingLanguage) {
+          return false
+        }
+      }
+
+      // 6. Price range filter
+      if (priceRange) {
+        const minInCents = priceRange.min * 100
+        const maxInCents = priceRange.max * 100
+
+        // If therapist has no price info, filter out
+        if (!therapist.priceMin && !therapist.priceMax) {
+          return false
+        }
+
+        // Check if therapist's price range overlaps with filter range
+        const therapistMin = therapist.priceMin ?? 0
+        const therapistMax = therapist.priceMax ?? Infinity
+
+        // No overlap if therapist's min price is above filter max, or therapist's max is below filter min
+        if (therapistMin > maxInCents || therapistMax < minInCents) {
+          return false
+        }
+      }
+
+      // 7. Insurance filter
+      if (acceptsInsurance) {
+        if (therapist.acceptedInsurance.length === 0) {
+          return false
+        }
+      }
+
+      // 8. Specific insurance provider filter
+      if (insuranceProviders.size > 0) {
+        const hasMatchingInsurance = therapist.acceptedInsurance.some((insurance) =>
+          insuranceProviders.has(insurance)
+        )
+        if (!hasMatchingInsurance) {
+          return false
+        }
+      }
+
       return true
     })
   }, [
@@ -179,7 +261,84 @@ export function useTherapistFiltering({
     nearbyOnly,
     userLocation,
     radius,
+    languages,
+    priceRange,
+    acceptsInsurance,
+    insuranceProviders,
   ])
+
+  // Sort therapists
+  const sortedTherapists = useMemo(() => {
+    const sorted = [...filteredTherapists]
+
+    switch (sortBy) {
+      case 'distance':
+        // Sort by distance (closest first)
+        sorted.sort((a, b) => {
+          const distA = a.distanceInKm ?? Infinity
+          const distB = b.distanceInKm ?? Infinity
+          return distA - distB
+        })
+        break
+
+      case 'price-low':
+        // Sort by price (lowest first)
+        sorted.sort((a, b) => {
+          const priceA = a.priceMin ?? Infinity
+          const priceB = b.priceMin ?? Infinity
+          return priceA - priceB
+        })
+        break
+
+      case 'price-high':
+        // Sort by price (highest first)
+        sorted.sort((a, b) => {
+          const priceA = a.priceMax ?? 0
+          const priceB = b.priceMax ?? 0
+          return priceB - priceA
+        })
+        break
+
+      case 'experience':
+        // Sort by years of experience (most experienced first)
+        sorted.sort((a, b) => {
+          // Extract years from experience string (e.g., "12 Jahre Praxis")
+          const yearsA = parseInt(a.experience.match(/\d+/)?.[0] ?? '0')
+          const yearsB = parseInt(b.experience.match(/\d+/)?.[0] ?? '0')
+          return yearsB - yearsA
+        })
+        break
+
+      case 'rating':
+        // Sort by rating (highest first)
+        sorted.sort((a, b) => {
+          return b.rating - a.rating
+        })
+        break
+
+      case 'availability':
+        // Sort by availability (most available first)
+        sorted.sort((a, b) => {
+          return a.availabilityRank - b.availabilityRank
+        })
+        break
+
+      case 'relevance':
+      default:
+        // Default: Sort by status (verified first), then by availability
+        sorted.sort((a, b) => {
+          // Verified profiles first
+          if (a.status === 'VERIFIED' && b.status !== 'VERIFIED') return -1
+          if (a.status !== 'VERIFIED' && b.status === 'VERIFIED') return 1
+
+          // Then by availability
+          return a.availabilityRank - b.availabilityRank
+        })
+        break
+    }
+
+    return sorted
+  }, [filteredTherapists, sortBy])
 
   // Get all available specializations
   const availableSpecializations = useMemo(() => {
@@ -190,15 +349,62 @@ export function useTherapistFiltering({
     return Array.from(specs).sort()
   }, [therapists])
 
+  // Get all available languages
+  const availableLanguages = useMemo(() => {
+    const langs = new Set<string>()
+    therapists.forEach((therapist) => {
+      therapist.languages.forEach((lang) => langs.add(lang))
+    })
+    return Array.from(langs).sort()
+  }, [therapists])
+
+  // Get all available insurance providers
+  const availableInsuranceProviders = useMemo(() => {
+    const providers = new Set<string>()
+    therapists.forEach((therapist) => {
+      therapist.acceptedInsurance.forEach((insurance) => providers.add(insurance))
+    })
+    return Array.from(providers).sort()
+  }, [therapists])
+
+  // Calculate price range stats
+  const priceRangeStats = useMemo(() => {
+    const prices = therapists
+      .filter((t) => t.priceMin || t.priceMax)
+      .flatMap((t) => [t.priceMin, t.priceMax])
+      .filter((p): p is number => p != null)
+      .map((p) => p / 100) // Convert cents to euros
+
+    if (prices.length === 0) return null
+
+    return {
+      min: Math.floor(Math.min(...prices)),
+      max: Math.ceil(Math.max(...prices)),
+    }
+  }, [therapists])
+
   // Check if any filters are active
   const hasActiveFilters = useMemo(() => {
     return (
       debouncedSearchQuery.length > 0 ||
       formats.size > 0 ||
       specializations.size > 0 ||
-      nearbyOnly
+      nearbyOnly ||
+      languages.size > 0 ||
+      priceRange !== null ||
+      acceptsInsurance ||
+      insuranceProviders.size > 0
     )
-  }, [debouncedSearchQuery, formats, specializations, nearbyOnly])
+  }, [
+    debouncedSearchQuery,
+    formats,
+    specializations,
+    nearbyOnly,
+    languages,
+    priceRange,
+    acceptsInsurance,
+    insuranceProviders,
+  ])
 
   // Reset all filters
   const resetFilters = () => {
@@ -209,6 +415,11 @@ export function useTherapistFiltering({
     setFormats(new Set())
     setSpecializations(new Set())
     setUserLocation(null)
+    setLanguages(new Set())
+    setPriceRange(null)
+    setAcceptsInsurance(false)
+    setInsuranceProviders(new Set())
+    setSortBy('relevance')
   }
 
   return {
@@ -220,6 +431,11 @@ export function useTherapistFiltering({
       formats,
       specializations,
       userLocation,
+      languages,
+      priceRange,
+      acceptsInsurance,
+      insuranceProviders,
+      sortBy,
     },
     setSearchQuery,
     setLocation,
@@ -228,10 +444,18 @@ export function useTherapistFiltering({
     setFormats,
     setSpecializations,
     setUserLocation,
+    setLanguages,
+    setPriceRange,
+    setAcceptsInsurance,
+    setInsuranceProviders,
+    setSortBy,
     resetFilters,
-    filteredTherapists,
+    filteredTherapists: sortedTherapists,
     totalCount: therapists.length,
     hasActiveFilters,
     availableSpecializations,
+    availableLanguages,
+    availableInsuranceProviders,
+    priceRangeStats,
   }
 }

@@ -84,6 +84,13 @@ enum MicrositeStatus {
   PUBLISHED
 }
 
+enum AvailabilityStatus {
+  AVAILABLE
+  LIMITED
+  WAITLIST
+  UNAVAILABLE
+}
+
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
@@ -189,11 +196,19 @@ model TherapistProfile {
   languages        String[]
   online           Boolean         @default(false)
   city             String?
+  postalCode       String?
+  street           String?
+  state            String?         // Bundesland (e.g., "Wien", "Niederösterreich")
+  addressLine      String?         // Full address line for display
   latitude         Float?
   longitude        Float?
   country          String          @default("AT")
   about            String?         @db.Text
   availabilityNote String?         @db.Text
+  availabilityStatus AvailabilityStatus? // Current availability status
+  nextAvailableDate DateTime?      // Next available appointment slot
+  estimatedWaitWeeks Int?          // Estimated waiting time in weeks
+  lastAvailabilityUpdate DateTime? // When availability was last updated
   pricingNote      String?         @db.Text
   isPublic         Boolean         @default(false)
 
@@ -238,9 +253,12 @@ model TherapistProfile {
 
   @@index([status, isPublic])
   @@index([city])
+  @@index([postalCode])
+  @@index([state])
   @@index([latitude, longitude])
   @@index([country])
   @@index([acceptingClients])
+  @@index([availabilityStatus])
   @@index([deletedAt])
   @@index([micrositeSlug])
   @@index([micrositeStatus])

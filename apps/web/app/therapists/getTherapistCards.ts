@@ -42,6 +42,11 @@ export async function getTherapistCards(): Promise<TherapistCard[]> {
       yearsExperience: true,
       profileImageUrl: true,
       status: true,
+      priceMin: true,
+      priceMax: true,
+      acceptedInsurance: true,
+      ageGroups: true,
+      modalities: true,
       user: {
         select: {
           firstName: true,
@@ -86,6 +91,11 @@ function transformProfileToCard(profile: TherapistProfileWithUser): TherapistCar
     status: profile.status,
     formatTags: deriveFormatTags(profile.city ?? '', profile.online),
     locationTokens: buildLocationTokens(city, locationLabel),
+    priceMin: profile.priceMin ?? undefined,
+    priceMax: profile.priceMax ?? undefined,
+    acceptedInsurance: profile.acceptedInsurance ?? [],
+    ageGroups: profile.ageGroups ?? [],
+    modalities: profile.modalities ?? [],
   }
 }
 

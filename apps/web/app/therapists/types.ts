@@ -22,4 +22,10 @@ export type TherapistCard = {
   formatTags: Array<'online' | 'praesenz' | 'hybrid'>
   distanceInKm?: number
   locationTokens: string[]
+  // Extended filter fields
+  priceMin?: number // in cents
+  priceMax?: number // in cents
+  acceptedInsurance: string[]
+  ageGroups: string[]
+  modalities: string[]
 }

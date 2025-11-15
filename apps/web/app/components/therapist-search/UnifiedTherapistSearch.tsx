@@ -11,6 +11,10 @@ import {
 import type { Coordinates } from '../../therapists/location-data'
 import { LocationInput } from './LocationInput'
 import { SpecializationFilters } from './SpecializationFilters'
+import { LanguageFilters } from './LanguageFilters'
+import { PriceRangeFilter } from './PriceRangeFilter'
+import { InsuranceFilters } from './InsuranceFilters'
+import { SortOptions } from './SortOptions'
 
 export type UnifiedTherapistSearchProps = {
   therapists: TherapistCard[]
@@ -60,11 +64,19 @@ export function UnifiedTherapistSearch({
     setFormats,
     setSpecializations,
     setUserLocation,
+    setLanguages,
+    setPriceRange,
+    setAcceptsInsurance,
+    setInsuranceProviders,
+    setSortBy,
     resetFilters,
     filteredTherapists,
     totalCount,
     hasActiveFilters,
     availableSpecializations,
+    availableLanguages,
+    availableInsuranceProviders,
+    priceRangeStats,
   } = useTherapistFiltering({ therapists })
 
   // Update parent with filtered results
@@ -93,11 +105,18 @@ export function UnifiedTherapistSearch({
   const advancedFiltersProps: AdvancedFiltersContentProps = {
     filters,
     availableSpecializations,
+    availableLanguages,
+    availableInsuranceProviders,
+    priceRangeStats,
     onLocationChange: setLocation,
     onCoordinatesChange: setUserLocation,
     onNearbyOnlyChange: setNearbyOnly,
     onRadiusChange: setRadius,
     onSpecializationsChange: setSpecializations,
+    onLanguagesChange: setLanguages,
+    onPriceRangeChange: setPriceRange,
+    onAcceptsInsuranceChange: setAcceptsInsurance,
+    onInsuranceProvidersChange: setInsuranceProviders,
   }
 
   return (
@@ -141,6 +160,11 @@ export function UnifiedTherapistSearch({
             )
           })}
         </div>
+      </div>
+
+      {/* Sort Options */}
+      <div className="mb-4">
+        <SortOptions sortBy={filters.sortBy} onChange={setSortBy} />
       </div>
 
       {/* Advanced Filters Toggle (Desktop - Accordion) */}
@@ -206,12 +230,14 @@ export function UnifiedTherapistSearch({
           <div className="absolute inset-x-0 bottom-0 max-h-[85vh] w-full rounded-t-3xl bg-gradient-to-b from-primary-950 via-neutral-950 to-black shadow-2xl animate-in slide-in-from-bottom duration-300">
             <div className="flex h-full flex-col">
               {/* Drag Handle */}
-              <div
-                className="flex justify-center pt-3 pb-2 cursor-pointer touch-none"
+              <button
+                type="button"
+                className="flex justify-center pt-3 pb-2 cursor-pointer touch-none w-full"
                 onClick={() => setIsFilterModalOpen(false)}
+                aria-label="Filter schließen"
               >
                 <div className="h-1.5 w-12 rounded-full bg-white/30" />
-              </div>
+              </button>
 
               {/* Header */}
               <div className="flex items-center justify-between border-b border-white/10 p-4">
@@ -308,21 +334,35 @@ export function UnifiedTherapistSearch({
 type AdvancedFiltersContentProps = {
   filters: TherapistFilters
   availableSpecializations: string[]
+  availableLanguages: string[]
+  availableInsuranceProviders: string[]
+  priceRangeStats: { min: number; max: number } | null
   onLocationChange: (value: string) => void
   onCoordinatesChange: (coords: Coordinates | null) => void
   onNearbyOnlyChange: (nearbyOnly: boolean) => void
   onRadiusChange: (radius: number) => void
   onSpecializationsChange: (specializations: Set<string>) => void
+  onLanguagesChange: (languages: Set<string>) => void
+  onPriceRangeChange: (range: { min: number; max: number } | null) => void
+  onAcceptsInsuranceChange: (accepts: boolean) => void
+  onInsuranceProvidersChange: (providers: Set<string>) => void
 }
 
 function AdvancedFiltersContent({
   filters,
   availableSpecializations,
+  availableLanguages,
+  availableInsuranceProviders,
+  priceRangeStats,
   onLocationChange,
   onCoordinatesChange,
   onNearbyOnlyChange,
   onRadiusChange,
   onSpecializationsChange,
+  onLanguagesChange,
+  onPriceRangeChange,
+  onAcceptsInsuranceChange,
+  onInsuranceProvidersChange,
 }: AdvancedFiltersContentProps) {
   return (
     <div className="space-y-6">
@@ -341,6 +381,32 @@ function AdvancedFiltersContent({
         selectedSpecializations={filters.specializations}
         onChange={onSpecializationsChange}
       />
+
+      <div className="border-t border-white/10 pt-6">
+        <LanguageFilters
+          availableLanguages={availableLanguages}
+          selectedLanguages={filters.languages}
+          onChange={onLanguagesChange}
+        />
+      </div>
+
+      <div className="border-t border-white/10 pt-6">
+        <PriceRangeFilter
+          priceRange={filters.priceRange}
+          onChange={onPriceRangeChange}
+          priceRangeStats={priceRangeStats}
+        />
+      </div>
+
+      <div className="border-t border-white/10 pt-6">
+        <InsuranceFilters
+          availableInsuranceProviders={availableInsuranceProviders}
+          acceptsInsurance={filters.acceptsInsurance}
+          onAcceptsInsuranceChange={onAcceptsInsuranceChange}
+          insuranceProviders={filters.insuranceProviders}
+          onInsuranceProvidersChange={onInsuranceProvidersChange}
+        />
+      </div>
     </div>
   )
 }
