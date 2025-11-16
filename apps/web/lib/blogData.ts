@@ -62,7 +62,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Ratgeber',
     publishedAt: '2025-01-15',
     readingTime: '15 Min.',
-    author: 'Dr. Gregor Studlar',
+    author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Panikattacken', 'Angststörungen', 'Akuthilfe', 'Verhaltenstherapie', 'Selbsthilfe'],
     featuredImage: {
