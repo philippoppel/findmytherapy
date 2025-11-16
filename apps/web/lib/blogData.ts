@@ -48,6 +48,126 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'akuthilfe-panikattacken',
+    title: 'Panikattacken verstehen und bewältigen',
+    excerpt:
+      'Herzrasen, Zittern, das Gefühl von Kontrollverlust – eine Panikattacke kommt oft plötzlich und ohne Vorwarnung. In diesem wissenschaftlich fundierten Artikel erklären wir, was Panikattacken sind, wie man sie erkennt, was im Körper dabei passiert und welche Strategien in akuten Momenten helfen.',
+    summary: [
+      'Panikattacken sind plötzliche, intensive Angstanfälle, die ohne objektive Gefahr auftreten und körperlich nicht schädlich sind',
+      'Typische Symptome umfassen Herzrasen, Atemnot, Schwindel und intensive Angstgedanken wie Todesangst',
+      'Im Körper wird ein "Fehlalarm" ausgelöst: Das Angstzentrum aktiviert die Kampf-oder-Flucht-Reaktion ohne reale Bedrohung',
+      'Akuthilfe-Strategien: Kontrolliertes Atmen, körperliche Bewegung, laut sprechen und Grounding-Techniken',
+      'Kognitive Verhaltenstherapie mit Konfrontation ist nachweislich wirksam zur Bewältigung von Panikattacken',
+    ],
+    category: 'Ratgeber',
+    publishedAt: '2025-01-15',
+    readingTime: '15 Min.',
+    author: 'Dr. Gregor Studlar',
+    authorId: 'gregor-studlar',
+    tags: ['Panikattacken', 'Angststörungen', 'Akuthilfe', 'Verhaltenstherapie', 'Selbsthilfe'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person in ruhiger Umgebung praktiziert Atemübungen zur Bewältigung von Angst',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Panikattacken',
+      'Angststörung',
+      'Akuthilfe',
+      'Panikstörung',
+      'Verhaltenstherapie',
+      'Selbsthilfe',
+      'Atemtechniken',
+    ],
+    relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
+    sections: [
+      {
+        heading: 'Was sind Panikattacken?',
+        paragraphs: [
+          'Panikattacken sind plötzliche, intensive Angstanfälle, die typischerweise „wie aus heiterem Himmel" auftreten – also ohne objektiv erkennbare äußere Gefahr. Dabei verspüren Betroffene innerhalb von Minuten extreme Angst und eine Reihe körperlicher Symptome, als stünde ihr Leben auf dem Spiel. Oft werden diese Anfälle als Todesangst oder Gefühl des Wahnsinn-Werdens beschrieben.',
+          'Wichtig zu wissen ist, dass eine einzelne Panikattacke noch keine psychische Erkrankung darstellt. Erst wenn Panikattacken wiederholt auftreten und die ständige Furcht vor der nächsten Attacke (auch Erwartungsangst oder „Angst vor der Angst") entsteht, spricht man von einer Panikstörung. Bei einer Panikstörung dominieren die unerwarteten Anfälle das Leben der Person und führen oft dazu, dass bestimmte Orte oder Situationen gemieden werden, aus Angst, dort eine Attacke zu erleiden.',
+          'Panikattacken können in völlig entspannten Momenten auftauchen oder nach vorangegangenem Stress auftreten. Häufig kommen sie schlagartig, erreichen innerhalb von 5 bis 10 Minuten ihren Höhepunkt und klingen dann von selbst wieder ab – meist nach wenigen Minuten bis etwa einer halben Stunde. So eine Episode fühlt sich für Betroffene zwar endlos an, ist aber zeitlich begrenzt.',
+          'Treten Panikattacken vor allem in bestimmten Situationen auf (etwa in Menschenmengen, Aufzügen oder beim Fliegen), können sie auch Teil anderer Angststörungen sein – zum Beispiel bei Agoraphobie (Platzangst) oder sozialen Phobien. Insgesamt sind Panikattacken keine Seltenheit: Schätzungen zufolge erleben etwa jeder zehnte Erwachsene pro Jahr zumindest einmal eine Panikattacke. Circa 3–5 % der Menschen entwickeln im Laufe des Lebens eine Panikstörung, Frauen etwas häufiger als Männer.',
+        ],
+      },
+      {
+        heading: 'Woran erkenne ich eine Panikattacke?',
+        paragraphs: [
+          'Panikattacken äußern sich durch heftige körperliche Symptome und angsterfüllte Gedanken. Typischerweise beginnen sie abrupt, mit einem intensiven Angstgefühl und körperlichen Reaktionen, die binnen Minuten eskalieren. Folgende Anzeichen sind charakteristisch für eine Panikattacke:',
+        ],
+        list: [
+          'Herz-Kreislauf: Starkes Herzklopfen oder Herzrasen, manchmal unregelmäßiger Herzschlag (Herzstolpern), Enge- oder Druckgefühle in der Brust und Brustschmerzen. Viele Betroffene denken aufgrund dieser Symptome zunächst an einen Herzinfarkt.',
+          'Atmung: Kurzatmigkeit, beschleunigte Atmung bis hin zu Hyperventilation, Erstickungsgefühle oder das Empfinden, „keine Luft zu bekommen".',
+          'Vegetative Symptome: Schwitzen (oft schweißnasse Hände), Hitzewallungen oder Kälteschauer, Zittern oder Beben am ganzen Körper. Auch ein trockener Mund, Übelkeit, „Kloß im Hals" oder Magen-Darm-Beschwerden können auftreten.',
+          'Neurologische Empfindungen: Schwindel, Benommenheit oder das Gefühl, ohnmächtig zu werden. Kribbelnde oder taube Empfindungen in Händen, Füßen oder Gesicht (Parästhesien) sind ebenfalls häufig. Viele erleben auch ein Gefühl der Unwirklichkeit (Derealisation) oder fühlen sich losgelöst von sich selbst (Depersonalisation) inmitten der Attacke.',
+          'Angstgedanken: Intensive Furcht, die Kontrolle zu verlieren, „verrückt zu werden" oder unmittelbar zu sterben. Diese Gedanken verstärken die Panik meist noch weiter. Nicht selten kommt es aus lauter Angst auch zur Furcht vor peinlichen Konsequenzen – etwa ohnmächtig zu werden oder einen sichtbaren „Anfall" zu erleiden, was die Betroffenen vor anderen blamieren könnte.',
+        ],
+      },
+      {
+        heading: 'Was passiert im Körper während einer Panikattacke?',
+        paragraphs: [
+          'Eine Panikattacke lässt sich als „Fehlalarm" des Körpers verstehen. Evolutionsbiologisch betrachtet aktiviert der Körper dabei Mechanismen, die uns in wirklichen Lebensgefahren schützen sollen – die sogenannte Kampf-oder-Flucht-Reaktion. Ausgelöst wird diese Reaktion durch das Angstzentrum im Gehirn, der Amygdala (auch Mandelkern genannt). Dieses Alarmzentrum bewertet Sinneseindrücke blitzschnell und schickt im Notfall ein Alarmsignal an den Körper – meist schneller, als unser bewusster Verstand die Situation überhaupt einordnen kann. Bei einer Panikattacke passiert genau das: Der Mandelkern schlägt Alarm, obwohl keine echte Bedrohung besteht.',
+          'Daraufhin tritt das Stress-System des Körpers (Sympathikus) in Aktion. Es werden große Mengen der Stresshormone Adrenalin und Noradrenalin ausgeschüttet, um den Körper in Alarmbereitschaft zu versetzen. Diese Hormone verursachen die typischen körperlichen Veränderungen: Das Herz schlägt schneller und kräftiger, der Blutdruck steigt an, die Atemfrequenz erhöht sich und die Bronchien weiten sich, um mehr Sauerstoff aufzunehmen. Die Muskulatur spannt sich an – bereit zu Kampf oder Flucht – und gleichzeitig werden nachgeordnete Funktionen gedrosselt: Die Verdauung verlangsamt sich, die Durchblutung der Haut nimmt ab (daher wird manchen blass oder kalt), und die Speichelproduktion wird gehemmt (trockener Mund entsteht). Insgesamt versetzt dieser Adrenalinstoß den Organismus in höchste Alarmbereitschaft, was sich als die Vielzahl körperlicher Angstsymptome äußert.',
+          'Allerdings ist bei einer Panikattacke kein reales Flucht-oder-Kampf-Ziel vorhanden. Der Körper läuft also unter Hochspannung, ohne dass wir die eingeleitete Energie nutzen können. Dies führt häufig zu einer „Erstarrungsreaktion": Viele Betroffene fühlen sich wie gelähmt oder handlungsunfähig während der Attacke – als wären Gas- und Bremspedal gleichzeitig durchgedrückt. In der Fachsprache spricht man neben Kampf und Flucht auch von der Freeze-Reaktion (Totstellreflex). Tatsächlich beobachtet man bei Panik, dass einerseits das anregende sympathische Nervensystem auf Hochtouren läuft, andererseits aber auch das Gegenstück, der Parasympathikus, aktiv wird und eine Blockade verursacht. Diese unproduktive Mischung trägt zum subjektiven Gefühl des Kontrollverlusts bei, das Panikattacken so beängstigend macht.',
+          'Trotz der intensiven körperlichen Empfindungen gilt: Eine Panikattacke ist körperlich nicht schädlich. Der Anstieg von Herzschlag und Blutdruck hält nur kurz an und ist – bei ansonsten gesundem Herz – völlig ungefährlich, vergleichbar mit der Belastung bei heftigem Sport oder Sex. Auch die oft befürchtete Ohnmacht bleibt aus, denn im Unterschied zu einer echten Unterzuckerung oder einem Kreislaufkollaps fällt der Blutdruck bei Panik nicht ab, sondern ist sogar erhöht.',
+          'Ein häufiges Phänomen ist die Hyperventilation: Aus Angst atmen viele Betroffene zu schnell und flach. Dadurch sinkt der Kohlendioxidgehalt im Blut, was zu Symptomen wie Schwindel, Kribbeln oder einem Engegefühl in Brust und Hals führt. Diese Auswirkungen sind jedoch medizinisch harmlos und vorübergehend. Sobald der Körper bemerkt, dass keine echte Gefahr besteht, und der Parasympathikus wieder die Oberhand gewinnt, normalisieren sich die Funktionen. Nach einigen Minuten pendeln sich Puls und Atmung automatisch wieder ein, und die akute Panikreaktion klingt ab. Zurück bleibt oft körperliche Ermüdung – vergleichbar mit dem „Muskelkater" nach einer Stress-Spitze.',
+        ],
+      },
+      {
+        heading: 'Was kann man akut tun, wenn eine Panikattacke auftritt?',
+        paragraphs: [
+          'In der akuten Situation einer Panikattacke scheint die Angst unkontrollierbar – doch es gibt Soforthilfestrategien, die helfen können, die Attacke abzuschwächen oder schneller zu überstehen. Zunächst einmal ist es wichtig, sich bewusst zu machen: Die Panikattacke geht vorbei und ist an sich nicht lebensbedrohlich. Diese innere Erinnerung („Es ist nur Angst, kein Herzinfarkt!") kann helfen, den Teufelskreis aus Angstgedanken etwas zu durchbrechen. Folgende Maßnahmen haben sich in der Akutsituation bewährt:',
+        ],
+        list: [
+          'Ruhig und kontrolliert atmen: Versuchen Sie, die schnelle Atmung bewusst zu verlangsamen. Eine einfache Technik ist die Lippenbremse: Dabei atmet man langsam durch die Nase ein und anschließend mindestens doppelt so lange durch leicht geschürzte Lippen wieder aus. Zum Beispiel können Sie innerlich langsam „einatmen… eins… zwei…" zählen und beim Ausatmen „aus… zwei… drei… vier…". Durch dieses verlängerte Ausatmen wird einer Hyperventilation entgegengewirkt, der Sauerstoffaustausch verbessert und ein Beruhigungseffekt erzielt. Ziel ist etwa 6 Atemzüge pro Minute, was den Körper in einen Entspannungsmodus versetzt. Konzentrieren Sie sich ganz auf das Zählen und das Füllen und Leeren Ihrer Lungen – diese Achtsamkeit lenkt zugleich von angstvollen Gedanken ab.',
+          'Körperlich aktiv werden: Bewegung hilft, die überschüssige Angstenergie abzubauen. Wenn möglich, stehen Sie auf und gehen Sie umher – auch wenn Ihnen gerade nicht danach ist. Schon das Anspannen großer Muskelgruppen kann Linderung bringen. Machen Sie ein paar Kniebeugen, schütteln Sie die Arme aus oder gehen Sie zügig ein paar Schritte (z. B. Treppen hoch und runter). Durch körperliche Aktivität werden Stresshormone wie Adrenalin schneller verstoffwechselt, und die Anspannung sinkt. Viele Betroffene merken: Sobald sie sich aktiv bewegen, gewinnen sie wieder ein Stück Kontrolle über den Körper zurück.',
+          'Laut sprechen oder jemanden anrufen: Kommunikation kann in zweifacher Hinsicht helfen. Erstens lenkt Sprechen die Aufmerksamkeit nach außen – weg von den bedrohlichen Körperempfindungen. Zweitens normalisiert es die Atmung: Wer redet oder singt, kann nicht gleichzeitig hyperventilieren. Sagen Sie sich zum Beispiel laut vor: „Ich kriege genug Luft. Mir passiert gerade nichts Schlimmes. Das geht gleich vorüber." Sie können auch bewusst anfangen zu singen oder mit einer vertrauten Person zu telefonieren. Dieses Laute-aus-sich-Herausgehen wirkt der inneren Panikspirale entgegen.',
+          'Sich selbst erden und beruhigen: Versuchen Sie, Ihren Geist aus der Angstsphäre zurückzuholen. Einige Techniken der Achtsamkeit können sofort angewandt werden: Schauen Sie sich bewusst im Raum um und benennen Sie leise fünf Dinge, die Sie sehen. Fühlen Sie den Boden unter den Füßen oder greifen Sie einen Gegenstand (z. B. den Schlüsselbund in der Tasche) und konzentrieren Sie sich darauf. Solche einfachen Grounding-Übungen signalisieren dem Gehirn, dass Sie im Hier-und-Jetzt sicher sind.',
+        ],
+      },
+      {
+        heading: 'Wie unterscheidet man Panikattacken von anderen Störungen?',
+        paragraphs: [
+          'Panikattacken können zwar Teil verschiedener Störungsbilder sein, doch es gibt charakteristische Unterschiede im Ablauf und den Auslösern. Gegenüber realen organischen Erkrankungen – allen voran einem Herzinfarkt – sind Panikattacken zwar symptomatisch ähnlich, aber vom Wesen her anders: Eine Panikattacke ist nicht lebensbedrohlich, während ein echter Herzinfarkt ohne Behandlung oft tödlich enden kann. Bei einem Herzinfarkt liegen typische körperliche Befunde vor (z. B. Verschluss einer Herzarterie), und die Schmerzen bleiben bestehen oder verstärken sich, bis medizinische Maßnahmen greifen.',
+          'Eine Panikattacke hingegen verursacht keine organischen Schäden und klingt in relativ kurzer Zeit von selbst ab. Zudem treten Herzinfarkte häufig unter körperlicher Belastung auf oder gehen mit spezifischen Symptomen einher (etwa ausstrahlende Schmerzen in Arm oder Kiefer), während Panikattacken oft aus völliger Ruhe heraus einsetzen. Dennoch: Die Symptome können sich stark ähneln, daher sollte bei unklaren Brustschmerzen immer zuerst ein Arzt prüfen, ob ein medizinisches Problem vorliegt. Sind EKG, Herz und Schilddrüse in Ordnung, kann man wieder an die Panik als Ursache denken.',
+          'Im Bereich der Angststörungen gibt es ebenfalls klare Abgrenzungen: Bei phobischen Störungen (etwa spezifischen Phobien oder sozialen Phobien) wird die Angst durch konkrete Auslöser hervorgerufen – zum Beispiel Höhenangst durch Höhe, Prüfungsangst durch eine Prüfungssituation oder soziale Angst durch das Sprechen vor Publikum. In solchen Fällen kommt es nur in den gefürchteten Situationen zu panikartigen Symptomen. Bei einer Panikstörung dagegen treten die Attacken unvorhersehbar und ohne erkennbaren externen Auslöser auf. Diese Unvorhersehbarkeit macht Panikstörungen besonders belastend.',
+          'Auch andere psychische Störungen können im Verlauf Panikattacken beinhalten. Beispielsweise erleben manche Menschen mit Posttraumatischer Belastungsstörung (PTBS) in Angstsituationen oder bei Trigger-Erinnerungen ähnliche Anfälle. Bei einer Agoraphobie (der Angst vor bestimmten Orten/Weiten) entstehen Panikattacken vor allem dann, wenn die Person sich an Orten befindet, die sie als unsicher wahrnimmt – etwa wo Flucht schwierig wäre oder Hilfe unsicher erscheint. Nicht zuletzt können auch körperliche Faktoren panikartige Symptome auslösen: etwa Schilddrüsenüberfunktion, Hormonumstellungen oder starker Konsum von Koffein oder Drogen.',
+        ],
+      },
+      {
+        heading: 'Welche therapeutischen Ansätze und Selbsthilfestrategien sind wirksam?',
+        paragraphs: [
+          'Panikattacken geraten leicht in einen Teufelskreis: Aus Angst vor den Angstsymptomen vermeiden Betroffene Anstrengungen oder bestimmte Situationen. Diese Vermeidung verhindert jedoch, dass man positive Erfahrungen macht – zum Beispiel eine angstauslösende Situation erfolgreich zu bewältigen. Dadurch bleibt die Angst vor der Angst bestehen oder verstärkt sich sogar, und die Panikattacken treten weiter auf. Moderne Therapieansätze zielen darauf ab, diesen Teufelskreis zu durchbrechen, indem man der Angst Schritt für Schritt die Grundlage entzieht.',
+          'Als besonders wirksam bei Panikattacken hat sich die kognitive Verhaltenstherapie (KVT) erwiesen. In einer solchen Therapie lernt die Patientin, die Angstmechanismen besser zu verstehen (Psychoedukation) und anders damit umzugehen. Zunächst wird vermittelt, was im Körper bei Angst passiert und dass die Symptome zwar extrem unangenehm, aber nicht gefährlich sind. Dieses Wissen allein kann oft schon beruhigend wirken. Die Therapeutin hilft dann dabei, katastrophisierende Gedanken zu erkennen und zu korrigieren.',
+          'Der nächste zentrale Baustein der Verhaltenstherapie ist die Konfrontationstherapie (Exposition). Dabei übt die Person, sich schrittweise den angstauslösenden Situationen oder Körperempfindungen zu stellen, ohne die üblichen Flucht- und Vermeidungsstrategien anzuwenden. Studien zeigen, dass eine behutsame Konfrontation mit den Angstreaktionen sehr effektiv ist, um Panikattacken zu überwinden. In der Praxis kann das so aussehen, dass der Therapeut mit der Patientin künstlich leichte Angstsymptome hervorruft – etwa durch bewusstes schnelleres Atmen (Hyperventilationstest), durch im Kreis drehen (Schwindel erzeugen) oder durch Anspannen der Muskulatur.',
+          'Begleitend können Entspannungstechniken und achtsamkeitsbasierte Methoden sehr hilfreich sein. Entspannungsverfahren wie progressive Muskelentspannung nach Jacobson oder autogenes Training zielen darauf ab, das überaktive autonome Nervensystem wieder ins Gleichgewicht zu bringen. Regelmäßig geübt, senken sie das allgemeine Anspannungsniveau und können somit die Neigung zu Panikattacken reduzieren. Achtsamkeitsübungen – beispielsweise eine Atemmeditation – schulen den Betroffenen darin, Körperempfindungen wahrzunehmen, ohne sofort mit Angst darauf zu reagieren.',
+          'In einigen Fällen kann eine medikamentöse Behandlung sinnvoll sein – vor allem, wenn die Angst so stark ist, dass ein Zugang über Psychotherapie zunächst erschwert wird. Hier kommen vorrangig Antidepressiva zum Einsatz, insbesondere SSRI (selektive Serotonin-Wiederaufnahmehemmer) oder SNRI (Serotonin-Noradrenalin-Wiederaufnahmehemmer). Diese Medikamente sind für die Behandlung der Panikstörung am besten untersucht und haben sich als wirkungsvoll erwiesen. Sie senken die Grundangst und können damit eine Therapie überhaupt erst möglich machen.',
+          'Zusätzlich zur professionellen Therapie gibt es zahlreiche Selbsthilfeansätze, die Betroffenen von Panikattacken Erleichterung verschaffen. Ein zentraler Punkt ist die Psychoedukation, also sich selbst über die Natur der Panikstörung aufzuklären. Das Verständnis, dass die körperlichen Symptome letztlich „nur" Ausdruck übersteigerter Angstreaktionen sind – vergleichbar einem Fehlalarm – kann schon einen Teil des Schreckens nehmen.',
+          'Ebenfalls hilfreich sind Lebensstil-Anpassungen zur Vorbeugung von Panikattacken. Ausreichender Schlaf und regelmäßige Bewegung verbessern die allgemeine Stressresistenz; insbesondere Ausdauersport (Joggen, Radfahren, Schwimmen) wirkt erwiesenermaßen angstlösend. Auf übermäßigen Konsum von Koffein und anderen anregenden Substanzen sollte verzichtet werden, da diese körperliche Unruhe fördern. Auch der Abbau von chronischem Stress – etwa durch bessere Zeitplanung, Entspannungspausen im Alltag oder gegebenenfalls eine psychologische Stressbewältigung – kann dazu beitragen, die Häufigkeit von Attacken zu reduzieren.',
+        ],
+      },
+      {
+        heading: 'Häufige Fragen (FAQ) zu Panikattacken',
+        paragraphs: [
+          'Sind Panikattacken gefährlich? – Nein, auch wenn sie sich schrecklich anfühlen. Eine Panikattacke kann einem nicht das Leben nehmen und führt weder zum Herzinfarkt noch zum „Durchdrehen". Die körperlichen Symptome – Herzrasen, hoher Blutdruck, Hyperventilation etc. – sind vorübergehend und hinterlassen keine bleibenden Schäden. Allerdings sollte man, besonders beim ersten Auftreten, immer ärztlich abklären lassen, ob nicht doch etwas Körperliches vorliegt.',
+          'Wie häufig kommen Panikattacken vor? – Gelegentliche Panikattacken sind relativ häufig. Schätzungen zufolge erleben pro Jahr etwa 10 % der Erwachsenen mindestens eine Panikattacke. Die eigentliche Panikstörung (wiederholte Attacken plus anhaltende Angst davor) betrifft rund 3–5 % der Menschen irgendwann im Leben. Frauen entwickeln etwas häufiger eine Panikstörung als Männer. Angststörungen insgesamt gehören zu den häufigsten psychischen Erkrankungen – das zeigt, wie viele Menschen mit ähnlichen Problemen zu kämpfen haben.',
+          'Was ist der Unterschied zwischen einer Panikattacke und einem Herzinfarkt? – Die Symptome können sich ähneln (Brustschmerz, Luftnot, Schweißausbruch etc.), doch ein Herzinfarkt ist lebensbedrohlich, eine Panikattacke nicht. Bei einem Herzinfarkt liegt ein Verschluss einer Herzarterie vor; der Schmerz und die Beschwerden hören nicht einfach auf, sondern erfordern eine medizinische Notfallbehandlung. Eine Panikattacke hingegen resultiert „nur" aus einer überschießenden Alarmreaktion des Körpers auf Angst und vergeht von selbst wieder.',
+          'Braucht man Medikamente gegen Panikattacken? – Nicht zwingend. Therapie (vor allem Verhaltenstherapie) gilt als Behandlung erster Wahl, weil sie an den Ursachen ansetzt und nachhaltige Bewältigungsstrategien vermittelt. Medikamente wie Antidepressiva können aber unterstützend sinnvoll sein, insbesondere wenn die Angst sehr stark ist. Bestimmte Antidepressiva (z. B. SSRIs) haben sich bei Panikstörung als wirksam erwiesen und machen nicht abhängig.',
+          'Was kann ich selbst tun, um Panikattacken vorzubeugen? – Neben der professionellen Therapie gibt es einiges, was Sie selbst im Alltag tun können. Stress reduzieren ist ein wichtiger Faktor – sorgen Sie für regelmäßige Entspannung und ausreichend Schlaf. Körperliche Aktivität hilft erwiesenermaßen: Ausdauerbewegung wie Joggen, Radfahren oder Schwimmen verbessert die Angstbewältigung. Vermeiden Sie übermäßig viel Koffein, Nikotin und Alkohol, da diese Stoffe das Nervensystem anregen und Paniksymptome begünstigen können.',
+          'Wann sollte ich professionelle Hilfe suchen? – Grundsätzlich immer dann, wenn Panikattacken Ihr Leben wesentlich beeinträchtigen oder Ihre Lebensqualität mindern. Spätestens wenn Sie wegen der ständigen Angst bestimmte Orte meiden, sich sozial zurückziehen oder in dauernder Sorge vor der nächsten Attacke leben, ist es ratsam, einen Psychotherapeuten aufzusuchen. Scheuen Sie sich nicht davor – Angststörungen sind gut erforscht und behandelbar, und je früher man anfängt, desto schneller stellt sich Besserung ein.',
+        ],
+      },
+      {
+        heading: 'Fazit',
+        paragraphs: [
+          'Panikattacken können das Leben der Betroffenen massiv einschränken – doch es gibt wirkungsvolle Wege, diese Angststörung zu behandeln. Mit Wissen, Therapie und Übung lässt sich der Teufelskreis der Angst durchbrechen. Betroffene lernen allmählich, dass die Paniksymptome zwar furchteinflößend, aber letztlich ungefährlich sind, und gewinnen die Kontrolle über ihr Leben zurück.',
+          'Wichtig ist, das Thema offen anzugehen und bei Bedarf fachliche Hilfe in Anspruch zu nehmen. So besteht „endlich die Chance, ohne Panik zu leben" – ein Leben, in dem Angst nicht mehr der bestimmende Faktor ist, sondern wieder Platz ist für Lebensfreude, Freiheit und Selbstvertrauen. Sie sind der Angst nicht ausgeliefert – es gibt einen Weg heraus.',
+        ],
+      },
+    ],
+  },
+  {
     slug: 'digitale-ersteinschaetzung-mental-health',
     title: 'Digitale Ersteinschätzung: Wie FindMyTherapy Orientierung schafft',
     excerpt:
