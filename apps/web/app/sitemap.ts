@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { blogPosts } from '../lib/blogData'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://findmytherapy.net'
@@ -98,6 +99,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
+  // Dynamic blog post pages
+  const blogPostPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(post.publishedAt),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }))
+
+  // Blog category pages
+  const categories = Array.from(new Set(blogPosts.map((post) => post.category)))
+  const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
+    url: `${baseUrl}/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+
+  // Blog author pages
+  const authorIds = Array.from(new Set(blogPosts.map((post) => post.authorId)))
+  const authorPages: MetadataRoute.Sitemap = authorIds.map((authorId) => ({
+    url: `${baseUrl}/blog/authors/${authorId}`,
+    lastModified: currentDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }))
+
   // TODO: Add dynamic therapist profile pages
   // This should fetch from database and add entries like:
   // {
@@ -107,13 +134,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   //   priority: 0.8,
   // }
 
-  // TODO: Add dynamic blog post pages
-  // {
-  //   url: `${baseUrl}/blog/${post.slug}`,
-  //   lastModified: post.updatedAt,
-  //   changeFrequency: 'monthly',
-  //   priority: 0.6,
-  // }
-
-  return staticPages
+  return [...staticPages, ...blogPostPages, ...categoryPages, ...authorPages]
 }

@@ -20,6 +20,7 @@ import { AuthorBio } from '@/app/components/blog/AuthorBio'
 import { RelatedArticles } from '@/app/components/blog/RelatedArticles'
 import { SocialShare } from '@/app/components/blog/SocialShare'
 import { TableOfContents } from '@/app/components/blog/TableOfContents'
+import { MedicalDisclaimer } from '@/app/components/blog/MedicalDisclaimer'
 import { NewsletterForm } from '@/app/components/forms/NewsletterForm'
 
 type BlogPostPageProps = {
@@ -106,9 +107,36 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   // Build medical reviewer data if available
   const medicalReviewer = post.medicalReviewedBy ? getAuthorById(post.medicalReviewedBy) : null
 
+  // Organization Schema
+  const organizationStructuredData = {
+    '@type': 'Organization',
+    '@id': 'https://findmytherapy.net/#organization',
+    name: 'FindMyTherapy',
+    url: 'https://findmytherapy.net',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://findmytherapy.net/logo.png',
+    },
+    sameAs: [
+      'https://www.linkedin.com/company/findmytherapy',
+      'https://twitter.com/findmytherapy',
+    ],
+  }
+
+  // Determine if this is health-related content
+  const healthKeywords = ['Depression', 'Angst', 'Angststörung', 'Panik', 'Burnout', 'Therapie', 'Psychotherapie']
+  const isHealthTopic = post.medicalReviewedBy && post.keywords.some(keyword =>
+    healthKeywords.some(healthKw => keyword.toLowerCase().includes(healthKw.toLowerCase()))
+  )
+
+  // Extract primary health topic from keywords
+  const primaryHealthTopic = post.keywords.find(keyword =>
+    healthKeywords.some(healthKw => keyword.toLowerCase().includes(healthKw.toLowerCase()))
+  ) || 'Mentale Gesundheit'
+
   const articleStructuredData = {
     '@context': 'https://schema.org',
-    '@type': post.medicalReviewedBy ? 'MedicalWebPage' : 'BlogPosting',
+    '@type': isHealthTopic ? 'HealthTopicContent' : (post.medicalReviewedBy ? 'MedicalWebPage' : 'BlogPosting'),
     headline: post.title,
     description: post.excerpt,
     image: buildImageUrl(post.featuredImage?.src),
@@ -124,6 +152,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           '@type': 'Organization',
           name: post.author,
         },
+    publisher: organizationStructuredData,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     keywords: [...post.keywords, ...(post.tags || [])],
@@ -149,13 +178,49 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     ...(post.lastReviewed && {
       lastReviewed: post.lastReviewed,
     }),
-    ...(post.medicalReviewedBy && {
+    ...(isHealthTopic && {
+      hasHealthAspect: {
+        '@type': 'MedicalEntity',
+        name: primaryHealthTopic,
+      },
+      specialty: {
+        '@type': 'MedicalSpecialty',
+        name: 'Psychotherapie',
+      },
+    }),
+    ...(post.medicalReviewedBy && !isHealthTopic && {
       specialty: 'Psychotherapie',
       about: {
         '@type': 'MedicalCondition',
         name: 'Angststörungen',
       },
     }),
+  }
+
+  // BreadcrumbList Schema
+  const breadcrumbStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://findmytherapy.net',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://findmytherapy.net/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
   }
 
   // FAQ Schema if FAQs are present
@@ -366,6 +431,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </div>
 
+            {post.medicalReviewedBy && <MedicalDisclaimer />}
             {author && <AuthorBio author={author} />}
             <RelatedArticles currentPost={post} allPosts={blogPosts} />
           </div>
@@ -454,6 +520,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       </div>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }} />
       {faqStructuredData && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       )}
