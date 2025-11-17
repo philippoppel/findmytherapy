@@ -94,7 +94,7 @@ export const blogPosts: BlogPost[] = [
       'Selbsthilfe',
       'Atemtechniken',
     ],
-    relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
+    relatedPosts: ['angststoerungen-formen-symptome-behandlung', 'atemtechniken-bei-angst'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-15',
     faq: [
@@ -1618,7 +1618,7 @@ export const blogPosts: BlogPost[] = [
       'PHQ-9 Test',
       'Depressive Episode',
     ],
-    relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen'],
+    relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [
@@ -1781,7 +1781,7 @@ export const blogPosts: BlogPost[] = [
       height: 630
     },
     keywords: ['Burnout', 'Burnout Symptome', 'Burnout Test', 'Burnout Prävention', 'Erschöpfung', 'Work-Life-Balance', 'Stress Arbeit'],
-    relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden'],
+    relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [
@@ -1809,7 +1809,7 @@ export const blogPosts: BlogPost[] = [
     tags: ['Therapeutensuche', 'Psychotherapie Österreich', 'Kassentherapeut', 'Wahltherapeut'],
     featuredImage: { src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Therapeutisches Gespräch zwischen Therapeut und Klient', width: 1200, height: 630 },
     keywords: ['Therapeut finden Wien', 'Psychotherapeut finden Österreich', 'Kassentherapeut', 'Wahltherapeut', 'Psychotherapie Kassenzuschuss'],
-    relatedPosts: ['kassenzuschuss-psychotherapie-oesterreich', 'serioese-online-therapie-erkennen'],
+    relatedPosts: ['kassenzuschuss-psychotherapie-oesterreich', 'serioese-online-therapie-erkennen', 'psychologe-vs-psychotherapeut', 'wartezeiten-psychotherapie-wien'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [{ question: 'Was ist wichtiger: Die Therapiemethode oder die Person des Therapeuten?', answer: 'Studien zeigen klar: Die therapeutische Beziehung ist der stärkste Prädiktor für Therapieerfolg – wichtiger als die spezifische Methode. "Chemistry" zwischen Therapeut und Klient ist entscheidend. Wählen Sie einen Therapeuten, bei dem Sie sich wohl und verstanden fühlen.' }],
@@ -1828,7 +1828,7 @@ export const blogPosts: BlogPost[] = [
     tags: ['Atemtechniken', 'Angst', 'Panik', 'Selbsthilfe', 'Entspannung'],
     featuredImage: { src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person praktiziert Atemübungen in ruhiger Umgebung', width: 1200, height: 630 },
     keywords: ['Atemübungen Angst', 'Atemtechniken Panik', '4-7-8 Atmung', 'Bauchatmung', 'Box Breathing'],
-    relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten'],
+    relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     sections: [{ heading: 'Warum Atmung bei Angst hilft', paragraphs: ['Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.'] }, { heading: '1. Die 4-7-8-Atmung', paragraphs: ['Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.'] }, { heading: '2. Bauchatmung (Zwerchfellatmung)', paragraphs: ['Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.'] }, { heading: '3. Box-Breathing (4-4-4-4)', paragraphs: ['4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.'] }]
@@ -1846,7 +1846,7 @@ export const blogPosts: BlogPost[] = [
     tags: ['Psychologe', 'Psychotherapeut', 'Psychiater', 'Unterschiede', 'Ausbildung'],
     featuredImage: { src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Unterschiedliche Berufsgruppen in der psychischen Gesundheitsversorgung', width: 1200, height: 630 },
     keywords: ['Unterschied Psychologe Psychotherapeut', 'Psychiater vs Psychologe', 'Klinischer Psychologe', 'Psychotherapie Österreich'],
-    relatedPosts: ['richtigen-therapeuten-finden'],
+    relatedPosts: ['richtigen-therapeuten-finden', 'serioese-online-therapie-erkennen'],
     sections: [{ heading: 'Die drei Berufsgruppen im Überblick', paragraphs: ['In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.'] }, { heading: 'Psychologe', paragraphs: ['Ausbildung: Universitätsstudium der Psychologie (5 Jahre Bachelor + Master). Tätigkeit: Psychologische Diagnostik, Beratung, Coaching. KEINE Psychotherapie ohne Zusatzausbildung. Kassenleistung: Klinisch-psychologische Diagnostik teilweise auf Kasse.'] }, { heading: 'Psychotherapeut', paragraphs: ['Ausbildung: Propädeutikum + Fachspezifikum in einer anerkannten Therapiemethode (mind. 5 Jahre berufsbegleitend). Tätigkeit: Psychotherapie bei psychischen Erkrankungen. Kassenleistung: Auf Kasse bei Kassenstellen oder Zuschuss bei Wahltherapeuten (€30-40 pro Sitzung).'] }, { heading: 'Psychiater', paragraphs: ['Ausbildung: Medizinstudium + Facharztausbildung Psychiatrie (mind. 12 Jahre). Tätigkeit: Diagnose und medikamentöse Behandlung psychischer Erkrankungen. Kann Medikamente verschreiben. Kassenleistung: Volle Kassenleistung bei Kassenärzten.'] }]
   },
   {
