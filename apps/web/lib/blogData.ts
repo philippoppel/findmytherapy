@@ -165,6 +165,22 @@ export const blogPosts: BlogPost[] = [
           'Wichtig ist, das Thema offen anzugehen und bei Bedarf fachliche Hilfe in Anspruch zu nehmen. So besteht „endlich die Chance, ohne Panik zu leben" – ein Leben, in dem Angst nicht mehr der bestimmende Faktor ist, sondern wieder Platz ist für Lebensfreude, Freiheit und Selbstvertrauen. Sie sind der Angst nicht ausgeliefert – es gibt einen Weg heraus.',
         ],
       },
+      {
+        heading: 'Quellen und weiterführende Literatur',
+        paragraphs: [
+          'Dieser Artikel basiert auf wissenschaftlich fundierten Quellen und klinischer Expertise in der Behandlung von Angststörungen:',
+        ],
+        list: [
+          'Morschitzky, H. (2018). Endlich leben ohne Panik! Die besten Hilfen bei Panikattacken. Patmos Verlag. – Standardwerk zur Selbsthilfe bei Panikstörungen von einem der führenden deutschsprachigen Angstexperten.',
+          'Deutsche Gesellschaft für Psychosomatische Medizin und Ärztliche Psychotherapie (DGPM) & Deutsche Gesellschaft für Psychiatrie und Psychotherapie, Psychosomatik und Nervenheilkunde (DGPPN). S3-Leitlinie Behandlung von Angststörungen. – Evidenzbasierte Behandlungsempfehlungen.',
+          'Bandelow, B., & Wedekind, D. (2014). Angst- und Panikstörungen. In M. Berger (Hrsg.), Psychische Erkrankungen: Klinik und Therapie (5. Aufl.). Urban & Fischer. – Fachwissen zu Diagnostik und Therapie.',
+          'Aponet – Gesundheitsportal der deutschen Apotheker. Artikel zu Panikattacken und Angststörungen. https://www.aponet.de',
+          'Der Standard – Gesundheitsressort. Artikel zur mentalen Gesundheit und Panikstörungen. https://www.derstandard.at/gesundheit',
+          'Deutsche Angst-Hilfe e.V. (DASH). Informationen und Selbsthilfe-Ressourcen zu Angststörungen. https://www.angstselbsthilfe.de',
+          'Nationale Versorgungsleitlinie Unipolare Depression (2022). AWMF-Register-Nr.: nvl-005. – Enthält relevante Informationen zu komorbiden Angststörungen.',
+          'World Health Organization (WHO). ICD-11 Classification: Panic Disorder. – Internationale Klassifikation psychischer Störungen.',
+        ],
+      },
     ],
   },
   {
