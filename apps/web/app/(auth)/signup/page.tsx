@@ -22,7 +22,7 @@ export default function ClientSignupPage() {
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
             Zugang zu Programmen, Care-Team & Empfehlungen
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             Lege deinen Account an, sichere dir Kursmaterialien, persönliche Empfehlungen aus der Ersteinschätzung und den
             direkten Draht zum Care-Team.
           </p>

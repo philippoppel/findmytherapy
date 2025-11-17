@@ -173,7 +173,7 @@ export default function TagPage({ params }: TagPageProps) {
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-neutral-600">{post.excerpt}</p>
+                  <p className="text-sm text-muted">{post.excerpt}</p>
                 </div>
                 <div className="mt-4">
                   <Link href={`/blog/${post.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900">

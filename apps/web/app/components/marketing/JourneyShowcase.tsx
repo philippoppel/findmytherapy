@@ -97,7 +97,7 @@ export function JourneyShowcase() {
               >
                 Ein fließender Ablauf – von Unsicherheit zu professioneller Hilfe.
               </h2>
-              <p className="mt-4 text-pretty text-base leading-relaxed text-neutral-600 sm:text-lg">
+              <p className="mt-4 text-pretty text-base leading-relaxed text-muted sm:text-lg">
                 Unsere Plattform verbindet digitale Ersteinschätzung, persönliches Matching und begleitende Programme.
                 Alle Inhalte bleiben crawlbar und suchmaschinenfreundlich – SEO-optimiert ohne technische Spielereien.
               </p>
@@ -233,7 +233,7 @@ function JourneyStepCard({
         <h3 className="mt-4 text-2xl font-semibold text-neutral-900 sm:text-3xl">
           {step.title}
         </h3>
-        <p className="mt-3 text-pretty text-base leading-relaxed text-neutral-600">
+        <p className="mt-3 text-pretty text-base leading-relaxed text-muted">
           {step.description}
         </p>
         <ul className="mt-6 space-y-2 text-sm leading-relaxed text-neutral-900 sm:text-base">

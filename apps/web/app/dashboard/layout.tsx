@@ -53,7 +53,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="rounded-lg p-2 text-neutral-600 hover:bg-neutral-100 lg:hidden"
+              className="rounded-lg p-2 text-muted hover:bg-neutral-100 lg:hidden"
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>

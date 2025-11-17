@@ -440,7 +440,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Artikel-Insights</p>
               <h3 className="mt-2 text-xl font-semibold text-neutral-900">Metadaten & Tags</h3>
-              <dl className="mt-4 space-y-3 text-sm text-neutral-600">
+              <dl className="mt-4 space-y-3 text-sm text-muted">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                   <dt>Veröffentlicht</dt>
                   <dd className="font-semibold">{dateFormatter.format(publishedDate)}</dd>
@@ -495,7 +495,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
             <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
               <h3 className="text-lg font-semibold text-neutral-900">Mehr aus {post.category}</h3>
-              <p className="mt-2 text-sm text-neutral-600">
+              <p className="mt-2 text-sm text-muted">
                 Entdecke weitere Artikel aus dem Bereich {post.category} oder folge den Tags, um Updates zu erhalten.
               </p>
               <div className="mt-4 flex flex-col gap-3">

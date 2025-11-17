@@ -62,13 +62,14 @@ export function CookieConsentBanner() {
       />
 
       {/* Banner */}
-      <div className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-5xl p-4 sm:p-6">
+      <div className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-5xl p-4 sm:p-6" data-testid="cookie-consent-banner">
         <div className="relative rounded-2xl border border-gray-200 bg-white shadow-2xl">
           {/* Close button */}
           <button
             onClick={handleClose}
             className="absolute right-4 top-4 rounded-lg p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
             aria-label="Cookie-Banner schließen (nur essenziell)"
+            data-testid="cookie-banner-close"
           >
             <X className="h-5 w-5" />
           </button>
@@ -97,6 +98,7 @@ export function CookieConsentBanner() {
                   onClick={handleAcceptAll}
                   className="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
                   size="lg"
+                  data-testid="cookie-accept-all"
                 >
                   Alle akzeptieren
                 </Button>
@@ -105,6 +107,7 @@ export function CookieConsentBanner() {
                   variant="outline"
                   className="flex-1"
                   size="lg"
+                  data-testid="cookie-reject-all"
                 >
                   Nur Essenziell
                 </Button>

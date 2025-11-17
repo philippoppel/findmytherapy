@@ -75,7 +75,7 @@ export function BlogFeatureSection() {
                   <h3 className="text-2xl font-bold text-neutral-900 transition-colors group-hover:text-primary-600 sm:text-3xl">
                     {featuredPost.title}
                   </h3>
-                  <p className="text-base text-neutral-600 sm:text-lg">{featuredPost.excerpt}</p>
+                  <p className="text-base text-muted sm:text-lg">{featuredPost.excerpt}</p>
 
                   <div className="mt-auto grid gap-4 text-sm text-neutral-500 sm:grid-cols-2">
                     <span className="flex items-center gap-2">

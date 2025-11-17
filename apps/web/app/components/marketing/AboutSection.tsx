@@ -99,7 +99,7 @@ export function AboutSection() {
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
             {teamContent.heading}
           </h2>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-neutral-600 sm:text-xl">
+          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
             {teamContent.description}
           </p>
         </Reveal>
@@ -140,9 +140,9 @@ export function AboutSection() {
                       Founder Team
                     </p>
                     <p className="mt-2 text-xl font-semibold text-neutral-900">{member.name}</p>
-                    <p className="text-sm font-medium text-neutral-600">{member.role}</p>
+                    <p className="text-sm font-medium text-muted">{member.role}</p>
                     <p
-                      className="mt-2 text-sm leading-relaxed text-neutral-600"
+                      className="mt-2 text-sm leading-relaxed text-muted"
                       style={{
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
@@ -167,13 +167,13 @@ export function AboutSection() {
                 <h3 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
                   Jede:r soll Zugang zu qualifizierter Unterstützung bekommen.
                 </h3>
-                <p className="mb-6 text-base leading-relaxed text-neutral-600 sm:text-lg">
+                <p className="mb-6 text-base leading-relaxed text-muted sm:text-lg">
                   Wir verbinden evidenzbasiertes Wissen mit verifizierten Therapeut:innen und
                   einer Plattform, die Orientierung schafft – vom ersten Symptom bis zum Termin.
                 </p>
                 <ul className="space-y-3">
                   {missionHighlights.map((highlight) => (
-                    <li key={highlight} className="flex items-start gap-3 text-sm text-neutral-600">
+                    <li key={highlight} className="flex items-start gap-3 text-sm text-muted">
                       <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary-100 text-xs font-semibold text-primary-700">
                         ✓
                       </span>
@@ -200,7 +200,7 @@ export function AboutSection() {
                       transition={{ duration: 0.4, delay: 0.1 * index }}
                     >
                       <p className="text-base font-semibold text-neutral-900">{badge.label}</p>
-                      <p className="text-sm text-neutral-600">{badge.description}</p>
+                      <p className="text-sm text-muted">{badge.description}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -268,7 +268,7 @@ export function AboutSection() {
                 />
               </motion.div>
               <h4 className="mb-2 text-lg font-semibold text-neutral-900">{value.title}</h4>
-              <p className="text-sm leading-relaxed text-neutral-600">{value.description}</p>
+              <p className="text-sm leading-relaxed text-muted">{value.description}</p>
             </motion.div>
           ))}
         </div>

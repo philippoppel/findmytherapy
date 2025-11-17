@@ -73,7 +73,7 @@ export default async function TherapistDashboardPage() {
           Willkommen zurück, {session.user.firstName || session.user.email}
         </h1>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-neutral-600">Status:</span>
+          <span className="text-sm text-muted">Status:</span>
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
               profile?.status === 'VERIFIED'
@@ -260,7 +260,7 @@ function MetricCard({ icon: Icon, label, value, tone }: MetricCardProps) {
         </div>
         <div>
           <p className="text-3xl font-bold text-neutral-900">{value}</p>
-          <p className="text-sm text-neutral-600">{label}</p>
+          <p className="text-sm text-muted">{label}</p>
         </div>
       </div>
     </div>

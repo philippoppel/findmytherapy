@@ -85,7 +85,7 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
             Professionelle Unterstützung finden
           </h2>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-neutral-600 sm:text-xl">
+          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
             Alle Therapeut:innen sind verifiziert, haben transparente Profile und eigene
             SEO-optimierte Microsites für maximale Auffindbarkeit.
           </p>
@@ -151,7 +151,7 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
                 >
                   {stat.value}
                 </motion.p>
-                <p className="text-sm text-neutral-600">{stat.label}</p>
+                <p className="text-sm text-muted">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -232,7 +232,7 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
                       </p>
                     )}
 
-                    <p className="mb-4 line-clamp-2 text-sm text-neutral-600">
+                    <p className="mb-4 line-clamp-2 text-sm text-muted">
                       {therapist.approachSummary ||
                         therapist.modalities[0] ||
                         'Individuelle Begleitung'}

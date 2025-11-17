@@ -236,7 +236,7 @@ export default function BlogPage() {
               aria-hidden
             />
             <div className="relative z-10 grid gap-6 bg-gradient-to-br from-white via-white/90 to-primary-50 p-8 sm:p-10">
-              <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
+              <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
                 <span className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-3 py-1 text-primary-800">
                   <Tag className="h-4 w-4" aria-hidden />
                   {featuredPost.category}
@@ -276,7 +276,7 @@ export default function BlogPage() {
                   <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">Autor:in</span>
                   <div>
                     <p className="text-base font-semibold text-neutral-900">{featuredPost.author}</p>
-                    <p className="text-sm text-neutral-600">FindMyTherapy Redaktion</p>
+                    <p className="text-sm text-muted">FindMyTherapy Redaktion</p>
                   </div>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default function BlogPage() {
                 <div key={topic.title} className="rounded-2xl border border-primary-100/60 bg-primary-50/70 p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">{topic.tag}</p>
                   <h3 className="mt-2 text-lg font-semibold text-neutral-900">{topic.title}</h3>
-                  <p className="mt-1 text-sm text-neutral-600">{topic.description}</p>
+                  <p className="mt-1 text-sm text-muted">{topic.description}</p>
                 </div>
               ))}
             </div>
@@ -375,7 +375,7 @@ export default function BlogPage() {
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="text-sm leading-relaxed text-neutral-600">{post.excerpt}</p>
+                  <p className="text-sm leading-relaxed text-muted">{post.excerpt}</p>
                 </div>
                 <div className="mt-6 border-t border-neutral-100 pt-4">
                   <Link
@@ -429,7 +429,7 @@ export default function BlogPage() {
                             {post.title}
                           </Link>
                         </h4>
-                        <p className="text-sm text-neutral-600">{post.summary[0]}</p>
+                        <p className="text-sm text-muted">{post.summary[0]}</p>
                         <div className="mt-auto pt-2">
                           <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-primary-900">
                             Mehr erfahren →
@@ -488,7 +488,7 @@ export default function BlogPage() {
                 <ShieldCheck className="h-6 w-6" aria-hidden />
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Medizinische Validierung</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Alle gesundheitsbezogenen Inhalte werden von Psychotherapeut:innen und klinischen Psycholog:innen
                 aus unserem Netzwerk gegengelesen und freigegeben.
               </p>
@@ -501,7 +501,7 @@ export default function BlogPage() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Primärquellen & Zitate</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Wir verlinken direkt auf peer-reviewed Studien, offizielle Leitlinien (AWMF, S3) und Gesetzestexte –
                 keine Sekundärquellen oder Blog-Zitate.
               </p>
@@ -514,7 +514,7 @@ export default function BlogPage() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Regelmäßige Updates</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Artikel werden bei neuen Studienergebnissen, Gesetzesänderungen oder Produkt-Updates aktualisiert.
                 Jede Änderung wird datiert und dokumentiert.
               </p>
@@ -528,7 +528,7 @@ export default function BlogPage() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Transparente Autorenschaft</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Jeder Artikel ist namentlich gekennzeichnet. Unser Redaktionsteam besteht aus Gesundheitsjournalist:innen,
                 Produktmanager:innen und klinischen Berater:innen.
               </p>
@@ -541,7 +541,7 @@ export default function BlogPage() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Strukturierte Daten für SEO</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Alle Artikel verwenden schema.org Markup (BlogPosting, FAQPage) für optimale Sichtbarkeit in
                 Suchmaschinen und Featured Snippets.
               </p>
@@ -554,7 +554,7 @@ export default function BlogPage() {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-neutral-900">Community-getriebene Inhalte</h3>
-              <p className="text-sm leading-relaxed text-neutral-600">
+              <p className="text-sm leading-relaxed text-muted">
                 Wir priorisieren Themen basierend auf den häufigsten Fragen unserer Nutzer:innen und greifen
                 echte Bedürfnisse auf – kein Keyword-Stuffing.
               </p>
@@ -614,13 +614,13 @@ export default function BlogPage() {
             {blogFaq.map((item) => (
               <div key={item.question} className="rounded-2xl border border-neutral-100 bg-neutral-50/80 p-5">
                 <h3 className="text-lg font-semibold text-neutral-900">{item.question}</h3>
-                <p className="mt-2 text-sm text-neutral-600">{item.answer}</p>
+                <p className="mt-2 text-sm text-muted">{item.answer}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section aria-labelledby="seo-copy" className="space-y-4 text-sm leading-relaxed text-neutral-600">
+        <section aria-labelledby="seo-copy" className="space-y-4 text-sm leading-relaxed text-muted">
           <h2 id="seo-copy" className="text-base font-semibold text-neutral-900">
             Warum der FindMyTherapy Blog relevant für SEO & Vertrauen ist
           </h2>

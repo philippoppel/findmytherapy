@@ -56,7 +56,7 @@ export function Header() {
               <span className="text-base font-semibold leading-tight text-neutral-900">
                 FindMyTherapy
               </span>
-              <span className="hidden text-xs font-medium text-neutral-600 sm:block">
+              <span className="hidden text-xs font-medium text-muted sm:block">
                 Mentale Orientierung
               </span>
             </div>
@@ -83,7 +83,7 @@ export function Header() {
             {!isHome && FEATURES.ASSESSMENT && (
               <Link
                 href="/triage"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary-900 px-5 py-2.5 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-950 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
               >
                 Kostenlose Ersteinschätzung
               </Link>
@@ -127,7 +127,7 @@ export function Header() {
               {FEATURES.ASSESSMENT && (
                 <Link
                   href="/triage"
-                  className="block rounded-xl bg-primary-600 px-4 py-3 text-center text-sm font-medium text-white shadow-soft transition hover:bg-primary-700"
+                  className="block rounded-xl bg-primary-900 px-4 py-3 text-center text-sm font-medium text-white shadow-soft transition hover:bg-primary-950"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Kostenlose Ersteinschätzung

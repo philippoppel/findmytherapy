@@ -101,7 +101,7 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
               </p>
             </div>
 
-            <div className="space-y-2.5 text-sm text-neutral-600">
+            <div className="space-y-2.5 text-sm text-muted">
               <div className="flex items-start gap-2.5">
                 <Heart className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-500" aria-hidden />
                 <span className="line-clamp-2 leading-relaxed">{approach}</span>

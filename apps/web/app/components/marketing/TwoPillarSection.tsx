@@ -103,7 +103,7 @@ export function TwoPillarSection() {
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
             Zwei Wege zu mentaler Gesundheit
           </h2>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-neutral-600 sm:text-xl">
+          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
             Ob sofortige Hilfe durch Expert:innen-Wissen oder professionelle Begleitung durch
             verifizierte Therapeut:innen – wir sind für dich da.
           </p>
@@ -180,7 +180,7 @@ export function TwoPillarSection() {
               <p className="mb-2 text-xl font-semibold text-neutral-900">
                 Bereit für den nächsten Schritt?
               </p>
-              <p className="text-base text-neutral-600">
+              <p className="text-base text-muted">
                 Entdecke kostenlose Artikel oder finde deine:n Therapeut:in.
               </p>
             </motion.div>

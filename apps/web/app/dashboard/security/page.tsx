@@ -22,7 +22,7 @@ export default async function SecurityPage() {
     <div className="max-w-4xl space-y-8">
       <header className="space-y-3">
         <h1 className="text-3xl font-bold text-neutral-900">Sicherheit</h1>
-        <p className="text-neutral-600">
+        <p className="text-muted">
           Aktiviere Zwei-Faktor-Authentifizierung (TOTP), um dein Konto zusätzlich zu schützen.
         </p>
       </header>

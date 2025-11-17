@@ -33,7 +33,7 @@ export default async function DashboardPage() {
             <h1 className="text-3xl font-bold text-neutral-900">
               Willkommen im Dashboard
             </h1>
-            <p className="mt-2 text-neutral-600">
+            <p className="mt-2 text-muted">
               Du bist erfolgreich eingeloggt! 🎉
             </p>
           </div>
@@ -45,14 +45,14 @@ export default async function DashboardPage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="rounded-lg bg-white p-4 shadow-sm">
-                <p className="text-sm font-medium text-neutral-600">E-Mail</p>
+                <p className="text-sm font-medium text-muted">E-Mail</p>
                 <p className="mt-1 text-lg font-semibold text-neutral-900">
                   {session.user.email}
                 </p>
               </div>
 
               <div className="rounded-lg bg-white p-4 shadow-sm">
-                <p className="text-sm font-medium text-neutral-600">Rolle</p>
+                <p className="text-sm font-medium text-muted">Rolle</p>
                 <p className="mt-1 text-lg font-semibold text-neutral-900">
                   {session.user.role}
                 </p>
@@ -60,7 +60,7 @@ export default async function DashboardPage() {
 
               {session.user.firstName && (
                 <div className="rounded-lg bg-white p-4 shadow-sm">
-                  <p className="text-sm font-medium text-neutral-600">Name</p>
+                  <p className="text-sm font-medium text-muted">Name</p>
                   <p className="mt-1 text-lg font-semibold text-neutral-900">
                     {session.user.firstName} {session.user.lastName}
                   </p>
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
               )}
 
               <div className="rounded-lg bg-white p-4 shadow-sm">
-                <p className="text-sm font-medium text-neutral-600">User ID</p>
+                <p className="text-sm font-medium text-muted">User ID</p>
                 <p className="mt-1 text-sm font-mono text-neutral-900">
                   {session.user.id}
                 </p>

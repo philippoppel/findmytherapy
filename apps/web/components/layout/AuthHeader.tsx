@@ -21,7 +21,7 @@ export function AuthHeader() {
   }, [])
 
   if (status === 'loading') {
-    return <div className="h-9 w-28 animate-pulse rounded-full bg-white/20" />
+    return <div className="h-9 w-28 animate-pulse rounded-full bg-primary-100" />
   }
 
   if (!session) {
@@ -29,13 +29,13 @@ export function AuthHeader() {
       <div className="flex w-full flex-wrap items-center gap-2 md:w-auto md:flex-nowrap">
         <Link
           href="/login"
-          className="w-full rounded-full border border-white/25 px-4 py-2 text-center text-sm font-medium text-white/80 transition hover:border-white/45 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950 md:w-auto"
+          className="w-full rounded-full border border-neutral-300 px-4 py-2 text-center text-sm font-medium text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 md:w-auto"
         >
           Anmelden
         </Link>
         <Link
           href="/register"
-          className="w-full rounded-full bg-white/20 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm shadow-white/15 transition hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950 md:w-auto"
+          className="w-full rounded-full bg-primary-100 px-4 py-2 text-center text-sm font-semibold text-primary-900 shadow-sm transition hover:bg-primary-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 md:w-auto"
         >
           Registrieren
         </Link>
@@ -56,10 +56,10 @@ export function AuthHeader() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsMenuOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border border-white/20 px-2 py-1.5 text-sm font-medium text-white/85 transition hover:border-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-950"
+        className="flex items-center gap-2 rounded-full border border-neutral-300 px-2 py-1.5 text-sm font-medium text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
-          <User className="h-4 w-4 text-white" aria-hidden />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
+          <User className="h-4 w-4 text-primary-900" aria-hidden />
         </div>
         <span className="hidden md:block">
           {session.user?.email?.split('@')[0]}
@@ -67,12 +67,12 @@ export function AuthHeader() {
       </button>
 
       {isMenuOpen && (
-        <div className="absolute right-0 z-50 mt-3 w-60 rounded-2xl border border-white/10 bg-teal-950/90 py-3 shadow-xl backdrop-blur-lg">
-          <div className="border-b border-white/10 px-5 pb-3">
-            <p className="text-sm font-semibold text-white">
+        <div className="absolute right-0 z-50 mt-3 w-60 rounded-2xl border border-neutral-200 bg-white py-3 shadow-xl backdrop-blur-lg">
+          <div className="border-b border-neutral-200 px-5 pb-3">
+            <p className="text-sm font-semibold text-neutral-900">
               {session.user?.email}
             </p>
-            <p className="text-xs text-white/65">
+            <p className="text-xs text-muted">
               {isAdmin ? 'Administrator' : isTherapist ? 'Therapeut:in' : 'Klient:in'}
             </p>
           </div>
@@ -96,7 +96,7 @@ export function AuthHeader() {
               setIsMenuOpen(false)
               signOut({ callbackUrl: '/' })
             }}
-            className="mt-2 flex w-full items-center justify-start gap-2 border-t border-white/10 px-5 pt-3 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
+            className="mt-2 flex w-full items-center justify-start gap-2 border-t border-neutral-200 px-5 pt-3 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900"
           >
             <LogOut className="h-4 w-4" />
             Abmelden
@@ -111,10 +111,10 @@ function HeaderMenuLink({ href, label, icon, onClick }: { href: string; label: s
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 px-5 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+      className="flex items-center gap-2 px-5 py-2 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900"
       onClick={onClick}
     >
-      <span className="text-white/70">{icon}</span>
+      <span className="text-muted">{icon}</span>
       {label}
     </Link>
   )

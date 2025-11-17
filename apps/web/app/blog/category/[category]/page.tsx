@@ -173,7 +173,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       {post.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-neutral-600">{post.excerpt}</p>
+                  <p className="text-sm text-muted">{post.excerpt}</p>
                 </div>
                 <div className="mt-auto pt-3">
                   <Link href={`/blog/${post.slug}`} className="text-sm font-semibold text-primary-900">
@@ -216,7 +216,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                           {post.title}
                         </Link>
                       </h3>
-                      <p className="text-sm text-neutral-600">{post.summary[0]}</p>
+                      <p className="text-sm text-muted">{post.summary[0]}</p>
                     </div>
                     <Link href={`/blog/${post.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900">
                       Mehr erfahren

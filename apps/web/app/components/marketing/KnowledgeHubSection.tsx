@@ -37,7 +37,7 @@ export function KnowledgeHubSection() {
         <h2 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
           Soforthilfe zum Nachlesen
         </h2>
-        <p className="mb-6 text-base leading-relaxed text-neutral-600">
+        <p className="mb-6 text-base leading-relaxed text-muted">
           Unser Blog liefert dir verständliche Antworten rund um mentale Gesundheit – von Akutsituationen bis Prävention. Jede Seite ist von Expert:innen geprüft.
         </p>
         <ul className="space-y-3 text-sm text-neutral-700">
@@ -56,7 +56,7 @@ export function KnowledgeHubSection() {
           <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-secondary-700">
             Beliebte Artikel
           </p>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             Frisch veröffentlichte Artikel mit klaren Handlungsempfehlungen.
           </p>
         </div>
@@ -104,7 +104,7 @@ export function KnowledgeHubSection() {
                   <h3 className="mt-3 text-base font-semibold leading-tight text-neutral-900 transition-colors group-hover:text-secondary-700">
                     {post.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-sm text-neutral-600 line-clamp-2">{post.excerpt}</p>
+                  <p className="mt-2 flex-1 text-sm text-muted line-clamp-2">{post.excerpt}</p>
                   <span className="mt-4 text-xs font-semibold uppercase tracking-wide text-secondary-500">
                     Jetzt lesen →
                   </span>

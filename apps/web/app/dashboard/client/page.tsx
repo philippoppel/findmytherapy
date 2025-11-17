@@ -166,7 +166,7 @@ export default async function ClientDashboardPage() {
                         {enrollment.course.title}
                       </h3>
                       {therapistName && (
-                        <p className="text-xs text-neutral-600">
+                        <p className="text-xs text-muted">
                           Entwickelt von {therapistName}
                           {enrollment.course.therapist?.city
                             ? ` • ${enrollment.course.therapist.city}`
@@ -186,13 +186,13 @@ export default async function ClientDashboardPage() {
                           style={{ width: `${progress}%` }}
                         />
                       </div>
-                      <p className="mt-2 text-xs text-neutral-600">
+                      <p className="mt-2 text-xs text-muted">
                         {completedLessons} von {Math.max(lessonCount, completedLessons)} Lektionen bearbeitet
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-divider pt-4 text-xs text-neutral-600">
+                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-divider pt-4 text-xs text-muted">
                     <span>Gestartet am {enrollment.createdAt.toLocaleDateString('de-AT')}</span>
                     <span>{formatCurrency(enrollment.course.price, enrollment.course.currency)}</span>
                     <Link
@@ -247,7 +247,7 @@ export default async function ClientDashboardPage() {
               </Link>
             </div>
           ) : (
-            <div className="mt-4 rounded-2xl border border-dashed border-divider bg-white/70 p-5 text-sm text-neutral-600">
+            <div className="mt-4 rounded-2xl border border-dashed border-divider bg-white/70 p-5 text-sm text-muted">
               Noch keine Ersteinschätzung hinterlegt. Starte mit ein paar Fragen und erhalte direkt Empfehlungen.
               <div className="mt-3">
                 <Link
@@ -294,12 +294,12 @@ export default async function ClientDashboardPage() {
                         Match Score {Math.round(match.score * 100)}%
                       </span>
                     </div>
-                    <p className="text-xs text-neutral-600 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       {match.therapist?.city ?? 'Online'} •{' '}
                       {match.therapist?.specialties.slice(0, 2).join(', ')}
                     </p>
                     {typeof match.therapist?.priceMin === 'number' && typeof match.therapist?.priceMax === 'number' && (
-                      <p className="text-xs text-neutral-600 mt-1">
+                      <p className="text-xs text-muted mt-1">
                         {formatCurrency(match.therapist.priceMin, 'EUR')} –{' '}
                         {formatCurrency(match.therapist.priceMax, 'EUR')}
                       </p>

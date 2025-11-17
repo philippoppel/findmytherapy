@@ -23,7 +23,7 @@ export default function AuthLayout({
               <span className="text-base font-semibold leading-tight text-neutral-900">
                 FindMyTherapy
               </span>
-              <span className="text-[10px] font-medium text-neutral-600">
+              <span className="text-[10px] font-medium text-muted">
                 Mentale Orientierung
               </span>
             </div>
@@ -31,7 +31,7 @@ export default function AuthLayout({
 
           <Link
             href="/"
-            className="text-sm font-medium text-neutral-600 transition hover:text-neutral-900"
+            className="text-sm font-medium text-muted transition hover:text-neutral-900"
           >
             Zur Homepage
           </Link>
@@ -45,7 +45,7 @@ export default function AuthLayout({
 
       {/* Minimal Footer */}
       <footer className="border-t border-neutral-200 bg-white/60 py-6">
-        <div className="mx-auto max-w-7xl px-4 text-center text-sm text-neutral-600">
+        <div className="mx-auto max-w-7xl px-4 text-center text-sm text-muted">
           <p>
             © {new Date().getFullYear()} FindMyTherapy. Der klare Weg zur richtigen Hilfe.
           </p>

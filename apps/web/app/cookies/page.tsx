@@ -58,7 +58,7 @@ export default function CookiePolicyPage() {
               <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">
                 Cookie-Richtlinie
               </h1>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-muted">
                 Letzte Aktualisierung: {new Date().toLocaleDateString('de-AT', { year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
             </div>
@@ -144,13 +144,13 @@ export default function CookiePolicyPage() {
                     <tr key={cookie.name} className="hover:bg-surface-2/60">
                       <td className="px-4 py-3 font-mono text-xs">{cookie.name}</td>
                       <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
+                      <td className="px-4 py-3 text-muted">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="mt-4 rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
+            <div className="mt-4 rounded-lg bg-surface-2 p-4 text-xs text-muted">
               <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse).
               Diese Cookies sind technisch notwendig für die Grundfunktionen der Website und benötigen keine Einwilligung.
             </div>
@@ -185,7 +185,7 @@ export default function CookiePolicyPage() {
                     <tr key={cookie.name} className="hover:bg-surface-2/60">
                       <td className="px-4 py-3 font-semibold text-neutral-900">{cookie.name}</td>
                       <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
+                      <td className="px-4 py-3 text-muted">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -197,7 +197,7 @@ export default function CookiePolicyPage() {
                 das keine Cookies setzt und keine personenbezogenen Daten speichert. Es erfüllt die DSGVO-Anforderungen
                 und benötigt theoretisch keine Einwilligung, wir fragen dennoch aus Transparenzgründen.
               </div>
-              <div className="rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
+              <div className="rounded-lg bg-surface-2 p-4 text-xs text-muted">
                 <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
                 Diese Cookies werden nur mit Ihrer ausdrücklichen Zustimmung aktiviert.
               </div>
@@ -233,7 +233,7 @@ export default function CookiePolicyPage() {
                     <tr key={cookie.name} className="hover:bg-surface-2/60">
                       <td className="px-4 py-3 font-semibold text-neutral-900">{cookie.name}</td>
                       <td className="px-4 py-3 text-neutral-700">{cookie.purpose}</td>
-                      <td className="px-4 py-3 text-neutral-600">{cookie.duration}</td>
+                      <td className="px-4 py-3 text-muted">{cookie.duration}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -244,7 +244,7 @@ export default function CookiePolicyPage() {
                 <strong>Hinweis:</strong> Sentry erfasst technische Fehlerberichte, die möglicherweise
                 IP-Adressen und Browser-Informationen enthalten. Sensible Daten werden automatisch entfernt.
               </div>
-              <div className="rounded-lg bg-surface-2 p-4 text-xs text-neutral-600">
+              <div className="rounded-lg bg-surface-2 p-4 text-xs text-muted">
                 <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
                 Diese Cookies werden nur mit Ihrer ausdrücklichen Zustimmung aktiviert.
               </div>
@@ -282,7 +282,7 @@ export default function CookiePolicyPage() {
               <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-2 p-4">
                 <div>
                   <h4 className="font-semibold text-neutral-900">Essenziell</h4>
-                  <p className="text-sm text-neutral-600">Technisch notwendig, immer aktiv</p>
+                  <p className="text-sm text-muted">Technisch notwendig, immer aktiv</p>
                 </div>
                 <div className="text-primary-600 font-semibold">Immer an</div>
               </div>
@@ -291,7 +291,7 @@ export default function CookiePolicyPage() {
               <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-1 p-4">
                 <div>
                   <h4 className="font-semibold text-neutral-900">Analytics</h4>
-                  <p className="text-sm text-neutral-600">Anonyme Besuchsstatistiken</p>
+                  <p className="text-sm text-muted">Anonyme Besuchsstatistiken</p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center" aria-label="Analytics aktivieren/deaktivieren">
                   <input
@@ -311,7 +311,7 @@ export default function CookiePolicyPage() {
               <div className="flex items-center justify-between rounded-lg border border-divider bg-surface-1 p-4">
                 <div>
                   <h4 className="font-semibold text-neutral-900">Fehlererfassung</h4>
-                  <p className="text-sm text-neutral-600">Hilft uns, Fehler zu beheben</p>
+                  <p className="text-sm text-muted">Hilft uns, Fehler zu beheben</p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center" aria-label="Fehlererfassung aktivieren/deaktivieren">
                   <input

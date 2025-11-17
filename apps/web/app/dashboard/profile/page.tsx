@@ -135,7 +135,7 @@ export default async function TherapistProfilePage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-neutral-900">Therapeuten-Profil</h1>
-                <p className="text-sm text-neutral-600 mt-0.5">
+                <p className="text-sm text-muted mt-0.5">
                   Verwalte deine öffentliche Setcard
                 </p>
               </div>

@@ -59,7 +59,7 @@ export function ClientBenefits({ content }: ClientBenefitsProps) {
                     </div>
                   </div>
 
-                  <p className="text-pretty text-base leading-extra-relaxed text-neutral-600 sm:text-lg">
+                  <p className="text-pretty text-base leading-extra-relaxed text-muted sm:text-lg">
                     {benefit.description}
                   </p>
 

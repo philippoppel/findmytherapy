@@ -21,7 +21,7 @@ export function TherapistSEOShowcase() {
         <h2 className="mb-4 text-center text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
           SEO-optimierte Präsenz
         </h2>
-        <p className="text-center text-base leading-relaxed text-neutral-600">
+        <p className="text-center text-base leading-relaxed text-muted">
           Professionelle Microsites für jede:n Therapeut:in. Von SEO-Expert:innen optimiert für maximale Sichtbarkeit.
         </p>
       </div>
@@ -49,7 +49,7 @@ export function TherapistSEOShowcase() {
               <GlobeIcon className="h-6 w-6 text-primary-600" />
             </motion.div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-neutral-600">Deine persönliche Microsite</p>
+              <p className="text-sm font-medium text-muted">Deine persönliche Microsite</p>
               <p className="text-lg font-semibold text-primary-600">
                 findmytherapy.com/t/<span className="text-neutral-400">[dein-name]</span>
               </p>
@@ -109,7 +109,7 @@ export function TherapistSEOShowcase() {
             )}
           </motion.div>
           <motion.p
-            className="mt-4 text-center text-sm text-neutral-600"
+            className="mt-4 text-center text-sm text-muted"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -166,7 +166,7 @@ export function TherapistSEOShowcase() {
             </motion.div>
             <div className="flex-1">
               <h3 className="mb-1 text-base font-semibold text-neutral-900">{feature.title}</h3>
-              <p className="text-sm text-neutral-600">{feature.description}</p>
+              <p className="text-sm text-muted">{feature.description}</p>
             </div>
           </motion.div>
         ))}
@@ -210,7 +210,7 @@ export function TherapistSEOShowcase() {
             >
               {stat.value}
             </motion.p>
-            <p className="text-xs leading-snug text-neutral-600">{stat.label}</p>
+            <p className="text-xs leading-snug text-muted">{stat.label}</p>
           </motion.div>
         ))}
       </motion.div>

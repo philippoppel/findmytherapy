@@ -8,10 +8,10 @@
   --color-primary-400: 207 190 159;
   --color-primary-500: 189 168 126;
   --color-primary-600: 166 143 101;
-  --color-primary-700: 140 117 81;
-  --color-primary-800: 110 93 66;
-  --color-primary-900: 74 63 46;
-  --color-primary-950: 43 38 29;
+  --color-primary-700: 160 137 101;
+  --color-primary-800: 140 120 90;
+  --color-primary-900: 120 105 82;
+  --color-primary-950: 100 88 70;
 
   /* Secondary: Warm Terracotta/Coral - Harmonizes with beige primary */
   --color-secondary-50: 252 248 246;
@@ -21,10 +21,10 @@
   --color-secondary-400: 220 171 142;
   --color-secondary-500: 208 143 104;
   --color-secondary-600: 186 115 76;
-  --color-secondary-700: 164 87 48;
-  --color-secondary-800: 132 70 38;
-  --color-secondary-900: 100 53 29;
-  --color-secondary-950: 68 36 20;
+  --color-secondary-700: 180 110 70;
+  --color-secondary-800: 160 100 65;
+  --color-secondary-900: 140 90 60;
+  --color-secondary-950: 120 80 55;
 
   --color-accent-50: 255 248 235;
   --color-accent-100: 255 237 196;
@@ -46,10 +46,10 @@
   --color-neutral-400: 186 175 160;
   --color-neutral-500: 158 147 131;
   --color-neutral-600: 133 122 108;
-  --color-neutral-700: 108 99 89;
-  --color-neutral-800: 79 73 66;
-  --color-neutral-900: 58 51 46;
-  --color-neutral-950: 36 31 28;
+  --color-neutral-700: 120 110 98;
+  --color-neutral-800: 100 92 82;
+  --color-neutral-900: 90 82 73;
+  --color-neutral-950: 75 68 61;
 
   --on-color-primary: 255 255 255;
   --on-color-secondary: 255 255 255;
@@ -73,18 +73,18 @@
 
   --token-text-default: var(--color-neutral-900);
   --token-text-muted: var(--color-neutral-700);
-  --token-text-subtle: var(--color-neutral-600);
+  --token-text-subtle: var(--color-neutral-700);
   --token-text-inverse: 255 255 255;
-  --token-text-link: var(--color-primary-600);
+  --token-text-link: var(--color-primary-900);
 
   --text: var(--token-text-default);
   --text-muted: var(--token-text-muted);
   --text-subtle: var(--token-text-subtle);
   --link: var(--token-text-link);
 
-  --primary: var(--color-primary-500);
-  --primary-hover: var(--color-primary-600);
-  --primary-active: var(--color-primary-700);
+  --primary: var(--color-primary-900);
+  --primary-hover: var(--color-primary-950);
+  --primary-active: var(--color-primary-950);
   --primary-foreground: var(--on-color-primary);
 
   --secondary: var(--color-secondary-600);

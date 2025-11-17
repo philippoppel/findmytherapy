@@ -230,7 +230,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-bold text-neutral-900">Profil bearbeiten</h2>
-            <p className="text-sm text-neutral-600 mt-1">
+            <p className="text-sm text-muted mt-1">
               Aktualisiere deine öffentliche Setcard für Klient:innen
             </p>
           </div>
@@ -269,7 +269,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Öffentliche Darstellung</h3>
-            <p className="text-sm text-neutral-600">Wie du auf deinem Profil erscheinst</p>
+            <p className="text-sm text-muted">Wie du auf deinem Profil erscheinst</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -308,7 +308,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Galerie</h3>
-            <p className="text-sm text-neutral-600">Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)</p>
+            <p className="text-sm text-muted">Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4">
@@ -340,7 +340,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Online-Präsenz & Social Media</h3>
-            <p className="text-sm text-neutral-600">Verlinke deine Website und Social-Media-Profile</p>
+            <p className="text-sm text-muted">Verlinke deine Website und Social-Media-Profile</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -369,7 +369,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Beschreibung & Über mich</h3>
-            <p className="text-sm text-neutral-600">Deine Arbeitsweise und Erfahrung</p>
+            <p className="text-sm text-muted">Deine Arbeitsweise und Erfahrung</p>
           </div>
         </div>
         <FormField
@@ -403,7 +403,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Angebot & Spezialisierungen</h3>
-            <p className="text-sm text-neutral-600">Deine Leistungen und Schwerpunkte</p>
+            <p className="text-sm text-muted">Deine Leistungen und Schwerpunkte</p>
           </div>
         </div>
         <FormField
@@ -445,7 +445,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Qualifikationen & Zielgruppen</h3>
-            <p className="text-sm text-neutral-600">Ausbildung, Zertifikate und Zielgruppen</p>
+            <p className="text-sm text-muted">Ausbildung, Zertifikate und Zielgruppen</p>
           </div>
         </div>
         <FormField
@@ -490,7 +490,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Rahmendaten & Preise</h3>
-            <p className="text-sm text-neutral-600">Standort, Preise und Erfahrung</p>
+            <p className="text-sm text-muted">Standort, Preise und Erfahrung</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
