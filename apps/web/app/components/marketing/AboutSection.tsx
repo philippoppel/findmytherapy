@@ -111,7 +111,7 @@ export function AboutSection() {
               {teamContent.members.map((member, index) => (
                 <motion.article
                   key={member.name}
-                  className="group overflow-hidden rounded-[32px] border border-white/40 bg-white shadow-2xl shadow-primary-900/5"
+                  className="group overflow-hidden rounded-[32px] border border-white/40 bg-white shadow-2xl shadow-primary-700/5"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -208,7 +208,7 @@ export function AboutSection() {
             </Reveal>
 
             <Reveal delay={250}>
-              <div className="h-full rounded-3xl border border-neutral-800/80 bg-neutral-900 p-8 text-white shadow-2xl shadow-neutral-900/40">
+              <div className="h-full rounded-3xl border border-neutral-700/80 bg-neutral-800 p-8 text-white shadow-2xl shadow-neutral-800/40">
                 <p className="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-white/60">
                   Lass uns verbinden
                 </p>

@@ -71,7 +71,7 @@ export async function TherapistFinderSection() {
   return (
     <section
       id="therapist-search"
-      className="relative overflow-hidden bg-gradient-to-b from-primary-950 via-neutral-950 to-black py-16 text-white sm:py-20 lg:py-24 xl:py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-primary-800 via-neutral-800 to-neutral-900 py-16 text-white sm:py-20 lg:py-24 xl:py-28"
     >
       {/* Background Decoration */}
       <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
