@@ -55,6 +55,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
 
   const canonicalUrl = `https://findmytherapy.net/blog/${post.slug}`
   const imageUrl = buildImageUrl(post.featuredImage?.src) ?? 'https://findmytherapy.net/og-image.jpg'
+  const author = getAuthorById(post.authorId)
 
   return {
     title: `${post.title} | FindMyTherapy Blog`,
@@ -66,8 +67,10 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       description: post.excerpt,
       type: 'article',
       publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-      tags: post.keywords,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      authors: author ? [`https://findmytherapy.net/blog/authors/${author.slug}`] : undefined,
+      section: post.category,
+      tags: [...post.keywords, ...(post.tags || [])],
       images: [
         {
           url: imageUrl,
@@ -76,12 +79,15 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
           alt: post.featuredImage?.alt || post.title,
         },
       ],
+      locale: 'de_AT',
+      siteName: 'FindMyTherapy',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
       images: [imageUrl],
+      creator: '@findmytherapy',
     },
   }
 }
@@ -97,9 +103,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const updatedDate = post.updatedAt ? new Date(post.updatedAt) : null
   const postUrl = `https://findmytherapy.net/blog/${post.slug}`
 
+  // Build medical reviewer data if available
+  const medicalReviewer = post.medicalReviewedBy ? getAuthorById(post.medicalReviewedBy) : null
+
   const articleStructuredData = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': post.medicalReviewedBy ? 'MedicalWebPage' : 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
     image: buildImageUrl(post.featuredImage?.src),
@@ -129,7 +138,57 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       '@type': 'WebPage',
       '@id': postUrl,
     },
+    ...(medicalReviewer && {
+      reviewedBy: {
+        '@type': 'Person',
+        name: medicalReviewer.name,
+        jobTitle: medicalReviewer.title,
+        description: medicalReviewer.credentials,
+      },
+    }),
+    ...(post.lastReviewed && {
+      lastReviewed: post.lastReviewed,
+    }),
+    ...(post.medicalReviewedBy && {
+      specialty: 'Psychotherapie',
+      about: {
+        '@type': 'MedicalCondition',
+        name: 'Angststörungen',
+      },
+    }),
   }
+
+  // FAQ Schema if FAQs are present
+  const faqStructuredData = post.faq
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null
+
+  // HowTo Schema if HowTo steps are present
+  const howToStructuredData = post.howTo
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: `Akuthilfe: ${post.title}`,
+        description: 'Schritt-für-Schritt Anleitung zur Bewältigung von Panikattacken',
+        step: post.howTo.map((step, index) => ({
+          '@type': 'HowToStep',
+          position: index + 1,
+          name: step.name,
+          text: step.text,
+        })),
+      }
+    : null
 
   return (
     <div className="marketing-theme bg-surface text-default">
@@ -186,6 +245,18 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   <ShieldCheck className="h-4 w-4" aria-hidden />
                   Evidenzbasiert
                 </span>
+                {medicalReviewer && (
+                  <span className="inline-flex items-center gap-2 rounded-full border border-green-400/40 bg-green-500/20 px-4 py-1.5">
+                    <ShieldCheck className="h-4 w-4" aria-hidden />
+                    Medizinisch geprüft
+                  </span>
+                )}
+                {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
+                  <span className="inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-500/20 px-4 py-1.5">
+                    <Clock className="h-4 w-4" aria-hidden />
+                    Aktualisiert {dateFormatter.format(updatedDate)}
+                  </span>
+                )}
               </div>
               <div className="space-y-4">
                 <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
@@ -262,7 +333,18 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   const sectionId = slugify(section.heading)
                   return (
                     <section key={section.heading} id={sectionId} className="space-y-4 scroll-mt-24">
-                      <h2 className="text-3xl font-bold text-neutral-900">{section.heading}</h2>
+                      <h2 className="group relative text-3xl font-bold text-neutral-900">
+                        {section.heading}
+                        <a
+                          href={`#${sectionId}`}
+                          className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-lg opacity-0 transition hover:bg-primary-50 group-hover:opacity-100"
+                          aria-label={`Link zu Abschnitt: ${section.heading}`}
+                        >
+                          <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                        </a>
+                      </h2>
                       <div className="space-y-4 text-lg leading-relaxed text-neutral-700">
                         {section.paragraphs.map((paragraph) => (
                           <p key={paragraph}>{paragraph}</p>
@@ -372,6 +454,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       </div>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
+      {faqStructuredData && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
+      )}
+      {howToStructuredData && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToStructuredData) }} />
+      )}
     </article>
   </div>
   )

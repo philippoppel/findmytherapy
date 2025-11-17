@@ -4,6 +4,16 @@ export type BlogPostSection = {
   list?: string[]
 }
 
+export type FAQItem = {
+  question: string
+  answer: string
+}
+
+export type HowToStep = {
+  name: string
+  text: string
+}
+
 export type Author = {
   id: string
   name: string
@@ -44,6 +54,10 @@ export type BlogPost = {
   featuredImage: FeaturedImage
   sections: BlogPostSection[]
   relatedPosts?: string[] // Slugs of related posts
+  faq?: FAQItem[] // FAQ for FAQ Schema
+  howTo?: HowToStep[] // HowTo steps for HowTo Schema
+  medicalReviewedBy?: string // Author ID for medical review
+  lastReviewed?: string // Last medical review date
 }
 
 export const blogPosts: BlogPost[] = [
@@ -81,6 +95,52 @@ export const blogPosts: BlogPost[] = [
       'Atemtechniken',
     ],
     relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-15',
+    faq: [
+      {
+        question: 'Sind Panikattacken gefährlich?',
+        answer: 'Nein, auch wenn sie sich schrecklich anfühlen. Eine Panikattacke kann einem nicht das Leben nehmen und führt weder zum Herzinfarkt noch zum „Durchdrehen". Die körperlichen Symptome – Herzrasen, hoher Blutdruck, Hyperventilation etc. – sind vorübergehend und hinterlassen keine bleibenden Schäden. Allerdings sollte man, besonders beim ersten Auftreten, immer ärztlich abklären lassen, ob nicht doch etwas Körperliches vorliegt.',
+      },
+      {
+        question: 'Wie häufig kommen Panikattacken vor?',
+        answer: 'Gelegentliche Panikattacken sind relativ häufig. Schätzungen zufolge erleben pro Jahr etwa 10 % der Erwachsenen mindestens eine Panikattacke. Die eigentliche Panikstörung (wiederholte Attacken plus anhaltende Angst davor) betrifft rund 3–5 % der Menschen irgendwann im Leben. Frauen entwickeln etwas häufiger eine Panikstörung als Männer.',
+      },
+      {
+        question: 'Was ist der Unterschied zwischen einer Panikattacke und einem Herzinfarkt?',
+        answer: 'Die Symptome können sich ähneln (Brustschmerz, Luftnot, Schweißausbruch etc.), doch ein Herzinfarkt ist lebensbedrohlich, eine Panikattacke nicht. Bei einem Herzinfarkt liegt ein Verschluss einer Herzarterie vor; der Schmerz und die Beschwerden hören nicht einfach auf, sondern erfordern eine medizinische Notfallbehandlung. Eine Panikattacke hingegen resultiert „nur" aus einer überschießenden Alarmreaktion des Körpers auf Angst und vergeht von selbst wieder.',
+      },
+      {
+        question: 'Braucht man Medikamente gegen Panikattacken?',
+        answer: 'Nicht zwingend. Therapie (vor allem Verhaltenstherapie) gilt als Behandlung erster Wahl, weil sie an den Ursachen ansetzt und nachhaltige Bewältigungsstrategien vermittelt. Medikamente wie Antidepressiva können aber unterstützend sinnvoll sein, insbesondere wenn die Angst sehr stark ist. Bestimmte Antidepressiva (z. B. SSRIs) haben sich bei Panikstörung als wirksam erwiesen und machen nicht abhängig.',
+      },
+      {
+        question: 'Was kann ich selbst tun, um Panikattacken vorzubeugen?',
+        answer: 'Stress reduzieren ist ein wichtiger Faktor – sorgen Sie für regelmäßige Entspannung und ausreichend Schlaf. Körperliche Aktivität hilft erwiesenermaßen: Ausdauerbewegung wie Joggen, Radfahren oder Schwimmen verbessert die Angstbewältigung. Vermeiden Sie übermäßig viel Koffein, Nikotin und Alkohol, da diese Stoffe das Nervensystem anregen und Paniksymptome begünstigen können.',
+      },
+      {
+        question: 'Wann sollte ich professionelle Hilfe suchen?',
+        answer: 'Grundsätzlich immer dann, wenn Panikattacken Ihr Leben wesentlich beeinträchtigen oder Ihre Lebensqualität mindern. Spätestens wenn Sie wegen der ständigen Angst bestimmte Orte meiden, sich sozial zurückziehen oder in dauernder Sorge vor der nächsten Attacke leben, ist es ratsam, einen Psychotherapeuten aufzusuchen. Scheuen Sie sich nicht davor – Angststörungen sind gut erforscht und behandelbar, und je früher man anfängt, desto schneller stellt sich Besserung ein.',
+      },
+    ],
+    howTo: [
+      {
+        name: 'Ruhig und kontrolliert atmen',
+        text: 'Versuchen Sie, die schnelle Atmung bewusst zu verlangsamen. Eine einfache Technik ist die Lippenbremse: Dabei atmet man langsam durch die Nase ein und anschließend mindestens doppelt so lange durch leicht geschürzte Lippen wieder aus. Ziel ist etwa 6 Atemzüge pro Minute, was den Körper in einen Entspannungsmodus versetzt.',
+      },
+      {
+        name: 'Körperlich aktiv werden',
+        text: 'Bewegung hilft, die überschüssige Angstenergie abzubauen. Wenn möglich, stehen Sie auf und gehen Sie umher. Machen Sie ein paar Kniebeugen, schütteln Sie die Arme aus oder gehen Sie zügig ein paar Schritte. Durch körperliche Aktivität werden Stresshormone wie Adrenalin schneller verstoffwechselt.',
+      },
+      {
+        name: 'Laut sprechen oder jemanden anrufen',
+        text: 'Kommunikation lenkt die Aufmerksamkeit nach außen – weg von den bedrohlichen Körperempfindungen. Wer redet oder singt, kann nicht gleichzeitig hyperventilieren. Sagen Sie sich zum Beispiel laut vor: „Ich kriege genug Luft. Mir passiert gerade nichts Schlimmes. Das geht gleich vorüber."',
+      },
+      {
+        name: 'Sich selbst erden und beruhigen',
+        text: 'Schauen Sie sich bewusst im Raum um und benennen Sie leise fünf Dinge, die Sie sehen. Fühlen Sie den Boden unter den Füßen oder greifen Sie einen Gegenstand und konzentrieren Sie sich darauf. Solche Grounding-Übungen signalisieren dem Gehirn, dass Sie im Hier-und-Jetzt sicher sind.',
+      },
+    ],
     sections: [
       {
         heading: 'Was sind Panikattacken?',
