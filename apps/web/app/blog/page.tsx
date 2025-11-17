@@ -52,10 +52,20 @@ export const metadata: Metadata = {
 
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' })
 
+// Dynamic stats calculation
+const totalArticles = blogPosts.length
+const uniqueCategories = Array.from(new Set(blogPosts.map((post) => post.category))).length
+const avgReadingTime = Math.round(
+  blogPosts.reduce((sum, post) => {
+    const minutes = parseInt(post.readingTime.replace(/[^\d]/g, ''), 10)
+    return sum + minutes
+  }, 0) / blogPosts.length
+)
+
 const heroStats = [
-  { label: 'Expertenwissen-Artikel', value: '13' },
-  { label: 'Themenbereiche', value: '8' },
-  { label: 'Durchschn. Lesezeit', value: '~9 Min.' },
+  { label: 'Expertenwissen-Artikel', value: String(totalArticles) },
+  { label: 'Themenbereiche', value: String(uniqueCategories) },
+  { label: 'Durchschn. Lesezeit', value: `~${avgReadingTime} Min.` },
 ]
 
 const blogFaq = [
@@ -72,7 +82,7 @@ const blogFaq = [
   {
     question: 'Kann ich Themenwünsche einsenden?',
     answer:
-      'Ja, über das Kontaktformular oder direkt per E-Mail an hello@findmytherapy.net. Wir priorisieren Fragen aus der Community.',
+      'Ja, nutze das Themenwunsch-Formular weiter oben auf dieser Seite oder schreibe direkt an hello@findmytherapy.net. Wir priorisieren Fragen aus der Community.',
   },
 ]
 
@@ -181,13 +191,13 @@ export default function BlogPage() {
             </div>
 
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
-              <Link
-                href="/contact"
+              <a
+                href="#themenwunsch"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-8 py-3 text-base font-semibold text-primary-900 shadow-xl shadow-black/20 transition hover:-translate-y-1 hover:shadow-2xl sm:w-auto"
               >
                 Themenwunsch einreichen
                 <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+              </a>
               <Link
                 href="/how-it-works"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-8 py-3 text-base font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-white/60 sm:w-auto"
@@ -431,6 +441,28 @@ export default function BlogPage() {
                 </div>
               ),
             )}
+          </div>
+        </section>
+
+        <section
+          id="themenwunsch"
+          aria-labelledby="topic-request-cta"
+          className="relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-secondary-900 via-secondary-700 to-primary-700 px-6 py-12 text-white shadow-2xl shadow-secondary-900/40 sm:px-10"
+        >
+          <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-1/2 bg-[radial-gradient(circle_at_top,_#ffffff33,_transparent)] opacity-70" />
+          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/80">Community-Input</p>
+              <h2 id="topic-request-cta" className="text-3xl font-semibold leading-tight">
+                Deine Fragen – unsere Artikel
+              </h2>
+              <p className="text-base text-white/90">
+                Du vermisst ein Thema oder hast eine konkrete Frage zu mentaler Gesundheit, digitaler Ersteinschätzung
+                oder unserem Matching-Algorithmus? Sag uns, was dich interessiert – wir bereiten fundierte Artikel mit
+                Expert:innen-Input vor.
+              </p>
+            </div>
+            <NewsletterForm variant="topic" className="w-full lg:w-96" />
           </div>
         </section>
 
