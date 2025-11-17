@@ -198,13 +198,13 @@ export default function BlogPage() {
                 Themenwunsch einreichen
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </a>
-              <Link
-                href="/how-it-works"
+              <a
+                href="#redaktionelle-standards"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-8 py-3 text-base font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-white/60 sm:w-auto"
               >
-                Unser Ansatz
+                Redaktionelle Standards
                 <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+              </a>
             </div>
 
             <dl className="mt-6 grid gap-6 text-left sm:grid-cols-3">
@@ -463,6 +463,125 @@ export default function BlogPage() {
               </p>
             </div>
             <NewsletterForm variant="topic" className="w-full lg:w-96" />
+          </div>
+        </section>
+
+        <section
+          id="redaktionelle-standards"
+          aria-labelledby="editorial-standards"
+          className="space-y-8 rounded-3xl border border-neutral-200 bg-white p-8 shadow-xl shadow-primary-900/5 sm:p-10"
+        >
+          <div className="space-y-4 border-b border-neutral-100 pb-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Transparenz & Qualität</p>
+            <h2 id="editorial-standards" className="text-3xl font-semibold text-neutral-900 sm:text-4xl">
+              Unsere redaktionellen Standards
+            </h2>
+            <p className="text-lg leading-relaxed text-neutral-700">
+              Jeder Artikel durchläuft einen mehrstufigen Prüfprozess, um medizinische Genauigkeit, journalistische
+              Sorgfalt und praktischen Nutzen sicherzustellen.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <ShieldCheck className="h-6 w-6" aria-hidden />
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Medizinische Validierung</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Alle gesundheitsbezogenen Inhalte werden von Psychotherapeut:innen und klinischen Psycholog:innen
+                aus unserem Netzwerk gegengelesen und freigegeben.
+              </p>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Primärquellen & Zitate</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Wir verlinken direkt auf peer-reviewed Studien, offizielle Leitlinien (AWMF, S3) und Gesetzestexte –
+                keine Sekundärquellen oder Blog-Zitate.
+              </p>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Regelmäßige Updates</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Artikel werden bei neuen Studienergebnissen, Gesetzesänderungen oder Produkt-Updates aktualisiert.
+                Jede Änderung wird datiert und dokumentiert.
+              </p>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Transparente Autorenschaft</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Jeder Artikel ist namentlich gekennzeichnet. Unser Redaktionsteam besteht aus Gesundheitsjournalist:innen,
+                Produktmanager:innen und klinischen Berater:innen.
+              </p>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Strukturierte Daten für SEO</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Alle Artikel verwenden schema.org Markup (BlogPosting, FAQPage) für optimale Sichtbarkeit in
+                Suchmaschinen und Featured Snippets.
+              </p>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-primary-100/60 bg-primary-50/30 p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-900 text-white">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-neutral-900">Community-getriebene Inhalte</h3>
+              <p className="text-sm leading-relaxed text-neutral-600">
+                Wir priorisieren Themen basierend auf den häufigsten Fragen unserer Nutzer:innen und greifen
+                echte Bedürfnisse auf – kein Keyword-Stuffing.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 to-secondary-50/50 p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
+              <div className="flex-1 space-y-2">
+                <p className="text-sm font-semibold text-primary-900">
+                  E-E-A-T Prinzipien nach Google Quality Rater Guidelines
+                </p>
+                <p className="text-sm text-neutral-700">
+                  <strong>Experience:</strong> Unsere Autor:innen arbeiten täglich mit dem Produkt und Therapeut:innen.
+                  <strong className="ml-2">Expertise:</strong> Medizinische Freigabe durch Fachpersonal.
+                  <strong className="ml-2">Authoritativeness:</strong> Offizielle Zitate und Primärquellen.
+                  <strong className="ml-2">Trustworthiness:</strong> Transparente Korrekturen und Versionierung.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-primary-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-900/30 transition hover:-translate-y-0.5"
+              >
+                Redaktion kontaktieren
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
           </div>
         </section>
 
