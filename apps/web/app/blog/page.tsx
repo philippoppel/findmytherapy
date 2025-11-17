@@ -53,9 +53,9 @@ export const metadata: Metadata = {
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' })
 
 const heroStats = [
-  { label: 'Research-basierte Guides', value: '25+' },
-  { label: 'Interviews mit Expert:innen', value: '12' },
-  { label: 'Produkt-Updates', value: '9' },
+  { label: 'Expertenwissen-Artikel', value: '13' },
+  { label: 'Themenbereiche', value: '8' },
+  { label: 'Durchschn. Lesezeit', value: '~9 Min.' },
 ]
 
 const blogFaq = [
@@ -189,7 +189,7 @@ export default function BlogPage() {
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
               <Link
-                href="/therapists"
+                href="/how-it-works"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-8 py-3 text-base font-semibold text-white backdrop-blur transition hover:-translate-y-1 hover:border-white/60 sm:w-auto"
               >
                 Unser Ansatz
@@ -315,20 +315,11 @@ export default function BlogPage() {
         </section>
 
         <section aria-labelledby="category-navigation" className="space-y-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Themenbereiche</p>
-              <h2 id="category-navigation" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
-                Navigiere durch unsere Fokusfelder
-              </h2>
-            </div>
-            <Link
-              href="/blog/sitemap"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
-            >
-              Alle Artikel (Sitemap)
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Themenbereiche</p>
+            <h2 id="category-navigation" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
+              Navigiere durch unsere Fokusfelder
+            </h2>
           </div>
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
@@ -345,17 +336,11 @@ export default function BlogPage() {
         </section>
 
         <section aria-labelledby="latest-articles" className="space-y-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Aktuell</p>
-              <h2 id="latest-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
-                Essentielle Artikel für einen schnellen Überblick
-              </h2>
-            </div>
-            <Link href="/blog/tag/pilot" className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900">
-              Pilotphase begleiten
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Aktuell</p>
+            <h2 id="latest-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
+              Essentielle Artikel für einen schnellen Überblick
+            </h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {essentialArticles.map((post) => (
