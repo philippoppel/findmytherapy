@@ -10,8 +10,8 @@
   --color-primary-600: 166 143 101;
   --color-primary-700: 140 117 81;
   --color-primary-800: 110 93 66;
-  --color-primary-900: 74 63 46;
-  --color-primary-950: 43 38 29;
+  --color-primary-900: 90 77 58;
+  --color-primary-950: 65 56 44;
   /* Secondary: Warm Terracotta/Coral - Harmonizes with beige primary */
   --color-secondary-50: 252 248 246;
   --color-secondary-100: 249 241 237;
@@ -22,8 +22,8 @@
   --color-secondary-600: 186 115 76;
   --color-secondary-700: 164 87 48;
   --color-secondary-800: 132 70 38;
-  --color-secondary-900: 100 53 29;
-  --color-secondary-950: 68 36 20;
+  --color-secondary-900: 115 70 45;
+  --color-secondary-950: 85 52 35;
   --color-accent-50: 255 251 235;
   --color-accent-100: 254 243 199;
   --color-accent-200: 253 230 138;
@@ -89,8 +89,8 @@
   --color-neutral-600: 133 122 108;
   --color-neutral-700: 108 99 89;
   --color-neutral-800: 79 73 66;
-  --color-neutral-900: 58 51 46;
-  --color-neutral-950: 36 31 28;
+  --color-neutral-900: 75 68 61;
+  --color-neutral-950: 52 47 42;
   --on-color-primary: 255 255 255;
   --on-color-secondary: 255 255 255;
   --on-color-accent: 69 26 3;
@@ -103,8 +103,8 @@
   --surface-surface1: 255 255 255;
   --surface-surface2: 245 240 232;
   --surface-surface3: 235 227 213;
-  --surface-inverseBg: 36 31 28;
-  --surface-inverseSurface: 58 51 46;
+  --surface-inverseBg: 52 47 42;
+  --surface-inverseSurface: 75 68 61;
   --token-text-default: var(--color-neutral-900);
   --token-text-muted: var(--color-neutral-700);
   --token-text-subtle: var(--color-neutral-600);
