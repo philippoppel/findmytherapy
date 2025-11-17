@@ -1,0 +1,159 @@
+================================================================================
+INTERNAL LINKING NETWORK VISUALIZATION - FOUNDATION POSTS
+================================================================================
+
+Legend:
+  [P] = Pillar Post
+  [C] = Cluster Post  
+  [F] = Foundation (existing)
+  → = Outgoing link
+  ⚠️ = Issue detected
+
+================================================================================
+CURRENT STATE (Before Fixes)
+================================================================================
+
+    ┌─────────────────────────────────────────────────────┐
+    │         PILLAR: Angststörungen ⚠️ ORPHAN            │
+    │    angststoerungen-formen-symptome-behandlung       │
+    │         (NO INCOMING LINKS FROM FOUNDATION)         │
+    └──┬────────────────────────────┬─────────────────────┘
+       │                            │
+       │                            │
+       ↓                            ↓
+    ┌──────────────┐         ┌──────────────┐
+    │ [F] Akuthilfe│         │ [C] Atem-    │
+    │ Panikattacken│         │  techniken   │
+    │              │         │  bei Angst   │
+    │ ⚠️ Links to  │         └──────┬───────┘
+    │ NON-Foundation│               │
+    └──────────────┘                │
+                                    ↓
+                            ┌───────────────┐
+                            │ [C] Meditation│
+                            │  3 Minuten    │
+                            └───────┬───────┘
+                                    │
+       ┌────────────────────────────┘
+       │
+       ↓
+    ┌──────────────────────────────────────┐
+    │    PILLAR: Burnout                   │
+    │    burnout-erkennen-vorbeugen        │
+    └──┬──────────────────┬────────────────┘
+       │                  │
+       ↓                  ↓
+    ┌──────────────┐   ┌──────────────────────┐
+    │ [P] Depression│   │ [P] Therapeuten-     │
+    │  verstehen    │   │      suche           │
+    │  bewältigen   │   │                      │
+    └──────┬────────┘   └──┬──────────┬────────┘
+           │               │          │
+           │               ↓          ↓
+           │        ┌───────────┐ ┌─────────────┐
+           │        │[C] Kassen-│ │[C] Seriöse  │
+           │        │  zuschuss │ │Online-      │
+           │        │           │ │Therapie     │
+           │        └─────┬─────┘ └──────┬──────┘
+           │              │               │
+           │              ↓               ↓
+           │        ┌───────────┐   ┌──────────┐
+           │        │[C] Warte- │   │[C] Psycho│
+           │        │  zeiten   │   │ vs Psycho│
+           │        │  Wien     │   │  therapeut│
+           │        └───────────┘   └──────────┘
+           │              ⚠️              ⚠️
+           │         (One-way link)  (One-way link)
+           │
+           └─→ Back to Pillar: Burnout
+
+Key Issues Visible:
+1. Angststörungen Pillar is isolated (no incoming links)
+2. Akuthilfe-Panikattacken links OUT of Foundation cluster
+3. Multiple one-way links (should be bidirectional)
+4. Therapeutensuche Pillar missing 2 cluster links
+
+================================================================================
+PROPOSED STATE (After Fixes)
+================================================================================
+
+    ┌─────────────────────────────────────────────────────┐
+    │         PILLAR: Angststörungen ✓                    │
+    │    angststoerungen-formen-symptome-behandlung       │
+    │         (3+ INCOMING LINKS)                         │
+    └──┬────────────────────────────┬─────────────────────┘
+       │                            │
+       ↓                            ↓
+    ┌──────────────────┐     ┌──────────────────┐
+    │ [F] Akuthilfe    │←────│ [C] Atemtechniken│
+    │ Panikattacken    │     │  bei Angst       │
+    │                  │     │                  │
+    │ ✓ Now links      │     └─────────┬────────┘
+    │   within         │               ↓
+    │   Foundation     │        ┌──────────────┐
+    └───────┬──────────┘        │ [C] Meditation│
+            ↑                   │  3 Minuten   │
+            │                   └──────┬───────┘
+            │                          │
+            └──────────────────────────┘
+                                       ↓
+    ┌──────────────────────────────────────────┐
+    │    PILLAR: Burnout ✓                     │
+    │    burnout-erkennen-vorbeugen            │
+    │    (4 outgoing, 3 incoming)              │
+    └──┬──────────┬──────────┬─────────────────┘
+       │          │          │
+       ↓          ↓          ↓
+    Depression  Therapeuten Meditation
+                   ↓
+    ┌──────────────────────────────────────────┐
+    │    PILLAR: Therapeutensuche ✓            │
+    │    richtigen-therapeuten-finden          │
+    │    (4 outgoing - ALL clusters linked)    │
+    └──┬───────┬──────────┬────────────────┬───┘
+       │       │          │                │
+       ↓       ↓          ↓                ↓
+    Kassen- Seriöse  Psychologe   Wartezeiten
+    zuschuss Online   vs Psycho-    Wien
+             Therapie therapeut
+       ↓       ↓          ↓                ↓
+       └───────┴──────────┴────────────────┘
+            (All link back ✓)
+
+    ┌──────────────────────────────────────────┐
+    │    PILLAR: Depression ✓                  │
+    │    depression-verstehen-bewaeltigen      │
+    │    (3 outgoing including Angststörungen) │
+    └──┬───────────┬──────────────────────────┘
+       │           │
+       ↓           ↓
+    Akuthilfe  Burnout
+               ↓
+         Angststörungen ✓
+
+Improvements:
+✓ All posts now have incoming links (no orphans)
+✓ Bidirectional linking established
+✓ Pillar posts link to ALL their cluster posts
+✓ Cross-cluster linking improved
+✓ Foundation post integrated into cluster
+
+================================================================================
+METRICS COMPARISON
+================================================================================
+
+                            BEFORE  →  AFTER   IMPROVEMENT
+────────────────────────────────────────────────────────────
+Total Links                   21    →   28        +33%
+Avg Links/Post               1.91   →  2.55       +33%
+Orphaned Posts                1     →   0         -100%
+Bidirectional Links          ~50%   →  ~95%       +90%
+Pillar→Cluster Coverage      60%    →  100%       +67%
+
+════════════════════════════════════════════════════════════
+
+SEO Impact Score:     BEFORE: 6/10  →  AFTER: 8.5/10  ⭐
+
+Next optimization target: Increase to 3-4 links/post for 10/10
+
+================================================================================
