@@ -187,7 +187,7 @@ jobs:
             !**/node_modules/**
 
   integration-tests:
-    name: Integration Tests
+    name: DB Integration Tests
     runs-on: ubuntu-latest
     needs: lint
     services:
@@ -227,7 +227,7 @@ jobs:
           pnpm db:push
           pnpm db:seed
 
-      - name: Run integration tests (DB + API)
+      - name: Run DB integration tests
         env:
           DATABASE_URL: postgresql://postgres:password@localhost:5432/integration_test_db
           REDIS_URL: redis://localhost:6379
@@ -247,13 +247,84 @@ jobs:
           S3_ACCESS_KEY_ID: test-access-key
           S3_SECRET_ACCESS_KEY: test-secret-key
           APP_BASE_URL: http://localhost:3000
-        run: pnpm --filter web test -- --config jest.integration.config.js tests/integration --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next"
+        run: pnpm --filter web test -- --config jest.integration.config.js tests/integration/db --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next"
 
-      - name: Upload integration test results
+      - name: Upload DB integration test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: integration-test-results
+          name: db-integration-test-results
+          path: |
+            apps/web/coverage/**
+
+  api-integration-tests:
+    name: API Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: api_integration_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/api_integration_test_db
+        run: |
+          pnpm db:push
+          pnpm db:seed
+
+      - name: Run API integration tests
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/api_integration_test_db
+          REDIS_URL: redis://localhost:6379
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key-for-api-integration-tests-at-least-32-characters-long
+          EMAIL_FROM: noreply@test.example.com
+          EMAIL_PROVIDER_API_KEY: test-email-api-key
+          STRIPE_SECRET_KEY: sk_test_placeholder
+          STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          STRIPE_WEBHOOK_SECRET: whsec_test_placeholder
+          STRIPE_CONNECT_CLIENT_ID: ca_test_placeholder
+          STRIPE_PRICE_LISTING_MONTHLY: price_test_monthly
+          STRIPE_PRICE_LISTING_YEARLY: price_test_yearly
+          S3_ENDPOINT: https://s3.test.example.com
+          S3_REGION: us-east-1
+          S3_BUCKET: test-bucket
+          S3_ACCESS_KEY_ID: test-access-key
+          S3_SECRET_ACCESS_KEY: test-secret-key
+          APP_BASE_URL: http://localhost:3000
+        run: pnpm --filter web test -- --config jest.integration.config.js tests/integration/api --coverage --testPathIgnorePatterns="node_modules" --testPathIgnorePatterns=".next"
+
+      - name: Upload API integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-integration-test-results
           path: |
             apps/web/coverage/**
 
