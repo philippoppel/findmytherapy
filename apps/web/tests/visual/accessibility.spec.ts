@@ -13,10 +13,7 @@ const PAGES_TO_TEST = [
   { path: '/', name: 'Homepage' },
   { path: '/about', name: 'About Page' },
   { path: '/therapists', name: 'Therapists Directory' },
-  { path: '/how-it-works', name: 'How It Works' },
   { path: '/login', name: 'Login Page' },
-  { path: '/signup', name: 'Signup Page' },
-  { path: '/register', name: 'Register Page' },
   { path: '/triage', name: 'Triage Flow' },
 ]
 

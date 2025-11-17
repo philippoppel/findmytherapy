@@ -12,12 +12,12 @@ export default defineConfig({
   testDir: './tests',
   testMatch: ['**/e2e/**/*.spec.ts', '**/visual/**/*.spec.ts'],
   testIgnore: ['**/integration/**', '**/fixtures/**', '**/utils/**'],
-  timeout: 60_000,
+  timeout: 45_000, // Reduced from 60s
   expect: {
     timeout: 5_000,
   },
   fullyParallel: true,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0, // Reduced from 2 to 1
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: BASE_URL,

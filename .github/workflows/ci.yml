@@ -330,6 +330,7 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20 # Prevent hanging tests
     needs: [build, unit-tests]
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     services:
@@ -406,8 +407,8 @@ jobs:
         run: |
           pnpm --filter web build
           pnpm --filter web start &
-          sleep 15
-          cd apps/web && pnpm exec playwright test tests/e2e --project=chromium-desktop
+          sleep 10
+          cd apps/web && pnpm exec playwright test tests/e2e --project=chromium-desktop --max-failures=3
 
       - name: Upload E2E test results
         if: always()
@@ -421,6 +422,7 @@ jobs:
   visual-regression-tests:
     name: Visual & UI Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15 # Prevent hanging tests
     needs: build
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     services:
@@ -497,8 +499,8 @@ jobs:
         run: |
           pnpm --filter web build
           pnpm --filter web start &
-          sleep 15
-          cd apps/web && pnpm exec playwright test tests/visual --project=chromium-desktop
+          sleep 10
+          cd apps/web && pnpm exec playwright test tests/visual --project=chromium-desktop --max-failures=5
 
       - name: Upload visual test results
         if: always()
