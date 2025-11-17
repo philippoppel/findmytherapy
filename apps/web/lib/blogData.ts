@@ -1585,6 +1585,334 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'depression-verstehen-bewaeltigen',
+    title: 'Depression verstehen und bewältigen: Ein umfassender Leitfaden',
+    excerpt:
+      'Depression ist mehr als nur schlechte Laune oder Traurigkeit. In diesem evidenzbasierten Leitfaden erklären wir, wie man Depression erkennt, welche Behandlungsmöglichkeiten es gibt und wie Betroffene und Angehörige damit umgehen können.',
+    summary: [
+      'Depression ist eine ernstzunehmende psychische Erkrankung, die Gedanken, Gefühle, Körper und Verhalten betrifft',
+      'Hauptsymptome: Anhaltende Niedergeschlagenheit, Interessenverlust, Antriebslosigkeit, Schlafstörungen und Konzentrationsprobleme',
+      'Diagnose erfolgt über strukturierte Interviews und validierte Fragebögen wie PHQ-9 und ICD-11 Kriterien',
+      'Behandlung: Psychotherapie (v.a. Verhaltenstherapie) und bei Bedarf Medikamente (Antidepressiva) sind nachweislich wirksam',
+      'Selbsthilfe und soziale Unterstützung spielen eine wichtige Rolle im Genesungsprozess',
+    ],
+    category: 'Ratgeber',
+    publishedAt: '2025-01-17',
+    readingTime: '18 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Depression', 'Psychotherapie', 'Antidepressiva', 'Selbsthilfe', 'PHQ-9'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person sitzt nachdenklich am Fenster mit Blick nach draußen, symbolisiert Depression und innere Kämpfe',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Depression',
+      'Depression Symptome',
+      'Depression Behandlung',
+      'Antidepressiva',
+      'Depression Therapie Österreich',
+      'PHQ-9 Test',
+      'Depressive Episode',
+    ],
+    relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-17',
+    faq: [
+      {
+        question: 'Was ist der Unterschied zwischen Depression und normaler Traurigkeit?',
+        answer:
+          'Traurigkeit ist eine normale emotionale Reaktion auf Verluste oder Enttäuschungen und klingt meist nach Tagen oder Wochen ab. Depression hingegen ist eine Erkrankung mit anhaltenden Symptomen über mindestens zwei Wochen, die das tägliche Leben massiv beeinträchtigt. Bei Depression sind auch körperliche Symptome wie Schlafstörungen, Appetitveränderungen und Erschöpfung typisch.',
+      },
+      {
+        question: 'Wie häufig ist Depression?',
+        answer:
+          'Depression gehört zu den häufigsten psychischen Erkrankungen. In Österreich erleben etwa 15-20% der Menschen im Laufe ihres Lebens mindestens eine depressive Episode. Frauen sind etwa doppelt so häufig betroffen wie Männer. Die Erkrankung kann in jedem Alter auftreten, beginnt aber oft im jungen Erwachsenenalter.',
+      },
+      {
+        question: 'Sind Antidepressiva gefährlich oder machen sie abhängig?',
+        answer:
+          'Moderne Antidepressiva (vor allem SSRIs und SNRIs) machen nicht abhängig im klassischen Sinne. Sie verändern jedoch die Neurochemie im Gehirn, weshalb ein Absetzen immer schrittweise und unter ärztlicher Begleitung erfolgen sollte, um Absetzsymptome zu vermeiden. Nebenwirkungen sind individuell verschieden, meist mild und klingen nach einigen Wochen ab.',
+      },
+      {
+        question: 'Wie lange dauert die Behandlung einer Depression?',
+        answer:
+          'Die akute Behandlungsphase dauert meist 3-6 Monate. Bei mittelschweren bis schweren Depressionen wird oft eine Erhaltungstherapie von 6-12 Monaten empfohlen. Bei wiederkehrenden Depressionen kann eine längerfristige Behandlung sinnvoll sein. Psychotherapie umfasst typischerweise 15-25 Sitzungen, kann aber variieren.',
+      },
+      {
+        question: 'Kann Depression von selbst wieder verschwinden?',
+        answer:
+          'Manche leichte depressive Episoden klingen nach einigen Monaten spontan ab. Allerdings ist das Risiko für wiederkehrende Episoden ohne Behandlung deutlich höher. Professionelle Behandlung verkürzt nicht nur das Leiden, sondern vermittelt auch Bewältigungsstrategien, die vor Rückfällen schützen. Bei mittelschweren bis schweren Depressionen ist Behandlung dringend empfohlen.',
+      },
+    ],
+    sections: [
+      {
+        heading: 'Was ist Depression?',
+        paragraphs: [
+          'Depression ist eine ernsthafte psychische Erkrankung, die weit über vorübergehende Traurigkeit oder schlechte Laune hinausgeht. Sie betrifft das gesamte Erleben eines Menschen: Denken, Fühlen, körperliches Empfinden und Verhalten. Menschen mit Depression beschreiben oft ein Gefühl der inneren Leere, der Hoffnungslosigkeit und des Verlusts jeglicher Lebensfreude.',
+          'Medizinisch gesprochen handelt es sich bei Depression um eine affektive Störung – also eine Erkrankung, die primär die Stimmung betrifft. Das Gehirn zeigt bei Depression nachweisbare Veränderungen in der Aktivität bestimmter Regionen und im Gleichgewicht von Botenstoffen (Neurotransmittern) wie Serotonin, Noradrenalin und Dopamin. Depression ist also keine Einbildung oder Willensschwäche, sondern eine biologisch fassbare Erkrankung.',
+          'Die Weltgesundheitsorganisation (WHO) zählt Depression zu den häufigsten Ursachen für Krankheitslast weltweit. In Österreich erleben etwa 15-20% der Menschen mindestens einmal im Leben eine depressive Episode. Frauen sind etwa doppelt so häufig betroffen wie Männer, wobei hormonelle Faktoren und unterschiedliche Stressbelastungen eine Rolle spielen können.',
+        ],
+      },
+      {
+        heading: 'Symptome: Wie erkennt man Depression?',
+        paragraphs: [
+          'Depression äußert sich durch eine charakteristische Kombination von emotionalen, kognitiven, körperlichen und verhaltensbezogenen Symptomen. Nach den Diagnosekriterien der ICD-11 und des DSM-5 müssen Symptome über mindestens zwei Wochen bestehen und eine deutliche Beeinträchtigung im Alltag verursachen.',
+        ],
+        list: [
+          'Kernsymptome (Hauptsymptome): Gedrückte Stimmung an fast allen Tagen, deutlich vermindertes Interesse oder Freude an Aktivitäten, die früher Spaß gemacht haben (Anhedonie), verminderter Antrieb und schnelle Ermüdbarkeit selbst bei kleinen Aufgaben',
+          'Kognitive Symptome: Konzentrations- und Gedächtnisprobleme, Entscheidungsunfähigkeit, negative und selbstabwertende Gedanken ("Ich bin wertlos", "Es wird nie besser"), Grübeln über Vergangenheit oder Zukunft, im schlimmsten Fall Suizidgedanken',
+          'Körperliche Symptome: Schlafstörungen (Ein- oder Durchschlafprobleme, frühmorgendliches Erwachen), Appetitveränderungen (verminderter oder gesteigerter Appetit), Gewichtsveränderungen, Erschöpfung und Energielosigkeit, körperliche Schmerzen ohne klare organische Ursache (z.B. Kopf-, Rücken- oder Magenschmerzen)',
+          'Verhaltensänderungen: Sozialer Rückzug, Vernachlässigung von Hobbys und sozialen Kontakten, verlangsamte Bewegungen und Sprache, Vernachlässigung der Selbstfürsorge (Hygiene, Ernährung)',
+          'Emotionale Symptome: Gefühl der inneren Leere, Hoffnungslosigkeit, Verzweiflung, Reizbarkeit, erhöhte Tränenneigung oder umgekehrt Unfähigkeit zu weinen',
+        ],
+      },
+      {
+        heading: 'Ursachen und Risikofaktoren',
+        paragraphs: [
+          'Depression entsteht meist durch ein Zusammenspiel mehrerer Faktoren (bio-psycho-soziales Modell). Es gibt keine einzelne Ursache, sondern verschiedene Risikofaktoren erhöhen die Wahrscheinlichkeit zu erkranken.',
+          'Biologische Faktoren: Genetische Veranlagung spielt eine Rolle – das Risiko ist erhöht, wenn nahe Verwandte betroffen sind. Störungen im Botenstoffhaushalt des Gehirns (Serotonin, Noradrenalin, Dopamin) sowie hormonelle Veränderungen (z.B. nach Geburt, in Wechseljahren) können Depression begünstigen.',
+          'Psychologische Faktoren: Frühe belastende Lebenserfahrungen (Verlust, Trauma, emotionale Vernachlässigung), bestimmte Denkmuster (pessimistische Grundhaltung, Perfektionismus), geringe Selbstwirksamkeitserwartung und Schwierigkeiten im Umgang mit Stress erhöhen das Risiko.',
+          'Soziale Faktoren: Aktueller schwerer Stress (Arbeitsplatzverlust, Trennung, Trauer), soziale Isolation, chronische Überforderung, finanzielle Sorgen sowie fehlende soziale Unterstützung sind wichtige Auslöser.',
+        ],
+      },
+      {
+        heading: 'Diagnose: PHQ-9 und ärztliche Beurteilung',
+        paragraphs: [
+          'Die Diagnose Depression wird durch ein ausführliches klinisches Gespräch gestellt. Ärzte und Psychotherapeuten nutzen dabei strukturierte Interviews und validierte Fragebögen. Ein häufig eingesetztes Instrument ist der PHQ-9 (Patient Health Questionnaire-9), der neun Fragen zu depressiven Symptomen in den letzten zwei Wochen stellt.',
+          'Der PHQ-9 erfasst die Häufigkeit von Symptomen wie Niedergeschlagenheit, Interessenverlust, Schlafprobleme, Müdigkeit, Appetitveränderungen, Schuldgefühle, Konzentrationsstörungen, psychomotorische Verlangsamung oder Unruhe sowie Suizidgedanken. Je nach Punktzahl wird der Schweregrad eingeschätzt: keine, leichte, mittelschwere oder schwere Depression.',
+          'Wichtig ist auch, körperliche Erkrankungen auszuschließen, die depressive Symptome verursachen können (z.B. Schilddrüsenunterfunktion, Vitaminmangel, chronische Schmerzen, neurologische Erkrankungen). Daher gehört zur Erstdiagnostik oft auch eine körperliche Untersuchung und Labordiagnostik.',
+        ],
+      },
+      {
+        heading: 'Behandlung: Psychotherapie und Medikamente',
+        paragraphs: [
+          'Die gute Nachricht: Depression ist gut behandelbar. Internationale Leitlinien empfehlen je nach Schweregrad unterschiedliche Ansätze. Bei leichten Depressionen kann bereits psychoedukative Beratung und Aktivierung helfen. Bei mittelschweren und schweren Depressionen ist Psychotherapie und/oder medikamentöse Behandlung angezeigt.',
+          'Psychotherapie: Die wirksamste Form ist die Kognitive Verhaltenstherapie (KVT), die in zahlreichen Studien ihre Wirksamkeit bewiesen hat. Dabei lernen Betroffene, negative Denkmuster zu erkennen und zu verändern, sich schrittweise wieder zu aktivieren und hilfreiche Bewältigungsstrategien aufzubauen. Auch andere Therapieformen wie interpersonelle Psychotherapie (IPT) oder tiefenpsychologische Verfahren können wirksam sein.',
+          'Medikamente (Antidepressiva): Bei mittelschweren bis schweren Depressionen werden oft Antidepressiva verschrieben. Die am häufigsten eingesetzten Medikamente sind SSRIs (Selektive Serotonin-Wiederaufnahmehemmer) wie Sertralin oder Escitalopram sowie SNRIs (Serotonin-Noradrenalin-Wiederaufnahmehemmer). Diese Medikamente wirken auf den Botenstoffhaushalt im Gehirn und benötigen meist 2-4 Wochen, bis eine spürbare Wirkung eintritt.',
+          'Kombinationsbehandlung: Studien zeigen, dass die Kombination aus Psychotherapie und Medikamenten bei mittelschweren bis schweren Depressionen oft am wirksamsten ist. Beide Ansätze ergänzen sich: Medikamente können die akute Symptomatik lindern und Psychotherapie vermittelt langfristige Bewältigungsstrategien.',
+        ],
+      },
+      {
+        heading: 'Selbsthilfe und Unterstützung im Alltag',
+        paragraphs: [
+          'Neben professioneller Behandlung können Betroffene selbst einiges tun, um den Heilungsprozess zu unterstützen. Diese Selbsthilfestrategien ersetzen keine Therapie, können aber ergänzend sehr hilfreich sein.',
+        ],
+        list: [
+          'Tagesstruktur und Aktivierung: Auch wenn es schwerfällt – eine regelmäßige Tagesstruktur mit festen Aufsteh- und Schlafenszeiten hilft. Kleine, erreichbare Aufgaben planen und abhaken gibt Erfolgserlebnisse.',
+          'Bewegung: Körperliche Aktivität wirkt nachweislich antidepressiv. Schon 30 Minuten zügiges Gehen pro Tag können die Stimmung verbessern. Sport fördert die Ausschüttung von Endorphinen und reguliert Stresshormone.',
+          'Soziale Kontakte pflegen: Auch wenn der Rückzugswunsch groß ist – regelmäßiger Kontakt zu vertrauten Menschen ist wichtig. Teilen Sie Ihr Befinden mit ausgewählten Personen.',
+          'Achtsamkeit und Entspannung: Achtsamkeitsübungen, Meditation oder progressive Muskelentspannung können helfen, Grübeln zu unterbrechen und Anspannung zu reduzieren.',
+          'Suizidgedanken ernst nehmen: Wenn Sie Gedanken haben, sich das Leben zu nehmen, suchen Sie sofort Hilfe (Telefonseelsorge 142, Rettung 144, psychiatrische Notaufnahme).',
+        ],
+      },
+      {
+        heading: 'Unterstützung für Angehörige',
+        paragraphs: [
+          'Angehörige von Menschen mit Depression sind oft unsicher, wie sie helfen können. Wichtig ist: Seien Sie da, hören Sie zu ohne zu urteilen, und ermutigen Sie die Person, professionelle Hilfe zu suchen. Respektieren Sie, dass Depression eine Erkrankung ist – Ratschläge wie "Reiß dich zusammen" sind nicht hilfreich.',
+          'Achten Sie auch auf Ihre eigenen Grenzen. Die Begleitung eines depressiven Menschen kann belastend sein. Holen Sie sich bei Bedarf selbst Unterstützung durch Beratung oder Angehörigengruppen.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'angststoerungen-formen-symptome-behandlung',
+    title: 'Angststörungen: Formen, Symptome und Behandlungsmöglichkeiten',
+    excerpt: 'Angststörungen gehören zu den häufigsten psychischen Erkrankungen. Dieser umfassende Leitfaden erklärt die verschiedenen Formen von Angststörungen, ihre Symptome und evidenzbasierte Behandlungsansätze.',
+    summary: [
+      'Angststörungen umfassen verschiedene Formen: Generalisierte Angststörung, Panikstörung, soziale Phobie und spezifische Phobien',
+      'Charakteristisch sind übermäßige, anhaltende Angst und Vermeidungsverhalten, die den Alltag beeinträchtigen',
+      'Etwa 15-20% der Menschen erleben im Leben eine Angststörung, Frauen häufiger als Männer',
+      'Kognitive Verhaltenstherapie mit Expositionsübungen ist die wirksamste Behandlung',
+      'Medikamentöse Unterstützung durch SSRIs kann bei mittelschweren bis schweren Fällen sinnvoll sein'
+    ],
+    category: 'Ratgeber',
+    publishedAt: '2025-01-17',
+    readingTime: '17 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Angststörung', 'GAD', 'Soziale Phobie', 'Panikstörung', 'Verhaltenstherapie', 'Exposition'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Besorgt wirkende Person in Menschenmenge, symbolisiert soziale Angst',
+      width: 1200,
+      height: 630
+    },
+    keywords: ['Angststörung', 'Generalisierte Angststörung', 'GAD-7', 'Soziale Phobie', 'Panikstörung', 'Angst Behandlung Österreich', 'Verhaltenstherapie Angst'],
+    relatedPosts: ['akuthilfe-panikattacken', 'atemtechniken-bei-angst'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-17',
+    faq: [
+      { question: 'Was ist der Unterschied zwischen normaler Angst und einer Angststörung?', answer: 'Normale Angst ist eine angemessene Reaktion auf reale Bedrohungen und hilft uns, vorsichtig zu sein. Eine Angststörung liegt vor, wenn Angst unverhältnismäßig stark, anhaltend und ohne angemessenen Auslöser auftritt und das tägliche Leben deutlich beeinträchtigt. Die Angst ist nicht mehr funktional, sondern wird zur Belastung.' },
+      { question: 'Welche ist die häufigste Angststörung?', answer: 'Die Generalisierte Angststörung (GAD) und spezifische Phobien sind am häufigsten. Etwa 5-7% der Bevölkerung erleben im Laufe eines Jahres eine GAD, gekennzeichnet durch ständige, übermäßige Sorgen zu verschiedenen Lebensbereichen.' },
+      { question: 'Können Angststörungen geheilt werden?', answer: 'Ja, Angststörungen sind sehr gut behandelbar. Kognitive Verhaltenstherapie zeigt Erfolgsraten von 60-80%. Viele Menschen werden nach einer Therapie vollständig symptomfrei, andere lernen, ihre Angst so gut zu managen, dass sie kaum noch beeinträchtigt.' }
+    ],
+    sections: [
+      { heading: 'Was sind Angststörungen?', paragraphs: ['Angststörungen sind psychische Erkrankungen, bei denen Angst das zentrale Symptom ist – allerdings nicht als hilfreiche Warnreaktion, sondern als übermäßige, lang anhaltende oder unangemessene Angst, die das Leben einschränkt. Angststörungen gehören zu den häufigsten psychischen Erkrankungen weltweit.', 'Anders als bei normaler Angst, die vor realen Gefahren schützt, tritt bei Angststörungen die Angst ohne tatsächliche Bedrohung oder in einem unverhältnismäßigen Ausmaß auf. Betroffene wissen oft selbst, dass ihre Angst übertrieben ist, können sie aber nicht kontrollieren. Das führt häufig zu Vermeidungsverhalten, wodurch sich die Angst langfristig verstärkt.'] },
+      { heading: 'Formen von Angststörungen', paragraphs: ['Es gibt verschiedene Arten von Angststörungen, die sich in Auslösern und Symptomen unterscheiden:'], list: ['Generalisierte Angststörung (GAD): Anhaltende, unkontrollierbare Sorgen über viele Lebensbereiche (Gesundheit, Finanzen, Familie, Arbeit). Die Angst ist nicht auf spezifische Situationen beschränkt.', 'Panikstörung: Wiederkehrende, unerwartete Panikattacken mit intensiven körperlichen Symptomen. Oft entwickelt sich Angst vor der nächsten Attacke (Erwartungsangst).', 'Soziale Angststörung (Soziale Phobie): Ausgeprägte Angst vor sozialen Situationen, in denen man bewertet werden könnte. Befürchtung, sich zu blamieren oder abgelehnt zu werden.', 'Spezifische Phobien: Intensive Angst vor bestimmten Objekten oder Situationen (z.B. Höhe, Tiere, Fliegen, Blut, enge Räume). Die Angst wird durch den spezifischen Auslöser hervorgerufen.', 'Agoraphobie: Angst vor Situationen, aus denen eine Flucht schwierig wäre oder Hilfe nicht verfügbar ist (Menschenmengen, öffentliche Verkehrsmittel, weite Plätze).'] },
+      { heading: 'Symptome und Diagnose', paragraphs: ['Angststörungen zeigen sich auf mehreren Ebenen:', 'Psychische Symptome: Ständige Sorgen, Gefühl der Bedrohung, Nervosität, Reizbarkeit, Konzentrationsprobleme, Angst vor Kontrollverlust oder dem Sterben.', 'Körperliche Symptome: Herzrasen, Schwitzen, Zittern, Schwindel, Atemnot, Übelkeit, Muskelverspannungen, Schlafstörungen.', 'Verhaltenssymptome: Vermeidung angstauslösender Situationen, Rückversicherungsverhalten, sozialer Rückzug.', 'Zur Diagnose nutzen Fachpersonen strukturierte Interviews und Fragebögen wie den GAD-7 (für generalisierte Angst) oder die Liebowitz Social Anxiety Scale (für soziale Angst).'] },
+      { heading: 'Behandlung: Verhaltenstherapie und Exposition', paragraphs: ['Die wirksamste Behandlung ist die Kognitive Verhaltenstherapie (KVT), besonders mit Expositionsübungen. Dabei lernen Betroffene, sich schrittweise den angstauslösenden Situationen zu stellen, statt sie zu vermeiden. Durch wiederholte Exposition bei gleichzeitigem Ausbleiben der befürchteten Katastrophe lernt das Gehirn, dass die Situation nicht gefährlich ist.', 'Zusätzlich werden in der Therapie angstauslösende Gedankenmuster identifiziert und durch realistischere Bewertungen ersetzt. Entspannungstechniken und Atemübungen helfen, körperliche Angstsymptome zu reduzieren.', 'Bei mittelschweren bis schweren Angststörungen können Medikamente (vor allem SSRIs wie Sertralin oder Escitalopram) unterstützend eingesetzt werden. Sie ersetzen nicht die Therapie, können aber die Symptome so weit lindern, dass Therapie und Exposition besser möglich sind.'] }
+    ]
+  },
+  {
+    slug: 'burnout-erkennen-vorbeugen',
+    title: 'Burnout erkennen und vorbeugen: Ein Praxisleitfaden',
+    excerpt: 'Burnout entwickelt sich schleichend und betrifft immer mehr Menschen. Erfahren Sie, wie Sie Warnsignale frühzeitig erkennen, was Burnout von Depression unterscheidet und welche Präventionsstrategien wirklich helfen.',
+    summary: [
+      'Burnout ist ein Zustand emotionaler, körperlicher und mentaler Erschöpfung durch chronischen Stress',
+      'Charakteristisch sind drei Dimensionen: Erschöpfung, Zynismus/Distanzierung und verringerte Leistungsfähigkeit',
+      'Burnout unterscheidet sich von Depression durch den klaren Bezug zu Arbeit oder Überlastungssituation',
+      'Prävention umfasst Stressmanagement, gesunde Grenzen, soziale Unterstützung und Selbstfürsorge',
+      'Behandlung erfolgt durch Psychotherapie, Stressreduktion und ggf. medizinische Rehabilitation'
+    ],
+    category: 'Ratgeber',
+    publishedAt: '2025-01-17',
+    readingTime: '14 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Burnout', 'Stress', 'Arbeit', 'Prävention', 'Work-Life-Balance'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Erschöpfte Person am Schreibtisch, symbolisiert Burnout und Überlastung',
+      width: 1200,
+      height: 630
+    },
+    keywords: ['Burnout', 'Burnout Symptome', 'Burnout Test', 'Burnout Prävention', 'Erschöpfung', 'Work-Life-Balance', 'Stress Arbeit'],
+    relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-17',
+    faq: [
+      { question: 'Was ist der Unterschied zwischen Burnout und Depression?', answer: 'Burnout entsteht durch chronischen Stress, meist im beruflichen Kontext, und bessert sich typischerweise bei Distanz zur Stressquelle (z.B. im Urlaub). Depression ist eine eigenständige Erkrankung, die alle Lebensbereiche betrifft und nicht automatisch durch Urlaub verschwindet. Allerdings kann aus einem Burnout eine Depression entstehen.' },
+      { question: 'Ist Burnout eine offizielle Diagnose?', answer: 'Nein, Burnout ist keine eigenständige medizinische Diagnose nach ICD-11 oder DSM-5. Die WHO führt Burnout als "Syndrom aufgrund von chronischem Stress am Arbeitsplatz" in der ICD-11 unter "Probleme im Zusammenhang mit Beschäftigung und Arbeitslosigkeit". Für Krankschreibung wird meist eine Erschöpfungsdepression oder Anpassungsstörung diagnostiziert.' },
+      { question: 'Kann man Burnout vorbeugen?', answer: 'Ja! Präventionsstrategien umfassen: Realistische Zielsetzungen, Grenzen setzen (Nein-Sagen lernen), regelmäßige Pausen, Work-Life-Balance pflegen, soziale Unterstützung suchen, Stressbewältigungstechniken erlernen und Frühwarnsignale ernst nehmen.' }
+    ],
+    sections: [
+      { heading: 'Was ist Burnout?', paragraphs: ['Burnout beschreibt einen Zustand totaler Erschöpfung – emotional, körperlich und mental – als Folge von chronischem Stress, der nicht bewältigt wurde. Der Begriff stammt aus den 1970er-Jahren und beschrieb ursprünglich die Erschöpfung von Pflegekräften und Sozialarbeitern. Heute ist Burnout ein weit verbreitetes Phänomen in vielen Berufsfeldern.', 'Burnout entwickelt sich schleichend über Monate oder Jahre. Anfangs versuchen Betroffene, durch noch mehr Einsatz gegenzusteuern, was die Erschöpfung weiter verstärkt. Die drei Kerndimensionen nach dem Maslach Burnout Inventory sind: 1) Emotionale Erschöpfung, 2) Depersonalisation/Zynismus (Distanzierung von der Arbeit), 3) Reduzierte persönliche Leistungsfähigkeit.'] },
+      { heading: 'Die 12 Phasen des Burnout', paragraphs: ['Nach Freudenberger entwickelt sich Burnout typischerweise in Phasen:'], list: ['1-3: Anfangsphase: Zwang, sich zu beweisen, verstärkter Einsatz, Vernachlässigung eigener Bedürfnisse', '4-6: Mittlere Phase: Verdrängung von Problemen, Rückzug, innere Leere, erste körperliche Symptome', '7-9: Kritische Phase: Verhaltensänderungen, Depersonalisation, innere Leere verstärkt sich', '10-12: Endphase: Verzweiflung, Depression, totale Erschöpfung, Zusammenbruch'] },
+      { heading: 'Warnsignale und Symptome', paragraphs: ['Burnout zeigt sich vielfältig. Wichtig ist, Frühwarnsignale ernst zu nehmen:'], list: ['Emotionale Warnsignale: Ständige Müdigkeit, Gefühl der Überforderung, Verlust von Freude an der Arbeit, Reizbarkeit, Zynismus', 'Körperliche Symptome: Chronische Erschöpfung, Schlafstörungen, Kopfschmerzen, Muskelverspannungen, Magen-Darm-Probleme, häufige Infekte', 'Kognitive Symptome: Konzentrationsprobleme, Vergesslichkeit, Entscheidungsschwierigkeiten, negative Gedankenmuster', 'Verhaltenssymptome: Sozialer Rückzug, Leistungsabfall, Prokrastination, erhöhter Konsum von Kaffee/Alkohol/Nikotin'] },
+      { heading: 'Prävention: Was schützt vor Burnout?', paragraphs: ['Burnout-Prävention setzt an mehreren Ebenen an:'], list: ['Arbeitsorganisation: Realistische Ziele, klare Prioritäten, Delegieren lernen, regelmäßige Pausen einplanen', 'Grenzen setzen: Nein sagen lernen, Arbeitszeit begrenzen, E-Mails nach Feierabend ignorieren', 'Work-Life-Balance: Hobbys pflegen, soziale Kontakte, Erholung ernst nehmen', 'Stressbewältigung: Entspannungstechniken (Meditation, Yoga), Sport, Achtsamkeit', 'Soziale Unterstützung: Probleme ansprechen, Hilfe suchen, Netzwerk pflegen', 'Selbstfürsorge: Ausreichend Schlaf, gesunde Ernährung, regelmäßige Bewegung'] }
+    ]
+  },
+  {
+    slug: 'richtigen-therapeuten-finden',
+    title: 'Den richtigen Therapeuten finden: 5 Schritte zum passenden Match',
+    excerpt: 'Die Wahl des richtigen Therapeuten ist entscheidend für den Therapieerfolg. Dieser Leitfaden hilft Ihnen, einen Therapeuten zu finden, der zu Ihren Bedürfnissen passt – in Österreich, mit oder ohne Kassenzuschuss.',
+    summary: ['Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor in der Therapie', 'In Österreich gibt es verschiedene Therapierichtungen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie u.a.', 'Kassentherapeuten haben lange Wartezeiten (3-12 Monate), Wahltherapeuten bieten kürzere Wartezeiten mit Zuschuss', 'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen', 'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen'],
+    category: 'Therapeutensuche',
+    publishedAt: '2025-01-17',
+    readingTime: '12 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Therapeutensuche', 'Psychotherapie Österreich', 'Kassentherapeut', 'Wahltherapeut'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Therapeutisches Gespräch zwischen Therapeut und Klient', width: 1200, height: 630 },
+    keywords: ['Therapeut finden Wien', 'Psychotherapeut finden Österreich', 'Kassentherapeut', 'Wahltherapeut', 'Psychotherapie Kassenzuschuss'],
+    relatedPosts: ['kassenzuschuss-psychotherapie-oesterreich', 'serioese-online-therapie-erkennen'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-17',
+    faq: [{ question: 'Was ist wichtiger: Die Therapiemethode oder die Person des Therapeuten?', answer: 'Studien zeigen klar: Die therapeutische Beziehung ist der stärkste Prädiktor für Therapieerfolg – wichtiger als die spezifische Methode. "Chemistry" zwischen Therapeut und Klient ist entscheidend. Wählen Sie einen Therapeuten, bei dem Sie sich wohl und verstanden fühlen.' }],
+    sections: [{ heading: 'Warum die Wahl des Therapeuten so wichtig ist', paragraphs: ['Der wichtigste Erfolgsfaktor in der Psychotherapie ist nicht die angewandte Methode, sondern die Qualität der therapeutischen Beziehung. Studien zeigen, dass etwa 30% des Therapieerfolgs auf die Beziehung zwischen Therapeut und Klient zurückzuführen ist. Wenn Sie sich bei Ihrem Therapeuten nicht wohl, verstanden oder sicher fühlen, wird die Therapie weniger wirksam sein – unabhängig davon, wie qualifiziert die Person ist.'] }, { heading: '5 Schritte zum passenden Therapeuten', paragraphs: ['1. Therapierichtung wählen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie, Humanistische Verfahren. 2. Kasse oder Privat: Entscheiden Sie, ob Kassentherapeut (lange Wartezeit, keine Kosten) oder Wahltherapeut (kurze Wartezeit, Teilzuschuss). 3. Erstgespräch vereinbaren: Nutzen Sie 1-2 Probesitzungen. 4. Passung prüfen: Fühlen Sie sich wohl? Verstanden? Respektiert? 5. Entscheiden: Bei Zweifeln weitersuchen – die Chemie muss stimmen.'] }]
+  },
+  {
+    slug: 'atemtechniken-bei-angst',
+    title: '5 wirksame Atemtechniken bei Angst und Panik',
+    excerpt: 'Kontrolliertes Atmen ist eine der effektivsten Sofortmaßnahmen bei Angst. Diese 5 evidenzbasierten Atemtechniken helfen, Angstsymptome schnell zu reduzieren und das Nervensystem zu beruhigen.',
+    summary: ['Kontrollierte Atmung aktiviert das parasympathische Nervensystem und wirkt beruhigend', 'Die 4-7-8-Atmung, Bauchatmung und Box-Breathing sind wissenschaftlich fundierte Techniken', 'Regelmäßiges Üben (5-10 Min täglich) verstärkt die Wirkung in Angstsituationen', 'Atemtechniken können Herzrate und Blutdruck senken sowie Stresshormone reduzieren'],
+    category: 'Selbsthilfe',
+    publishedAt: '2025-01-17',
+    readingTime: '6 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Atemtechniken', 'Angst', 'Panik', 'Selbsthilfe', 'Entspannung'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person praktiziert Atemübungen in ruhiger Umgebung', width: 1200, height: 630 },
+    keywords: ['Atemübungen Angst', 'Atemtechniken Panik', '4-7-8 Atmung', 'Bauchatmung', 'Box Breathing'],
+    relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-17',
+    sections: [{ heading: 'Warum Atmung bei Angst hilft', paragraphs: ['Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.'] }, { heading: '1. Die 4-7-8-Atmung', paragraphs: ['Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.'] }, { heading: '2. Bauchatmung (Zwerchfellatmung)', paragraphs: ['Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.'] }, { heading: '3. Box-Breathing (4-4-4-4)', paragraphs: ['4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.'] }]
+  },
+  {
+    slug: 'psychologe-vs-psychotherapeut',
+    title: 'Psychologe, Psychotherapeut, Psychiater: Die Unterschiede erklärt',
+    excerpt: 'Psychologe, Psychotherapeut, Psychiater – die Begriffe werden oft verwechselt. Dieser Artikel erklärt die wichtigen Unterschiede in Ausbildung, Leistungen und wann Sie zu wem gehen sollten.',
+    summary: ['Psychologen haben ein Psychologie-Studium, dürfen aber nicht automatisch therapieren', 'Psychotherapeuten haben eine mehrjährige psychotherapeutische Ausbildung und sind zur Therapie berechtigt', 'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben', 'Klinische Psychologen können diagnostizieren und behandeln, aber keine Psychotherapie im engeren Sinne'],
+    category: 'Wissen',
+    publishedAt: '2025-01-17',
+    readingTime: '7 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Psychologe', 'Psychotherapeut', 'Psychiater', 'Unterschiede', 'Ausbildung'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Unterschiedliche Berufsgruppen in der psychischen Gesundheitsversorgung', width: 1200, height: 630 },
+    keywords: ['Unterschied Psychologe Psychotherapeut', 'Psychiater vs Psychologe', 'Klinischer Psychologe', 'Psychotherapie Österreich'],
+    relatedPosts: ['richtigen-therapeuten-finden'],
+    sections: [{ heading: 'Die drei Berufsgruppen im Überblick', paragraphs: ['In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.'] }, { heading: 'Psychologe', paragraphs: ['Ausbildung: Universitätsstudium der Psychologie (5 Jahre Bachelor + Master). Tätigkeit: Psychologische Diagnostik, Beratung, Coaching. KEINE Psychotherapie ohne Zusatzausbildung. Kassenleistung: Klinisch-psychologische Diagnostik teilweise auf Kasse.'] }, { heading: 'Psychotherapeut', paragraphs: ['Ausbildung: Propädeutikum + Fachspezifikum in einer anerkannten Therapiemethode (mind. 5 Jahre berufsbegleitend). Tätigkeit: Psychotherapie bei psychischen Erkrankungen. Kassenleistung: Auf Kasse bei Kassenstellen oder Zuschuss bei Wahltherapeuten (€30-40 pro Sitzung).'] }, { heading: 'Psychiater', paragraphs: ['Ausbildung: Medizinstudium + Facharztausbildung Psychiatrie (mind. 12 Jahre). Tätigkeit: Diagnose und medikamentöse Behandlung psychischer Erkrankungen. Kann Medikamente verschreiben. Kassenleistung: Volle Kassenleistung bei Kassenärzten.'] }]
+  },
+  {
+    slug: 'kassenzuschuss-psychotherapie-oesterreich',
+    title: 'Kassenzuschuss für Psychotherapie in Österreich 2025',
+    excerpt: 'Psychotherapie ist teuer. In Österreich können Sie als Versicherter einen Zuschuss beantragen. Dieser Guide erklärt, wie viel Zuschuss Sie bekommen, wie Sie ihn beantragen und was Sie beachten müssen.',
+    summary: ['Kassenzuschuss beträgt €30-40 pro Sitzung bei Wahltherapeuten (Stand 2025)', 'Voraussetzungen: Psychotherapeut muss in Therapeutenliste eingetragen sein', 'Antrag: Nach jeder Sitzung Honorarnote einreichen bei der Krankenkasse', 'Kassentherapeuten: Kostenlos, aber Wartezeit 3-12 Monate', 'Zusatzversicherungen können weitere Kosten übernehmen'],
+    category: 'Finanzierung',
+    publishedAt: '2025-01-17',
+    readingTime: '8 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Kassenzuschuss', 'Psychotherapie Kosten', 'Österreich', 'ÖGK', 'Krankenkasse'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Krankenkassenkarte und Dokumente symbolisieren Gesundheitsfinanzierung', width: 1200, height: 630 },
+    keywords: ['Kassenzuschuss Psychotherapie', 'Psychotherapie Kosten Österreich', 'ÖGK Zuschuss', 'Wahltherapeut Zuschuss'],
+    relatedPosts: ['richtigen-therapeuten-finden', 'wartezeiten-psychotherapie-wien'],
+    sections: [{ heading: 'Zwei Wege: Kasse oder Zuschuss', paragraphs: ['In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).'] }, { heading: 'Höhe des Kassenzuschusses', paragraphs: ['Österreichische Gesundheitskasse (ÖGK): €30-40 pro Sitzung. SVS, BVAEB: Ähnliche Sätze. Wahltherapeut-Honorar: €80-120 pro Sitzung. Eigenanteil: €40-90 pro Sitzung.'] }, { heading: 'So beantragen Sie den Zuschuss', paragraphs: ['1. Therapeut aus Liste wählen (muss eingetragen sein). 2. Nach jeder Sitzung Honorarnote vom Therapeut holen. 3. Honorarnote bei Krankenkasse einreichen (online oder per Post). 4. Zuschuss wird überwiesen (meist 2-4 Wochen).'] }]
+  },
+  {
+    slug: 'serioese-online-therapie-erkennen',
+    title: 'Seriöse Online-Therapie erkennen: Worauf Sie achten müssen',
+    excerpt: 'Online-Therapie boomt, aber nicht alle Angebote sind seriös. Dieser Leitfaden hilft Ihnen, qualifizierte Online-Therapeuten zu erkennen und unseriöse Anbieter zu meiden.',
+    summary: ['Online-Therapie ist evidenzbasiert wirksam bei vielen psychischen Erkrankungen', 'Seriöse Anbieter: Therapeuten sind staatlich zertifiziert, transparent über Qualifikationen', 'Warnsignale: Keine Zulassung erkennbar, unrealistische Heilversprechen, Vorauszahlung ohne Probesitzung', 'Videotelefonie ist der Goldstandard, Chattherapie nur als Ergänzung'],
+    category: 'Digitale Gesundheit',
+    publishedAt: '2025-01-17',
+    readingTime: '6 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Online-Therapie', 'Videotherapie', 'Digitale Gesundheit', 'Telemedizin'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person nimmt an Online-Therapie-Sitzung per Video teil', width: 1200, height: 630 },
+    keywords: ['Online Therapie Österreich', 'Videotherapie seriös', 'Online Psychotherapie', 'Teletherapie'],
+    relatedPosts: ['richtigen-therapeuten-finden', 'psychologe-vs-psychotherapeut'],
+    sections: [{ heading: 'Was ist seriöse Online-Therapie?', paragraphs: ['Online-Therapie (auch Videotherapie oder Teletherapie) ist Psychotherapie per Videoanruf. Studien zeigen: Bei Depressionen, Angststörungen und vielen anderen Erkrankungen ist sie genauso wirksam wie Präsenztherapie.'] }, { heading: 'Erkennungsmerkmale seriöser Anbieter', paragraphs: ['Staatliche Zertifizierung: Therapeut ist im Psychotherapeutenregister eingetragen. Transparenz: Qualifikationen klar ersichtlich. Erstgespräch: Angebot einer unverbindlichen Kennenlernens Sitzung. Datenschutz: DSGVO-konforme Videoplattform. Grenzen: Klare Kommunikation, wann Online-Therapie NICHT geeignet ist.'] }, { heading: 'Warnsignale unseriöser Anbieter', paragraphs: ['Keine erkennbare Zulassung. Heilversprechen ("In 4 Wochen geheilt!"). Hohe Vorauszahlung ohne Probesitzung. Nur Chat, kein Video. Kein persönlicher Therapeut (wechselnde Personen). Druck zum Abschluss ("Nur heute!").'] }]
+  },
+  {
+    slug: 'meditation-anfaenger-3-minuten',
+    title: 'Meditation für Anfänger: Die 3-Minuten-Atemmeditation',
+    excerpt: 'Sie möchten mit Meditation beginnen, wissen aber nicht wie? Diese einfache 3-Minuten-Übung ist perfekt für Einsteiger und lässt sich überall durchführen – wissenschaftlich fundiert und sofort umsetzbar.',
+    summary: ['Meditation reduziert nachweislich Stress, Angst und verbessert emotionale Regulation', 'Die 3-Minuten-Atemmeditation ist eine Einsteigerübung, die jederzeit durchführbar ist', 'Regelmäßigkeit ist wichtiger als Länge – täglich 3 Minuten sind besser als einmal wöchentlich 30 Minuten', 'Häufige Anfängerfehler: Erwartung der Gedankenleere, Perfektionismus, zu lange Sitzungen'],
+    category: 'Selbsthilfe',
+    publishedAt: '2025-01-17',
+    readingTime: '5 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Meditation', 'Achtsamkeit', 'Anfänger', 'Stressreduktion', 'Selbsthilfe'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person meditiert in ruhiger Umgebung', width: 1200, height: 630 },
+    keywords: ['Meditation Anfänger', 'Meditation lernen', 'Achtsamkeit', 'Atemmeditation', '3-Minuten-Meditation'],
+    relatedPosts: ['atemtechniken-bei-angst', 'burnout-erkennen-vorbeugen'],
+    sections: [{ heading: 'Warum Meditation?', paragraphs: ['Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.'] }, { heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt', paragraphs: ['1. Sitzposition: Aufrecht sitzen (Stuhl oder Boden), Hände locker auf den Oberschenkeln. 2. Augen schließen oder weichen Blick. 3. Aufmerksamkeit auf Atem richten: Spüren Sie, wie Atem ein- und ausströmt. 4. Gedanken kommen lassen: Nicht bekämpfen, einfach zurück zum Atem. 5. Nach 3 Minuten: Langsam Augen öffnen, kurz nachspüren.'] }, { heading: 'Häufige Anfängerfehler', paragraphs: ['Erwartung der Gedankenleere: Gedanken sind normal! Ziel ist, sie zu beobachten, nicht zu stoppen. Zu lange Sitzungen: Anfänger scheitern oft an 20-Minuten-Sessions. Start 3 Minuten! Perfektionismus: Es gibt kein "falsch". Abschweifen ist Teil der Übung.'] }]
+  },
+  {
+    slug: 'wartezeiten-psychotherapie-wien',
+    title: 'Wartezeiten Psychotherapie: Wien vs. andere Bundesländer',
+    excerpt: 'Die Wartezeiten auf einen Therapieplatz in Österreich sind lang. Dieser Artikel vergleicht die Situation in Wien mit anderen Bundesländern und gibt Tipps, wie Sie schneller einen Platz finden.',
+    summary: ['Durchschnittliche Wartezeit auf Kassentherapeut: 3-12 Monate, regional sehr unterschiedlich', 'Wien hat die meisten Therapeuten, aber auch die höchste Nachfrage – Wartezeit 4-8 Monate', 'Ländliche Regionen: Weniger Therapeuten, längere Anfahrtswege, oft noch längere Wartezeiten', 'Schneller zum Platz: Wahltherapeut, Privatambulanz, Online-Therapie, mehrere Anfragen parallel'],
+    category: 'Therapeutensuche',
+    publishedAt: '2025-01-17',
+    readingTime: '7 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Wartezeit', 'Therapeutensuche', 'Wien', 'Österreich', 'Kassentherapeut'],
+    featuredImage: { src: 'https://images.unsplash.com/photo-1495954380655-c0b98c3e4b72?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Uhr symbolisiert Wartezeit auf Therapieplatz', width: 1200, height: 630 },
+    keywords: ['Psychotherapie Wartezeit Österreich', 'Therapeut Wartezeit Wien', 'Kassentherapeut Wartezeit', 'Therapieplatz finden'],
+    relatedPosts: ['richtigen-therapeuten-finden', 'kassenzuschuss-psychotherapie-oesterreich'],
+    sections: [{ heading: 'Die Situation in Österreich', paragraphs: ['Österreich hat einen Versorgungsengpass in der Psychotherapie. Auf einen Kassentherapieplatz warten Betroffene durchschnittlich 3-12 Monate. Die Situation variiert stark nach Bundesland und Therapiemethode.'] }, { heading: 'Wien: Viele Therapeuten, hohe Nachfrage', paragraphs: ['Wien hat die höchste Therapeutendichte Österreichs (ca. 40% aller österreichischen Therapeuten). Trotzdem: Wartezeit 4-8 Monate für Kassenplätze. Grund: Hohe Nachfrage, viele Studierende und junge Erwachsene. Vorteil: Große Auswahl, viele Wahltherapeuten, kürzere Wartezeiten bei privater Finanzierung.'] }, { heading: 'Andere Bundesländer', paragraphs: ['Niederösterreich, Oberösterreich: Mittlere Versorgung, Wartezeit 6-10 Monate. Kärnten, Steiermark, Tirol: Unterschiedlich, Zentren (Graz, Klagenfurt, Innsbruck) besser versorgt als Umland. Burgenland, Vorarlberg: Geringste Therapeutendichte, längste Wartezeiten (8-12 Monate).'] }, { heading: 'So kommen Sie schneller zum Therapieplatz', paragraphs: ['1. Mehrere Anfragen parallel stellen. 2. Wahltherapeut nutzen (Zuschuss beantragen). 3. Online-Therapie in Erwägung ziehen. 4. Privatambulanz oder Ausbildungsinstitute (günstigere Honorare). 5. Krisenintervention bei akuter Gefahr (keine Wartezeit).'] }]
+  },
 ]
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
