@@ -162,7 +162,7 @@ export default function BlogPage() {
 
   return (
     <div className="marketing-theme bg-surface text-default">
-      <div className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
+      <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
           <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 px-6 py-14 text-white shadow-2xl shadow-primary-950/40 sm:px-12 sm:py-20">
           <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-56 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
@@ -647,7 +647,7 @@ export default function BlogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
       />
+      </main>
     </div>
-  </div>
   )
 }

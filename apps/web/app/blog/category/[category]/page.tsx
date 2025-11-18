@@ -78,7 +78,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="marketing-theme bg-surface text-default">
-      <div className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
+      <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
         <nav className="text-sm text-neutral-500">
           <ol className="flex flex-wrap items-center gap-2">
@@ -305,7 +305,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </section>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

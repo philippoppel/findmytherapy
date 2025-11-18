@@ -257,8 +257,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="marketing-theme bg-surface text-default">
-      <article className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
+      <main>
+        <article className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16" itemScope itemType="https://schema.org/Article">
+          <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
         <nav className="text-sm text-neutral-500">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
@@ -327,7 +328,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
                   {post.category}
                 </p>
-                <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+                <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl" itemProp="headline">
                   {post.title}
                 </h1>
                 <p className="text-lg text-white/90">{post.excerpt}</p>
@@ -392,7 +393,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <TableOfContents sections={post.sections} />
             </section>
 
-            <div className="prose prose-lg prose-neutral mt-4 max-w-none">
+            <div className="prose prose-lg prose-neutral mt-4 max-w-none" itemProp="articleBody">
               <div className="space-y-12">
                 {post.sections.map((section) => {
                   const sectionId = slugify(section.heading)
@@ -534,7 +535,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       {howToStructuredData && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToStructuredData) }} />
       )}
-    </article>
-  </div>
+        </article>
+      </main>
+    </div>
   )
 }

@@ -63,7 +63,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-16">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 mb-8">
@@ -269,6 +269,6 @@ export default function AuthorPage({ params }: AuthorPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(authorStructuredData) }}
       />
-    </div>
+    </main>
   )
 }
