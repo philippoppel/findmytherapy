@@ -433,10 +433,17 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
             {post.medicalReviewedBy && <MedicalDisclaimer />}
             {author && <AuthorBio author={author} />}
-            <RelatedArticles currentPost={post} allPosts={blogPosts} />
           </div>
 
           <aside className="space-y-6">
+            <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Weiterlesen</p>
+              <h3 className="mt-2 text-xl font-semibold text-neutral-900">Ähnliche Artikel</h3>
+              <div className="mt-4">
+                <RelatedArticles currentPost={post} allPosts={blogPosts} variant="sidebar" />
+              </div>
+            </div>
+
             <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Artikel-Insights</p>
               <h3 className="mt-2 text-xl font-semibold text-neutral-900">Metadaten & Tags</h3>

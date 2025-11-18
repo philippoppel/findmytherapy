@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'panikattacken-verstehen-bewaeltigen',
     title: 'Panikattacken verstehen und bewältigen',
     excerpt:
-      'Herzrasen, Zittern, das Gefühl von Kontrollverlust – eine Panikattacke kommt oft plötzlich und ohne Vorwarnung. In diesem wissenschaftlich fundierten Artikel erklären wir, was Panikattacken sind, wie man sie erkennt, was im Körper dabei passiert und welche Strategien in akuten Momenten helfen.',
+      'Herzrasen, Zittern, Kontrollverlust – was sind Panikattacken, was passiert im Körper und welche Strategien helfen? Ein wissenschaftlich fundierter Leitfaden.',
     summary: [
       'Panikattacken sind plötzliche, intensive Angstanfälle, die ohne objektive Gefahr auftreten und körperlich nicht schädlich sind',
       'Typische Symptome umfassen Herzrasen, Atemnot, Schwindel und intensive Angstgedanken wie Todesangst',
@@ -95,7 +95,7 @@ export const blogPosts: BlogPost[] = [
       'Selbsthilfe',
       'Atemtechniken',
     ],
-    relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
+    relatedPosts: ['akuthilfe-panikattacken', 'atemtechniken-bei-angst', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-15',
     faq: [
@@ -393,7 +393,7 @@ export const blogPosts: BlogPost[] = [
       'Employee Assistance Program',
       'Ressourcen für Teams',
     ],
-    relatedPosts: ['digitale-ersteinschaetzung-mental-health'],
+    relatedPosts: ['burnout-erkennen-vorbeugen', 'mental-health-strategien-alltag', 'burnout-praevention-forschung'],
     sections: [
       {
         heading: 'Herausforderungen in Unternehmen',
@@ -439,6 +439,12 @@ export const blogPosts: BlogPost[] = [
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
     tags: ['Therapieformen', 'Verhaltenstherapie', 'Tiefenpsychologie', 'Systemische Therapie', 'Psychotherapie Österreich'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Therapeutische Beratungssituation symbolisiert verschiedene Therapieformen',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Therapieformen',
       'Verhaltenstherapie',
@@ -538,6 +544,12 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['KVT', 'Verhaltenstherapie', 'Psychotherapie', 'Angststörungen', 'Depression'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Strukturierte Therapiesitzung symbolisiert kognitive Verhaltenstherapie',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'kognitive Verhaltenstherapie',
       'KVT',
@@ -635,7 +647,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'mental-health-strategien-alltag',
     title: '7 wissenschaftlich fundierte Strategien für bessere mentale Gesundheit im Alltag',
     excerpt:
-      'Von Bewegung über Schlaf bis soziale Kontakte: Was die Forschung über Prävention und Selbstfürsorge sagt – mit konkreten, umsetzbaren Empfehlungen.',
+      'Bewegung, Schlaf, soziale Kontakte: Was die Forschung über Prävention sagt – mit konkreten Empfehlungen.',
     summary: [
       'In Österreich erfüllt jede vierte Person im Laufe des Lebens Kriterien einer psychischen Störung',
       'Bewegung reduziert depressive Symptome mit Effektstärke d=0.62 – vergleichbar mit Therapie',
@@ -652,6 +664,12 @@ export const blogPosts: BlogPost[] = [
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
     tags: ['Prävention', 'Selbstfürsorge', 'Resilienz', 'Lebensstil', 'Achtsamkeit'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person praktiziert gesunde Gewohnheiten für mentale Gesundheit im Alltag',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'mentale Gesundheit',
       'Prävention',
@@ -772,7 +790,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'burnout-praevention-forschung',
     title: 'Burnout erkennen und vorbeugen: Was die Forschung zeigt',
     excerpt:
-      'Wissenschaftliche Erkenntnisse zu Ursachen, Frühwarnsignalen und evidenzbasierten Präventionsstrategien – für Einzelpersonen und Organisationen.',
+      'Ursachen, Frühwarnsignale und evidenzbasierte Präventionsstrategien – für Einzelpersonen und Organisationen.',
     summary: [
       'WHO definiert Burnout als "Syndrom aufgrund chronischen Stresses am Arbeitsplatz"',
       '22% der österreichischen Erwerbstätigen berichten arbeitsbezogene psychische Belastungen',
@@ -789,6 +807,12 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Burnout', 'Stress', 'Prävention', 'Arbeitspsychologie', 'Work-Life-Balance'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Gestresste Person am Arbeitsplatz symbolisiert Burnout-Risikofaktoren',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Burnout',
       'Prävention',
@@ -891,9 +915,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'mental-health-oesterreich-zahlen-fakten',
-    title: 'Mental Health in Österreich: Aktuelle Zahlen und Fakten 2024',
+    title: 'Mental Health in Österreich: Aktuelle Zahlen und Fakten 2025',
     excerpt:
-      'Ein evidenzbasierter Überblick über die Versorgungssituation, Prävalenzen psychischer Erkrankungen und aktuelle Entwicklungen im österreichischen Gesundheitssystem.',
+      'Versorgungssituation, Prävalenzen und aktuelle Entwicklungen im österreichischen Gesundheitssystem – alle wichtigen Zahlen und Fakten.',
     summary: [
       '25% der Erwachsenen erfüllen jährlich Kriterien einer psychischen Störung – COVID erhöhte Zahlen um 40-50%',
       'Etwa 12.000 Psychotherapeut:innen in Österreich, aber nur 15% mit Kassenverträgen',
@@ -910,6 +934,12 @@ export const blogPosts: BlogPost[] = [
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
     tags: ['Österreich', 'Statistik', 'Versorgung', 'Psychotherapie', 'Gesundheitssystem'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Datenvisualisierung und Statistiken zur mentalen Gesundheit in Österreich',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Mental Health Österreich',
       'Psychotherapie',
@@ -1025,7 +1055,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'wirksamkeit-psychotherapie-studien',
     title: 'Wirksamkeit von Psychotherapie: Was sagen die Studien?',
     excerpt:
-      'Ein evidenzbasierter Überblick über Erfolgsraten, Langzeitwirkungen und Vergleiche mit anderen Behandlungsformen – basierend auf aktuellen Meta-Analysen.',
+      'Erfolgsraten, Langzeitwirkungen und Vergleiche mit Medikation – was aktuelle Meta-Analysen über Psychotherapie-Wirksamkeit zeigen.',
     summary: [
       'Meta-Analysen mit über 10.000 Studien belegen: Psychotherapie wirkt eindeutig',
       'Durchschnittliche Effektstärke d=0.80 – 80% der Therapierten geht es besser als unbehandelten Personen',
@@ -1042,6 +1072,12 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Psychotherapie', 'Forschung', 'Wirksamkeit', 'Meta-Analysen', 'Evidenz'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Wissenschaftliche Forschung und Studien zur Wirksamkeit von Psychotherapie',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Psychotherapie Wirksamkeit',
       'Evidenz',
@@ -1190,7 +1226,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'psychologe-psychotherapeut-psychiater-unterschiede',
     title: 'Psycholog:in, Psychotherapeut:in, Psychiater:in: Wer macht was?',
     excerpt:
-      'Ein wissenschaftlich fundierter Überblick über die wichtigsten Berufsgruppen im Bereich mentale Gesundheit – mit Fokus auf Ausbildung, Tätigkeitsfelder und gesetzliche Rahmenbedingungen in Österreich.',
+      'Ausbildung, Tätigkeitsfelder und gesetzliche Rahmenbedingungen der wichtigsten Berufsgruppen im Bereich mentale Gesundheit in Österreich.',
     summary: [
       'Psycholog:in: Universitätsstudium (5 Jahre) – keine Behandlungsberechtigung ohne Zusatzausbildung',
       'Klinische:r Psycholog:in: Psychologiestudium + 2 Jahre postgraduale Ausbildung – Diagnostik und Behandlung',
@@ -1207,6 +1243,12 @@ export const blogPosts: BlogPost[] = [
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
     tags: ['Psychotherapie', 'Psychologie', 'Psychiatrie', 'Ausbildung', 'Gesundheitsberufe', 'Österreich'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Verschiedene Berufsgruppen im Bereich psychische Gesundheit',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Psychotherapeut',
       'Psychologe',
@@ -1375,7 +1417,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'screening-instrumente-phq9-gad7-who5',
     title: 'PHQ-9, GAD-7 und WHO-5: Die wichtigsten Screening-Instrumente im Vergleich',
     excerpt:
-      'Welche Fragebögen nutzen Fachpersonen, um Depression und Angst zu erkennen? Ein evidenzbasierter Vergleich der drei meistverwendeten Screening-Instrumente – inklusive Wirksamkeit, Lizenzierung und praktischer Anwendung.',
+      'PHQ-9, GAD-7, WHO-5 im Vergleich: Wirksamkeit, Lizenzierung und praktische Anwendung der drei wichtigsten Screening-Instrumente.',
     summary: [
       'PHQ-9 für Depression: 9 Fragen, 2 Minuten, Sensitivität/Spezifität 88% – Public Domain (kostenfrei)',
       'GAD-7 für Angst: 7 Fragen, 1-2 Minuten, Sensitivität 83-89% – Public Domain (kostenfrei)',
@@ -1392,6 +1434,12 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Screening', 'PHQ-9', 'GAD-7', 'WHO-5', 'Diagnostik', 'Assessment'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Fragebögen und Screening-Instrumente für psychische Gesundheit',
+      width: 1200,
+      height: 630,
+    },
     keywords: [
       'Screening',
       'PHQ-9',
@@ -1647,7 +1695,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'depression-verstehen-bewaeltigen',
     title: 'Depression verstehen und bewältigen: Ein umfassender Leitfaden',
     excerpt:
-      'Depression ist mehr als nur schlechte Laune oder Traurigkeit. In diesem evidenzbasierten Leitfaden erklären wir, wie man Depression erkennt, welche Behandlungsmöglichkeiten es gibt und wie Betroffene und Angehörige damit umgehen können.',
+      'Depression ist mehr als Traurigkeit. Erkennung, Behandlung und Unterstützung für Betroffene und Angehörige – ein evidenzbasierter Leitfaden.',
     summary: [
       'Depression ist eine ernstzunehmende psychische Erkrankung, die Gedanken, Gefühle, Körper und Verhalten betrifft',
       'Hauptsymptome: Anhaltende Niedergeschlagenheit, Interessenverlust, Antriebslosigkeit, Schlafstörungen und Konzentrationsprobleme',
@@ -1780,7 +1828,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'angststoerungen-formen-symptome-behandlung',
     title: 'Angststörungen: Formen, Symptome und Behandlungsmöglichkeiten',
-    excerpt: 'Angststörungen gehören zu den häufigsten psychischen Erkrankungen. Dieser umfassende Leitfaden erklärt die verschiedenen Formen von Angststörungen, ihre Symptome und evidenzbasierte Behandlungsansätze.',
+    excerpt: 'Die verschiedenen Formen von Angststörungen, ihre Symptome und evidenzbasierte Behandlungsansätze – ein umfassender Leitfaden.',
     summary: [
       'Angststörungen umfassen verschiedene Formen: Generalisierte Angststörung, Panikstörung, soziale Phobie und spezifische Phobien',
       'Charakteristisch sind übermäßige, anhaltende Angst und Vermeidungsverhalten, die den Alltag beeinträchtigen',
@@ -1820,7 +1868,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'burnout-erkennen-vorbeugen',
     title: 'Burnout erkennen und vorbeugen: Ein Praxisleitfaden',
-    excerpt: 'Burnout entwickelt sich schleichend und betrifft immer mehr Menschen. Erfahren Sie, wie Sie Warnsignale frühzeitig erkennen, was Burnout von Depression unterscheidet und welche Präventionsstrategien wirklich helfen.',
+    excerpt: 'Warnsignale erkennen, Burnout von Depression unterscheiden und wirksame Präventionsstrategien – ein Praxisleitfaden.',
     summary: [
       'Burnout ist ein Zustand emotionaler, körperlicher und mentaler Erschöpfung durch chronischen Stress',
       'Charakteristisch sind drei Dimensionen: Erschöpfung, Zynismus/Distanzierung und verringerte Leistungsfähigkeit',
@@ -1860,7 +1908,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'richtigen-therapeuten-finden',
     title: 'Den richtigen Therapeuten finden: 5 Schritte zum passenden Match',
-    excerpt: 'Die Wahl des richtigen Therapeuten ist entscheidend für den Therapieerfolg. Dieser Leitfaden hilft Ihnen, einen Therapeuten zu finden, der zu Ihren Bedürfnissen passt – in Österreich, mit oder ohne Kassenzuschuss.',
+    excerpt: 'Therapeut finden in Österreich: 5 Schritte zum passenden Match – mit oder ohne Kassenzuschuss.',
     summary: ['Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor in der Therapie', 'In Österreich gibt es verschiedene Therapierichtungen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie u.a.', 'Kassentherapeuten haben lange Wartezeiten (3-12 Monate), Wahltherapeuten bieten kürzere Wartezeiten mit Zuschuss', 'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen', 'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen'],
     category: 'Therapeutensuche',
     publishedAt: '2025-01-17',

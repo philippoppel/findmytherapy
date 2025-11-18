@@ -6,11 +6,13 @@ import { Badge } from '@mental-health/ui'
 interface RelatedArticlesProps {
   currentPost: BlogPost
   allPosts: BlogPost[]
+  variant?: 'default' | 'sidebar'
 }
 
 export function RelatedArticles({
   currentPost,
   allPosts,
+  variant = 'default',
 }: RelatedArticlesProps) {
   // Get related posts
   let relatedPosts: BlogPost[] = []
@@ -62,6 +64,67 @@ export function RelatedArticles({
     return null
   }
 
+  // Sidebar variant - compact vertical list like YouTube suggestions
+  if (variant === 'sidebar') {
+    return (
+      <div className="space-y-4">
+        {relatedPosts.map((post) => (
+          <Link
+            key={post.slug}
+            href={`/blog/${post.slug}`}
+            className="group flex gap-3"
+          >
+            {/* Thumbnail */}
+            {post.featuredImage && (
+              <div className="relative w-24 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                <Image
+                  src={post.featuredImage.src}
+                  alt={post.featuredImage.alt}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            )}
+
+            <div className="flex-1 min-w-0">
+              {/* Title */}
+              <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                {post.title}
+              </h4>
+
+              {/* Metadata */}
+              <div className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
+                <span>{post.readingTime}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+
+        {/* View All Link */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors mt-2"
+        >
+          Alle Artikel ansehen
+          <svg
+            className="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </Link>
+      </div>
+    )
+  }
+
+  // Default variant - grid layout at bottom
   return (
     <section className="mt-16 pt-16 border-t border-gray-200 dark:border-gray-800">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
