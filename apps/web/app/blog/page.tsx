@@ -124,8 +124,12 @@ const blogStructuredData = {
     '@type': 'Organization',
     name: 'FindMyTherapy',
     url: 'https://findmytherapy.net',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://findmytherapy.net/images/logo.png',
+    },
   },
-  blogPost: blogPosts.map((post) => ({
+  blogPost: sortedBlogPosts.map((post) => ({
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
@@ -134,6 +138,24 @@ const blogStructuredData = {
     url: `https://findmytherapy.net/blog/${post.slug}`,
     image: post.featuredImage?.src,
     keywords: post.keywords,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+    },
+  })),
+}
+
+// FAQ structured data for better SEO
+const faqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: blogFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
   })),
 }
 
@@ -655,6 +677,10 @@ export default function BlogPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
       </main>
     </div>

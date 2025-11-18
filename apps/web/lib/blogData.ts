@@ -2063,8 +2063,8 @@ export const blogPosts: BlogPost[] = [
     publishedAt: '2025-11-18',
     updatedAt: '2025-11-18',
     readingTime: '12 Min.',
-    author: 'Team FindMyTherapy',
-    authorId: 'team-findmytherapy',
+    author: 'Thomas Kaufmann BA pth.',
+    authorId: 'thomas-kaufmann',
     tags: ['KI', 'ChatGPT', 'Digitale Gesundheit', 'Psychotherapie', 'Selbsthilfe', 'Ethik'],
     featuredImage: {
       src: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=630&q=80',
