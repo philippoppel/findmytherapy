@@ -37,6 +37,27 @@ export const authors: Record<string, Author> = {
       'Digitale Gesundheit',
     ],
   },
+  'thomas-kaufmann': {
+    id: 'thomas-kaufmann',
+    name: 'Thomas Kaufmann BA pth.',
+    slug: 'thomas-kaufmann',
+    title: 'Psychotherapeut (Verhaltenstherapie) in Ausbildung unter Supervision',
+    credentials: 'Verhaltenstherapie • NKA/NKV Notfallsanitäter • Sigmund Freud Universität Wien',
+    bio: 'Thomas Kaufmann ist Psychotherapeut in Ausbildung unter Supervision mit Schwerpunkt Verhaltenstherapie. Seine Erfahrung als Notfallsanitäter prägt seinen lösungsorientierten Zugang zu Krisenintervention und Angststörungen. Er verbindet evidenzbasierte Methoden mit praxisnaher Begleitung in Phasen der Veränderung.',
+    avatar: '/images/team/thomaskaufmann.jpg',
+    email: 'office@thomas-kaufmann.at',
+    social: {
+      website: 'https://thomas-kaufmann.at',
+    },
+    expertise: [
+      'Angststörungen & Panikattacken',
+      'Krisenintervention',
+      'Depression & Stimmungsmanagement',
+      'Stress & Burnout',
+      'Verhaltenstherapie',
+      'Traumafokussierte Therapie',
+    ],
+  },
 }
 
 export function getAuthorById(id: string): Author | undefined {

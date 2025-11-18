@@ -62,7 +62,7 @@ export type BlogPost = {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: 'akuthilfe-panikattacken',
+    slug: 'panikattacken-verstehen-bewaeltigen',
     title: 'Panikattacken verstehen und bewältigen',
     excerpt:
       'Herzrasen, Zittern, das Gefühl von Kontrollverlust – eine Panikattacke kommt oft plötzlich und ohne Vorwarnung. In diesem wissenschaftlich fundierten Artikel erklären wir, was Panikattacken sind, wie man sie erkennt, was im Körper dabei passiert und welche Strategien in akuten Momenten helfen.',
@@ -75,6 +75,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-15',
+    updatedAt: '2025-01-15',
     readingTime: '15 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -257,6 +258,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Produkt',
     publishedAt: '2025-04-10',
+    updatedAt: '2025-04-10',
     readingTime: '6 Min.',
     author: 'Team FindMyTherapy',
     authorId: 'team-findmytherapy',
@@ -315,6 +317,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Netzwerk',
     publishedAt: '2025-03-28',
+    updatedAt: '2025-03-28',
     readingTime: '5 Min.',
     author: 'Team FindMyTherapy',
     authorId: 'team-findmytherapy',
@@ -373,6 +376,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Arbeitswelt',
     publishedAt: '2025-03-12',
+    updatedAt: '2025-03-12',
     readingTime: '7 Min.',
     author: 'Team FindMyTherapy',
     authorId: 'team-findmytherapy',
@@ -430,8 +434,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Wissen',
     publishedAt: '2025-05-15',
+    updatedAt: '2025-05-15',
     readingTime: '8 Min.',
-    author: 'Dr. Sarah Weber',
+    author: 'Thomas Kaufmann BA pth.',
+    authorId: 'thomas-kaufmann',
+    tags: ['Therapieformen', 'Verhaltenstherapie', 'Tiefenpsychologie', 'Systemische Therapie', 'Psychotherapie Österreich'],
     keywords: [
       'Therapieformen',
       'Verhaltenstherapie',
@@ -439,6 +446,9 @@ export const blogPosts: BlogPost[] = [
       'Psychotherapie Österreich',
       'evidenzbasiert',
     ],
+    relatedPosts: ['kognitive-verhaltenstherapie-erklaert', 'richtigen-therapeuten-finden'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-05-15',
     sections: [
       {
         heading: 'Die Vielfalt psychotherapeutischer Ansätze',
@@ -523,8 +533,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Wissen',
     publishedAt: '2025-06-02',
+    updatedAt: '2025-06-02',
     readingTime: '9 Min.',
-    author: 'Dr. Martin Gruber',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['KVT', 'Verhaltenstherapie', 'Psychotherapie', 'Angststörungen', 'Depression'],
     keywords: [
       'kognitive Verhaltenstherapie',
       'KVT',
@@ -532,6 +545,14 @@ export const blogPosts: BlogPost[] = [
       'Therapiemethoden',
       'evidenzbasiert',
       'Psychotherapie',
+    ],
+    relatedPosts: ['therapieformen-vergleich', 'depression-verstehen-bewaeltigen', 'angststoerungen-formen-symptome-behandlung'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-06-02',
+    faq: [
+      { question: 'Wie lange dauert eine kognitive Verhaltenstherapie?', answer: 'Eine typische KVT-Behandlung umfasst 15-25 Sitzungen bei wöchentlichen Terminen. Je nach Schweregrad und Störungsbild kann die Therapie auch kürzer (bei leichten Ängsten) oder länger (bei komplexen Störungen) dauern.' },
+      { question: 'Für welche Störungen ist KVT besonders wirksam?', answer: 'KVT zeigt besonders hohe Wirksamkeit bei Angststörungen (70-90% Erfolgsrate), Depressionen, Zwangsstörungen, PTBS und Essstörungen. Sie ist die am besten erforschte Therapieform mit über 500 kontrollierten Studien.' },
+      { question: 'Was ist der Unterschied zwischen KVT und tiefenpsychologischen Verfahren?', answer: 'KVT arbeitet primär im Hier und Jetzt mit konkreten Problemen und vermittelt aktive Selbsthilfe-Strategien. Tiefenpsychologische Verfahren fokussieren stärker auf unbewusste Konflikte und die Vergangenheit. KVT ist kürzer und strukturierter.' }
     ],
     sections: [
       {
@@ -626,8 +647,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Prävention',
     publishedAt: '2025-06-18',
+    updatedAt: '2025-06-18',
     readingTime: '10 Min.',
-    author: 'Mag. Lisa Hofmann',
+    author: 'Thomas Kaufmann BA pth.',
+    authorId: 'thomas-kaufmann',
+    tags: ['Prävention', 'Selbstfürsorge', 'Resilienz', 'Lebensstil', 'Achtsamkeit'],
     keywords: [
       'mentale Gesundheit',
       'Prävention',
@@ -636,6 +660,9 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Alltag',
     ],
+    relatedPosts: ['burnout-praevention-forschung', 'depression-verstehen-bewaeltigen', 'meditation-anfaenger-3-minuten'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-06-18',
     sections: [
       {
         heading: 'Warum Prävention wichtig ist',
@@ -757,8 +784,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Prävention',
     publishedAt: '2025-07-05',
+    updatedAt: '2025-07-05',
     readingTime: '9 Min.',
-    author: 'Dr. Thomas Eder',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Burnout', 'Stress', 'Prävention', 'Arbeitspsychologie', 'Work-Life-Balance'],
     keywords: [
       'Burnout',
       'Prävention',
@@ -767,6 +797,9 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Arbeitspsychologie',
     ],
+    relatedPosts: ['burnout-erkennen-vorbeugen', 'mental-health-strategien-alltag', 'depression-verstehen-bewaeltigen'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-07-05',
     sections: [
       {
         heading: 'Was ist Burnout? Definition und Abgrenzung',
@@ -872,8 +905,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Forschung',
     publishedAt: '2025-07-22',
+    updatedAt: '2025-07-22',
     readingTime: '8 Min.',
-    author: 'Dr. Katharina Berger',
+    author: 'Thomas Kaufmann BA pth.',
+    authorId: 'thomas-kaufmann',
+    tags: ['Österreich', 'Statistik', 'Versorgung', 'Psychotherapie', 'Gesundheitssystem'],
     keywords: [
       'Mental Health Österreich',
       'Psychotherapie',
@@ -882,6 +918,9 @@ export const blogPosts: BlogPost[] = [
       'Gesundheitssystem',
       'Prävention',
     ],
+    relatedPosts: ['wirksamkeit-psychotherapie-studien', 'kassenzuschuss-psychotherapie-oesterreich', 'wartezeiten-psychotherapie-wien'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-07-22',
     sections: [
       {
         heading: 'Prävalenz psychischer Erkrankungen in Österreich',
@@ -998,8 +1037,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Forschung',
     publishedAt: '2025-08-10',
+    updatedAt: '2025-08-10',
     readingTime: '10 Min.',
-    author: 'Prof. Dr. Michael Stadler',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Psychotherapie', 'Forschung', 'Wirksamkeit', 'Meta-Analysen', 'Evidenz'],
     keywords: [
       'Psychotherapie Wirksamkeit',
       'Evidenz',
@@ -1008,6 +1050,9 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Therapieerfolg',
     ],
+    relatedPosts: ['therapieformen-vergleich', 'kognitive-verhaltenstherapie-erklaert', 'depression-verstehen-bewaeltigen'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-08-10',
     sections: [
       {
         heading: 'Die Grundfrage: Wirkt Psychotherapie wirklich?',
@@ -1157,8 +1202,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Wissen',
     publishedAt: '2025-09-05',
+    updatedAt: '2025-09-05',
     readingTime: '11 Min.',
-    author: 'Dr. Sarah Weber & Team FindMyTherapy',
+    author: 'Thomas Kaufmann BA pth.',
+    authorId: 'thomas-kaufmann',
+    tags: ['Psychotherapie', 'Psychologie', 'Psychiatrie', 'Ausbildung', 'Gesundheitsberufe', 'Österreich'],
     keywords: [
       'Psychotherapeut',
       'Psychologe',
@@ -1170,6 +1218,9 @@ export const blogPosts: BlogPost[] = [
       'Gesundheitsberufe',
       'Psychotherapiegesetz',
     ],
+    relatedPosts: ['psychologe-vs-psychotherapeut', 'therapieformen-vergleich', 'richtigen-therapeuten-finden'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-09-05',
     sections: [
       {
         heading: 'Warum die Unterscheidung wichtig ist',
@@ -1336,8 +1387,11 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Forschung',
     publishedAt: '2025-11-08',
+    updatedAt: '2025-11-08',
     readingTime: '8 Min.',
-    author: 'Team FindMyTherapy',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: ['Screening', 'PHQ-9', 'GAD-7', 'WHO-5', 'Diagnostik', 'Assessment'],
     keywords: [
       'Screening',
       'PHQ-9',
@@ -1349,6 +1403,9 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Primärversorgung',
     ],
+    relatedPosts: ['digitale-ersteinschaetzung-mental-health', 'depression-verstehen-bewaeltigen', 'angststoerungen-formen-symptome-behandlung'],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-11-08',
     sections: [
       {
         heading: 'Warum Screening-Instrumente in der Primärversorgung wichtig sind',
@@ -1457,6 +1514,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Akuthilfe',
     publishedAt: '2025-01-15',
+    updatedAt: '2025-01-15',
     readingTime: '7 Min.',
     author: 'Team FindMyTherapy',
     authorId: 'team-findmytherapy',
@@ -1599,6 +1657,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '18 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1731,6 +1790,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '17 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1770,6 +1830,7 @@ export const blogPosts: BlogPost[] = [
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '14 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1803,6 +1864,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor in der Therapie', 'In Österreich gibt es verschiedene Therapierichtungen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie u.a.', 'Kassentherapeuten haben lange Wartezeiten (3-12 Monate), Wahltherapeuten bieten kürzere Wartezeiten mit Zuschuss', 'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen', 'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen'],
     category: 'Therapeutensuche',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '12 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1822,6 +1884,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Kontrollierte Atmung aktiviert das parasympathische Nervensystem und wirkt beruhigend', 'Die 4-7-8-Atmung, Bauchatmung und Box-Breathing sind wissenschaftlich fundierte Techniken', 'Regelmäßiges Üben (5-10 Min täglich) verstärkt die Wirkung in Angstsituationen', 'Atemtechniken können Herzrate und Blutdruck senken sowie Stresshormone reduzieren'],
     category: 'Selbsthilfe',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '6 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1831,22 +1894,34 @@ export const blogPosts: BlogPost[] = [
     relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
+    howTo: {
+      name: '5 wirksame Atemtechniken bei Angst und Panik',
+      description: 'Schritt-für-Schritt-Anleitung für evidenzbasierte Atemübungen, die bei Angst und Panikattacken schnell beruhigen.',
+      steps: [
+        { name: '4-7-8-Atmung', text: '4 Sekunden durch die Nase einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend bei akuter Angst.' },
+        { name: 'Bauchatmung (Zwerchfellatmung)', text: 'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.' },
+        { name: 'Box-Breathing (4-4-4-4)', text: '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Gleichmäßiger Rhythmus beruhigt und fokussiert.' },
+        { name: 'Verlängerte Ausatmung', text: 'Normal einatmen, dann doppelt so lange ausatmen (z.B. 4 Sekunden ein, 8 Sekunden aus). Aktiviert den Parasympathikus und reduziert Herzfrequenz.' },
+        { name: 'Atemzählung', text: 'Atem beobachten und zählen: 1 beim Einatmen, 2 beim Ausatmen. Bis 10 zählen, dann von vorne beginnen. Fokussiert den Geist und unterbricht Angstspiralen.' }
+      ]
+    },
     sections: [{ heading: 'Warum Atmung bei Angst hilft', paragraphs: ['Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.'] }, { heading: '1. Die 4-7-8-Atmung', paragraphs: ['Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.'] }, { heading: '2. Bauchatmung (Zwerchfellatmung)', paragraphs: ['Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.'] }, { heading: '3. Box-Breathing (4-4-4-4)', paragraphs: ['4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.'] }]
   },
   {
     slug: 'psychologe-vs-psychotherapeut',
-    title: 'Psychologe, Psychotherapeut, Psychiater: Die Unterschiede erklärt',
-    excerpt: 'Psychologe, Psychotherapeut, Psychiater – die Begriffe werden oft verwechselt. Dieser Artikel erklärt die wichtigen Unterschiede in Ausbildung, Leistungen und wann Sie zu wem gehen sollten.',
-    summary: ['Psychologen haben ein Psychologie-Studium, dürfen aber nicht automatisch therapieren', 'Psychotherapeuten haben eine mehrjährige psychotherapeutische Ausbildung und sind zur Therapie berechtigt', 'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben', 'Klinische Psychologen können diagnostizieren und behandeln, aber keine Psychotherapie im engeren Sinne'],
+    title: 'Psychologe oder Psychotherapeut? Schnellübersicht für die erste Orientierung',
+    excerpt: 'In 7 Minuten verstehen: Wer darf therapieren, wer verschreibt Medikamente, zu wem gehe ich zuerst? Die kompakte Übersicht für alle, die schnell Klarheit brauchen.',
+    summary: ['Psychologen haben ein Psychologie-Studium, dürfen aber nicht automatisch therapieren', 'Psychotherapeuten haben eine mehrjährige psychotherapeutische Ausbildung und sind zur Therapie berechtigt', 'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben', 'Für ausführliche Infos siehe unseren umfassenden Artikel zu allen Berufsgruppen'],
     category: 'Wissen',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '7 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
-    tags: ['Psychologe', 'Psychotherapeut', 'Psychiater', 'Unterschiede', 'Ausbildung'],
+    tags: ['Psychologe', 'Psychotherapeut', 'Psychiater', 'Schnellübersicht', 'Erste Hilfe'],
     featuredImage: { src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Unterschiedliche Berufsgruppen in der psychischen Gesundheitsversorgung', width: 1200, height: 630 },
-    keywords: ['Unterschied Psychologe Psychotherapeut', 'Psychiater vs Psychologe', 'Klinischer Psychologe', 'Psychotherapie Österreich'],
-    relatedPosts: ['richtigen-therapeuten-finden', 'serioese-online-therapie-erkennen'],
+    keywords: ['Psychologe oder Psychotherapeut', 'zu wem gehen', 'erste Orientierung', 'schnelle Übersicht Therapie'],
+    relatedPosts: ['psychologe-psychotherapeut-psychiater-unterschiede', 'richtigen-therapeuten-finden', 'serioese-online-therapie-erkennen'],
     sections: [{ heading: 'Die drei Berufsgruppen im Überblick', paragraphs: ['In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.'] }, { heading: 'Psychologe', paragraphs: ['Ausbildung: Universitätsstudium der Psychologie (5 Jahre Bachelor + Master). Tätigkeit: Psychologische Diagnostik, Beratung, Coaching. KEINE Psychotherapie ohne Zusatzausbildung. Kassenleistung: Klinisch-psychologische Diagnostik teilweise auf Kasse.'] }, { heading: 'Psychotherapeut', paragraphs: ['Ausbildung: Propädeutikum + Fachspezifikum in einer anerkannten Therapiemethode (mind. 5 Jahre berufsbegleitend). Tätigkeit: Psychotherapie bei psychischen Erkrankungen. Kassenleistung: Auf Kasse bei Kassenstellen oder Zuschuss bei Wahltherapeuten (€30-40 pro Sitzung).'] }, { heading: 'Psychiater', paragraphs: ['Ausbildung: Medizinstudium + Facharztausbildung Psychiatrie (mind. 12 Jahre). Tätigkeit: Diagnose und medikamentöse Behandlung psychischer Erkrankungen. Kann Medikamente verschreiben. Kassenleistung: Volle Kassenleistung bei Kassenärzten.'] }]
   },
   {
@@ -1856,6 +1931,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Kassenzuschuss beträgt €30-40 pro Sitzung bei Wahltherapeuten (Stand 2025)', 'Voraussetzungen: Psychotherapeut muss in Therapeutenliste eingetragen sein', 'Antrag: Nach jeder Sitzung Honorarnote einreichen bei der Krankenkasse', 'Kassentherapeuten: Kostenlos, aber Wartezeit 3-12 Monate', 'Zusatzversicherungen können weitere Kosten übernehmen'],
     category: 'Finanzierung',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '8 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1863,6 +1939,11 @@ export const blogPosts: BlogPost[] = [
     featuredImage: { src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Krankenkassenkarte und Dokumente symbolisieren Gesundheitsfinanzierung', width: 1200, height: 630 },
     keywords: ['Kassenzuschuss Psychotherapie', 'Psychotherapie Kosten Österreich', 'ÖGK Zuschuss', 'Wahltherapeut Zuschuss'],
     relatedPosts: ['richtigen-therapeuten-finden', 'wartezeiten-psychotherapie-wien'],
+    faq: [
+      { question: 'Wie viel Kassenzuschuss bekomme ich für Psychotherapie?', answer: 'Die ÖGK erstattet €30-40 pro Sitzung bei Wahltherapeuten. Bei einem durchschnittlichen Honorar von €80-120 liegt Ihr Eigenanteil bei €40-90 pro Sitzung. Andere Kassen (SVS, BVAEB) haben ähnliche Sätze.' },
+      { question: 'Wie beantrage ich den Zuschuss für Psychotherapie?', answer: 'Nach jeder Therapiesitzung erhalten Sie eine Honorarnote von Ihrem Therapeuten. Diese reichen Sie bei Ihrer Krankenkasse ein (online oder per Post). Der Zuschuss wird innerhalb von 2-4 Wochen überwiesen.' },
+      { question: 'Was ist der Unterschied zwischen Kassentherapeut und Wahltherapeut?', answer: 'Bei Kassentherapeuten entstehen keine Kosten, dafür beträgt die Wartezeit 3-12 Monate. Bei Wahltherapeuten zahlen Sie selbst und bekommen einen Teilzuschuss, haben aber kürzere Wartezeiten.' }
+    ],
     sections: [{ heading: 'Zwei Wege: Kasse oder Zuschuss', paragraphs: ['In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).'] }, { heading: 'Höhe des Kassenzuschusses', paragraphs: ['Österreichische Gesundheitskasse (ÖGK): €30-40 pro Sitzung. SVS, BVAEB: Ähnliche Sätze. Wahltherapeut-Honorar: €80-120 pro Sitzung. Eigenanteil: €40-90 pro Sitzung.'] }, { heading: 'So beantragen Sie den Zuschuss', paragraphs: ['1. Therapeut aus Liste wählen (muss eingetragen sein). 2. Nach jeder Sitzung Honorarnote vom Therapeut holen. 3. Honorarnote bei Krankenkasse einreichen (online oder per Post). 4. Zuschuss wird überwiesen (meist 2-4 Wochen).'] }]
   },
   {
@@ -1872,6 +1953,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Online-Therapie ist evidenzbasiert wirksam bei vielen psychischen Erkrankungen', 'Seriöse Anbieter: Therapeuten sind staatlich zertifiziert, transparent über Qualifikationen', 'Warnsignale: Keine Zulassung erkennbar, unrealistische Heilversprechen, Vorauszahlung ohne Probesitzung', 'Videotelefonie ist der Goldstandard, Chattherapie nur als Ergänzung'],
     category: 'Digitale Gesundheit',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '6 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1888,6 +1970,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Meditation reduziert nachweislich Stress, Angst und verbessert emotionale Regulation', 'Die 3-Minuten-Atemmeditation ist eine Einsteigerübung, die jederzeit durchführbar ist', 'Regelmäßigkeit ist wichtiger als Länge – täglich 3 Minuten sind besser als einmal wöchentlich 30 Minuten', 'Häufige Anfängerfehler: Erwartung der Gedankenleere, Perfektionismus, zu lange Sitzungen'],
     category: 'Selbsthilfe',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '5 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
@@ -1895,6 +1978,17 @@ export const blogPosts: BlogPost[] = [
     featuredImage: { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person meditiert in ruhiger Umgebung', width: 1200, height: 630 },
     keywords: ['Meditation Anfänger', 'Meditation lernen', 'Achtsamkeit', 'Atemmeditation', '3-Minuten-Meditation'],
     relatedPosts: ['atemtechniken-bei-angst', 'burnout-erkennen-vorbeugen'],
+    howTo: {
+      name: 'Die 3-Minuten-Atemmeditation für Anfänger',
+      description: 'Eine einfache Meditationsübung für Einsteiger, die überall durchführbar ist und nachweislich Stress reduziert.',
+      steps: [
+        { name: 'Sitzposition einnehmen', text: 'Setzen Sie sich aufrecht hin (Stuhl oder Boden). Hände locker auf den Oberschenkeln ablegen. Rücken gerade, Schultern entspannt.' },
+        { name: 'Augen schließen', text: 'Schließen Sie sanft die Augen oder richten Sie einen weichen Blick auf einen Punkt vor sich. Dies reduziert äußere Ablenkungen.' },
+        { name: 'Aufmerksamkeit auf den Atem richten', text: 'Spüren Sie, wie der Atem ein- und ausströmt. Beobachten Sie das Heben und Senken des Bauches oder die Luft an der Nasenspitze.' },
+        { name: 'Gedanken ziehen lassen', text: 'Wenn Gedanken kommen, nicht bekämpfen. Beobachten Sie sie wie Wolken und kehren Sie sanft zum Atem zurück. Das ist die eigentliche Übung!' },
+        { name: 'Abschluss nach 3 Minuten', text: 'Nach 3 Minuten (Timer nutzen): Langsam die Augen öffnen, kurz nachspüren. Bemerken Sie den Unterschied zu vorher.' }
+      ]
+    },
     sections: [{ heading: 'Warum Meditation?', paragraphs: ['Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.'] }, { heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt', paragraphs: ['1. Sitzposition: Aufrecht sitzen (Stuhl oder Boden), Hände locker auf den Oberschenkeln. 2. Augen schließen oder weichen Blick. 3. Aufmerksamkeit auf Atem richten: Spüren Sie, wie Atem ein- und ausströmt. 4. Gedanken kommen lassen: Nicht bekämpfen, einfach zurück zum Atem. 5. Nach 3 Minuten: Langsam Augen öffnen, kurz nachspüren.'] }, { heading: 'Häufige Anfängerfehler', paragraphs: ['Erwartung der Gedankenleere: Gedanken sind normal! Ziel ist, sie zu beobachten, nicht zu stoppen. Zu lange Sitzungen: Anfänger scheitern oft an 20-Minuten-Sessions. Start 3 Minuten! Perfektionismus: Es gibt kein "falsch". Abschweifen ist Teil der Übung.'] }]
   },
   {
@@ -1904,6 +1998,7 @@ export const blogPosts: BlogPost[] = [
     summary: ['Durchschnittliche Wartezeit auf Kassentherapeut: 3-12 Monate, regional sehr unterschiedlich', 'Wien hat die meisten Therapeuten, aber auch die höchste Nachfrage – Wartezeit 4-8 Monate', 'Ländliche Regionen: Weniger Therapeuten, längere Anfahrtswege, oft noch längere Wartezeiten', 'Schneller zum Platz: Wahltherapeut, Privatambulanz, Online-Therapie, mehrere Anfragen parallel'],
     category: 'Therapeutensuche',
     publishedAt: '2025-01-17',
+    updatedAt: '2025-01-17',
     readingTime: '7 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
