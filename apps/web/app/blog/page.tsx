@@ -3,6 +3,12 @@ import type { Metadata } from 'next'
 import { ArrowRight, Calendar, Clock, Tag, Sparkles, ShieldCheck } from 'lucide-react'
 import { blogPosts } from '../../lib/blogData'
 import { NewsletterForm } from '@/app/components/forms/NewsletterForm'
+import { BlogSearch } from '@/app/components/blog/BlogSearch'
+
+// Sort blog posts by date (newest first)
+const sortedBlogPosts = [...blogPosts].sort((a, b) => {
+  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+})
 
 const pageDescription =
   'Deep Dives zu mentaler Gesundheit, Produkt-Updates und Einblicke in unser Therapeut:innen-Netzwerk – direkt aus dem FindMyTherapy Team.'
@@ -151,7 +157,7 @@ const breadcrumbStructuredData = {
 }
 
 export default function BlogPage() {
-  const [featuredPost, ...restPosts] = blogPosts
+  const [featuredPost, ...restPosts] = sortedBlogPosts
 
   const insightsByCategory = categories.map((category) => ({
     category,
@@ -344,6 +350,9 @@ export default function BlogPage() {
             ))}
           </div>
         </section>
+
+        {/* Searchable Blog List */}
+        <BlogSearch posts={sortedBlogPosts} categories={categories} />
 
         <section aria-labelledby="latest-articles" className="space-y-8">
           <div>
