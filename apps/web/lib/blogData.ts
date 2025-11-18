@@ -1568,7 +1568,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'team-findmytherapy',
     tags: ['Panikattacken', 'Akuthilfe', 'Atemtechnik', 'Grounding', 'Angst', 'Notfall'],
     featuredImage: {
-      src: 'https://images.unsplash.com/photo-1462219184706-54e0a4f62348?auto=format&fit=crop&w=1200&h=630&q=80',
+      src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Person wendet Atemtechnik bei Panikattacke an – Sofort-Hilfe Strategien',
       width: 1200,
       height: 630,

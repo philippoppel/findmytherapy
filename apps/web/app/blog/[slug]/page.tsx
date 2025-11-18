@@ -391,6 +391,17 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </aside>
 
+              {/* Quick recommendation after Key Takeaways */}
+              <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-4">
+                <div className="flex items-center gap-2 text-sm font-medium text-primary-700">
+                  <Sparkles className="h-4 w-4" aria-hidden />
+                  <span>Passend zum Thema</span>
+                </div>
+                <div className="mt-3">
+                  <RelatedArticles currentPost={post} allPosts={blogPosts} variant="inline" maxPosts={2} showNextArticle={false} />
+                </div>
+              </div>
+
               {/* TOC as nav - Reader Mode will skip navigation */}
               <nav className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5" aria-label="Inhaltsverzeichnis">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
@@ -399,34 +410,42 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
               {/* Main article content - flat structure for Reader Mode */}
               <div className="prose prose-lg prose-neutral max-w-none" itemProp="articleBody">
-                {post.sections.map((section) => {
+                {post.sections.map((section, index) => {
                   const sectionId = slugify(section.heading)
+                  const showInlineRecommendation = index === 2 && post.sections.length > 4
                   return (
-                    <div key={section.heading} id={sectionId} className="mb-12 scroll-mt-24">
-                      <h2 className="group relative text-3xl font-bold text-neutral-900">
-                        {section.heading}
-                        <a
-                          href={`#${sectionId}`}
-                          className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-lg opacity-0 transition hover:bg-primary-50 group-hover:opacity-100"
-                          aria-label={`Link zu Abschnitt: ${section.heading}`}
-                        >
-                          <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                          </svg>
-                        </a>
-                      </h2>
-                      {section.paragraphs.map((paragraph) => (
-                        <p key={paragraph} className="mt-4 text-lg leading-relaxed text-neutral-700">{paragraph}</p>
-                      ))}
-                      {section.list && (
-                        <ul className="mt-4 space-y-2 text-lg text-neutral-700">
-                          {section.list.map((item) => (
-                            <li key={item} className="flex items-start gap-3">
-                              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    <div key={section.heading}>
+                      <div id={sectionId} className="mb-12 scroll-mt-24">
+                        <h2 className="group relative text-3xl font-bold text-neutral-900">
+                          {section.heading}
+                          <a
+                            href={`#${sectionId}`}
+                            className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-lg opacity-0 transition hover:bg-primary-50 group-hover:opacity-100"
+                            aria-label={`Link zu Abschnitt: ${section.heading}`}
+                          >
+                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                          </a>
+                        </h2>
+                        {section.paragraphs.map((paragraph) => (
+                          <p key={paragraph} className="mt-4 text-lg leading-relaxed text-neutral-700">{paragraph}</p>
+                        ))}
+                        {section.list && (
+                          <ul className="mt-4 space-y-2 text-lg text-neutral-700">
+                            {section.list.map((item) => (
+                              <li key={item} className="flex items-start gap-3">
+                                <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      {showInlineRecommendation && (
+                        <div className="not-prose mb-12">
+                          <RelatedArticles currentPost={post} allPosts={blogPosts} variant="inline" maxPosts={2} showNextArticle={false} />
+                        </div>
                       )}
                     </div>
                   )
@@ -439,6 +458,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </aside>
               )}
               {author && <AuthorBio author={author} />}
+
+              {/* Related Articles Section at end of article */}
+              <section className="mt-12 border-t border-neutral-200 pt-10">
+                <h2 className="mb-6 text-2xl font-bold text-neutral-900">Das könnte dich auch interessieren</h2>
+                <RelatedArticles currentPost={post} allPosts={blogPosts} variant="default" maxPosts={6} showNextArticle={true} />
+              </section>
 
               <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
               <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }} />
