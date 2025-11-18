@@ -9,7 +9,7 @@ interface AuthorBioProps {
 
 export function AuthorBio({ author, showBio = true }: AuthorBioProps) {
   return (
-    <div className="border-t border-gray-200 dark:border-gray-800 pt-8 mt-12">
+    <address className="border-t border-gray-200 dark:border-gray-800 pt-8 mt-12 not-italic" itemScope itemType="https://schema.org/Person" itemProp="author">
       <div className="flex items-start gap-6">
         <Link
           href={`/blog/authors/${author.slug}`}
@@ -21,6 +21,7 @@ export function AuthorBio({ author, showBio = true }: AuthorBioProps) {
               alt={author.name}
               fill
               className="object-cover"
+              itemProp="image"
             />
           </div>
         </Link>
@@ -30,11 +31,12 @@ export function AuthorBio({ author, showBio = true }: AuthorBioProps) {
             <Link
               href={`/blog/authors/${author.slug}`}
               className="text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              itemProp="url"
             >
-              {author.name}
+              <span itemProp="name">{author.name}</span>
             </Link>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
-              {author.title} • {author.credentials}
+              <span itemProp="jobTitle">{author.title}</span> • {author.credentials}
             </p>
           </div>
 
@@ -143,6 +145,6 @@ export function AuthorBio({ author, showBio = true }: AuthorBioProps) {
           )}
         </div>
       </div>
-    </div>
+    </address>
   )
 }

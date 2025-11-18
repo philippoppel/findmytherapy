@@ -30,7 +30,7 @@ export const authors: Record<string, Author> = {
     title: 'Redaktionsteam',
     credentials: 'Verifiziert von klinischen Psycholog:innen',
     bio: 'Unser interdisziplinäres Team aus Psycholog:innen, Therapeut:innen und Gesundheitsexpert:innen arbeitet daran, evidenzbasiertes Wissen zu mentaler Gesundheit zugänglich zu machen.',
-    avatar: '/images/authors/team.jpg',
+    avatar: '/images/team/gregorstudlar.jpg',
     expertise: [
       'Mentale Gesundheit',
       'Psychotherapie',
@@ -44,7 +44,7 @@ export const authors: Record<string, Author> = {
     title: 'Psychotherapeut (Verhaltenstherapie) in Ausbildung unter Supervision',
     credentials: 'Verhaltenstherapie • NKA/NKV Notfallsanitäter • Sigmund Freud Universität Wien',
     bio: 'Thomas Kaufmann ist Psychotherapeut in Ausbildung unter Supervision mit Schwerpunkt Verhaltenstherapie. Seine Erfahrung als Notfallsanitäter prägt seinen lösungsorientierten Zugang zu Krisenintervention und Angststörungen. Er verbindet evidenzbasierte Methoden mit praxisnaher Begleitung in Phasen der Veränderung.',
-    avatar: '/images/team/thomaskaufmann.jpg',
+    avatar: '/images/team/thomaskaufmann.jpeg',
     email: 'office@thomas-kaufmann.at',
     social: {
       website: 'https://thomas-kaufmann.at',
