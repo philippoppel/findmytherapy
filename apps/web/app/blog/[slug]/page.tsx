@@ -368,76 +368,77 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </header>
 
-              <div className="space-y-10">
-                <section className="rounded-3xl border border-primary-100/70 bg-white p-6 shadow-lg shadow-primary-900/5 sm:p-8" aria-label="Zusammenfassung">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg">
-                      <Lightbulb className="h-5 w-5" aria-hidden />
-                    </div>
-                    <div className="flex-1 space-y-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Auf einen Blick</p>
-                        <h2 className="text-2xl font-semibold text-neutral-900">Key-Takeaways</h2>
-                      </div>
-                      <ul className="space-y-3">
-                        {post.summary.map((point) => (
-                          <li key={point} className="flex items-start gap-3">
-                            <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600" aria-hidden />
-                            <span className="text-base leading-relaxed text-neutral-700">{point}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              {/* Key-Takeaways as aside - not main content for Reader Mode */}
+              <aside className="rounded-3xl border border-primary-100/70 bg-white p-6 shadow-lg shadow-primary-900/5 sm:p-8" aria-label="Zusammenfassung">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg">
+                    <Lightbulb className="h-5 w-5" aria-hidden />
                   </div>
-                </section>
+                  <div className="flex-1 space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Auf einen Blick</p>
+                      <p className="text-2xl font-semibold text-neutral-900">Key-Takeaways</p>
+                    </div>
+                    <ul className="space-y-3">
+                      {post.summary.map((point) => (
+                        <li key={point} className="flex items-start gap-3">
+                          <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600" aria-hidden />
+                          <span className="text-base leading-relaxed text-neutral-700">{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </aside>
 
-                <nav className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5" aria-label="Inhaltsverzeichnis">
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
-                  <TableOfContents sections={post.sections} />
-                </nav>
+              {/* TOC as nav - Reader Mode will skip navigation */}
+              <nav className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5" aria-label="Inhaltsverzeichnis">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
+                <TableOfContents sections={post.sections} />
+              </nav>
 
-                <section className="prose prose-lg prose-neutral mt-4 max-w-none" itemProp="articleBody" aria-label="Artikelinhalt">
-                  {post.sections.map((section) => {
-                    const sectionId = slugify(section.heading)
-                    return (
-                      <section key={section.heading} id={sectionId} className="mb-12 scroll-mt-24">
-                        <h2 className="group relative text-3xl font-bold text-neutral-900">
-                          {section.heading}
-                          <a
-                            href={`#${sectionId}`}
-                            className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-lg opacity-0 transition hover:bg-primary-50 group-hover:opacity-100"
-                            aria-label={`Link zu Abschnitt: ${section.heading}`}
-                          >
-                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                          </a>
-                        </h2>
-                        {section.paragraphs.map((paragraph) => (
-                          <p key={paragraph} className="mt-4 text-lg leading-relaxed text-neutral-700">{paragraph}</p>
-                        ))}
-                        {section.list && (
-                          <ul className="mt-4 space-y-2 text-lg text-neutral-700">
-                            {section.list.map((item) => (
-                              <li key={item} className="flex items-start gap-3">
-                                <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </section>
-                    )
-                  })}
-                </section>
-
-                {post.medicalReviewedBy && (
-                  <aside aria-label="Medizinischer Hinweis">
-                    <MedicalDisclaimer />
-                  </aside>
-                )}
-                {author && <AuthorBio author={author} />}
+              {/* Main article content - flat structure for Reader Mode */}
+              <div className="prose prose-lg prose-neutral max-w-none" itemProp="articleBody">
+                {post.sections.map((section) => {
+                  const sectionId = slugify(section.heading)
+                  return (
+                    <div key={section.heading} id={sectionId} className="mb-12 scroll-mt-24">
+                      <h2 className="group relative text-3xl font-bold text-neutral-900">
+                        {section.heading}
+                        <a
+                          href={`#${sectionId}`}
+                          className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-lg opacity-0 transition hover:bg-primary-50 group-hover:opacity-100"
+                          aria-label={`Link zu Abschnitt: ${section.heading}`}
+                        >
+                          <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                        </a>
+                      </h2>
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph} className="mt-4 text-lg leading-relaxed text-neutral-700">{paragraph}</p>
+                      ))}
+                      {section.list && (
+                        <ul className="mt-4 space-y-2 text-lg text-neutral-700">
+                          {section.list.map((item) => (
+                            <li key={item} className="flex items-start gap-3">
+                              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
+
+              {post.medicalReviewedBy && (
+                <aside aria-label="Medizinischer Hinweis">
+                  <MedicalDisclaimer />
+                </aside>
+              )}
+              {author && <AuthorBio author={author} />}
 
               <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }} />
               <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }} />
