@@ -1942,17 +1942,13 @@ export const blogPosts: BlogPost[] = [
     relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
-    howTo: {
-      name: '5 wirksame Atemtechniken bei Angst und Panik',
-      description: 'Schritt-für-Schritt-Anleitung für evidenzbasierte Atemübungen, die bei Angst und Panikattacken schnell beruhigen.',
-      steps: [
-        { name: '4-7-8-Atmung', text: '4 Sekunden durch die Nase einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend bei akuter Angst.' },
-        { name: 'Bauchatmung (Zwerchfellatmung)', text: 'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.' },
-        { name: 'Box-Breathing (4-4-4-4)', text: '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Gleichmäßiger Rhythmus beruhigt und fokussiert.' },
-        { name: 'Verlängerte Ausatmung', text: 'Normal einatmen, dann doppelt so lange ausatmen (z.B. 4 Sekunden ein, 8 Sekunden aus). Aktiviert den Parasympathikus und reduziert Herzfrequenz.' },
-        { name: 'Atemzählung', text: 'Atem beobachten und zählen: 1 beim Einatmen, 2 beim Ausatmen. Bis 10 zählen, dann von vorne beginnen. Fokussiert den Geist und unterbricht Angstspiralen.' }
-      ]
-    },
+    howTo: [
+      { name: '4-7-8-Atmung', text: '4 Sekunden durch die Nase einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend bei akuter Angst.' },
+      { name: 'Bauchatmung (Zwerchfellatmung)', text: 'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.' },
+      { name: 'Box-Breathing (4-4-4-4)', text: '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Gleichmäßiger Rhythmus beruhigt und fokussiert.' },
+      { name: 'Verlängerte Ausatmung', text: 'Normal einatmen, dann doppelt so lange ausatmen (z.B. 4 Sekunden ein, 8 Sekunden aus). Aktiviert den Parasympathikus und reduziert Herzfrequenz.' },
+      { name: 'Atemzählung', text: 'Atem beobachten und zählen: 1 beim Einatmen, 2 beim Ausatmen. Bis 10 zählen, dann von vorne beginnen. Fokussiert den Geist und unterbricht Angstspiralen.' }
+    ],
     sections: [{ heading: 'Warum Atmung bei Angst hilft', paragraphs: ['Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.'] }, { heading: '1. Die 4-7-8-Atmung', paragraphs: ['Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.'] }, { heading: '2. Bauchatmung (Zwerchfellatmung)', paragraphs: ['Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.'] }, { heading: '3. Box-Breathing (4-4-4-4)', paragraphs: ['4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.'] }]
   },
   {
@@ -2026,17 +2022,13 @@ export const blogPosts: BlogPost[] = [
     featuredImage: { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person meditiert in ruhiger Umgebung', width: 1200, height: 630 },
     keywords: ['Meditation Anfänger', 'Meditation lernen', 'Achtsamkeit', 'Atemmeditation', '3-Minuten-Meditation'],
     relatedPosts: ['atemtechniken-bei-angst', 'burnout-erkennen-vorbeugen'],
-    howTo: {
-      name: 'Die 3-Minuten-Atemmeditation für Anfänger',
-      description: 'Eine einfache Meditationsübung für Einsteiger, die überall durchführbar ist und nachweislich Stress reduziert.',
-      steps: [
-        { name: 'Sitzposition einnehmen', text: 'Setzen Sie sich aufrecht hin (Stuhl oder Boden). Hände locker auf den Oberschenkeln ablegen. Rücken gerade, Schultern entspannt.' },
-        { name: 'Augen schließen', text: 'Schließen Sie sanft die Augen oder richten Sie einen weichen Blick auf einen Punkt vor sich. Dies reduziert äußere Ablenkungen.' },
-        { name: 'Aufmerksamkeit auf den Atem richten', text: 'Spüren Sie, wie der Atem ein- und ausströmt. Beobachten Sie das Heben und Senken des Bauches oder die Luft an der Nasenspitze.' },
-        { name: 'Gedanken ziehen lassen', text: 'Wenn Gedanken kommen, nicht bekämpfen. Beobachten Sie sie wie Wolken und kehren Sie sanft zum Atem zurück. Das ist die eigentliche Übung!' },
-        { name: 'Abschluss nach 3 Minuten', text: 'Nach 3 Minuten (Timer nutzen): Langsam die Augen öffnen, kurz nachspüren. Bemerken Sie den Unterschied zu vorher.' }
-      ]
-    },
+    howTo: [
+      { name: 'Sitzposition einnehmen', text: 'Setzen Sie sich aufrecht hin (Stuhl oder Boden). Hände locker auf den Oberschenkeln ablegen. Rücken gerade, Schultern entspannt.' },
+      { name: 'Augen schließen', text: 'Schließen Sie sanft die Augen oder richten Sie einen weichen Blick auf einen Punkt vor sich. Dies reduziert äußere Ablenkungen.' },
+      { name: 'Aufmerksamkeit auf den Atem richten', text: 'Spüren Sie, wie der Atem ein- und ausströmt. Beobachten Sie das Heben und Senken des Bauches oder die Luft an der Nasenspitze.' },
+      { name: 'Gedanken ziehen lassen', text: 'Wenn Gedanken kommen, nicht bekämpfen. Beobachten Sie sie wie Wolken und kehren Sie sanft zum Atem zurück. Das ist die eigentliche Übung!' },
+      { name: 'Abschluss nach 3 Minuten', text: 'Nach 3 Minuten (Timer nutzen): Langsam die Augen öffnen, kurz nachspüren. Bemerken Sie den Unterschied zu vorher.' }
+    ],
     sections: [{ heading: 'Warum Meditation?', paragraphs: ['Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.'] }, { heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt', paragraphs: ['1. Sitzposition: Aufrecht sitzen (Stuhl oder Boden), Hände locker auf den Oberschenkeln. 2. Augen schließen oder weichen Blick. 3. Aufmerksamkeit auf Atem richten: Spüren Sie, wie Atem ein- und ausströmt. 4. Gedanken kommen lassen: Nicht bekämpfen, einfach zurück zum Atem. 5. Nach 3 Minuten: Langsam Augen öffnen, kurz nachspüren.'] }, { heading: 'Häufige Anfängerfehler', paragraphs: ['Erwartung der Gedankenleere: Gedanken sind normal! Ziel ist, sie zu beobachten, nicht zu stoppen. Zu lange Sitzungen: Anfänger scheitern oft an 20-Minuten-Sessions. Start 3 Minuten! Perfektionismus: Es gibt kein "falsch". Abschweifen ist Teil der Übung.'] }]
   },
   {
