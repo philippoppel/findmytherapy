@@ -11,6 +11,7 @@ import { filterNavigationItems } from '@/lib/content-filters'
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation'
 
 const baseAppNavigation = [
+  { label: 'Matching', href: '/match' },
   { label: 'Therapeut:innen', href: '/therapists' },
   { label: 'Kurse', href: '/courses' },
   { label: 'Blog', href: '/blog' },
@@ -31,6 +32,7 @@ export function Header() {
 
   // Auf der Homepage nur die wichtigsten Links zeigen
   const baseDesktopNavigation = [
+    { label: 'Matching', href: '/match' },
     ...(FEATURES.ASSESSMENT ? [{ label: 'Ersteinschätzung', href: '/triage' }] : []),
     { label: 'Therapeut:innen', href: '#therapist-search' },
     { label: 'Team', href: '#team' },

@@ -107,21 +107,22 @@ model User {
   deletedAt      DateTime?
 
   // Relations
-  accounts         Account[]
-  sessions         Session[]
-  therapistProfile TherapistProfile?
-  clientOrders     Order[] @relation("ClientOrders")
-  enrollments      Enrollment[]
-  triageSessions   TriageSession[]
-  clientMatches    Match[] @relation("ClientMatches")
-  emergencyAlerts  EmergencyAlert[] @relation("ClientAlerts")
-  handledAlerts    EmergencyAlert[] @relation("HandlerAlerts")
-  auditLogs        AuditLog[]
-  appointments     Appointment[]
-  profileVersions  TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
-  dossiers         SessionZeroDossier[]
-  dossierAccesses  DossierAccessLog[]
-  consents         ClientConsent[]
+  accounts            Account[]
+  sessions            Session[]
+  therapistProfile    TherapistProfile?
+  clientOrders        Order[] @relation("ClientOrders")
+  enrollments         Enrollment[]
+  triageSessions      TriageSession[]
+  clientMatches       Match[] @relation("ClientMatches")
+  emergencyAlerts     EmergencyAlert[] @relation("ClientAlerts")
+  handledAlerts       EmergencyAlert[] @relation("HandlerAlerts")
+  auditLogs           AuditLog[]
+  appointments        Appointment[]
+  profileVersions     TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
+  dossiers            SessionZeroDossier[]
+  dossierAccesses     DossierAccessLog[]
+  consents            ClientConsent[]
+  matchingPreferences MatchingPreferences[]
 
   @@index([email])
   @@index([role])
@@ -447,21 +448,28 @@ model TriageSnapshot {
 }
 
 model Match {
-  id          String      @id @default(cuid())
-  clientId    String
-  client      User        @relation("ClientMatches", fields: [clientId], references: [id])
-  therapistId String
-  therapist   TherapistProfile @relation("TherapistMatches", fields: [therapistId], references: [id])
-  score       Float
-  reason      String[]
-  status      MatchStatus @default(NEW)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  clientId      String
+  client        User        @relation("ClientMatches", fields: [clientId], references: [id])
+  therapistId   String
+  therapist     TherapistProfile @relation("TherapistMatches", fields: [therapistId], references: [id])
+  score         Float
+  reason        String[]
+  status        MatchStatus @default(NEW)
+
+  // Erweiterung für detailliertes Matching
+  scoreBreakdown Json?      // Detaillierte Score-Aufschlüsselung
+  preferencesId  String?
+  preferences    MatchingPreferences? @relation(fields: [preferencesId], references: [id], onDelete: SetNull)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   @@unique([clientId, therapistId])
   @@index([clientId])
   @@index([therapistId])
   @@index([status])
+  @@index([preferencesId])
 }
 
 model EmergencyAlert {
@@ -645,6 +653,63 @@ enum ConsentScope {
 enum ConsentStatus {
   GRANTED
   REVOKED
+}
+
+enum InsuranceType {
+  PUBLIC
+  PRIVATE
+  SELF_PAY
+  ANY
+}
+
+enum TherapyFormat {
+  ONLINE
+  IN_PERSON
+  BOTH
+}
+
+enum CommunicationStyle {
+  DIRECT
+  GENTLE
+  ANY
+}
+
+model MatchingPreferences {
+  id                    String             @id @default(cuid())
+  sessionId             String             @unique  // Für anonyme Nutzung
+  userId                String?            // Optional für registrierte User
+  user                  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Harte Kriterien
+  problemAreas          String[]           // Angst, Depression, Trauma...
+  languages             String[]
+  insuranceType         InsuranceType      @default(ANY)
+  format                TherapyFormat      @default(BOTH)
+  maxDistanceKm         Int?
+  latitude              Float?
+  longitude             Float?
+  postalCode            String?
+  city                  String?
+  maxWaitWeeks          Int?
+
+  // Weiche Kriterien
+  preferredMethods      String[]           // EMDR, CBT, systemisch...
+  therapistGender       String?            // "male", "female", "any"
+  therapistAgeRange     String?            // "young", "middle", "senior", "any"
+  communicationStyle    CommunicationStyle @default(ANY)
+  priceMax              Int?               // in Cent
+
+  // Metadata
+  createdAt             DateTime           @default(now())
+  expiresAt             DateTime           // 30 Tage DSGVO
+
+  // Relations
+  matches               Match[]
+
+  @@index([sessionId])
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([createdAt])
 }
 
 model SessionZeroDossier {
