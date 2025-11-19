@@ -12,28 +12,24 @@ function getScoreDisplay(score: number) {
   const percent = Math.round(score * 100)
   let color = 'text-gray-600'
   let bgColor = 'bg-gray-100'
-  let label = 'Passend'
 
   if (percent >= 80) {
     color = 'text-green-700'
     bgColor = 'bg-green-100'
-    label = 'Sehr passend'
   } else if (percent >= 60) {
     color = 'text-primary-700'
     bgColor = 'bg-primary-100'
-    label = 'Gut passend'
   } else if (percent >= 40) {
     color = 'text-yellow-700'
     bgColor = 'bg-yellow-100'
-    label = 'Passend'
   }
 
-  return { percent, color, bgColor, label }
+  return { percent, color, bgColor }
 }
 
 // Einzelne Match-Card Komponente
 function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
-  const { percent, color, bgColor, label } = getScoreDisplay(match.score)
+  const { percent, color, bgColor } = getScoreDisplay(match.score)
   const [showDetails, setShowDetails] = useState(false)
 
   // Initiale für Avatar

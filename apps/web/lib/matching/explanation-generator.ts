@@ -148,7 +148,6 @@ export function generateMatchExplanation(
   }
 
   // Bewertungs-Erklärungen
-  const ratingComponent = scoreBreakdown.components.rating
   if (therapist.rating && therapist.rating >= 4.5 && (therapist.reviewCount || 0) >= 5) {
     items.push({
       text: `Sehr gut bewertet (${therapist.rating.toFixed(1)} ⭐)`,

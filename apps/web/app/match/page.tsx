@@ -202,9 +202,9 @@ export default function MatchPage() {
 
                   {/* Format-Auswahl */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Therapieformat
-                    </label>
+                    </span>
                     <div className="grid grid-cols-3 gap-3">
                       {[
                         { id: 'BOTH', label: 'Beides', icon: '🔄' },
@@ -231,9 +231,9 @@ export default function MatchPage() {
                   {formData.format !== 'ONLINE' && (
                     <>
                       <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <span className="block text-sm font-medium text-gray-700 mb-2">
                           PLZ oder Stadt
-                        </label>
+                        </span>
                         <input
                           type="text"
                           value={formData.postalCode || formData.city}
@@ -252,9 +252,9 @@ export default function MatchPage() {
 
                       {/* Umkreis */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <span className="block text-sm font-medium text-gray-700 mb-2">
                           Maximale Entfernung: {formData.maxDistanceKm} km
-                        </label>
+                        </span>
                         <input
                           type="range"
                           min="5"
@@ -281,9 +281,9 @@ export default function MatchPage() {
 
                   {/* Sprachen */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Sprache(n)
-                    </label>
+                    </span>
                     <div className="flex flex-wrap gap-2">
                       {LANGUAGES.map((lang) => (
                         <button
@@ -303,9 +303,9 @@ export default function MatchPage() {
 
                   {/* Versicherung */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Kostenübernahme
-                    </label>
+                    </span>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         { id: 'ANY', label: 'Egal' },
@@ -330,9 +330,9 @@ export default function MatchPage() {
 
                   {/* Wartezeit */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Maximale Wartezeit
-                    </label>
+                    </span>
                     <select
                       value={formData.maxWaitWeeks ?? ''}
                       onChange={(e) =>
@@ -362,9 +362,9 @@ export default function MatchPage() {
 
                   {/* Therapiemethoden */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Bevorzugte Therapiemethoden
-                    </label>
+                    </span>
                     <div className="flex flex-wrap gap-2">
                       {THERAPY_METHODS.map((method) => (
                         <button
@@ -384,9 +384,9 @@ export default function MatchPage() {
 
                   {/* Geschlecht */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Bevorzugtes Geschlecht
-                    </label>
+                    </span>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: 'any', label: 'Egal' },
@@ -410,9 +410,9 @@ export default function MatchPage() {
 
                   {/* Maximaler Preis */}
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Maximaler Preis pro Sitzung (€)
-                    </label>
+                    </span>
                     <input
                       type="number"
                       value={formData.priceMax || ''}
@@ -428,9 +428,9 @@ export default function MatchPage() {
 
                   {/* Kommunikationsstil */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Bevorzugter Kommunikationsstil
-                    </label>
+                    </span>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: 'ANY', label: 'Egal' },
