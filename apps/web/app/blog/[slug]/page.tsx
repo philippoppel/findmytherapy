@@ -275,7 +275,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </Link>
               </li>
               <li className="text-neutral-400">/</li>
-              <li className="max-w-[200px] truncate font-medium text-neutral-700 sm:max-w-none sm:truncate-none">{post.title}</li>
+              <li className="max-w-[200px] truncate font-medium text-neutral-700 sm:max-w-none sm:whitespace-normal">{post.title}</li>
             </ol>
           </nav>
 
@@ -392,7 +392,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </aside>
 
               {/* Quick recommendation after Key Takeaways */}
-              <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-4">
+              <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-4 sm:rounded-3xl sm:p-6">
                 <div className="flex items-center gap-2 text-sm font-medium text-primary-700">
                   <Sparkles className="h-4 w-4" aria-hidden />
                   <span>Passend zum Thema</span>

@@ -123,19 +123,19 @@ export function RelatedArticles({
   // Inline variant - compact horizontal scroll for mid-article recommendations
   if (variant === 'inline') {
     return (
-      <div className="my-10 rounded-2xl border border-primary-100 bg-gradient-to-r from-primary-50/50 to-secondary-50/50 p-6">
-        <div className="mb-4 flex items-center gap-2">
+      <div className="my-6 rounded-2xl border border-primary-100 bg-gradient-to-r from-primary-50/50 to-secondary-50/50 p-4 sm:my-10 sm:p-6">
+        <div className="mb-3 flex items-center gap-2 sm:mb-4">
           <Sparkles className="h-4 w-4 text-primary-600" />
           <span className="text-sm font-semibold text-primary-700">
             Verwandte Themen
           </span>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pb-2 sm:gap-4">
           {relatedPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex min-w-[280px] gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition hover:border-primary-200 hover:shadow-md"
+              className="group flex min-w-[240px] gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition hover:border-primary-200 hover:shadow-md sm:min-w-[280px]"
             >
               {post.featuredImage && (
                 <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
@@ -252,7 +252,7 @@ export function RelatedArticles({
 
   // Default variant - grid layout at bottom with Next Article CTA
   return (
-    <section className="mt-16 pt-16 border-t border-gray-200 dark:border-gray-800">
+    <section className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 sm:mt-16 sm:pt-16">
       {/* Schema.org ItemList for SEO */}
       <script
         type="application/ld+json"
@@ -261,19 +261,19 @@ export function RelatedArticles({
 
       {/* Next Article CTA - YouTube-style prominent recommendation */}
       {nextArticle && showNextArticle && (
-        <div className="mb-12">
-          <div className="mb-4 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary-600" />
-            <span className="text-sm font-semibold uppercase tracking-wide text-primary-600">
+        <div className="mb-8 sm:mb-12">
+          <div className="mb-3 flex items-center gap-2 sm:mb-4">
+            <TrendingUp className="h-4 w-4 text-primary-600 sm:h-5 sm:w-5" />
+            <span className="text-xs font-semibold uppercase tracking-wide text-primary-600 sm:text-sm">
               Empfohlen
             </span>
           </div>
           <Link
             href={`/blog/${nextArticle.slug}`}
-            className="group relative flex flex-col overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 to-secondary-50 shadow-lg transition hover:shadow-xl md:flex-row"
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 to-secondary-50 shadow-lg transition hover:shadow-xl sm:rounded-2xl md:flex-row"
           >
             {nextArticle.featuredImage && (
-              <div className="relative h-48 w-full md:h-auto md:w-2/5">
+              <div className="relative h-40 w-full sm:h-48 md:h-auto md:w-2/5">
                 <Image
                   src={nextArticle.featuredImage.src}
                   alt={nextArticle.featuredImage.alt}
@@ -283,20 +283,20 @@ export function RelatedArticles({
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary-50/90 md:block hidden" />
               </div>
             )}
-            <div className="flex flex-1 flex-col justify-center p-6 md:p-8">
+            <div className="flex flex-1 flex-col justify-center p-4 sm:p-6 md:p-8">
               <Badge
                 variant="neutral"
-                className="mb-3 self-start bg-primary-100 text-primary-700"
+                className="mb-2 self-start bg-primary-100 text-primary-700 sm:mb-3"
               >
                 {nextArticle.category}
               </Badge>
-              <h3 className="text-xl font-bold text-neutral-900 group-hover:text-primary-700 transition-colors md:text-2xl">
+              <h3 className="text-lg font-bold text-neutral-900 group-hover:text-primary-700 transition-colors sm:text-xl md:text-2xl">
                 {nextArticle.title}
               </h3>
-              <p className="mt-2 text-neutral-600 line-clamp-2">
+              <p className="mt-2 text-sm text-neutral-600 line-clamp-2 sm:text-base">
                 {nextArticle.excerpt}
               </p>
-              <div className="mt-4 flex items-center gap-4 text-sm text-neutral-500">
+              <div className="mt-3 flex items-center gap-3 text-xs text-neutral-500 sm:mt-4 sm:gap-4 sm:text-sm">
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
                   {nextArticle.readingTime}
@@ -311,12 +311,12 @@ export function RelatedArticles({
         </div>
       )}
 
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 sm:text-2xl sm:mb-8">
         Das könnte Sie auch interessieren
       </h2>
 
       {/* 6-post grid for better discovery */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {relatedPosts.map((post) => (
           <Link
             key={post.slug}
@@ -369,10 +369,10 @@ export function RelatedArticles({
       </div>
 
       {/* View All Articles CTA */}
-      <div className="mt-10 text-center">
+      <div className="mt-6 text-center sm:mt-10">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 rounded-full border-2 border-primary-600 bg-white px-6 py-3 text-sm font-semibold text-primary-600 transition hover:bg-primary-600 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-full border-2 border-primary-600 bg-white px-4 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-600 hover:text-white sm:px-6 sm:py-3"
         >
           Alle Artikel entdecken
           <ArrowRight className="h-4 w-4" />
