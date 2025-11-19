@@ -256,9 +256,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     : null
 
   return (
-    <div className="marketing-theme bg-surface text-default">
+    <div className="marketing-theme bg-surface text-default overflow-x-hidden">
       <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Navigation outside article for Reader Mode compatibility */}
           <nav className="text-sm text-neutral-500" aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-2">
@@ -303,7 +303,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
                 <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-64 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
                 <div className="relative z-10 grid gap-6 sm:gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
-                  <div className="space-y-6">
+                  <div className="min-w-0 space-y-6">
                     <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm">
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
                         <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
@@ -326,14 +326,14 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                         </span>
                       )}
                     </div>
-                    <div className="space-y-4">
-                      <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
+                    <div className="space-y-3 sm:space-y-4">
+                      <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/80 sm:px-4 sm:tracking-[0.4em] sm:text-xs">
                         {post.category}
                       </p>
-                      <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl" itemProp="headline">
+                      <h1 className="text-2xl font-bold leading-tight tracking-tight break-words sm:text-4xl lg:text-5xl" itemProp="headline">
                         {post.title}
                       </h1>
-                      <p className="text-base text-white/90 sm:text-lg">{post.excerpt}</p>
+                      <p className="text-sm text-white/90 sm:text-base lg:text-lg">{post.excerpt}</p>
                     </div>
                     <div className="flex flex-wrap gap-2 text-xs text-white/75 sm:gap-3 sm:text-sm">
                       <span className="inline-flex items-center gap-1.5 sm:gap-2">
@@ -409,7 +409,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </nav>
 
               {/* Main article content - flat structure for Reader Mode */}
-              <div className="prose prose-sm prose-neutral max-w-none sm:prose-lg" itemProp="articleBody">
+              <div className="prose prose-sm prose-neutral max-w-none overflow-hidden sm:prose-lg" itemProp="articleBody">
                 {post.sections.map((section, index) => {
                   const sectionId = slugify(section.heading)
                   const showInlineRecommendation = index === 2 && post.sections.length > 4
