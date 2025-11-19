@@ -275,7 +275,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </Link>
               </li>
               <li className="text-neutral-400">/</li>
-              <li className="font-medium text-neutral-700">{post.title}</li>
+              <li className="max-w-[200px] truncate font-medium text-neutral-700 sm:max-w-none sm:truncate-none">{post.title}</li>
             </ol>
           </nav>
 
@@ -287,9 +287,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             Zur Übersicht
           </Link>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,2fr),minmax(0,0.85fr)]">
-            <article itemScope itemType="https://schema.org/Article" className="flex flex-col gap-10">
-              <header className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-primary-950 via-secondary-800 to-secondary-900 px-6 py-10 text-white shadow-2xl shadow-primary-950/50 sm:px-12 sm:py-14">
+          <div className="mt-6 grid gap-6 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,2fr),minmax(0,0.85fr)]">
+            <article itemScope itemType="https://schema.org/Article" className="flex flex-col gap-6 sm:gap-10">
+              <header className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-primary-950 via-secondary-800 to-secondary-900 px-4 py-6 text-white shadow-2xl shadow-primary-950/50 sm:rounded-[32px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
                 {post.featuredImage && (
                   <div
                     className="absolute inset-0 opacity-30"
@@ -302,26 +302,26 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   />
                 )}
                 <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-64 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
-                <div className="relative z-10 grid gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
+                <div className="relative z-10 grid gap-6 sm:gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
                   <div className="space-y-6">
-                    <div className="flex flex-wrap items-center gap-3 text-sm font-semibold uppercase tracking-widest text-white/80">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5">
-                        <Sparkles className="h-4 w-4" aria-hidden />
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
+                        <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                         Insights
                       </span>
-                      <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1.5">
-                        <ShieldCheck className="h-4 w-4" aria-hidden />
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/5 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
+                        <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                         Evidenzbasiert
                       </span>
                       {medicalReviewer && (
-                        <span className="inline-flex items-center gap-2 rounded-full border border-green-400/40 bg-green-500/20 px-4 py-1.5">
-                          <ShieldCheck className="h-4 w-4" aria-hidden />
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-green-400/40 bg-green-500/20 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
+                          <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                           Medizinisch geprüft
                         </span>
                       )}
                       {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
-                        <span className="inline-flex items-center gap-2 rounded-full border border-blue-400/40 bg-blue-500/20 px-4 py-1.5">
-                          <Clock className="h-4 w-4" aria-hidden />
+                        <span className="hidden items-center gap-1.5 rounded-full border border-blue-400/40 bg-blue-500/20 px-3 py-1 sm:inline-flex sm:gap-2 sm:px-4 sm:py-1.5">
+                          <Clock className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                           Aktualisiert {dateFormatter.format(updatedDate)}
                         </span>
                       )}
@@ -330,32 +330,32 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                       <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-white/80">
                         {post.category}
                       </p>
-                      <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl" itemProp="headline">
+                      <h1 className="text-balance text-2xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl" itemProp="headline">
                         {post.title}
                       </h1>
-                      <p className="text-lg text-white/90">{post.excerpt}</p>
+                      <p className="text-base text-white/90 sm:text-lg">{post.excerpt}</p>
                     </div>
-                    <div className="flex flex-wrap gap-3 text-sm text-white/75">
-                      <span className="inline-flex items-center gap-2">
-                        <Calendar className="h-4 w-4" aria-hidden />
+                    <div className="flex flex-wrap gap-2 text-xs text-white/75 sm:gap-3 sm:text-sm">
+                      <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                        <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
                         <time dateTime={post.publishedAt} itemProp="datePublished">
                           {dateFormatter.format(publishedDate)}
                         </time>
                       </span>
                       {updatedDate && publishedDate.getTime() !== updatedDate.getTime() && (
-                        <span className="inline-flex items-center gap-2">
-                          <Clock className="h-4 w-4" aria-hidden />
+                        <span className="hidden items-center gap-1.5 sm:inline-flex sm:gap-2">
+                          <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
                           Aktualisiert: <time dateTime={post.updatedAt} itemProp="dateModified">{dateFormatter.format(updatedDate)}</time>
                         </span>
                       )}
-                      <span className="inline-flex items-center gap-2">
-                        <Clock className="h-4 w-4" aria-hidden />
+                      <span className="inline-flex items-center gap-1.5 sm:gap-2">
+                        <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden />
                         {post.readingTime}
                       </span>
                     </div>
                   </div>
                   {post.featuredImage && (
-                    <div className="relative h-72 w-full overflow-hidden rounded-3xl border border-white/20 shadow-2xl">
+                    <div className="relative hidden h-48 w-full overflow-hidden rounded-2xl border border-white/20 shadow-2xl sm:block sm:h-72 sm:rounded-3xl">
                       <Image
                         src={post.featuredImage.src}
                         alt={post.featuredImage.alt}
@@ -369,21 +369,21 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </header>
 
               {/* Key-Takeaways as aside - not main content for Reader Mode */}
-              <aside className="rounded-3xl border border-primary-100/70 bg-white p-6 shadow-lg shadow-primary-900/5 sm:p-8" aria-label="Zusammenfassung">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg">
-                    <Lightbulb className="h-5 w-5" aria-hidden />
+              <aside className="rounded-2xl border border-primary-100/70 bg-white p-4 shadow-lg shadow-primary-900/5 sm:rounded-3xl sm:p-6 lg:p-8" aria-label="Zusammenfassung">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary-600 text-white shadow-lg sm:h-11 sm:w-11 sm:rounded-2xl">
+                    <Lightbulb className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
                   </div>
-                  <div className="flex-1 space-y-4">
+                  <div className="flex-1 space-y-3 sm:space-y-4">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Auf einen Blick</p>
-                      <p className="text-2xl font-semibold text-neutral-900">Key-Takeaways</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary-700 sm:text-xs">Auf einen Blick</p>
+                      <p className="text-xl font-semibold text-neutral-900 sm:text-2xl">Key-Takeaways</p>
                     </div>
-                    <ul className="space-y-3">
+                    <ul className="space-y-2 sm:space-y-3">
                       {post.summary.map((point) => (
-                        <li key={point} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-600" aria-hidden />
-                          <span className="text-base leading-relaxed text-neutral-700">{point}</span>
+                        <li key={point} className="flex items-start gap-2 sm:gap-3">
+                          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-primary-600 sm:h-5 sm:w-5" aria-hidden />
+                          <span className="text-sm leading-relaxed text-neutral-700 sm:text-base">{point}</span>
                         </li>
                       ))}
                     </ul>
@@ -403,20 +403,20 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               {/* TOC as nav - Reader Mode will skip navigation */}
-              <nav className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5" aria-label="Inhaltsverzeichnis">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Inhalt</p>
+              <nav className="rounded-2xl border border-neutral-200 bg-white/90 p-4 shadow-lg shadow-primary-900/5 sm:rounded-3xl sm:p-6" aria-label="Inhaltsverzeichnis">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary-700 sm:text-xs">Inhalt</p>
                 <TableOfContents sections={post.sections} />
               </nav>
 
               {/* Main article content - flat structure for Reader Mode */}
-              <div className="prose prose-lg prose-neutral max-w-none" itemProp="articleBody">
+              <div className="prose prose-sm prose-neutral max-w-none sm:prose-lg" itemProp="articleBody">
                 {post.sections.map((section, index) => {
                   const sectionId = slugify(section.heading)
                   const showInlineRecommendation = index === 2 && post.sections.length > 4
                   return (
                     <div key={section.heading}>
-                      <div id={sectionId} className="mb-12 scroll-mt-24">
-                        <h2 className="group relative text-3xl font-bold text-neutral-900">
+                      <div id={sectionId} className="mb-8 scroll-mt-24 sm:mb-12">
+                        <h2 className="group relative text-xl font-bold text-neutral-900 sm:text-3xl">
                           {section.heading}
                           <a
                             href={`#${sectionId}`}
@@ -429,13 +429,13 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                           </a>
                         </h2>
                         {section.paragraphs.map((paragraph) => (
-                          <p key={paragraph} className="mt-4 text-lg leading-relaxed text-neutral-700">{paragraph}</p>
+                          <p key={paragraph} className="mt-3 text-sm leading-relaxed text-neutral-700 sm:mt-4 sm:text-lg">{paragraph}</p>
                         ))}
                         {section.list && (
-                          <ul className="mt-4 space-y-2 text-lg text-neutral-700">
+                          <ul className="mt-3 space-y-2 text-sm text-neutral-700 sm:mt-4 sm:text-lg">
                             {section.list.map((item) => (
-                              <li key={item} className="flex items-start gap-3">
-                                <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary-600" />
+                              <li key={item} className="flex items-start gap-2 sm:gap-3">
+                                <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-primary-600 sm:mt-2 sm:h-1.5 sm:w-1.5" />
                                 <span>{item}</span>
                               </li>
                             ))}
@@ -443,7 +443,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                         )}
                       </div>
                       {showInlineRecommendation && (
-                        <div className="not-prose mb-12">
+                        <div className="not-prose mb-8 sm:mb-12">
                           <RelatedArticles currentPost={post} allPosts={blogPosts} variant="inline" maxPosts={2} showNextArticle={false} />
                         </div>
                       )}
@@ -460,8 +460,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               {author && <AuthorBio author={author} />}
 
               {/* Related Articles Section at end of article */}
-              <section className="mt-12 border-t border-neutral-200 pt-10">
-                <h2 className="mb-6 text-2xl font-bold text-neutral-900">Das könnte dich auch interessieren</h2>
+              <section className="mt-8 border-t border-neutral-200 pt-6 sm:mt-12 sm:pt-10">
+                <h2 className="mb-4 text-xl font-bold text-neutral-900 sm:mb-6 sm:text-2xl">Das könnte dich auch interessieren</h2>
                 <RelatedArticles currentPost={post} allPosts={blogPosts} variant="default" maxPosts={6} showNextArticle={true} />
               </section>
 
@@ -475,7 +475,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </article>
 
-            <aside className="space-y-6" aria-label="Zusätzliche Informationen">
+            <aside className="hidden space-y-6 lg:block" aria-label="Zusätzliche Informationen">
               <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">Weiterlesen</p>
                 <h3 className="mt-2 text-xl font-semibold text-neutral-900">Ähnliche Artikel</h3>
