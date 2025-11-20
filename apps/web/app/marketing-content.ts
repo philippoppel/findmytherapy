@@ -416,6 +416,26 @@ export const partnerLogos = [
 
 export const faqItems = [
   {
+    question: 'Kostet die Nutzung von FindMyTherapy für Patient:innen etwas?',
+    answer:
+      'Nein, die Nutzung von FindMyTherapy ist für Patient:innen komplett kostenlos. Du zahlst nichts für die Suche, das Matching, die Ersteinschätzung oder den Zugang zu unseren Ratgebern. Kosten entstehen nur direkt bei der Therapeut:in für die Therapiesitzungen selbst – diese Honorare werden transparent im Profil angezeigt und direkt mit der Therapeut:in abgerechnet. Unser Ziel ist es, dir zu helfen, die richtige Therapie zu finden, nicht dich zur Kasse zu bitten.',
+  },
+  {
+    question: 'Wie funktioniert das Therapeut:innen-Matching bei FindMyTherapy?',
+    answer:
+      'Unser Matching basiert auf einem intelligenten Scoring-System, nicht auf einfachen Filtern. Du gibst deine Präferenzen an – von Muss-Kriterien (z.B. Fachrichtung, online oder vor Ort) bis zu Kann-Kriterien mit individueller Gewichtung (z.B. Sprache, Geschlecht, Spezialisierung, Erfahrung). Unser System berechnet dann für jede Therapeut:in einen Match-Score (z.B. "passt zu 87%") und sortiert die Ergebnisse nach Relevanz. So findest du nicht irgendeine Therapeut:in, sondern die passende für deine individuellen Bedürfnisse.',
+  },
+  {
+    question: 'Was unterscheidet FindMyTherapy von anderen Therapeuten-Verzeichnissen?',
+    answer:
+      'Der entscheidende Unterschied: Wir finden nicht irgendeine Therapie – wir finden die passende. Während traditionelle Verzeichnisse nur einfache Listen bieten, nutzen wir intelligentes Matching mit Scoring-System, zeigen nur verifizierte Therapeut:innen mit echten Kapazitäten, bieten eine moderne, benutzerfreundliche Suche, und stellen validierte Ersteinschätzungen (PHQ-9/GAD-7) bereit. Außerdem erhältst du vor dem ersten Termin bereits strukturierte Informationen über deine Situation, die du mit deiner Therapeut:in teilen kannst – für einen besseren Start in die Therapie.',
+  },
+  {
+    question: 'Warum ist die richtige Therapie wichtiger als irgendeine Therapeut:in?',
+    answer:
+      'Die Passung zwischen Patient:in und Therapeut:in ist einer der wichtigsten Faktoren für den Therapieerfolg. Eine Therapeut:in, die fachlich exzellent ist, aber nicht zu deinen Bedürfnissen, Werten oder deiner Lebenssituation passt, wird dir weniger helfen können. Unser Matching-System berücksichtigt daher nicht nur fachliche Qualifikationen, sondern auch persönliche Präferenzen, Spezialisierungen und Erfahrungen. So erhöhen wir die Wahrscheinlichkeit, dass du nicht nach wenigen Sitzungen abbrichst, sondern eine Therapeut:in findest, mit der du langfristig arbeiten kannst.',
+  },
+  {
     question: 'Was kostet FindMyTherapy?',
     answer:
       'Die Ersteinschätzung, unser Blog und Kurs-Schnuppermodule sind kostenlos. Kosten entstehen nur, wenn du eine Therapie buchst oder einen Kurs kaufst – die Honorare werden transparent pro Therapeut:in bzw. Kurs angezeigt und direkt mit ihnen abgerechnet. Therapeut:innen sprechen ihr Abo nach der Verifizierung mit uns ab und zahlen erst, wenn ihre Microsite live ist.',
