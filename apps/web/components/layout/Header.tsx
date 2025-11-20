@@ -9,6 +9,7 @@ import { AuthHeader } from './AuthHeader'
 import { FEATURES } from '@/lib/features'
 import { filterNavigationItems } from '@/lib/content-filters'
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation'
+import { MatchingLink } from '@/app/components/matching/MatchingLink'
 
 const baseAppNavigation = [
   { label: 'Matching', href: '/match' },
@@ -34,7 +35,7 @@ export function Header() {
   const baseDesktopNavigation = [
     { label: 'Matching', href: '/match' },
     ...(FEATURES.ASSESSMENT ? [{ label: 'Ersteinschätzung', href: '/triage' }] : []),
-    { label: 'Therapeut:innen', href: '/therapists' },
+    { label: 'Therapeut:innen', href: '#therapist-directory' },
     { label: 'Team', href: '#team' },
     { label: 'Blog', href: '/blog' },
     { label: 'FAQ', href: '#faq' },
@@ -68,14 +69,14 @@ export function Header() {
             {desktopNavigation.map((item) => {
               const isAnchor = item.href.startsWith('#')
               return (
-                <Link
+                <MatchingLink
                   key={item.href}
                   href={item.href}
                   onClick={(event) => isAnchor && handleAnchorNavigation(event, item.href)}
                   className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
                 >
                   {item.label}
-                </Link>
+                </MatchingLink>
               )
             })}
           </div>
@@ -108,7 +109,7 @@ export function Header() {
               {navigation.map((item) => {
                 const isAnchor = item.href.startsWith('#')
                 return (
-                  <Link
+                  <MatchingLink
                     key={item.href}
                     href={item.href}
                     className="block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
@@ -120,7 +121,7 @@ export function Header() {
                     }}
                   >
                     {item.label}
-                  </Link>
+                  </MatchingLink>
                 )
               })}
             </div>

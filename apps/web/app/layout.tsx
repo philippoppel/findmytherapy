@@ -6,6 +6,8 @@ import Script from 'next/script'
 import { SessionProvider } from '../components/providers/SessionProvider'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { CookieConsentBanner } from '../components/CookieConsentBanner'
+import { MatchingProvider } from './components/matching/MatchingProvider'
+import { MatchingWizardModal } from './components/matching/MatchingWizardModal'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -91,7 +93,10 @@ export default function RootLayout({
       <body className={`${plusJakartaSans.className} bg-white`} suppressHydrationWarning>
         <ErrorBoundary>
           <SessionProvider>
-            {children}
+            <MatchingProvider>
+              {children}
+              <MatchingWizardModal />
+            </MatchingProvider>
           </SessionProvider>
         </ErrorBoundary>
         <CookieConsentBanner />

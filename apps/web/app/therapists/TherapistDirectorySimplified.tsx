@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react'
 import type { TherapistCard } from './types'
 import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch'
+import { MatchingLink } from '../components/matching/MatchingLink'
 
 // Utility function to merge classNames
 function cn(...classes: (string | undefined | null | false)[]): string {
@@ -74,13 +75,13 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               Passe die Filter an oder probiere unseren intelligenten Matching-Wizard aus, um personalisierte Empfehlungen zu erhalten.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-              <Link
+              <MatchingLink
                 href="/match"
                 className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-700 hover:shadow-xl"
               >
                 <Sparkles className="h-4 w-4" />
                 Matching-Wizard starten
-              </Link>
+              </MatchingLink>
               <button
                 onClick={() => setFilteredTherapists(therapists)}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/15"
@@ -128,13 +129,13 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                           </div>
 
                           {/* CTA */}
-                          <Link
+                          <MatchingLink
                             href="/match"
                             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-700 shadow-lg transition-all hover:bg-white/90 hover:shadow-xl"
                           >
                             <Sparkles className="h-4 w-4" />
                             Matching starten
-                          </Link>
+                          </MatchingLink>
                         </div>
                       </div>
                     </div>

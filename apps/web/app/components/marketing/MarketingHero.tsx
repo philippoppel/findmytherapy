@@ -9,6 +9,7 @@ import type { heroContent } from '../../marketing-content'
 import { Reveal } from './Reveal'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 import { useAnchorNavigation } from '../useAnchorNavigation'
+import { MatchingLink } from '../matching/MatchingLink'
 
 interface HeroProps {
   content: typeof heroContent
@@ -142,21 +143,21 @@ export function MarketingHero({ content }: HeroProps) {
                   variant="primary"
                   className="w-full shadow-2xl transition-all hover:-translate-y-1 hover:scale-105 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
                 >
-                  <Link href={content.primaryCta.href}>
+                  <MatchingLink href={content.primaryCta.href}>
                     {content.primaryCta.label}
-                  </Link>
+                  </MatchingLink>
                 </Button>
                 <Button
                   asChild
                   size="lg"
                   className="w-full border-2 border-white/40 bg-white/15 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-white/50 hover:bg-white/25 hover:shadow-2xl sm:w-auto sm:px-12 sm:py-7 sm:text-xl"
                 >
-                  <Link
+                  <MatchingLink
                     href={content.secondaryCta.href}
                     onClick={(event) => handleAnchorNavigation(event, content.secondaryCta.href)}
                   >
                     {content.secondaryCta.label}
-                  </Link>
+                  </MatchingLink>
                 </Button>
               </div>
 
