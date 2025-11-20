@@ -2,7 +2,7 @@ export const marketingNavigation = [
   { label: 'Ratgeber', href: '/blog' },
   { label: 'Ersteinschätzung', href: '/triage' },
   { label: 'Vorteile', href: '#benefits' },
-  { label: 'Therapeut:innen', href: '/therapists' },
+  { label: 'Therapeut:innen', href: '#therapist-directory' },
   { label: 'Über uns', href: '/about' },
   { label: 'FAQ', href: '#faq' },
 ] as const;
@@ -14,12 +14,12 @@ export const heroContent = {
   description:
     'Entdecke gratis Ratgeber von anerkannten Psychotherapeut:innen für sofortige Hilfe. Oder finde verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites. Therapeut:innen erhalten individuelle Microsites und maximale Online-Sichtbarkeit durch unsere SEO-Expert:innen. Transparent und DSGVO-konform (EU-Datenschutz).',
   primaryCta: {
-    label: 'Gratis Wissen entdecken',
-    href: '/blog',
+    label: 'Matching starten',
+    href: '/match',
   },
   secondaryCta: {
-    label: 'Therapeut:in finden',
-    href: '/therapists',
+    label: 'Alle durchsuchen',
+    href: '#therapist-directory',
   },
   tertiaryCta: {
     label: 'Für Therapeut:innen',
