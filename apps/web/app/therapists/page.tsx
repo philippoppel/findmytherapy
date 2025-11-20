@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Compass, Sparkles } from 'lucide-react'
 
 import { TherapistDirectory } from './TherapistDirectorySimplified'
+import { TherapistSearchChoice } from './components/TherapistSearchChoice'
 import { FEATURES } from '@/lib/features'
 import { getTherapistCards } from './getTherapistCards'
 
@@ -99,7 +100,9 @@ export default async function TherapistsPage() {
         </div>
       </section>
 
-      <section className="relative pb-20">
+      <TherapistSearchChoice />
+
+      <section id="therapist-directory" className="relative pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="theme-dark relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-950 via-primary-950 to-neutral-900 p-8 shadow-soft-xl sm:p-10">
             <div className="pointer-events-none absolute inset-0" aria-hidden>

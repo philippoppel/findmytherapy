@@ -34,7 +34,7 @@ export function Header() {
   const baseDesktopNavigation = [
     { label: 'Matching', href: '/match' },
     ...(FEATURES.ASSESSMENT ? [{ label: 'Ersteinschätzung', href: '/triage' }] : []),
-    { label: 'Therapeut:innen', href: '#therapist-search' },
+    { label: 'Therapeut:innen', href: '/therapists' },
     { label: 'Team', href: '#team' },
     { label: 'Blog', href: '/blog' },
     { label: 'FAQ', href: '#faq' },
