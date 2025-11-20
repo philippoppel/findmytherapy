@@ -6,6 +6,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import type { MatchingResponse, MatchResult } from '@/lib/matching'
+import { EncouragementBanner } from './components/EncouragementBanner'
+import { NextStepsGuide } from './components/NextStepsGuide'
+import { MotivationalQuote } from './components/MotivationalQuote'
+import { ReassuranceBox } from './components/ReassuranceBox'
 
 // Score zu Prozent und Farbe konvertieren
 function getScoreDisplay(score: number) {
@@ -86,8 +90,13 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           </div>
 
           {/* Score */}
-          <div className={`px-3 py-1 rounded-full ${bgColor} ${color} text-sm font-medium`}>
-            {percent}%
+          <div className="text-right">
+            <div className={`px-3 py-1.5 rounded-full ${bgColor} ${color} text-sm font-bold shadow-sm`}>
+              {percent}% Match
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              {percent >= 80 ? 'Hervorragend' : percent >= 60 ? 'Sehr gut' : 'Gut'}
+            </p>
           </div>
         </div>
 
@@ -96,13 +105,16 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           <p className="text-sm text-gray-600 mb-3 line-clamp-2">{match.therapist.headline}</p>
         )}
 
-        {/* Hauptgründe für das Match */}
+        {/* Warum passt dieser Therapeut? */}
         <div className="mb-4">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu dir?
+          </p>
           <div className="flex flex-wrap gap-2">
             {match.explanation.primary.map((reason, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center px-2.5 py-1 rounded-md bg-primary-50 text-primary-700 text-xs font-medium"
+                className="inline-flex items-center px-2.5 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-800 text-xs font-medium"
               >
                 ✓ {reason}
               </span>
@@ -205,18 +217,22 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
         )}
 
         {/* Action Buttons */}
-        <div className="flex gap-2 mt-4">
+        <div className="mt-4 space-y-2">
           <Link
             href={`/therapists/${match.therapist.id}`}
-            className="flex-1 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg text-center hover:bg-primary-700 transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-700 hover:shadow-lg"
           >
-            Profil ansehen
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            Vollständiges Profil ansehen
           </Link>
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="px-3 py-2 text-gray-600 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="w-full px-3 py-2 text-gray-600 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            {showDetails ? 'Weniger' : 'Details'}
+            {showDetails ? '▲ Weniger Details' : '▼ Mehr Details & Score-Breakdown'}
           </button>
         </div>
       </div>
@@ -279,7 +295,7 @@ export default function MatchResultsPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
@@ -291,14 +307,22 @@ export default function MatchResultsPage() {
           </button>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Ihre Matches
+            Deine persönlichen Empfehlungen
           </h1>
           <p className="text-gray-600">
             {results?.total === 0
               ? 'Leider keine passenden Therapeut:innen gefunden.'
-              : `Wir haben ${results?.total} passende Therapeut:innen für Sie gefunden.`}
+              : results?.total === 1
+              ? `Wir haben die perfekte Therapeut:in für dich gefunden.`
+              : `Wir haben ${results?.total} Therapeut:innen gefunden, die gut zu dir passen.`}
           </p>
         </div>
+
+        {/* Encouragement Banner */}
+        {results && results.matches.length > 0 && <EncouragementBanner />}
+
+        {/* Motivational Quote */}
+        {results && results.matches.length > 0 && <MotivationalQuote />}
 
         {/* Keine Matches */}
         {results?.matches.length === 0 && (
@@ -329,11 +353,22 @@ export default function MatchResultsPage() {
 
         {/* Match-Liste */}
         {results && results.matches.length > 0 && (
-          <div className="grid gap-4 md:grid-cols-2">
-            {results.matches.map((match, index) => (
-              <MatchCard key={match.therapist.id} match={match} rank={index + 1} />
-            ))}
-          </div>
+          <>
+            <h2 className="mb-4 text-xl font-bold text-gray-900">
+              Deine Top-Matches
+            </h2>
+            <div className="grid gap-4 mb-8 md:grid-cols-2">
+              {results.matches.map((match, index) => (
+                <MatchCard key={match.therapist.id} match={match} rank={index + 1} />
+              ))}
+            </div>
+
+            {/* Next Steps Guide */}
+            <NextStepsGuide />
+
+            {/* Reassurance Box */}
+            <ReassuranceBox />
+          </>
         )}
 
         {/* Footer Actions */}
