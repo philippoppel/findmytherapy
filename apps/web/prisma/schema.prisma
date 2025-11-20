@@ -84,6 +84,25 @@ enum MicrositeStatus {
   PUBLISHED
 }
 
+enum InsuranceType {
+  PUBLIC
+  PRIVATE
+  SELF_PAY
+  ANY
+}
+
+enum TherapyFormat {
+  ONLINE
+  IN_PERSON
+  BOTH
+}
+
+enum CommunicationStyle {
+  DIRECT
+  GENTLE
+  ANY
+}
+
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
@@ -112,6 +131,7 @@ model User {
   auditLogs        AuditLog[]
   appointments     Appointment[]
   profileVersions  TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
+  matchingPreferences MatchingPreferences[]
 
   @@index([email])
   @@index([role])
@@ -420,21 +440,62 @@ model TriageSnapshot {
 }
 
 model Match {
-  id          String      @id @default(cuid())
-  clientId    String
-  client      User        @relation("ClientMatches", fields: [clientId], references: [id])
-  therapistId String
-  therapist   TherapistProfile @relation("TherapistMatches", fields: [therapistId], references: [id])
-  score       Float
-  reason      String[]
-  status      MatchStatus @default(NEW)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id               String               @id @default(cuid())
+  clientId         String
+  client           User                 @relation("ClientMatches", fields: [clientId], references: [id])
+  therapistId      String
+  therapist        TherapistProfile     @relation("TherapistMatches", fields: [therapistId], references: [id])
+  preferencesId    String?
+  preferences      MatchingPreferences? @relation(fields: [preferencesId], references: [id], onDelete: SetNull)
+  score            Float
+  scoreBreakdown   Json?
+  reason           String[]
+  status           MatchStatus          @default(NEW)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
 
   @@unique([clientId, therapistId])
   @@index([clientId])
   @@index([therapistId])
   @@index([status])
+  @@index([preferencesId])
+}
+
+model MatchingPreferences {
+  id                    String             @id @default(cuid())
+  sessionId             String             @unique  // Für anonyme Nutzung
+  userId                String?            // Optional für registrierte User
+  user                  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Harte Kriterien
+  problemAreas          String[]           // Angst, Depression, Trauma...
+  languages             String[]
+  insuranceType         InsuranceType      @default(ANY)
+  format                TherapyFormat      @default(BOTH)
+  maxDistanceKm         Int?
+  latitude              Float?
+  longitude             Float?
+  postalCode            String?
+  city                  String?
+  maxWaitWeeks          Int?
+
+  // Weiche Kriterien
+  preferredMethods      String[]           // EMDR, CBT, systemisch...
+  therapistGender       String?            // "male", "female", "any"
+  therapistAgeRange     String?            // "young", "middle", "senior", "any"
+  communicationStyle    CommunicationStyle @default(ANY)
+  priceMax              Int?               // in Cent
+
+  // Metadata
+  createdAt             DateTime           @default(now())
+  expiresAt             DateTime           // 30 Tage DSGVO
+
+  // Relations
+  matches               Match[]
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([expiresAt])
 }
 
 model EmergencyAlert {
