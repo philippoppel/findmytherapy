@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 }
 
 export default async function TherapistsPage() {
-  const therapists = await getTherapistCards()
+  const { therapists } = await getTherapistCards()
 
   return (
     <div className="marketing-theme bg-surface text-default">
