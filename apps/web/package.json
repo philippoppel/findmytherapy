@@ -21,8 +21,8 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
-    "postinstall": "npx prisma generate",
-    "vercel-build": "prisma generate && next build"
+    "db:verify-production": "bash scripts/verify-production-db.sh",
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@auth/core": "^0.19.0",

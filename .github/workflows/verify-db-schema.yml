@@ -1,0 +1,133 @@
+name: Verify Production Database Schema
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/prisma/schema.prisma'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/web/prisma/schema.prisma'
+  workflow_dispatch:
+
+jobs:
+  check-schema:
+    runs-on: ubuntu-latest
+    name: Check Production DB Schema
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: |
+          cd apps/web
+          pnpm install
+
+      - name: Check for schema drift
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
+        run: |
+          cd apps/web
+
+          echo "🔍 Checking for schema drift..."
+
+          # Dry-run to check if schema is in sync
+          DRIFT_OUTPUT=$(pnpm exec prisma db push --dry-run 2>&1 || true)
+
+          echo "$DRIFT_OUTPUT"
+
+          if echo "$DRIFT_OUTPUT" | grep -q "already in sync"; then
+            echo "✅ Production database schema is in sync"
+            exit 0
+          elif echo "$DRIFT_OUTPUT" | grep -q "will be created\|will be altered"; then
+            echo "⚠️ WARNING: Schema drift detected!"
+            echo ""
+            echo "The Prisma schema file has been modified but the production database"
+            echo "has not been updated yet."
+            echo ""
+            echo "⚠️ CRITICAL: You MUST update the production database before merging!"
+            echo ""
+            echo "To fix this, run:"
+            echo "  cd apps/web"
+            echo "  pnpm db:verify-production"
+            echo ""
+            echo "Or manually:"
+            echo "  vercel env pull .env.vercel.production --environment=production"
+            echo "  DATABASE_URL=\"\$(grep DATABASE_URL .env.vercel.production | cut -d= -f2)\" pnpm exec prisma db push"
+            echo ""
+
+            # Fail the workflow
+            exit 1
+          else
+            echo "✅ Schema check completed"
+            exit 0
+          fi
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ **Database Schema Drift Detected**
+
+              The Prisma schema has been modified but the production database has not been updated.
+
+              **You MUST update the production database before merging this PR!**
+
+              Run:
+              \`\`\`bash
+              cd apps/web
+              pnpm db:verify-production
+              \`\`\`
+
+              Then verify:
+              \`\`\`bash
+              curl https://findmytherapy-qyva.vercel.app/api/health
+              \`\`\`
+
+              See \`CRITICAL_CHECKLIST.md\` for more details.`
+            })
+
+  test-health-endpoint:
+    runs-on: ubuntu-latest
+    name: Test Health Endpoint
+    needs: check-schema
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Check health endpoint
+        run: |
+          echo "🏥 Checking production health endpoint..."
+
+          RESPONSE=$(curl -s https://findmytherapy-qyva.vercel.app/api/health)
+          STATUS=$(echo $RESPONSE | jq -r '.status')
+
+          echo "Response: $RESPONSE"
+
+          if [ "$STATUS" = "healthy" ]; then
+            echo "✅ Production is healthy"
+            exit 0
+          else
+            echo "❌ Production health check failed"
+            echo "$RESPONSE"
+            exit 1
+          fi

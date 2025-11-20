@@ -1,5 +1,9 @@
 # FindMyTherapy MVP – Pilot-Plattform für Investor:innen & Therapeut:innen
 
+> **⚠️ CRITICAL: Wenn du Datenbank-Schema-Änderungen machst (Prisma), lies ZUERST: [`CRITICAL_CHECKLIST.md`](./CRITICAL_CHECKLIST.md)**
+>
+> **TL;DR**: Bei Änderungen an `apps/web/prisma/schema.prisma` MUSST du `pnpm db:verify-production` ausführen, bevor du commitest!
+
 FindMyTherapy befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, der Investor:innen den Kernnutzen zeigt und erste Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP".
 
 ## 🎯 MVP-Fokus

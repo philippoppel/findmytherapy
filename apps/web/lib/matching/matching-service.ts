@@ -64,14 +64,26 @@ export async function findMatches(
   } = options
 
   // 1. Alle öffentlichen, verifizierten Therapeuten laden
-  const rawTherapists = await prisma.therapistProfile.findMany({
-    where: {
-      isPublic: true,
-      status: 'VERIFIED',
-      deletedAt: null,
-    },
-    select: THERAPIST_SELECT,
-  })
+  let rawTherapists
+  try {
+    rawTherapists = await prisma.therapistProfile.findMany({
+      where: {
+        isPublic: true,
+        status: 'VERIFIED',
+        deletedAt: null,
+      },
+      select: THERAPIST_SELECT,
+    })
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('does not exist')) {
+      throw new Error(
+        `Datenbank-Schema-Fehler: Eine erforderliche Tabelle existiert nicht. ` +
+        `Bitte überprüfen Sie die Datenbankverbindung und das Schema. ` +
+        `Aktuelle Datenbank: ${process.env.DATABASE_URL?.substring(0, 40)}...`
+      )
+    }
+    throw error
+  }
 
   // Availability-Felder aus availabilityNote berechnen
   const therapists: TherapistForMatching[] = rawTherapists.map(t => {
@@ -302,34 +314,45 @@ export async function saveMatchingPreferences(
   const sessionId = crypto.randomUUID()
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 Tage
 
-  const saved = await prisma.matchingPreferences.create({
-    data: {
-      sessionId,
-      userId,
-      problemAreas: preferences.problemAreas,
-      languages: preferences.languages,
-      insuranceType: preferences.insuranceType,
-      format: preferences.format,
-      maxDistanceKm: preferences.maxDistanceKm,
-      latitude: preferences.latitude,
-      longitude: preferences.longitude,
-      postalCode: preferences.postalCode,
-      city: preferences.city,
-      maxWaitWeeks: preferences.maxWaitWeeks,
-      preferredMethods: preferences.preferredMethods || [],
-      therapistGender: preferences.therapistGender,
-      therapistAgeRange: preferences.therapistAgeRange,
-      communicationStyle: preferences.communicationStyle || 'ANY',
-      priceMax: preferences.priceMax,
-      expiresAt,
-    },
-    select: {
-      id: true,
-      sessionId: true,
-    },
-  })
+  try {
+    const saved = await prisma.matchingPreferences.create({
+      data: {
+        sessionId,
+        userId,
+        problemAreas: preferences.problemAreas,
+        languages: preferences.languages,
+        insuranceType: preferences.insuranceType,
+        format: preferences.format,
+        maxDistanceKm: preferences.maxDistanceKm,
+        latitude: preferences.latitude,
+        longitude: preferences.longitude,
+        postalCode: preferences.postalCode,
+        city: preferences.city,
+        maxWaitWeeks: preferences.maxWaitWeeks,
+        preferredMethods: preferences.preferredMethods || [],
+        therapistGender: preferences.therapistGender,
+        therapistAgeRange: preferences.therapistAgeRange,
+        communicationStyle: preferences.communicationStyle || 'ANY',
+        priceMax: preferences.priceMax,
+        expiresAt,
+      },
+      select: {
+        id: true,
+        sessionId: true,
+      },
+    })
 
-  return saved
+    return saved
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('does not exist')) {
+      throw new Error(
+        `Datenbank-Schema-Fehler: Die MatchingPreferences-Tabelle existiert nicht. ` +
+        `Bitte führen Sie 'prisma db push' mit der korrekten DATABASE_URL aus. ` +
+        `Aktuelle Datenbank: ${process.env.DATABASE_URL?.substring(0, 40)}...`
+      )
+    }
+    throw error
+  }
 }
 
 // Vollständige Matching-Response erstellen
