@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     service: 'FindMyTherapy Matching API',
-    version: '1.0',
+    version: '1.0.1',
     endpoints: {
       'POST /api/match': 'Therapeuten-Matching durchführen',
     },
