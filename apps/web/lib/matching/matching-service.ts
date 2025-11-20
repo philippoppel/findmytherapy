@@ -224,24 +224,6 @@ function checkHardFilters(
           return 'distance_exceeded'
         }
       }
-      // Wenn Therapeut keine Koordinaten hat aber Online anbietet, akzeptieren
-      else if (!therapist.online) {
-        return 'distance_exceeded'
-      }
-    }
-  }
-
-  // 6. Verfügbarkeit prüfen (wenn Toleranz angegeben)
-  if (preferences.maxWaitWeeks !== undefined && preferences.maxWaitWeeks !== null) {
-    let waitWeeks = therapist.estimatedWaitWeeks
-    if (waitWeeks === null || waitWeeks === undefined) {
-      const status = therapist.availabilityStatus || 'LIMITED'
-      waitWeeks = AVAILABILITY_STATUS_WEEKS[status] ?? 4
-    }
-
-    // Toleranz mit 50% Puffer
-    if (waitWeeks > preferences.maxWaitWeeks * 1.5) {
-      return 'availability_exceeded'
     }
   }
 

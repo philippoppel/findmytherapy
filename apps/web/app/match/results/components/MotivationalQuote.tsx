@@ -30,13 +30,13 @@ export function MotivationalQuote() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.2 }}
-      className="mb-8 rounded-2xl border-l-4 border-primary-500 bg-gradient-to-r from-primary-50 to-transparent p-6"
+      className="mb-6 sm:mb-8 rounded-2xl border-l-4 border-primary-500 bg-gradient-to-r from-primary-50 to-transparent p-4 sm:p-6"
     >
       <blockquote className="text-gray-700">
-        <p className="mb-2 text-lg italic leading-relaxed">
+        <p className="mb-2 text-sm sm:text-base md:text-lg italic leading-relaxed break-words">
           "{quote.text}"
         </p>
-        <footer className="text-sm font-medium text-gray-600">
+        <footer className="text-xs sm:text-sm font-medium text-gray-600 break-words">
           — {quote.author}
         </footer>
       </blockquote>

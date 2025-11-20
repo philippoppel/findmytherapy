@@ -90,7 +90,7 @@ function calculateDistanceScore(
     if (therapist.online && (preferences.format === 'BOTH' || preferences.format === 'ONLINE')) {
       return { score: 0.8 }
     }
-    return { score: 0.3 }
+    return { score: 0.4 }
   }
 
   const distanceKm = calculateDistanceKm(
@@ -98,10 +98,17 @@ function calculateDistanceScore(
     { lat: therapist.latitude, lng: therapist.longitude }
   )
 
-  // Exponentieller Abfall: score = exp(-0.1 * km)
-  // Bei 10km: 0.37, bei 20km: 0.14, bei 30km: 0.05
-  const alpha = 0.05 // Angepasst für größere Radien
-  const score = Math.exp(-alpha * distanceKm)
+  const maxPreferred = preferences.maxDistanceKm ?? 50
+  if (distanceKm <= maxPreferred) {
+    // Linearer Abfall innerhalb des Wunsch-Radius mit Mindestscore 0.3 am Rand
+    const ratio = distanceKm / maxPreferred
+    const score = Math.max(0.3, 1 - 0.7 * ratio)
+    return { score, distanceKm }
+  }
+
+  // Außerhalb des Radius: exponentiell abfallender Restscore
+  const overshoot = distanceKm - maxPreferred
+  const score = Math.max(0, 0.3 * Math.exp(-0.05 * overshoot))
 
   return { score, distanceKm }
 }
@@ -240,6 +247,34 @@ function calculateStyleScore(
   return 0.5 // Neutral, da keine Daten verfügbar
 }
 
+// Profil-Qualität (Vollständigkeit/Aktualität)
+function calculateProfileQualityScore(therapist: TherapistForMatching): { score: number; factors: string[] } {
+  let score = 0.5 // Basis
+  const factors: string[] = []
+
+  if (therapist.profileImageUrl) {
+    score += 0.2
+    factors.push('profilbild')
+  }
+
+  if (therapist.headline) {
+    score += 0.1
+    factors.push('headline')
+  }
+
+  if (therapist.city && therapist.latitude && therapist.longitude) {
+    score += 0.1
+    factors.push('standort-daten')
+  }
+
+  if (therapist.yearsExperience && therapist.yearsExperience >= 5) {
+    score += therapist.yearsExperience >= 10 ? 0.1 : 0.05
+    factors.push('erfahrung')
+  }
+
+  return { score: Math.min(1, score), factors }
+}
+
 // Haupt-Scoring-Funktion
 export function calculateMatchScore(
   preferences: MatchingPreferencesInput,
@@ -255,6 +290,7 @@ export function calculateMatchScore(
   const genderScore = calculateGenderScore(preferences, therapist)
   const ratingScore = calculateRatingScore(therapist)
   const styleScore = calculateStyleScore(preferences, therapist)
+  const { score: profileQualityScore, factors: profileFactors } = calculateProfileQualityScore(therapist)
 
   // Gewichtete Beiträge berechnen
   const components = {
@@ -300,6 +336,12 @@ export function calculateMatchScore(
       score: styleScore,
       weight: weights.style,
       contribution: styleScore * weights.style,
+    },
+    profileQuality: {
+      score: profileQualityScore,
+      weight: weights.profileQuality,
+      contribution: profileQualityScore * weights.profileQuality,
+      factors: profileFactors,
     },
   }
 

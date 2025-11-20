@@ -36,25 +36,27 @@ export interface Coordinates {
 // Score-Gewichtungen (konfigurierbar)
 export interface MatchingWeights {
   specialty: number      // 0.30 - Fachliche Übereinstimmung
-  distance: number       // 0.15 - Entfernung
-  availability: number   // 0.15 - Verfügbarkeit
-  methods: number        // 0.10 - Therapiemethoden
-  language: number       // 0.10 - Sprache
-  gender: number         // 0.05 - Geschlecht
-  rating: number         // 0.10 - Bewertungen
-  style: number          // 0.05 - Kommunikationsstil
+  distance: number       // 0.14 - Entfernung
+  availability: number   // 0.13 - Verfügbarkeit
+  methods: number        // 0.09 - Therapiemethoden
+  language: number       // 0.09 - Sprache
+  gender: number         // 0.04 - Geschlecht
+  rating: number         // 0.08 - Bewertungen
+  style: number          // 0.04 - Kommunikationsstil
+  profileQuality: number // 0.10 - Vollständigkeit/Qualität Profil
 }
 
 // Standard-Gewichtungen aus dem Pflichtenheft
 export const DEFAULT_WEIGHTS: MatchingWeights = {
-  specialty: 0.30,
-  distance: 0.15,
-  availability: 0.15,
-  methods: 0.10,
-  language: 0.10,
-  gender: 0.05,
-  rating: 0.10,
-  style: 0.05,
+  specialty: 0.29,
+  distance: 0.14,
+  availability: 0.13,
+  methods: 0.09,
+  language: 0.09,
+  gender: 0.04,
+  rating: 0.08,
+  style: 0.04,
+  profileQuality: 0.10,
 }
 
 // Detaillierte Score-Aufschlüsselung
@@ -69,6 +71,7 @@ export interface ScoreBreakdown {
     gender: { score: number; weight: number; contribution: number }
     rating: { score: number; weight: number; contribution: number }
     style: { score: number; weight: number; contribution: number }
+    profileQuality: { score: number; weight: number; contribution: number; factors: string[] }
   }
 }
 
@@ -136,7 +139,6 @@ export type FilterReason =
   | 'insurance_mismatch'
   | 'format_mismatch'
   | 'distance_exceeded'
-  | 'availability_exceeded'
 
 // Ausgeschlossener Therapeut (für Debugging/Logs)
 export interface FilteredTherapist {

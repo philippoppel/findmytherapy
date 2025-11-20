@@ -28,24 +28,24 @@ export function ReassuranceBox() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5 }}
-      className="mb-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 sm:p-8"
+      className="mb-6 sm:mb-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6 md:p-8"
     >
-      <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-gray-900">
-        <CheckCircle2 className="h-6 w-6 text-blue-600" />
-        Wichtig zu wissen
+      <h3 className="mb-3 sm:mb-4 flex items-center gap-2 text-base sm:text-lg font-bold text-gray-900 break-words">
+        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 text-blue-600" />
+        <span>Wichtig zu wissen</span>
       </h3>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
         {reassurances.map((item, index) => (
-          <div key={index} className="rounded-xl bg-white/80 p-4 shadow-sm">
-            <h4 className="mb-1 font-semibold text-gray-900">{item.title}</h4>
-            <p className="text-sm text-gray-600 leading-relaxed">{item.text}</p>
+          <div key={index} className="rounded-xl bg-white/80 p-3 sm:p-4 shadow-sm">
+            <h4 className="mb-1 text-sm sm:text-base font-semibold text-gray-900 break-words">{item.title}</h4>
+            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed break-words">{item.text}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 rounded-xl bg-blue-100 border border-blue-200 p-4">
-        <p className="text-sm text-blue-900">
+      <div className="mt-4 sm:mt-6 rounded-xl bg-blue-100 border border-blue-200 p-3 sm:p-4">
+        <p className="text-xs sm:text-sm text-blue-900 leading-relaxed break-words">
           <strong>📞 Tipp für den ersten Kontakt:</strong> Du musst nicht sofort alles erzählen.
           Ein einfaches "Ich interessiere mich für ein Erstgespräch" reicht völlig aus. Die meisten
           Therapeut:innen sind sehr verständnisvoll und erklären dir den weiteren Ablauf.

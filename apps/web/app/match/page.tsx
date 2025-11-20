@@ -119,19 +119,19 @@ export default function MatchPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-3xl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 px-2">
             Finden Sie Ihren Therapeuten
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600 px-2">
             Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für Sie.
           </p>
         </div>
 
         {/* Progress Steps */}
-        <div className="flex justify-between mb-8">
+        <div className="flex justify-between mb-6 sm:mb-8 px-2">
           {STEPS.map((step) => (
             <div
               key={step.id}
@@ -144,7 +144,7 @@ export default function MatchPage() {
               }`}
             >
               <div
-                className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center text-sm font-medium ${
+                className={`w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
                   step.id < currentStep
                     ? 'bg-primary-600 text-white'
                     : step.id === currentStep
@@ -154,7 +154,9 @@ export default function MatchPage() {
               >
                 {step.id < currentStep ? '✓' : step.id}
               </div>
-              <div className="mt-2 text-xs font-medium hidden sm:block">{step.title}</div>
+              <div className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium leading-tight break-words px-1">
+                {step.title}
+              </div>
             </div>
           ))}
         </div>
@@ -172,23 +174,23 @@ export default function MatchPage() {
               {/* Schritt 1: Problemfelder */}
               {currentStep === 1 && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Was beschäftigt Sie?</h2>
-                  <p className="text-gray-600 mb-6">
+                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Was beschäftigt Sie?</h2>
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
                     Wählen Sie die Bereiche aus, in denen Sie Unterstützung suchen.
                   </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
                     {PROBLEM_AREAS.map((area) => (
                       <button
                         key={area.id}
                         onClick={() => toggleArrayItem('problemAreas', area.id)}
-                        className={`p-3 rounded-lg border-2 text-left transition-all ${
+                        className={`p-2.5 sm:p-3 rounded-lg border-2 text-left transition-all ${
                           formData.problemAreas.includes(area.id)
                             ? 'border-primary-600 bg-primary-50 text-primary-700'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <span className="text-lg mr-2">{area.icon}</span>
-                        <span className="text-sm font-medium">{area.label}</span>
+                        <span className="text-base sm:text-lg mr-1.5 sm:mr-2">{area.icon}</span>
+                        <span className="text-xs sm:text-sm font-medium leading-tight break-words">{area.label}</span>
                       </button>
                     ))}
                   </div>
@@ -198,14 +200,16 @@ export default function MatchPage() {
               {/* Schritt 2: Standort & Format */}
               {currentStep === 2 && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Wo und wie möchten Sie therapiert werden?</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 break-words leading-snug">
+                    Wo und wie möchten Sie therapiert werden?
+                  </h2>
 
                   {/* Format-Auswahl */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Therapieformat
                     </span>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3">
                       {[
                         { id: 'BOTH', label: 'Beides', icon: '🔄' },
                         { id: 'IN_PERSON', label: 'Präsenz', icon: '🏢' },
@@ -214,14 +218,14 @@ export default function MatchPage() {
                         <button
                           key={format.id}
                           onClick={() => updateForm({ format: format.id as WizardFormData['format'] })}
-                          className={`p-3 rounded-lg border-2 text-center transition-all ${
+                          className={`p-2.5 sm:p-3 rounded-lg border-2 text-center transition-all ${
                             formData.format === format.id
                               ? 'border-primary-600 bg-primary-50'
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          <span className="text-xl block mb-1">{format.icon}</span>
-                          <span className="text-sm font-medium">{format.label}</span>
+                          <span className="text-lg sm:text-xl block mb-1">{format.icon}</span>
+                          <span className="text-xs sm:text-sm font-medium">{format.label}</span>
                         </button>
                       ))}
                     </div>
@@ -231,7 +235,7 @@ export default function MatchPage() {
                   {formData.format !== 'ONLINE' && (
                     <>
                       <div className="mb-4">
-                        <span className="block text-sm font-medium text-gray-700 mb-2">
+                        <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                           PLZ oder Stadt
                         </span>
                         <input
@@ -246,13 +250,13 @@ export default function MatchPage() {
                             }
                           }}
                           placeholder="z.B. 1010 oder Wien"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         />
                       </div>
 
                       {/* Umkreis */}
                       <div>
-                        <span className="block text-sm font-medium text-gray-700 mb-2">
+                        <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                           Maximale Entfernung: {formData.maxDistanceKm} km
                         </span>
                         <input
@@ -277,19 +281,19 @@ export default function MatchPage() {
               {/* Schritt 3: Präferenzen */}
               {currentStep === 3 && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Ihre Präferenzen</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Ihre Präferenzen</h2>
 
                   {/* Sprachen */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Sprache(n)
                     </span>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {LANGUAGES.map((lang) => (
                         <button
                           key={lang.id}
                           onClick={() => toggleArrayItem('languages', lang.id)}
-                          className={`px-3 py-1.5 rounded-full text-sm transition-all ${
+                          className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm transition-all whitespace-nowrap ${
                             formData.languages.includes(lang.id)
                               ? 'bg-primary-600 text-white'
                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -302,8 +306,8 @@ export default function MatchPage() {
                   </div>
 
                   {/* Versicherung */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Kostenübernahme
                     </span>
                     <div className="grid grid-cols-2 gap-2">
@@ -316,7 +320,7 @@ export default function MatchPage() {
                         <button
                           key={ins.id}
                           onClick={() => updateForm({ insuranceType: ins.id as WizardFormData['insuranceType'] })}
-                          className={`px-3 py-2 rounded-lg border text-sm transition-all ${
+                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
                             formData.insuranceType === ins.id
                               ? 'border-primary-600 bg-primary-50 text-primary-700'
                               : 'border-gray-200 hover:border-gray-300'
@@ -330,7 +334,7 @@ export default function MatchPage() {
 
                   {/* Wartezeit */}
                   <div>
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Maximale Wartezeit
                     </span>
                     <select
@@ -340,7 +344,7 @@ export default function MatchPage() {
                           maxWaitWeeks: e.target.value ? parseInt(e.target.value) : undefined,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     >
                       {WAIT_TIME_OPTIONS.map((opt) => (
                         <option key={opt.label} value={opt.value ?? ''}>
@@ -355,22 +359,22 @@ export default function MatchPage() {
               {/* Schritt 4: Optionale Details */}
               {currentStep === 4 && (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Optionale Details</h2>
-                  <p className="text-gray-600 mb-6 text-sm">
+                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Optionale Details</h2>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
                     Diese Angaben sind optional und helfen uns, noch bessere Matches zu finden.
                   </p>
 
                   {/* Therapiemethoden */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Bevorzugte Therapiemethoden
                     </span>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {THERAPY_METHODS.map((method) => (
                         <button
                           key={method.id}
                           onClick={() => toggleArrayItem('preferredMethods', method.id)}
-                          className={`px-3 py-1.5 rounded-full text-sm transition-all ${
+                          className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm transition-all whitespace-nowrap ${
                             formData.preferredMethods.includes(method.id)
                               ? 'bg-primary-600 text-white'
                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -383,8 +387,8 @@ export default function MatchPage() {
                   </div>
 
                   {/* Geschlecht */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Bevorzugtes Geschlecht
                     </span>
                     <div className="grid grid-cols-3 gap-2">
@@ -396,7 +400,7 @@ export default function MatchPage() {
                         <button
                           key={gender.id}
                           onClick={() => updateForm({ therapistGender: gender.id as WizardFormData['therapistGender'] })}
-                          className={`px-3 py-2 rounded-lg border text-sm transition-all ${
+                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
                             formData.therapistGender === gender.id
                               ? 'border-primary-600 bg-primary-50'
                               : 'border-gray-200 hover:border-gray-300'
@@ -409,8 +413,8 @@ export default function MatchPage() {
                   </div>
 
                   {/* Maximaler Preis */}
-                  <div className="mb-6">
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-5 sm:mb-6">
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Maximaler Preis pro Sitzung (€)
                     </span>
                     <input
@@ -422,14 +426,14 @@ export default function MatchPage() {
                         })
                       }
                       placeholder="z.B. 120"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
 
                   {/* Kommunikationsstil */}
                   <div>
-                    <span className="block text-sm font-medium text-gray-700 mb-2">
-                      Bevorzugter Kommunikationsstil
+                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      Kommunikationsstil
                     </span>
                     <div className="grid grid-cols-3 gap-2">
                       {[
@@ -440,7 +444,7 @@ export default function MatchPage() {
                         <button
                           key={style.id}
                           onClick={() => updateForm({ communicationStyle: style.id as WizardFormData['communicationStyle'] })}
-                          className={`px-3 py-2 rounded-lg border text-sm transition-all ${
+                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
                             formData.communicationStyle === style.id
                               ? 'border-primary-600 bg-primary-50'
                               : 'border-gray-200 hover:border-gray-300'
@@ -458,17 +462,17 @@ export default function MatchPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm break-words">
               {error}
             </div>
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t">
+          <div className="flex justify-between mt-6 sm:mt-8 pt-5 sm:pt-6 border-t gap-2 sm:gap-3">
             <button
               onClick={prevStep}
               disabled={currentStep === 1}
-              className={`px-6 py-2 rounded-lg font-medium transition-all ${
+              className={`px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-medium transition-all ${
                 currentStep === 1
                   ? 'text-gray-400 cursor-not-allowed'
                   : 'text-gray-700 hover:bg-gray-100'
@@ -481,7 +485,7 @@ export default function MatchPage() {
               <button
                 onClick={nextStep}
                 disabled={!canProceed()}
-                className={`px-6 py-2 rounded-lg font-medium transition-all ${
+                className={`px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-medium transition-all ${
                   canProceed()
                     ? 'bg-primary-600 text-white hover:bg-primary-700'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -493,7 +497,7 @@ export default function MatchPage() {
               <button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="px-6 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-all disabled:opacity-50"
+                className="px-4 sm:px-6 py-2 bg-primary-600 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-primary-700 transition-all disabled:opacity-50 whitespace-nowrap"
               >
                 {isLoading ? 'Suche läuft...' : 'Therapeuten finden'}
               </button>
@@ -502,7 +506,7 @@ export default function MatchPage() {
         </div>
 
         {/* Info Text */}
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6 px-4">
           Ihre Daten werden vertraulich behandelt und nach 30 Tagen gelöscht.
         </p>
       </div>

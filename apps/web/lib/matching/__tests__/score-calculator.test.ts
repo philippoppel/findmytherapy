@@ -353,6 +353,7 @@ describe('calculateMatchScore', () => {
       expect(result.components).toHaveProperty('gender')
       expect(result.components).toHaveProperty('rating')
       expect(result.components).toHaveProperty('style')
+      expect(result.components).toHaveProperty('profileQuality')
     })
 
     it('should have correct weights summing to 1', () => {
@@ -381,6 +382,31 @@ describe('calculateMatchScore', () => {
           4
         )
       }
+    })
+
+    it('should reward higher profile quality', () => {
+      const lowQuality = createMockTherapist({
+        profileImageUrl: null,
+        headline: null,
+        yearsExperience: 1,
+        latitude: undefined,
+        longitude: undefined,
+      })
+      const highQuality = createMockTherapist({
+        profileImageUrl: 'https://example.com/photo.jpg',
+        headline: 'Erfahrene Therapeutin',
+        yearsExperience: 12,
+      })
+      const preferences = createMockPreferences({
+        latitude: 48.2082,
+        longitude: 16.3738,
+      })
+
+      const low = calculateMatchScore(preferences, lowQuality)
+      const high = calculateMatchScore(preferences, highQuality)
+
+      expect(high.components.profileQuality.score).toBeGreaterThan(low.components.profileQuality.score)
+      expect(high.total).toBeGreaterThan(low.total)
     })
   })
 })
