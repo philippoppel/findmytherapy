@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Monitor, Building2, Wifi } from 'lucide-react'
 import {
   WizardFormData,
   defaultFormData,
@@ -144,7 +145,7 @@ export default function MatchPage() {
               }`}
             >
               <div
-                className={`w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
+                className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold shadow-sm ${
                   step.id < currentStep
                     ? 'bg-primary-600 text-white'
                     : step.id === currentStep
@@ -152,7 +153,7 @@ export default function MatchPage() {
                       : 'bg-gray-200 text-gray-500'
                 }`}
               >
-                {step.id < currentStep ? '✓' : step.id}
+                {step.id < currentStep ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : step.id}
               </div>
               <div className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium leading-tight break-words px-1">
                 {step.title}
@@ -174,23 +175,22 @@ export default function MatchPage() {
               {/* Schritt 1: Problemfelder */}
               {currentStep === 1 && (
                 <div>
-                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Was beschäftigt Sie?</h2>
-                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Was beschäftigt Sie?</h2>
+                  <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
                     Wählen Sie die Bereiche aus, in denen Sie Unterstützung suchen.
                   </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
                     {PROBLEM_AREAS.map((area) => (
                       <button
                         key={area.id}
                         onClick={() => toggleArrayItem('problemAreas', area.id)}
-                        className={`p-2.5 sm:p-3 rounded-lg border-2 text-left transition-all ${
+                        className={`p-3 sm:p-4 rounded-xl border-2 text-center transition-all font-medium ${
                           formData.problemAreas.includes(area.id)
-                            ? 'border-primary-600 bg-primary-50 text-primary-700'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
+                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
                         }`}
                       >
-                        <span className="text-base sm:text-lg mr-1.5 sm:mr-2">{area.icon}</span>
-                        <span className="text-xs sm:text-sm font-medium leading-tight break-words">{area.label}</span>
+                        <span className="text-xs sm:text-sm leading-tight break-words">{area.label}</span>
                       </button>
                     ))}
                   </div>
@@ -200,32 +200,32 @@ export default function MatchPage() {
               {/* Schritt 2: Standort & Format */}
               {currentStep === 2 && (
                 <div>
-                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 break-words leading-snug">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900 break-words leading-snug">
                     Wo und wie möchten Sie therapiert werden?
                   </h2>
 
                   {/* Format-Auswahl */}
                   <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm sm:text-base font-semibold text-gray-700 mb-3">
                       Therapieformat
                     </span>
-                    <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                       {[
-                        { id: 'BOTH', label: 'Beides', icon: '🔄' },
-                        { id: 'IN_PERSON', label: 'Präsenz', icon: '🏢' },
-                        { id: 'ONLINE', label: 'Online', icon: '💻' },
+                        { id: 'BOTH', label: 'Beides', Icon: Monitor },
+                        { id: 'IN_PERSON', label: 'Präsenz', Icon: Building2 },
+                        { id: 'ONLINE', label: 'Online', Icon: Wifi },
                       ].map((format) => (
                         <button
                           key={format.id}
                           onClick={() => updateForm({ format: format.id as WizardFormData['format'] })}
-                          className={`p-2.5 sm:p-3 rounded-lg border-2 text-center transition-all ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 text-center transition-all ${
                             formData.format === format.id
-                              ? 'border-primary-600 bg-primary-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
+                              : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
                           }`}
                         >
-                          <span className="text-lg sm:text-xl block mb-1">{format.icon}</span>
-                          <span className="text-xs sm:text-sm font-medium">{format.label}</span>
+                          <format.Icon className="w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-2" />
+                          <span className="text-xs sm:text-sm font-medium block">{format.label}</span>
                         </button>
                       ))}
                     </div>
@@ -281,7 +281,7 @@ export default function MatchPage() {
               {/* Schritt 3: Präferenzen */}
               {currentStep === 3 && (
                 <div>
-                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Ihre Präferenzen</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Ihre Präferenzen</h2>
 
                   {/* Sprachen */}
                   <div className="mb-5 sm:mb-6">
@@ -359,8 +359,8 @@ export default function MatchPage() {
               {/* Schritt 4: Optionale Details */}
               {currentStep === 4 && (
                 <div>
-                  <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Optionale Details</h2>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Optionale Details</h2>
+                  <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
                     Diese Angaben sind optional und helfen uns, noch bessere Matches zu finden.
                   </p>
 
