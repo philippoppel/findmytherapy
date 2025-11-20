@@ -92,9 +92,8 @@ export type TherapistForMatching = Pick<
   | 'city'
   | 'latitude'
   | 'longitude'
-  | 'availabilityStatus'
-  | 'estimatedWaitWeeks'
-  | 'nextAvailableDate'
+  | 'availabilityNote'
+  | 'acceptingClients'
   | 'priceMin'
   | 'priceMax'
   | 'acceptedInsurance'
@@ -104,7 +103,12 @@ export type TherapistForMatching = Pick<
   | 'yearsExperience'
   | 'profileImageUrl'
   | 'headline'
->
+> & {
+  // Berechnete Felder aus availabilityNote
+  availabilityStatus?: 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE' | null
+  estimatedWaitWeeks?: number | null
+  nextAvailableDate?: Date | null
+}
 
 // Einzelnes Match-Ergebnis
 export interface MatchResult {

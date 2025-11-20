@@ -12,6 +12,7 @@ import type {
 import { DEFAULT_WEIGHTS, AVAILABILITY_STATUS_WEEKS, PROBLEM_AREA_MAPPING } from './types'
 import { calculateMatchScore, calculateDistanceKm } from './score-calculator'
 import { generateMatchExplanation } from './explanation-generator'
+import { getAvailabilityMeta } from '@/app/therapists/availability'
 
 // Felder die wir vom Therapeuten brauchen
 const THERAPIST_SELECT = {
@@ -25,9 +26,9 @@ const THERAPIST_SELECT = {
   city: true,
   latitude: true,
   longitude: true,
-  availabilityStatus: true,
-  estimatedWaitWeeks: true,
-  nextAvailableDate: true,
+  // availabilityStatus, estimatedWaitWeeks, nextAvailableDate werden aus availabilityNote extrahiert
+  availabilityNote: true,
+  acceptingClients: true,
   priceMin: true,
   priceMax: true,
   acceptedInsurance: true,
@@ -63,13 +64,32 @@ export async function findMatches(
   } = options
 
   // 1. Alle öffentlichen, verifizierten Therapeuten laden
-  const therapists = await prisma.therapistProfile.findMany({
+  const rawTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
       status: 'VERIFIED',
       deletedAt: null,
     },
     select: THERAPIST_SELECT,
+  })
+
+  // Availability-Felder aus availabilityNote berechnen
+  const therapists: TherapistForMatching[] = rawTherapists.map(t => {
+    const availMeta = getAvailabilityMeta(t.availabilityNote, t.acceptingClients)
+    return {
+      ...t,
+      availabilityStatus: availMeta.rank === 0 ? 'AVAILABLE' :
+                         availMeta.rank === 1 ? 'AVAILABLE' :
+                         availMeta.rank === 2 ? 'LIMITED' :
+                         availMeta.rank === 3 ? 'WAITLIST' :
+                         'UNAVAILABLE',
+      estimatedWaitWeeks: availMeta.rank === 0 ? 0 :
+                         availMeta.rank === 1 ? 1 :
+                         availMeta.rank === 2 ? 3 :
+                         availMeta.rank === 3 ? 6 :
+                         12,
+      nextAvailableDate: availMeta.nextAvailableDate,
+    }
   })
 
   // 2. Harte Filter anwenden
