@@ -263,51 +263,93 @@ export default async function ClientDashboardPage() {
         </div>
 
         <div className="rounded-3xl border border-divider bg-white/90 p-6 shadow-sm shadow-primary/10">
-          <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary" aria-hidden />
-            Empfehlungen & Matches
-          </h2>
-          {matches.length === 0 ? (
-            <p className="mt-4 text-sm text-neutral-700">
-              Sobald wir mehr über deine Ziele wissen, erscheinen hier passende Therapeut:innen aus dem Pilot.
-            </p>
-          ) : (
-            <ul className="mt-4 space-y-3">
-              {matches.map((match) => {
-                const therapistName = [
-                  match.therapist?.user?.firstName,
-                  match.therapist?.user?.lastName,
-                ]
-                  .filter(Boolean)
-                  .join(' ');
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-primary" aria-hidden />
+              Empfehlungen & Matches
+            </h2>
+            <Link
+              href="/match"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-full px-4 py-1.5 border border-primary/30"
+            >
+              <Sparkles className="h-4 w-4" aria-hidden />
+              Neue Suche
+            </Link>
+          </div>
 
-                return (
-                  <li
-                    key={match.id}
-                    className="rounded-2xl border border-divider bg-surface-1/90 px-4 py-3 text-sm text-neutral-800"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="font-semibold text-neutral-950">
-                        {therapistName || 'Pilot-Therapeut:in'}
-                      </p>
-                      <span className="text-xs font-semibold text-primary">
-                        Match Score {Math.round(match.score * 100)}%
-                      </span>
-                    </div>
-                    <p className="text-xs text-muted mt-1">
-                      {match.therapist?.city ?? 'Online'} •{' '}
-                      {match.therapist?.specialties.slice(0, 2).join(', ')}
-                    </p>
-                    {typeof match.therapist?.priceMin === 'number' && typeof match.therapist?.priceMax === 'number' && (
+          {matches.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-divider bg-surface-1/70 p-5 text-center">
+              <div className="mx-auto max-w-md space-y-3">
+                <p className="text-sm text-neutral-700">
+                  Noch keine personalisierten Matches. Starte unseren Matching-Wizard, um Therapeut:innen zu finden, die perfekt zu dir passen.
+                </p>
+                <Link
+                  href="/match"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-primary/25 transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  <Sparkles className="h-4 w-4" aria-hidden />
+                  Matching starten
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <>
+              <ul className="space-y-3">
+                {matches.map((match) => {
+                  const therapistName = [
+                    match.therapist?.user?.firstName,
+                    match.therapist?.user?.lastName,
+                  ]
+                    .filter(Boolean)
+                    .join(' ');
+
+                  return (
+                    <li
+                      key={match.id}
+                      className="rounded-2xl border border-divider bg-surface-1/90 px-4 py-3 text-sm text-neutral-800 hover:bg-surface-1 transition-colors"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-semibold text-neutral-950">
+                          {therapistName || 'Pilot-Therapeut:in'}
+                        </p>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+                          <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                          {Math.round(match.score * 100)}%
+                        </span>
+                      </div>
                       <p className="text-xs text-muted mt-1">
-                        {formatCurrency(match.therapist.priceMin, 'EUR')} –{' '}
-                        {formatCurrency(match.therapist.priceMax, 'EUR')}
+                        {match.therapist?.city ?? 'Online'} •{' '}
+                        {match.therapist?.specialties.slice(0, 2).join(', ')}
                       </p>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+                      {typeof match.therapist?.priceMin === 'number' && typeof match.therapist?.priceMax === 'number' && (
+                        <p className="text-xs text-muted mt-1">
+                          {formatCurrency(match.therapist.priceMin, 'EUR')} –{' '}
+                          {formatCurrency(match.therapist.priceMax, 'EUR')}
+                        </p>
+                      )}
+                      {match.reason && match.reason.length > 0 && (
+                        <div className="mt-2 pt-2 border-t border-divider/50">
+                          <p className="text-xs text-muted">
+                            <strong className="text-neutral-700">Warum passt es:</strong>{' '}
+                            {match.reason[0]}
+                          </p>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="mt-4 pt-4 border-t border-divider/50">
+                <Link
+                  href="/therapists"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                >
+                  Alle Therapeut:innen durchsuchen
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </section>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react'
@@ -66,17 +66,82 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
       {/* Results */}
       {filteredTherapists.length === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur">
-          <p className="text-sm text-white/70">
-            Keine Profile gefunden. Passe die Filter an oder kontaktiere das Care-Team für eine individuelle Empfehlung.
-          </p>
+          <div className="mx-auto max-w-md space-y-4">
+            <p className="text-base text-white/90 font-medium">
+              Keine passenden Profile gefunden
+            </p>
+            <p className="text-sm text-white/70">
+              Passe die Filter an oder probiere unseren intelligenten Matching-Wizard aus, um personalisierte Empfehlungen zu erhalten.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <Link
+                href="/match"
+                className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-700 hover:shadow-xl"
+              >
+                <Sparkles className="h-4 w-4" />
+                Matching-Wizard starten
+              </Link>
+              <button
+                onClick={() => setFilteredTherapists(therapists)}
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/15"
+              >
+                Filter zurücksetzen
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <>
           {/* Therapist Grid */}
           <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3 2xl:grid-cols-4">
-            {visibleTherapists.map((therapist) => (
-              <DirectoryCard key={therapist.id} therapist={therapist} />
-            ))}
+            {visibleTherapists.map((therapist, index) => {
+              const showBanner = index === 5 && visibleTherapists.length > 6
+
+              return (
+                <React.Fragment key={therapist.id}>
+                  <DirectoryCard therapist={therapist} />
+
+                  {/* Contextual CTA Banner after 6 therapists */}
+                  {showBanner && (
+                    <div className="col-span-full my-4">
+                      <div className="relative overflow-hidden rounded-2xl border border-primary-400/30 bg-gradient-to-br from-primary-500/10 via-primary-600/5 to-secondary-500/10 p-6 backdrop-blur sm:p-8">
+                        {/* Background decoration */}
+                        <div className="pointer-events-none absolute inset-0 opacity-30">
+                          <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-primary-400/40 blur-3xl" />
+                          <div className="absolute -left-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-secondary-400/40 blur-3xl" />
+                        </div>
+
+                        <div className="relative flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
+                          {/* Icon */}
+                          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg">
+                            <Sparkles className="h-7 w-7 text-white" />
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1">
+                            <h3 className="mb-2 text-lg font-bold text-white sm:text-xl">
+                              Zu viele Optionen? Lass uns helfen!
+                            </h3>
+                            <p className="text-sm text-white/80 sm:text-base">
+                              Beantworte ein paar Fragen und erhalte personalisierte Therapeut:innen-Empfehlungen mit Passungs-Scores – passend zu deinen Bedürfnissen.
+                            </p>
+                          </div>
+
+                          {/* CTA */}
+                          <Link
+                            href="/match"
+                            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-700 shadow-lg transition-all hover:bg-white/90 hover:shadow-xl"
+                          >
+                            <Sparkles className="h-4 w-4" />
+                            Matching starten
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              )
+            })}
           </div>
 
           {/* Load More Button */}
