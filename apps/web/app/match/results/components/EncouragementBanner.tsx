@@ -8,7 +8,7 @@ export function EncouragementBanner() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mb-6 sm:mb-8 rounded-2xl border border-primary-200/50 bg-gradient-to-br from-primary-50 via-white to-secondary-50 p-4 sm:p-6 md:p-8"
+      className="mb-8 rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-6 sm:p-8 shadow-xl"
     >
       <div className="mb-3 sm:mb-4 flex items-start sm:items-center gap-2 sm:gap-3">
         <div className="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-600 shadow-lg">

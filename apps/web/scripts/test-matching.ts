@@ -137,6 +137,44 @@ async function testMatching() {
       console.log('')
     })
 
+    // Test Case 5: Probleme im Beruf + Online + Deutsch (User-spezifischer Test)
+    console.log('\n\n📋 TEST CASE 5: Probleme im Beruf + Online + Deutsch')
+    console.log('-'.repeat(80))
+    const test5: MatchingPreferencesInput = {
+      problemAreas: ['Probleme im Beruf'],
+      languages: ['Deutsch'],
+      insuranceType: 'ANY',
+      format: 'ONLINE',
+    }
+
+    const result5 = await findMatches(test5, { limit: 10, includeFiltered: true })
+
+    console.log(`\n✅ Gefunden: ${result5.total} passende Therapeut:innen`)
+    if (result5.filtered && result5.filtered.length > 0) {
+      console.log(`⚠️  ${result5.filtered.length} Therapeut:innen wurden gefiltert:`)
+      const filterReasons = result5.filtered.reduce((acc, f) => {
+        acc[f.reason] = (acc[f.reason] || 0) + 1
+        return acc
+      }, {} as Record<string, number>)
+      Object.entries(filterReasons).forEach(([reason, count]) => {
+        console.log(`   - ${reason}: ${count}`)
+      })
+      console.log('')
+    }
+    console.log(`📊 Top ${result5.matches.length} Matches:\n`)
+
+    result5.matches.forEach((match, i) => {
+      console.log(`${i + 1}. ${match.therapist.displayName} - Score: ${(match.score * 100).toFixed(1)}%`)
+      console.log(`   📍 ${match.therapist.city || 'Online'}`)
+      console.log(`   🎯 Spezialisierungen: ${match.therapist.specialties?.slice(0, 5).join(', ')}`)
+      console.log(`   🌐 Online: ${match.therapist.online ? 'Ja' : 'Nein'}`)
+      console.log(`   Gesamt-Score: ${(match.score * 100).toFixed(1)}%`)
+      console.log(`   Score-Details:`)
+      console.log(`      - Spezialisierung: ${(match.scoreBreakdown.components.specialty.score * 100).toFixed(0)}%`)
+      console.log(`      - Sprache: ${(match.scoreBreakdown.components.language.score * 100).toFixed(0)}%`)
+      console.log('')
+    })
+
     console.log('\n' + '='.repeat(80))
     console.log('✨ Matching-Tests abgeschlossen!')
     console.log('='.repeat(80))

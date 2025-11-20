@@ -104,8 +104,19 @@ export async function findMatches(
     }
   })
 
-  // 2. Harte Filter anwenden
-  const { passed, filtered } = applyHardFilters(therapists, preferences)
+  // 2. Harte Filter anwenden mit Fallback-Strategie
+  const MIN_RESULTS = 3 // Mindestanzahl an Ergebnissen vor Fallback
+
+  // Versuch 1: Alle harten Filter inkl. Spezialisierung
+  let { passed, filtered } = applyHardFilters(therapists, preferences, { strictSpecialty: true })
+
+  // Fallback: Wenn zu wenig Ergebnisse, lockere NUR den Spezialisierungs-Filter
+  // WICHTIG: Sprache, Format und Versicherung bleiben IMMER hart!
+  if (passed.length < MIN_RESULTS) {
+    const fallback = applyHardFilters(therapists, preferences, { strictSpecialty: false })
+    passed = fallback.passed
+    filtered = fallback.filtered
+  }
 
   // 3. Scores berechnen und sortieren
   const matchResults: MatchResult[] = []
@@ -146,15 +157,21 @@ export async function findMatches(
 }
 
 // Harte Filter anwenden
+interface FilterOptions {
+  strictSpecialty: boolean  // Wenn false, wird Spezialisierung nur im Score berücksichtigt
+  // Sprache, Format und Versicherung bleiben IMMER hart!
+}
+
 function applyHardFilters(
   therapists: TherapistForMatching[],
-  preferences: MatchingPreferencesInput
+  preferences: MatchingPreferencesInput,
+  options: FilterOptions = { strictSpecialty: true }
 ): { passed: TherapistForMatching[]; filtered: FilteredTherapist[] } {
   const passed: TherapistForMatching[] = []
   const filtered: FilteredTherapist[] = []
 
   for (const therapist of therapists) {
-    const filterReason = checkHardFilters(therapist, preferences)
+    const filterReason = checkHardFilters(therapist, preferences, options)
 
     if (filterReason) {
       filtered.push({ therapistId: therapist.id, reason: filterReason })
@@ -169,17 +186,18 @@ function applyHardFilters(
 // Einzelnen Therapeuten gegen harte Kriterien prüfen
 function checkHardFilters(
   therapist: TherapistForMatching,
-  preferences: MatchingPreferencesInput
+  preferences: MatchingPreferencesInput,
+  options: FilterOptions = { strictSpecialty: true }
 ): FilterReason | null {
-  // 1. Spezialisierung muss Problemfeld abdecken
-  if (preferences.problemAreas.length > 0) {
+  // 1. Spezialisierung muss Problemfeld abdecken (nur wenn strictSpecialty = true)
+  if (options.strictSpecialty && preferences.problemAreas.length > 0) {
     const hasSpecialtyMatch = checkSpecialtyMatch(therapist, preferences)
     if (!hasSpecialtyMatch) {
       return 'no_specialty_match'
     }
   }
 
-  // 2. Sprache muss passen
+  // 2. Sprache muss IMMER passen (bleibt IMMER harter Filter)
   if (preferences.languages.length > 0) {
     const therapistLangs = (therapist.languages || []).map(l => l.toLowerCase())
     const hasLanguageMatch = preferences.languages.some(lang =>
@@ -190,7 +208,7 @@ function checkHardFilters(
     }
   }
 
-  // 3. Versicherung/Kosten muss passen (wenn gefordert)
+  // 3. Versicherung/Kosten muss IMMER passen (wenn gefordert)
   if (preferences.insuranceType !== 'ANY') {
     const hasInsuranceMatch = checkInsuranceMatch(therapist, preferences)
     if (!hasInsuranceMatch) {
@@ -198,7 +216,7 @@ function checkHardFilters(
     }
   }
 
-  // 4. Online/Präsenz muss kompatibel sein
+  // 4. Online/Präsenz muss IMMER kompatibel sein (bleibt IMMER harter Filter)
   if (preferences.format === 'ONLINE' && !therapist.online) {
     return 'format_mismatch'
   }
@@ -212,7 +230,8 @@ function checkHardFilters(
     }
   }
 
-  // 5. Entfernung prüfen (wenn Präsenz gewünscht)
+  // 5. Entfernung prüfen (wenn Präsenz gewünscht und maxDistance angegeben)
+  // Dies bleibt ein harter Filter, weil er vom User explizit gesetzt wird
   if (preferences.format !== 'ONLINE' && preferences.maxDistanceKm) {
     if (preferences.latitude && preferences.longitude) {
       if (therapist.latitude && therapist.longitude) {

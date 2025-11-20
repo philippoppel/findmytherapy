@@ -3,7 +3,29 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, Monitor, Building2, Wifi } from 'lucide-react'
+import {
+  Brain,
+  MapPin,
+  Ruler,
+  Globe,
+  Wallet,
+  Clock,
+  User,
+  MessageCircle,
+  Euro,
+  Lock,
+  Search,
+  Video,
+  Building,
+  RefreshCw,
+  Sparkles,
+  Check,
+  Hospital,
+  Briefcase,
+  CreditCard,
+  Zap,
+  Flower2,
+} from 'lucide-react'
 import {
   WizardFormData,
   defaultFormData,
@@ -119,51 +141,58 @@ export default function MatchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-3xl">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/30 via-white to-stone-50/20">
+      <div className="container mx-auto px-4 py-6 sm:py-10 max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 px-2">
+        <div className="text-center mb-8 sm:mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg mb-4 sm:mb-6">
+            <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
+          </div>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 px-2">
             Finden Sie Ihren Therapeuten
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 px-2">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für Sie.
           </p>
         </div>
 
         {/* Progress Steps */}
-        <div className="flex justify-between mb-6 sm:mb-8 px-2">
-          {STEPS.map((step) => (
+        <div className="relative mb-8 sm:mb-10">
+          <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200">
             <div
-              key={step.id}
-              className={`flex-1 text-center ${
-                step.id < currentStep
-                  ? 'text-primary-600'
-                  : step.id === currentStep
-                    ? 'text-primary-600'
-                    : 'text-gray-400'
-              }`}
-            >
+              className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
+              style={{ width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
+            />
+          </div>
+          <div className="flex justify-between relative">
+            {STEPS.map((step) => (
               <div
-                className={`w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold shadow-sm ${
-                  step.id < currentStep
-                    ? 'bg-primary-600 text-white'
-                    : step.id === currentStep
-                      ? 'bg-primary-100 text-primary-600 border-2 border-primary-600'
-                      : 'bg-gray-200 text-gray-500'
-                }`}
+                key={step.id}
+                className="flex flex-col items-center flex-1"
               >
-                {step.id < currentStep ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : step.id}
+                <div
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-semibold shadow-md transition-all duration-300 ${
+                    step.id < currentStep
+                      ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white scale-100'
+                      : step.id === currentStep
+                        ? 'bg-white text-amber-600 ring-4 ring-amber-100 scale-110'
+                        : 'bg-gray-100 text-gray-400'
+                  }`}
+                >
+                  {step.id < currentStep ? '✓' : step.id}
+                </div>
+                <div className={`mt-2 text-[10px] sm:text-xs font-medium text-center px-1 transition-colors ${
+                  step.id <= currentStep ? 'text-gray-900' : 'text-gray-400'
+                }`}>
+                  {step.title}
+                </div>
               </div>
-              <div className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium leading-tight break-words px-1">
-                {step.title}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -175,22 +204,40 @@ export default function MatchPage() {
               {/* Schritt 1: Problemfelder */}
               {currentStep === 1 && (
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Was beschäftigt Sie?</h2>
-                  <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
-                    Wählen Sie die Bereiche aus, in denen Sie Unterstützung suchen.
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3">
+                  <div className="mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Was beschäftigt Sie?</h2>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Wählen Sie ein oder mehrere Bereiche aus, in denen Sie Unterstützung suchen.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {PROBLEM_AREAS.map((area) => (
                       <button
                         key={area.id}
                         onClick={() => toggleArrayItem('problemAreas', area.id)}
-                        className={`p-3 sm:p-4 rounded-xl border-2 text-center transition-all font-medium ${
+                        className={`group relative p-4 rounded-xl border-2 text-left transition-all duration-200 ${
                           formData.problemAreas.includes(area.id)
-                            ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
-                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
+                            ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md scale-[1.02]'
+                            : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm hover:scale-[1.01]'
                         }`}
                       >
-                        <span className="text-xs sm:text-sm leading-tight break-words">{area.label}</span>
+                        <div className="flex items-start gap-3">
+                          <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
+                            formData.problemAreas.includes(area.id)
+                              ? 'bg-white shadow-sm'
+                              : 'bg-gray-50 group-hover:bg-amber-50'
+                          }`}>
+                            <span className="text-2xl">{area.icon}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-sm font-semibold text-gray-900 block leading-tight">{area.label}</span>
+                          </div>
+                          {formData.problemAreas.includes(area.id) && (
+                            <div className="absolute top-2 right-2 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs">✓</span>
+                            </div>
+                          )}
+                        </div>
                       </button>
                     ))}
                   </div>
@@ -200,32 +247,44 @@ export default function MatchPage() {
               {/* Schritt 2: Standort & Format */}
               {currentStep === 2 && (
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900 break-words leading-snug">
-                    Wo und wie möchten Sie therapiert werden?
-                  </h2>
+                  <div className="mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                      Wo und wie möchten Sie therapiert werden?
+                    </h2>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Wählen Sie Ihr bevorzugtes Format und ggf. Ihren Standort.
+                    </p>
+                  </div>
 
                   {/* Format-Auswahl */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-sm sm:text-base font-semibold text-gray-700 mb-3">
+                  <div className="mb-6">
+                    <label className="block text-sm font-semibold text-gray-900 mb-3">
                       Therapieformat
-                    </span>
-                    <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
                       {[
-                        { id: 'BOTH', label: 'Beides', Icon: Monitor },
-                        { id: 'IN_PERSON', label: 'Präsenz', Icon: Building2 },
-                        { id: 'ONLINE', label: 'Online', Icon: Wifi },
+                        { id: 'BOTH', label: 'Beides', Icon: RefreshCw, desc: 'Flexibel' },
+                        { id: 'IN_PERSON', label: 'Präsenz', Icon: Building, desc: 'Vor Ort' },
+                        { id: 'ONLINE', label: 'Online', Icon: Video, desc: 'Digital' },
                       ].map((format) => (
                         <button
                           key={format.id}
                           onClick={() => updateForm({ format: format.id as WizardFormData['format'] })}
-                          className={`p-3 sm:p-4 rounded-xl border-2 text-center transition-all ${
+                          className={`group p-4 rounded-xl border-2 text-center transition-all duration-200 ${
                             formData.format === format.id
-                              ? 'border-primary-600 bg-primary-50 text-primary-700 shadow-sm'
-                              : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
+                              ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
+                              : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                           }`}
                         >
-                          <format.Icon className="w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-2" />
-                          <span className="text-xs sm:text-sm font-medium block">{format.label}</span>
+                          <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center transition-all ${
+                            formData.format === format.id
+                              ? 'bg-white shadow-sm'
+                              : 'bg-gray-50 group-hover:bg-amber-50'
+                          }`}>
+                            <format.Icon className={`w-6 h-6 ${formData.format === format.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                          </div>
+                          <div className="text-sm font-semibold text-gray-900">{format.label}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">{format.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -234,10 +293,11 @@ export default function MatchPage() {
                   {/* Standort (nur wenn nicht rein Online) */}
                   {formData.format !== 'ONLINE' && (
                     <>
-                      <div className="mb-4">
-                        <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      <div className="mb-6">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                          <MapPin className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                           PLZ oder Stadt
-                        </span>
+                        </label>
                         <input
                           type="text"
                           value={formData.postalCode || formData.city}
@@ -250,15 +310,16 @@ export default function MatchPage() {
                             }
                           }}
                           placeholder="z.B. 1010 oder Wien"
-                          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all"
                         />
                       </div>
 
                       {/* Umkreis */}
-                      <div>
-                        <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                          Maximale Entfernung: {formData.maxDistanceKm} km
-                        </span>
+                      <div className="bg-gray-50 rounded-xl p-4">
+                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                          <Ruler className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                          Maximale Entfernung: <span className="text-amber-600">{formData.maxDistanceKm} km</span>
+                        </label>
                         <input
                           type="range"
                           min="5"
@@ -266,10 +327,11 @@ export default function MatchPage() {
                           step="5"
                           value={formData.maxDistanceKm}
                           onChange={(e) => updateForm({ maxDistanceKm: parseInt(e.target.value) })}
-                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
                         />
-                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <div className="flex justify-between text-xs text-gray-500 mt-2">
                           <span>5 km</span>
+                          <span>50 km</span>
                           <span>100 km</span>
                         </div>
                       </div>
@@ -281,22 +343,28 @@ export default function MatchPage() {
               {/* Schritt 3: Präferenzen */}
               {currentStep === 3 && (
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Ihre Präferenzen</h2>
+                  <div className="mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Ihre Präferenzen</h2>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Helfen Sie uns, die passenden Therapeut:innen zu finden.
+                    </p>
+                  </div>
 
                   {/* Sprachen */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <Globe className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Sprache(n)
-                    </span>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    </label>
+                    <div className="flex flex-wrap gap-2">
                       {LANGUAGES.map((lang) => (
                         <button
                           key={lang.id}
                           onClick={() => toggleArrayItem('languages', lang.id)}
-                          className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm transition-all whitespace-nowrap ${
+                          className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                             formData.languages.includes(lang.id)
-                              ? 'bg-primary-600 text-white'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md scale-105'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
                           }`}
                         >
                           {lang.label}
@@ -306,27 +374,31 @@ export default function MatchPage() {
                   </div>
 
                   {/* Versicherung */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <Wallet className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Kostenübernahme
-                    </span>
-                    <div className="grid grid-cols-2 gap-2">
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
                       {[
-                        { id: 'ANY', label: 'Egal' },
-                        { id: 'PUBLIC', label: 'Krankenkasse' },
-                        { id: 'PRIVATE', label: 'Privat' },
-                        { id: 'SELF_PAY', label: 'Selbstzahler' },
+                        { id: 'ANY', label: 'Egal', Icon: Check },
+                        { id: 'PUBLIC', label: 'Krankenkasse', Icon: Hospital },
+                        { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
+                        { id: 'SELF_PAY', label: 'Selbstzahler', Icon: CreditCard },
                       ].map((ins) => (
                         <button
                           key={ins.id}
                           onClick={() => updateForm({ insuranceType: ins.id as WizardFormData['insuranceType'] })}
-                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
+                          className={`group p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                             formData.insuranceType === ins.id
-                              ? 'border-primary-600 bg-primary-50 text-primary-700'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
+                              : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                           }`}
                         >
-                          {ins.label}
+                          <div className="flex items-center justify-center h-8 mb-1">
+                            <ins.Icon className={`w-5 h-5 ${formData.insuranceType === ins.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                          </div>
+                          <div className="text-sm font-medium text-gray-900">{ins.label}</div>
                         </button>
                       ))}
                     </div>
@@ -334,9 +406,10 @@ export default function MatchPage() {
 
                   {/* Wartezeit */}
                   <div>
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <Clock className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Maximale Wartezeit
-                    </span>
+                    </label>
                     <select
                       value={formData.maxWaitWeeks ?? ''}
                       onChange={(e) =>
@@ -344,7 +417,7 @@ export default function MatchPage() {
                           maxWaitWeeks: e.target.value ? parseInt(e.target.value) : undefined,
                         })
                       }
-                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all bg-white"
                     >
                       {WAIT_TIME_OPTIONS.map((opt) => (
                         <option key={opt.label} value={opt.value ?? ''}>
@@ -359,25 +432,28 @@ export default function MatchPage() {
               {/* Schritt 4: Optionale Details */}
               {currentStep === 4 && (
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Optionale Details</h2>
-                  <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">
-                    Diese Angaben sind optional und helfen uns, noch bessere Matches zu finden.
-                  </p>
+                  <div className="mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Optionale Details</h2>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Diese Angaben sind optional und helfen uns, noch bessere Matches zu finden.
+                    </p>
+                  </div>
 
                   {/* Therapiemethoden */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                      Bevorzugte Therapiemethoden
-                    </span>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <Brain className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                      Bevorzugte Therapiemethoden <span className="text-gray-400 font-normal">(optional)</span>
+                    </label>
+                    <div className="flex flex-wrap gap-2">
                       {THERAPY_METHODS.map((method) => (
                         <button
                           key={method.id}
                           onClick={() => toggleArrayItem('preferredMethods', method.id)}
-                          className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm transition-all whitespace-nowrap ${
+                          className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                             formData.preferredMethods.includes(method.id)
-                              ? 'bg-primary-600 text-white'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md scale-105'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
                           }`}
                         >
                           {method.label}
@@ -387,36 +463,41 @@ export default function MatchPage() {
                   </div>
 
                   {/* Geschlecht */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                      Bevorzugtes Geschlecht
-                    </span>
-                    <div className="grid grid-cols-3 gap-2">
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <User className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                      Bevorzugtes Geschlecht <span className="text-gray-400 font-normal">(optional)</span>
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
                       {[
-                        { id: 'any', label: 'Egal' },
-                        { id: 'female', label: 'Weiblich' },
-                        { id: 'male', label: 'Männlich' },
+                        { id: 'any', label: 'Egal', Icon: Check },
+                        { id: 'female', label: 'Weiblich', Icon: User },
+                        { id: 'male', label: 'Männlich', Icon: User },
                       ].map((gender) => (
                         <button
                           key={gender.id}
                           onClick={() => updateForm({ therapistGender: gender.id as WizardFormData['therapistGender'] })}
-                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
+                          className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                             formData.therapistGender === gender.id
-                              ? 'border-primary-600 bg-primary-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
+                              : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                           }`}
                         >
-                          {gender.label}
+                          <div className="flex items-center justify-center h-8 mb-1">
+                            <gender.Icon className={`w-5 h-5 ${formData.therapistGender === gender.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                          </div>
+                          <div className="text-sm font-medium text-gray-900">{gender.label}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* Maximaler Preis */}
-                  <div className="mb-5 sm:mb-6">
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                      Maximaler Preis pro Sitzung (€)
-                    </span>
+                  <div className="mb-6">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <Euro className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                      Maximaler Preis pro Sitzung <span className="text-gray-400 font-normal">(optional)</span>
+                    </label>
                     <input
                       type="number"
                       value={formData.priceMax || ''}
@@ -426,31 +507,35 @@ export default function MatchPage() {
                         })
                       }
                       placeholder="z.B. 120"
-                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all"
                     />
                   </div>
 
                   {/* Kommunikationsstil */}
                   <div>
-                    <span className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                      Kommunikationsstil
-                    </span>
-                    <div className="grid grid-cols-3 gap-2">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                      <MessageCircle className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                      Kommunikationsstil <span className="text-gray-400 font-normal">(optional)</span>
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
                       {[
-                        { id: 'ANY', label: 'Egal' },
-                        { id: 'DIRECT', label: 'Direkt' },
-                        { id: 'GENTLE', label: 'Sanft' },
+                        { id: 'ANY', label: 'Egal', Icon: Check },
+                        { id: 'DIRECT', label: 'Direkt', Icon: Zap },
+                        { id: 'GENTLE', label: 'Sanft', Icon: Flower2 },
                       ].map((style) => (
                         <button
                           key={style.id}
                           onClick={() => updateForm({ communicationStyle: style.id as WizardFormData['communicationStyle'] })}
-                          className={`px-2.5 sm:px-3 py-2 rounded-lg border text-xs sm:text-sm transition-all ${
+                          className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                             formData.communicationStyle === style.id
-                              ? 'border-primary-600 bg-primary-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
+                              : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                           }`}
                         >
-                          {style.label}
+                          <div className="flex items-center justify-center h-8 mb-1">
+                            <style.Icon className={`w-5 h-5 ${formData.communicationStyle === style.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                          </div>
+                          <div className="text-sm font-medium text-gray-900">{style.label}</div>
                         </button>
                       ))}
                     </div>
@@ -462,53 +547,72 @@ export default function MatchPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm break-words">
-              {error}
+            <div className="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-sm flex items-start gap-3">
+              <span className="text-xl flex-shrink-0">⚠️</span>
+              <span className="break-words">{error}</span>
             </div>
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-6 sm:mt-8 pt-5 sm:pt-6 border-t gap-2 sm:gap-3">
+          <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 gap-3">
             <button
               onClick={prevStep}
               disabled={currentStep === 1}
-              className={`px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-medium transition-all ${
+              className={`px-6 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${
                 currentStep === 1
-                  ? 'text-gray-400 cursor-not-allowed'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'text-gray-300 cursor-not-allowed'
+                  : 'text-gray-700 hover:bg-gray-100 active:scale-95'
               }`}
             >
-              Zurück
+              ← Zurück
             </button>
 
             {currentStep < 4 ? (
               <button
                 onClick={nextStep}
                 disabled={!canProceed()}
-                className={`px-4 sm:px-6 py-2 rounded-lg text-sm sm:text-base font-medium transition-all ${
+                className={`px-8 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${
                   canProceed()
-                    ? 'bg-primary-600 text-white hover:bg-primary-700'
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-200 hover:shadow-xl hover:scale-[1.02] active:scale-95'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                Weiter
+                Weiter →
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="px-4 sm:px-6 py-2 bg-primary-600 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-primary-700 transition-all disabled:opacity-50 whitespace-nowrap"
+                className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-base font-semibold shadow-lg shadow-amber-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
               >
-                {isLoading ? 'Suche läuft...' : 'Therapeuten finden'}
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Suche läuft...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Search className="w-5 h-5" strokeWidth={2.5} />
+                    Therapeuten finden
+                  </span>
+                )}
               </button>
             )}
           </div>
         </div>
 
         {/* Info Text */}
-        <p className="text-center text-xs sm:text-sm text-gray-500 mt-4 sm:mt-6 px-4">
-          Ihre Daten werden vertraulich behandelt und nach 30 Tagen gelöscht.
-        </p>
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-xl shadow-sm border border-gray-100">
+            <Lock className="w-4 h-4 text-green-600" strokeWidth={2.5} />
+            <p className="text-sm text-gray-600">
+              Ihre Daten werden vertraulich behandelt und nach 30 Tagen gelöscht.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )

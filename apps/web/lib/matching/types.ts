@@ -161,7 +161,11 @@ export const PROBLEM_AREA_MAPPING: Record<string, string[]> = {
   'trauer': ['Trauer', 'Verlust', 'Trauerbegleitung'],
   'zwang': ['Zwangsstörungen', 'OCD', 'Zwangsgedanken'],
   'adhs': ['ADHS', 'ADS', 'Aufmerksamkeit', 'Konzentration'],
-  'arbeit': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout'],
+  'arbeit': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout', 'Work-Life-Balance'],
+  'beruf': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout', 'Work-Life-Balance'],
+  'probleme im beruf': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout', 'Work-Life-Balance'],
+  'berufliche probleme': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout', 'Work-Life-Balance'],
+  'job': ['Berufliche Probleme', 'Karriere', 'Mobbing', 'Burnout', 'Work-Life-Balance'],
 }
 
 // Verfügbarkeits-Ranking zu Wartezeit-Mapping

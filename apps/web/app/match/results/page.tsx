@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Check, AlertCircle, Search } from 'lucide-react'
+import { Target, Eye, Sparkles, Check, Star, ThumbsUp } from 'lucide-react'
 import type { MatchingResponse, MatchResult } from '@/lib/matching'
 import { EncouragementBanner } from './components/EncouragementBanner'
 import { NextStepsGuide } from './components/NextStepsGuide'
@@ -50,38 +50,45 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: rank * 0.1 }}
-      className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow"
+      className="group bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl hover:border-amber-200 transition-all duration-300"
     >
-      <div className="p-4 sm:p-5">
+      {/* Rang-Ribbon (nur Top 3) */}
+      {rank <= 3 && (
+        <div className="relative h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
+      )}
+
+      <div className="p-5 sm:p-6">
         {/* Header mit Rang und Score */}
-        <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        <div className="flex items-start justify-between mb-4 gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Avatar */}
             <div className="relative flex-shrink-0">
               {match.therapist.profileImageUrl ? (
-                <Image
-                  src={match.therapist.profileImageUrl}
-                  alt={match.therapist.displayName || 'Therapeut'}
-                  width={48}
-                  height={48}
-                  className="rounded-full object-cover sm:w-14 sm:h-14"
-                />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden ring-2 ring-gray-100 group-hover:ring-amber-200 transition-all">
+                  <Image
+                    src={match.therapist.profileImageUrl}
+                    alt={match.therapist.displayName || 'Therapeut'}
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
               ) : (
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-semibold text-sm sm:text-base">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-amber-700 font-bold text-lg ring-2 ring-gray-100">
                   {initials}
                 </div>
               )}
-              {/* Rang-Badge */}
+              {/* Rang-Badge für Top 3 */}
               {rank <= 3 && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-primary-600 text-white text-[10px] sm:text-xs rounded-full flex items-center justify-center font-bold">
-                  {rank}
+                <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg ring-2 ring-white">
+                  #{rank}
                 </div>
               )}
             </div>
 
             {/* Name & Titel */}
             <div className="min-w-0 flex-1">
-              <h3 className="font-semibold text-sm sm:text-base text-gray-900 break-words line-clamp-2">
+              <h3 className="font-bold text-base sm:text-lg text-gray-900 break-words line-clamp-1 mb-0.5">
                 {match.therapist.displayName || 'Therapeut:in'}
               </h3>
               {match.therapist.title && (
@@ -90,14 +97,29 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
             </div>
           </div>
 
-          {/* Score */}
-          <div className="text-right flex-shrink-0">
-            <div className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${bgColor} ${color} text-xs sm:text-sm font-bold shadow-sm whitespace-nowrap`}>
-              {percent}%
+          {/* Score Badge */}
+          <div className="flex-shrink-0">
+            <div className={`px-3 py-2 rounded-xl ${bgColor} ${color} font-bold shadow-md text-center min-w-[70px]`}>
+              <div className="text-lg sm:text-xl">{percent}%</div>
+              <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs opacity-80 whitespace-nowrap">
+                {percent >= 80 ? (
+                  <>
+                    <Star className="w-3 h-3" fill="currentColor" />
+                    <span>Top</span>
+                  </>
+                ) : percent >= 60 ? (
+                  <>
+                    <ThumbsUp className="w-3 h-3" />
+                    <span>Sehr gut</span>
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-3 h-3" />
+                    <span>Gut</span>
+                  </>
+                )}
+              </div>
             </div>
-            <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1 whitespace-nowrap">
-              {percent >= 80 ? 'Hervorragend' : percent >= 60 ? 'Sehr gut' : 'Gut'}
-            </p>
           </div>
         </div>
 
@@ -107,17 +129,20 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
         )}
 
         {/* Warum passt dieser Therapeut? */}
-        <div className="mb-3 sm:mb-4">
-          <p className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 break-words">
-            Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu dir?
-          </p>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+            <h4 className="text-sm font-bold text-gray-900">
+              Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu dir?
+            </h4>
+          </div>
+          <div className="flex flex-wrap gap-2">
             {match.explanation.primary.map((reason, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-800 text-[10px] sm:text-xs font-medium break-words"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 text-green-800 text-xs font-semibold shadow-sm"
               >
-                <Check className="w-3 h-3 flex-shrink-0" />
+                <Check className="w-3 h-3 text-green-600" strokeWidth={2.5} />
                 {reason}
               </span>
             ))}
@@ -195,7 +220,7 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
                 <ul className="text-xs sm:text-sm text-yellow-700 space-y-1">
                   {match.explanation.warnings.map((warning, idx) => (
                     <li key={idx} className="flex items-start gap-2 break-words">
-                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span className="flex-shrink-0">⚠️</span>
                       <span>{warning}</span>
                     </li>
                   ))}
@@ -219,22 +244,19 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
         )}
 
         {/* Action Buttons */}
-        <div className="mt-3 sm:mt-4 space-y-2">
+        <div className="mt-5 flex gap-3">
           <Link
             href={`/therapists/${match.therapist.id}`}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-700 hover:shadow-lg"
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-amber-200 transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
           >
-            <svg className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <span className="break-words leading-tight">Profil ansehen</span>
+            <Eye className="w-5 h-5" strokeWidth={2.5} />
+            <span>Profil ansehen</span>
           </Link>
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full px-3 py-2 text-gray-600 text-xs sm:text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors break-words"
+            className="px-4 py-3.5 text-gray-700 text-sm font-semibold border-2 border-gray-200 rounded-xl hover:border-amber-300 hover:bg-amber-50 transition-all"
           >
-            {showDetails ? '▲ Weniger Details' : '▼ Mehr Details'}
+            {showDetails ? '▲' : '▼'}
           </button>
         </div>
       </div>
@@ -294,30 +316,35 @@ export default function MatchResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-5xl">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/30 via-white to-stone-50/20">
+      <div className="container mx-auto px-4 py-6 sm:py-10 max-w-6xl">
         {/* Header */}
-        <div className="mb-5 sm:mb-6">
+        <div className="mb-8 sm:mb-10">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-sm sm:text-base text-gray-600 hover:text-gray-900 mb-3 sm:mb-4"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 px-4 py-2 rounded-xl hover:bg-white transition-all group"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Zurück
+            <span className="font-medium">Zurück zur Suche</span>
           </button>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 break-words">
-            Deine persönlichen Empfehlungen
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600 break-words">
-            {results?.total === 0
-              ? 'Leider keine passenden Therapeut:innen gefunden.'
-              : results?.total === 1
-              ? `Wir haben die perfekte Therapeut:in für dich gefunden.`
-              : `Wir haben ${results?.total} Therapeut:innen gefunden, die gut zu dir passen.`}
-          </p>
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg mb-4 sm:mb-6">
+              <Target className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
+            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 break-words">
+              Deine persönlichen Empfehlungen
+            </h1>
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto break-words">
+              {results?.total === 0
+                ? 'Leider keine passenden Therapeut:innen gefunden.'
+                : results?.total === 1
+                ? 'Wir haben die perfekte Therapeut:in für dich gefunden!'
+                : `Wir haben ${results?.total} Therapeut:innen gefunden, die gut zu dir passen!`}
+            </p>
+          </div>
         </div>
 
         {/* Encouragement Banner */}
@@ -329,11 +356,7 @@ export default function MatchResultsPage() {
         {/* Keine Matches */}
         {results?.matches.length === 0 && (
           <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 flex items-center justify-center">
-                <Search className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
-              </div>
-            </div>
+            <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🔍</div>
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 break-words">
               Keine passenden Therapeut:innen gefunden
             </h2>
