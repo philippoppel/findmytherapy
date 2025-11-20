@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { Check, AlertCircle, Search } from 'lucide-react'
 import type { MatchingResponse, MatchResult } from '@/lib/matching'
 import { EncouragementBanner } from './components/EncouragementBanner'
 import { NextStepsGuide } from './components/NextStepsGuide'
@@ -114,9 +115,10 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
             {match.explanation.primary.map((reason, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-800 text-[10px] sm:text-xs font-medium break-words"
+                className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-800 text-[10px] sm:text-xs font-medium break-words"
               >
-                ✓ {reason}
+                <Check className="w-3 h-3 flex-shrink-0" />
+                {reason}
               </span>
             ))}
           </div>
@@ -193,7 +195,7 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
                 <ul className="text-xs sm:text-sm text-yellow-700 space-y-1">
                   {match.explanation.warnings.map((warning, idx) => (
                     <li key={idx} className="flex items-start gap-2 break-words">
-                      <span className="flex-shrink-0">⚠️</span>
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
                       <span>{warning}</span>
                     </li>
                   ))}
@@ -327,7 +329,11 @@ export default function MatchResultsPage() {
         {/* Keine Matches */}
         {results?.matches.length === 0 && (
           <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 text-center">
-            <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🔍</div>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 flex items-center justify-center">
+                <Search className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+              </div>
+            </div>
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 break-words">
               Keine passenden Therapeut:innen gefunden
             </h2>

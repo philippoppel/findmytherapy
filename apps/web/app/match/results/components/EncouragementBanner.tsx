@@ -16,7 +16,7 @@ export function EncouragementBanner() {
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 break-words leading-tight">
-            Der erste Schritt ist gemacht! 🎉
+            Der erste Schritt ist gemacht!
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 break-words">
             Das ist oft der schwerste – und du hast ihn bereits geschafft.
