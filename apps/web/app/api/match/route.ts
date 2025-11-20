@@ -89,7 +89,11 @@ export async function POST(request: NextRequest) {
     console.error('Matching error:', error)
 
     return NextResponse.json(
-      { error: 'Interner Serverfehler beim Matching' },
+      {
+        error: 'Interner Serverfehler beim Matching',
+        details: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
