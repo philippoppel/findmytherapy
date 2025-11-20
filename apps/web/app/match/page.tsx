@@ -19,7 +19,7 @@ import {
   Building,
   RefreshCw,
   Check,
-  Hospital,
+  Heart,
   Briefcase,
   CreditCard,
   Zap,
@@ -381,7 +381,7 @@ export default function MatchPage() {
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         { id: 'ANY', label: 'Egal', Icon: Check },
-                        { id: 'PUBLIC', label: 'Krankenkasse', Icon: Hospital },
+                        { id: 'PUBLIC', label: 'Krankenkasse', Icon: Heart },
                         { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
                         { id: 'SELF_PAY', label: 'Selbstzahler', Icon: CreditCard },
                       ].map((ins) => (
