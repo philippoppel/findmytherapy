@@ -674,6 +674,7 @@ enum CommunicationStyle {
   ANY
 }
 
+// Force Vercel rebuild: 2025-11-20
 model MatchingPreferences {
   id                    String             @id @default(cuid())
   sessionId             String             @unique  // Für anonyme Nutzung
