@@ -6,12 +6,10 @@ import { Reveal } from './Reveal'
 import { KnowledgeHubSection } from './KnowledgeHubSection'
 import { TherapistSEOShowcase } from './TherapistSEOShowcase'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
-import { useAnchorNavigation } from '../useAnchorNavigation'
 
 export function TwoPillarSection() {
   const prefersReducedMotion = usePrefersReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
-  const handleAnchorNavigation = useAnchorNavigation()
 
   // Scroll-based animations
   const { scrollYProgress } = useScroll({

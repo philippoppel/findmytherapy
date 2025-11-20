@@ -9,7 +9,7 @@ import type {
   FilterReason,
   FilteredTherapist,
 } from './types'
-import { DEFAULT_WEIGHTS, AVAILABILITY_STATUS_WEEKS, PROBLEM_AREA_MAPPING } from './types'
+import { DEFAULT_WEIGHTS, PROBLEM_AREA_MAPPING } from './types'
 import { calculateMatchScore, calculateDistanceKm } from './score-calculator'
 import { generateMatchExplanation } from './explanation-generator'
 import { getAvailabilityMeta } from '@/app/therapists/availability'

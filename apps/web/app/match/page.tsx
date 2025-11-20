@@ -18,7 +18,6 @@ import {
   Video,
   Building,
   RefreshCw,
-  Sparkles,
   Check,
   Hospital,
   Briefcase,
@@ -258,9 +257,9 @@ export default function MatchPage() {
 
                   {/* Format-Auswahl */}
                   <div className="mb-6">
-                    <label className="block text-sm font-semibold text-gray-900 mb-3">
+                    <div className="block text-sm font-semibold text-gray-900 mb-3">
                       Therapieformat
-                    </label>
+                    </div>
                     <div className="grid grid-cols-3 gap-3">
                       {[
                         { id: 'BOTH', label: 'Beides', Icon: RefreshCw, desc: 'Flexibel' },
@@ -294,10 +293,10 @@ export default function MatchPage() {
                   {formData.format !== 'ONLINE' && (
                     <>
                       <div className="mb-6">
-                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                           <MapPin className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                           PLZ oder Stadt
-                        </label>
+                        </div>
                         <input
                           type="text"
                           value={formData.postalCode || formData.city}
@@ -352,10 +351,10 @@ export default function MatchPage() {
 
                   {/* Sprachen */}
                   <div className="mb-6">
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <Globe className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Sprache(n)
-                    </label>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {LANGUAGES.map((lang) => (
                         <button
@@ -375,10 +374,10 @@ export default function MatchPage() {
 
                   {/* Versicherung */}
                   <div className="mb-6">
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <Wallet className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Kostenübernahme
-                    </label>
+                    </div>
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         { id: 'ANY', label: 'Egal', Icon: Check },
@@ -406,10 +405,10 @@ export default function MatchPage() {
 
                   {/* Wartezeit */}
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <Clock className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Maximale Wartezeit
-                    </label>
+                    </div>
                     <select
                       value={formData.maxWaitWeeks ?? ''}
                       onChange={(e) =>
@@ -441,10 +440,10 @@ export default function MatchPage() {
 
                   {/* Therapiemethoden */}
                   <div className="mb-6">
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <Brain className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Bevorzugte Therapiemethoden <span className="text-gray-400 font-normal">(optional)</span>
-                    </label>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {THERAPY_METHODS.map((method) => (
                         <button
@@ -464,10 +463,10 @@ export default function MatchPage() {
 
                   {/* Geschlecht */}
                   <div className="mb-6">
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <User className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Bevorzugtes Geschlecht <span className="text-gray-400 font-normal">(optional)</span>
-                    </label>
+                    </div>
                     <div className="grid grid-cols-3 gap-3">
                       {[
                         { id: 'any', label: 'Egal', Icon: Check },
@@ -494,10 +493,10 @@ export default function MatchPage() {
 
                   {/* Maximaler Preis */}
                   <div className="mb-6">
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <Euro className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Maximaler Preis pro Sitzung <span className="text-gray-400 font-normal">(optional)</span>
-                    </label>
+                    </div>
                     <input
                       type="number"
                       value={formData.priceMax || ''}
@@ -513,10 +512,10 @@ export default function MatchPage() {
 
                   {/* Kommunikationsstil */}
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                       <MessageCircle className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
                       Kommunikationsstil <span className="text-gray-400 font-normal">(optional)</span>
-                    </label>
+                    </div>
                     <div className="grid grid-cols-3 gap-3">
                       {[
                         { id: 'ANY', label: 'Egal', Icon: Check },

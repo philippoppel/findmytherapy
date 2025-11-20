@@ -34,7 +34,7 @@ export function MotivationalQuote() {
     >
       <blockquote className="text-gray-700">
         <p className="mb-2 text-sm sm:text-base md:text-lg italic leading-relaxed break-words">
-          "{quote.text}"
+          &ldquo;{quote.text}&rdquo;
         </p>
         <footer className="text-xs sm:text-sm font-medium text-gray-600 break-words">
           — {quote.author}

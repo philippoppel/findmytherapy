@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion'
-import Link from 'next/link'
 import { MatchingLink } from '@/app/components/matching/MatchingLink'
 
 export function TherapistSearchChoice() {

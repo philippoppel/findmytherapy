@@ -47,7 +47,7 @@ export function ReassuranceBox() {
       <div className="mt-4 sm:mt-6 rounded-xl bg-blue-100 border border-blue-200 p-3 sm:p-4">
         <p className="text-xs sm:text-sm text-blue-900 leading-relaxed break-words">
           <strong>📞 Tipp für den ersten Kontakt:</strong> Du musst nicht sofort alles erzählen.
-          Ein einfaches "Ich interessiere mich für ein Erstgespräch" reicht völlig aus. Die meisten
+          Ein einfaches &ldquo;Ich interessiere mich für ein Erstgespräch&rdquo; reicht völlig aus. Die meisten
           Therapeut:innen sind sehr verständnisvoll und erklären dir den weiteren Ablauf.
         </p>
       </div>

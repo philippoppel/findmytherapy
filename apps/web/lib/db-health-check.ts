@@ -17,6 +17,7 @@ export async function validateDatabaseSchema() {
   for (const table of criticalTables) {
     try {
       // Versuche eine einfache Query auf jede Tabelle
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (prisma as any)[table.charAt(0).toLowerCase() + table.slice(1)].findFirst({
         take: 1,
       })

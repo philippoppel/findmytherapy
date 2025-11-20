@@ -67,7 +67,7 @@ export function NextStepsGuide() {
       <div className="mt-4 sm:mt-6 rounded-xl bg-green-50 border border-green-200 p-3 sm:p-4">
         <p className="text-xs sm:text-sm text-green-800 break-words leading-relaxed">
           <strong>💡 Tipp:</strong> Es ist völlig normal, mehrere Therapeut:innen zu kontaktieren.
-          Die "Chemie" muss stimmen – und das merkst du meist schon im Erstgespräch.
+          Die &ldquo;Chemie&rdquo; muss stimmen – und das merkst du meist schon im Erstgespräch.
         </p>
       </div>
     </motion.div>
