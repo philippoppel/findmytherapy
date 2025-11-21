@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTherapistCards } from '@/app/therapists/getTherapistCards'
 
+// Force this route to be dynamic since it uses search params
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/therapists
  *
