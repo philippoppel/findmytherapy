@@ -130,24 +130,27 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page)
 
     // Step 2: Location (Online therapy - skip location)
-    // Wait for Online button to appear
-    const onlineButton = page.getByRole('button', { name: /^Online$/i })
+    // Wait for Online button to appear (button contains "Online" and "Digital")
+    const onlineButton = page.getByRole('button', { name: /Online.*Digital/i })
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 })
     await onlineButton.click()
     await page.getByRole('button', { name: /Weiter/i }).click()
     await waitForNetworkIdle(page)
 
-    // Step 3: Preferences (Language: German)
-    // Wait for language selection
-    const germanButton = page.getByRole('button', { name: /Deutsch/i })
-    await germanButton.waitFor({ state: 'visible', timeout: 10000 })
-    await germanButton.click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    // Step 3: Preferences (Language is required, other fields optional)
+    // NOTE: Deutsch is selected by default in the wizard, so Weiter should already be enabled
+    // Wait for step to load
+    await page.waitForTimeout(500)
+
+    // Weiter button should be enabled because Deutsch is selected by default
+    const weiterButton = page.getByRole('button', { name: /Weiter/i })
+    await expect(weiterButton).toBeEnabled({ timeout: 5000 })
+    await weiterButton.click()
     await waitForNetworkIdle(page)
 
     // Step 4: Optional details - skip and submit
-    // Look for submit button with various possible texts
-    const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen|Suchen|Matching starten|Absenden|Fertig/i })
+    // Look for submit button "Therapeuten finden"
+    const submitButton = page.getByRole('button', { name: /Therapeuten finden/i })
     await submitButton.waitFor({ state: 'visible', timeout: 10000 })
     await submitButton.click()
     await waitForNetworkIdle(page, 10000)
@@ -163,7 +166,7 @@ test.describe('Matching System', () => {
     await expect(scoreElement).toBeVisible()
 
     // Should show explanation why therapist matches
-    await expect(page.getByText(/Warum passt/i)).toBeVisible()
+    await expect(page.getByText(/Warum passt/i).first()).toBeVisible()
   })
 
   test('should show matches even when none are perfect', async ({ page }) => {
@@ -179,21 +182,18 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page)
 
     // Step 2: Online
-    const onlineButton = page.getByRole('button', { name: /^Online$/i })
+    const onlineButton = page.getByRole('button', { name: /Online.*Digital/i })
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 })
     await onlineButton.click()
     await page.getByRole('button', { name: /Weiter/i }).click()
     await waitForNetworkIdle(page)
 
-    // Step 3: Language
-    const germanButton = page.getByRole('button', { name: /Deutsch/i })
-    await germanButton.waitFor({ state: 'visible', timeout: 10000 })
-    await germanButton.click()
+    // Step 3: Language (Deutsch is selected by default, just click Weiter)
     await page.getByRole('button', { name: /Weiter/i }).click()
     await waitForNetworkIdle(page)
 
     // Step 4: Submit
-    const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen|Suchen|Matching starten|Absenden|Fertig/i })
+    const submitButton = page.getByRole('button', { name: /Therapeuten finden/i })
     await submitButton.waitFor({ state: 'visible', timeout: 10000 })
     await submitButton.click()
     await waitForNetworkIdle(page, 10000)
@@ -202,9 +202,8 @@ test.describe('Matching System', () => {
     await expect(page).toHaveURL(/\/match\/results/i)
 
     // Should show some therapists (even if not perfect match)
-    const therapistCards = page.locator('article, [class*="card"], div[class*="match"]')
-    const count = await therapistCards.count()
-    expect(count).toBeGreaterThan(0)
+    // Look for the results message showing therapists were found
+    await expect(page.getByText(/\d+\s+Therapeut.*gefunden/i)).toBeVisible()
 
     // CRITICAL: Should NOT promise false results
     // Check for honest communication
@@ -225,26 +224,27 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page)
 
     // Step 2: Location
-    await page.getByRole('button', { name: /^Online$/i }).click()
+    await page.getByRole('button', { name: /Online.*Digital/i }).click()
     await page.getByRole('button', { name: /Weiter/i }).click()
     await waitForNetworkIdle(page)
 
-    // Step 3: Language - select uncommon language
-    // If there's a rare language option, select it; otherwise use German
+    // Step 3: Language - try to select uncommon language
+    // If there's a rare language option, select it (unselecting Deutsch first)
     const turkishButton = page.getByRole('button', { name: /Türkisch/i })
     const turkishExists = await turkishButton.isVisible().catch(() => false)
 
     if (turkishExists) {
-      await turkishButton.click()
-    } else {
+      // First deselect Deutsch (which is selected by default), then select Turkish
       await page.getByRole('button', { name: /Deutsch/i }).click()
+      await turkishButton.click()
     }
+    // If Turkish doesn't exist, Deutsch is already selected by default
 
     await page.getByRole('button', { name: /Weiter/i }).click()
     await waitForNetworkIdle(page)
 
     // Step 4: Submit
-    await page.getByRole('button', { name: /Ergebnisse anzeigen|Suchen|Matching starten/i }).click()
+    await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
     // Should navigate to results
@@ -281,15 +281,14 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Weiter/i }).click()
 
     // Step 2
-    await page.getByRole('button', { name: /^Online$/i }).click()
+    await page.getByRole('button', { name: /Online.*Digital/i }).click()
     await page.getByRole('button', { name: /Weiter/i }).click()
 
-    // Step 3
-    await page.getByRole('button', { name: /Deutsch/i }).click()
+    // Step 3 (Deutsch is selected by default, just click Weiter)
     await page.getByRole('button', { name: /Weiter/i }).click()
 
     // Step 4
-    await page.getByRole('button', { name: /Ergebnisse anzeigen|Suchen|Matching starten/i }).click()
+    await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
     // Should show results
@@ -319,11 +318,11 @@ test.describe('Matching System', () => {
     // Complete quick search
     await page.getByRole('button', { name: /Depression/i }).click()
     await page.getByRole('button', { name: /Weiter/i }).click()
-    await page.getByRole('button', { name: /^Online$/i }).click()
+    await page.getByRole('button', { name: /Online.*Digital/i }).click()
     await page.getByRole('button', { name: /Weiter/i }).click()
-    await page.getByRole('button', { name: /Deutsch/i }).click()
+    // Step 3: Deutsch is already selected by default
     await page.getByRole('button', { name: /Weiter/i }).click()
-    await page.getByRole('button', { name: /Ergebnisse anzeigen|Suchen|Matching starten/i }).click()
+    await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
     // Should be on results page
@@ -366,11 +365,11 @@ test.describe('Matching System', () => {
     const nextButton = page.getByRole('button', { name: /Weiter/i })
 
     // For online, button should be enabled; for location-based, it should require input
-    const isOnline = await page.getByRole('button', { name: /^Online$/i }).isVisible()
+    const isOnline = await page.getByRole('button', { name: /Online.*Digital/i }).isVisible()
 
     if (isOnline) {
       // If online option is visible, select it (otherwise validation might fail)
-      await page.getByRole('button', { name: /^Online$/i }).click()
+      await page.getByRole('button', { name: /Online.*Digital/i }).click()
       await nextButton.click()
       await waitForNetworkIdle(page)
 
