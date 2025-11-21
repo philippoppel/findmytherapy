@@ -13,7 +13,7 @@
 import { test, expect } from '@playwright/test'
 import { waitForNetworkIdle, dismissCookieBanner } from '../utils/test-helpers'
 import { getTestDbClient, cleanupDatabase } from '../utils/db-test-client'
-import { createTestTherapist } from '../fixtures/user.factory'
+import { createTestTherapist, resetEmailCounter } from '../fixtures/user.factory'
 import { createTestTherapistProfile } from '../fixtures/therapist.factory'
 
 test.describe('Matching System', () => {
@@ -26,6 +26,9 @@ test.describe('Matching System', () => {
   async function setupTherapistData() {
     // Clean database first (important for retries!)
     await cleanupDatabase()
+
+    // Reset email counter to ensure unique emails on each run
+    resetEmailCounter()
 
     // Create diverse set of therapists for matching scenarios
     const therapists = [
