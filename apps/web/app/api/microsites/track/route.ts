@@ -45,6 +45,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, tracked: false }, { status: 200 });
     }
 
+    // Verify profile exists before creating visit record
+    const profileExists = await prisma.therapistProfile.findUnique({
+      where: { id: profileId },
+      select: { id: true },
+    });
+
+    if (!profileExists) {
+      // Profile doesn't exist - likely deleted in tests
+      return NextResponse.json({ success: false }, { status: 200 });
+    }
+
     // Create visit record
     await prisma.therapistMicrositeVisit.create({
       data: {
