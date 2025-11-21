@@ -84,23 +84,11 @@ enum MicrositeStatus {
   PUBLISHED
 }
 
-enum InsuranceType {
-  PUBLIC
-  PRIVATE
-  SELF_PAY
-  ANY
-}
-
-enum TherapyFormat {
-  ONLINE
-  IN_PERSON
-  BOTH
-}
-
-enum CommunicationStyle {
-  DIRECT
-  GENTLE
-  ANY
+enum AvailabilityStatus {
+  AVAILABLE
+  LIMITED
+  WAITLIST
+  UNAVAILABLE
 }
 
 model User {
@@ -119,18 +107,21 @@ model User {
   deletedAt      DateTime?
 
   // Relations
-  accounts         Account[]
-  sessions         Session[]
-  therapistProfile TherapistProfile?
-  clientOrders     Order[] @relation("ClientOrders")
-  enrollments      Enrollment[]
-  triageSessions   TriageSession[]
-  clientMatches    Match[] @relation("ClientMatches")
-  emergencyAlerts  EmergencyAlert[] @relation("ClientAlerts")
-  handledAlerts    EmergencyAlert[] @relation("HandlerAlerts")
-  auditLogs        AuditLog[]
-  appointments     Appointment[]
-  profileVersions  TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
+  accounts            Account[]
+  sessions            Session[]
+  therapistProfile    TherapistProfile?
+  clientOrders        Order[] @relation("ClientOrders")
+  enrollments         Enrollment[]
+  triageSessions      TriageSession[]
+  clientMatches       Match[] @relation("ClientMatches")
+  emergencyAlerts     EmergencyAlert[] @relation("ClientAlerts")
+  handledAlerts       EmergencyAlert[] @relation("HandlerAlerts")
+  auditLogs           AuditLog[]
+  appointments        Appointment[]
+  profileVersions     TherapistProfileVersion[] @relation("TherapistProfileVersionAuthor")
+  dossiers            SessionZeroDossier[]
+  dossierAccesses     DossierAccessLog[]
+  consents            ClientConsent[]
   matchingPreferences MatchingPreferences[]
 
   @@index([email])
@@ -198,8 +189,6 @@ model TherapistProfile {
   videoUrl         String?
   acceptingClients Boolean         @default(true)
   yearsExperience  Int?
-  rating           Float?
-  reviewCount      Int?            @default(0)
   responseTime     String?
   modalities       String[]
   specialties      String[]
@@ -208,24 +197,40 @@ model TherapistProfile {
   languages        String[]
   online           Boolean         @default(false)
   city             String?
+  postalCode       String?
+  street           String?
+  state            String?         // Bundesland (e.g., "Wien", "Niederösterreich")
+  addressLine      String?         // Full address line for display
   latitude         Float?
   longitude        Float?
   country          String          @default("AT")
   about            String?         @db.Text
   availabilityNote String?         @db.Text
+  availabilityStatus AvailabilityStatus? // Current availability status
+  nextAvailableDate DateTime?      // Next available appointment slot
+  estimatedWaitWeeks Int?          // Estimated waiting time in weeks
+  lastAvailabilityUpdate DateTime? // When availability was last updated
   pricingNote      String?         @db.Text
   isPublic         Boolean         @default(false)
 
-  // Additional profile fields
+  // Gallery & Media
   galleryImages    String[]        @default([])
+
+  // Social Media & Web Presence
   socialLinkedin   String?
   socialInstagram  String?
   socialFacebook   String?
   websiteUrl       String?
+
+  // Additional Profile Info
   qualifications   String[]        @default([])
   ageGroups        String[]        @default([])
   acceptedInsurance String[]       @default([])
   privatePractice  Boolean         @default(false)
+
+  // Rating & Reviews
+  rating           Float?          @default(0)
+  reviewCount      Int             @default(0)
 
   // Microsite fields
   micrositeSlug            String?          @unique
@@ -249,10 +254,12 @@ model TherapistProfile {
 
   @@index([status, isPublic])
   @@index([city])
+  @@index([postalCode])
+  @@index([state])
   @@index([latitude, longitude])
   @@index([country])
   @@index([acceptingClients])
-  @@index([rating])
+  @@index([availabilityStatus])
   @@index([deletedAt])
   @@index([micrositeSlug])
   @@index([micrositeStatus])
@@ -415,6 +422,7 @@ model TriageSession {
 
   // Relations
   emergencyAlerts    EmergencyAlert[] @relation("TriageEmergencyAlerts")
+  dossier            SessionZeroDossier?
 
   @@index([clientId])
   @@index([riskLevel])
@@ -440,62 +448,28 @@ model TriageSnapshot {
 }
 
 model Match {
-  id               String               @id @default(cuid())
-  clientId         String
-  client           User                 @relation("ClientMatches", fields: [clientId], references: [id])
-  therapistId      String
-  therapist        TherapistProfile     @relation("TherapistMatches", fields: [therapistId], references: [id])
-  preferencesId    String?
-  preferences      MatchingPreferences? @relation(fields: [preferencesId], references: [id], onDelete: SetNull)
-  score            Float
-  scoreBreakdown   Json?
-  reason           String[]
-  status           MatchStatus          @default(NEW)
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
+  id            String      @id @default(cuid())
+  clientId      String
+  client        User        @relation("ClientMatches", fields: [clientId], references: [id])
+  therapistId   String
+  therapist     TherapistProfile @relation("TherapistMatches", fields: [therapistId], references: [id])
+  score         Float
+  reason        String[]
+  status        MatchStatus @default(NEW)
+
+  // Erweiterung für detailliertes Matching
+  scoreBreakdown Json?      // Detaillierte Score-Aufschlüsselung
+  preferencesId  String?
+  preferences    MatchingPreferences? @relation(fields: [preferencesId], references: [id], onDelete: SetNull)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   @@unique([clientId, therapistId])
   @@index([clientId])
   @@index([therapistId])
   @@index([status])
   @@index([preferencesId])
-}
-
-model MatchingPreferences {
-  id                    String             @id @default(cuid())
-  sessionId             String             @unique  // Für anonyme Nutzung
-  userId                String?            // Optional für registrierte User
-  user                  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  // Harte Kriterien
-  problemAreas          String[]           // Angst, Depression, Trauma...
-  languages             String[]
-  insuranceType         InsuranceType      @default(ANY)
-  format                TherapyFormat      @default(BOTH)
-  maxDistanceKm         Int?
-  latitude              Float?
-  longitude             Float?
-  postalCode            String?
-  city                  String?
-  maxWaitWeeks          Int?
-
-  // Weiche Kriterien
-  preferredMethods      String[]           // EMDR, CBT, systemisch...
-  therapistGender       String?            // "male", "female", "any"
-  therapistAgeRange     String?            // "young", "middle", "senior", "any"
-  communicationStyle    CommunicationStyle @default(ANY)
-  priceMax              Int?               // in Cent
-
-  // Metadata
-  createdAt             DateTime           @default(now())
-  expiresAt             DateTime           // 30 Tage DSGVO
-
-  // Relations
-  matches               Match[]
-
-  @@index([userId])
-  @@index([sessionId])
-  @@index([expiresAt])
 }
 
 model EmergencyAlert {
@@ -644,4 +618,168 @@ model TherapistMicrositeRedirect {
 
   @@index([fromSlug])
   @@index([toSlug])
+}
+
+enum DossierRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum DossierGeneratedBy {
+  ADMIN
+  WORKER
+  AUTO
+}
+
+enum DossierAccessStatus {
+  SUCCESS
+  DENIED
+  EXPIRED
+}
+
+enum DossierAccessChannel {
+  WEB_DASHBOARD
+  SIGNED_LINK
+}
+
+enum ConsentScope {
+  DOSSIER_SHARING
+  DATA_PROCESSING
+  COMMUNICATION
+}
+
+enum ConsentStatus {
+  GRANTED
+  REVOKED
+}
+
+enum InsuranceType {
+  PUBLIC
+  PRIVATE
+  SELF_PAY
+  ANY
+}
+
+enum TherapyFormat {
+  ONLINE
+  IN_PERSON
+  BOTH
+}
+
+enum CommunicationStyle {
+  DIRECT
+  GENTLE
+  ANY
+}
+
+// Force Vercel rebuild: 2025-11-20
+model MatchingPreferences {
+  id                    String             @id @default(cuid())
+  sessionId             String             @unique  // Für anonyme Nutzung
+  userId                String?            // Optional für registrierte User
+  user                  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Harte Kriterien
+  problemAreas          String[]           // Angst, Depression, Trauma...
+  languages             String[]
+  insuranceType         InsuranceType      @default(ANY)
+  format                TherapyFormat      @default(BOTH)
+  maxDistanceKm         Int?
+  latitude              Float?
+  longitude             Float?
+  postalCode            String?
+  city                  String?
+  maxWaitWeeks          Int?
+
+  // Weiche Kriterien
+  preferredMethods      String[]           // EMDR, CBT, systemisch...
+  therapistGender       String?            // "male", "female", "any"
+  therapistAgeRange     String?            // "young", "middle", "senior", "any"
+  communicationStyle    CommunicationStyle @default(ANY)
+  priceMax              Int?               // in Cent
+
+  // Metadata
+  createdAt             DateTime           @default(now())
+  expiresAt             DateTime           // 30 Tage DSGVO
+
+  // Relations
+  matches               Match[]
+
+  @@index([sessionId])
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([createdAt])
+}
+
+model SessionZeroDossier {
+  id                       String             @id @default(cuid())
+  triageSessionId          String             @unique
+  triageSession            TriageSession      @relation(fields: [triageSessionId], references: [id], onDelete: Cascade)
+  clientId                 String
+  client                   User               @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Encrypted data storage
+  encryptedPayload         String             @db.Text  // Encrypted JSON with all sensitive data
+  encryptionKeyId          String             // Reference to which key was used (for key rotation)
+
+  // Metadata (not encrypted)
+  pdfUrl                   String?            // Signierte Storage-URL (S3/GCS)
+  riskLevel                DossierRiskLevel
+  redFlags                 Json?              // Liste kritischer Hinweise (Text + Code)
+  generatedBy              DossierGeneratedBy @default(AUTO)
+  version                  Int                @default(1)
+  expiresAt                DateTime
+
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+
+  // Relations
+  accessLogs               DossierAccessLog[]
+  recommendedTherapists    String[]           // Array of therapist IDs who can access
+
+  @@index([clientId])
+  @@index([triageSessionId])
+  @@index([riskLevel])
+  @@index([expiresAt])
+  @@index([createdAt])
+}
+
+model DossierAccessLog {
+  id              String               @id @default(cuid())
+  dossierId       String
+  dossier         SessionZeroDossier   @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  therapistUserId String
+  therapistUser   User                 @relation(fields: [therapistUserId], references: [id], onDelete: Cascade)
+
+  accessedAt      DateTime             @default(now())
+  channel         DossierAccessChannel
+  ipHash          String               // SHA256 Hash der IP (Datenschutz)
+  userAgent       String?              @db.Text
+  status          DossierAccessStatus
+  reason          String?              @db.Text  // Fehlerbeschreibung bei DENIED
+
+  @@index([dossierId])
+  @@index([therapistUserId])
+  @@index([accessedAt])
+  @@index([status])
+}
+
+model ClientConsent {
+  id         String        @id @default(cuid())
+  clientId   String
+  client     User          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  scope      ConsentScope
+  status     ConsentStatus @default(GRANTED)
+  grantedAt  DateTime      @default(now())
+  revokedAt  DateTime?
+  source     String        // e.g., "triage_flow", "settings_page"
+  metadata   Json?         // Additional context
+
+  @@index([clientId])
+  @@index([scope])
+  @@index([status])
+  @@index([grantedAt])
 }
