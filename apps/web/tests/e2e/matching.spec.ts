@@ -23,6 +23,7 @@ test.describe('Matching System', () => {
   test.describe.configure({ mode: 'serial' })
 
   test.beforeAll(async () => {
+    // Clean database first (important for retries!)
     await cleanupDatabase()
 
     // Create diverse set of therapists for matching scenarios
