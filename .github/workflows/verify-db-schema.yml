@@ -15,6 +15,10 @@ jobs:
   check-schema:
     runs-on: ubuntu-latest
     name: Check Production DB Schema
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -28,7 +32,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - name: Install dependencies
         run: |
