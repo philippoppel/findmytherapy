@@ -20,13 +20,22 @@ type CreateUserInput = {
 let emailCounter = 0
 
 /**
+ * Generate a unique email with timestamp to avoid collisions across test files
+ */
+function generateUniqueEmail(prefix: string): string {
+  emailCounter++
+  const timestamp = Date.now()
+  return `${prefix}-${timestamp}-${emailCounter}@example.com`
+}
+
+/**
  * Create a test user with default values
  */
 export function createTestUser(overrides?: CreateUserInput): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
   emailCounter++
 
   return {
-    email: overrides?.email || `test-user-${emailCounter}@example.com`,
+    email: overrides?.email || generateUniqueEmail('test-user'),
     emailVerified: overrides?.emailVerified ?? new Date(),
     passwordHash: null, // Will be set by createTestUserWithPassword if needed
     firstName: overrides?.firstName || `Test`,
@@ -63,7 +72,7 @@ export async function createTestTherapist(overrides?: CreateUserInput) {
     role: 'THERAPIST',
     firstName: overrides?.firstName || 'Dr.',
     lastName: overrides?.lastName || `Therapeut ${++emailCounter}`,
-    email: overrides?.email || `therapist-${emailCounter}@example.com`
+    email: overrides?.email || generateUniqueEmail('therapist')
   })
 }
 
@@ -76,7 +85,7 @@ export async function createTestAdmin(overrides?: CreateUserInput) {
     role: 'ADMIN',
     firstName: overrides?.firstName || 'Admin',
     lastName: overrides?.lastName || `User ${++emailCounter}`,
-    email: overrides?.email || `admin-${emailCounter}@example.com`
+    email: overrides?.email || generateUniqueEmail('admin')
   })
 }
 
@@ -89,7 +98,7 @@ export async function createTestClient(overrides?: CreateUserInput) {
     role: 'CLIENT',
     firstName: overrides?.firstName || 'Test',
     lastName: overrides?.lastName || `Client ${++emailCounter}`,
-    email: overrides?.email || `client-${emailCounter}@example.com`
+    email: overrides?.email || generateUniqueEmail('client')
   })
 }
 
