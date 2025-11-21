@@ -22,7 +22,8 @@ test.describe('Matching System', () => {
   // Run tests serially to avoid database conflicts
   test.describe.configure({ mode: 'serial' })
 
-  test.beforeAll(async () => {
+  // Helper function to create test therapist data
+  async function setupTherapistData() {
     // Clean database first (important for retries!)
     await cleanupDatabase()
 
@@ -105,6 +106,11 @@ test.describe('Matching System', () => {
       })
       await db.therapistProfile.create({ data: profileData })
     }
+  }
+
+  // Setup data before each test (important for retries!)
+  test.beforeEach(async () => {
+    await setupTherapistData()
   })
 
   test.afterAll(async () => {
