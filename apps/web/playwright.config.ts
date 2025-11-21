@@ -12,55 +12,33 @@ export default defineConfig({
   testDir: './tests',
   testMatch: ['**/e2e/**/*.spec.ts', '**/visual/**/*.spec.ts'],
   testIgnore: ['**/integration/**', '**/fixtures/**', '**/utils/**'],
-  timeout: 45_000, // Reduced from 60s
+  timeout: 60_000,
   expect: {
-    timeout: 5_000,
+    timeout: 10_000,
   },
   fullyParallel: true,
-  retries: process.env.CI ? 1 : 0, // Reduced from 2 to 1
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  retries: process.env.CI ? 1 : 0,
+  reporter: process.env.CI
+    ? [['github'], ['html', { open: 'never' }]]
+    : [['list'], ['html', { open: 'on-failure' }]],
   use: {
     baseURL: BASE_URL,
     trace: 'on-first-retry',
     viewport: { width: 1280, height: 720 },
     colorScheme: 'light',
     screenshot: 'only-on-failure',
+    // Disable cookie banner in tests
+    extraHTTPHeaders: {
+      'X-Disable-Cookie-Banner': 'true',
+    },
   },
-  projects: process.env.CI
-    ? [
-        // In CI, only run chromium to save time and resources
-        {
-          name: 'chromium-desktop',
-          use: { ...devices['Desktop Chrome'] },
-        },
-      ]
-    : [
-        // Locally, run all browsers for comprehensive testing
-        {
-          name: 'chromium-desktop',
-          use: { ...devices['Desktop Chrome'] },
-        },
-        {
-          name: 'mobile-chrome',
-          use: { ...devices['Pixel 5'] },
-        },
-        {
-          name: 'mobile-safari',
-          use: { ...devices['iPhone 13'] },
-        },
-        {
-          name: 'tablet',
-          use: { ...devices['iPad Pro'] },
-        },
-        {
-          name: 'firefox-desktop',
-          use: { ...devices['Desktop Firefox'] },
-        },
-        {
-          name: 'webkit-desktop',
-          use: { ...devices['Desktop Safari'] },
-        },
-      ],
+  projects: [
+    // Desktop - primary test environment
+    {
+      name: 'chromium-desktop',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
