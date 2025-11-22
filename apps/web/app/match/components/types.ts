@@ -37,19 +37,19 @@ export const defaultFormData: WizardFormData = {
 
 // Problemfelder für die Auswahl
 export const PROBLEM_AREAS = [
-  { id: 'angst', label: 'Angst & Panik' },
-  { id: 'depression', label: 'Depression & Niedergeschlagenheit' },
-  { id: 'stress', label: 'Stress & Burnout' },
-  { id: 'trauma', label: 'Trauma & PTBS' },
-  { id: 'beziehung', label: 'Beziehungsprobleme' },
-  { id: 'selbstwert', label: 'Selbstwert & Identität' },
-  { id: 'trauer', label: 'Trauer & Verlust' },
-  { id: 'sucht', label: 'Sucht & Abhängigkeit' },
-  { id: 'essstoerung', label: 'Essstörungen' },
-  { id: 'schlaf', label: 'Schlafstörungen' },
-  { id: 'zwang', label: 'Zwangsstörungen' },
-  { id: 'adhs', label: 'ADHS & Konzentration' },
-  { id: 'arbeit', label: 'Berufliche Probleme' },
+  { id: 'angst', label: 'Angst & Panik', icon: '😰' },
+  { id: 'depression', label: 'Depression & Niedergeschlagenheit', icon: '😔' },
+  { id: 'stress', label: 'Stress & Burnout', icon: '😓' },
+  { id: 'trauma', label: 'Trauma & PTBS', icon: '💔' },
+  { id: 'beziehung', label: 'Beziehungsprobleme', icon: '💑' },
+  { id: 'selbstwert', label: 'Selbstwert & Identität', icon: '🪞' },
+  { id: 'trauer', label: 'Trauer & Verlust', icon: '🕊️' },
+  { id: 'sucht', label: 'Sucht & Abhängigkeit', icon: '🚭' },
+  { id: 'essstoerung', label: 'Essstörungen', icon: '🍽️' },
+  { id: 'schlaf', label: 'Schlafstörungen', icon: '😴' },
+  { id: 'zwang', label: 'Zwangsstörungen', icon: '🔄' },
+  { id: 'adhs', label: 'ADHS & Konzentration', icon: '🎯' },
+  { id: 'arbeit', label: 'Berufliche Probleme', icon: '💼' },
 ]
 
 // Therapiemethoden
