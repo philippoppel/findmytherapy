@@ -106,19 +106,32 @@ export default function MatchPage() {
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Fehler beim Matching')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || `Fehler beim Matching (${response.status})`)
       }
 
       const result = await response.json()
 
-      // Ergebnisse in Session Storage speichern und zur Ergebnisseite navigieren
-      sessionStorage.setItem('matchResults', JSON.stringify(result))
-      sessionStorage.setItem('matchPreferences', JSON.stringify(formData))
+      // Validierung der Ergebnisse
+      if (!result || typeof result !== 'object') {
+        throw new Error('Ungültige Antwort vom Server')
+      }
+
+      // Ergebnisse in Session Storage speichern
+      try {
+        sessionStorage.setItem('matchResults', JSON.stringify(result))
+        sessionStorage.setItem('matchPreferences', JSON.stringify(formData))
+      } catch (storageError) {
+        console.error('Session storage error:', storageError)
+        // Continue anyway - results are in memory
+      }
+
+      // Navigation zur Ergebnisseite
       router.push('/match/results')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten')
-    } finally {
+      const errorMessage = err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten'
+      console.error('Matching error:', errorMessage, err)
+      setError(errorMessage)
       setIsLoading(false)
     }
   }
@@ -154,6 +167,32 @@ export default function MatchPage() {
             Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für Sie.
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 w-5 h-5 mt-0.5 text-red-600">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-red-800 mb-1">Fehler beim Matching</h3>
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+              <button
+                onClick={() => setError(null)}
+                className="flex-shrink-0 text-red-400 hover:text-red-600 transition-colors"
+                aria-label="Fehler schließen"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Progress Steps */}
         <div className="relative mb-8 sm:mb-10">
