@@ -2,10 +2,11 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, MapPin, Calendar, Heart, CheckCircle2 } from 'lucide-react'
+import { Star, MapPin, Calendar, Heart } from 'lucide-react'
 import { InteractiveCard } from '../InteractiveCard'
 import type { TherapistWithListing } from './types'
 import { PlaceholderImage } from './PlaceholderImage'
+import { AvailabilityBadge } from '../AvailabilityBadge'
 
 interface TherapistCardProps {
   therapist: TherapistWithListing
@@ -72,12 +73,14 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
             )}
 
             {/* Availability Badge */}
-            {therapist.acceptingClients && (
-              <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-teal-500/95 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
-                <CheckCircle2 className="h-3 w-3" aria-hidden />
-                Verfügbar
-              </div>
-            )}
+            <div className="absolute left-3 top-3 backdrop-blur-sm">
+              <AvailabilityBadge
+                status={therapist.availabilityStatus}
+                estimatedWaitWeeks={therapist.estimatedWaitWeeks}
+                acceptingClients={therapist.acceptingClients}
+                variant="default"
+              />
+            </div>
           </div>
 
           {/* Content Section */}

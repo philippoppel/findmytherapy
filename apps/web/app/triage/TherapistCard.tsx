@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown, ChevronUp, Star, User, MapPin, Clock, Globe, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@mental-health/ui'
+import { AvailabilityBadge } from '@/app/components/AvailabilityBadge'
 
 type TherapistRecommendation = {
   id: string
@@ -95,15 +96,10 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
           <div className="space-y-2 text-center md:text-left">
             <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
               <h3 className="text-xl font-semibold text-default">{therapist.name}</h3>
-              {therapist.acceptingClients ? (
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
-                  Nimmt Klient:innen auf
-                </span>
-              ) : (
-                <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
-                  Warteliste
-                </span>
-              )}
+              <AvailabilityBadge
+                acceptingClients={therapist.acceptingClients}
+                variant="compact"
+              />
             </div>
             <p className="text-sm text-muted">{therapist.title}</p>
             {therapist.headline ? <p className="text-sm text-default">{therapist.headline}</p> : null}

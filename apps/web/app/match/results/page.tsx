@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Target, Eye, Sparkles, Check, Star, ThumbsUp } from 'lucide-react'
+import { Target, Eye, Sparkles, Check, Star, ThumbsUp, Award } from 'lucide-react'
 import type { MatchingResponse, MatchResult } from '@/lib/matching'
 import { EncouragementBanner } from './components/EncouragementBanner'
 import { NextStepsGuide } from './components/NextStepsGuide'
 import { MotivationalQuote } from './components/MotivationalQuote'
 import { ReassuranceBox } from './components/ReassuranceBox'
+import { AvailabilityBadge } from '@/app/components/AvailabilityBadge'
 
 // Score zu Prozent und Farbe konvertieren
 function getScoreDisplay(score: number) {
@@ -58,7 +59,38 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
       )}
 
       <div className="p-5 sm:p-6">
-        {/* Header mit Rang und Score */}
+        {/* Prominenter Match-Score Banner am oberen Rand */}
+        <div className={`mb-4 px-4 py-3 rounded-xl ${bgColor} border-2 ${percent >= 80 ? 'border-green-300' : percent >= 60 ? 'border-primary-300' : 'border-yellow-300'}`}>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Award className={`w-5 h-5 sm:w-6 sm:h-6 ${color}`} strokeWidth={2.5} />
+              <div>
+                <div className={`text-xs font-medium ${color} opacity-80`}>Match-Score</div>
+                <div className={`text-2xl sm:text-3xl font-bold ${color}`}>{percent}%</div>
+              </div>
+            </div>
+            <div className="text-right">
+              {percent >= 80 ? (
+                <div className="flex items-center gap-1.5">
+                  <Star className={`w-4 h-4 ${color}`} fill="currentColor" />
+                  <span className={`text-sm font-bold ${color}`}>Hervorragend</span>
+                </div>
+              ) : percent >= 60 ? (
+                <div className="flex items-center gap-1.5">
+                  <ThumbsUp className={`w-4 h-4 ${color}`} />
+                  <span className={`text-sm font-bold ${color}`}>Sehr gut</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5">
+                  <Check className={`w-4 h-4 ${color}`} />
+                  <span className={`text-sm font-bold ${color}`}>Gut</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Header mit Rang */}
         <div className="flex items-start justify-between mb-4 gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Avatar */}
@@ -97,29 +129,14 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
             </div>
           </div>
 
-          {/* Score Badge */}
+          {/* Verfügbarkeit Badge */}
           <div className="flex-shrink-0">
-            <div className={`px-3 py-2 rounded-xl ${bgColor} ${color} font-bold shadow-md text-center min-w-[70px]`}>
-              <div className="text-lg sm:text-xl">{percent}%</div>
-              <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs opacity-80 whitespace-nowrap">
-                {percent >= 80 ? (
-                  <>
-                    <Star className="w-3 h-3" fill="currentColor" />
-                    <span>Top</span>
-                  </>
-                ) : percent >= 60 ? (
-                  <>
-                    <ThumbsUp className="w-3 h-3" />
-                    <span>Sehr gut</span>
-                  </>
-                ) : (
-                  <>
-                    <Check className="w-3 h-3" />
-                    <span>Gut</span>
-                  </>
-                )}
-              </div>
-            </div>
+            <AvailabilityBadge
+              status={match.therapist.availabilityStatus}
+              estimatedWaitWeeks={match.therapist.estimatedWaitWeeks}
+              acceptingClients={match.therapist.acceptingClients}
+              variant="default"
+            />
           </div>
         </div>
 
