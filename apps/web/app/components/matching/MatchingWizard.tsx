@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Brain,
@@ -81,7 +81,7 @@ export function MatchingWizard() {
   }
 
   // Lade verfügbare Filter-Optionen
-  const fetchFilterOptions = async () => {
+  const fetchFilterOptions = useCallback(async () => {
     setIsLoadingFilters(true)
     try {
       const params = new URLSearchParams()
@@ -128,21 +128,21 @@ export function MatchingWizard() {
     } finally {
       setIsLoadingFilters(false)
     }
-  }
+  }, [formData])
 
   // Lade Filter-Optionen wenn sich relevante Form-Daten ändern
   useEffect(() => {
     if (isOpen && (currentStep === 2 || currentStep === 3)) {
       fetchFilterOptions()
     }
-  }, [isOpen, currentStep, formData.format, formData.insuranceType])
+  }, [isOpen, currentStep, formData.format, formData.insuranceType, fetchFilterOptions])
 
   // Initiales Laden wenn Wizard geöffnet wird
   useEffect(() => {
     if (isOpen) {
       fetchFilterOptions()
     }
-  }, [isOpen])
+  }, [isOpen, fetchFilterOptions])
 
   // Weiter zum nächsten Schritt
   const nextStep = () => {

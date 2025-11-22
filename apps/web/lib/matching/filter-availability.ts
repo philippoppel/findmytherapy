@@ -14,6 +14,15 @@ interface CurrentFilters {
   longitude?: number
 }
 
+interface TherapistForFiltering {
+  id: string
+  languages: string[]
+  specialties: string[]
+  online: boolean
+  acceptedInsurance: string[]
+  privatePractice: boolean
+}
+
 /**
  * Berechnet verfügbare Filter-Optionen basierend auf aktuellen Filtern
  * Zeigt Counts für jede Option (wie viele Therapeuten verfügbar)
@@ -110,8 +119,8 @@ export async function getAvailableFilterOptions(
  * Berechnet verfügbare Sprachen
  */
 function calculateLanguageOptions(
-  therapists: any[],
-  currentFilters: CurrentFilters
+  therapists: TherapistForFiltering[],
+  _currentFilters: CurrentFilters
 ): FilterOption[] {
   // Zähle wie oft jede Sprache vorkommt
   const languageCounts = new Map<string, number>()
@@ -136,8 +145,8 @@ function calculateLanguageOptions(
  * Berechnet verfügbare Versicherungstypen
  */
 function calculateInsuranceOptions(
-  therapists: any[],
-  currentFilters: CurrentFilters
+  therapists: TherapistForFiltering[],
+  _currentFilters: CurrentFilters
 ): FilterOption[] {
   const counts = {
     ANY: therapists.length,
@@ -175,8 +184,8 @@ function calculateInsuranceOptions(
  * Berechnet verfügbare Problemfelder
  */
 function calculateProblemAreaOptions(
-  therapists: any[],
-  currentFilters: CurrentFilters
+  therapists: TherapistForFiltering[],
+  _currentFilters: CurrentFilters
 ): FilterOption[] {
   // Zähle wie oft jede Spezialisierung vorkommt
   const specialtyCounts = new Map<string, number>()
@@ -207,8 +216,8 @@ function calculateProblemAreaOptions(
  * Berechnet verfügbare Formate
  */
 function calculateFormatOptions(
-  therapists: any[],
-  currentFilters: CurrentFilters
+  therapists: TherapistForFiltering[],
+  _currentFilters: CurrentFilters
 ): FilterOption[] {
   const counts = {
     BOTH: 0,
