@@ -17,6 +17,8 @@ export interface TherapistWithListing {
   yearsExperience: number | null
   acceptingClients: boolean
   availabilityNote: string | null
+  availabilityStatus: 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE' | null
+  estimatedWaitWeeks: number | null
   acceptedInsurance: string[]
   ageGroups: string[]
   rating: number | null

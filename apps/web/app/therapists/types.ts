@@ -12,6 +12,8 @@ export type TherapistCard = {
   coordinates: Coordinates | null
   availability: string
   availabilityRank: number
+  availabilityStatus: 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE' | null
+  estimatedWaitWeeks: number | null
   languages: string[]
   rating: number
   reviews: number
