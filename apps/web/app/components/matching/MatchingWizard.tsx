@@ -58,7 +58,7 @@ interface FilterOptions {
 }
 
 export function MatchingWizard() {
-  const { isOpen, closeWizard, setResults, setFormData: setContextFormData, setShowResults } = useMatchingWizard()
+  const { isOpen, closeWizard, setResults, setFormData: setContextFormData, setShowResults, showResults } = useMatchingWizard()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<WizardFormData>(defaultFormData)
   const [isLoading, setIsLoading] = useState(false)
@@ -243,7 +243,8 @@ export function MatchingWizard() {
     closeWizard()
   }
 
-  if (!isOpen) return null
+  // Hide wizard when results are showing or when not open
+  if (!isOpen || showResults) return null
 
   return (
     <AnimatePresence>
