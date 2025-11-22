@@ -139,7 +139,7 @@ test.describe('Matching System', () => {
     await depressionButton.click()
 
     // Click next
-    const nextButton = page.getByRole('button', { name: /Weiter/i })
+    const nextButton = page.getByRole('button', { name: 'Weiter →' })
     await nextButton.click()
     await waitForNetworkIdle(page)
 
@@ -148,7 +148,7 @@ test.describe('Matching System', () => {
     const onlineButton = page.getByRole('button', { name: /Online.*Digital/i })
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 })
     await onlineButton.click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 3: Preferences (Language is required, other fields optional)
@@ -157,7 +157,7 @@ test.describe('Matching System', () => {
     await page.waitForTimeout(500)
 
     // Weiter button should be enabled because Deutsch is selected by default
-    const weiterButton = page.getByRole('button', { name: /Weiter/i })
+    const weiterButton = page.getByRole('button', { name: 'Weiter →' })
     await expect(weiterButton).toBeEnabled({ timeout: 5000 })
     await weiterButton.click()
     await waitForNetworkIdle(page)
@@ -196,18 +196,18 @@ test.describe('Matching System', () => {
     const burnoutButton = page.getByRole('button', { name: /Burnout/i })
     await burnoutButton.waitFor({ state: 'visible', timeout: 10000 })
     await burnoutButton.click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 2: Online
     const onlineButton = page.getByRole('button', { name: /Online.*Digital/i })
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 })
     await onlineButton.click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 3: Language (Deutsch is selected by default, just click Weiter)
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 4: Submit
@@ -242,12 +242,12 @@ test.describe('Matching System', () => {
     // Search for something very specific that won't match
     // Step 1: Problem area
     await page.getByRole('button', { name: /ADHS|Neurodiversität/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 2: Location
     await page.getByRole('button', { name: /Online.*Digital/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 3: Language - try to select uncommon language
@@ -262,7 +262,7 @@ test.describe('Matching System', () => {
     }
     // If Turkish doesn't exist, Deutsch is already selected by default
 
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 4: Submit
@@ -304,14 +304,14 @@ test.describe('Matching System', () => {
     // Search for Anxiety (Sarah Berger is on waitlist but has this specialty)
     // Step 1
     await page.getByRole('button', { name: /Angst/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
 
     // Step 2
     await page.getByRole('button', { name: /Online.*Digital/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
 
     // Step 3 (Deutsch is selected by default, just click Weiter)
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
 
     // Step 4
     await page.getByRole('button', { name: /Therapeuten finden/i }).click()
@@ -347,11 +347,11 @@ test.describe('Matching System', () => {
 
     // Complete quick search
     await page.getByRole('button', { name: /Depression/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await page.getByRole('button', { name: /Online.*Digital/i }).click()
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     // Step 3: Deutsch is already selected by default
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
@@ -392,11 +392,11 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Depression/i }).click()
 
     // Try to proceed without completing required fields on next step
-    await page.getByRole('button', { name: /Weiter/i }).click()
+    await page.getByRole('button', { name: 'Weiter →' }).click()
     await waitForNetworkIdle(page)
 
     // Step 2: Don't select anything, try to proceed
-    const nextButton = page.getByRole('button', { name: /Weiter/i })
+    const nextButton = page.getByRole('button', { name: 'Weiter →' })
 
     // For online, button should be enabled; for location-based, it should require input
     const isOnline = await page.getByRole('button', { name: /Online.*Digital/i }).isVisible()
