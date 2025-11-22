@@ -113,7 +113,7 @@ export function TherapistSearchChoice() {
                   Geführte Suche
                 </h3>
                 <p className="mb-5 text-base leading-relaxed text-muted">
-                  Beantworte ein paar Fragen über deine Bedürfnisse und erhalte personalisierte Therapeuten-Empfehlungen mit Passungs-Scores.
+                  Beantworte ein paar Fragen und erhalte personalisierte Empfehlungen mit Match-Prozenten – sortiert nach Passgenauigkeit.
                 </p>
 
                 {/* Features List */}
@@ -124,7 +124,7 @@ export function TherapistSearchChoice() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
-                    <span className="text-sm text-neutral-700">Matches sortiert nach Passungs-Score</span>
+                    <span className="text-sm text-neutral-700">Ergebnisse sortiert nach Match-Prozent</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
