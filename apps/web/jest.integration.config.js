@@ -29,6 +29,7 @@ const customJestConfig = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
   ],
+  maxWorkers: 1, // Run serially to avoid DB lock contention during TRUNCATE
   // Longer timeout for DB operations
   testTimeout: 30000,
   collectCoverageFrom: [

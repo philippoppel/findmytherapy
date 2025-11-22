@@ -44,22 +44,19 @@ export async function POST(request: NextRequest) {
       createDossierSchema.parse(body)
 
     // Fetch the triage session with client data
-    const triageSession = await prisma.triageSession.findUnique({
-      where: { id: triageSessionId },
-      include: {
-        client: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-        dossier: {
-          select: { id: true, version: true },
+  const triageSession = await prisma.triageSession.findUnique({
+    where: { id: triageSessionId },
+    include: {
+      client: {
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
         },
       },
-    })
+    },
+  })
 
     if (!triageSession) {
       return NextResponse.json(
@@ -99,19 +96,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if dossier already exists
-    if (triageSession.dossier) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Dossier already exists for this triage session',
-          code: 'DOSSIER_EXISTS',
-          existingDossierId: triageSession.dossier.id,
-          version: triageSession.dossier.version,
-        },
-        { status: 409 }
-      )
-    }
+  const existingDossier = await prisma.sessionZeroDossier.findUnique({
+    where: { triageSessionId },
+    select: { id: true, version: true },
+  })
+
+  // Check if dossier already exists
+  if (existingDossier) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Dossier already exists for this triage session',
+        code: 'DOSSIER_EXISTS',
+        existingDossierId: existingDossier.id,
+        version: existingDossier.version,
+      },
+      { status: 409 }
+    )
+  }
 
     // Build dossier payload
     const payload = buildDossierPayload(triageSession, triageSession.client)

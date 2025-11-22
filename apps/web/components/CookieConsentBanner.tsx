@@ -12,6 +12,9 @@ import {
   cookieCategoryInfo,
 } from '../lib/cookies'
 
+const disableCookieBanner =
+  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DISABLE_COOKIE_BANNER === 'true'
+
 export function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
@@ -22,8 +25,10 @@ export function CookieConsentBanner() {
   })
 
   useEffect(() => {
-    // Show banner if consent not given
-    setIsVisible(shouldShowCookieBanner())
+    // Show banner if consent not given (unless explicitly disabled for tests)
+    if (!disableCookieBanner) {
+      setIsVisible(shouldShowCookieBanner())
+    }
   }, [])
 
   const handleAcceptAll = () => {
@@ -47,7 +52,7 @@ export function CookieConsentBanner() {
     setIsVisible(false)
   }
 
-  if (!isVisible) return null
+  if (!isVisible || disableCookieBanner) return null
 
   return (
     <>

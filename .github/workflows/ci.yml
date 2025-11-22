@@ -333,7 +333,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20 # Prevent hanging tests
     needs: [build, unit-tests]
-    if: github.event_name == 'workflow_dispatch'
     services:
       postgres:
         image: postgres:16-alpine
