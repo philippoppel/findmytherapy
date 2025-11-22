@@ -94,12 +94,16 @@ export async function setCached<T>(
   ttlSeconds: number = 300
 ): Promise<void> {
   const client = await getRedisClient()
-  if (!client) return
+  if (!client) {
+    console.log('[Redis] SET skipped - client not available')
+    return
+  }
 
   try {
     await client.set(key, JSON.stringify(value), {
       EX: ttlSeconds,
     })
+    console.log(`[Redis] SET successful: ${key} (TTL: ${ttlSeconds}s)`)
   } catch (error) {
     console.error('[Redis] SET error:', error)
   }
