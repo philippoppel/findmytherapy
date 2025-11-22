@@ -8,6 +8,7 @@ import type {
   TherapistForMatching,
   FilterReason,
   FilteredTherapist,
+  ZeroResultsAnalysis,
 } from './types'
 import { DEFAULT_WEIGHTS, PROBLEM_AREA_MAPPING } from './types'
 import { calculateMatchScore, calculateDistanceKm } from './score-calculator'
@@ -356,6 +357,199 @@ export async function saveMatchingPreferences(
   }
 }
 
+// Analysiere warum keine Ergebnisse gefunden wurden
+export async function analyzeFailedFilters(
+  preferences: MatchingPreferencesInput
+): Promise<ZeroResultsAnalysis> {
+  // Alle Therapeuten laden (wie in findMatches)
+  const rawTherapists = await prisma.therapistProfile.findMany({
+    where: {
+      isPublic: true,
+      status: 'VERIFIED',
+      deletedAt: null,
+    },
+    select: THERAPIST_SELECT,
+  })
+
+  const therapists: TherapistForMatching[] = rawTherapists.map(t => {
+    const availMeta = getAvailabilityMeta(t.availabilityNote, t.acceptingClients)
+    return {
+      ...t,
+      availabilityStatus: availMeta.rank === 0 ? 'AVAILABLE' :
+                         availMeta.rank === 1 ? 'AVAILABLE' :
+                         availMeta.rank === 2 ? 'LIMITED' :
+                         availMeta.rank === 3 ? 'WAITLIST' :
+                         'UNAVAILABLE',
+      estimatedWaitWeeks: availMeta.rank === 0 ? 0 :
+                         availMeta.rank === 1 ? 1 :
+                         availMeta.rank === 2 ? 3 :
+                         availMeta.rank === 3 ? 6 :
+                         12,
+      nextAvailableDate: null,
+    }
+  })
+
+  // Teste jeden harten Filter einzeln
+  const analysis: ZeroResultsAnalysis = {
+    failedFilter: 'none',
+    alternativesCount: {},
+    matchedCriteria: [],
+  }
+
+  // 1. Teste Sprache
+  if (preferences.languages.length > 0) {
+    const withLanguage = therapists.filter(t => {
+      const therapistLangs = (t.languages || []).map(l => l.toLowerCase())
+      return preferences.languages.some(lang =>
+        therapistLangs.includes(lang.toLowerCase())
+      )
+    })
+
+    if (withLanguage.length === 0) {
+      analysis.failedFilter = 'language'
+      analysis.specificValue = preferences.languages.join(', ')
+
+      // Zähle wie viele ohne Sprach-Filter verfügbar wären
+      const withoutLanguageFilter = therapists.filter(t => {
+        // Teste alle anderen Filter außer Sprache
+        if (preferences.insuranceType !== 'ANY' && !checkInsuranceMatch(t, preferences)) return false
+        if (preferences.format === 'ONLINE' && !t.online) return false
+        if (preferences.format === 'IN_PERSON' && !t.city && !t.latitude) return false
+        return true
+      })
+      analysis.alternativesCount.relaxLanguage = withoutLanguageFilter.length
+
+      return analysis
+    } else {
+      // Sprache passt - als matched criterion speichern
+      analysis.matchedCriteria.push({
+        criterion: `Sprache: ${preferences.languages.join(', ')}`,
+        availableCount: withLanguage.length,
+      })
+    }
+  }
+
+  // 2. Teste Versicherung
+  if (preferences.insuranceType !== 'ANY') {
+    const withInsurance = therapists.filter(t => checkInsuranceMatch(t, preferences))
+
+    if (withInsurance.length === 0) {
+      analysis.failedFilter = 'insurance'
+      analysis.specificValue = preferences.insuranceType
+
+      const withoutInsuranceFilter = therapists.filter(t => {
+        if (preferences.languages.length > 0) {
+          const therapistLangs = (t.languages || []).map(l => l.toLowerCase())
+          if (!preferences.languages.some(lang => therapistLangs.includes(lang.toLowerCase()))) return false
+        }
+        if (preferences.format === 'ONLINE' && !t.online) return false
+        if (preferences.format === 'IN_PERSON' && !t.city && !t.latitude) return false
+        return true
+      })
+      analysis.alternativesCount.relaxInsurance = withoutInsuranceFilter.length
+
+      return analysis
+    } else {
+      analysis.matchedCriteria.push({
+        criterion: `Versicherung: ${preferences.insuranceType}`,
+        availableCount: withInsurance.length,
+      })
+    }
+  }
+
+  // 3. Teste Format (Online/Präsenz)
+  if (preferences.format === 'ONLINE') {
+    const withOnline = therapists.filter(t => t.online)
+
+    if (withOnline.length === 0) {
+      analysis.failedFilter = 'format'
+      analysis.specificValue = 'Online-Therapie'
+
+      const withoutFormatFilter = therapists.filter(t => {
+        if (preferences.languages.length > 0) {
+          const therapistLangs = (t.languages || []).map(l => l.toLowerCase())
+          if (!preferences.languages.some(lang => therapistLangs.includes(lang.toLowerCase()))) return false
+        }
+        if (preferences.insuranceType !== 'ANY' && !checkInsuranceMatch(t, preferences)) return false
+        return true
+      })
+      analysis.alternativesCount.relaxFormat = withoutFormatFilter.length
+
+      return analysis
+    } else {
+      analysis.matchedCriteria.push({
+        criterion: 'Online-Therapie',
+        availableCount: withOnline.length,
+      })
+    }
+  }
+
+  // 4. Teste Distanz
+  if (preferences.format !== 'ONLINE' && preferences.maxDistanceKm && preferences.latitude && preferences.longitude) {
+    const inDistance = therapists.filter(t => {
+      if (!t.latitude || !t.longitude) return false
+      const distance = calculateDistanceKm(
+        { lat: preferences.latitude!, lng: preferences.longitude! },
+        { lat: t.latitude, lng: t.longitude }
+      )
+      return distance <= preferences.maxDistanceKm!
+    })
+
+    if (inDistance.length === 0) {
+      analysis.failedFilter = 'distance'
+      analysis.specificValue = `${preferences.maxDistanceKm} km`
+
+      const withoutDistanceFilter = therapists.filter(t => {
+        if (preferences.languages.length > 0) {
+          const therapistLangs = (t.languages || []).map(l => l.toLowerCase())
+          if (!preferences.languages.some(lang => therapistLangs.includes(lang.toLowerCase()))) return false
+        }
+        if (preferences.insuranceType !== 'ANY' && !checkInsuranceMatch(t, preferences)) return false
+        return true
+      })
+      analysis.alternativesCount.relaxDistance = withoutDistanceFilter.length
+
+      return analysis
+    } else {
+      analysis.matchedCriteria.push({
+        criterion: `Umkreis: ${preferences.maxDistanceKm} km`,
+        availableCount: inDistance.length,
+      })
+    }
+  }
+
+  // 5. Teste Spezialisierung (letzter Check)
+  if (preferences.problemAreas.length > 0) {
+    const withSpecialty = therapists.filter(t => checkSpecialtyMatch(t, preferences))
+
+    if (withSpecialty.length === 0) {
+      analysis.failedFilter = 'specialty'
+      analysis.specificValue = preferences.problemAreas.join(', ')
+
+      const withoutSpecialtyFilter = therapists.filter(t => {
+        if (preferences.languages.length > 0) {
+          const therapistLangs = (t.languages || []).map(l => l.toLowerCase())
+          if (!preferences.languages.some(lang => therapistLangs.includes(lang.toLowerCase()))) return false
+        }
+        if (preferences.insuranceType !== 'ANY' && !checkInsuranceMatch(t, preferences)) return false
+        if (preferences.format === 'ONLINE' && !t.online) return false
+        if (preferences.format === 'IN_PERSON' && !t.city && !t.latitude) return false
+        return true
+      })
+      analysis.alternativesCount.relaxSpecialty = withoutSpecialtyFilter.length
+
+      return analysis
+    } else {
+      analysis.matchedCriteria.push({
+        criterion: `Spezialisierung: ${preferences.problemAreas.join(', ')}`,
+        availableCount: withSpecialty.length,
+      })
+    }
+  }
+
+  return analysis
+}
+
 // Vollständige Matching-Response erstellen
 export async function createMatchingResponse(
   preferences: MatchingPreferencesInput,
@@ -368,10 +562,17 @@ export async function createMatchingResponse(
   // Präferenzen speichern
   const saved = await saveMatchingPreferences(preferences, userId)
 
+  // Analysiere warum keine Ergebnisse, wenn 0 Matches
+  let zeroResultsAnalysis: ZeroResultsAnalysis | undefined
+  if (result.total === 0) {
+    zeroResultsAnalysis = await analyzeFailedFilters(preferences)
+  }
+
   return {
     matches: result.matches,
     total: result.total,
     preferences: saved,
+    zeroResultsAnalysis,
   }
 }
 

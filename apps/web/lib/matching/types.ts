@@ -122,6 +122,38 @@ export interface MatchResult {
   distanceKm?: number
 }
 
+// Smart Filtering: Verfügbare Filter-Optionen mit Counts
+export interface FilterOption {
+  value: string
+  label: string
+  count: number
+  available: boolean
+}
+
+export interface FilterOptionsResponse {
+  languages: FilterOption[]
+  insuranceTypes: FilterOption[]
+  problemAreas: FilterOption[]
+  formats: FilterOption[]
+}
+
+// Analyse warum keine Ergebnisse gefunden wurden
+export interface ZeroResultsAnalysis {
+  failedFilter: 'language' | 'insurance' | 'format' | 'distance' | 'specialty' | 'none'
+  specificValue?: string
+  alternativesCount: {
+    relaxLanguage?: number
+    relaxInsurance?: number
+    relaxFormat?: number
+    relaxDistance?: number
+    relaxSpecialty?: number
+  }
+  matchedCriteria: {
+    criterion: string
+    availableCount: number
+  }[]
+}
+
 // API-Response für /api/match
 export interface MatchingResponse {
   matches: MatchResult[]
@@ -130,6 +162,7 @@ export interface MatchingResponse {
     id: string
     sessionId: string
   }
+  zeroResultsAnalysis?: ZeroResultsAnalysis
 }
 
 // Filter-Grund für ausgeschlossene Therapeuten

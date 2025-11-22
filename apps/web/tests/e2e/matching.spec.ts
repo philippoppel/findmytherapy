@@ -121,9 +121,13 @@ test.describe('Matching System', () => {
   })
 
   test('should complete wizard and find perfect matches', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Page should load
     await expect(page.getByRole('heading', { name: /Finden Sie Ihren Therapeuten/i })).toBeVisible()
@@ -180,9 +184,13 @@ test.describe('Matching System', () => {
   })
 
   test('should show matches even when none are perfect', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Step 1: Select specific problem area
     const burnoutButton = page.getByRole('button', { name: /Burnout/i })
@@ -223,9 +231,13 @@ test.describe('Matching System', () => {
   })
 
   test('should handle no matches gracefully with alternatives', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Search for something very specific that won't match
     // Step 1: Problem area
@@ -281,9 +293,13 @@ test.describe('Matching System', () => {
   })
 
   test('should show waitlist therapists with clear communication', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Search for Anxiety (Sarah Berger is on waitlist but has this specialty)
     // Step 1
@@ -321,9 +337,13 @@ test.describe('Matching System', () => {
   })
 
   test('should allow adjusting search/going back to wizard', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Complete quick search
     await page.getByRole('button', { name: /Depression/i }).click()
@@ -335,34 +355,38 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
-    // Should be on results page
-    await expect(page).toHaveURL(/\/match\/results/i)
+    // Should show inline results
+    await page.waitForSelector('#matching-results', { state: 'visible' })
+    await expect(page.getByRole('heading', { name: /persönlichen Empfehlungen/i })).toBeVisible()
 
     // Should have option to adjust search
-    const adjustButton = page.getByRole('link', { name: /neue suche|suche anpassen|zurück/i }).or(
-      page.getByRole('button', { name: /neue suche|suche anpassen|zurück/i })
-    )
+    const adjustButton = page.getByRole('button', { name: /neue suche|suche anpassen/i }).first()
 
-    // Check if button exists (it's okay if it doesn't, but if it does, it should work)
-    const buttonExists = await adjustButton.first().isVisible().catch(() => false)
+    // Check if button exists and click it
+    const buttonExists = await adjustButton.isVisible().catch(() => false)
 
     if (buttonExists) {
-      await adjustButton.first().click()
+      await adjustButton.click()
       await waitForNetworkIdle(page)
 
-      // Should go back to wizard (either start or previous step)
-      const isOnWizard =
-        (await page.url().includes('/match')) &&
-        !(await page.url().includes('/match/results'))
+      // Should show wizard again and hide results
+      await page.waitForSelector('#matching-wizard', { state: 'visible' })
+      await expect(page.getByRole('heading', { name: /Finden Sie Ihren Therapeuten/i })).toBeVisible()
 
-      expect(isOnWizard).toBeTruthy()
+      // Results should be hidden
+      const resultsHidden = await page.locator('#matching-results').isHidden().catch(() => true)
+      expect(resultsHidden).toBeTruthy()
     }
   })
 
   test('should persist and validate wizard form data', async ({ page }) => {
-    await page.goto('/match')
+    await page.goto('/')
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
+
+    // Click "Matching starten" button to open wizard
+    await page.getByRole('button', { name: /matching starten/i }).first().click()
+    await page.waitForSelector('#matching-wizard', { state: 'visible' })
 
     // Step 1: Select problem area
     await page.getByRole('button', { name: /Depression/i }).click()

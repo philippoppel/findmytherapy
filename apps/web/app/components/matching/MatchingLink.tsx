@@ -1,10 +1,10 @@
 'use client'
 
 import { ReactNode } from 'react'
-import Link from 'next/link'
+import { useMatchingWizard } from './MatchingWizardContext'
 
 interface MatchingLinkProps {
-  href: string
+  href?: string
   children: ReactNode
   className?: string
   onClick?: (event: React.MouseEvent) => void
@@ -12,12 +12,33 @@ interface MatchingLinkProps {
 
 /**
  * Link component for matching navigation
- * Always navigates directly to the page (no modal)
+ * Opens the inline matching wizard instead of navigating to a separate page
  */
-export function MatchingLink({ href, children, className, onClick }: MatchingLinkProps) {
+export function MatchingLink({ children, className, onClick }: MatchingLinkProps) {
+  const { openWizard } = useMatchingWizard()
+
+  const handleClick = (event: React.MouseEvent) => {
+    event.preventDefault()
+
+    if (onClick) {
+      onClick(event)
+    }
+
+    // Open the wizard
+    openWizard()
+
+    // Smooth scroll to the wizard after a brief delay to allow for expansion
+    setTimeout(() => {
+      const wizardElement = document.getElementById('matching-wizard')
+      if (wizardElement) {
+        wizardElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
+  }
+
   return (
-    <Link href={href} className={className} onClick={onClick}>
+    <button onClick={handleClick} className={className}>
       {children}
-    </Link>
+    </button>
   )
 }

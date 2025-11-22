@@ -15,7 +15,7 @@ export const heroContent = {
     'Entdecke gratis Ratgeber von anerkannten Psychotherapeut:innen für sofortige Hilfe. Oder finde verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites. Therapeut:innen erhalten individuelle Microsites und maximale Online-Sichtbarkeit durch unsere SEO-Expert:innen. Transparent und DSGVO-konform (EU-Datenschutz).',
   primaryCta: {
     label: 'Matching starten',
-    href: '/match',
+    href: '#matching-wizard',
   },
   secondaryCta: {
     label: 'Alle durchsuchen',

@@ -85,7 +85,7 @@ export function TherapistSearchChoice() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <MatchingLink href="/match" className="block h-full">
+            <MatchingLink className="block h-full">
               <motion.div
                 className="group relative h-full overflow-hidden rounded-3xl border-2 border-primary-200/60 bg-gradient-to-br from-white via-primary-50/20 to-white p-6 shadow-xl shadow-primary-500/5 transition-all hover:border-primary-300 hover:shadow-2xl hover:shadow-primary-500/10 sm:p-8"
                 whileHover={

@@ -6,6 +6,7 @@ import { ContactCta } from '../components/marketing/ContactCta'
 import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
 import { AboutSection } from '../components/marketing/AboutSection'
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection'
+import { MatchingSection } from '../components/matching/MatchingSection'
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic'
@@ -195,6 +196,9 @@ export default function HomePage() {
         <div className="px-3 pt-6 sm:px-4 sm:pt-10 lg:px-8">
           <MarketingHero content={heroContent} />
         </div>
+
+        {/* Matching Wizard & Results - Inline Expansion */}
+        <MatchingSection />
 
         {/* Two Pillar Section - Knowledge Hub & Therapist SEO Showcase */}
         <TwoPillarSection />
