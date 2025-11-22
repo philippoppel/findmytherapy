@@ -5,6 +5,7 @@ import { getTherapistCards } from '../../therapists/getTherapistCards'
 import { TherapistSearchChoice } from '../../therapists/components/TherapistSearchChoice'
 // import type { TherapistCard } from '../../therapists/types'
 import { Reveal } from './Reveal'
+import { MatchingSection } from '../matching/MatchingSection'
 
 // Commented out for now - can be used later for stats display
 /* import type { TherapistCard } from '../../therapists/types'
@@ -73,6 +74,9 @@ export async function TherapistFinderSection() {
     <>
       {/* Choice Section - Matching vs Browse */}
       <TherapistSearchChoice />
+
+      {/* Matching Wizard & Results - Inline Expansion */}
+      <MatchingSection />
 
       {/* Browse All Section */}
       <section
