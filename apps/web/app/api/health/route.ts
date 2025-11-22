@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getDatabaseHealth } from '@/lib/db-health-check'
+import { checkRedisHealth } from '@/lib/redis'
 
 /**
  * Health-Check Endpoint
@@ -9,10 +10,22 @@ import { getDatabaseHealth } from '@/lib/db-health-check'
  * - Datenbankverbindung
  * - Kritische Tabellen
  * - Basis-Statistiken
+ * - Redis Cache Verfügbarkeit
  */
 export async function GET() {
   try {
-    const health = await getDatabaseHealth()
+    const [dbHealth, redisHealthy] = await Promise.all([
+      getDatabaseHealth(),
+      checkRedisHealth()
+    ])
+
+    const health = {
+      ...dbHealth,
+      redis: {
+        available: redisHealthy,
+        url: process.env.RD_REDIS_URL ? 'RD_REDIS_URL set' : (process.env.REDIS_URL ? 'REDIS_URL set' : 'not configured')
+      }
+    }
 
     const statusCode = health.status === 'healthy' ? 200 : 503
 
