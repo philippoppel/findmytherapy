@@ -123,11 +123,40 @@ test.describe('Therapeut:innen Suche & Filter', () => {
     await dismissCookieBanner(page)
     await waitForNetworkIdle(page)
 
-    // Verify Thomas Wagner exists before testing filter
-    const wagnerExists = await page.getByText(/Thomas Wagner/i).count()
-    if (wagnerExists === 0) {
-      test.skip()
-      return
+    // Verify Thomas Wagner exists in database, re-create if needed
+    const wagnerProfile = await db.therapistProfile.findFirst({
+      where: {
+        displayName: 'Dr. Thomas Wagner',
+        status: 'VERIFIED',
+        isPublic: true,
+      },
+    })
+
+    if (!wagnerProfile) {
+      console.log('Thomas Wagner profile not found, re-creating...')
+
+      const userData = await createTestTherapist({ firstName: 'Dr. Thomas', lastName: 'Wagner' })
+      const user = await db.user.create({ data: userData })
+
+      const profileData = createTestTherapistProfile({
+        userId: user.id,
+        status: 'VERIFIED',
+        isPublic: true,
+        displayName: 'Dr. Thomas Wagner',
+        city: 'Graz',
+        online: false,
+        specialties: ['Trauma', 'PTSD'],
+        languages: ['Deutsch'],
+        priceMin: 10000,
+        priceMax: 15000,
+      })
+
+      await db.therapistProfile.create({ data: profileData })
+
+      // Reload page to show new data
+      await page.reload()
+      await dismissCookieBanner(page)
+      await waitForNetworkIdle(page)
     }
 
     // Click "Präsenz" filter button

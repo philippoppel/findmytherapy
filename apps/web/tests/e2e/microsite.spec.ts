@@ -335,9 +335,45 @@ test.describe('Therapist Microsites - SEO & Data Management', () => {
       where: { id: testProfileId },
     })
 
+    // If profile doesn't exist (e.g., due to cleanup from retry), re-create it
     if (!existingProfile) {
-      test.skip()
-      return
+      console.log('Profile was deleted, re-creating for this test...')
+
+      // Re-create user if needed
+      const userData = await createTestTherapist({ firstName: 'Dr. Maria', lastName: 'Schmidt' })
+      const user = await db.user.create({
+        data: userData,
+      })
+
+      const baseProfileData = createTestTherapistProfile({
+        userId: user.id,
+        status: 'VERIFIED',
+        isPublic: true,
+        displayName: 'Dr. Maria Schmidt',
+        title: 'Klinische Psychologin & Psychotherapeutin',
+        headline: 'Spezialisiert auf Angststörungen und Depression',
+        city: 'Wien',
+        country: 'AT',
+        online: true,
+        specialties: ['Angststörungen', 'Depression', 'Burnout'],
+        languages: ['Deutsch', 'Englisch'],
+        modalities: ['Verhaltenstherapie', 'MBSR'],
+        priceMin: 9000,
+        priceMax: 12000,
+        yearsExperience: 10,
+        acceptingClients: true,
+      })
+
+      const profileData = {
+        ...baseProfileData,
+        about:
+          'Mit über 10 Jahren Erfahrung unterstütze ich Menschen bei der Bewältigung von Angststörungen, Depression und Burnout. Mein Ansatz kombiniert evidenzbasierte Methoden der Verhaltenstherapie mit achtsamkeitsbasierten Interventionen.',
+        micrositeSlug: testSlug,
+        micrositeStatus: 'PUBLISHED' as const,
+        profileImageUrl: '/images/test-therapist.jpg',
+      }
+
+      await db.therapistProfile.create({ data: { ...profileData, id: testProfileId } })
     }
 
     // Update profile headline
