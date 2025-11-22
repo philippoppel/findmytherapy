@@ -101,13 +101,7 @@ export async function getAvailableFilterOptions(
   }
 
   // In Redis cachen (5 Minuten TTL) - mit Fallback falls Redis nicht verfügbar
-  try {
-    await kv.set(cacheKey, options, { ex: 300 })
-    console.log('[Cache] Filter options saved to Redis')
-  } catch (error) {
-    // Redis nicht verfügbar - ignorieren, funktioniert auch ohne Cache
-    console.log('[Cache] Could not save to Redis, continuing without cache')
-  }
+  await setCached(cacheKey, options, 300)
 
   return options
 }
