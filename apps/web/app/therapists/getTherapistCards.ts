@@ -135,19 +135,21 @@ function transformProfileToCard(profile: TherapistProfileWithUser): TherapistCar
 function deriveFormatTags(location: string, online: boolean): TherapistCard['formatTags'] {
   const tags = new Set<TherapistCard['formatTags'][number]>()
 
+  // Check if therapist has a physical location (not just "Online")
+  const hasPhysicalLocation = location && location.toLowerCase() !== 'online'
+
+  // Add format tags based on service offering
+  if (hasPhysicalLocation) {
+    tags.add('praesenz')
+  }
+
   if (online) {
     tags.add('online')
   }
 
-  const lowerLocation = location.toLowerCase()
-  if (lowerLocation.includes('präsenz') || lowerLocation.includes('praesenz')) {
-    tags.add('praesenz')
-  }
-  if (lowerLocation.includes('hybrid')) {
+  // If both online and physical location, also add hybrid
+  if (hasPhysicalLocation && online) {
     tags.add('hybrid')
-  }
-  if (lowerLocation.includes('online')) {
-    tags.add('online')
   }
 
   return Array.from(tags)
