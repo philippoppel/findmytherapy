@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Search, Target, Grid3x3, Sparkles, Check } from 'lucide-react'
+import { Search, Target, Grid3x3, Sparkles, Check, Compass } from 'lucide-react'
 import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion'
 import { MatchingLink } from '@/app/components/matching/MatchingLink'
 
@@ -63,12 +63,23 @@ export function TherapistSearchChoice() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-4 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 px-4 py-2 text-sm font-medium text-neutral-800 shadow-sm">
-              <Search className="h-4 w-4 text-primary-600" />
-              <span>Finde deine:n Therapeut:in</span>
+          {/* Logo */}
+          <div className="mb-6 flex justify-center">
+            <div className="flex items-center gap-3">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 shadow-lg">
+                <Compass className="h-7 w-7 text-white" aria-hidden />
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="text-xl font-semibold leading-tight text-neutral-900">
+                  FindMyTherapy
+                </span>
+                <span className="text-sm font-medium text-muted">
+                  Mentale Orientierung
+                </span>
+              </div>
             </div>
           </div>
+
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
             Wie möchtest du suchen?
           </h1>
