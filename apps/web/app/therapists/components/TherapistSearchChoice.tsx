@@ -116,7 +116,7 @@ export function TherapistSearchChoice() {
                 </div>
 
                 {/* Icon */}
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
+                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30">
                   <Target className="h-7 w-7 text-white" />
                 </div>
 
@@ -189,7 +189,7 @@ export function TherapistSearchChoice() {
                 <div className="mb-4 h-6" aria-hidden="true" />
 
                 {/* Icon */}
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-neutral-700 to-neutral-800 shadow-lg shadow-neutral-500/30">
+                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-neutral-700 to-neutral-800 shadow-lg shadow-neutral-500/30">
                   <Grid3x3 className="h-7 w-7 text-white" />
                 </div>
 
