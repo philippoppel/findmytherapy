@@ -10,7 +10,7 @@ export function TherapistSearchChoice() {
 
   const handleScrollToSearch = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
-    const element = document.getElementById('therapist-directory')
+    const element = document.getElementById('therapist-list')
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -169,7 +169,7 @@ export function TherapistSearchChoice() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <a
-              href="#therapist-directory"
+              href="#therapist-list"
               onClick={handleScrollToSearch}
               className="block h-full"
             >

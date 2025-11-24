@@ -71,7 +71,7 @@ export async function TherapistFinderSection() {
   }
 
   return (
-    <>
+    <div id="therapist-directory">
       {/* Choice Section - Matching vs Browse */}
       <TherapistSearchChoice />
 
@@ -80,7 +80,7 @@ export async function TherapistFinderSection() {
 
       {/* Browse All Section */}
       <section
-        id="therapist-directory"
+        id="therapist-list"
         className="relative overflow-hidden bg-gradient-to-b from-primary-800 via-neutral-800 to-neutral-900 py-16 text-white sm:py-20 lg:py-24 xl:py-28"
       >
         {/* Background Decoration */}
@@ -130,6 +130,6 @@ export async function TherapistFinderSection() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(therapistListStructuredData) }}
         />
       </section>
-    </>
+    </div>
   )
 }
