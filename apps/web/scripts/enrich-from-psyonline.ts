@@ -22,6 +22,7 @@
 
 import { PrismaClient } from '@prisma/client'
 import { chromium } from 'playwright'
+import { appendFileSync, writeFileSync } from 'fs'
 
 const prisma = new PrismaClient()
 
@@ -34,6 +35,11 @@ const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : undefined
 
 // IMPORTANT: Respect robots.txt crawl-delay of 10 seconds
 const CRAWL_DELAY_MS = 10000
+
+// CSV log file
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
+const CSV_FILE = `/tmp/psyonline-enrichment-${timestamp}.csv`
+const NO_WEBSITE_FILE = `/tmp/psyonline-no-website-${timestamp}.csv`
 
 interface EnrichmentResult {
   therapistId: string
@@ -64,6 +70,71 @@ interface EnrichmentStats {
 }
 
 /**
+ * Check if website is a real therapist website (not bestnet)
+ */
+function isRealWebsite(url: string | undefined): boolean {
+  if (!url) return false
+
+  const bestnetDomains = [
+    'psyonline.at', 'psychologen.at', 'supervision.at',
+    'psychotherapeuten.at', 'coaching.cc', 'lebensberatung.at',
+    'berater.at', 'besthelp.at', 'bestmed.at', 'bestnet',
+    'aufstellerinnen.at', 'mediation.at', 'training.at',
+    'ergotherapeuten.at', 'kunsttherapie.at'
+  ]
+
+  try {
+    const urlObj = new URL(url)
+    const hostname = urlObj.hostname.toLowerCase().replace('www.', '')
+    return !bestnetDomains.some(domain => hostname.includes(domain))
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Write enrichment result to CSV log
+ */
+function logToCsv(result: EnrichmentResult, city: string) {
+  const escapeCsv = (str: string | undefined) => {
+    if (!str) return ''
+    // Escape quotes and wrap in quotes if contains comma
+    const escaped = str.replace(/"/g, '""')
+    return escaped.includes(',') ? `"${escaped}"` : escaped
+  }
+
+  const row = [
+    result.therapistName,
+    city,
+    result.matchConfidence,
+    result.websiteUrl ? 'ja' : 'nein',
+    result.profileImageUrl ? 'ja' : 'nein',
+    result.about ? 'ja' : 'nein',
+    result.socialLinkedin || result.socialInstagram || result.socialFacebook ? 'ja' : 'nein',
+    result.priceMin || result.priceMax ? 'ja' : 'nein',
+    escapeCsv(result.websiteUrl),
+    escapeCsv(result.psyonlineUrl),
+    result.error ? escapeCsv(result.error) : '',
+  ].join(',')
+
+  appendFileSync(CSV_FILE, row + '\n')
+}
+
+/**
+ * Log therapist without real website
+ */
+function logNoWebsite(therapistName: string, city: string, reason: string, bestnetUrl?: string) {
+  const row = [
+    therapistName,
+    city,
+    reason,
+    bestnetUrl || ''
+  ].join(',')
+
+  appendFileSync(NO_WEBSITE_FILE, row + '\n')
+}
+
+/**
  * Main function
  */
 async function main() {
@@ -75,7 +146,27 @@ async function main() {
   if (limit) {
     console.log(`Limit: ${limit} profiles`)
   }
+  console.log(`CSV Log: ${CSV_FILE}`)
   console.log('='.repeat(80) + '\n')
+
+  // Initialize CSV files with headers
+  const csvHeader = [
+    'Name',
+    'Stadt',
+    'Match',
+    'Website',
+    'Foto',
+    'Beschreibung',
+    'Social Media',
+    'Preis',
+    'Website URL',
+    'PsyOnline URL',
+    'Fehler',
+  ].join(',')
+  writeFileSync(CSV_FILE, csvHeader + '\n')
+
+  const noWebsiteHeader = ['Name', 'Stadt', 'Grund', 'Bestnet URL'].join(',')
+  writeFileSync(NO_WEBSITE_FILE, noWebsiteHeader + '\n')
 
   // Fetch profiles to enrich
   const whereClause = force
@@ -158,6 +249,9 @@ async function main() {
       try {
         const result = await enrichFromPsyonline(browser, profile)
 
+        // Log to CSV
+        logToCsv(result, profile.city || '')
+
         if (result.error) {
           console.log(`         ❌ FEHLER: ${result.error}`)
           stats.failed++
@@ -187,17 +281,41 @@ async function main() {
         if (result.priceMin || result.priceMax) {
           console.log(`         💰 Preis: €${result.priceMin || '?'}-${result.priceMax || '?'}`)
         }
+        if (result.socialLinkedin) {
+          console.log(`         🔗 LinkedIn: ${result.socialLinkedin}`)
+        }
+        if (result.socialInstagram) {
+          console.log(`         📷 Instagram: ${result.socialInstagram}`)
+        }
+        if (result.socialFacebook) {
+          console.log(`         👍 Facebook: ${result.socialFacebook}`)
+        }
 
         // Track confidence
         if (result.matchConfidence === 'high') stats.highConfidence++
         if (result.matchConfidence === 'medium') stats.mediumConfidence++
         if (result.matchConfidence === 'low') stats.lowConfidence++
 
+        // Check if website is real (not bestnet)
+        const hasRealWebsite = isRealWebsite(result.websiteUrl)
+
+        if (!hasRealWebsite) {
+          // Log therapist without real website
+          if (result.matchConfidence === 'none') {
+            logNoWebsite(profile.displayName || 'Unknown', profile.city || '', 'Kein Match gefunden')
+          } else if (result.websiteUrl) {
+            logNoWebsite(profile.displayName || 'Unknown', profile.city || '', 'Nur Bestnet Website', result.websiteUrl)
+          } else {
+            logNoWebsite(profile.displayName || 'Unknown', profile.city || '', 'Keine Website auf psyonline.at')
+          }
+        }
+
         // Update database (unless dry run or low confidence)
+        // Only save real websites, not bestnet
         if (!isDryRun && result.matchConfidence !== 'low') {
           const updateData: any = {}
 
-          if (result.websiteUrl) updateData.websiteUrl = result.websiteUrl
+          if (hasRealWebsite && result.websiteUrl) updateData.websiteUrl = result.websiteUrl
           if (result.profileImageUrl) updateData.profileImageUrl = result.profileImageUrl
           if (result.about) updateData.about = result.about
           if (result.priceMin) updateData.priceMin = result.priceMin
@@ -247,6 +365,9 @@ async function main() {
   // Print summary
   printSummary(stats)
 
+  console.log(`\n📄 Detailliertes Log: ${CSV_FILE}`)
+  console.log(`📄 Therapeuten ohne echte Website: ${NO_WEBSITE_FILE}`)
+
   if (isDryRun) {
     console.log('\n⚠️  Dies war ein DRY RUN. Keine Änderungen wurden gespeichert.')
     console.log('Führe ohne --dry-run aus um Änderungen zu speichern.')
@@ -287,12 +408,38 @@ async function enrichFromPsyonline(
     const firstName = profile.user.firstName || profile.displayName?.split(' ')[0] || ''
     const lastName = profile.user.lastName || profile.displayName?.split(' ').pop() || ''
 
-    // Navigate to psyonline search
-    const searchUrl = `https://www.psyonline.at/psychotherapeutinnen?name=${encodeURIComponent(lastName)}`
-    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    // Navigate to psyonline quick search
+    await page.goto('https://www.psyonline.at/psychotherapeutinnen-schnellsuche', {
+      waitUntil: 'networkidle',
+      timeout: 15000
+    })
     await page.waitForTimeout(2000)
 
-    // Find search results - More flexible approach
+    // Fill search form
+    const familyNameField = await page.$('input[name="familienname"]')
+    const ortField = await page.$('input[name="ort"]')
+
+    if (!familyNameField) {
+      result.error = 'Could not find search form'
+      return result
+    }
+
+    await familyNameField.fill(lastName)
+    if (ortField && profile.city) {
+      await ortField.fill(profile.city)
+    }
+
+    // Click the correct search button (search_random = Standard-Suche)
+    const searchButton = await page.$('input[name="search_random"]')
+    if (!searchButton) {
+      result.error = 'Could not find search button'
+      return result
+    }
+
+    await searchButton.click()
+    await page.waitForTimeout(5000) // Wait for results to load
+
+    // Find search results - Look for profile links with personen_id
     const searchResults = await page.evaluate(() => {
       const results: Array<{
         name: string
@@ -301,58 +448,32 @@ async function enrichFromPsyonline(
         snippet: string
       }> = []
 
-      // Strategy 1: Look for all links with names in them
-      const allLinks = Array.from(document.querySelectorAll('a[href*="therapeut"], a[href*="person"]'))
+      // Find all links with personen_id (these are the profile links)
+      const profileLinks = Array.from(document.querySelectorAll('a[href*="personen_id="]'))
 
-      allLinks.forEach((link: Element) => {
+      profileLinks.forEach((link: Element) => {
         const href = link.getAttribute('href') || ''
         const text = link.textContent?.trim() || ''
 
-        // Skip navigation links
-        if (text.length < 5 || text.length > 100) return
-        if (href.includes('?') && !href.includes('/')) return // Query params only
+        // Only process links with name-like text (not too long, not too short)
+        if (text.length < 5 || text.length > 150) return
 
-        // Look for name patterns (capitalized words)
-        const hasName = /[A-ZÄÖÜ][a-zäöüß]+\s+[A-ZÄÖÜ][a-zäöüß]+/.test(text)
+        // Look for name patterns
+        const hasName = /[A-ZÄÖÜ][a-zäöüß]+/.test(text)
+        if (!hasName) return
 
-        if (hasName) {
-          // Try to find city in parent element
-          const parent = link.parentElement
-          const parentText = parent?.textContent || ''
-          const cityMatch = parentText.match(/\d{4}\s+([A-ZÄÖÜ][a-zäöüß]+)/)
+        // Try to find city in parent container
+        const container = link.closest('div')
+        const containerText = container?.textContent || ''
+        const cityMatch = containerText.match(/\d{4}\s+([A-ZÄÖÜ][a-zäöüß]+)/)
 
-          results.push({
-            name: text,
-            url: href,
-            city: cityMatch ? cityMatch[1] : '',
-            snippet: parentText.slice(0, 200),
-          })
-        }
-      })
-
-      // Strategy 2: If no results, try looking for ANY element with person-like text
-      if (results.length === 0) {
-        const allElements = Array.from(document.querySelectorAll('h2, h3, h4, .name, [class*="person"], [class*="therapist"]'))
-
-        allElements.forEach((el: Element) => {
-          const text = el.textContent?.trim() || ''
-          const hasName = /[A-ZÄÖÜ][a-zäöüß]+\s+[A-ZÄÖÜ][a-zäöüß]+/.test(text)
-
-          if (hasName && text.length < 100) {
-            // Look for link in same element or parent
-            const link = el.querySelector('a') || el.closest('a') || el.parentElement?.querySelector('a')
-
-            if (link) {
-              results.push({
-                name: text,
-                url: link.getAttribute('href') || '',
-                city: '',
-                snippet: el.parentElement?.textContent?.slice(0, 200) || '',
-              })
-            }
-          }
+        results.push({
+          name: text,
+          url: href,
+          city: cityMatch ? cityMatch[1] : '',
+          snippet: containerText.slice(0, 200),
         })
-      }
+      })
 
       return results
     })
@@ -378,44 +499,77 @@ async function enrichFromPsyonline(
     }
 
     // Navigate to profile page
-    const profileUrl = bestMatch.url.startsWith('http')
-      ? bestMatch.url
-      : `https://www.psyonline.at${bestMatch.url}`
+    let profileUrl = bestMatch.url
+    // Handle relative URLs and different URL formats
+    if (!profileUrl.startsWith('http')) {
+      profileUrl = `https://www.psyonline.at${profileUrl}`
+    }
+    // Handle PsyOnline.at vs psyonline.at
+    profileUrl = profileUrl.replace('www.PsyOnline.at', 'www.psyonline.at')
 
     await page.goto(profileUrl, { waitUntil: 'domcontentloaded', timeout: 15000 })
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(3000) // Wait longer for dynamic content
 
     // Extract profile data
     const profileData = await page.evaluate(() => {
       const data: any = {}
 
-      // Photo
-      const photoEl = document.querySelector('img.profile-photo, img.therapist-photo, [itemprop="image"]')
-      if (photoEl) {
-        data.profileImageUrl = photoEl.getAttribute('src')
+      // Photo - look for webface images (psyonline.at specific)
+      const images = Array.from(document.querySelectorAll('img[src*="webface"], img[alt*="Moser"], img[alt*="Schmidt"], img[alt*="Müller"]'))
+      if (images.length > 0) {
+        const photoImg = images.find(img => {
+          const src = img.getAttribute('src') || ''
+          return src.includes('webface') && img.width >= 80
+        })
+        if (photoImg) {
+          data.profileImageUrl = photoImg.getAttribute('src')
+        }
       }
 
-      // About/Description
-      const aboutSelectors = [
-        '.about, .description, .bio',
-        '[itemprop="description"]',
-        'section.about p',
-        '.profile-text',
-      ]
-      for (const selector of aboutSelectors) {
-        const aboutEl = document.querySelector(selector)
-        if (aboutEl?.textContent) {
-          data.about = aboutEl.textContent.trim()
+      // About/Description - look for text after "Bilder" or profile description
+      const bodyText = document.body.innerText
+      const lines = bodyText.split('\n').map(l => l.trim()).filter(l => l.length > 0)
+
+      // Find description (usually after address/contact info)
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i]
+        // Look for descriptive text (longer than 50 chars, contains full sentences)
+        if (line.length > 50 &&
+            line.includes('.') &&
+            !line.includes('http') &&
+            !line.includes('PLZ') &&
+            !line.includes('Umkreis') &&
+            !line.match(/^\d{4}/)) { // Not a zip code
+          data.about = line
           break
         }
       }
 
-      // Website
-      const websiteEl = document.querySelector('a[href*="www"], a.website, [itemprop="url"]')
-      if (websiteEl) {
-        const href = websiteEl.getAttribute('href')
-        if (href && !href.includes('psyonline.at')) {
+      // Website - look for external links (not psyonline.at or other bestnet sites)
+      const allLinks = Array.from(document.querySelectorAll('a[href^="http"]'))
+      const bestnetDomains = [
+        'psyonline.at',
+        'psychologen.at',
+        'supervision.at',
+        'psychotherapeuten.at',
+        'coaching.cc',
+        'lebensberatung.at',
+        'berater.at',
+        'besthelp.at',
+        'bestmed.at',
+        'bestnet'
+      ]
+
+      for (const link of allLinks) {
+        const href = link.getAttribute('href') || ''
+        const isBestnet = bestnetDomains.some(domain => href.toLowerCase().includes(domain))
+        const isSocialMedia = href.includes('facebook.com') ||
+                              href.includes('instagram.com') ||
+                              href.includes('linkedin.com')
+
+        if (href && !isBestnet && !isSocialMedia) {
           data.websiteUrl = href
+          break
         }
       }
 

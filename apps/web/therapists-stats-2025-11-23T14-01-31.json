@@ -1,0 +1,122 @@
+{
+  "total": 5468,
+  "publicProfiles": 5465,
+  "verifiedProfiles": 5465,
+  "fieldStats": {
+    "profileImageUrl": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "about": {
+      "filled": 5466,
+      "empty": 2,
+      "percentage": 100
+    },
+    "websiteUrl": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "videoUrl": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "priceMin": {
+      "filled": 4,
+      "empty": 5464,
+      "percentage": 0
+    },
+    "priceMax": {
+      "filled": 4,
+      "empty": 5464,
+      "percentage": 0
+    },
+    "latitude": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "longitude": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "socialLinkedin": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "socialInstagram": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "socialFacebook": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "availabilityStatus": {
+      "filled": 0,
+      "empty": 5468,
+      "percentage": 0
+    },
+    "headline": {
+      "filled": 5466,
+      "empty": 2,
+      "percentage": 100
+    },
+    "yearsExperience": {
+      "filled": 5466,
+      "empty": 2,
+      "percentage": 100
+    },
+    "micrositeSlug": {
+      "filled": 2,
+      "empty": 5466,
+      "percentage": 0
+    },
+    "pricingNote": {
+      "filled": 5468,
+      "empty": 0,
+      "percentage": 100
+    },
+    "availabilityNote": {
+      "filled": 5466,
+      "empty": 2,
+      "percentage": 100
+    }
+  },
+  "completenessDistribution": {
+    "0-25%": 2,
+    "26-50%": 4307,
+    "51-75%": 1159,
+    "76-100%": 0
+  },
+  "cityDistribution": {
+    "Wien": 5031,
+    "Mödling": 17,
+    "Klosterneuburg": 14,
+    "Purkersdorf": 12,
+    "Baden": 10,
+    "Wien,Innere Stadt": 9,
+    "Perchtoldsdorf": 8,
+    "Tulln": 8,
+    "Graz": 8,
+    "Linz": 7,
+    "Wien,Döbling": 7,
+    "Korneuburg": 7,
+    "Eisenstadt": 6,
+    "Wien,Hietzing": 6,
+    "Wiener Neustadt": 6,
+    "Wien,Hernals": 6,
+    "Wien,Penzing": 6,
+    "Wien,Liesing": 6,
+    "St. Pölten": 5,
+    "Gänserndorf": 5
+  },
+  "stateDistribution": {},
+  "timestamp": "2025-11-23T14:01:33.000Z"
+}
