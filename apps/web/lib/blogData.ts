@@ -2616,6 +2616,218 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'panikattacke-oder-herzinfarkt-unterschied',
+    title: 'Panikattacke oder Herzinfarkt? Der wichtigste Unterschied',
+    excerpt:
+      'Herzrasen, Brustenge, Atemnot: Panikattacke oder Herzproblem? Erfahren Sie, wie sich beide unterscheiden, warum sie sich so ähnlich anfühlen und wann Sie ärztliche Hilfe brauchen.',
+    summary: [
+      'Panikattacken und Herzinfarkte können sich täuschend ähnlich anfühlen, sind aber völlig unterschiedlich gefährlich.',
+      'Eine Panikattacke ist unangenehm, aber nicht lebensbedrohlich. Ein Herzinfarkt ist ein medizinischer Notfall.',
+      'Panikattacken beginnen plötzlich und klingen meist nach 10 bis 30 Minuten ab, während ein Herzinfarkt länger anhält.',
+      'Im Zweifel sollte man immer ärztliche Hilfe rufen. Wenn das Herz gesund ist, hilft Psychotherapie, den Teufelskreis zu durchbrechen.',
+    ],
+    category: 'Ratgeber',
+    publishedAt: '2025-01-25',
+    updatedAt: '2025-01-25',
+    readingTime: '8 Min.',
+    author: 'MMag. Dr. Gregor Studlar BA',
+    authorId: 'gregor-studlar',
+    tags: [
+      'Panikattacken',
+      'Herzinfarkt',
+      'Herzangst',
+      'Herzneurose',
+      'Brustschmerzen',
+      'Notfall',
+      'Selbsthilfe',
+    ],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person hält sich die Brust: Unterschied zwischen Panikattacke und Herzproblem',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Panikattacke oder Herzinfarkt',
+      'Unterschied Panikattacke Herzinfarkt',
+      'Herzrasen Angst oder Herz',
+      'Brustschmerzen Panik',
+      'Herzangst',
+      'Herzneurose',
+      'Panikattacke Symptome',
+      'Herzinfarkt Symptome',
+      'Panikattacke Notaufnahme',
+      'psychogene Herzbeschwerden',
+    ],
+    relatedPosts: [
+      'panikattacken-verstehen-bewaeltigen',
+      'teufelskreis-panikattacke-einfach-erklaert',
+      'akuthilfe-panikattacken',
+      'atemtechniken-bei-angst',
+    ],
+    medicalReviewedBy: 'gregor-studlar',
+    lastReviewed: '2025-01-25',
+    faq: [
+      {
+        question: 'Wie unterscheide ich eine Panikattacke von einem Herzinfarkt?',
+        answer:
+          'Panikattacken beginnen abrupt und klingen nach 10 bis 30 Minuten ab. Der Schmerz ist oft stechend und wandernd. Herzinfarkte entwickeln sich langsamer, der Schmerz ist drückend und strahlt in Arm, Kiefer oder Rücken aus. Bei Unsicherheit immer den Notarzt rufen.',
+      },
+      {
+        question: 'Kann eine Panikattacke einen Herzinfarkt auslösen?',
+        answer:
+          'Nein, eine Panikattacke kann keinen Herzinfarkt verursachen. Obwohl das Herz schneller schlägt und der Blutdruck steigt, ist das bei einem gesunden Herzen völlig ungefährlich. Die Symptome verschwinden von selbst, wenn die Panik nachlässt.',
+      },
+      {
+        question: 'Warum landen so viele Panikpatienten in der Notaufnahme?',
+        answer:
+          'Bis zu 10 Prozent aller Notaufnahmen mit Brustschmerz gehen auf Angst zurück. Die Symptome einer Panikattacke fühlen sich so real an, dass Betroffene überzeugt sind, einen Herzinfarkt zu haben. Das ist verständlich, da der Körper dieselben Alarmsignale sendet.',
+      },
+      {
+        question: 'Was ist Herzangst oder Herzneurose?',
+        answer:
+          'Herzangst beschreibt die übermäßige Sorge, an einer Herzkrankheit zu leiden, obwohl medizinisch alles in Ordnung ist. Betroffene tasten ständig den Puls, vermeiden Anstrengung und achten überwachsam auf jedes Körpersignal. Diese Hypervigilanz verstärkt paradoxerweise die Angst.',
+      },
+      {
+        question: 'Was hilft akut bei einer Panikattacke mit Herzrasen?',
+        answer:
+          'Sagen Sie sich: „Das ist Angst, kein Herzinfarkt." Atmen Sie langsam (4 Sekunden ein, 6 Sekunden aus). Die 5-4-3-2-1-Methode hilft, sich zu erden: 5 Dinge sehen, 4 spüren, 3 hören, 2 riechen, 1 schmecken. Bei Unsicherheit trotzdem ärztlich abklären lassen.',
+      },
+      {
+        question: 'Wann sollte ich bei Brustschmerzen den Notarzt rufen?',
+        answer:
+          'Rufen Sie sofort den Notarzt (144) bei: anhaltenden, drückenden Brustschmerzen über 5 Minuten, Ausstrahlung in Arm, Kiefer oder Rücken, kaltem Schweiß, Blässe, starker Übelkeit oder Schwächegefühl. Im Zweifel lieber einmal zu viel anrufen als einmal zu wenig.',
+      },
+    ],
+    howTo: [
+      {
+        name: 'Selbstberuhigung bei Panik mit Herzrasen',
+        text: 'Sagen Sie sich innerlich: „Das ist Angst, kein Herzinfarkt. Ich bin sicher." Dieser Satz unterbricht den Katastrophengedanken und gibt dem rationalen Denken Raum.',
+      },
+      {
+        name: 'Beruhigende Atmung anwenden',
+        text: 'Atmen Sie langsam ein (4 Sekunden) und noch langsamer aus (6 Sekunden). Das längere Ausatmen aktiviert den Parasympathikus und senkt Herzfrequenz und Blutdruck.',
+      },
+      {
+        name: '5-4-3-2-1-Grounding durchführen',
+        text: 'Lenken Sie sich ab: Benennen Sie 5 Dinge, die Sie sehen, 4 die Sie spüren, 3 die Sie hören, 2 die Sie riechen und 1 das Sie schmecken. Das bringt Sie zurück in die Gegenwart.',
+      },
+      {
+        name: 'Bei Unsicherheit ärztlich abklären',
+        text: 'Wenn Sie unsicher sind, ob es Panik oder ein Herzproblem ist, rufen Sie den Notarzt. Eine Untersuchung (EKG, Bluttest) gibt Klarheit. Danach können Sie die Panik gezielt behandeln.',
+      },
+    ],
+    sections: [
+      {
+        heading: 'Wenn sich Angst wie ein Herzinfarkt anfühlt',
+        paragraphs: [
+          'Herzrasen, Engegefühl, Schwindel, Atemnot – all das kann Panik oder ein Herzproblem sein. Für Betroffene fühlt sich beides gleich real an. Kein Wunder, dass viele in der Notaufnahme landen. Doch obwohl die Symptome fast identisch wirken, unterscheiden sich Ursache und Verlauf deutlich.',
+          'Bei einer Panikattacke reagiert das Gehirn auf eine vermeintliche Bedrohung. Die Amygdala schüttet Adrenalin aus, das Herz rast, der Blutdruck steigt, Muskeln spannen sich an. Der Körper glaubt, er müsse fliehen oder kämpfen, obwohl keine Gefahr besteht.',
+          'Der Herzinfarkt hingegen entsteht durch eine Durchblutungsstörung des Herzmuskels. Das Herz wird nicht mehr ausreichend mit Sauerstoff versorgt, was lebensgefährlich ist.',
+        ],
+      },
+      {
+        heading: 'Die wichtigsten Unterschiede',
+        paragraphs: [
+          'Obwohl sich Panikattacken und Herzinfarkte ähnlich anfühlen können, gibt es charakteristische Unterschiede in Dauer, Schmerzcharakter, Begleitsymptomen und Kontext.',
+        ],
+      },
+      {
+        heading: 'Dauer und Verlauf',
+        paragraphs: [
+          'Panikattacken beginnen abrupt, erreichen ihren Höhepunkt nach wenigen Minuten und klingen meist innerhalb von 20 bis 30 Minuten ab. Ein Herzinfarkt entwickelt sich langsamer, hält an und bessert sich ohne Behandlung nicht.',
+        ],
+      },
+      {
+        heading: 'Schmerzcharakter',
+        paragraphs: [
+          'Panikschmerzen sind häufig stechend, wechselnd oder oberflächlich. Herzinfarktschmerzen sind drückend, brennend oder wie ein massiver Druck auf der Brust. Sie strahlen oft in den linken Arm, den Kiefer oder den Rücken aus.',
+        ],
+      },
+      {
+        heading: 'Begleitsymptome',
+        paragraphs: [
+          'Bei Panikattacken kommen oft Schwindel, Kribbeln, Hitzewellen, Zittern und das Gefühl der Entfremdung hinzu. Beim Herzinfarkt treten dagegen kalter Schweiß, Blässe, Übelkeit und ausgeprägte Schwäche auf.',
+        ],
+      },
+      {
+        heading: 'Kontext und Auslöser',
+        paragraphs: [
+          'Panikattacken entstehen häufig in Ruhe oder in psychisch belastenden Situationen. Herzinfarkte treten oft unter körperlicher Belastung auf oder wecken Betroffene nachts aus dem Schlaf.',
+        ],
+      },
+      {
+        heading: 'Warum sich beides so ähnlich anfühlt',
+        paragraphs: [
+          'Die körperlichen Reaktionen einer Panikattacke sind dieselben, die auch bei echter Gefahr entstehen. Adrenalin beschleunigt Herzschlag und Atmung, das Blut wird in die Muskeln gepumpt, der Körper steht auf Alarm.',
+          'Diese Mechanismen sind uralt und dienen dem Überleben. Nur reagiert das System manchmal zu stark – der Körper spielt Feueralarm, obwohl es nirgends brennt.',
+          'Beim Herzinfarkt wiederum löst die Durchblutungsstörung des Herzmuskels ebenfalls einen Alarmzustand aus. In beiden Fällen werden also dieselben Körpersignale aktiviert: Herzrasen, Brustenge, Atemnot. Das erklärt, warum Panikattacken so überzeugend wirken – sie sind biologisch fast identisch mit echter Lebensgefahr.',
+        ],
+      },
+      {
+        heading: 'Warum viele in der Notaufnahme landen',
+        paragraphs: [
+          'Viele Betroffene rufen bei der ersten Panikattacke den Notarzt, weil die Symptome so bedrohlich erscheinen. In der Klinik wird dann ein EKG geschrieben, Blut auf Herzenzyme untersucht und der Blutdruck gemessen.',
+          'Findet sich nichts Auffälliges, lautet die Diagnose oft: „psychogene Herzbeschwerden" oder „Panikattacke". Studien zeigen, dass bis zu zehn Prozent aller Notaufnahmen mit Brustschmerz letztlich auf Angstzustände zurückgehen. Das zeigt: Panik fühlt sich körperlich echt an, auch wenn das Herz völlig gesund ist.',
+        ],
+      },
+      {
+        heading: 'Was in Kopf und Körper passiert',
+        paragraphs: [
+          'Während einer Panikattacke interpretieren Betroffene harmlose Körperempfindungen als bedrohlich. Ein schneller Puls wird zum Zeichen eines Herzinfarkts, ein Schwindelgefühl zum drohenden Kollaps. Diese Katastrophengedanken lösen Angst aus – und Angst verstärkt die Symptome. So entsteht der Teufelskreis: Angst führt zu Adrenalin, Adrenalin zu Herzklopfen, Herzklopfen zu noch mehr Angst.',
+          'Menschen mit Herzangst oder sogenannter Herzneurose beobachten ihr Herz besonders genau. Sie tasten ständig den Puls, vermeiden Anstrengung und achten auf jedes Signal. Ironischerweise verstärkt diese ständige Kontrolle die Angst, weil der Fokus ununterbrochen auf dem Körper liegt.',
+        ],
+      },
+      {
+        heading: 'Was hilft, um Panik von Gefahr zu unterscheiden',
+        paragraphs: [
+          'Panikattacken treten meist wiederholt auf, oft unter ähnlichen Umständen. Wenn Sie bereits mehrfach dieselben Beschwerden hatten und Untersuchungen jedes Mal unauffällig waren, spricht das für Panik. Ein Herzinfarkt hingegen bleibt in der Regel einmalig und verschwindet nicht von selbst.',
+          'Wenn die Beschwerden durch langsames Atmen oder Ablenkung deutlich besser werden, ist Panik wahrscheinlich. Bei echten Herzproblemen hilft das nicht.',
+        ],
+        list: [
+          'Anhaltende, drückende Schmerzen über 5 Minuten',
+          'Ausstrahlung in Arm, Kiefer oder Rücken',
+          'Kalter Schweiß und Blässe',
+          'Ausgeprägte Schwäche oder Übelkeit',
+        ],
+      },
+      {
+        heading: 'Warnzeichen ernst nehmen',
+        paragraphs: [
+          'Diese Symptome sollten immer ärztlich abgeklärt werden – sofort, nicht später. Im Zweifel gilt: Lieber einmal zu viel den Notarzt rufen als einmal zu wenig.',
+        ],
+      },
+      {
+        heading: 'Wenn es Panik ist: Was Sie tun können',
+        paragraphs: [
+          'Sagen Sie sich innerlich: „Das ist Angst, kein Herzinfarkt. Ich bin sicher." Atmen Sie ruhig – vier Sekunden ein, sechs Sekunden aus.',
+          'Lenken Sie sich mit der 5-4-3-2-1-Methode ab: Fünf Dinge sehen, vier spüren, drei hören, zwei riechen, eins schmecken. Das bringt Sie zurück in die Gegenwart.',
+          'Wenn Panikattacken häufig auftreten, kann eine Verhaltenstherapie helfen. Dort lernen Sie, die Körpersignale anders zu deuten und die Angst zu stoppen, bevor sie groß wird.',
+        ],
+      },
+      {
+        heading: 'Fazit',
+        paragraphs: [
+          'Panikattacken und Herzinfarkte haben vieles gemeinsam, aber sie unterscheiden sich grundlegend in Ursache und Risiko. Eine Panikattacke ist beängstigend, doch harmlos. Ein Herzinfarkt ist lebensgefährlich.',
+          'Wer unsicher ist, sollte immer ärztliche Hilfe rufen – sicher ist sicher. Wenn das Herz gesund ist, darf man die Panik ernst nehmen, aber man kann lernen, sie zu kontrollieren und ihr den Schrecken zu nehmen.',
+        ],
+      },
+      {
+        heading: 'Quellen und weiterführende Literatur',
+        paragraphs: [
+          'Dieser Artikel basiert auf wissenschaftlich fundierten Quellen zur Unterscheidung von Panikattacken und kardialen Ereignissen:',
+        ],
+        list: [
+          'Clark, D. M. (1986). A cognitive approach to panic. Behaviour Research and Therapy, 24(4), 461-470. – Kognitives Modell der Panikstörung.',
+          'Morschitzky, H. (2014). Angststörungen: Diagnostik, Konzepte, Therapie, Selbsthilfe. Springer Wien. – Standardwerk zu Angststörungen.',
+          'Margraf, J. & Schneider, S. (1990). Panik: Angstanfälle und ihre Behandlung. Springer. – Klassiker zur Panikbehandlung.',
+          'DGPPN (2021). S3-Leitlinie Behandlung von Angststörungen. AWMF-Register Nr. 051-028. – Evidenzbasierte Behandlungsempfehlungen.',
+          'Deutsche Herzstiftung e.V. Herzinfarkt oder Panikattacke? Patienteninformation. https://www.herzstiftung.de – Verständliche Patientenaufklärung.',
+        ],
+      },
+    ],
+  },
 ]
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
