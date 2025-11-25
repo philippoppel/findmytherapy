@@ -169,11 +169,11 @@ test.describe('Matching System', () => {
     await submitButton.click()
     await waitForNetworkIdle(page, 10000)
 
-    // Should navigate to results page
-    await expect(page).toHaveURL(/\/match\/results/i)
+    // Should show inline results (not navigate to separate page)
+    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
 
     // Should show matches
-    await expect(page.getByText(/Anna Weber/i)).toBeVisible()
+    await expect(page.getByText(/Anna Weber/i)).toBeVisible({ timeout: 10000 })
 
     // Should show match score/percentage
     const scoreElement = page.locator('text=/\\d+%/').first()
@@ -216,8 +216,8 @@ test.describe('Matching System', () => {
     await submitButton.click()
     await waitForNetworkIdle(page, 10000)
 
-    // Should still show results (partial matches)
-    await expect(page).toHaveURL(/\/match\/results/i)
+    // Should show inline results (partial matches)
+    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
 
     // Should show some therapists (even if not perfect match)
     // Look for the results message showing therapists were found
@@ -269,8 +269,8 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
-    // Should navigate to results
-    await expect(page).toHaveURL(/\/match\/results/i)
+    // Should show inline results
+    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
 
     // CRITICAL: Should offer helpful alternatives, NOT empty results
     const bodyText = await page.textContent('body')
@@ -317,8 +317,8 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Therapeuten finden/i }).click()
     await waitForNetworkIdle(page, 10000)
 
-    // Should show results
-    await expect(page).toHaveURL(/\/match\/results/i)
+    // Should show inline results
+    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
 
     // Sarah Berger should appear (she's on waitlist but matches criteria)
     await expect(page.getByText(/Sarah Berger/i)).toBeVisible()
