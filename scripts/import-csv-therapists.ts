@@ -40,6 +40,16 @@ function parsePostalCode(plz: string): string | null {
   return Math.floor(parsed).toString();
 }
 
+function hasOnlineServices(settings: string): boolean {
+  if (!settings) return false;
+  const lowerSettings = settings.toLowerCase();
+  return (
+    lowerSettings.includes('online') ||
+    lowerSettings.includes('video') ||
+    lowerSettings.includes('videotelefonie')
+  );
+}
+
 function extractMethodFromQualifications(qualifications: string): string[] {
   // Extrahiere die therapeutische Methode aus den Zusatzbezeichnungen
   const methods: string[] = [];
@@ -228,6 +238,7 @@ async function main() {
                 isPublic: true,
                 acceptingClients: true,
                 country: 'AT',
+                online: hasOnlineServices(record.settings),
               },
             });
 
@@ -266,6 +277,7 @@ async function main() {
                   isPublic: true,
                   acceptingClients: true,
                   country: 'AT',
+                  online: hasOnlineServices(record.settings),
                 },
               },
             },
