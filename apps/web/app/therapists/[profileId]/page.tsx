@@ -66,7 +66,13 @@ export async function generateMetadata({ params }: TherapistProfilePageProps) {
     select: {
       displayName: true,
       headline: true,
+      title: true,
       isPublic: true,
+      profileImageUrl: true,
+      city: true,
+      country: true,
+      specialties: true,
+      modalities: true,
     },
   })
 
@@ -76,9 +82,60 @@ export async function generateMetadata({ params }: TherapistProfilePageProps) {
     }
   }
 
+  const title = `${profile.displayName ?? 'Therapeut:in'}${profile.title ? ` - ${profile.title}` : ''} | FindMyTherapy`
+  const description = profile.headline
+    ?? `Psychotherapeut:in ${profile.displayName} aus ${profile.city ?? profile.country ?? 'Österreich'}. Jetzt Erstgespräch vereinbaren.`
+
+  const keywords = [
+    'Psychotherapie',
+    profile.city,
+    profile.country,
+    profile.displayName,
+    ...(profile.specialties ?? []),
+    ...(profile.modalities ?? []),
+  ].filter(Boolean)
+
   return {
-    title: `${profile.displayName ?? 'Therapeut:in'} – FindMyTherapy`,
-    description: profile.headline ?? 'Individuelle psychologische Unterstützung mit FindMyTherapy.',
+    title,
+    description,
+    keywords: keywords.join(', '),
+    authors: [{ name: profile.displayName ?? 'Therapeut:in' }],
+    alternates: {
+      canonical: `https://findmytherapy.net/therapists/${params.profileId}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: 'profile',
+      locale: 'de_AT',
+      siteName: 'FindMyTherapy',
+      url: `https://findmytherapy.net/therapists/${params.profileId}`,
+      images: profile.profileImageUrl
+        ? [
+            {
+              url: profile.profileImageUrl,
+              width: 400,
+              height: 400,
+              alt: `${profile.displayName} - Psychotherapeut:in`,
+            },
+          ]
+        : [
+            {
+              url: 'https://findmytherapy.net/images/og-image.jpg',
+              width: 1200,
+              height: 630,
+              alt: 'FindMyTherapy - Therapeut:innen finden',
+            },
+          ],
+    },
+    twitter: {
+      card: profile.profileImageUrl ? 'summary' : 'summary_large_image',
+      title,
+      description,
+      images: profile.profileImageUrl
+        ? [profile.profileImageUrl]
+        : ['https://findmytherapy.net/images/og-image.jpg'],
+    },
   }
 }
 
@@ -116,7 +173,43 @@ export default async function TherapistProfilePage({ params, searchParams }: The
   const experience = profile.yearsExperience ? `${profile.yearsExperience} Jahre` : undefined
   const fromTriage = searchParams?.from === 'triage'
 
+  // Schema.org structured data for SEO
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': ['Person', 'MedicalBusiness'],
+    '@id': `https://findmytherapy.net/therapists/${params.profileId}`,
+    name: profile.displayName,
+    jobTitle: profile.title ?? 'Psychotherapeut:in',
+    description: profile.headline ?? profile.about?.substring(0, 200),
+    image: profile.profileImageUrl,
+    url: `https://findmytherapy.net/therapists/${params.profileId}`,
+    medicalSpecialty: 'Psychotherapy',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: profile.city,
+      addressCountry: profile.country ?? 'AT',
+    },
+    areaServed: profile.online
+      ? [{ '@type': 'Country', name: 'Österreich' }, 'Online']
+      : { '@type': 'City', name: profile.city },
+    knowsAbout: profile.specialties,
+    knowsLanguage: profile.languages,
+    priceRange: profile.priceMin || profile.priceMax
+      ? `${profile.priceMin ?? '?'}€ - ${profile.priceMax ?? '?'}€`
+      : undefined,
+    availableService: (profile.modalities ?? []).map((modality) => ({
+      '@type': 'MedicalTherapy',
+      name: modality,
+    })),
+  }
+
   return (
+    <>
+      {/* Schema.org JSON-LD for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50/30">
       {/* Navigation */}
       <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
@@ -536,5 +629,6 @@ export default async function TherapistProfilePage({ params, searchParams }: The
         </div>
       </div>
     </div>
+    </>
   )
 }

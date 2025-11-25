@@ -23,15 +23,47 @@ export const metadata: Metadata = {
   },
   description: 'FindMyTherapy verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
   keywords: [
+    // Hauptkeywords
     'Therapeut finden Österreich',
     'Psychotherapie Wien',
-    'mentale Gesundheit',
-    'Online Therapie',
-    'Ersteinschätzung',
-    'PHQ-9',
-    'GAD-7',
     'Psychotherapeut Österreich',
     'Therapeutensuche',
+    'mentale Gesundheit',
+    // Städte Österreich
+    'Psychotherapie Graz',
+    'Therapeut Linz',
+    'Psychotherapie Salzburg',
+    'Therapeut Innsbruck',
+    'Psychotherapie Klagenfurt',
+    'Therapeut St. Pölten',
+    'Psychotherapie Villach',
+    'Therapeut Wels',
+    // Störungsbilder
+    'Therapie Depression Österreich',
+    'Angststörung Behandlung',
+    'Burnout Therapie Wien',
+    'Panikattacken Hilfe',
+    'Trauma Therapeut Österreich',
+    'PTBS Behandlung',
+    'Essstörung Therapie',
+    'ADHS Therapie Erwachsene',
+    // Therapieformen
+    'Verhaltenstherapie Österreich',
+    'Psychoanalyse Wien',
+    'Systemische Therapie',
+    'Gesprächstherapie',
+    'Tiefenpsychologie',
+    // Long-Tail
+    'Psychotherapie Kosten Österreich',
+    'Psychotherapie Krankenkasse',
+    'Online Therapie Österreich',
+    'Erstgespräch Psychotherapie',
+    'Kassenplatz Psychotherapie',
+    'Psychotherapie Wartezeit',
+    // Tools
+    'PHQ-9',
+    'GAD-7',
+    'Ersteinschätzung',
   ],
   authors: [{ name: 'FindMyTherapy' }],
   creator: 'FindMyTherapy',
@@ -55,6 +87,29 @@ export const metadata: Metadata = {
   verification: {
     // Add your verification codes when available
     // google: 'your-google-verification-code',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'de_AT',
+    siteName: 'FindMyTherapy',
+    title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe',
+    description: 'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
+    images: [
+      {
+        url: 'https://findmytherapy.net/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'FindMyTherapy - Therapeut:innen finden in Österreich',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@findmytherapy',
+    creator: '@findmytherapy',
+    title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe',
+    description: 'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
+    images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
 }
 

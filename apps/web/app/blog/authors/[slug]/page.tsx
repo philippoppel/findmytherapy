@@ -29,13 +29,56 @@ export function generateMetadata({ params }: AuthorPageProps): Metadata {
     }
   }
 
+  const authorPosts = blogPosts.filter((post) => post.authorId === author.id)
+  const description = `${author.bio} ${authorPosts.length} Artikel auf FindMyTherapy.`
+
   return {
     title: `${author.name} – ${author.title} | FindMyTherapy Blog`,
-    description: author.bio,
+    description,
+    keywords: [
+      author.name,
+      author.title,
+      ...author.expertise,
+      'FindMyTherapy',
+      'Psychotherapie',
+      'mentale Gesundheit',
+    ],
+    authors: [{ name: author.name }],
+    alternates: {
+      canonical: `https://findmytherapy.net/blog/authors/${params.slug}`,
+    },
     openGraph: {
       title: `${author.name} – ${author.title}`,
-      description: author.bio,
+      description,
       type: 'profile',
+      locale: 'de_AT',
+      siteName: 'FindMyTherapy',
+      url: `https://findmytherapy.net/blog/authors/${params.slug}`,
+      images: author.avatar
+        ? [
+            {
+              url: author.avatar.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`,
+              width: 400,
+              height: 400,
+              alt: author.name,
+            },
+          ]
+        : [
+            {
+              url: 'https://findmytherapy.net/images/og-image.jpg',
+              width: 1200,
+              height: 630,
+              alt: 'FindMyTherapy Blog',
+            },
+          ],
+    },
+    twitter: {
+      card: 'summary',
+      title: `${author.name} – ${author.title}`,
+      description,
+      images: author.avatar
+        ? [author.avatar.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`]
+        : ['https://findmytherapy.net/images/og-image.jpg'],
     },
   }
 }
@@ -51,15 +94,75 @@ export default function AuthorPage({ params }: AuthorPageProps) {
   // Get all posts by this author
   const authorPosts = blogPosts.filter((post) => post.authorId === author.id)
 
+  // Extended Person Schema for E-E-A-T signals
   const authorStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `https://findmytherapy.net/blog/authors/${author.slug}#person`,
     name: author.name,
     jobTitle: author.title,
     description: author.bio,
     url: `https://findmytherapy.net/blog/authors/${author.slug}`,
+    image: author.avatar?.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`,
     sameAs: Object.values(author.social || {}).filter(Boolean),
-    knowsAbout: author.expertise,
+    knowsAbout: author.expertise.map((skill) => ({
+      '@type': 'Thing',
+      name: skill,
+    })),
+    // Credentials for medical authority (E-E-A-T)
+    hasCredential: author.credentials
+      ? {
+          '@type': 'EducationalOccupationalCredential',
+          credentialCategory: author.credentials,
+        }
+      : undefined,
+    // Affiliation to FindMyTherapy
+    affiliation: {
+      '@type': 'Organization',
+      name: 'FindMyTherapy',
+      url: 'https://findmytherapy.net',
+    },
+    // Articles written by this author
+    ...(authorPosts.length > 0 && {
+      author: authorPosts.map((post) => ({
+        '@type': 'BlogPosting',
+        '@id': `https://findmytherapy.net/blog/${post.slug}#article`,
+        headline: post.title,
+        url: `https://findmytherapy.net/blog/${post.slug}`,
+      })),
+    }),
+  }
+
+  // Breadcrumb Schema
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://findmytherapy.net',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://findmytherapy.net/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'Autoren',
+        item: 'https://findmytherapy.net/blog/authors',
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: author.name,
+        item: `https://findmytherapy.net/blog/authors/${author.slug}`,
+      },
+    ],
   }
 
   return (
@@ -268,6 +371,10 @@ export default function AuthorPage({ params }: AuthorPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(authorStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </main>
   )

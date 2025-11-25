@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next'
 import { blogPosts } from '../lib/blogData'
+import { prisma } from '@/lib/prisma'
+import { austrianCities } from '@/lib/seo/cities'
+import { mentalHealthConditions } from '@/lib/seo/conditions'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://findmytherapy.net'
   const currentDate = new Date()
 
@@ -125,14 +128,50 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  // TODO: Add dynamic therapist profile pages
-  // This should fetch from database and add entries like:
-  // {
-  //   url: `${baseUrl}/t/${therapist.slug}`,
-  //   lastModified: therapist.updatedAt,
-  //   changeFrequency: 'weekly',
-  //   priority: 0.8,
-  // }
+  // Dynamic therapist profile pages (microsites and regular profiles)
+  let therapistPages: MetadataRoute.Sitemap = []
+  try {
+    const therapists = await prisma.therapistProfile.findMany({
+      where: {
+        status: 'VERIFIED',
+        isPublic: true,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        updatedAt: true,
+        micrositeSlug: true,
+        micrositeStatus: true,
+      },
+    })
 
-  return [...staticPages, ...blogPostPages, ...categoryPages, ...authorPages]
+    therapistPages = therapists.map((t) => ({
+      url: t.micrositeSlug && t.micrositeStatus === 'PUBLISHED'
+        ? `${baseUrl}/t/${t.micrositeSlug}`
+        : `${baseUrl}/therapists/${t.id}`,
+      lastModified: t.updatedAt,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+  } catch (error) {
+    console.warn('Could not fetch therapists for sitemap:', error)
+  }
+
+  // City landing pages for SEO
+  const cityPages: MetadataRoute.Sitemap = austrianCities.map((city) => ({
+    url: `${baseUrl}/stadt/${city.slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
+  }))
+
+  // Condition/topic landing pages for SEO
+  const conditionPages: MetadataRoute.Sitemap = mentalHealthConditions.map((condition) => ({
+    url: `${baseUrl}/themen/${condition.slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly' as const,
+    priority: 0.85,
+  }))
+
+  return [...staticPages, ...blogPostPages, ...categoryPages, ...authorPages, ...therapistPages, ...cityPages, ...conditionPages]
 }

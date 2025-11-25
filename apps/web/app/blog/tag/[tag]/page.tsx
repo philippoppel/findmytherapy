@@ -44,9 +44,40 @@ export function generateMetadata({ params }: TagPageProps): Metadata {
     }
   }
 
+  const description = `Alle ${tagPosts.length} Beiträge mit dem Tag ${tagName}. Fachwissen zu mentaler Gesundheit, Produktentwicklung und Netzwerkaufbau.`
+
   return {
     title: `${tagName} – Artikel & Deep Dives | FindMyTherapy Blog`,
-    description: `Alle Beiträge mit dem Tag ${tagName}. Fachwissen zu mentaler Gesundheit, Produktentwicklung und Netzwerkaufbau.`,
+    description,
+    keywords: [
+      tagName,
+      'Psychotherapie',
+      'mentale Gesundheit',
+      'FindMyTherapy Blog',
+      ...tagPosts.flatMap((p) => p.keywords?.slice(0, 2) || []),
+    ].filter((v, i, a) => a.indexOf(v) === i).slice(0, 12),
+    openGraph: {
+      title: `${tagName} – Artikel & Deep Dives | FindMyTherapy Blog`,
+      description,
+      type: 'website',
+      locale: 'de_AT',
+      siteName: 'FindMyTherapy',
+      url: `https://findmytherapy.net/blog/tag/${params.tag}`,
+      images: [
+        {
+          url: 'https://findmytherapy.net/images/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${tagName} – FindMyTherapy Blog`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tagName} – Artikel & Deep Dives`,
+      description,
+      images: ['https://findmytherapy.net/images/og-image.jpg'],
+    },
     alternates: {
       canonical: `https://findmytherapy.net/blog/tag/${params.tag}`,
     },
@@ -77,7 +108,68 @@ export default function TagPage({ params }: TagPageProps) {
     },
   ]
 
+  // Schema.org structured data for SEO
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${tagName} – Artikel & Deep Dives | FindMyTherapy Blog`,
+    description: `Alle Beiträge mit dem Tag ${tagName}`,
+    url: `https://findmytherapy.net/blog/tag/${tagSlug}`,
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'FindMyTherapy Blog',
+      url: 'https://findmytherapy.net/blog',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'FindMyTherapy',
+      url: 'https://findmytherapy.net',
+    },
+    numberOfItems: tagPosts.length,
+    hasPart: tagPosts.slice(0, 10).map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `https://findmytherapy.net/blog/${post.slug}`,
+      datePublished: post.publishedAt,
+      description: post.excerpt,
+    })),
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://findmytherapy.net',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://findmytherapy.net/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: `#${tagName}`,
+        item: `https://findmytherapy.net/blog/tag/${tagSlug}`,
+      },
+    ],
+  }
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="marketing-theme bg-surface text-default">
       <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
@@ -258,5 +350,6 @@ export default function TagPage({ params }: TagPageProps) {
         </div>
       </main>
     </div>
+    </>
   )
 }

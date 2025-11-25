@@ -40,13 +40,39 @@ export function generateMetadata({ params }: CategoryPageProps): Metadata {
     }
   }
 
+  const description = `Alle ${categoryPosts.length} Artikel zum Fokusbereich ${categoryName}. Evidenzbasierte Perspektiven von FindMyTherapy.`
+
   return {
     title: `${categoryName} – Insights | FindMyTherapy Blog`,
-    description: `Alle Artikel zum Fokusbereich ${categoryName}. Evidenzbasierte Perspektiven von FindMyTherapy.`,
+    description,
+    keywords: [
+      categoryName,
+      'Psychotherapie',
+      'mentale Gesundheit',
+      'FindMyTherapy Blog',
+      ...categoryPosts.flatMap((p) => p.keywords?.slice(0, 3) || []),
+    ].filter((v, i, a) => a.indexOf(v) === i).slice(0, 15),
     openGraph: {
-      title: `${categoryName} – Insights`,
-      description: `Alle Artikel zum Fokusbereich ${categoryName}`,
+      title: `${categoryName} – Insights | FindMyTherapy Blog`,
+      description,
       type: 'website',
+      locale: 'de_AT',
+      siteName: 'FindMyTherapy',
+      url: `https://findmytherapy.net/blog/category/${params.category}`,
+      images: [
+        {
+          url: 'https://findmytherapy.net/images/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${categoryName} – FindMyTherapy Blog`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${categoryName} – Insights`,
+      description,
+      images: ['https://findmytherapy.net/images/og-image.jpg'],
     },
     alternates: {
       canonical: `https://findmytherapy.net/blog/category/${params.category}`,
@@ -76,7 +102,68 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     { label: 'Tags in diesem Themenfeld', value: String(relatedTags.length || '—') },
   ]
 
+  // Schema.org structured data for SEO
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${categoryName} – Insights | FindMyTherapy Blog`,
+    description: `Alle Artikel zum Fokusbereich ${categoryName}`,
+    url: `https://findmytherapy.net/blog/category/${categorySlug}`,
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'FindMyTherapy Blog',
+      url: 'https://findmytherapy.net/blog',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'FindMyTherapy',
+      url: 'https://findmytherapy.net',
+    },
+    numberOfItems: categoryPosts.length,
+    hasPart: categoryPosts.slice(0, 10).map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `https://findmytherapy.net/blog/${post.slug}`,
+      datePublished: post.publishedAt,
+      description: post.excerpt,
+    })),
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://findmytherapy.net',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: 'https://findmytherapy.net/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: categoryName,
+        item: `https://findmytherapy.net/blog/category/${categorySlug}`,
+      },
+    ],
+  }
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="marketing-theme bg-surface text-default">
       <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
@@ -307,5 +394,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </main>
     </div>
+    </>
   )
 }

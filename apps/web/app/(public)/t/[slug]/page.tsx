@@ -119,7 +119,7 @@ export async function generateMetadata({
         images: profile.profileImageUrl ? [profile.profileImageUrl] : [],
       },
       alternates: {
-        canonical: `/t/${params.slug}`,
+        canonical: `https://findmytherapy.net/t/${params.slug}`,
       },
     };
   } catch (error) {
