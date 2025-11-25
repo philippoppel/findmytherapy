@@ -59,7 +59,7 @@ export function AboutSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-gradient-to-b from-white via-neutral-50 to-white py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-32"
     >
       {/* Background decorations */}
       {!prefersReducedMotion ? (

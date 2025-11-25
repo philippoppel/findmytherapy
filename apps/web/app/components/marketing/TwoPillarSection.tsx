@@ -32,7 +32,7 @@ export function TwoPillarSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-gradient-to-b from-surface via-white to-surface py-20 sm:py-24 lg:py-32"
+      className="relative overflow-hidden py-20 sm:py-24 lg:py-32"
     >
       {/* Background decorations with parallax */}
       {!prefersReducedMotion ? (

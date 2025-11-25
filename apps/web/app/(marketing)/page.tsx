@@ -189,7 +189,7 @@ export default function HomePage() {
   }));
 
   return (
-    <div className="marketing-theme bg-surface text-default">
+    <div className="marketing-theme text-default">
       <main className="flex flex-col">
         {/* Hero Section */}
         <div className="px-3 pt-6 sm:px-4 sm:pt-10 lg:px-8">

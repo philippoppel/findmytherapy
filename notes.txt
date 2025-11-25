@@ -1,0 +1,232 @@
+**Kurzzusammenfassung – Keypoints auf den Punkt gebracht**
+
+- Die Plattform muss extrem einfach, emotional und bildlastig sein, speziell für Menschen mit psychischer Beeinträchtigung und niedriger kognitiver Belastbarkeit.
+- Mobil-First: große Bilder, klare Buttons, wenig Text, klare Call-to-Actions („Los geht’s“), Orientierung an Dating-Apps (Tinder-Logik: Wischen/Klicken, Karten).
+- Zwei Haupteinstiege für Nutzer:innen:
+    1. „Ich weiß, was ich suche“ → direkte Therapeut:innen-Suche mit Filtern.
+    2. „Sag uns, was los ist“ → geführte Anamnese mit Bildern/Symptomen/Lebensthemen.
+- Zentrale Rolle einer Wissensplattform / „Academy“: Krankheitsbilder + Lebensthemen als Content-Hub, der dann in den Matching-Flow und zur Therapeut:innen-Suche führt.
+- Emotionalisierung als USP auch für Therapeut:innen: fertige, schöne Profilseiten mit Bildern/Videos; Demokratisierung für alle, die selbst keine Website bauen können.
+- Zusatzleistung: professionelle Foto-/Videoshootings (Angie + Kolleg:innen) als bezahlter Service mit Provision für die Plattform.
+- Informationsarchitektur: Klarer Header mit Logo, „Therapeut:innen finden“, „Wissen/Ratgeber“, „Für Therapeut:innen“ und Suche; Footer mit About/Impressum.
+- Startseite mit Hero-Bereich: kurzer Claim, Erklärung, „Los geht’s“-Button, Handy-Mockup/Video + „Empfohlen von …“-Logos, darunter Blöcke für „Sag uns, was los ist“ und Krankheitsbilder-Slider.
+- Matching-Konzept: Kombination aus Themen-Einstieg (Lebensthema vs Krankheitsbild) und Symptomen (ICD-11-Logik), mittelfristig auch validierte psychologische Fragebögen als zweites Matching-Level.
+- Marketing- und Positionierungslogik: drei relevante Zielgruppen – Patient:innen/Klient:innen, Therapeut:innen, Organisationen als Vertrauensanker.
+- Action Items: Prototyp der Website mit Strukturen/Flows bauen, zwei Startseiten-Varianten (A/B) testen, Logo-/Brandingvorschläge ausarbeiten, Fotopakete definieren.
+
+---
+
+## **1. Zielgruppe und Grundprinzip: Emotional, bildlastig, extrem einfach**
+
+Die Plattform richtet sich in erster Linie an Menschen mit psychischer Beeinträchtigung. Die Annahme: Viele sind in ihrer kognitiven Leistungsfähigkeit eingeschränkt und können komplexe Texte oder komplizierte Navigation nur schwer verarbeiten.
+
+Daraus leiten sich mehrere Designprinzipien ab:
+
+- So wenig Text wie möglich, so viele Emotionen wie möglich.
+- Große Bilder, klare Icons, einfache Symbole statt langer Beschreibungen.
+- Jede Interaktion muss „no-brainer“ sein: anklicken, bestätigen, weiter.
+- Orientierung: Die Seite muss so einfach sein, dass man sie der eigenen Mutter oder einem Laien zeigen kann, der „gar keinen Tau“ hat, und sie kommt trotzdem klar.
+
+Emotionalisierung ist nicht „nice to have“, sondern Kern des Produkts: Menschen mit Angst, Depression, Flugangst etc. sollen sich auf den Bildern selbst wiederfinden („jemand im Flugzeug mit Panik“, „jemand erschöpft auf der Couch“).
+
+---
+
+## **2. Mobil-First und Interaktionsmuster (Tinder- / Karten-Logik)**
+
+Im Alltag werden die Nutzer:innen die Plattform sehr wahrscheinlich mobil benutzen. Das prägt:
+
+- Große, hochformatige Bilder (Hero-Banner, Krankheitsbilder-Kacheln).
+- Ein klarer, großer Button („Los geht’s“) als Einstieg.
+- Interaktionen, die aus der Dating-App-Welt bekannt sind:
+    - Karten, die man „mag“ oder „nicht mag“ (z. B. Daumen hoch/runter oder Herz/X).
+    - Alternativ: Kacheln, die beim Antippen hervorgehoben werden, statt komplizierten Formularen.
+- Wischen ist optional (nicht jeder weiß, ob man nach links oder rechts wischen muss), daher eher „Tippen“ und visuelle Hervorhebung bevorzugt.
+
+Ziel: Es fühlt sich an wie ein leichtes Swipen/Tappen durch Bilder, nicht wie ein medizinischer Fragebogen – auch wenn im Hintergrund ein Anamnese-Logik steckt.
+
+---
+
+## **3. Zwei Hauptrouten: „Ich weiß, was ich will“ vs „Sag uns, was los ist“**
+
+Die Plattform soll zwei zentrale Einstiege anbieten:
+
+1. **Ich weiß, was ich suche / ich kenne meine Diagnose oder Art von Hilfe**
+    - Direkter Weg in eine klassische Therapeut:innen-Suche.
+    - Oben ein Filter (Ort, Therapieform, Schwerpunkte, Setting, etc.).
+    - Unten eine Ergebnisliste mit zunächst vielen Therapeut:innen, die über Filter immer weiter eingegrenzt werden.
+    - Optional kann man diesen Einstieg auch erst im Header-Menü exponieren, aktiver Standard bleibt der geführte Weg.
+2. **Ich weiß nicht genau, was los ist / ich brauche Orientierung („Sag uns, was los ist“)**
+    - Geführter Flow mit Bildern und einfachen Fragen:
+        - Auswahl von „Lebensthemen“ (z. B. Scheidung, Schule, Familie, Arbeit).
+        - Oder Auswahl von „Krankheitsbildern“ bzw. Symptomen (Angst, Panik, Schlafstörungen, Depression etc.).
+    - Mit jeder Auswahl „baut“ sich ein Bild des Problems auf.
+    - Am Ende steht ein Vorschlag: „Du könntest an XYZ leiden / in diese Kategorie fallen; möchtest du passende Therapeut:innen sehen?“
+
+Diese beiden Routen können in der Oberfläche sehr nah zusammenliegen: z. B. im ersten Panel nach „Los geht’s“ oder im Header-Menü („Therapeut:in finden“ vs. „Wissen“ vs. „Geführter Test“).
+
+---
+
+## **4. Wissensplattform / „Academy“ als Content- und SEO-Herz**
+
+Die Wissensdatenbank soll mehrere Zwecke erfüllen:
+
+- Einstiegspunkt für Menschen, die zunächst nur Informationen wollen („Habe ich überhaupt ein Problem?“, „Was ist Flugangst?“).
+- SEO-Treiber: Artikel, Videos, Podcasts zu Themen wie Angst, Depression, Traumata, Lebenskrisen.
+- Lern- und Vertrauenselement: Nutzer:innen merken, dass die Plattform inhaltlich „weiß, wovon sie spricht“.
+
+Struktur:
+
+- Oberkategorien:
+    - Krankheitsbilder (nach ICD-11 inspiriert: Depression, Angststörungen, Zwang, Traumafolgestörung etc.).
+    - Lebensthemen (Scheidung, Familie, Schule, Beruf, Überlastung etc.).
+- Jede Detailseite:
+    - Verständliche Beschreibung, Symptome, mögliche Verläufe.
+    - Optional Downloads oder weiterführende Infos.
+    - Am Ende immer ein klarer Call-to-Action:
+        - „Brauchen Sie Unterstützung? Passende Therapeut:innen zu diesem Thema anzeigen.“
+
+Idealerweise resultiert das in vorgefilterten Therapeut:innen-Listen: Wer z. B. die Seite über „Flugangst“ liest, bekommt dann gezielt Angst-Therapeut:innen / Personen mit Schwerpunkt Flugangst angezeigt.
+
+---
+
+## **5. Emotionalisierung und Demokratisierung für Therapeut:innen**
+
+Aus Sicht der Therapeut:innen ist ein großer Mehrwert:
+
+- Viele aktuelle Websites sind alt, technisch schlecht und nicht emotional.
+- Trotzdem entscheiden sich Patient:innen oft nach dem ersten Eindruck der Website („sympathisch vs. abschreckend“).
+- Die Plattform bietet:
+    - Eine standardisierte, ästhetische, emotional gestaltete Profilseite.
+    - Möglichst wenig Aufwand für die Therapeut:innen (kein eigener Entwickler nötig).
+    - Einheitliche Struktur: Über mich, Ausbildung, Schwerpunkte, Leistungen, Kontakt – plus gute Fotos/Videos.
+
+Damit wird „Chancengleichheit“ hergestellt: Nicht mehr derjenige, der zufällig einen Webentwickler kennt, hat die beste Außendarstellung, sondern alle bekommen eine hochwertige Präsentation.
+
+---
+
+## **6. Zusatzleistung: Foto- und Videoservice (Angie & Co.) als Angebot**
+
+Ein konkreter Vorschlag ist:
+
+- Kooperation mit einer Fotografin (Angie) und ggf. weiteren Kolleg:innen.
+- Paket: Fotos/Videos für Therapeut:innen, die noch kein gutes Bildmaterial haben oder mehr wollen.
+- Abwicklung:
+    - Auf der Plattform als Zusatzoption buchbar („Professionelles Fotopaket“).
+    - Die Plattform erhält eine Provision, Angie & Team den Hauptteil.
+- Vorteil:
+    - Noch stärkere Emotionalisierung der Profile.
+    - Zusätzliche Einnahmequelle für das Projekt.
+    - Flächendeckendere Abdeckung (nicht nur ein Ort).
+
+Wichtig: Das Grunddesign der Profile soll auch ohne Zusatzpaket funktionieren; das Fotopaket ist „Upgrade“, kein Muss.
+
+---
+
+## **7. Informationsarchitektur und Navigation der Website**
+
+Die diskutierte Grundstruktur:
+
+- **Header (Desktop):**
+    - Links: Logo (später mit Lupe-/Such-/Menschen-Motiv).
+    - Mitte: Menü mit wenigen Punkten, z. B.:
+        - „Therapeut:innen finden“
+        - „Wissen“ / „Ratgeber“
+        - „Warum wir“ / „Über uns“ (eventuell als Dropdown oder im Footer).
+    - Rechts: Button „Für Therapeut:innen“ (führt auf eine Landingpage mit Infos + Login/Registrierung).
+    - Optional: Sucheingabefeld (viele User nutzen gern eine Suchleiste).
+    - Header bleibt sticky beim Scrollen.
+- **Header (mobil):**
+    - Logo + Burger-Menü.
+    - Im Burger-Menü dieselben Punkte (Therapeut:innen finden, Wissen, Für Therapeut:innen).
+- **Footer:**
+    - „Über uns“, „Team“, „Impressum“, „Datenschutz“, ggf. Presse, FAQ etc.
+
+---
+
+## **8. Startseite / Home: Hero, „Los geht’s“, Vertrauen, Krankheitsbilder**
+
+Die Startseite soll klar strukturierte Blöcke haben:
+
+1. **Hero-Bereich (oberster Block):**
+    - Kurzer Claim: z. B. „Finde die Psychotherapie, die zu dir passt.“
+    - 1–2 Sätze Erklärung darunter.
+    - Großer Button: „Los geht’s“.
+    - Visuelles Element: z. B. ein Handy in der Mitte, auf dem die App/Website zu sehen ist, drumherum Bilder von Menschen/Szenen.
+    - Optional: Ein kurzes Video im Hero (Desktop), mobil ggf. erst darunter, damit nichts ruckelt.
+2. **Vertrauenssektion:**
+    - Logos oder Nennungen: „Empfohlen von …“ (z. B. Organisationen, Verbände, Nutzer:innen-Statements).
+    - Ziel: „Trusted by“-Effekt schaffen.
+3. **Block „Sag uns, was los ist“:**
+    - Klar abgetrennter Bereich mit etwas „Luft“.
+    - Text: „Sag uns, was los ist.“
+    - Auswahlmöglichkeiten (Kacheln): „Ich habe Angst“, „Ich fühle mich depressiv“, „Ich stehe vor einer Trennung“, etc.
+    - Klick führt in den geführten Anamnese-/Matching-Flow.
+4. **Block „Du weißt, wonach du suchst“:**
+    - Alternative: „Ich weiß, was ich suche.“
+    - Direktlink zur Filtersuche (Therapeut:innen-Liste mit Filtern).
+5. **Krankheitsbilder-/Lebensthemen-Slider oder -Kacheln:**
+    - Große, emotionale Bilder mit Titeln wie „Flugangst“, „Depression“, „Panikattacken“, „Burnout“.
+    - Klick führt direkt zur jeweiligen Wissensseite + CTA zum Matching.
+
+---
+
+## **9. Matching-Konzept: Anamnese, ICD-11, Lebenssituationen**
+
+Inhaltlich werden zwei Ebenen diskutiert:
+
+1. **Kurz-Anamnese nach Themen und Symptomen (für den Einstieg):**
+    - Erste Frage: „Was beschäftigt dich?“
+        - Optionen:
+            - „Ein Lebensthema“ (z. B. Scheidung, Schule, Familie, Arbeit).
+            - „Ein starkes Gefühl / Symptom“ (Angst, Panik, Schlafstörung, Traurigkeit etc.).
+    - Je nach Auswahl:
+        - Liste von Lebensthemen oder
+        - Liste von Symptomen / Krankheitsbildern.
+    - Nutzer:in klickt mehrere Sachen an.
+    - Ergebnis: Zuteilung zu Kategorien (z. B. „wahrscheinlich depressive Episode / Angststörung“).
+2. **Langfristig: Validierter psychologischer Test (zweites Matching-Level):**
+    - Inspiriert von ICD-11 bzw. etablierten Fragebögen.
+    - Längere, strukturiere Befragung („Hast du häufig …“, „Seit wann …“?).
+    - Ziel: validiertes Ergebnis, das zur genaueren Zuweisung führt (Psychotherapie vs. Psychiatrie vs. andere Hilfsangebote).
+    - Diese Variante ist technisch/inhaltlich aufwändiger und wird eher als späterer Ausbau gesehen.
+
+Wichtig ist, dass der Einstieg immer einfach und emotional bleibt, auch wenn im Hintergrund Fachlogik steckt.
+
+---
+
+## **10. Marketing/Positionierung und rechtliche Zuordnung**
+
+Zielgruppen:
+
+- **Patient:innen/Klient:innen**: Menschen, die Hilfe suchen, aber nicht genau wissen, wo sie anfangen sollen.
+- **Therapeut:innen**: Psychotherapeut:innen, die neue Klient:innen gewinnen und sich professionell präsentieren wollen.
+- **Organisationen/Verbände**: Potenzielle Kooperationspartner und Vertrauensgeber („Empfohlen von …“).
+
+Rechtlich / inhaltlich:
+
+- Die Plattform konzentriert sich auf Psychotherapie.
+- Es wird diskutiert, wie man bei bestimmten Eingaben (z. B. starke körperliche Symptome, suizidale Gedanken) klar abgrenzt, ob Psychotherapie reicht oder ob eher Psychiatrie/Medizin gefragt ist.
+- Zusätzlich besteht die Idee, auch Lebensberatung/Sozialberatung als Kategorie sichtbar zu machen, aber ohne Verwirrung zu stiften (z. B. durch klare Kennzeichnung: „Lebens- und Sozialberatung kann X, darf aber Y nicht“).
+
+---
+
+## **11. Konkrete nächste Schritte (Action Items)**
+
+- Philipp baut einen ersten Prototypen:
+    - Startseite mit Hero/Claim, „Los geht’s“-Button, Vertrauenssektion.
+    - Block „Sag uns, was los ist“ + Einstieg in einen ersten, einfachen Klick-Flow.
+    - Einfache Variante der Therapeut:innen-Suche mit Filtern.
+    - Erste Anbindung an eine Wissensseite als Beispiel (z. B. „Flugangst“).
+- Zwei Versionen der Startseite (A/B) werden vorerst intern umgesetzt:
+    - Variante A: Starker Fokus auf geführten Einstieg („Los geht’s“ → sofortiger Guided-Flow).
+    - Variante B: Mehr Fokus auf sofortige Krankheitsbilder-/Themen-Kacheln + Wissenszugang.
+- Logo/Branding:
+    - Entwicklung erster Vorschläge (z. B. Lupe, Mensch, Maßstab/Balance).
+    - Ziel: Klar erkennbar, einfach, seriös, aber nicht klinisch-kalt.
+- Fotopakete:
+    - Klärung mit Angie (und ggf. weiteren Fotograf:innen), wie Pakete aussehen (Preis, Umfang, Regionen).
+    - Definition der Provision für die Plattform.
+- Weitere Meetings:
+    - Prototyp zeigen.
+    - Flow und Emotion „aus dem Bauch“ an Laien testen (Freunde, Familie).
+    - Auf Basis des Feedbacks Struktur/Design nachschärfen.

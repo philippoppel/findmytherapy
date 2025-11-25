@@ -27,7 +27,7 @@ export function Footer() {
 
   return (
     <footer
-      className="relative mt-auto border-t border-divider bg-surface text-default"
+      className="relative mt-auto border-t border-divider bg-white/70 backdrop-blur-sm text-default"
       itemScope
       itemType="https://schema.org/WPFooter"
     >

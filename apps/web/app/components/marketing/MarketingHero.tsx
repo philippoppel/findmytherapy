@@ -21,9 +21,6 @@ export function MarketingHero({ content }: HeroProps) {
       className="relative h-[90vh] min-h-[700px] max-h-[1000px] overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Background gradient layers */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary-25 via-white to-primary-50/70" />
-
       {/* Ambient blur effects */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
