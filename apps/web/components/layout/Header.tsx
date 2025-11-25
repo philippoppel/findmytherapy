@@ -68,15 +68,36 @@ export function Header() {
           <div className="hidden flex-1 items-center justify-center gap-1.5 lg:flex">
             {desktopNavigation.map((item) => {
               const isAnchor = item.href.startsWith('#')
+              const isMatching = item.href === '/match'
+              const linkClass = "rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+
+              // Only use MatchingLink for the Matching button
+              if (isMatching) {
+                return (
+                  <MatchingLink key={item.href} href={item.href} className={linkClass}>
+                    {item.label}
+                  </MatchingLink>
+                )
+              }
+
+              // Use button for anchor links
+              if (isAnchor) {
+                return (
+                  <button
+                    key={item.href}
+                    onClick={(event) => handleAnchorNavigation(event, item.href)}
+                    className={linkClass}
+                  >
+                    {item.label}
+                  </button>
+                )
+              }
+
+              // Use regular Link for other navigation
               return (
-                <MatchingLink
-                  key={item.href}
-                  href={item.href}
-                  onClick={(event) => isAnchor && handleAnchorNavigation(event, item.href)}
-                  className="rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
-                >
+                <Link key={item.href} href={item.href} className={linkClass}>
                   {item.label}
-                </MatchingLink>
+                </Link>
               )
             })}
           </div>
@@ -108,20 +129,49 @@ export function Header() {
             <div className="space-y-1.5">
               {navigation.map((item) => {
                 const isAnchor = item.href.startsWith('#')
+                const isMatching = item.href === '/match'
+                const mobileClass = "block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
+
+                // Only use MatchingLink for the Matching button
+                if (isMatching) {
+                  return (
+                    <MatchingLink
+                      key={item.href}
+                      href={item.href}
+                      className={mobileClass}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </MatchingLink>
+                  )
+                }
+
+                // Use button for anchor links
+                if (isAnchor) {
+                  return (
+                    <button
+                      key={item.href}
+                      onClick={(event) => {
+                        handleAnchorNavigation(event, item.href)
+                        setIsMenuOpen(false)
+                      }}
+                      className={mobileClass + " w-full text-left"}
+                    >
+                      {item.label}
+                    </button>
+                  )
+                }
+
+                // Use regular Link for other navigation
                 return (
-                  <MatchingLink
+                  <Link
                     key={item.href}
                     href={item.href}
-                    className="block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
-                    onClick={(event) => {
-                      if (isAnchor) {
-                        handleAnchorNavigation(event, item.href)
-                      }
-                      setIsMenuOpen(false)
-                    }}
+                    className={mobileClass}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
-                  </MatchingLink>
+                  </Link>
                 )
               })}
             </div>
