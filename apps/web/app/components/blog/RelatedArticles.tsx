@@ -118,12 +118,12 @@ export function RelatedArticles({
           <Sparkles className="h-4 w-4 text-primary-600" />
           <span className="text-sm font-semibold text-primary-700">Verwandte Themen</span>
         </div>
-        <div className="flex gap-3 overflow-x-auto pb-2 sm:gap-4">
+        <div className="flex gap-3 overflow-x-auto pb-2 sm:gap-4 scrollbar-hide">
           {relatedPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group flex min-w-[240px] gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition hover:border-primary-200 hover:shadow-md sm:min-w-[280px]"
+              className="group flex min-w-[200px] max-w-[240px] flex-shrink-0 gap-3 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition hover:border-primary-200 hover:shadow-md sm:min-w-[240px] sm:max-w-[280px]"
             >
               {post.featuredImage && (
                 <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">

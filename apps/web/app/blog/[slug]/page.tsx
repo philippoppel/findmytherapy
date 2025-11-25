@@ -305,11 +305,11 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             Zur Übersicht
           </Link>
 
-          <div className="mt-6 grid gap-6 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,2fr),minmax(0,0.85fr)]">
+          <div className="mt-6 grid gap-6 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,2fr),minmax(0,0.85fr)] overflow-hidden">
             <article
               itemScope
               itemType="https://schema.org/Article"
-              className="flex flex-col gap-6 sm:gap-10"
+              className="flex flex-col gap-6 sm:gap-10 min-w-0 overflow-hidden"
             >
               <header className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-primary-950 via-secondary-800 to-secondary-900 px-4 py-6 text-white shadow-2xl shadow-primary-950/50 sm:rounded-[32px] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
                 {post.featuredImage && (
@@ -326,7 +326,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-64 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
                 <div className="relative z-10 grid gap-6 sm:gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
                   <div className="min-w-0 w-full max-w-full space-y-6 overflow-hidden">
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm overflow-x-auto pb-1 scrollbar-hide">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm">
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
                         <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                         Insights
