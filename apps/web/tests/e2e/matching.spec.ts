@@ -320,22 +320,23 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page, 10000)
 
     // Should show inline results
-    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
+    const matchingResults = page.locator('#matching-results')
+    await matchingResults.waitFor({ state: 'visible', timeout: 15000 })
 
     // Sarah Berger should appear (she's on waitlist but matches criteria)
-    await expect(page.getByText(/Sarah Berger/i)).toBeVisible()
+    await expect(matchingResults.getByText(/Sarah Berger/i).first()).toBeVisible()
 
     // CRITICAL: Should clearly communicate waitlist status
     // Check for waitlist indicators
-    const bodyText = await page.textContent('body')
+    const resultsText = await matchingResults.textContent()
     const hasWaitlistInfo =
-      bodyText?.includes('Warte') ||
-      bodyText?.includes('warteliste') ||
-      bodyText?.includes('Wochen')
+      resultsText?.includes('Warte') ||
+      resultsText?.includes('warteliste') ||
+      resultsText?.includes('Wochen')
 
     // We accept either clear waitlist info OR just showing the therapist
     // (the important thing is not hiding waitlist therapists completely)
-    expect(hasWaitlistInfo || bodyText?.includes('Sarah Berger')).toBeTruthy()
+    expect(hasWaitlistInfo || resultsText?.includes('Sarah Berger')).toBeTruthy()
   })
 
   test('should allow adjusting search/going back to wizard', async ({ page }) => {
