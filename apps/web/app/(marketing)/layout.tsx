@@ -9,7 +9,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
     <MatchingWizardProvider>
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 bg-surface">{children}</main>
+        <main className="flex-1 bg-surface pt-20 sm:pt-24">{children}</main>
         <Footer />
         <FeatureGate feature="CHATBOT">
           <ChatWidget />

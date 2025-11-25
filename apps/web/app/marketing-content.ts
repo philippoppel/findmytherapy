@@ -8,18 +8,19 @@ export const marketingNavigation = [
 ] as const;
 
 export const heroContent = {
-  eyebrow: 'Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile',
-  title: 'Zwei Wege zu mentaler Gesundheit.',
-  highlight: 'Sofortige Hilfe durch Wissen. Professionelle Begleitung durch Expert:innen.',
+  eyebrow: 'Ruhiger Start',
+  title: 'Psychotherapie, die zu dir passt.',
+  highlight:
+    'Sag uns in wenigen Klicks, wie es dir geht – wir zeigen dir passende Therapeut:innen und begleiten dich Schritt für Schritt.',
   description:
-    'Entdecke gratis Ratgeber von anerkannten Psychotherapeut:innen für sofortige Hilfe. Oder finde verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites. Therapeut:innen erhalten individuelle Microsites und maximale Online-Sichtbarkeit durch unsere SEO-Expert:innen. Transparent und DSGVO-konform (EU-Datenschutz).',
+    'Ruhiger Einstieg ohne Fachbegriffe: Wir führen dich durch wenige Fragen und empfehlen dir sofort passende Therapeut:innen. Klar, einfühlsam und datensicher.',
   primaryCta: {
-    label: 'Matching starten',
+    label: "Los geht's",
     href: '#matching-wizard',
   },
   secondaryCta: {
-    label: 'Alle durchsuchen',
-    href: '#therapist-directory',
+    label: 'Ich weiß schon, was ich suche',
+    href: '/therapists',
   },
   tertiaryCta: {
     label: 'Für Therapeut:innen',
@@ -35,8 +36,8 @@ export const heroContent = {
     { value: '100% DSGVO', label: 'EU-Datenschutz' },
   ],
   image: {
-    src: '/images/therapists/therapy-1.jpg',
-    alt: 'Professionelle Therapiesitzung – FindMyTherapy verbindet Wissen und Therapeut:innen',
+    src: '/images/therapists/therapy-2.jpg',
+    alt: 'Beruhigende Therapiesitzung in einem hellen Raum – eine Person findet Unterstützung auf dem Sofa',
   },
 };
 
