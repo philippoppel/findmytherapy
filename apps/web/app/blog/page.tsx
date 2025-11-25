@@ -70,7 +70,7 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 overflow-x-hidden">
       {/* Sticky Header */}
       <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -191,7 +191,7 @@ export default function BlogPage() {
                       <span className="mb-3 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
                         {featuredPost.category}
                       </span>
-                      <h2 className="mb-3 text-2xl font-bold leading-tight text-white sm:text-4xl">
+                      <h2 className="mb-3 text-2xl font-bold leading-tight text-white sm:text-4xl break-words">
                         {featuredPost.title}
                       </h2>
                       <p className="mb-4 hidden max-w-2xl text-sm text-white/80 sm:block sm:text-base">
@@ -218,7 +218,7 @@ export default function BlogPage() {
               {gridPosts.map((post, index) => (
                 <article
                   key={post.slug}
-                  className={`group overflow-hidden rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+                  className={`group min-w-0 overflow-hidden rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
                     index === 0 ? 'sm:col-span-2 sm:row-span-2' : ''
                   }`}
                 >
@@ -248,7 +248,7 @@ export default function BlogPage() {
                     {/* Content */}
                     <div className="p-4 sm:p-5">
                       <h3
-                        className={`font-semibold text-neutral-900 group-hover:text-primary-700 ${
+                        className={`font-semibold text-neutral-900 group-hover:text-primary-700 break-words ${
                           index === 0 ? 'text-xl sm:text-2xl' : 'text-lg'
                         }`}
                       >
@@ -276,7 +276,7 @@ export default function BlogPage() {
                   {restPosts.slice(8).map((post) => (
                     <article
                       key={post.slug}
-                      className="group flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-primary-200 hover:shadow-sm"
+                      className="group flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-primary-200 hover:shadow-sm min-w-0"
                     >
                       {post.featuredImage?.src && (
                         <div className="relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-200">
@@ -288,9 +288,9 @@ export default function BlogPage() {
                           />
                         </div>
                       )}
-                      <div className="flex-1 min-w-0">
+                      <div className="flex-1 min-w-0 overflow-hidden">
                         <Link href={`/blog/${post.slug}`}>
-                          <h3 className="font-semibold text-neutral-900 group-hover:text-primary-700 line-clamp-1">
+                          <h3 className="font-semibold text-neutral-900 group-hover:text-primary-700 line-clamp-1 break-words">
                             {post.title}
                           </h3>
                         </Link>
@@ -310,11 +310,11 @@ export default function BlogPage() {
             )}
 
             {/* View All by Category */}
-            <section className="mb-12 rounded-2xl bg-white p-6 shadow-sm">
+            <section className="mb-12 rounded-2xl bg-white p-6 shadow-sm overflow-hidden">
               <h2 className="mb-4 text-lg font-bold text-neutral-900">
                 Nach Kategorie durchsuchen
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 overflow-hidden">
                 {categories.map((category) => {
                   const count = blogPosts.filter((p) => p.category === category).length;
                   return (

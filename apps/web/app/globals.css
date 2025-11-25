@@ -14,6 +14,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -22,6 +23,13 @@
     color: rgb(var(--text));
     line-height: 1.7;
     letter-spacing: 0.01em;
+    overflow-x: hidden;
+  }
+
+  /* Prevent long words from causing horizontal overflow on mobile */
+  h1, h2, h3, h4, h5, h6, p, li, a, span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 
   h1,

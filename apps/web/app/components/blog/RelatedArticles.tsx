@@ -135,8 +135,8 @@ export function RelatedArticles({
                   />
                 </div>
               )}
-              <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 line-clamp-2">
+              <div className="flex-1 min-w-0 overflow-hidden">
+                <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 line-clamp-2 break-words">
                   {post.title}
                 </h4>
                 <span className="mt-1 text-xs text-neutral-500">{post.readingTime}</span>
@@ -181,9 +181,9 @@ export function RelatedArticles({
               )}
             </div>
 
-            <div className="flex-1 min-w-0 py-0.5">
+            <div className="flex-1 min-w-0 py-0.5 overflow-hidden">
               {/* Title - 2 lines max */}
-              <h4 className="text-sm font-semibold leading-snug text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+              <h4 className="text-sm font-semibold leading-snug text-neutral-900 group-hover:text-primary-600 transition-colors line-clamp-2 break-words">
                 {post.title}
               </h4>
 
@@ -274,7 +274,7 @@ export function RelatedArticles({
               >
                 {nextArticle.category}
               </Badge>
-              <h3 className="text-lg font-bold text-neutral-900 group-hover:text-primary-700 transition-colors sm:text-xl md:text-2xl">
+              <h3 className="text-lg font-bold text-neutral-900 group-hover:text-primary-700 transition-colors sm:text-xl md:text-2xl break-words">
                 {nextArticle.title}
               </h3>
               <p className="mt-2 text-sm text-neutral-600 line-clamp-2 sm:text-base">
@@ -305,7 +305,7 @@ export function RelatedArticles({
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex flex-col rounded-xl border border-neutral-200 bg-white overflow-hidden shadow-sm transition hover:shadow-lg hover:border-primary-200"
+            className="group flex flex-col rounded-xl border border-neutral-200 bg-white overflow-hidden shadow-sm transition hover:shadow-lg hover:border-primary-200 min-w-0"
           >
             {/* Featured Image with overlay */}
             {post.featuredImage && (
@@ -330,7 +330,7 @@ export function RelatedArticles({
               </Badge>
 
               {/* Title */}
-              <h3 className="text-base font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 flex-grow">
+              <h3 className="text-base font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 flex-grow break-words">
                 {post.title}
               </h3>
 
