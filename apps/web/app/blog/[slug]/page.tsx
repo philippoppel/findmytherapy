@@ -325,8 +325,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 )}
                 <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-64 w-[90%] rounded-full bg-primary-400/20 blur-3xl" />
                 <div className="relative z-10 grid gap-6 sm:gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
-                  <div className="min-w-0 space-y-6">
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm">
+                  <div className="min-w-0 w-full max-w-full space-y-6 overflow-hidden">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-widest text-white/80 sm:gap-3 sm:text-sm overflow-x-auto pb-1 scrollbar-hide">
                       <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1 sm:gap-2 sm:px-4 sm:py-1.5">
                         <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden />
                         Insights
@@ -348,17 +348,17 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                         </span>
                       )}
                     </div>
-                    <div className="space-y-3 sm:space-y-4">
+                    <div className="space-y-3 sm:space-y-4 overflow-hidden">
                       <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/80 sm:px-4 sm:tracking-[0.4em] sm:text-xs">
                         {post.category}
                       </p>
                       <h1
-                        className="text-2xl font-bold leading-tight tracking-tight break-words sm:text-4xl lg:text-5xl"
+                        className="text-2xl font-bold leading-tight tracking-tight break-words [overflow-wrap:anywhere] sm:text-4xl lg:text-5xl"
                         itemProp="headline"
                       >
                         {post.title}
                       </h1>
-                      <p className="text-sm text-white/90 sm:text-base lg:text-lg">
+                      <p className="text-sm text-white/90 break-words sm:text-base lg:text-lg">
                         {post.excerpt}
                       </p>
                     </div>

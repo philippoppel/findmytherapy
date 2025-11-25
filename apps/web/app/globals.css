@@ -92,6 +92,15 @@
     background: rgb(var(--color-neutral-400));
   }
 
+  /* Hide scrollbar while allowing scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .theme-dark .text-neutral-950,
   .theme-dark .text-neutral-900,
   .theme-dark .text-neutral-800,
