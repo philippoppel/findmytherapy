@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react'
-import type { TherapistCard } from './types'
-import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch'
-import { MatchingLink } from '../components/matching/MatchingLink'
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react';
+import type { TherapistCard } from './types';
+import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch';
+import { MatchingLink } from '../components/matching/MatchingLink';
 
 // Utility function to merge classNames
 function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
-const INITIAL_VISIBLE_COUNT = 12
-const LOAD_MORE_COUNT = 12
+const INITIAL_VISIBLE_COUNT = 12;
+const LOAD_MORE_COUNT = 12;
 
 const statusLabel: Record<TherapistCard['status'], string> = {
   VERIFIED: 'Verifiziert',
   PENDING: 'In Prüfung',
   DRAFT: 'Entwurf',
-}
+};
 
 const gradients = [
   'from-blue-600 to-cyan-600',
@@ -29,31 +29,31 @@ const gradients = [
   'from-orange-600 to-amber-600',
   'from-red-600 to-rose-600',
   'from-indigo-600 to-purple-600',
-]
+];
 
 function getGradientClass(id: string): string {
-  let hash = 0
+  let hash = 0;
   for (let i = 0; i < id.length; i++) {
-    hash = id.charCodeAt(i) + ((hash << 5) - hash)
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return gradients[Math.abs(hash) % gradients.length]
+  return gradients[Math.abs(hash) % gradients.length];
 }
 
 export type TherapistDirectoryProps = {
-  therapists: TherapistCard[]
-}
+  therapists: TherapistCard[];
+};
 
 export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
-  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(therapists)
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT)
+  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(therapists);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
 
   // Reset visible count when filtered results change
   useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_COUNT)
-  }, [filteredTherapists.length])
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+  }, [filteredTherapists.length]);
 
-  const visibleTherapists = filteredTherapists.slice(0, visibleCount)
-  const hasMore = visibleCount < filteredTherapists.length
+  const visibleTherapists = filteredTherapists.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredTherapists.length;
 
   return (
     <div className="w-full">
@@ -68,11 +68,10 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
       {filteredTherapists.length === 0 ? (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur">
           <div className="mx-auto max-w-md space-y-4">
-            <p className="text-base text-white/90 font-medium">
-              Keine passenden Profile gefunden
-            </p>
+            <p className="text-base text-white/90 font-medium">Keine passenden Profile gefunden</p>
             <p className="text-sm text-white/70">
-              Passe die Filter an oder probiere unseren intelligenten Matching-Wizard aus, um personalisierte Empfehlungen zu erhalten.
+              Passe die Filter an oder probiere unseren intelligenten Matching-Wizard aus, um
+              personalisierte Empfehlungen zu erhalten.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <MatchingLink
@@ -96,7 +95,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
           {/* Therapist Grid */}
           <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3 2xl:grid-cols-4">
             {visibleTherapists.map((therapist, index) => {
-              const showBanner = index === 5 && visibleTherapists.length > 6
+              const showBanner = index === 5 && visibleTherapists.length > 6;
 
               return (
                 <React.Fragment key={therapist.id}>
@@ -124,7 +123,9 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                               Zu viele Optionen? Lass uns helfen!
                             </h3>
                             <p className="text-sm text-white/80 sm:text-base">
-                              Beantworte ein paar Fragen und erhalte personalisierte Therapeut:innen-Empfehlungen mit Passungs-Scores – passend zu deinen Bedürfnissen.
+                              Beantworte ein paar Fragen und erhalte personalisierte
+                              Therapeut:innen-Empfehlungen mit Passungs-Scores – passend zu deinen
+                              Bedürfnissen.
                             </p>
                           </div>
 
@@ -141,7 +142,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                     </div>
                   )}
                 </React.Fragment>
-              )
+              );
             })}
           </div>
 
@@ -159,15 +160,16 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
         </>
       )}
     </div>
-  )
+  );
 }
 
 function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
-  const gradientClass = getGradientClass(therapist.id)
-  const primaryFocus = therapist.focus.slice(0, 3)
-  const distance = typeof therapist.distanceInKm === 'number'
-    ? `${Math.max(1, Math.round(therapist.distanceInKm))} km`
-    : null
+  const gradientClass = getGradientClass(therapist.id);
+  const primaryFocus = therapist.focus.slice(0, 3);
+  const distance =
+    typeof therapist.distanceInKm === 'number'
+      ? `${Math.max(1, Math.round(therapist.distanceInKm))} km`
+      : null;
 
   return (
     <Link href={`/therapists/${therapist.id}`} prefetch={false} className="group">
@@ -217,8 +219,8 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
                 therapist.status === 'VERIFIED'
                   ? 'border-emerald-400/60 bg-emerald-500/30 text-emerald-100'
                   : therapist.status === 'PENDING'
-                  ? 'border-amber-400/60 bg-amber-500/30 text-amber-100'
-                  : 'border-red-400/60 bg-red-500/30 text-red-100',
+                    ? 'border-amber-400/60 bg-amber-500/30 text-amber-100'
+                    : 'border-red-400/60 bg-red-500/30 text-red-100',
               )}
             >
               <ShieldCheck className="h-3 w-3 flex-shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden />
@@ -244,21 +246,27 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
             <h3 className="line-clamp-2 text-base font-bold leading-tight text-white sm:text-lg lg:text-xl">
               {therapist.name}
             </h3>
-            <p className="line-clamp-2 text-xs text-white/70 sm:text-sm">
-              {therapist.title}
-            </p>
+            <p className="line-clamp-2 text-xs text-white/70 sm:text-sm">{therapist.title}</p>
           </div>
 
           {/* Experience Badge */}
           <div className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/90 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm">
-            <Sparkles className="h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4" aria-hidden />
+            <Sparkles
+              className="h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4"
+              aria-hidden
+            />
             <span className="line-clamp-1">{therapist.experience}</span>
           </div>
 
           {/* Quick Info */}
           <div className="flex items-start gap-2">
-            <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4" aria-hidden />
-            <span className="line-clamp-2 text-xs text-white/80 sm:text-sm">{therapist.location}</span>
+            <MapPin
+              className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4"
+              aria-hidden
+            />
+            <span className="line-clamp-2 text-xs text-white/80 sm:text-sm">
+              {therapist.location}
+            </span>
           </div>
 
           {/* Focus Areas */}
@@ -289,8 +297,8 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
                   therapist.availabilityRank <= 2
                     ? 'text-emerald-400'
                     : therapist.availabilityRank <= 4
-                    ? 'text-amber-400'
-                    : 'text-red-400',
+                      ? 'text-amber-400'
+                      : 'text-red-400',
                 )}
               >
                 {therapist.availability}
@@ -300,5 +308,5 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
         </div>
       </article>
     </Link>
-  )
+  );
 }

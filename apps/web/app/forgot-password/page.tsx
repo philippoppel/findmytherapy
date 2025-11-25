@@ -1,13 +1,13 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
-import { ForgotPasswordForm } from './ForgotPasswordForm'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+import { ForgotPasswordForm } from './ForgotPasswordForm';
 
 export const metadata: Metadata = {
   title: 'Passwort zurücksetzen – FindMyTherapy',
   description:
     'Setze dein Passwort zurück und erhalte wieder Zugriff auf dein FindMyTherapy-Konto.',
-}
+};
 
 export default function ForgotPasswordPage() {
   return (
@@ -34,16 +34,17 @@ export default function ForgotPasswordPage() {
               Alternative: Kontakt aufnehmen
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Du kannst uns auch direkt kontaktieren, wenn du Probleme hast oder sofort Unterstützung benötigst.
+              Du kannst uns auch direkt kontaktieren, wenn du Probleme hast oder sofort
+              Unterstützung benötigst.
             </p>
 
             <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/10 px-5 py-4 text-sm text-primary dark:border-primary/50 dark:bg-primary/20">
-              <strong>Sofortige Hilfe?</strong> Ruf uns an unter <strong>+43 720 123456</strong> oder sende eine E-Mail an{' '}
-              <strong>support@findmytherapy.net</strong>
+              <strong>Sofortige Hilfe?</strong> Ruf uns an unter <strong>+43 720 123456</strong>{' '}
+              oder sende eine E-Mail an <strong>support@findmytherapy.net</strong>
             </div>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

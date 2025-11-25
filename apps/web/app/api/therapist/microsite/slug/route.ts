@@ -30,10 +30,7 @@ export async function GET() {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findFirst({
@@ -51,7 +48,7 @@ export async function GET() {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -62,12 +59,7 @@ export async function GET() {
         select: { firstName: true, lastName: true },
       });
 
-      const slug = await generateUniqueSlug(
-        prisma,
-        user?.firstName,
-        user?.lastName,
-        profile.id
-      );
+      const slug = await generateUniqueSlug(prisma, user?.firstName, user?.lastName, profile.id);
 
       await prisma.therapistProfile.update({
         where: { id: profile.id },
@@ -91,7 +83,7 @@ export async function GET() {
 
     return NextResponse.json(
       { success: false, message: 'Slug konnte nicht geladen werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -105,10 +97,7 @@ export async function PATCH(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findFirst({
@@ -125,7 +114,7 @@ export async function PATCH(request: NextRequest) {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -135,10 +124,7 @@ export async function PATCH(request: NextRequest) {
     // Validate slug format
     const validation = validateSlug(newSlug);
     if (!validation.valid) {
-      return NextResponse.json(
-        { success: false, message: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: validation.error }, { status: 400 });
     }
 
     // Check if slug is the same (no-op)
@@ -154,10 +140,7 @@ export async function PATCH(request: NextRequest) {
     const result = await updateTherapistSlug(prisma, profile.id, newSlug);
 
     if (!result.success) {
-      return NextResponse.json(
-        { success: false, message: result.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: result.error }, { status: 400 });
     }
 
     // Revalidate microsite pages
@@ -181,13 +164,13 @@ export async function PATCH(request: NextRequest) {
           message: 'Validierungsfehler',
           errors: error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { success: false, message: 'Slug konnte nicht aktualisiert werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -201,10 +184,7 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findFirst({
@@ -220,7 +200,7 @@ export async function POST(request: NextRequest) {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -249,15 +229,12 @@ export async function POST(request: NextRequest) {
     captureError(error, { location: 'api/therapist/microsite/slug/check:post' });
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { success: false, message: 'Ungültiger Slug' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: 'Ungültiger Slug' }, { status: 400 });
     }
 
     return NextResponse.json(
       { success: false, message: 'Verfügbarkeit konnte nicht geprüft werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import Link from 'next/link'
-import { useSession, signOut } from 'next-auth/react'
-import { LayoutDashboard, LogOut, Shield, User } from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { LayoutDashboard, LogOut, Shield, User } from 'lucide-react';
 
 export function AuthHeader() {
-  const { data: session, status } = useSession()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const { data: session, status } = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false)
+        setIsMenuOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   if (status === 'loading') {
-    return <div className="h-9 w-28 animate-pulse rounded-full bg-primary-100" />
+    return <div className="h-9 w-28 animate-pulse rounded-full bg-primary-100" />;
   }
 
   if (!session) {
@@ -40,17 +40,21 @@ export function AuthHeader() {
           Registrieren
         </Link>
       </div>
-    )
+    );
   }
 
-  const role = session.user?.role
-  const isAdmin = role === 'ADMIN'
-  const isTherapist = role === 'THERAPIST'
-  const isClient = role === 'CLIENT'
-  const dashboardHref = isAdmin ? '/admin' : '/dashboard'
-  const showSecurityLink = isTherapist || isAdmin
-  const profileHref = isTherapist ? '/dashboard/profile' : isAdmin ? '/admin' : '/settings'
-  const profileLabel = isTherapist ? 'Profil verwalten' : isAdmin ? 'Adminbereich' : 'Profil & Einstellungen'
+  const role = session.user?.role;
+  const isAdmin = role === 'ADMIN';
+  const isTherapist = role === 'THERAPIST';
+  const isClient = role === 'CLIENT';
+  const dashboardHref = isAdmin ? '/admin' : '/dashboard';
+  const showSecurityLink = isTherapist || isAdmin;
+  const profileHref = isTherapist ? '/dashboard/profile' : isAdmin ? '/admin' : '/settings';
+  const profileLabel = isTherapist
+    ? 'Profil verwalten'
+    : isAdmin
+      ? 'Adminbereich'
+      : 'Profil & Einstellungen';
 
   return (
     <div className="relative" ref={menuRef}>
@@ -61,40 +65,56 @@ export function AuthHeader() {
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100">
           <User className="h-4 w-4 text-primary-900" aria-hidden />
         </div>
-        <span className="hidden md:block">
-          {session.user?.email?.split('@')[0]}
-        </span>
+        <span className="hidden md:block">{session.user?.email?.split('@')[0]}</span>
       </button>
 
       {isMenuOpen && (
         <div className="absolute right-0 z-50 mt-3 w-60 rounded-2xl border border-neutral-200 bg-white py-3 shadow-xl backdrop-blur-lg">
           <div className="border-b border-neutral-200 px-5 pb-3">
-            <p className="text-sm font-semibold text-neutral-900">
-              {session.user?.email}
-            </p>
+            <p className="text-sm font-semibold text-neutral-900">{session.user?.email}</p>
             <p className="text-xs text-muted">
               {isAdmin ? 'Administrator' : isTherapist ? 'Therapeut:in' : 'Klient:in'}
             </p>
           </div>
 
           {(isTherapist || isAdmin) && (
-            <HeaderMenuLink href={dashboardHref} label="Dashboard" icon={<LayoutDashboard className="h-4 w-4" />} onClick={() => setIsMenuOpen(false)} />
+            <HeaderMenuLink
+              href={dashboardHref}
+              label="Dashboard"
+              icon={<LayoutDashboard className="h-4 w-4" />}
+              onClick={() => setIsMenuOpen(false)}
+            />
           )}
 
           {isClient && (
-            <HeaderMenuLink href="/courses" label="Meine Kurse" icon={<LayoutDashboard className="h-4 w-4" />} onClick={() => setIsMenuOpen(false)} />
+            <HeaderMenuLink
+              href="/courses"
+              label="Meine Kurse"
+              icon={<LayoutDashboard className="h-4 w-4" />}
+              onClick={() => setIsMenuOpen(false)}
+            />
           )}
 
           {showSecurityLink && (
-            <HeaderMenuLink href="/dashboard/security" label="Sicherheit" icon={<Shield className="h-4 w-4" />} onClick={() => setIsMenuOpen(false)} />
+            <HeaderMenuLink
+              href="/dashboard/security"
+              label="Sicherheit"
+              icon={<Shield className="h-4 w-4" />}
+              onClick={() => setIsMenuOpen(false)}
+            />
           )}
 
-          <HeaderMenuLink href={profileHref} label={profileLabel} icon={<User className="h-4 w-4" />} onClick={() => setIsMenuOpen(false)} />
+          <HeaderMenuLink
+            href={profileHref}
+            label={profileLabel}
+            icon={<User className="h-4 w-4" />}
+            onClick={() => setIsMenuOpen(false)}
+          />
 
           <button
             onClick={() => {
-              setIsMenuOpen(false)
-              signOut({ callbackUrl: '/' })
+              setIsMenuOpen(false);
+              signOut({ callbackUrl: '/' });
             }}
             className="mt-2 flex w-full items-center justify-start gap-2 border-t border-neutral-200 px-5 pt-3 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900"
           >
@@ -104,10 +124,20 @@ export function AuthHeader() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-function HeaderMenuLink({ href, label, icon, onClick }: { href: string; label: string; icon: ReactNode; onClick: () => void }) {
+function HeaderMenuLink({
+  href,
+  label,
+  icon,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  icon: ReactNode;
+  onClick: () => void;
+}) {
   return (
     <Link
       href={href}
@@ -117,5 +147,5 @@ function HeaderMenuLink({ href, label, icon, onClick }: { href: string; label: s
       <span className="text-muted">{icon}</span>
       {label}
     </Link>
-  )
+  );
 }

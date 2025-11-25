@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { MatchingWizard } from './MatchingWizard'
-import { MatchingResults } from './MatchingResults'
+import { MatchingWizard } from './MatchingWizard';
+import { MatchingResults } from './MatchingResults';
 
 /**
  * Section that contains both the matching wizard and results
@@ -13,5 +13,5 @@ export function MatchingSection() {
       <MatchingWizard />
       <MatchingResults />
     </div>
-  )
+  );
 }

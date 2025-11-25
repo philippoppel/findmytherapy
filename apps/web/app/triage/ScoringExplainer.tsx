@@ -1,15 +1,19 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Info } from 'lucide-react'
-import { phq9Thresholds, gad7Thresholds, scientificSources } from '../../lib/triage/scientific-benchmarks'
+import { useState } from 'react';
+import { ChevronDown, ChevronUp, ExternalLink, Info } from 'lucide-react';
+import {
+  phq9Thresholds,
+  gad7Thresholds,
+  scientificSources,
+} from '../../lib/triage/scientific-benchmarks';
 
 type ScoringExplainerProps = {
-  className?: string
-}
+  className?: string;
+};
 
 export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className={`rounded-2xl border border-divider bg-white/90 ${className}`}>
@@ -39,9 +43,10 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
           {/* Einleitung */}
           <div className="rounded-xl border border-primary-100 bg-primary-50/50 p-4">
             <p className="text-sm text-default leading-relaxed">
-              Ihre Einschätzung basiert auf zwei international anerkannten, wissenschaftlich validierten Screening-Instrumenten:
-              dem <strong>PHQ-9</strong> (Depression) und dem <strong>GAD-7</strong> (Angststörungen). Diese werden weltweit
-              in der klinischen Praxis und Forschung eingesetzt.
+              Ihre Einschätzung basiert auf zwei international anerkannten, wissenschaftlich
+              validierten Screening-Instrumenten: dem <strong>PHQ-9</strong> (Depression) und dem{' '}
+              <strong>GAD-7</strong> (Angststörungen). Diese werden weltweit in der klinischen
+              Praxis und Forschung eingesetzt.
             </p>
           </div>
 
@@ -54,10 +59,15 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
             <div className="mt-3 space-y-2">
               {Object.values(phq9Thresholds).map((threshold) => (
                 <div key={threshold.label} className="flex items-start gap-3">
-                  <div className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none" aria-hidden />
+                  <div
+                    className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none"
+                    aria-hidden
+                  />
                   <div className="flex-1 text-xs">
                     <span className="font-medium text-default">{threshold.label}</span>{' '}
-                    <span className="text-muted">({threshold.min}-{threshold.max} Punkte)</span>
+                    <span className="text-muted">
+                      ({threshold.min}-{threshold.max} Punkte)
+                    </span>
                   </div>
                 </div>
               ))}
@@ -73,10 +83,15 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
             <div className="mt-3 space-y-2">
               {Object.values(gad7Thresholds).map((threshold) => (
                 <div key={threshold.label} className="flex items-start gap-3">
-                  <div className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none" aria-hidden />
+                  <div
+                    className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 flex-none"
+                    aria-hidden
+                  />
                   <div className="flex-1 text-xs">
                     <span className="font-medium text-default">{threshold.label}</span>{' '}
-                    <span className="text-muted">({threshold.min}-{threshold.max} Punkte)</span>
+                    <span className="text-muted">
+                      ({threshold.min}-{threshold.max} Punkte)
+                    </span>
                   </div>
                 </div>
               ))}
@@ -93,19 +108,25 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
               <li className="flex items-start gap-2">
                 <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-emerald-500" aria-hidden />
                 <span>
-                  <strong className="text-emerald-900">Grün – Geringe Belastung:</strong> Die Ergebnisse zeigen minimale Symptome in beiden Bereichen. Präventive Maßnahmen und Selbstfürsorge sind empfehlenswert.
+                  <strong className="text-emerald-900">Grün – Geringe Belastung:</strong> Die
+                  Ergebnisse zeigen minimale Symptome in beiden Bereichen. Präventive Maßnahmen und
+                  Selbstfürsorge sind empfehlenswert.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-amber-500" aria-hidden />
                 <span>
-                  <strong className="text-amber-900">Gelb – Mittlere Belastung:</strong> Es liegen mittelschwere Symptome vor, die den Alltag beeinträchtigen können. Professionelle Unterstützung wird empfohlen.
+                  <strong className="text-amber-900">Gelb – Mittlere Belastung:</strong> Es liegen
+                  mittelschwere Symptome vor, die den Alltag beeinträchtigen können. Professionelle
+                  Unterstützung wird empfohlen.
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <div className="mt-0.5 h-2 w-2 flex-none rounded-full bg-red-500" aria-hidden />
                 <span>
-                  <strong className="text-red-900">Rot – Hohe Belastung:</strong> Die Ergebnisse deuten auf schwere Symptome hin, die eine zeitnahe professionelle Behandlung erfordern.
+                  <strong className="text-red-900">Rot – Hohe Belastung:</strong> Die Ergebnisse
+                  deuten auf schwere Symptome hin, die eine zeitnahe professionelle Behandlung
+                  erfordern.
                 </span>
               </li>
             </ul>
@@ -137,14 +158,15 @@ export function ScoringExplainer({ className = '' }: ScoringExplainerProps) {
           <div className="rounded-xl border border-primary-200 bg-primary-50 p-4">
             <h5 className="text-sm font-semibold text-primary-900 mb-2">Wichtiger Hinweis</h5>
             <p className="text-xs text-primary-900 leading-relaxed">
-              Die Fragebögen PHQ-9 und GAD-7 sind international anerkannte, wissenschaftlich validierte Screening-Instrumente
-              zur Ersteinschätzung psychischer Belastung. Sie dienen als Orientierungshilfe und ersetzen keine professionelle
-              Diagnose. Für eine umfassende Beurteilung und Behandlungsempfehlung ist eine persönliche Einschätzung durch
-              qualifizierte Fachpersonen erforderlich.
+              Die Fragebögen PHQ-9 und GAD-7 sind international anerkannte, wissenschaftlich
+              validierte Screening-Instrumente zur Ersteinschätzung psychischer Belastung. Sie
+              dienen als Orientierungshilfe und ersetzen keine professionelle Diagnose. Für eine
+              umfassende Beurteilung und Behandlungsempfehlung ist eine persönliche Einschätzung
+              durch qualifizierte Fachpersonen erforderlich.
             </p>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

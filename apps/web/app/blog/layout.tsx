@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Blog | FindMyTherapy',
@@ -18,8 +18,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Blog | FindMyTherapy',
-    description:
-      'Artikel zu mentaler Gesundheit, Psychotherapie und Selbsthilfe in Österreich.',
+    description: 'Artikel zu mentaler Gesundheit, Psychotherapie und Selbsthilfe in Österreich.',
     type: 'website',
     url: 'https://findmytherapy.net/blog',
     locale: 'de_AT',
@@ -36,12 +35,11 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Blog | FindMyTherapy',
-    description:
-      'Artikel zu mentaler Gesundheit, Psychotherapie und Selbsthilfe in Österreich.',
+    description: 'Artikel zu mentaler Gesundheit, Psychotherapie und Selbsthilfe in Österreich.',
     images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
-}
+};
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
-  return children
+  return children;
 }

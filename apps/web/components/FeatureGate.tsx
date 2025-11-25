@@ -20,31 +20,31 @@
  * ```
  */
 
-import { type ReactNode } from 'react'
-import { FEATURES, type FeatureName } from '@/lib/features'
+import { type ReactNode } from 'react';
+import { FEATURES, type FeatureName } from '@/lib/features';
 
 interface FeatureGateProps {
   /**
    * The feature that must be enabled for children to render
    */
-  feature: FeatureName
+  feature: FeatureName;
 
   /**
    * Content to render when the feature is enabled
    */
-  children: ReactNode
+  children: ReactNode;
 
   /**
    * Optional content to render when the feature is disabled
    * If not provided, nothing will be rendered
    */
-  fallback?: ReactNode
+  fallback?: ReactNode;
 
   /**
    * If true, renders fallback when feature is ENABLED
    * and children when feature is DISABLED (inverted logic)
    */
-  invert?: boolean
+  invert?: boolean;
 }
 
 /**
@@ -56,14 +56,14 @@ export function FeatureGate({
   fallback = null,
   invert = false,
 }: FeatureGateProps) {
-  const isEnabled = FEATURES[feature]
-  const shouldRenderChildren = invert ? !isEnabled : isEnabled
+  const isEnabled = FEATURES[feature];
+  const shouldRenderChildren = invert ? !isEnabled : isEnabled;
 
   if (shouldRenderChildren) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
-  return <>{fallback}</>
+  return <>{fallback}</>;
 }
 
 /**
@@ -77,7 +77,7 @@ export function FeatureGate({
  * ```
  */
 export function useFeature(feature: FeatureName): boolean {
-  return FEATURES[feature]
+  return FEATURES[feature];
 }
 
 /**
@@ -94,13 +94,13 @@ export function useFeature(feature: FeatureName): boolean {
 export function withFeatureGate<P extends object>(
   Component: React.ComponentType<P>,
   feature: FeatureName,
-  fallback?: ReactNode
+  fallback?: ReactNode,
 ) {
   return function FeatureGatedComponent(props: P) {
     return (
       <FeatureGate feature={feature} fallback={fallback}>
         <Component {...props} />
       </FeatureGate>
-    )
-  }
+    );
+  };
 }

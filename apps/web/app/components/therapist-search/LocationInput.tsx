@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { MapPin, LocateFixed, Loader2 } from 'lucide-react'
-import type { Coordinates } from '../../therapists/location-data'
-import { validateLocationInput } from '../../therapists/location-data'
-import { useDebouncedValue } from '../../hooks/useDebouncedValue'
+import { useState, useEffect } from 'react';
+import { MapPin, LocateFixed, Loader2 } from 'lucide-react';
+import type { Coordinates } from '../../therapists/location-data';
+import { validateLocationInput } from '../../therapists/location-data';
+import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 
 export type LocationInputProps = {
-  value: string
-  onChange: (value: string) => void
-  onCoordinatesChange: (coordinates: Coordinates | null) => void
-  nearbyOnly: boolean
-  onNearbyOnlyChange: (nearby: boolean) => void
-  radius: number
-  onRadiusChange: (radius: number) => void
-  className?: string
-}
+  value: string;
+  onChange: (value: string) => void;
+  onCoordinatesChange: (coordinates: Coordinates | null) => void;
+  nearbyOnly: boolean;
+  onNearbyOnlyChange: (nearby: boolean) => void;
+  radius: number;
+  onRadiusChange: (radius: number) => void;
+  className?: string;
+};
 
-type GeoStatus = 'idle' | 'loading' | 'error'
+type GeoStatus = 'idle' | 'loading' | 'error';
 
-const RADIUS_OPTIONS = [25, 50, 75, 120] as const
+const RADIUS_OPTIONS = [25, 50, 75, 120] as const;
 
 export function LocationInput({
   value,
@@ -31,89 +31,89 @@ export function LocationInput({
   onRadiusChange,
   className = '',
 }: LocationInputProps) {
-  const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle')
-  const [geoError, setGeoError] = useState<string>('')
-  const [locationError, setLocationError] = useState<string>('')
-  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle');
+  const [geoError, setGeoError] = useState<string>('');
+  const [locationError, setLocationError] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // Debounce location input to prevent validation on every keystroke
-  const debouncedValue = useDebouncedValue(value, 500)
+  const debouncedValue = useDebouncedValue(value, 500);
 
   // Validate location input when debounced value changes
   useEffect(() => {
     if (!debouncedValue.trim()) {
-      setLocationError('')
-      setSuggestions([])
-      onCoordinatesChange(null)
-      return
+      setLocationError('');
+      setSuggestions([]);
+      onCoordinatesChange(null);
+      return;
     }
 
-    const result = validateLocationInput(debouncedValue)
+    const result = validateLocationInput(debouncedValue);
 
     if (result.valid) {
-      setLocationError('')
-      setSuggestions([])
-      onCoordinatesChange(result.coordinates)
+      setLocationError('');
+      setSuggestions([]);
+      onCoordinatesChange(result.coordinates);
       // Auto-enable nearby filter when valid location is entered
       if (!nearbyOnly) {
-        onNearbyOnlyChange(true)
+        onNearbyOnlyChange(true);
       }
     } else {
-      setLocationError(result.error)
-      setSuggestions(result.suggestions)
-      onCoordinatesChange(null)
+      setLocationError(result.error);
+      setSuggestions(result.suggestions);
+      onCoordinatesChange(null);
     }
-  }, [debouncedValue, onCoordinatesChange, nearbyOnly, onNearbyOnlyChange])
+  }, [debouncedValue, onCoordinatesChange, nearbyOnly, onNearbyOnlyChange]);
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
-      setGeoError('Geolocation wird von deinem Browser nicht unterstützt.')
-      setGeoStatus('error')
-      return
+      setGeoError('Geolocation wird von deinem Browser nicht unterstützt.');
+      setGeoStatus('error');
+      return;
     }
 
-    setGeoStatus('loading')
-    setGeoError('')
+    setGeoStatus('loading');
+    setGeoError('');
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const coords: Coordinates = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-        }
-        onCoordinatesChange(coords)
-        setGeoStatus('idle')
-        onNearbyOnlyChange(true)
+        };
+        onCoordinatesChange(coords);
+        setGeoStatus('idle');
+        onNearbyOnlyChange(true);
         // Clear text input when using geolocation
-        onChange('')
-        setLocationError('')
-        setSuggestions([])
+        onChange('');
+        setLocationError('');
+        setSuggestions([]);
       },
       (error) => {
-        setGeoStatus('error')
+        setGeoStatus('error');
         if (error.code === 1) {
-          setGeoError('Standort-Berechtigung verweigert. Gib manuell eine Stadt ein.')
+          setGeoError('Standort-Berechtigung verweigert. Gib manuell eine Stadt ein.');
         } else if (error.code === 2) {
-          setGeoError('Standort konnte nicht ermittelt werden.')
+          setGeoError('Standort konnte nicht ermittelt werden.');
         } else if (error.code === 3) {
-          setGeoError('Zeitüberschreitung. Versuche es erneut.')
+          setGeoError('Zeitüberschreitung. Versuche es erneut.');
         } else {
-          setGeoError(error.message || 'Standort konnte nicht ermittelt werden.')
+          setGeoError(error.message || 'Standort konnte nicht ermittelt werden.');
         }
       },
       {
         maximumAge: 1000 * 60 * 5, // Cache for 5 minutes
         timeout: 10000, // 10 second timeout
         enableHighAccuracy: false,
-      }
-    )
-  }
+      },
+    );
+  };
 
   const handleSuggestionClick = (suggestion: string) => {
-    onChange(suggestion)
-    setSuggestions([])
-    setLocationError('')
-  }
+    onChange(suggestion);
+    setSuggestions([]);
+    setLocationError('');
+  };
 
   return (
     <div className={className}>
@@ -249,5 +249,5 @@ export function LocationInput({
         )}
       </div>
     </div>
-  )
+  );
 }

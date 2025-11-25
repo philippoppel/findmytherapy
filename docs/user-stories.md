@@ -1,6 +1,7 @@
 # FindMyTherapy MVP – User Stories
 
 ## 1. Investor:innen-Erlebnis & Marketing
+
 - **Story ID:** MKT-001
   **Als** Interessent:in auf der Landingpage
   **möchte ich** die Kernbotschaft und Produktwerte klar verstehen
@@ -20,6 +21,7 @@
   **Akzeptanzkriterien:** Kurs- und Therapieseiten listen Seed-Inhalte, zeigen Preisrange, verlinken zurück zur Triage.
 
 ## 2. Pilot-Therapeut:innen Onboarding
+
 - **Story ID:** THER-001  
   **Als** Pilot-Therapeut:in  
   **möchte ich** mich mit Basisdaten registrieren und ein Passwort vergeben  
@@ -45,6 +47,7 @@
   **Akzeptanzkriterien:** Download-Link oder PDF-Viewer im Onboarding/Admin-Bereich, Dokumente versioniert abgelegt.
 
 ## 3. Klient:innen Journey & Seed-Daten
+
 - **Story ID:** CLIENT-001  
   **Als** interessierte Klient:in  
   **möchte ich** mich einloggen können  
@@ -69,13 +72,14 @@
   **damit** das Care-Team mein Anliegen bearbeiten kann.  
   **Akzeptanzkriterien:** Formular mit Validierung, Speicherung in DB, Rückmeldung im UI, Queue-Eintrag für Follow-up.
 
-- **Story ID:** CLIENT-004 *(offen)*  
+- **Story ID:** CLIENT-004 _(offen)_  
   **Als** Support-Team  
   **möchte ich** dass Kontaktanfragen automatisch eine Bestätigungs-E-Mail und Slack/Inbox-Notification auslösen  
   **damit** keine Anfrage verloren geht.  
   **Akzeptanzkriterien:** E-Mail-/Notification-Dispatch, Retry-Mechanismus oder Logging, sichtbarer Statuswechsel.
 
 ## 4. Operatives Backbone & Sicherheit
+
 - **Story ID:** OPS-001  
   **Als** Tech-Team  
   **möchte ich** Seed-Daten via Seed-Skript bereitstellen  
@@ -95,13 +99,14 @@
   **Akzeptanzkriterien:** `captureError`-Hooks in API-Routen, Worker-Heartbeat-Logs, Konsolenhinweise in DEV.
 
 ## 5. Qualität & Kommunikation
+
 - **Story ID:** QA-001  
   **Als** Produktteam  
   **möchte ich** automatisierte Smoke-Tests für Kernformulare  
   **damit** kritische Flows (Triage, Registrierung, Kontakt) regressionssicher bleiben.  
   **Akzeptanzkriterien:** Jest-Specs für Triage, Registration, Contact; läuft via `pnpm test`.
 
-- **Story ID:** QA-002 *(offen)*  
+- **Story ID:** QA-002 _(offen)_  
   **Als** Produktteam  
   **möchte ich** E2E-Tests für Auth- und Dashboard-Flows  
   **damit** Login/TOTP/Profil-Sichten automatisiert geprüft werden können.  
@@ -115,4 +120,4 @@
 
 ---
 
-**Status-Legende:** Stories ohne Zusatz gelten als erledigt; mit *(offen)* markierte Stories sind noch umzusetzen. Bitte nach Umsetzung jeweils Status im PROJECT_PLAN.md und hier aktualisieren.
+**Status-Legende:** Stories ohne Zusatz gelten als erledigt; mit _(offen)_ markierte Stories sind noch umzusetzen. Bitte nach Umsetzung jeweils Status im PROJECT_PLAN.md und hier aktualisieren.

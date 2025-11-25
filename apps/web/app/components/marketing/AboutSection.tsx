@@ -1,23 +1,23 @@
-'use client'
+'use client';
 
-import { useRef } from 'react'
-import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
-import { teamContent } from '../../marketing-content'
+import { useRef } from 'react';
+import Image from 'next/image';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Reveal } from './Reveal';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
+import { teamContent } from '../../marketing-content';
 
 export function AboutSection() {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const sectionRef = useRef<HTMLElement>(null)
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
-  })
+  });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   const values = [
     {
@@ -44,17 +44,17 @@ export function AboutSection() {
       description: 'Basierend auf evidenzbasierten Methoden und aktueller Forschung.',
       color: 'secondary',
     },
-  ]
+  ];
   const missionHighlights = [
     'Psychotherapeutische Expertise & klinische Erfahrung',
     'Digitale Produktentwicklung & Forschung verbunden',
     'Partnerschaften mit Praxen, Kliniken & Selbsthilfegruppen',
-  ]
+  ];
   const trustBadges = [
     { label: 'PHQ-9 & GAD-7 validiert', description: 'Evidenzbasierte Ersteinschätzung' },
     { label: 'DSGVO-Konform (EU)', description: 'Transparenter Umgang mit Daten' },
     { label: 'Partner:innen aus Praxis & Forschung', description: 'Gemeinsam mit der Community' },
-  ]
+  ];
 
   return (
     <section
@@ -168,8 +168,8 @@ export function AboutSection() {
                   Jede:r soll Zugang zu qualifizierter Unterstützung bekommen.
                 </h3>
                 <p className="mb-6 text-base leading-relaxed text-muted sm:text-lg">
-                  Wir verbinden evidenzbasiertes Wissen mit verifizierten Therapeut:innen und
-                  einer Plattform, die Orientierung schafft – vom ersten Symptom bis zum Termin.
+                  Wir verbinden evidenzbasiertes Wissen mit verifizierten Therapeut:innen und einer
+                  Plattform, die Orientierung schafft – vom ersten Symptom bis zum Termin.
                 </p>
                 <ul className="space-y-3">
                   {missionHighlights.map((highlight) => (
@@ -216,8 +216,8 @@ export function AboutSection() {
                   Wir tauschen uns regelmäßig mit Partner:innen aus Praxis & Forschung aus.
                 </p>
                 <p className="mb-6 text-sm text-white/80">
-                  Schreibe uns, wenn du mitgestalten möchtest – egal ob Therapeut:in, Kooperationspartner
-                  oder Institution.
+                  Schreibe uns, wenn du mitgestalten möchtest – egal ob Therapeut:in,
+                  Kooperationspartner oder Institution.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {teamContent.ctas?.map((cta) => (
@@ -238,9 +238,7 @@ export function AboutSection() {
 
         {/* Values Grid */}
         <Reveal delay={300}>
-          <h3 className="mb-12 text-center text-3xl font-bold text-neutral-900">
-            Unsere Werte
-          </h3>
+          <h3 className="mb-12 text-center text-3xl font-bold text-neutral-900">Unsere Werte</h3>
         </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -274,7 +272,7 @@ export function AboutSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function UsersIcon({ className }: { className?: string }) {
@@ -287,7 +285,7 @@ function UsersIcon({ className }: { className?: string }) {
         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
       />
     </svg>
-  )
+  );
 }
 
 function ShieldCheckIcon({ className }: { className?: string }) {
@@ -300,7 +298,7 @@ function ShieldCheckIcon({ className }: { className?: string }) {
         d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
       />
     </svg>
-  )
+  );
 }
 
 function HeartIcon({ className }: { className?: string }) {
@@ -308,7 +306,7 @@ function HeartIcon({ className }: { className?: string }) {
     <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
       <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
     </svg>
-  )
+  );
 }
 
 function LockIcon({ className }: { className?: string }) {
@@ -321,7 +319,7 @@ function LockIcon({ className }: { className?: string }) {
         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
       />
     </svg>
-  )
+  );
 }
 
 function SparklesIcon({ className }: { className?: string }) {
@@ -334,7 +332,7 @@ function SparklesIcon({ className }: { className?: string }) {
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
       />
     </svg>
-  )
+  );
 }
 
 function ArrowUpRightIcon({ className }: { className?: string }) {
@@ -347,5 +345,5 @@ function ArrowUpRightIcon({ className }: { className?: string }) {
         d="M17 7l-10 10m0-10h10v10"
       />
     </svg>
-  )
+  );
 }

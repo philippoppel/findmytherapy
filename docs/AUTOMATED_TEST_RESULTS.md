@@ -9,15 +9,18 @@
 ## ✅ Was wurde getestet
 
 ### 1. Test-Daten Setup
+
 - ✅ **Status:** Erfolgreich erstellt
 - ✅ Therapeuten-Profil mit Microsite konfiguriert
 - ✅ Triage Session für Client erstellt
 - ✅ Client Consent für Dossier-Sharing vorhanden
 
 ### 2. Database Validation Tests
+
 **Total: 20 Tests | Passed: 20 (100%) | Failed: 0**
 
 #### Test Suite 1: Microsite Data Completeness (10/10)
+
 - ✅ Display Name vorhanden
 - ✅ Headline vorhanden
 - ✅ About-Text vorhanden
@@ -30,6 +33,7 @@
 - ✅ Accepting Clients = true
 
 #### Test Suite 2: Triage Session Data Quality (6/6)
+
 - ✅ PHQ-9 Antworten: 9 Items (korrekt)
 - ✅ GAD-7 Antworten: 7 Items (korrekt)
 - ✅ PHQ-9 Score: 10/27 (valid range)
@@ -38,6 +42,7 @@
 - ✅ Support Preferences: 2 Items
 
 #### Test Suite 3: Database Relationships (4/4)
+
 - ✅ Therapeut hat User-Account
 - ✅ User hat Role THERAPIST
 - ✅ Triage hat Client-User
@@ -74,9 +79,11 @@ Client Consent:
 ## ⚠️ Was ich NICHT testen konnte
 
 ### 1. Microsite UI/Frontend
+
 **Problem:** Vercel Deployment Protection aktiv (401 Unauthorized)
 
 **Was fehlt:**
+
 - ❌ Microsite im Browser aufrufen
 - ❌ Hero Section visuell prüfen
 - ❌ Kontaktformular testen
@@ -85,9 +92,11 @@ Client Consent:
 **Lösung:** Deployment Protection deaktivieren
 
 ### 2. Dossier API (mit Authentication)
+
 **Problem:** NextAuth Session Cookies erforderlich
 
 **Was fehlt:**
+
 - ❌ Dossier über API erstellen (POST /api/dossiers)
 - ❌ Dossier als Therapeut abrufen (GET /api/dossiers/:id)
 - ❌ Access-Logging testen
@@ -96,7 +105,9 @@ Client Consent:
 **Lösung:** Test-Credentials oder API-Key bereitstellen
 
 ### 3. End-to-End User Flows
+
 **Was fehlt:**
+
 - ❌ Lead-Formular absenden
 - ❌ Analytics-Tracking
 - ❌ Email-Benachrichtigungen
@@ -108,12 +119,14 @@ Client Consent:
 ### Option 1: Deployment Protection deaktivieren (empfohlen)
 
 **Schritte:**
+
 1. Gehe zu: https://vercel.com/philipps-projects-0f51423d/findmytherapy-qyva
 2. Settings → Deployment Protection
 3. Wähle: **"Only Preview Deployments"** oder **"Disabled"**
 4. Speichern
 
 **Danach kann ich:**
+
 - ✅ Microsite im Browser testen
 - ✅ Kontaktformular absenden
 - ✅ SEO-Tags verifizieren
@@ -122,6 +135,7 @@ Client Consent:
 ### Option 2: Test-Credentials bereitstellen
 
 **Was ich brauche:**
+
 ```json
 {
   "adminUser": {
@@ -136,6 +150,7 @@ Client Consent:
 ```
 
 **Danach kann ich:**
+
 - ✅ Als Admin Dossier erstellen
 - ✅ Als Therapeut Dossier abrufen
 - ✅ Access-Logging testen
@@ -144,6 +159,7 @@ Client Consent:
 ### Option 3: Nur Deployment Protection deaktivieren (Minimum)
 
 **Mindestanforderung für Basis-Tests:**
+
 - Deployment Protection deaktivieren → Ich kann Microsite öffentlich testen
 
 ---
@@ -153,6 +169,7 @@ Client Consent:
 ### Nach Deployment Protection Deaktivierung:
 
 **Ich führe automatisch durch:**
+
 1. ✅ Microsite UI/UX Test
    - Hero Section Rendering
    - Content-Vollständigkeit
@@ -194,18 +211,21 @@ Client Consent:
 ## 🎯 Test Coverage Summary
 
 ### ✅ Bereits getestet (100%)
+
 - Database Schema
 - Data Validation
 - Foreign Key Relationships
 - Data Completeness
 
 ### ⏳ Benötigt Deployment Protection Disable (70%)
+
 - Microsite UI/Frontend
 - Contact Form
 - SEO/Meta-Tags
 - Analytics Tracking
 
 ### ⏳ Benötigt Test-Credentials (30%)
+
 - Dossier API (mit Auth)
 - Access Control
 - Encryption/Decryption
@@ -216,11 +236,13 @@ Client Consent:
 ## 💡 Empfehlung
 
 **Für schnelles Testing:**
+
 1. Deployment Protection deaktivieren (2 Minuten)
 2. Ich teste Microsite automatisch (5 Minuten)
 3. Du bekommst vollständigen Test-Report
 
 **Für vollständiges Testing:**
+
 1. Deployment Protection deaktivieren
 2. Test-Credentials bereitstellen
 3. Ich teste beide Features komplett (15 Minuten)
@@ -231,11 +253,13 @@ Client Consent:
 ## 📧 Test-Ergebnisse anfordern
 
 **Nach Deployment Protection Deaktivierung:**
+
 ```
 Sage mir einfach: "Test jetzt die Microsite"
 ```
 
 **Oder schick mir Test-Credentials als:**
+
 ```json
 {
   "adminEmail": "...",

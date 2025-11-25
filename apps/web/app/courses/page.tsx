@@ -1,16 +1,16 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { Sparkles, Target } from 'lucide-react'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Sparkles, Target } from 'lucide-react';
 
-import { seedCourses } from '@/lib/seed-data'
-import { CourseCatalog, type CourseCard } from './CourseCatalog'
-import { FEATURES } from '@/lib/features'
+import { seedCourses } from '@/lib/seed-data';
+import { CourseCatalog, type CourseCard } from './CourseCatalog';
+import { FEATURES } from '@/lib/features';
 
 export const metadata: Metadata = {
   title: 'Programme & Kurse – FindMyTherapy',
   description:
     'Geführte digitale Programme, Live-Workshops und Hybridformate von FindMyTherapy. Einblicke in Aufbau, Inhalte und Begleitung.',
-}
+};
 
 export default function CoursesPage() {
   const courses: CourseCard[] = seedCourses
@@ -28,7 +28,7 @@ export default function CoursesPage() {
       price: course.price,
       currency: course.currency,
       lessons: course.lessons.length,
-    }))
+    }));
 
   return (
     <div className="bg-surface">
@@ -47,7 +47,8 @@ export default function CoursesPage() {
               Digitale Programme, die dich zwischen den Sessions tragen
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted">
-              Wir zeigen, wie Kurse und Hybridprogramme aufgebaut sind: klare Ziele, modulare Struktur, transparente Dauer und Integration ins FindMyTherapy-Sicherheitsnetz.
+              Wir zeigen, wie Kurse und Hybridprogramme aufgebaut sind: klare Ziele, modulare
+              Struktur, transparente Dauer und Integration ins FindMyTherapy-Sicherheitsnetz.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               {FEATURES.ASSESSMENT && (
@@ -73,11 +74,10 @@ export default function CoursesPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <div className="max-w-2xl space-y-3">
-              <h2 className="text-3xl font-semibold text-default">
-                Strukturierte Kursübersicht
-              </h2>
+              <h2 className="text-3xl font-semibold text-default">Strukturierte Kursübersicht</h2>
               <p className="text-base text-muted">
-                Alle Programme folgen einem klaren Aufbau. Menschen sehen auf einen Blick Ziel, Umfang, Intensität und was sie konkret erwartet.
+                Alle Programme folgen einem klaren Aufbau. Menschen sehen auf einen Blick Ziel,
+                Umfang, Intensität und was sie konkret erwartet.
               </p>
             </div>
             <div className="flex items-center gap-3 rounded-full border border-divider bg-white/70 px-4 py-2 text-sm text-muted">
@@ -90,5 +90,5 @@ export default function CoursesPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { Metadata } from 'next'
-import { WHO5Flow } from '../WHO5Flow'
+import { Metadata } from 'next';
+import { WHO5Flow } from '../WHO5Flow';
 
 export const metadata: Metadata = {
   title: 'WHO-5 Wohlbefindens-Check | Klarthera',
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     description: 'Schneller 5-Fragen Check zu deinem Wohlbefinden - wissenschaftlich validiert.',
     type: 'website',
   },
-}
+};
 
 export default function WHO5QuickCheckPage() {
-  return <WHO5Flow />
+  return <WHO5Flow />;
 }

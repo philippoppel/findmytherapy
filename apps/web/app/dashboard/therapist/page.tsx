@@ -7,7 +7,7 @@ import { TherapistDashboardClient } from './components/TherapistDashboardClient'
 import { GettingStartedWidget } from './components/GettingStartedWidget';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const fetchTherapistProfile = async (userId: string) => {
   const profile = await prisma.therapistProfile.findUnique({
@@ -58,9 +58,9 @@ export default async function TherapistDashboardPage() {
   // Calculate Getting Started checklist values
   const profileComplete = Boolean(
     profile?.headline &&
-    profile?.experienceSummary &&
-    profile?.specialties &&
-    profile.specialties.length >= 3
+      profile?.experienceSummary &&
+      profile?.specialties &&
+      profile.specialties.length >= 3,
   );
   const micrositePublished = profile?.micrositeStatus === 'PUBLISHED';
   const hasLeads = (profile?.micrositeLeads?.length ?? 0) > 0;
@@ -79,15 +79,15 @@ export default async function TherapistDashboardPage() {
               profile?.status === 'VERIFIED'
                 ? 'bg-green-100 text-green-700'
                 : profile?.status === 'PENDING'
-                ? 'bg-yellow-100 text-yellow-700'
-                : 'bg-red-100 text-red-700'
+                  ? 'bg-yellow-100 text-yellow-700'
+                  : 'bg-red-100 text-red-700'
             }`}
           >
             {profile?.status === 'VERIFIED'
               ? '✓ Verifiziert'
               : profile?.status === 'PENDING'
-              ? '⏳ In Prüfung'
-              : '✕ Abgelehnt'}
+                ? '⏳ In Prüfung'
+                : '✕ Abgelehnt'}
           </span>
         </div>
       </header>
@@ -106,8 +106,18 @@ export default async function TherapistDashboardPage() {
             value={profile?.courses.filter((course) => course.status === 'PUBLISHED').length ?? 0}
             tone="accent"
           />
-          <MetricCard icon={TrendingUp} label="Listing-Plan" value={profile?.listings[0]?.plan ?? 'FREE'} tone="primary" />
-          <MetricCard icon={CreditCard} label="Ausstehende Auszahlungen" value="€0,00" tone="success" />
+          <MetricCard
+            icon={TrendingUp}
+            label="Listing-Plan"
+            value={profile?.listings[0]?.plan ?? 'FREE'}
+            tone="primary"
+          />
+          <MetricCard
+            icon={CreditCard}
+            label="Ausstehende Auszahlungen"
+            value="€0,00"
+            tone="success"
+          />
         </div>
       </section>
 
@@ -118,7 +128,10 @@ export default async function TherapistDashboardPage() {
         hasLeads={hasLeads}
       />
 
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6" aria-label="Schnellaktionen und Termine">
+      <section
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+        aria-label="Schnellaktionen und Termine"
+      >
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">Ihre nächsten Termine</h2>
@@ -210,10 +223,22 @@ export default async function TherapistDashboardPage() {
           <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">Schnellzugriff</h2>
             <nav className="space-y-2">
-              <QuickAction href="/dashboard/security" icon={Heart} label="Zwei-Faktor-Schutz verwalten" />
+              <QuickAction
+                href="/dashboard/security"
+                icon={Heart}
+                label="Zwei-Faktor-Schutz verwalten"
+              />
               <QuickAction href="/dashboard/profile" icon={Settings} label="Profil aktualisieren" />
-              <QuickAction href="/dashboard/listing" icon={TrendingUp} label="Listing-Plan anpassen" />
-              <QuickAction href="/dashboard/payouts" icon={CreditCard} label="Auszahlungen prüfen" />
+              <QuickAction
+                href="/dashboard/listing"
+                icon={TrendingUp}
+                label="Listing-Plan anpassen"
+              />
+              <QuickAction
+                href="/dashboard/payouts"
+                icon={CreditCard}
+                label="Auszahlungen prüfen"
+              />
             </nav>
           </div>
 
@@ -255,7 +280,9 @@ function MetricCard({ icon: Icon, label, value, tone }: MetricCardProps) {
   return (
     <div className="bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm transition hover:shadow-md">
       <div className="flex items-center gap-4">
-        <div className={`h-14 w-14 rounded-xl flex items-center justify-center ${toneStyles[tone]}`}>
+        <div
+          className={`h-14 w-14 rounded-xl flex items-center justify-center ${toneStyles[tone]}`}
+        >
           <Icon className="h-7 w-7" />
         </div>
         <div>

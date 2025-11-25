@@ -7,14 +7,18 @@ Dieses Dokument beschreibt die Verwendung des psyonline.at Scraping-Systems zur 
 ## ✅ Implementierte Scripts
 
 ### 1. Web-Enrichment (allgemein)
+
 **Datei**: `apps/web/scripts/enrich-therapists-from-web.ts`
+
 - Verwendet DuckDuckGo/Google Suche
 - Extrahiert: Website, Social Media Links
 - **Status**: Implementiert, aber Suchmaschinen blockieren Bots (CAPTCHA)
 - **Empfehlung**: Nur mit Google Custom Search API verwenden
 
 ### 2. psyonline.at Enrichment
+
 **Datei**: `apps/web/scripts/enrich-from-psyonline.ts`
+
 - Durchsucht psyonline.at nach Therapeuten-Namen
 - Fuzzy-Matching mit Confidence-Scoring
 - Extrahiert: Foto, Beschreibung, Website, Preise, Social Media
@@ -60,6 +64,7 @@ DATABASE_URL="<deine-db-url>" \
 ```
 
 **Output**:
+
 ```
 🌐 Enrichment von psyonline.at
 
@@ -89,6 +94,7 @@ DATABASE_URL="<deine-db-url>" \
 ```
 
 **WICHTIG**:
+
 - Beginne mit `--limit=10` für Tests
 - Erhöhe schrittweise nachdem du die Ergebnisse validiert hast
 - Für alle 4000+ Therapeuten: ~11 Stunden (10s Crawl-Delay)
@@ -106,20 +112,24 @@ DATABASE_URL="<deine-db-url>" \
 Das Script bewertet Matches nach Confidence:
 
 ### High Confidence (≥80 Punkte)
+
 - Vor- und Nachname stimmen überein
 - Stadt stimmt überein
 - **Wird automatisch gespeichert**
 
 ### Medium Confidence (50-79 Punkte)
+
 - Nachname stimmt überein
 - Vorname oder Stadt fehlt
 - **Wird automatisch gespeichert**
 
 ### Low Confidence (30-49 Punkte)
+
 - Nur Nachname passt teilweise
 - **Wird NICHT gespeichert** (manuelle Prüfung erforderlich)
 
 ### No Match (<30 Punkte)
+
 - Kein passendes Profil gefunden
 - **Übersprungen**
 
@@ -150,6 +160,7 @@ psyonline.at robots.txt: User-agent: * -> Crawl-delay: 10
 ```
 
 **Das bedeutet**:
+
 - 10 Sekunden Pause zwischen jedem Request
 - 6 Therapeuten pro Minute
 - 360 Therapeuten pro Stunde
@@ -158,6 +169,7 @@ psyonline.at robots.txt: User-agent: * -> Crawl-delay: 10
 ### Empfohlene Strategie
 
 **Phase 1: Wichtigste Therapeuten (Tag 1)**
+
 ```bash
 # Top 100 in Wien
 DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts --limit=100
@@ -165,6 +177,7 @@ DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts --limit=100
 ```
 
 **Phase 2: Weitere Städte (Tag 2-7)**
+
 ```bash
 # Jeweils 500 Therapeuten pro Tag
 DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts --limit=500
@@ -172,6 +185,7 @@ DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts --limit=500
 ```
 
 **Phase 3: Vollständiger Import (später)**
+
 ```bash
 # Alle verbleibenden Therapeuten
 DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts
@@ -196,6 +210,7 @@ DATABASE_URL="..." pnpm exec tsx scripts/enrich-from-psyonline.ts
 ### 📄 Rechtliche Prüfung empfohlen
 
 Vor dem großflächigen Einsatz (>1000 Therapeuten):
+
 1. psyonline.at AGBs lesen: https://www.psyonline.at/agb
 2. Optional: Kontakt mit psyonline.at aufnehmen
 3. Klären ob kommerzielle vs. nicht-kommerzielle Nutzung
@@ -207,6 +222,7 @@ Vor dem großflächigen Einsatz (>1000 Therapeuten):
 **Ursache**: Therapeut ist nicht auf psyonline.at oder Name passt nicht
 
 **Lösung**:
+
 ```bash
 # Prüfe ob Therapeut existiert
 # Öffne: https://www.psyonline.at/psychotherapeutinnen?name=Schmidt
@@ -218,6 +234,7 @@ Vor dem großflächigen Einsatz (>1000 Therapeuten):
 **Ursache**: Unterschiedliche Schreibweisen (z.B. "Müller" vs "Mueller")
 
 **Lösung**:
+
 ```typescript
 // Fuzzy-Matching verbessern (im Script):
 // - Umlaute normalisieren
@@ -230,6 +247,7 @@ Vor dem großflächigen Einsatz (>1000 Therapeuten):
 **Ursache**: 10s Crawl-Delay ist vorgeschrieben
 
 **Lösungen**:
+
 1. **Parallel-Processing**: Mehrere Browser-Instanzen (riskant!)
 2. **Selektion**: Nur wichtige Therapeuten (Top Städte)
 3. **Geduld**: Over-night laufen lassen
@@ -239,6 +257,7 @@ Vor dem großflächigen Einsatz (>1000 Therapeuten):
 **Ursache**: psyonline.at lädt langsam oder ist down
 
 **Lösung**:
+
 ```bash
 # Timeout erhöhen (im Script):
 await page.goto(url, { timeout: 30000 }) // Statt 15000
@@ -281,16 +300,17 @@ await prisma.\$disconnect();
 
 Basierend auf Erfahrungswerten:
 
-| Datenfeld | Erfolgsrate |
-|-----------|-------------|
-| **Match gefunden** | 40-60% |
-| **Website** | 30-50% |
-| **Profilbild** | 60-80% (von Matches) |
-| **Beschreibung** | 70-90% (von Matches) |
-| **Preise** | 20-40% |
-| **Social Media** | 10-30% |
+| Datenfeld          | Erfolgsrate          |
+| ------------------ | -------------------- |
+| **Match gefunden** | 40-60%               |
+| **Website**        | 30-50%               |
+| **Profilbild**     | 60-80% (von Matches) |
+| **Beschreibung**   | 70-90% (von Matches) |
+| **Preise**         | 20-40%               |
+| **Social Media**   | 10-30%               |
 
 **Beispiel**:
+
 - 4000 Therapeuten im BMSGPK-Register
 - ~2000 davon auch auf psyonline.at (50%)
 - ~1600 High/Medium Confidence Matches (80% von Matches)
@@ -323,6 +343,7 @@ Wenn du nach dem psyonline.at Scraping noch ein Email-Kampagne System möchtest:
 ## 📝 Zusammenfassung
 
 ### Was das Script macht:
+
 1. ✅ Lädt Therapeuten aus DB
 2. ✅ Sucht jeden auf psyonline.at
 3. ✅ Matched Profile mit Confidence-Scoring
@@ -331,6 +352,7 @@ Wenn du nach dem psyonline.at Scraping noch ein Email-Kampagne System möchtest:
 6. ✅ Respektiert 10s Crawl-Delay
 
 ### Was du tun musst:
+
 1. Echte BMSGPK-Therapeuten importieren (CSV)
 2. Playwright Browser installieren
 3. Dry-Run mit --limit=5 testen
@@ -339,6 +361,7 @@ Wenn du nach dem psyonline.at Scraping noch ein Email-Kampagne System möchtest:
 6. Schrittweise erhöhen
 
 ### Geschätzte Zeitinvestition:
+
 - **Setup**: 30 Minuten
 - **Erste Tests**: 1 Stunde
 - **Vollständiger Import**: 8-11 Stunden (automatisch, over-night)

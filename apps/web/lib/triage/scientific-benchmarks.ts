@@ -6,12 +6,12 @@
  */
 
 export type Benchmark = {
-  label: string
-  phq9Score: number
-  gad7Score: number
-  description: string
-  source?: string
-}
+  label: string;
+  phq9Score: number;
+  gad7Score: number;
+  description: string;
+  source?: string;
+};
 
 /**
  * Durchschnittswerte aus der Allgemeinbevölkerung
@@ -42,7 +42,7 @@ export const populationBenchmarks: Benchmark[] = [
     description: 'Durchschnittliche Werte bei Personen mit mittelschweren Symptomen',
     source: 'Kroenke et al. (2001), Spitzer et al. (2006)',
   },
-]
+];
 
 /**
  * Schwellenwerte für PHQ-9
@@ -53,7 +53,7 @@ export const phq9Thresholds = {
   moderate: { min: 10, max: 14, label: 'Mittelschwere Symptome', color: 'orange' },
   moderately_severe: { min: 15, max: 19, label: 'Mittelschwer bis schwere Symptome', color: 'red' },
   severe: { min: 20, max: 27, label: 'Schwere Symptome', color: 'red' },
-} as const
+} as const;
 
 /**
  * Schwellenwerte für GAD-7
@@ -63,22 +63,21 @@ export const gad7Thresholds = {
   mild: { min: 5, max: 9, label: 'Leichte Symptome', color: 'yellow' },
   moderate: { min: 10, max: 14, label: 'Mittelschwere Symptome', color: 'orange' },
   severe: { min: 15, max: 21, label: 'Schwere Symptome', color: 'red' },
-} as const
+} as const;
 
 /**
  * Hilfsfunktion: Findet den passenden Benchmark für einen Score
  */
 export function findClosestBenchmark(phq9Score: number, gad7Score: number): Benchmark {
-  const scores = populationBenchmarks.map(b => ({
+  const scores = populationBenchmarks.map((b) => ({
     benchmark: b,
     distance: Math.sqrt(
-      Math.pow(b.phq9Score - phq9Score, 2) +
-      Math.pow(b.gad7Score - gad7Score, 2)
+      Math.pow(b.phq9Score - phq9Score, 2) + Math.pow(b.gad7Score - gad7Score, 2),
     ),
-  }))
+  }));
 
-  scores.sort((a, b) => a.distance - b.distance)
-  return scores[0].benchmark
+  scores.sort((a, b) => a.distance - b.distance);
+  return scores[0].benchmark;
 }
 
 /**
@@ -87,22 +86,26 @@ export function findClosestBenchmark(phq9Score: number, gad7Score: number): Benc
 export const scientificSources = [
   {
     name: 'PHQ-9 Original-Validierung',
-    citation: 'Kroenke, K., Spitzer, R. L., & Williams, J. B. (2001). The PHQ-9: validity of a brief depression severity measure. Journal of general internal medicine, 16(9), 606-613.',
+    citation:
+      'Kroenke, K., Spitzer, R. L., & Williams, J. B. (2001). The PHQ-9: validity of a brief depression severity measure. Journal of general internal medicine, 16(9), 606-613.',
     url: 'https://doi.org/10.1046/j.1525-1497.2001.016009606.x',
   },
   {
     name: 'GAD-7 Original-Validierung',
-    citation: 'Spitzer, R. L., Kroenke, K., Williams, J. B., & Löwe, B. (2006). A brief measure for assessing generalized anxiety disorder: the GAD-7. Archives of internal medicine, 166(10), 1092-1097.',
+    citation:
+      'Spitzer, R. L., Kroenke, K., Williams, J. B., & Löwe, B. (2006). A brief measure for assessing generalized anxiety disorder: the GAD-7. Archives of internal medicine, 166(10), 1092-1097.',
     url: 'https://doi.org/10.1001/archinte.166.10.1092',
   },
   {
     name: 'PHQ-9 Deutsche Normierung',
-    citation: 'Kocalevent, R. D., Hinz, A., & Brähler, E. (2013). Standardization of the depression screener patient health questionnaire (PHQ-9) in the general population. General hospital psychiatry, 35(5), 551-555.',
+    citation:
+      'Kocalevent, R. D., Hinz, A., & Brähler, E. (2013). Standardization of the depression screener patient health questionnaire (PHQ-9) in the general population. General hospital psychiatry, 35(5), 551-555.',
     url: 'https://doi.org/10.1016/j.genhosppsych.2013.04.006',
   },
   {
     name: 'GAD-7 Deutsche Validierung',
-    citation: 'Löwe, B., Decker, O., Müller, S., et al. (2008). Validation and standardization of the Generalized Anxiety Disorder Screener (GAD-7) in the general population. Medical care, 46(3), 266-274.',
+    citation:
+      'Löwe, B., Decker, O., Müller, S., et al. (2008). Validation and standardization of the Generalized Anxiety Disorder Screener (GAD-7) in the general population. Medical care, 46(3), 266-274.',
     url: 'https://doi.org/10.1097/MLR.0b013e318160d093',
   },
-]
+];

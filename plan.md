@@ -1,7 +1,7 @@
-
 # Triage Optimierung – Arbeitsplan
 
 ## Schritte
+
 - [x] Plan anlegen und Fortschritt dokumentieren.
 - [x] Veraltete Hinweis-Copy zur verbleibenden Fragenanzahl im Triage-Flow aktualisieren.
 - [x] Änderungen prüfen und nächste Schritte notieren.
@@ -11,6 +11,7 @@
 - [x] Abschlussreview & Doku aktualisieren.
 
 ## Notizen
+
 - Adaptive Triage reduziert Fragenanzahl dynamisch, Copy muss dies widerspiegeln.
 - Ziel: Nutzer:innen nicht mit fixen hohen Zahlen abschrecken.
 - Setcard-Projekt: Versionierung einführen, Bearbeitung via Dashboard ermöglichen, öffentliche Profile anreichern.

@@ -1,12 +1,20 @@
 import Link from 'next/link';
 
 import { prisma } from '@/lib/prisma';
-import { ArrowRight, BookOpenCheck, CalendarHeart, CheckCircle2, Compass, Sparkles, TrendingUp } from 'lucide-react';
+import {
+  ArrowRight,
+  BookOpenCheck,
+  CalendarHeart,
+  CheckCircle2,
+  Compass,
+  Sparkles,
+  TrendingUp,
+} from 'lucide-react';
 
 import { requireClient } from '../../../lib/auth-guards';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const formatCurrency = (value: number, currency: string) =>
   new Intl.NumberFormat('de-AT', {
@@ -18,7 +26,7 @@ const formatCurrency = (value: number, currency: string) =>
 const computeProgress = (createdAt: Date, lessons: number, index: number) => {
   const daysSince = Math.max(
     1,
-    Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24))
+    Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)),
   );
   const base = Math.min(95, daysSince * 12 + index * 8);
   if (!Number.isFinite(base) || base <= 0) {
@@ -117,8 +125,8 @@ export default async function ClientDashboardPage() {
           Hallo {firstName}, willkommen zurück!
         </h1>
         <p className="text-sm text-neutral-700 max-w-2xl">
-          Behalte deine Programme, Termine und Empfehlungen im Blick. Wir synchronisieren Kursdaten, Ersteinschätzungen und
-          persönliche Matches für Storytelling.
+          Behalte deine Programme, Termine und Empfehlungen im Blick. Wir synchronisieren Kursdaten,
+          Ersteinschätzungen und persönliche Matches für Storytelling.
         </p>
       </header>
 
@@ -136,17 +144,24 @@ export default async function ClientDashboardPage() {
 
         {enrollments.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-divider bg-surface-1/80 p-6 text-sm text-neutral-700">
-            Noch keine Programme gebucht. Starte mit der Ersteinschätzung oder buche einen Kurs aus dem Katalog.
+            Noch keine Programme gebucht. Starte mit der Ersteinschätzung oder buche einen Kurs aus
+            dem Katalog.
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {enrollments.map((enrollment, index) => {
               const lessonCount = enrollment.course.lessons.length;
               const progress = computeProgress(enrollment.createdAt, lessonCount, index);
-              const completedLessons = Math.max(1, Math.round((progress / 100) * Math.max(lessonCount, 4)));
+              const completedLessons = Math.max(
+                1,
+                Math.round((progress / 100) * Math.max(lessonCount, 4)),
+              );
 
               const therapistName = enrollment.course.therapist?.user
-                ? [enrollment.course.therapist.user.firstName, enrollment.course.therapist.user.lastName]
+                ? [
+                    enrollment.course.therapist.user.firstName,
+                    enrollment.course.therapist.user.lastName,
+                  ]
                     .filter(Boolean)
                     .join(' ')
                 : null;
@@ -187,14 +202,17 @@ export default async function ClientDashboardPage() {
                         />
                       </div>
                       <p className="mt-2 text-xs text-muted">
-                        {completedLessons} von {Math.max(lessonCount, completedLessons)} Lektionen bearbeitet
+                        {completedLessons} von {Math.max(lessonCount, completedLessons)} Lektionen
+                        bearbeitet
                       </p>
                     </div>
                   </div>
 
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-divider pt-4 text-xs text-muted">
                     <span>Gestartet am {enrollment.createdAt.toLocaleDateString('de-AT')}</span>
-                    <span>{formatCurrency(enrollment.course.price, enrollment.course.currency)}</span>
+                    <span>
+                      {formatCurrency(enrollment.course.price, enrollment.course.currency)}
+                    </span>
                     <Link
                       href={`/courses/${enrollment.course.slug}`}
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
@@ -210,7 +228,10 @@ export default async function ClientDashboardPage() {
         )}
       </section>
 
-      <section aria-label="Ersteinschätzung & Nächste Schritte" className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <section
+        aria-label="Ersteinschätzung & Nächste Schritte"
+        className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]"
+      >
         <div className="rounded-3xl border border-divider bg-surface-1/90 p-6 shadow-sm shadow-primary/10">
           <h2 className="text-lg font-semibold text-neutral-950 flex items-center gap-2">
             <Compass className="h-5 w-5 text-primary" aria-hidden />
@@ -221,20 +242,32 @@ export default async function ClientDashboardPage() {
             <div className="mt-4 space-y-4">
               <p className="text-sm text-neutral-700">
                 Zuletzt ausgefüllt am{' '}
-                <strong>{triageSession.createdAt.toLocaleDateString('de-AT')}</strong>. Empfohlener Fokus:{' '}
-                <strong>{triageSession.recommendedNextStep === 'THERAPIST' ? 'Pilot-Therapeut:in' : 'Programm'}</strong>.
+                <strong>{triageSession.createdAt.toLocaleDateString('de-AT')}</strong>. Empfohlener
+                Fokus:{' '}
+                <strong>
+                  {triageSession.recommendedNextStep === 'THERAPIST'
+                    ? 'Pilot-Therapeut:in'
+                    : 'Programm'}
+                </strong>
+                .
               </p>
 
               <div className="rounded-2xl border border-primary/30 bg-primary/10 p-4 text-sm text-primary space-y-2 dark:border-primary/50 dark:bg-primary/20">
                 <p className="font-semibold">Zusammenfassung</p>
                 <ul className="space-y-2">
                   {typeof triageSession.phq9Score === 'number' && (
-                    <li>PHQ-9 Score: <strong>{triageSession.phq9Score}</strong></li>
+                    <li>
+                      PHQ-9 Score: <strong>{triageSession.phq9Score}</strong>
+                    </li>
                   )}
                   {typeof triageSession.gad7Score === 'number' && (
-                    <li>GAD-7 Score: <strong>{triageSession.gad7Score}</strong></li>
+                    <li>
+                      GAD-7 Score: <strong>{triageSession.gad7Score}</strong>
+                    </li>
                   )}
-                  <li>Risikoeinschätzung: <strong>{triageSession.riskLevel}</strong></li>
+                  <li>
+                    Risikoeinschätzung: <strong>{triageSession.riskLevel}</strong>
+                  </li>
                 </ul>
               </div>
 
@@ -248,7 +281,8 @@ export default async function ClientDashboardPage() {
             </div>
           ) : (
             <div className="mt-4 rounded-2xl border border-dashed border-divider bg-white/70 p-5 text-sm text-muted">
-              Noch keine Ersteinschätzung hinterlegt. Starte mit ein paar Fragen und erhalte direkt Empfehlungen.
+              Noch keine Ersteinschätzung hinterlegt. Starte mit ein paar Fragen und erhalte direkt
+              Empfehlungen.
               <div className="mt-3">
                 <Link
                   href="/triage"
@@ -281,7 +315,8 @@ export default async function ClientDashboardPage() {
             <div className="mt-4 rounded-2xl border border-dashed border-divider bg-surface-1/70 p-5 text-center">
               <div className="mx-auto max-w-md space-y-3">
                 <p className="text-sm text-neutral-700">
-                  Noch keine personalisierten Matches. Starte unseren Matching-Wizard, um Therapeut:innen zu finden, die perfekt zu dir passen.
+                  Noch keine personalisierten Matches. Starte unseren Matching-Wizard, um
+                  Therapeut:innen zu finden, die perfekt zu dir passen.
                 </p>
                 <Link
                   href="/match"
@@ -322,12 +357,13 @@ export default async function ClientDashboardPage() {
                         {match.therapist?.city ?? 'Online'} •{' '}
                         {match.therapist?.specialties.slice(0, 2).join(', ')}
                       </p>
-                      {typeof match.therapist?.priceMin === 'number' && typeof match.therapist?.priceMax === 'number' && (
-                        <p className="text-xs text-muted mt-1">
-                          {formatCurrency(match.therapist.priceMin, 'EUR')} –{' '}
-                          {formatCurrency(match.therapist.priceMax, 'EUR')}
-                        </p>
-                      )}
+                      {typeof match.therapist?.priceMin === 'number' &&
+                        typeof match.therapist?.priceMax === 'number' && (
+                          <p className="text-xs text-muted mt-1">
+                            {formatCurrency(match.therapist.priceMin, 'EUR')} –{' '}
+                            {formatCurrency(match.therapist.priceMax, 'EUR')}
+                          </p>
+                        )}
                       {match.reason && match.reason.length > 0 && (
                         <div className="mt-2 pt-2 border-t border-divider/50">
                           <p className="text-xs text-muted">
@@ -354,7 +390,10 @@ export default async function ClientDashboardPage() {
         </div>
       </section>
 
-      <section aria-label="Bestellungen" className="rounded-3xl border border-divider bg-white/90 p-6 shadow-sm shadow-primary/10">
+      <section
+        aria-label="Bestellungen"
+        className="rounded-3xl border border-divider bg-white/90 p-6 shadow-sm shadow-primary/10"
+      >
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-neutral-950">Deine Bestellungen</h2>
           <Link
@@ -368,7 +407,8 @@ export default async function ClientDashboardPage() {
 
         {orders.length === 0 ? (
           <p className="mt-4 text-sm text-neutral-700">
-            Noch keine Bestellungen. Sobald du ein Programm buchst, erscheinen hier Rechnungen und Status-Updates.
+            Noch keine Bestellungen. Sobald du ein Programm buchst, erscheinen hier Rechnungen und
+            Status-Updates.
           </p>
         ) : (
           <div className="mt-4 overflow-x-auto">
@@ -396,8 +436,8 @@ export default async function ClientDashboardPage() {
                           order.status === 'PAID'
                             ? 'bg-success-50 text-success-700'
                             : order.status === 'REQUIRES_PAYMENT'
-                            ? 'bg-warning-50 text-warning-700'
-                            : 'bg-neutral-100 text-neutral-700'
+                              ? 'bg-warning-50 text-warning-700'
+                              : 'bg-neutral-100 text-neutral-700'
                         }`}
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />

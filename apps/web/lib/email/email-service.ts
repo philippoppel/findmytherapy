@@ -43,7 +43,9 @@ class ResendEmailProvider implements EmailProvider {
     this.apiKey = apiKey;
   }
 
-  async send(options: EmailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  async send(
+    options: EmailOptions,
+  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -97,7 +99,9 @@ export function getEmailProvider(): EmailProvider {
 }
 
 // Main email sending function
-export async function sendEmail(options: EmailOptions): Promise<{ success: boolean; error?: string }> {
+export async function sendEmail(
+  options: EmailOptions,
+): Promise<{ success: boolean; error?: string }> {
   const provider = getEmailProvider();
   const result = await provider.send(options);
 

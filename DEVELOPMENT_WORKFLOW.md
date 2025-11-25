@@ -22,11 +22,13 @@
 ## Datenbanken
 
 ### Production (main)
+
 - **Database:** Prisma Accelerate
 - **Connection:** `DATABASE_URL` (nur Production)
 - **Verwendung:** Echte Kundendaten
 
 ### Development/Preview (develop + Feature Branches)
+
 - **Database:** Vercel Postgres `findmytherapy-development`
 - **Connection:** `DATABASE_URL` (Preview + Development)
 - **Verwendung:** Test-Daten
@@ -92,14 +94,17 @@ git push origin main
 Nach dem Seeden der Development-DB sind folgende Test-Accounts verfügbar:
 
 ### Admin
+
 - **Email:** admin@mental-health-platform.com
 - **Passwort:** Admin123!
 
 ### Client
+
 - **Email:** demo.client@example.com
 - **Passwort:** Client123!
 
 ### Therapeuten
+
 - **Email:** dr.mueller@example.com / **Passwort:** Therapist123!
 - **Email:** mag.wagner@example.com / **Passwort:** Therapist123!
 - **Email:** dr.schneider@example.com / **Passwort:** Therapist123!
@@ -156,22 +161,26 @@ Die GitHub Actions Pipeline läuft bei jedem Push:
 4. **Security Scan** - Sicherheitsprüfung
 
 Auf **main** Branch:
+
 - Alle Checks müssen erfolgreich sein
 - Branch Protection verhindert fehlerhafte Deployments
 
 ## Vercel Deployments
 
 ### Production (main Branch)
+
 - **URL:** https://findmytherapy-demo.vercel.app
 - **Datenbank:** Prisma Accelerate (Production)
 - **Automatisch:** Bei jedem Push zu main
 
 ### Development (develop Branch)
+
 - **URL:** https://findmytherapy-qyva-git-develop-philipps-projects.vercel.app
 - **Datenbank:** Vercel Postgres (Development)
 - **Automatisch:** Bei jedem Push zu develop
 
 ### Preview (Feature Branches)
+
 - **URL:** `https://findmytherapy-qyva-git-<branch-name>-philipps-projects.vercel.app`
 - **Datenbank:** Vercel Postgres (Development)
 - **Automatisch:** Bei jedem PR
@@ -187,10 +196,12 @@ Auf **main** Branch:
 ## Troubleshooting
 
 ### Preview Deployment schlägt fehl
+
 - Prüfe die Vercel Logs: `vercel logs <deployment-url>`
 - Stelle sicher, dass alle ENV Variables für Preview gesetzt sind
 
 ### Development DB Schema out of sync
+
 ```bash
 # Pull Development ENV
 vercel env pull .env.development --environment=development
@@ -200,5 +211,6 @@ DATABASE_URL="<development-url>" pnpm db:push
 ```
 
 ### CI Pipeline schlägt fehl
+
 - Prüfe die GitHub Actions Logs: `gh run view --log-failed`
 - Lokaler Test: `pnpm lint && pnpm build && pnpm test`

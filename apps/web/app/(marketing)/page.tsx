@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
-import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../marketing-content'
-import { MarketingHero } from '../components/marketing/MarketingHero'
-import { FaqAccordion } from '../components/marketing/FaqAccordion'
-import { ContactCta } from '../components/marketing/ContactCta'
-import { TwoPillarSection } from '../components/marketing/TwoPillarSection'
-import { AboutSection } from '../components/marketing/AboutSection'
-import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection'
+import type { Metadata } from 'next';
+import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../marketing-content';
+import { MarketingHero } from '../components/marketing/MarketingHero';
+import { FaqAccordion } from '../components/marketing/FaqAccordion';
+import { ContactCta } from '../components/marketing/ContactCta';
+import { TwoPillarSection } from '../components/marketing/TwoPillarSection';
+import { AboutSection } from '../components/marketing/AboutSection';
+import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 
 // Force dynamic rendering to prevent database access during build
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'FindMyTherapy – SEO-optimierte Therapeuten-Profile & Expert:innen-Wissen',
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
     site: '@findmytherapy',
     images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
-}
+};
 
 export default function HomePage() {
   // Get content for simplified homepage
-  const heroContent = getHeroContent()
-  const faqItems = getFAQItems()
-  const contactCta = getContactCta()
+  const heroContent = getHeroContent();
+  const faqItems = getFAQItems();
+  const contactCta = getContactCta();
 
   // Structured Data for SEO
   const faqStructuredData = {
@@ -74,7 +74,7 @@ export default function HomePage() {
         text: faq.answer,
       },
     })),
-  }
+  };
 
   const organizationStructuredData = {
     '@context': 'https://schema.org',
@@ -99,7 +99,7 @@ export default function HomePage() {
       'https://www.linkedin.com/company/findmytherapy',
       'https://www.instagram.com/findmytherapy',
     ],
-  }
+  };
 
   const websiteStructuredData = {
     '@context': 'https://schema.org',
@@ -117,7 +117,7 @@ export default function HomePage() {
       },
       'query-input': 'required name=search_term_string',
     },
-  }
+  };
 
   const medicalWebPageStructuredData = {
     '@context': 'https://schema.org',
@@ -143,7 +143,7 @@ export default function HomePage() {
       },
     },
     specialty: 'Psychotherapy',
-  }
+  };
 
   const videoObjectStructuredData = {
     '@context': 'https://schema.org',
@@ -157,7 +157,7 @@ export default function HomePage() {
     duration: 'PT30S',
     inLanguage: 'de-AT',
     about: 'Mentale Gesundheit und Psychotherapie in Österreich',
-  }
+  };
 
   const breadcrumbListStructuredData = {
     '@context': 'https://schema.org',
@@ -170,7 +170,7 @@ export default function HomePage() {
         item: 'https://findmytherapy.net',
       },
     ],
-  }
+  };
 
   // Team Members Person Structured Data
   const teamMembersStructuredData = teamContent.members.map((member) => ({
@@ -186,7 +186,7 @@ export default function HomePage() {
       url: 'https://findmytherapy.net',
     },
     url: 'https://findmytherapy.net',
-  }))
+  }));
 
   return (
     <div className="marketing-theme bg-surface text-default">
@@ -250,5 +250,5 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
     </div>
-  )
+  );
 }

@@ -76,19 +76,19 @@ export async function generateMetadata({
       };
     }
 
-  const title = `${profile.displayName}${profile.title ? ` - ${profile.title}` : ''} | FindMyTherapy`;
-  const description =
-    profile.headline ||
-    profile.about?.substring(0, 160) ||
-    `Psychotherapeut:in ${profile.displayName} aus ${profile.city || profile.country}`;
+    const title = `${profile.displayName}${profile.title ? ` - ${profile.title}` : ''} | FindMyTherapy`;
+    const description =
+      profile.headline ||
+      profile.about?.substring(0, 160) ||
+      `Psychotherapeut:in ${profile.displayName} aus ${profile.city || profile.country}`;
 
-  const keywords = [
-    'Psychotherapie',
-    profile.city,
-    profile.country,
-    ...(profile.specialties || []),
-    profile.displayName,
-  ].filter(Boolean);
+    const keywords = [
+      'Psychotherapie',
+      profile.city,
+      profile.country,
+      ...(profile.specialties || []),
+      profile.displayName,
+    ].filter(Boolean);
 
     return {
       title,
@@ -130,11 +130,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function TherapistMicrositePage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function TherapistMicrositePage({ params }: { params: { slug: string } }) {
   // Check for redirects first
   const redirectRecord = await prisma.therapistMicrositeRedirect.findUnique({
     where: { fromSlug: params.slug },
@@ -271,10 +267,7 @@ export default async function TherapistMicrositePage({
                 modalities={profile.modalities || []}
               />
 
-              <MicrositeCourses
-                courses={profile.courses}
-                therapistName={profile.displayName}
-              />
+              <MicrositeCourses courses={profile.courses} therapistName={profile.displayName} />
 
               {profile.videoUrl && (
                 <section className="bg-white rounded-lg shadow-sm p-6">

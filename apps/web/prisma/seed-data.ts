@@ -1,13 +1,13 @@
-import type { CourseStatus, ListingPlan, ListingStatus, TherapistStatus } from '@prisma/client'
+import type { CourseStatus, ListingPlan, ListingStatus, TherapistStatus } from '@prisma/client';
 
 export type SeedAccount = {
-  email: string
-  password: string
-  role: 'ADMIN' | 'CLIENT'
-  locale: string
-  firstName?: string
-  lastName?: string
-}
+  email: string;
+  password: string;
+  role: 'ADMIN' | 'CLIENT';
+  locale: string;
+  firstName?: string;
+  lastName?: string;
+};
 
 export const seedAccounts: Record<'admin' | 'client', SeedAccount> = {
   admin: {
@@ -26,54 +26,54 @@ export const seedAccounts: Record<'admin' | 'client', SeedAccount> = {
     firstName: 'Nora',
     lastName: 'Beispiel',
   },
-}
+};
 
 export type SeedTherapist = {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-  displayName: string
-  title: string
-  headline: string
-  focus: string[]
-  approach: string
-  location: string
-  availability: string
-  languages: string[]
-  rating: number
-  reviews: number
-  experience: string
-  yearsExperience: number
-  services: string[]
-  responseTime: string
-  videoUrl?: string | null
-  acceptingClients: boolean
-  image: string
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  title: string;
+  headline: string;
+  focus: string[];
+  approach: string;
+  location: string;
+  availability: string;
+  languages: string[];
+  rating: number;
+  reviews: number;
+  experience: string;
+  yearsExperience: number;
+  services: string[];
+  responseTime: string;
+  videoUrl?: string | null;
+  acceptingClients: boolean;
+  image: string;
   profile: {
-    status: TherapistStatus
-    licenseAuthority: string
-    licenseId: string
-    modalities: string[]
-    specialties: string[]
-    priceMin: number
-    priceMax: number
-    languages: string[]
-    online: boolean
-    city: string
-    latitude?: number | null
-    longitude?: number | null
-    country: string
-    about: string
-    availabilityNote: string
-    pricingNote: string
-    isPublic: boolean
-  }
+    status: TherapistStatus;
+    licenseAuthority: string;
+    licenseId: string;
+    modalities: string[];
+    specialties: string[];
+    priceMin: number;
+    priceMax: number;
+    languages: string[];
+    online: boolean;
+    city: string;
+    latitude?: number | null;
+    longitude?: number | null;
+    country: string;
+    about: string;
+    availabilityNote: string;
+    pricingNote: string;
+    isPublic: boolean;
+  };
   listing?: {
-    plan: ListingPlan
-    status: ListingStatus
-  }
-}
+    plan: ListingPlan;
+    status: ListingStatus;
+  };
+};
 
 export const seedTherapists: SeedTherapist[] = [
   {
@@ -116,8 +116,7 @@ export const seedTherapists: SeedTherapist[] = [
         'Fokussiert auf ressourcenorientierte Verhaltenstherapie mit Achtsamkeitsintegration. Langjährige Erfahrung mit Führungskräften und Personen in beruflichen Belastungssituationen.',
       availabilityNote:
         'Erstgespräche Montag & Mittwoch Nachmittag; bei Akutfällen Slots innerhalb von 5 Werktagen möglich.',
-      pricingNote:
-        'Honorar €80–120 je 50 Minuten; Sozialtarife für Studierende auf Anfrage.',
+      pricingNote: 'Honorar €80–120 je 50 Minuten; Sozialtarife für Studierende auf Anfrage.',
       isPublic: true,
     },
     listing: {
@@ -214,8 +213,7 @@ export const seedTherapists: SeedTherapist[] = [
         'Verbindet kinder- und jugendpsychiatrische Expertise mit systemischer Elternarbeit. Entwickelt digitale Lerntracks zur Familienintegration.',
       availabilityNote:
         'Erstgespräche für Jugendliche ab 20. Mai, Elterntermine Freitag Vormittag.',
-      pricingNote:
-        '€100–160 je Einheit; Kassenrückerstattung bei Diagnose nach Antrag möglich.',
+      pricingNote: '€100–160 je Einheit; Kassenrückerstattung bei Diagnose nach Antrag möglich.',
       isPublic: false,
     },
   },
@@ -268,32 +266,32 @@ export const seedTherapists: SeedTherapist[] = [
       status: 'ACTIVE',
     },
   },
-]
+];
 
 export type SeedCourse = {
-  slug: string
-  title: string
-  shortDescription: string
-  description: string
-  focus: string
-  duration: string
-  intensity: string
-  format: string
-  outcomes: string[]
-  price: number
-  currency: string
-  status: CourseStatus
-  therapistEmail: string
+  slug: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  focus: string;
+  duration: string;
+  intensity: string;
+  format: string;
+  outcomes: string[];
+  price: number;
+  currency: string;
+  status: CourseStatus;
+  therapistEmail: string;
   mediaManifest: {
-    totalDuration: number
-    format: string
-    chapters: number
-  }
+    totalDuration: number;
+    format: string;
+    chapters: number;
+  };
   lessons: Array<{
-    title: string
-    durationSec: number
-  }>
-}
+    title: string;
+    durationSec: number;
+  }>;
+};
 
 export const seedCourses: SeedCourse[] = [
   {
@@ -362,7 +360,8 @@ export const seedCourses: SeedCourse[] = [
   {
     slug: 'adhs-klartext',
     title: 'ADHS Klartext',
-    shortDescription: 'Alltagsstrategien, Executive Skills und emotionale Regulation für Erwachsene.',
+    shortDescription:
+      'Alltagsstrategien, Executive Skills und emotionale Regulation für Erwachsene.',
     description:
       'Ein praxisnahes Programm mit Live-Workshops, Habit-Tracking und Materialien zur Emotionsregulation für Erwachsene mit ADHS.',
     focus: 'ADHS im Erwachsenenalter',
@@ -390,4 +389,4 @@ export const seedCourses: SeedCourse[] = [
       { title: 'Live-Workshop Vorbereitung', durationSec: 380 },
     ],
   },
-]
+];

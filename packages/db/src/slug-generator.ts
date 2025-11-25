@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 /**
  * Converts a string to a URL-friendly slug
@@ -11,14 +11,14 @@ import { PrismaClient } from "@prisma/client";
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .normalize("NFD") // Decompose diacritics
-    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
-    .replace(/ß/g, "ss") // German sharp s
-    .replace(/æ/g, "ae")
-    .replace(/œ/g, "oe")
-    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with hyphen
-    .replace(/^-+|-+$/g, "") // Trim hyphens from start/end
-    .replace(/-+/g, "-"); // Replace consecutive hyphens with single hyphen
+    .normalize('NFD') // Decompose diacritics
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .replace(/ß/g, 'ss') // German sharp s
+    .replace(/æ/g, 'ae')
+    .replace(/œ/g, 'oe')
+    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphen
+    .replace(/^-+|-+$/g, '') // Trim hyphens from start/end
+    .replace(/-+/g, '-'); // Replace consecutive hyphens with single hyphen
 }
 
 /**
@@ -30,7 +30,7 @@ export async function generateUniqueSlug(
   prisma: PrismaClient,
   firstName: string | null | undefined,
   lastName: string | null | undefined,
-  profileId?: string // Optional: exclude this profile ID from uniqueness check (for updates)
+  profileId?: string, // Optional: exclude this profile ID from uniqueness check (for updates)
 ): Promise<string> {
   // Build base slug from name
   const parts: string[] = [];
@@ -38,7 +38,7 @@ export async function generateUniqueSlug(
   if (lastName) parts.push(slugify(lastName));
 
   // Fallback if no name provided
-  let baseSlug = parts.length > 0 ? parts.join("-") : "therapeut";
+  let baseSlug = parts.length > 0 ? parts.join('-') : 'therapeut';
 
   // Ensure minimum length
   if (baseSlug.length < 3) {
@@ -88,69 +88,69 @@ export function validateSlug(slug: string): {
 } {
   // Reserved words that cannot be used as slugs
   const reservedWords = [
-    "api",
-    "admin",
-    "dashboard",
-    "auth",
-    "login",
-    "logout",
-    "register",
-    "signup",
-    "signin",
-    "profile",
-    "settings",
-    "therapists",
-    "courses",
-    "blog",
-    "about",
-    "contact",
-    "privacy",
-    "terms",
-    "help",
-    "support",
-    "search",
-    "directory",
+    'api',
+    'admin',
+    'dashboard',
+    'auth',
+    'login',
+    'logout',
+    'register',
+    'signup',
+    'signin',
+    'profile',
+    'settings',
+    'therapists',
+    'courses',
+    'blog',
+    'about',
+    'contact',
+    'privacy',
+    'terms',
+    'help',
+    'support',
+    'search',
+    'directory',
   ];
 
   if (reservedWords.includes(slug)) {
     return {
       valid: false,
-      error: "Dieser Slug ist reserviert und kann nicht verwendet werden",
+      error: 'Dieser Slug ist reserviert und kann nicht verwendet werden',
     };
   }
 
   if (slug.length < 3) {
     return {
       valid: false,
-      error: "Slug muss mindestens 3 Zeichen lang sein",
+      error: 'Slug muss mindestens 3 Zeichen lang sein',
     };
   }
 
   if (slug.length > 60) {
     return {
       valid: false,
-      error: "Slug darf maximal 60 Zeichen lang sein",
+      error: 'Slug darf maximal 60 Zeichen lang sein',
     };
   }
 
   if (!/^[a-z0-9-]+$/.test(slug)) {
     return {
       valid: false,
-      error: "Slug darf nur Kleinbuchstaben, Zahlen und Bindestriche enthalten",
+      error: 'Slug darf nur Kleinbuchstaben, Zahlen und Bindestriche enthalten',
     };
   }
 
   if (!/^[a-z0-9]/.test(slug) || !/[a-z0-9]$/.test(slug)) {
     return {
       valid: false,
-      error: "Slug muss mit einem Buchstaben oder einer Zahl beginnen und enden",
+      error: 'Slug muss mit einem Buchstaben oder einer Zahl beginnen und enden',
     };
   }
 
   if (/--/.test(slug)) {
     return {
       valid: false,
-      error: "Slug darf keine aufeinanderfolgenden Bindestriche enthalten",
+      error: 'Slug darf keine aufeinanderfolgenden Bindestriche enthalten',
     };
   }
 
@@ -163,7 +163,7 @@ export function validateSlug(slug: string): {
 export async function isSlugAvailable(
   prisma: PrismaClient,
   slug: string,
-  excludeProfileId?: string
+  excludeProfileId?: string,
 ): Promise<boolean> {
   const profile = await prisma.therapistProfile.findFirst({
     where: {
@@ -189,7 +189,7 @@ export async function isSlugAvailable(
 export async function updateTherapistSlug(
   prisma: PrismaClient,
   profileId: string,
-  newSlug: string
+  newSlug: string,
 ): Promise<{ success: boolean; error?: string }> {
   // Validate new slug
   const validation = validateSlug(newSlug);
@@ -202,7 +202,7 @@ export async function updateTherapistSlug(
   if (!available) {
     return {
       success: false,
-      error: "Dieser Slug ist bereits vergeben",
+      error: 'Dieser Slug ist bereits vergeben',
     };
   }
 
@@ -213,7 +213,7 @@ export async function updateTherapistSlug(
   });
 
   if (!profile) {
-    return { success: false, error: "Profil nicht gefunden" };
+    return { success: false, error: 'Profil nicht gefunden' };
   }
 
   // Update slug

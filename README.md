@@ -7,6 +7,7 @@
 FindMyTherapy befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, der Investor:innen den Kernnutzen zeigt und erste Therapeut:innen sowie interessierte Kund:innen an Bord holt. Viele produktionsreife Features (Stripe, vollautomatisches Matching, Terraform-Infra) bleiben bewusst „post-MVP".
 
 ## 🎯 MVP-Fokus
+
 - **Investor:innen-Story**: Marketing-Homepage, geführte Triage-Erfahrung, Empfehlungen aus kuratierten Seed-Daten.
 - **Pilot-Therapeut:innen**: Registrierung mit Profilangaben, Admin-Freigabe und Sichtbarkeit im Verzeichnis.
 - **Interessierte Kund:innen**: Login/Registrierung, Triage-Flow mit persistierten Antworten, Kontaktaufnahme zum Team.
@@ -16,6 +17,7 @@ FindMyTherapy befindet sich in der MVP-Phase. Ziel ist ein vorzeigbarer Pilot, d
 > **Nicht Teil des MVP:** Stripe-Zahlungen, automatisierte Matching-Engine, Content-Streaming, produktionsfertige Infrastruktur.
 
 ## 🗂 Projektstruktur (Kurzfassung)
+
 ```
 mental-health-platform/
 ├── apps/
@@ -30,12 +32,14 @@ mental-health-platform/
 ```
 
 ## ✅ Voraussetzungen
+
 - Node.js ≥ 20
 - pnpm ≥ 9
 - Docker & Docker Compose (für Postgres, Redis, Mailhog)
 - Optional: Stripe CLI, falls du Zahlungs-Flows prototypen möchtest (nicht im MVP genutzt)
 
 ## 🚀 Schnellstart (Lokal)
+
 ```bash
 git clone <repository-url>
 cd mental-health-platform
@@ -75,10 +79,11 @@ git push origin main
 📖 **Detaillierte Docs**: [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ### Seed-Accounts (nach `pnpm db:seed`)
-| Rolle          | Login                            | Passwort       |
-|----------------|----------------------------------|----------------|
-| Admin          | admin@mental-health-platform.com | Admin123!      |
-| Client         | demo.client@example.com          | Client123!     |
+
+| Rolle              | Login                            | Passwort      |
+| ------------------ | -------------------------------- | ------------- |
+| Admin              | admin@mental-health-platform.com | Admin123!     |
+| Client             | demo.client@example.com          | Client123!    |
 | Pilot-Therapeut:in | dr.mueller@example.com           | Therapist123! |
 | Pilot-Therapeut:in | mag.wagner@example.com           | Therapist123! |
 | Pilot-Therapeut:in | dr.schneider@example.com         | Therapist123! |
@@ -86,12 +91,14 @@ git push origin main
 ## 🧭 Pilot-Guides
 
 ### 1. Investor:innen-Tour
+
 1. `http://localhost:3000/` – Hero, Vision, Social Proof.
 2. `Ersteinschätzung starten` → vollständiger Flow mit Beispiel-Fragen.
 3. Ergebnissecreen zeigt Empfehlungen (Therapeut:innen & Programme) aus Seed-Daten.
 4. Wahlweise Kurs- oder Therapist-Verzeichnisse öffnen, um Tiefe zu zeigen.
 
 ### 2. Pilot-Therapeut:innen Onboarding
+
 1. `http://localhost:3000/register` – Formular ausfüllen oder Seed-Login nutzen.
 2. Nach Login `http://localhost:3000/dashboard` aufrufen (requires `THERAPIST`).
 3. Profilstatus ist zunächst „In Prüfung“.
@@ -99,12 +106,14 @@ git push origin main
 5. Profil erscheint im öffentlichen Verzeichnis (`/therapists`) mit Badge „Verifiziert“.
 
 ### 3. Kund:innenreise
+
 1. `http://localhost:3000/signup` – Self-Service-Registrierung oder Seed-Login via `http://localhost:3000/login` nutzen.
 2. Nach dem Login erfolgt automatische Weiterleitung zum Client-Dashboard (`/dashboard/client`) mit Programmen, Matches & Bestellungen.
 3. `http://localhost:3000/triage` – Ersteinschätzung ausfüllen, Ergebnisse landen im Dashboard.
 4. Empfehlungen durchsuchen, anschließend `Kontakt` für Follow-up auslösen; Mails landen in Mailhog (`http://localhost:8025`).
 
 ## ⚙️ Technik & Daten
+
 - **Auth**: NextAuth (Passwort + Magic Link). TOTP optional für `ADMIN` & `THERAPIST`.
 - **Datenbank**: PostgreSQL via Prisma. Seeds erzeugen Pilot-Accounts, Profile, Kurse und Matches.
 - **Lokalisierung**: Statisches `de-AT`, Internationalisierung wird post-MVP erweitert.
@@ -114,6 +123,7 @@ git push origin main
 ## 🧪 Tests & Qualität
 
 ### Test-Befehle
+
 ```bash
 pnpm test              # Unit-Tests (Jest)
 pnpm test --coverage   # Mit Coverage-Report
@@ -124,6 +134,7 @@ pnpm format            # Prettier (check mode)
 ```
 
 ### CI/CD Pipeline
+
 Automatische Tests laufen bei jedem Push auf GitHub:
 
 ✅ **Linting** - ESLint & Prettier
@@ -136,6 +147,7 @@ Automatische Tests laufen bei jedem Push auf GitHub:
 Pipeline-Status: ![CI/CD](https://github.com/YOUR_USERNAME/mental-health-platform/workflows/CI%2FCD%20Pipeline/badge.svg)
 
 ### Test-Coverage
+
 - **Triage Flow**: Comprehensive Tests mit wissenschaftlicher Validierung
 - **API Routes**: Unit Tests für kritische Endpoints
 - **Forms**: Registrierung & Kontaktformular
@@ -144,18 +156,21 @@ Pipeline-Status: ![CI/CD](https://github.com/YOUR_USERNAME/mental-health-platfor
 Siehe [`docs/KRITISCHE_REVIEW_UND_TESTS.md`](./docs/KRITISCHE_REVIEW_UND_TESTS.md) für Details zu kritischen Bugfixes.
 
 ### Manuelle QA-Checkliste
+
 - Triagedemo funktioniert durchgängig
 - Pilot-Profil lässt sich freischalten und taucht im Verzeichnis auf
 - Kontaktformular sendet E-Mail (Mailhog prüfen)
 - ISR-Caching funktioniert (Therapeuten-Änderungen nach 5 Min sichtbar)
 
 ## 🔐 Sicherheit (MVP-Status)
+
 - Passwort-Login mit bcrypt-Hashes + Magic Link.
 - TOTP-Setup & -Verwaltung für privilegierte Rollen.
 - Keine Rate-Limits, CSP oder Zahlungsfreigaben – MVP-only! Feedback/Support via Team.
 - Hinweis auf jeder Produktdemo: Daten nur Mock/Pilot, kein Notfall-Support.
 
 ## 🧭 Post-MVP (Parkposition)
+
 - Stripe Billing & Checkout, Stripe Connect für Payouts.
 - Konfigurierbare Matching-Engine & Worker-basierte Automation.
 - Infrastruktur (Terraform, Observability, CI-Optimierungen).
@@ -163,6 +178,7 @@ Siehe [`docs/KRITISCHE_REVIEW_UND_TESTS.md`](./docs/KRITISCHE_REVIEW_UND_TESTS.m
 - Compliance-Dokumente (DSGVO, Notfall, Bezahlflows).
 
 ## 🤝 Pitch-Hilfen
+
 - **Pilot-Skript**: Starte im Hero, erzähle Problem → Triage-Flow → Pilot-Profil → Admin-Backoffice.
 - **Storytelling**: Betone, dass Matching & Payments vorbereitet, aber bewusst aus dem MVP scoped sind.
 - **Feedback-Loop**: Dokumentiere Pilot-Rückmeldungen im Admin-Dashboard (Notizfelder folgen).

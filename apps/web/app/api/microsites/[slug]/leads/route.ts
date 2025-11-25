@@ -22,17 +22,14 @@ type LeadInput = z.infer<typeof leadSchema>;
  * POST /api/microsites/[slug]/leads
  * Public endpoint to submit a lead/contact request
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params;
 
     if (!slug) {
       return NextResponse.json(
         { success: false, message: 'Slug ist erforderlich' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -59,7 +56,7 @@ export async function POST(
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Microsite nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -82,7 +79,8 @@ export async function POST(
     });
 
     // Send notification email to therapist
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL || 'https://findmytherapy.com';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL || 'https://findmytherapy.com';
     const emailTemplate = generateLeadNotificationEmail({
       therapistName: profile.displayName || profile.user.firstName || 'Therapeut',
       therapistEmail: profile.user.email,
@@ -115,7 +113,7 @@ export async function POST(
         message: 'Ihre Anfrage wurde erfolgreich gesendet',
         leadId: lead.id,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     captureError(error, { location: 'api/microsites/[slug]/leads:post' });
@@ -127,13 +125,13 @@ export async function POST(
           message: 'Validierungsfehler',
           errors: error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { success: false, message: 'Anfrage konnte nicht gesendet werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

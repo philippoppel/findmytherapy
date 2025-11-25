@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { ArrowUpDown, Check } from 'lucide-react'
-import { useState, useRef, useEffect } from 'react'
-import type { SortOption } from './types'
+import { ArrowUpDown, Check } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import type { SortOption } from './types';
 
 interface SortDropdownProps {
-  value: SortOption
-  onChange: (value: SortOption) => void
+  value: SortOption;
+  onChange: (value: SortOption) => void;
 }
 
 const sortOptions: Array<{ value: SortOption; label: string }> = [
@@ -15,26 +15,26 @@ const sortOptions: Array<{ value: SortOption; label: string }> = [
   { value: 'experience', label: 'Erfahrung' },
   { value: 'price-low', label: 'Preis: Niedrig → Hoch' },
   { value: 'price-high', label: 'Preis: Hoch → Niedrig' },
-]
+];
 
 export function SortDropdown({ value, onChange }: SortDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
-  const currentLabel = sortOptions.find((opt) => opt.value === value)?.label || 'Empfohlen'
+  const currentLabel = sortOptions.find((opt) => opt.value === value)?.label || 'Empfohlen';
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -53,7 +53,7 @@ export function SortDropdown({ value, onChange }: SortDropdownProps) {
         <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-2xl border-2 border-neutral-200 bg-white shadow-xl">
           <ul role="listbox" className="py-2">
             {sortOptions.map((option) => {
-              const isSelected = value === option.value
+              const isSelected = value === option.value;
               return (
                 <li key={option.value}>
                   <button
@@ -61,8 +61,8 @@ export function SortDropdown({ value, onChange }: SortDropdownProps) {
                     role="option"
                     aria-selected={isSelected}
                     onClick={() => {
-                      onChange(option.value)
-                      setIsOpen(false)
+                      onChange(option.value);
+                      setIsOpen(false);
                     }}
                     className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition-colors ${
                       isSelected
@@ -74,11 +74,11 @@ export function SortDropdown({ value, onChange }: SortDropdownProps) {
                     {isSelected && <Check className="h-4 w-4 text-primary-600" aria-hidden />}
                   </button>
                 </li>
-              )
+              );
             })}
           </ul>
         </div>
       )}
     </div>
-  )
+  );
 }

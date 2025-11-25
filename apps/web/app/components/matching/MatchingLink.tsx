@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { ReactNode } from 'react'
-import { useMatchingWizard } from './MatchingWizardContext'
+import { ReactNode } from 'react';
+import { useMatchingWizard } from './MatchingWizardContext';
 
 interface MatchingLinkProps {
-  href?: string
-  children: ReactNode
-  className?: string
-  onClick?: (event: React.MouseEvent) => void
+  href?: string;
+  children: ReactNode;
+  className?: string;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 /**
@@ -15,30 +15,30 @@ interface MatchingLinkProps {
  * Opens the inline matching wizard instead of navigating to a separate page
  */
 export function MatchingLink({ children, className, onClick }: MatchingLinkProps) {
-  const { openWizard } = useMatchingWizard()
+  const { openWizard } = useMatchingWizard();
 
   const handleClick = (event: React.MouseEvent) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (onClick) {
-      onClick(event)
+      onClick(event);
     }
 
     // Open the wizard
-    openWizard()
+    openWizard();
 
     // Smooth scroll to the wizard after a brief delay to allow for expansion
     setTimeout(() => {
-      const wizardElement = document.getElementById('matching-wizard')
+      const wizardElement = document.getElementById('matching-wizard');
       if (wizardElement) {
-        wizardElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        wizardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 100)
-  }
+    }, 100);
+  };
 
   return (
     <button onClick={handleClick} className={className}>
       {children}
     </button>
-  )
+  );
 }

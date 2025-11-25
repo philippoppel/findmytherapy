@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { motion } from 'framer-motion';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function TherapistAmbientGlow() {
-  const prefersReducedMotion = usePrefersReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   if (prefersReducedMotion) {
     return (
@@ -12,7 +12,7 @@ export function TherapistAmbientGlow() {
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-white via-teal-50/40 to-surface"
       />
-    )
+    );
   }
 
   return (
@@ -28,5 +28,5 @@ export function TherapistAmbientGlow() {
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
       />
     </div>
-  )
+  );
 }

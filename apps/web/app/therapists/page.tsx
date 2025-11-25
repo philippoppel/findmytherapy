@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { Compass, Sparkles } from 'lucide-react'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Compass, Sparkles } from 'lucide-react';
 
-import { TherapistDirectory } from './TherapistDirectorySimplified'
-import { TherapistSearchChoice } from './components/TherapistSearchChoice'
-import { FEATURES } from '@/lib/features'
-import { getTherapistCards } from './getTherapistCards'
+import { TherapistDirectory } from './TherapistDirectorySimplified';
+import { TherapistSearchChoice } from './components/TherapistSearchChoice';
+import { FEATURES } from '@/lib/features';
+import { getTherapistCards } from './getTherapistCards';
 
 // Force dynamic rendering to prevent database access during build
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Therapeut:innen finden in Österreich – FindMyTherapy',
@@ -41,10 +41,10 @@ export const metadata: Metadata = {
     description:
       'Zertifizierte Psychotherapeut:innen mit verfügbaren Terminen. Transparent, verifiziert, DSGVO-konform.',
   },
-}
+};
 
 export default async function TherapistsPage() {
-  const { therapists } = await getTherapistCards()
+  const { therapists } = await getTherapistCards();
 
   return (
     <div className="marketing-theme bg-surface text-default">
@@ -74,7 +74,9 @@ export default async function TherapistsPage() {
                   Finde die Therapeut:in, die zu deinem Bedarf passt
                 </h1>
                 <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted md:mx-0">
-                  Unser Care-Team validiert Qualifikationen, Schwerpunktsetzung und Kapazitäten. Starte mit einer Ersteinschätzung und erhalte Vorschläge, die zu deinen Antworten passen.
+                  Unser Care-Team validiert Qualifikationen, Schwerpunktsetzung und Kapazitäten.
+                  Starte mit einer Ersteinschätzung und erhalte Vorschläge, die zu deinen Antworten
+                  passen.
                 </p>
               </div>
               <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
@@ -111,9 +113,12 @@ export default async function TherapistsPage() {
             </div>
             <div className="relative flex flex-wrap items-center justify-between gap-6 pb-8">
               <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl font-semibold text-white">Ausgewählte Pilot-Therapeut:innen</h2>
+                <h2 className="text-3xl font-semibold text-white">
+                  Ausgewählte Pilot-Therapeut:innen
+                </h2>
                 <p className="text-base text-white/80">
-                  Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails – abgestimmt auf unsere Ersteinschätzung.
+                  Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails – abgestimmt auf
+                  unsere Ersteinschätzung.
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/80">
@@ -128,5 +133,5 @@ export default async function TherapistsPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

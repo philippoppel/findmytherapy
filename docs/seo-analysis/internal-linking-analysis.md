@@ -1,4 +1,5 @@
 # Internal Linking Analysis Report
+
 ## Foundation Blog Posts (11 posts)
 
 **Analysis Date:** 2025-11-17
@@ -9,6 +10,7 @@
 ## Executive Summary
 
 ### Overall Metrics
+
 - **Total Posts:** 11 (4 Pillar + 6 Cluster + 1 Foundation/existing)
 - **Posts with relatedPosts:** 11/11 (100%)
 - **Total Internal Links:** 21 outgoing links
@@ -38,12 +40,14 @@
 All 11 Foundation posts have `relatedPosts` arrays defined ✓
 
 **Pillar Posts (4):**
+
 - ✓ `depression-verstehen-bewaeltigen` → 2 links
 - ✓ `angststoerungen-formen-symptome-behandlung` → 2 links
 - ✓ `burnout-erkennen-vorbeugen` → 2 links
 - ✓ `richtigen-therapeuten-finden` → 2 links
 
 **Cluster Posts (6):**
+
 - ✓ `atemtechniken-bei-angst` → 2 links
 - ✓ `psychologe-vs-psychotherapeut` → 1 link
 - ✓ `kassenzuschuss-psychotherapie-oesterreich` → 2 links
@@ -52,6 +56,7 @@ All 11 Foundation posts have `relatedPosts` arrays defined ✓
 - ✓ `wartezeiten-psychotherapie-wien` → 2 links
 
 **Foundation (Existing) (1):**
+
 - ✓ `akuthilfe-panikattacken` → 2 links (to non-Foundation posts)
 
 ---
@@ -60,17 +65,17 @@ All 11 Foundation posts have `relatedPosts` arrays defined ✓
 
 **9 cases where Post A links to Post B, but B doesn't link back:**
 
-| From Post | To Post | Issue |
-|-----------|---------|-------|
-| depression-verstehen-bewaeltigen | akuthilfe-panikattacken | One-way link |
-| angststoerungen-formen-symptome-behandlung | akuthilfe-panikattacken | One-way link |
-| angststoerungen-formen-symptome-behandlung | atemtechniken-bei-angst | One-way link |
-| burnout-erkennen-vorbeugen | richtigen-therapeuten-finden | One-way link |
-| atemtechniken-bei-angst | akuthilfe-panikattacken | One-way link |
-| psychologe-vs-psychotherapeut | richtigen-therapeuten-finden | One-way link |
-| serioese-online-therapie-erkennen | psychologe-vs-psychotherapeut | One-way link |
-| meditation-anfaenger-3-minuten | burnout-erkennen-vorbeugen | One-way link |
-| wartezeiten-psychotherapie-wien | richtigen-therapeuten-finden | One-way link |
+| From Post                                  | To Post                       | Issue        |
+| ------------------------------------------ | ----------------------------- | ------------ |
+| depression-verstehen-bewaeltigen           | akuthilfe-panikattacken       | One-way link |
+| angststoerungen-formen-symptome-behandlung | akuthilfe-panikattacken       | One-way link |
+| angststoerungen-formen-symptome-behandlung | atemtechniken-bei-angst       | One-way link |
+| burnout-erkennen-vorbeugen                 | richtigen-therapeuten-finden  | One-way link |
+| atemtechniken-bei-angst                    | akuthilfe-panikattacken       | One-way link |
+| psychologe-vs-psychotherapeut              | richtigen-therapeuten-finden  | One-way link |
+| serioese-online-therapie-erkennen          | psychologe-vs-psychotherapeut | One-way link |
+| meditation-anfaenger-3-minuten             | burnout-erkennen-vorbeugen    | One-way link |
+| wartezeiten-psychotherapie-wien            | richtigen-therapeuten-finden  | One-way link |
 
 **SEO Impact:** Bidirectional linking strengthens topic clusters and improves PageRank flow.
 
@@ -79,25 +84,33 @@ All 11 Foundation posts have `relatedPosts` arrays defined ✓
 ### 3. Pillar → Cluster Linking
 
 #### Cluster 1: Angststörungen
+
 **Pillar:** `angststoerungen-formen-symptome-behandlung`
+
 - ✓ Links to: `atemtechniken-bei-angst`
 - ✓ Links to: `akuthilfe-panikattacken` (Foundation/existing)
 - Status: **GOOD** ✓
 
 #### Cluster 2: Depression
+
 **Pillar:** `depression-verstehen-bewaeltigen`
+
 - Links to: `akuthilfe-panikattacken`, `burnout-erkennen-vorbeugen`
 - ⚠️ No Cluster posts exist in Foundation set for Depression
 - Status: **Acceptable** (links to related Pillar)
 
 #### Cluster 3: Therapeutensuche
+
 **Pillar:** `richtigen-therapeuten-finden`
+
 - ✓ Links to: `kassenzuschuss-psychotherapie-oesterreich`, `serioese-online-therapie-erkennen`
 - ⚠️ Missing: `psychologe-vs-psychotherapeut`, `wartezeiten-psychotherapie-wien`
 - Status: **NEEDS IMPROVEMENT** ⚠️
 
 #### Cluster 4: Burnout
+
 **Pillar:** `burnout-erkennen-vorbeugen`
+
 - Links to: `depression-verstehen-bewaeltigen`, `richtigen-therapeuten-finden`
 - ⚠️ No Cluster posts exist in Foundation set for Burnout
 - Status: **Acceptable** (links to related Pillars)
@@ -109,6 +122,7 @@ All 11 Foundation posts have `relatedPosts` arrays defined ✓
 **1 orphaned post:**
 
 ⚠️ **`angststoerungen-formen-symptome-behandlung`** (Pillar)
+
 - **Tier:** Pillar
 - **Category:** Ratgeber
 - **Search Volume:** ~18,000/month
@@ -139,6 +153,7 @@ All 11 Foundation posts have `relatedPosts` arrays defined ✓
 **Status:** Below target ⚠️
 
 **Distribution:**
+
 - 2 links: 9 posts (82%)
 - 1 link: 1 post (9%)
 - 0 links: 0 posts (0%)
@@ -234,11 +249,13 @@ FOUNDATION (EXISTING):
 ### CRITICAL (Fix Immediately)
 
 #### 1. Fix Orphaned Pillar Post
+
 **Post:** `angststoerungen-formen-symptome-behandlung`
 **Impact:** HIGH - 18k monthly searches, Pillar content
 **Action:** Add this post to relatedPosts of at least 2-3 other Foundation posts
 
 **Suggested additions:**
+
 ```typescript
 // In depression-verstehen-bewaeltigen:
 relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen', 'angststoerungen-formen-symptome-behandlung'],
@@ -251,6 +268,7 @@ relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'ang
 ```
 
 #### 2. Make Bidirectional Links Mutual
+
 **Impact:** HIGH - Improves SEO link equity distribution
 **Action:** For each one-way link, add the reverse link
 
@@ -266,7 +284,7 @@ relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'ang
 
 // richtigen-therapeuten-finden - add missing Cluster posts
 relatedPosts: [
-  'kassenzuschuss-psychotherapie-oesterreich', 
+  'kassenzuschuss-psychotherapie-oesterreich',
   'serioese-online-therapie-erkennen',
   'psychologe-vs-psychotherapeut',
   'wartezeiten-psychotherapie-wien'
@@ -282,6 +300,7 @@ relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden
 ### HIGH PRIORITY
 
 #### 3. Complete Pillar → Cluster Linking
+
 **Post:** `richtigen-therapeuten-finden`
 **Action:** Add missing cluster posts
 
@@ -295,11 +314,13 @@ relatedPosts: [
 ```
 
 #### 4. Increase Linking Density
+
 **Current:** 1.91 links/post
 **Target:** 3-4 links/post
 **Action:** Add 1-2 more relevant links to each post
 
 **Benefits:**
+
 - Better topic clustering signal to Google
 - Increased time on site (users explore more content)
 - Stronger internal PageRank flow
@@ -307,6 +328,7 @@ relatedPosts: [
 ### MEDIUM PRIORITY
 
 #### 5. Link Foundation Post to Foundation Posts
+
 **Post:** `akuthilfe-panikattacken`
 **Current Issue:** Links to non-Foundation posts (kognitive-verhaltenstherapie-erklaert, mental-health-strategien-alltag)
 **Action:** Change to link within Foundation cluster
@@ -320,9 +342,11 @@ relatedPosts: ['angststoerungen-formen-symptome-behandlung', 'atemtechniken-bei-
 ```
 
 #### 6. Cross-Cluster Linking
+
 **Action:** Create strategic links between different topic clusters
 
 Examples:
+
 - `depression-verstehen-bewaeltigen` could link to `richtigen-therapeuten-finden`
 - `burnout-erkennen-vorbeugen` could link to `meditation-anfaenger-3-minuten`
 
@@ -331,18 +355,21 @@ Examples:
 ## Implementation Checklist
 
 ### Phase 1: Critical Fixes (Do First)
+
 - [ ] Fix orphaned post: Add `angststoerungen-formen-symptome-behandlung` to 3+ relatedPosts arrays
 - [ ] Fix `akuthilfe-panikattacken` to link within Foundation posts
 - [ ] Add missing links to `richtigen-therapeuten-finden`
 - [ ] Make all links bidirectional (see specific fixes above)
 
 ### Phase 2: Optimization (Do Next)
+
 - [ ] Increase each post to 3-4 links minimum
 - [ ] Add cross-cluster strategic links
 - [ ] Ensure each Pillar links to all its Cluster posts
 - [ ] Ensure each Cluster links back to its Pillar
 
 ### Phase 3: Maintenance (Ongoing)
+
 - [ ] Review linking structure quarterly
 - [ ] Add new posts with proper linking
 - [ ] Monitor Google Search Console for internal link metrics
@@ -355,21 +382,25 @@ Examples:
 ### After Implementing Recommendations:
 
 **Linking Density:**
+
 - Current: 1.91 links/post
 - After fixes: ~3.5 links/post
 - Improvement: +83%
 
 **Orphaned Posts:**
+
 - Current: 1
 - After fixes: 0
 - Improvement: 100%
 
 **Bidirectional Links:**
+
 - Current: ~50% bidirectional
 - After fixes: ~95% bidirectional
 - Improvement: +90%
 
 **SEO Benefits:**
+
 - Stronger topic authority signals
 - Better PageRank distribution
 - Increased crawl depth

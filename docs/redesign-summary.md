@@ -9,6 +9,7 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 **Ziel**: Transformation von einem kühlen, klinischen Design zu einer warmen, vertrauensbildenden Ästhetik
 
 **Kernelemente**:
+
 - Warme Farbpalette (Creme, Beige, Pastellblau)
 - Wärmere Schriftart (Plus Jakarta Sans)
 - Mehr Whitespace & Luftigkeit
@@ -22,9 +23,11 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 ### Phase 1: Design Foundation ✅
 
 #### 1.1 Neue Farbpalette
+
 **Datei**: `/packages/ui/src/styles/tokens.css`
 
 **Änderungen**:
+
 - **Primary**: Kühle Blau-Grautöne → Warme Beige/Sand-Töne
   - Alt: `rgb(74, 111, 165)` (Blue-gray)
   - Neu: `rgb(189, 168, 126)` (Warm beige)
@@ -43,12 +46,15 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
   - Surface 2: `rgb(245, 240, 232)` (Light beige)
 
 #### 1.2 Typografie-System
+
 **Dateien**:
+
 - `/apps/web/app/layout.tsx`
 - `/apps/web/app/globals.css`
 - `/apps/web/tailwind.config.ts`
 
 **Änderungen**:
+
 - Schriftart: **Inter** → **Plus Jakarta Sans**
 - Line-Height: `1.5` → `1.7` (Body Text)
 - Line-Height: `1.8` für Paragraphen
@@ -56,19 +62,24 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 - Font-Weights: Leichter (600 → 500 für Buttons)
 
 #### 1.3 Spacing & Whitespace
+
 **Datei**: `/apps/web/tailwind.config.ts`
 
 **Änderungen**:
+
 - Neue Spacing-Werte: 18, 22, 26, 30, 34, 38, 42, 46
 - Erweiterte Line-Heights: `extra-relaxed` (1.8), `super-relaxed` (2.0)
 - Font-Size Definitionen mit optimierten Line-Heights
 
 #### 1.4 Shadow & Border System
+
 **Dateien**:
+
 - `/packages/ui/src/styles/tokens.css`
 - `/apps/web/tailwind.config.ts`
 
 **Änderungen**:
+
 - Shadow-Color: Cool Blue → Warm Brown
   - Alt: `rgba(35, 56, 98, 0.12)`
   - Neu: `rgba(74, 63, 46, 0.08)`
@@ -87,9 +98,11 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 ### Phase 2: Core UI Components ✅
 
 #### 2.1 Button Component
+
 **Datei**: `/packages/ui/src/styles/components.css`
 
 **Änderungen**:
+
 - Border-Radius: `999px` (pill) → `1rem` (16px)
 - Padding: Erhöht für mehr Luftigkeit
   - Inline: `1.125rem` → `1.5rem`
@@ -101,14 +114,17 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
   - Neu: `0 4px 12px -4px rgba(shadow-color)`
 
 **Button-Größen**:
+
 - Small: `min-height: 2.75rem`
 - Default: `min-height: 3rem`
 - Large: `min-height: 3.5rem`
 
 #### 2.2 Form Components
+
 **Datei**: `/packages/ui/src/styles/components.css`
 
 **Änderungen Inputs/Textareas**:
+
 - Border-Radius: `0.625rem` → `0.875rem`
 - Border-Width: `1px` → `1.5px`
 - Padding erhöht für mehr Raum
@@ -119,18 +135,22 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 - Focus-State: Weicherer Ring mit Opacity
 
 #### 2.3 Alert Component
+
 **Datei**: `/packages/ui/src/styles/components.css`
 
 **Änderungen**:
+
 - Border-Radius: `0.75rem` → `1rem`
 - Padding: `1rem 1.25rem` → `1.25rem 1.5rem`
 - Gap: `0.75rem` → `1rem`
 - Shadow: Weicher und wärmer
 
 #### 2.4 Badge Component
+
 **Datei**: `/packages/ui/src/styles/components.css`
 
 **Änderungen**:
+
 - Border-Radius: `999px` → `0.75rem`
 - Font-Size: `0.75rem` → `0.8125rem`
 - Font-Weight: `700` → `500`
@@ -143,11 +163,13 @@ Dieses Dokument fasst alle Änderungen zusammen, die für das neue warme, vertra
 ### Phase 3: Priority Pages (Homepage) ✅
 
 #### 3.1 Homepage Hero
+
 **Datei**: `/apps/web/app/components/marketing/MarketingHero.tsx`
 
 **Komplettes Redesign**:
 
 **Vorher**:
+
 ```tsx
 bg-gradient-to-br from-teal-950 via-cyan-950 to-blue-950
 text-white
@@ -156,6 +178,7 @@ bg-white/10
 ```
 
 **Nachher**:
+
 ```tsx
 bg-gradient-to-br from-primary-50 via-white to-secondary-50
 text-neutral-900
@@ -205,11 +228,13 @@ bg-secondary-50
    - Shadow: `shadow-lg` → `shadow-soft-xl`
 
 #### 3.2 Marketing Header
+
 **Datei**: `/apps/web/components/layout/Header.tsx`
 
 **Komplettes Redesign**:
 
 **Vorher**:
+
 ```tsx
 bg-gradient-to-r from-teal-950 via-cyan-900 to-blue-950
 text-white
@@ -217,11 +242,12 @@ border-white/10
 ```
 
 **Nachher**:
+
 ```tsx
-bg-white/95
-text-neutral-900
-border-primary-200/50
-shadow-sm
+bg - white / 95;
+text - neutral - 900;
+border - primary - 200 / 50;
+shadow - sm;
 ```
 
 **Detaillierte Änderungen**:
@@ -270,9 +296,11 @@ shadow-sm
 ### Phase 4: Marketing Theme ✅
 
 #### 4.1 Marketing Theme CSS
+
 **Datei**: `/apps/web/app/marketing-theme.css`
 
 **Änderungen**:
+
 - Komplett synchronisiert mit den warmen Farben aus `tokens.css`
 - Alle Purple/Blue Töne ersetzt durch Beige/Pastel Blue
 - Surface-, Text- und Border-Colors aktualisiert
@@ -288,6 +316,7 @@ shadow-sm
 #### Erstellte Dokumente
 
 **1. Image Recommendations** (`/docs/image-recommendations.md`)
+
 - Umfassende Anleitung für emotionale Bilder
 - Stock-Photo Quellen (Unsplash, Pexels, etc.)
 - Suchbegriffe & Keywords (Deutsch & Englisch)
@@ -298,6 +327,7 @@ shadow-sm
 - Best Practices
 
 **2. Redesign Summary** (dieses Dokument)
+
 - Vollständige Übersicht aller Änderungen
 - Vorher/Nachher Vergleiche
 - Code-Beispiele
@@ -308,6 +338,7 @@ shadow-sm
 ## 📊 Datei-Änderungen Übersicht
 
 ### Kern-Design System
+
 ```
 ✅ /packages/ui/src/styles/tokens.css          (Farben, Tokens)
 ✅ /packages/ui/src/styles/components.css      (Component Styles)
@@ -318,12 +349,14 @@ shadow-sm
 ```
 
 ### Komponenten
+
 ```
 ✅ /apps/web/app/components/marketing/MarketingHero.tsx
 ✅ /apps/web/components/layout/Header.tsx
 ```
 
 ### Dokumentation
+
 ```
 ✅ /docs/image-recommendations.md              (Neu erstellt)
 ✅ /docs/redesign-summary.md                   (Dieses Dokument)
@@ -336,7 +369,9 @@ shadow-sm
 Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später angegangen werden:
 
 ### Phase 4.2: Weitere Marketing Sections
+
 **Dateien**:
+
 - `/apps/web/app/components/marketing/ClientBenefits.tsx`
 - `/apps/web/app/components/marketing/TherapistBenefits.tsx`
 - `/apps/web/app/components/marketing/WhySection.tsx`
@@ -346,24 +381,30 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
 - `/apps/web/app/components/marketing/EarlyAccessSection.tsx`
 
 **Was zu ändern**:
+
 - Farbschema von Blau/Teal → Beige/Pastel Blue
 - Spacing erhöhen
 - Schatten weicher machen
 - Rundungen aktualisieren
 
 ### Phase 3.3: Therapeuten-Suche & Profile
+
 **Dateien**:
+
 - `/apps/web/app/(main)/therapists/`
 - Therapeut-Komponenten
 
 **Was zu ändern**:
+
 - Profilkarten mit warmen Farben
 - Mehr Whitespace
 - Emotionale Profilbilder (siehe image-recommendations.md)
 - Filter-UI modernisieren
 
 ### Phase 5: Application Pages
+
 **Bereiche**:
+
 - **Auth Pages** (`/login`, `/register`)
   - Warme Begrüßung
   - Einladende Formulare
@@ -410,9 +451,11 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
    - **Priorität**: Homepage Hero Image!
 
 2. **Testen**
+
    ```bash
    npm run dev
    ```
+
    - Überprüfen Sie das neue Design
    - Testen Sie auf verschiedenen Bildschirmgrößen
    - Überprüfen Sie Accessibility
@@ -421,6 +464,7 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
    ```bash
    npm run build
    ```
+
    - Stellen Sie sicher, dass alles kompiliert
    - Überprüfen Sie Bundle-Größen
 
@@ -456,44 +500,50 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
 ## 📈 Vorher/Nachher Vergleich
 
 ### Farbpalette
-| Element | Vorher (Kühl) | Nachher (Warm) |
-|---------|---------------|----------------|
-| Primary | Blue-Gray #4A6FA5 | Warm Beige #BDA87E |
-| Secondary | Deep Indigo #6366F1 | Pastel Blue #5EACC6 |
-| Background | Cool Blue-Gray #E6F0F1 | Cream #FAF8F5 |
-| Text | Cool Dark Gray #28324E | Warm Dark Brown #3A332E |
-| Shadow | Cool Blue rgba(35,56,98,0.12) | Warm Brown rgba(74,63,46,0.08) |
+
+| Element    | Vorher (Kühl)                 | Nachher (Warm)                 |
+| ---------- | ----------------------------- | ------------------------------ |
+| Primary    | Blue-Gray #4A6FA5             | Warm Beige #BDA87E             |
+| Secondary  | Deep Indigo #6366F1           | Pastel Blue #5EACC6            |
+| Background | Cool Blue-Gray #E6F0F1        | Cream #FAF8F5                  |
+| Text       | Cool Dark Gray #28324E        | Warm Dark Brown #3A332E        |
+| Shadow     | Cool Blue rgba(35,56,98,0.12) | Warm Brown rgba(74,63,46,0.08) |
 
 ### Typography
-| Element | Vorher | Nachher |
-|---------|--------|---------|
-| Font-Family | Inter | Plus Jakarta Sans |
-| Body Line-Height | 1.5 | 1.7 |
-| Letter-Spacing | - | 0.01em |
-| Button Font-Weight | 600 | 500 |
+
+| Element            | Vorher | Nachher           |
+| ------------------ | ------ | ----------------- |
+| Font-Family        | Inter  | Plus Jakarta Sans |
+| Body Line-Height   | 1.5    | 1.7               |
+| Letter-Spacing     | -      | 0.01em            |
+| Button Font-Weight | 600    | 500               |
 
 ### Spacing
-| Element | Vorher | Nachher |
-|---------|--------|---------|
-| Button Padding-Inline | 1.125rem | 1.5rem |
-| Input Padding-Inline | 0.9rem | 1.125rem |
-| Alert Padding | 1rem 1.25rem | 1.25rem 1.5rem |
-| Button Min-Height | 2.75rem | 3rem |
+
+| Element               | Vorher       | Nachher        |
+| --------------------- | ------------ | -------------- |
+| Button Padding-Inline | 1.125rem     | 1.5rem         |
+| Input Padding-Inline  | 0.9rem       | 1.125rem       |
+| Alert Padding         | 1rem 1.25rem | 1.25rem 1.5rem |
+| Button Min-Height     | 2.75rem      | 3rem           |
 
 ### Border-Radius
-| Element | Vorher | Nachher |
-|---------|--------|---------|
-| Buttons | 999px (pill) | 1rem (16px) |
-| Inputs | 0.625rem (10px) | 0.875rem (14px) |
-| Alerts | 0.75rem (12px) | 1rem (16px) |
-| Badges | 999px | 0.75rem (12px) |
+
+| Element | Vorher          | Nachher         |
+| ------- | --------------- | --------------- |
+| Buttons | 999px (pill)    | 1rem (16px)     |
+| Inputs  | 0.625rem (10px) | 0.875rem (14px) |
+| Alerts  | 0.75rem (12px)  | 1rem (16px)     |
+| Badges  | 999px           | 0.75rem (12px)  |
 
 ---
 
 ## 🔧 Troubleshooting
 
 ### Problem: Farben werden nicht angezeigt
+
 **Lösung**:
+
 1. Löschen Sie `.next` Cache:
    ```bash
    rm -rf .next
@@ -502,13 +552,17 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
 2. Stellen Sie sicher, dass Tailwind neu kompiliert
 
 ### Problem: Font lädt nicht
+
 **Lösung**:
+
 1. Überprüfen Sie, dass `Plus_Jakarta_Sans` korrekt importiert ist
 2. Checken Sie Browser Network Tab
 3. Next.js Font-Optimization kann beim ersten Load langsam sein
 
 ### Problem: Alte Styles überschreiben neue
+
 **Lösung**:
+
 1. Überprüfen Sie CSS Spezifität
 2. Verwenden Sie `!important` nur im Notfall
 3. Prüfen Sie Marketing-Theme Overrides
@@ -518,16 +572,19 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
 ## 📚 Ressourcen
 
 ### Design System
+
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans)
 - [CSS Variables Guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 
 ### Bilder
+
 - [Unsplash](https://unsplash.com)
 - [Pexels](https://pexels.com)
 - [TinyPNG](https://tinypng.com)
 
 ### Performance
+
 - [Next.js Image Optimization](https://nextjs.org/docs/app/building-your-application/optimizing/images)
 - [WebP Converter](https://cloudconvert.com/webp-converter)
 - [Lighthouse](https://developers.google.com/web/tools/lighthouse)
@@ -539,6 +596,7 @@ Die folgenden Bereiche wurden noch nicht aktualisiert, können aber später ange
 Das neue Design ist **warm, einladend und vertrauensbildend**:
 
 ### Was erreicht wurde:
+
 ✅ Komplette Farbpalette von kühl → warm
 ✅ Wärmere Typografie mit Plus Jakarta Sans
 ✅ Mehr Whitespace & Luftigkeit
@@ -549,6 +607,7 @@ Das neue Design ist **warm, einladend und vertrauensbildend**:
 ✅ Umfassende Bild-Dokumentation
 
 ### Was als Nächstes kommt:
+
 1. Emotionale Bilder hinzufügen
 2. Weitere Marketing Sections
 3. Therapeuten-Profile

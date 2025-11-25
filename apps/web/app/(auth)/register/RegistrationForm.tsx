@@ -1,31 +1,31 @@
-'use client'
+'use client';
 
-import { useMemo, useState } from 'react'
-import { CheckCircle2, Loader2 } from 'lucide-react'
-import { Button, Input, Textarea } from '@mental-health/ui'
-import { track } from '../../../lib/analytics'
+import { useMemo, useState } from 'react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { Button, Input, Textarea } from '@mental-health/ui';
+import { track } from '../../../lib/analytics';
 
-type AccessRole = 'THERAPIST' | 'ORGANISATION' | 'PRIVATE'
-type TherapistFormat = 'ONLINE' | 'PRAESENZ' | 'HYBRID'
+type AccessRole = 'THERAPIST' | 'ORGANISATION' | 'PRIVATE';
+type TherapistFormat = 'ONLINE' | 'PRAESENZ' | 'HYBRID';
 
 type FormState = {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  confirmPassword: string
-  role: AccessRole
-  company: string
-  city: string
-  specialties: string[]
-  modalities: TherapistFormat[]
-  notes: string
-  availabilityNote: string
-  pricingNote: string
-  acceptTerms: boolean
-}
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: AccessRole;
+  company: string;
+  city: string;
+  specialties: string[];
+  modalities: TherapistFormat[];
+  notes: string;
+  availabilityNote: string;
+  pricingNote: string;
+  acceptTerms: boolean;
+};
 
-type FormErrors = Partial<Record<keyof FormState, string>>
+type FormErrors = Partial<Record<keyof FormState, string>>;
 
 const initialState: FormState = {
   firstName: '',
@@ -42,13 +42,13 @@ const initialState: FormState = {
   availabilityNote: '',
   pricingNote: '',
   acceptTerms: false,
-}
+};
 
 const roleLabels: Record<AccessRole, string> = {
   THERAPIST: 'Therapeut:in / Praxis',
   ORGANISATION: 'Unternehmen / HR / BGM',
   PRIVATE: 'Privatperson / Angehörige:r',
-}
+};
 
 const specialtyOptions = [
   'Depression & Burnout',
@@ -57,149 +57,150 @@ const specialtyOptions = [
   'ADHS & Neurodiversität',
   'Familie & Beziehungen',
   'Corporate Mental Health',
-] as const
+] as const;
 
 const formatOptions: Array<{ id: TherapistFormat; label: string }> = [
   { id: 'ONLINE', label: 'Online' },
   { id: 'PRAESENZ', label: 'Vor Ort' },
   { id: 'HYBRID', label: 'Hybrid' },
-]
+];
 
 export function RegistrationForm() {
-  const [form, setForm] = useState<FormState>(initialState)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [submittedRole, setSubmittedRole] = useState<AccessRole | null>(null)
+  const [form, setForm] = useState<FormState>(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [submittedRole, setSubmittedRole] = useState<AccessRole | null>(null);
 
   const accessSummary = useMemo(() => {
     if (form.role === 'THERAPIST') {
-      return 'Nach der Registrierung prüfen wir dein Profil und schalten dir das Pilot-Dashboard frei. Du erhältst alle Infos zum Listing und zur Onboarding-Storyline.'
+      return 'Nach der Registrierung prüfen wir dein Profil und schalten dir das Pilot-Dashboard frei. Du erhältst alle Infos zum Listing und zur Onboarding-Storyline.';
     }
 
     if (form.role === 'ORGANISATION') {
-      return 'Du erhältst einen Überblick über Team-Zugänge, Reporting und Employer Branding. Wir stimmen Termin und Storyline mit dir ab.'
+      return 'Du erhältst einen Überblick über Team-Zugänge, Reporting und Employer Branding. Wir stimmen Termin und Storyline mit dir ab.';
     }
 
-    return 'Wir zeigen dir die Ersteinschätzung inklusive Empfehlungen, Kursübersicht und Follow-up mit dem Care-Team.'
-  }, [form.role])
+    return 'Wir zeigen dir die Ersteinschätzung inklusive Empfehlungen, Kursübersicht und Follow-up mit dem Care-Team.';
+  }, [form.role]);
 
   const successCopy = useMemo(() => {
     if (submittedRole === 'THERAPIST') {
       return {
         title: 'Danke für deine Registrierung!',
-        body:
-          'Wir haben dein Konto angelegt und prüfen dein Profil. Du erhältst werktags innerhalb von 24 Stunden Zugang zum Pilot-Dashboard und weitere Hinweise zur Verifizierung.',
-      }
+        body: 'Wir haben dein Konto angelegt und prüfen dein Profil. Du erhältst werktags innerhalb von 24 Stunden Zugang zum Pilot-Dashboard und weitere Hinweise zur Verifizierung.',
+      };
     }
 
     return {
       title: 'Vielen Dank! Deine Anfrage ist bei uns angekommen.',
-      body:
-        'Wir melden uns werktags innerhalb von 24 Stunden mit dem passenden Ablauf. Schau gerne gleich in dein Postfach.',
-    }
-  }, [submittedRole])
+      body: 'Wir melden uns werktags innerhalb von 24 Stunden mit dem passenden Ablauf. Schau gerne gleich in dein Postfach.',
+    };
+  }, [submittedRole]);
 
   const handleChange =
     (field: keyof FormState) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      const value = event.target.type === 'checkbox' ? (event.target as HTMLInputElement).checked : event.target.value
+      const value =
+        event.target.type === 'checkbox'
+          ? (event.target as HTMLInputElement).checked
+          : event.target.value;
       setForm((prev) => ({
         ...prev,
         [field]: value,
-      }))
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
+      }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    };
 
   const toggleSpecialty = (value: string) => {
     setForm((prev) => {
       const nextValues = prev.specialties.includes(value)
         ? prev.specialties.filter((item) => item !== value)
-        : [...prev.specialties, value]
+        : [...prev.specialties, value];
 
       return {
         ...prev,
         specialties: nextValues,
-      }
-    })
-    setErrors((prev) => ({ ...prev, specialties: undefined }))
-  }
+      };
+    });
+    setErrors((prev) => ({ ...prev, specialties: undefined }));
+  };
 
   const toggleFormat = (value: TherapistFormat) => {
     setForm((prev) => {
       const nextValues = prev.modalities.includes(value)
         ? prev.modalities.filter((item) => item !== value)
-        : [...prev.modalities, value]
+        : [...prev.modalities, value];
 
       return {
         ...prev,
         modalities: nextValues,
-      }
-    })
-    setErrors((prev) => ({ ...prev, modalities: undefined }))
-  }
+      };
+    });
+    setErrors((prev) => ({ ...prev, modalities: undefined }));
+  };
 
   const validate = () => {
-    const nextErrors: FormErrors = {}
+    const nextErrors: FormErrors = {};
 
     if (!form.firstName.trim()) {
-      nextErrors.firstName = 'Pflichtfeld'
+      nextErrors.firstName = 'Pflichtfeld';
     }
     if (!form.lastName.trim()) {
-      nextErrors.lastName = 'Pflichtfeld'
+      nextErrors.lastName = 'Pflichtfeld';
     }
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben'
+      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben';
     }
     if (!['THERAPIST', 'ORGANISATION', 'PRIVATE'].includes(form.role)) {
-      nextErrors.role = 'Bitte Rolle auswählen'
+      nextErrors.role = 'Bitte Rolle auswählen';
     }
     if (form.role === 'ORGANISATION' && !form.company.trim()) {
-      nextErrors.company = 'Bitte Unternehmensname ergänzen'
+      nextErrors.company = 'Bitte Unternehmensname ergänzen';
     }
 
     if (form.role === 'THERAPIST') {
       if (!form.password.trim()) {
-        nextErrors.password = 'Bitte Passwort vergeben'
+        nextErrors.password = 'Bitte Passwort vergeben';
       } else if (form.password.length < 8) {
-        nextErrors.password = 'Mindestens 8 Zeichen'
+        nextErrors.password = 'Mindestens 8 Zeichen';
       }
       if (!form.confirmPassword.trim()) {
-        nextErrors.confirmPassword = 'Bitte bestätigen'
+        nextErrors.confirmPassword = 'Bitte bestätigen';
       } else if (form.password !== form.confirmPassword) {
-        nextErrors.confirmPassword = 'Passwörter stimmen nicht überein'
+        nextErrors.confirmPassword = 'Passwörter stimmen nicht überein';
       }
       if (!form.city.trim()) {
-        nextErrors.city = 'Bitte Stadt angeben'
+        nextErrors.city = 'Bitte Stadt angeben';
       }
       if (form.specialties.length === 0) {
-        nextErrors.specialties = 'Mindestens einen Schwerpunkt auswählen'
+        nextErrors.specialties = 'Mindestens einen Schwerpunkt auswählen';
       }
       if (form.modalities.length === 0) {
-        nextErrors.modalities = 'Mindestens ein Format auswählen'
+        nextErrors.modalities = 'Mindestens ein Format auswählen';
       }
       if (!form.acceptTerms) {
-        nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu'
+        nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu';
       }
     }
 
-    return nextErrors
-  }
+    return nextErrors;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setStatus('idle')
-    setErrorMessage('')
+    event.preventDefault();
+    setStatus('idle');
+    setErrorMessage('');
 
-    const validation = validate()
+    const validation = validate();
     if (Object.keys(validation).length > 0) {
-      setErrors(validation)
-      return
+      setErrors(validation);
+      return;
     }
 
-    setIsSubmitting(true)
-    const currentRole = form.role
+    setIsSubmitting(true);
+    const currentRole = form.role;
 
     const payload =
       currentRole === 'THERAPIST'
@@ -224,32 +225,33 @@ export function RegistrationForm() {
             role: currentRole,
             company: form.company.trim() || undefined,
             notes: form.notes.trim() || undefined,
-          }
+          };
 
     try {
-      const endpoint = currentRole === 'THERAPIST' ? '/api/register' : '/api/access-request'
+      const endpoint = currentRole === 'THERAPIST' ? '/api/register' : '/api/access-request';
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
         if (Array.isArray(data?.errors)) {
-          const apiErrors: FormErrors = {}
+          const apiErrors: FormErrors = {};
           for (const error of data.errors) {
-            const field = Array.isArray(error?.path) ? error.path[0] : undefined
+            const field = Array.isArray(error?.path) ? error.path[0] : undefined;
             if (typeof field === 'string' && field in initialState) {
-              apiErrors[field as keyof FormState] = typeof error.message === 'string' ? error.message : undefined
+              apiErrors[field as keyof FormState] =
+                typeof error.message === 'string' ? error.message : undefined;
             }
           }
-          setErrors((prev) => ({ ...prev, ...apiErrors }))
+          setErrors((prev) => ({ ...prev, ...apiErrors }));
         }
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten')
+        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
       }
 
       if (currentRole === 'THERAPIST') {
@@ -257,28 +259,28 @@ export function RegistrationForm() {
           city: form.city.trim(),
           specialties: form.specialties,
           modalities: form.modalities,
-        })
+        });
       } else {
         track('access_request_submitted', {
           role: currentRole,
           company: form.company.trim() || undefined,
-        })
+        });
       }
 
-      setSubmittedRole(currentRole)
-      setStatus('success')
-      setForm(initialState)
-      setErrors({})
+      setSubmittedRole(currentRole);
+      setStatus('success');
+      setForm(initialState);
+      setErrors({});
     } catch (error) {
-      console.error('Error submitting registration:', error)
-      setStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten')
+      console.error('Error submitting registration:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  const submitLabel = form.role === 'THERAPIST' ? 'Registrierung abschließen' : 'Zugang anfragen'
+  const submitLabel = form.role === 'THERAPIST' ? 'Registrierung abschließen' : 'Zugang anfragen';
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
@@ -384,11 +386,15 @@ export function RegistrationForm() {
 
         {form.role === 'THERAPIST' && (
           <div className="space-y-5 rounded-2xl border border-divider bg-surface-1/90 p-4">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">Profil-Angaben</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">
+              Profil-Angaben
+            </h3>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1 text-sm text-neutral-700">
-                <label htmlFor="password" className="font-medium text-default">Passwort</label>
+                <label htmlFor="password" className="font-medium text-default">
+                  Passwort
+                </label>
                 <Input
                   id="password"
                   type="password"
@@ -402,7 +408,9 @@ export function RegistrationForm() {
                 {errors.password && <span className="text-xs text-red-600">{errors.password}</span>}
               </div>
               <div className="space-y-1 text-sm text-neutral-700">
-                <label htmlFor="confirmPassword" className="font-medium text-default">Passwort bestätigen</label>
+                <label htmlFor="confirmPassword" className="font-medium text-default">
+                  Passwort bestätigen
+                </label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -436,7 +444,7 @@ export function RegistrationForm() {
               <legend className="text-sm font-medium text-default">Schwerpunkte</legend>
               <div className="flex flex-wrap gap-2">
                 {specialtyOptions.map((option) => {
-                  const isActive = form.specialties.includes(option)
+                  const isActive = form.specialties.includes(option);
                   return (
                     <button
                       key={option}
@@ -450,17 +458,19 @@ export function RegistrationForm() {
                     >
                       {option}
                     </button>
-                  )
+                  );
                 })}
               </div>
-              {errors.specialties && <span className="text-xs text-red-600">{errors.specialties}</span>}
+              {errors.specialties && (
+                <span className="text-xs text-red-600">{errors.specialties}</span>
+              )}
             </fieldset>
 
             <fieldset className="space-y-2">
               <legend className="text-sm font-medium text-default">Formate</legend>
               <div className="flex flex-wrap gap-2">
                 {formatOptions.map((option) => {
-                  const isActive = form.modalities.includes(option.id)
+                  const isActive = form.modalities.includes(option.id);
                   return (
                     <button
                       key={option.id}
@@ -474,10 +484,12 @@ export function RegistrationForm() {
                     >
                       {option.label}
                     </button>
-                  )
+                  );
                 })}
               </div>
-              {errors.modalities && <span className="text-xs text-red-600">{errors.modalities}</span>}
+              {errors.modalities && (
+                <span className="text-xs text-red-600">{errors.modalities}</span>
+              )}
             </fieldset>
 
             <div className="space-y-4 rounded-2xl border border-primary/30 bg-primary/10 p-4 dark:border-primary/50 dark:bg-primary/20">
@@ -498,7 +510,9 @@ export function RegistrationForm() {
               </label>
 
               <label className="space-y-1 text-sm text-neutral-700" htmlFor="pricingNote">
-                <span className="font-medium text-default">Preishinweise &amp; Sonderkonditionen</span>
+                <span className="font-medium text-default">
+                  Preishinweise &amp; Sonderkonditionen
+                </span>
                 <Textarea
                   id="pricingNote"
                   value={form.pricingNote}
@@ -531,7 +545,9 @@ export function RegistrationForm() {
         <label className="space-y-1 text-sm text-neutral-700" htmlFor="notes">
           <div className="flex items-center justify-between">
             <span className="font-medium text-default">
-              {form.role === 'THERAPIST' ? 'Was sollen wir über dich wissen?' : 'Worauf sollen wir uns vorbereiten?'}
+              {form.role === 'THERAPIST'
+                ? 'Was sollen wir über dich wissen?'
+                : 'Worauf sollen wir uns vorbereiten?'}
             </span>
             <span className="text-xs text-neutral-900">Optional</span>
           </div>
@@ -563,11 +579,21 @@ export function RegistrationForm() {
             />
             <span>
               Ich stimme den{' '}
-              <a className="text-primary underline" href="/terms" target="_blank" rel="noopener noreferrer">
+              <a
+                className="text-primary underline"
+                href="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Nutzungsbedingungen
               </a>{' '}
               und der{' '}
-              <a className="text-primary underline" href="/privacy" target="_blank" rel="noopener noreferrer">
+              <a
+                className="text-primary underline"
+                href="/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Datenschutzrichtlinie
               </a>{' '}
               zu.
@@ -590,10 +616,10 @@ export function RegistrationForm() {
         </Button>
 
         <p className="text-center text-xs text-neutral-800">
-          Mit dem Absenden bestätigst du, dass wir dich per E-Mail oder Telefon kontaktieren dürfen. Keine Werbung, keine
-          Weitergabe deiner Daten.
+          Mit dem Absenden bestätigst du, dass wir dich per E-Mail oder Telefon kontaktieren dürfen.
+          Keine Werbung, keine Weitergabe deiner Daten.
         </p>
       </form>
     </div>
-  )
+  );
 }

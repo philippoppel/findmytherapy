@@ -389,7 +389,10 @@
   font-size: 0.9375rem;
   letter-spacing: 0.01em;
   color: rgb(var(--text));
-  transition: border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
 }
 
 .input:focus-visible,
@@ -424,7 +427,9 @@
   text-decoration: underline;
   text-decoration-color: transparent;
   text-decoration-thickness: 0.1em;
-  transition: text-decoration-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    text-decoration-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .link:hover {

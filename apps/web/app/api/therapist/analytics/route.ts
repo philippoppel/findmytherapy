@@ -14,10 +14,7 @@ export async function GET() {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findFirst({
@@ -36,7 +33,7 @@ export async function GET() {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -155,7 +152,7 @@ export async function GET() {
 
     return NextResponse.json(
       { success: false, message: 'Fehler beim Laden der Analytics' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

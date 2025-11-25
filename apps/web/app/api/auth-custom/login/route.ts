@@ -71,9 +71,10 @@ export async function POST(request: NextRequest) {
       .encrypt(secret);
 
     // Set cookie with the same name NextAuth uses
-    const cookieName = process.env.NODE_ENV === 'production'
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token';
+    const cookieName =
+      process.env.NODE_ENV === 'production'
+        ? '__Secure-next-auth.session-token'
+        : 'next-auth.session-token';
 
     const response = NextResponse.json({
       success: true,
@@ -98,8 +99,11 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'INTERNAL_ERROR', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
+      {
+        error: 'INTERNAL_ERROR',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 },
     );
   }
 }

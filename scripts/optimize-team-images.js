@@ -42,7 +42,9 @@ async function optimizeImage(inputPath, outputPath) {
   console.log(`\nProcessing: ${path.basename(inputPath)}`);
 
   const beforeInfo = await getImageInfo(inputPath);
-  console.log(`  Before: ${(beforeInfo.size / 1024).toFixed(1)}KB (${beforeInfo.width}x${beforeInfo.height})`);
+  console.log(
+    `  Before: ${(beforeInfo.size / 1024).toFixed(1)}KB (${beforeInfo.width}x${beforeInfo.height})`,
+  );
 
   // Try different quality levels to hit target size
   let quality = TARGET_QUALITY;
@@ -50,18 +52,20 @@ async function optimizeImage(inputPath, outputPath) {
   const maxAttempts = 5;
 
   while (attempts < maxAttempts) {
-    await sharp(inputPath)
-      .jpeg({ quality, mozjpeg: true })
-      .toFile(outputPath);
+    await sharp(inputPath).jpeg({ quality, mozjpeg: true }).toFile(outputPath);
 
     const afterInfo = await getImageInfo(outputPath);
     const sizeDiff = afterInfo.size - TARGET_SIZE;
 
-    console.log(`  Attempt ${attempts + 1}: ${(afterInfo.size / 1024).toFixed(1)}KB (quality: ${quality})`);
+    console.log(
+      `  Attempt ${attempts + 1}: ${(afterInfo.size / 1024).toFixed(1)}KB (quality: ${quality})`,
+    );
 
     // If we're within 10KB of target, or quality is too low, stop
     if (Math.abs(sizeDiff) < 10 * 1024 || quality < 50) {
-      console.log(`  ✓ Final: ${(afterInfo.size / 1024).toFixed(1)}KB (saved ${((1 - afterInfo.size / beforeInfo.size) * 100).toFixed(1)}%)`);
+      console.log(
+        `  ✓ Final: ${(afterInfo.size / 1024).toFixed(1)}KB (saved ${((1 - afterInfo.size / beforeInfo.size) * 100).toFixed(1)}%)`,
+      );
       break;
     }
 

@@ -12,8 +12,7 @@ export const getColorHex = (palette: ColorPalette, shade: ColorShade) =>
 export const getOnColorHex = (palette: keyof ColorTokenFile['onColor']) =>
   designTokens.onColor[palette];
 
-export const getTextHex = (variant: keyof ColorTokenFile['text']) =>
-  designTokens.text[variant];
+export const getTextHex = (variant: keyof ColorTokenFile['text']) => designTokens.text[variant];
 
 export const getSurfaceHex = (variant: keyof ColorTokenFile['surface']) =>
   designTokens.surface[variant];
@@ -36,9 +35,7 @@ export const hexToRgbTupleString = (hex: string) => hexToRgb(hex).join(' ');
 
 const srgbToLinear = (value: number) => {
   const channel = value / 255;
-  return channel <= 0.04045
-    ? channel / 12.92
-    : Math.pow((channel + 0.055) / 1.055, 2.4);
+  return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
 };
 
 export const relativeLuminance = (hex: string) => {

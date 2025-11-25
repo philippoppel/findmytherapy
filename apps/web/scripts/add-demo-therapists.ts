@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const DEMO_THERAPISTS = [
   {
@@ -17,7 +17,10 @@ const DEMO_THERAPISTS = [
       latitude: 48.2082,
       longitude: 16.3738,
       yearsExperience: 8,
-      acceptedInsurance: ['ÖGK (Österreichische Gesundheitskasse)', 'BVAEB (Versicherungsanstalt öffentlich Bediensteter)'],
+      acceptedInsurance: [
+        'ÖGK (Österreichische Gesundheitskasse)',
+        'BVAEB (Versicherungsanstalt öffentlich Bediensteter)',
+      ],
       ageGroups: ['Junge Erwachsene (18-25)', 'Erwachsene (26-64)'],
       services: ['Einzeltherapie', 'Online-Sitzungen', 'Stressmanagement-Programme'],
       qualifications: [
@@ -46,9 +49,18 @@ const DEMO_THERAPISTS = [
       latitude: 47.0707,
       longitude: 15.4395,
       yearsExperience: 15,
-      acceptedInsurance: ['ÖGK (Österreichische Gesundheitskasse)', 'SVS (Sozialversicherung der Selbständigen)', 'Private Zusatzversicherungen'],
+      acceptedInsurance: [
+        'ÖGK (Österreichische Gesundheitskasse)',
+        'SVS (Sozialversicherung der Selbständigen)',
+        'Private Zusatzversicherungen',
+      ],
       ageGroups: ['Erwachsene (26-64)', 'Senioren (65+)'],
-      services: ['Einzeltherapie Präsenz', 'Einzeltherapie Online', 'EMDR-Traumatherapie', 'Langzeittherapie'],
+      services: [
+        'Einzeltherapie Präsenz',
+        'Einzeltherapie Online',
+        'EMDR-Traumatherapie',
+        'Langzeittherapie',
+      ],
       qualifications: [
         'Promotion in Klinischer Psychologie',
         'Zertifizierung in EMDR',
@@ -68,17 +80,34 @@ const DEMO_THERAPISTS = [
       displayName: 'Mag. Julia Hoffmann',
       title: 'Systemische Therapeutin',
       headline: 'Paartherapie und Familiensysteme',
-      specialties: ['Beziehungsprobleme', 'Paartherapie', 'Familientherapie', 'Kommunikation', 'Trennung'],
-      modalities: ['Systemische Therapie', 'Solution-Focused', 'Emotionsfokussierte Paartherapie', 'Mediation'],
+      specialties: [
+        'Beziehungsprobleme',
+        'Paartherapie',
+        'Familientherapie',
+        'Kommunikation',
+        'Trennung',
+      ],
+      modalities: [
+        'Systemische Therapie',
+        'Solution-Focused',
+        'Emotionsfokussierte Paartherapie',
+        'Mediation',
+      ],
       languages: ['Deutsch', 'Englisch', 'Italienisch'],
       online: true,
       city: 'Salzburg',
       latitude: 47.8095,
-      longitude: 13.0550,
+      longitude: 13.055,
       yearsExperience: 10,
       acceptedInsurance: ['ÖGK (Österreichische Gesundheitskasse)', 'Private Zusatzversicherungen'],
       ageGroups: ['Junge Erwachsene (18-25)', 'Erwachsene (26-64)'],
-      services: ['Paartherapie', 'Einzeltherapie', 'Familientherapie', 'Online-Beratung', 'Mediation'],
+      services: [
+        'Paartherapie',
+        'Einzeltherapie',
+        'Familientherapie',
+        'Online-Beratung',
+        'Mediation',
+      ],
       qualifications: [
         'Master in Psychologie',
         'Zertifizierung in Systemischer Therapie',
@@ -98,7 +127,13 @@ const DEMO_THERAPISTS = [
       displayName: 'Mag. Michael Berger',
       title: 'Kinder- und Jugendpsychologe',
       headline: 'Spezialist für Kinder, Jugendliche und ADHS',
-      specialties: ['ADHS', 'Lernstörungen', 'Angst bei Kindern', 'Schulprobleme', 'Entwicklungsstörungen'],
+      specialties: [
+        'ADHS',
+        'Lernstörungen',
+        'Angst bei Kindern',
+        'Schulprobleme',
+        'Entwicklungsstörungen',
+      ],
       modalities: ['Spieltherapie', 'Verhaltenstherapie', 'Familienberatung', 'Neurofeedback'],
       languages: ['Deutsch', 'Englisch'],
       online: false,
@@ -106,9 +141,17 @@ const DEMO_THERAPISTS = [
       latitude: 48.3064,
       longitude: 14.2858,
       yearsExperience: 12,
-      acceptedInsurance: ['ÖGK (Österreichische Gesundheitskasse)', 'BVAEB (Versicherungsanstalt öffentlich Bediensteter)'],
+      acceptedInsurance: [
+        'ÖGK (Österreichische Gesundheitskasse)',
+        'BVAEB (Versicherungsanstalt öffentlich Bediensteter)',
+      ],
       ageGroups: ['Kinder (6-13)', 'Jugendliche (14-17)'],
-      services: ['Diagnostik', 'Einzeltherapie Präsenz', 'Familienberatung', 'Neurofeedback-Training'],
+      services: [
+        'Diagnostik',
+        'Einzeltherapie Präsenz',
+        'Familienberatung',
+        'Neurofeedback-Training',
+      ],
       qualifications: [
         'Master in Psychologie',
         'Spezialisierung Kinder- und Jugendpsychologie',
@@ -128,8 +171,19 @@ const DEMO_THERAPISTS = [
       displayName: 'Mag. Nina Maier',
       title: 'Psychotherapeutin',
       headline: 'Depression, Selbstwert und Lebensübergänge',
-      specialties: ['Depression', 'Selbstwertprobleme', 'Lebensübergänge', 'Identität', 'Sinnkrisen'],
-      modalities: ['Tiefenpsychologie', 'Logotherapie', 'Achtsamkeit', 'ACT (Acceptance and Commitment Therapy)'],
+      specialties: [
+        'Depression',
+        'Selbstwertprobleme',
+        'Lebensübergänge',
+        'Identität',
+        'Sinnkrisen',
+      ],
+      modalities: [
+        'Tiefenpsychologie',
+        'Logotherapie',
+        'Achtsamkeit',
+        'ACT (Acceptance and Commitment Therapy)',
+      ],
       languages: ['Deutsch'],
       online: true,
       city: 'Innsbruck',
@@ -152,25 +206,25 @@ const DEMO_THERAPISTS = [
       availabilityNote: 'Neue Termine verfügbar ab nächster Woche',
     },
   },
-]
+];
 
 async function addDemoTherapists() {
   try {
-    console.log('🏥 Erstelle Demo-Therapeuten...\n')
+    console.log('🏥 Erstelle Demo-Therapeuten...\n');
 
-    let createdCount = 0
-    let skippedCount = 0
+    let createdCount = 0;
+    let skippedCount = 0;
 
     for (const demo of DEMO_THERAPISTS) {
       // Check if user already exists
       const existingUser = await prisma.user.findUnique({
         where: { email: demo.email },
-      })
+      });
 
       if (existingUser) {
-        console.log(`  ⏭️  ${demo.profile.displayName}: Email bereits vorhanden, überspringe`)
-        skippedCount++
-        continue
+        console.log(`  ⏭️  ${demo.profile.displayName}: Email bereits vorhanden, überspringe`);
+        skippedCount++;
+        continue;
       }
 
       // Create user with therapist profile
@@ -191,26 +245,27 @@ async function addDemoTherapists() {
         include: {
           therapistProfile: true,
         },
-      })
+      });
 
-      console.log(`  ✅ ${demo.profile.displayName}: Erfolgreich erstellt`)
-      createdCount++
+      console.log(`  ✅ ${demo.profile.displayName}: Erfolgreich erstellt`);
+      createdCount++;
     }
 
-    console.log(`\n✨ Fertig! ${createdCount} neue Therapeuten erstellt, ${skippedCount} übersprungen.\n`)
+    console.log(
+      `\n✨ Fertig! ${createdCount} neue Therapeuten erstellt, ${skippedCount} übersprungen.\n`,
+    );
 
     // Zeige Zusammenfassung
     const totalTherapists = await prisma.therapistProfile.count({
       where: { status: 'VERIFIED', isPublic: true },
-    })
+    });
 
-    console.log(`📊 Gesamtzahl verifizierter, öffentlicher Therapeuten: ${totalTherapists}`)
-
+    console.log(`📊 Gesamtzahl verifizierter, öffentlicher Therapeuten: ${totalTherapists}`);
   } catch (error) {
-    console.error('❌ Fehler:', error)
+    console.error('❌ Fehler:', error);
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
-addDemoTherapists()
+addDemoTherapists();

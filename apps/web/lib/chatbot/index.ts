@@ -18,8 +18,8 @@ export {
   createMessage,
   type ChatMessage,
   type ConversationState,
-} from './engine'
+} from './engine';
 
-export { KEYWORD_PATTERNS, RESPONSE_TEMPLATES, GENERAL_RESPONSES } from './responses'
+export { KEYWORD_PATTERNS, RESPONSE_TEMPLATES, GENERAL_RESPONSES } from './responses';
 
-export type { KeywordPattern, ResponseTemplate, MessageRole, KnowledgeReference } from './types'
+export type { KeywordPattern, ResponseTemplate, MessageRole, KnowledgeReference } from './types';

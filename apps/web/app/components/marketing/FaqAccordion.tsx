@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { useId, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
-import { cn } from '@mental-health/ui'
-import type { faqItems } from '../../marketing-content'
-import { Reveal } from './Reveal'
+import { useId, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@mental-health/ui';
+import type { faqItems } from '../../marketing-content';
+import { Reveal } from './Reveal';
 
 interface FaqAccordionProps {
-  items: typeof faqItems
+  items: typeof faqItems;
 }
 
 export function FaqAccordion({ items }: FaqAccordionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const baseId = useId()
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const baseId = useId();
 
   return (
     <section id="faq" className="py-24" aria-labelledby="faq-heading">
@@ -21,7 +21,10 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
           <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
             FAQ
           </span>
-          <h2 id="faq-heading" className="mt-4 text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl">
+          <h2
+            id="faq-heading"
+            className="mt-4 text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl"
+          >
             Deine wichtigsten Fragen – transparent beantwortet
           </h2>
           <p className="mt-3 text-lg leading-relaxed text-muted">
@@ -38,15 +41,12 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
 
         <div className="space-y-3 sm:space-y-4">
           {items.map((item, index) => {
-            const isOpen = openIndex === index
-            const contentId = `${baseId}-content-${index}`
-            const triggerId = `${baseId}-trigger-${index}`
+            const isOpen = openIndex === index;
+            const contentId = `${baseId}-content-${index}`;
+            const triggerId = `${baseId}-trigger-${index}`;
 
             return (
-              <Reveal
-                key={item.question}
-                delay={index * 120}
-              >
+              <Reveal key={item.question} delay={index * 120}>
                 <div className="overflow-hidden rounded-2xl border border-divider bg-white shadow-lg shadow-secondary/10 sm:rounded-3xl">
                   <button
                     id={triggerId}
@@ -86,10 +86,10 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                   </div>
                 </div>
               </Reveal>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

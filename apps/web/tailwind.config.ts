@@ -2,7 +2,19 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 const withOpacity = (variable: string) => `rgb(var(${variable}) / <alpha-value>)`;
-const shades = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'] as const;
+const shades = [
+  '50',
+  '100',
+  '200',
+  '300',
+  '400',
+  '500',
+  '600',
+  '700',
+  '800',
+  '900',
+  '950',
+] as const;
 
 const createPalette = (name: string) => {
   const palette: Record<string, string> = {
@@ -27,10 +39,13 @@ const colorConfig = {
   success: createPalette('success'),
   warning: createPalette('warning'),
   danger: createPalette('danger'),
-  neutral: shades.reduce<Record<string, string>>((acc, shade) => {
-    acc[shade] = withOpacity(`--color-neutral-${shade}`);
-    return acc;
-  }, { DEFAULT: withOpacity('--color-neutral-500') }),
+  neutral: shades.reduce<Record<string, string>>(
+    (acc, shade) => {
+      acc[shade] = withOpacity(`--color-neutral-${shade}`);
+      return acc;
+    },
+    { DEFAULT: withOpacity('--color-neutral-500') },
+  ),
   surface: {
     DEFAULT: withOpacity('--surface-1'),
     1: withOpacity('--surface-1'),
@@ -86,14 +101,14 @@ const config: Config = {
         'super-relaxed': '2',
       },
       letterSpacing: {
-        'warm': '0.01em',
+        warm: '0.01em',
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.01em' }],
-        'sm': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
-        'base': ['1rem', { lineHeight: '1.7', letterSpacing: '0.01em' }],
-        'lg': ['1.125rem', { lineHeight: '1.7', letterSpacing: '0.005em' }],
-        'xl': ['1.25rem', { lineHeight: '1.6', letterSpacing: '0em' }],
+        xs: ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.01em' }],
+        sm: ['0.875rem', { lineHeight: '1.6', letterSpacing: '0.01em' }],
+        base: ['1rem', { lineHeight: '1.7', letterSpacing: '0.01em' }],
+        lg: ['1.125rem', { lineHeight: '1.7', letterSpacing: '0.005em' }],
+        xl: ['1.25rem', { lineHeight: '1.6', letterSpacing: '0em' }],
         '2xl': ['1.5rem', { lineHeight: '1.5', letterSpacing: '-0.01em' }],
         '3xl': ['1.875rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
         '4xl': ['2.25rem', { lineHeight: '1.3', letterSpacing: '-0.02em' }],
@@ -107,7 +122,7 @@ const config: Config = {
       },
       boxShadow: {
         focus: `0 0 0 var(--focus-ring-width) rgb(var(--focus-ring))`,
-        'soft': '0 2px 8px rgba(var(--shadow-color))',
+        soft: '0 2px 8px rgba(var(--shadow-color))',
         'soft-lg': '0 4px 16px rgba(var(--shadow-color))',
         'soft-xl': '0 8px 24px rgba(var(--shadow-color))',
       },

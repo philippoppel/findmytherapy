@@ -1,11 +1,20 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { AlertTriangle, Phone, Heart, Wind, Info, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
+import { useState } from 'react';
+import {
+  AlertTriangle,
+  Phone,
+  Heart,
+  Wind,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+} from 'lucide-react';
 
 type CrisisResourcesProps = {
-  className?: string
-}
+  className?: string;
+};
 
 const emergencyContacts = [
   {
@@ -46,7 +55,7 @@ const emergencyContacts = [
     website: 'https://www.suizidpraevention-austria.at',
     type: 'info' as const,
   },
-]
+];
 
 const immediateExercises = [
   {
@@ -72,10 +81,10 @@ const immediateExercises = [
       'Wiederhole 4-5 Zyklen',
     ],
   },
-]
+];
 
 export function CrisisResources({ className = '' }: CrisisResourcesProps) {
-  const [expandedExercise, setExpandedExercise] = useState<number | null>(null)
+  const [expandedExercise, setExpandedExercise] = useState<number | null>(null);
 
   return (
     <div className={`rounded-3xl border-2 border-red-300 bg-red-50 p-6 shadow-lg ${className}`}>
@@ -92,8 +101,8 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
       {/* Emergency Notice */}
       <div className="mb-6 rounded-xl bg-red-100 p-4">
         <p className="text-sm font-semibold text-red-900">
-          Wenn du in akuter Gefahr bist oder an Selbstverletzung denkst, rufe bitte sofort den Notruf (144) oder die
-          Telefonseelsorge (142).
+          Wenn du in akuter Gefahr bist oder an Selbstverletzung denkst, rufe bitte sofort den
+          Notruf (144) oder die Telefonseelsorge (142).
         </p>
       </div>
 
@@ -141,7 +150,9 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
 
       {/* Immediate Exercises */}
       <div>
-        <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-red-900">Sofort-Übungen</h4>
+        <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-red-900">
+          Sofort-Übungen
+        </h4>
         <div className="space-y-2">
           {immediateExercises.map((exercise, index) => (
             <div key={exercise.title} className="rounded-xl border border-red-200 bg-white p-4">
@@ -188,10 +199,10 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
       <div className="mt-6 flex items-start gap-2 rounded-lg bg-red-100 p-3">
         <Info className="h-4 w-4 flex-none text-red-800" aria-hidden />
         <p className="text-xs text-red-800">
-          Diese Ressourcen ersetzen keine professionelle Behandlung. Bei akuten Notfällen kontaktiere bitte sofort
-          den Notruf 144.
+          Diese Ressourcen ersetzen keine professionelle Behandlung. Bei akuten Notfällen
+          kontaktiere bitte sofort den Notruf 144.
         </p>
       </div>
     </div>
-  )
+  );
 }

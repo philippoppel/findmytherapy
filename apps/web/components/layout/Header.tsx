@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-import { Compass, Menu, X } from 'lucide-react'
-import { getMarketingNavigation } from '../../app/marketing-content'
-import { AuthHeader } from './AuthHeader'
-import { FEATURES } from '@/lib/features'
-import { filterNavigationItems } from '@/lib/content-filters'
-import { useAnchorNavigation } from '@/app/components/useAnchorNavigation'
-import { MatchingLink } from '@/app/components/matching/MatchingLink'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { Compass, Menu, X } from 'lucide-react';
+import { getMarketingNavigation } from '../../app/marketing-content';
+import { AuthHeader } from './AuthHeader';
+import { FEATURES } from '@/lib/features';
+import { filterNavigationItems } from '@/lib/content-filters';
+import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
+import { MatchingLink } from '@/app/components/matching/MatchingLink';
 
 const baseAppNavigation = [
   { label: 'Matching', href: '/match' },
@@ -18,18 +18,18 @@ const baseAppNavigation = [
   { label: 'Blog', href: '/blog' },
   { label: 'Ersteinschätzung', href: '/triage' },
   { label: 'Über uns', href: '/about' },
-]
+];
 
 export function Header() {
-  const pathname = usePathname()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const isHome = pathname === '/'
-  const handleAnchorNavigation = useAnchorNavigation()
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isHome = pathname === '/';
+  const handleAnchorNavigation = useAnchorNavigation();
 
   // Get filtered navigation based on enabled features
-  const marketingNavigation = getMarketingNavigation()
-  const appNavigation = filterNavigationItems(baseAppNavigation)
-  const navigation = isHome ? marketingNavigation : appNavigation
+  const marketingNavigation = getMarketingNavigation();
+  const appNavigation = filterNavigationItems(baseAppNavigation);
+  const navigation = isHome ? marketingNavigation : appNavigation;
 
   // Auf der Homepage nur die wichtigsten Links zeigen
   const baseDesktopNavigation = [
@@ -39,9 +39,9 @@ export function Header() {
     { label: 'Team', href: '#team' },
     { label: 'Blog', href: '/blog' },
     { label: 'FAQ', href: '#faq' },
-  ]
+  ];
 
-  const desktopNavigation = isHome ? baseDesktopNavigation : navigation
+  const desktopNavigation = isHome ? baseDesktopNavigation : navigation;
 
   return (
     <header className="sticky top-0 z-50 border-b border-primary-200/50 bg-white/95 text-neutral-900 shadow-sm backdrop-blur-xl">
@@ -67,9 +67,10 @@ export function Header() {
 
           <div className="hidden flex-1 items-center justify-center gap-1.5 lg:flex">
             {desktopNavigation.map((item) => {
-              const isAnchor = item.href.startsWith('#')
-              const isMatching = item.href === '/match'
-              const linkClass = "rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+              const isAnchor = item.href.startsWith('#');
+              const isMatching = item.href === '/match';
+              const linkClass =
+                'rounded-xl px-4 py-2.5 text-sm font-medium text-neutral-700 transition-all hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2';
 
               // Only use MatchingLink for the Matching button
               if (isMatching) {
@@ -77,7 +78,7 @@ export function Header() {
                   <MatchingLink key={item.href} href={item.href} className={linkClass}>
                     {item.label}
                   </MatchingLink>
-                )
+                );
               }
 
               // Use button for anchor links
@@ -90,7 +91,7 @@ export function Header() {
                   >
                     {item.label}
                   </button>
-                )
+                );
               }
 
               // Use regular Link for other navigation
@@ -98,7 +99,7 @@ export function Header() {
                 <Link key={item.href} href={item.href} className={linkClass}>
                   {item.label}
                 </Link>
-              )
+              );
             })}
           </div>
 
@@ -128,9 +129,10 @@ export function Header() {
           <div className="mb-4 mt-2 space-y-4 rounded-2xl border border-primary-200 bg-white/95 p-5 text-sm text-neutral-900 shadow-soft-lg backdrop-blur lg:hidden">
             <div className="space-y-1.5">
               {navigation.map((item) => {
-                const isAnchor = item.href.startsWith('#')
-                const isMatching = item.href === '/match'
-                const mobileClass = "block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900"
+                const isAnchor = item.href.startsWith('#');
+                const isMatching = item.href === '/match';
+                const mobileClass =
+                  'block rounded-xl px-4 py-2.5 font-medium transition hover:bg-primary-50 hover:text-neutral-900';
 
                 // Only use MatchingLink for the Matching button
                 if (isMatching) {
@@ -143,7 +145,7 @@ export function Header() {
                     >
                       {item.label}
                     </MatchingLink>
-                  )
+                  );
                 }
 
                 // Use button for anchor links
@@ -152,14 +154,14 @@ export function Header() {
                     <button
                       key={item.href}
                       onClick={(event) => {
-                        handleAnchorNavigation(event, item.href)
-                        setIsMenuOpen(false)
+                        handleAnchorNavigation(event, item.href);
+                        setIsMenuOpen(false);
                       }}
-                      className={mobileClass + " w-full text-left"}
+                      className={mobileClass + ' w-full text-left'}
                     >
                       {item.label}
                     </button>
-                  )
+                  );
                 }
 
                 // Use regular Link for other navigation
@@ -172,7 +174,7 @@ export function Header() {
                   >
                     {item.label}
                   </Link>
-                )
+                );
               })}
             </div>
             <div className="space-y-3 border-t border-primary-200 pt-4">
@@ -191,5 +193,5 @@ export function Header() {
         )}
       </nav>
     </header>
-  )
+  );
 }

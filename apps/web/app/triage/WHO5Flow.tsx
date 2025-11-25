@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
-import { ArrowLeft, CheckCircle2, RotateCcw, Info, AlertTriangle } from 'lucide-react'
-import { Button } from '@mental-health/ui'
-import { track } from '../../lib/analytics'
+import { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowLeft, CheckCircle2, RotateCcw, Info, AlertTriangle } from 'lucide-react';
+import { Button } from '@mental-health/ui';
+import { track } from '../../lib/analytics';
 import {
   who5Questions,
   who5ResponseOptions,
@@ -16,46 +16,46 @@ import {
   getWHO5Recommendations,
   who5ScientificInfo,
   type WHO5Severity,
-} from '../../lib/triage/who5-questionnaire'
-import { QuestionTooltip } from './QuestionTooltip'
+} from '../../lib/triage/who5-questionnaire';
+import { QuestionTooltip } from './QuestionTooltip';
 
 export function WHO5Flow() {
-  const [questionIndex, setQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<number[]>([])
-  const [showSummary, setShowSummary] = useState(false)
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [showSummary, setShowSummary] = useState(false);
 
-  const currentQuestion = who5Questions[questionIndex]
-  const progress = Math.round(((questionIndex + 1) / who5Questions.length) * 100)
+  const currentQuestion = who5Questions[questionIndex];
+  const progress = Math.round(((questionIndex + 1) / who5Questions.length) * 100);
 
   const handleAnswer = (value: number) => {
-    const newAnswers = [...answers]
-    newAnswers[questionIndex] = value
-    setAnswers(newAnswers)
+    const newAnswers = [...answers];
+    newAnswers[questionIndex] = value;
+    setAnswers(newAnswers);
 
     setTimeout(() => {
       if (questionIndex < who5Questions.length - 1) {
-        setQuestionIndex(questionIndex + 1)
+        setQuestionIndex(questionIndex + 1);
       } else {
-        setShowSummary(true)
+        setShowSummary(true);
         track('who5_completed', {
           score: calculateWHO5Score(newAnswers),
           severity: calculateWHO5Severity(calculateWHO5Score(newAnswers)),
-        })
+        });
       }
-    }, 300)
-  }
+    }, 300);
+  };
 
   const goPrevious = () => {
     if (questionIndex > 0) {
-      setQuestionIndex(questionIndex - 1)
+      setQuestionIndex(questionIndex - 1);
     }
-  }
+  };
 
   const resetFlow = () => {
-    setAnswers([])
-    setQuestionIndex(0)
-    setShowSummary(false)
-  }
+    setAnswers([]);
+    setQuestionIndex(0);
+    setShowSummary(false);
+  };
 
   // Calculate results
   const { score, severity, recommendations } = useMemo(() => {
@@ -64,19 +64,19 @@ export function WHO5Flow() {
         score: 0,
         severity: 'MODERATE' as WHO5Severity,
         recommendations: getWHO5Recommendations('MODERATE'),
-      }
+      };
     }
 
-    const who5Score = calculateWHO5Score(answers)
-    const who5Severity = calculateWHO5Severity(who5Score)
-    const who5Recommendations = getWHO5Recommendations(who5Severity)
+    const who5Score = calculateWHO5Score(answers);
+    const who5Severity = calculateWHO5Severity(who5Score);
+    const who5Recommendations = getWHO5Recommendations(who5Severity);
 
     return {
       score: who5Score,
       severity: who5Severity,
       recommendations: who5Recommendations,
-    }
-  }, [answers])
+    };
+  }, [answers]);
 
   // Summary view
   if (showSummary) {
@@ -112,7 +112,9 @@ export function WHO5Flow() {
                   <CheckCircle2 className="h-4 w-4" aria-hidden />
                   WHO-5 Ergebnis
                 </div>
-                <h2 className="text-2xl font-bold text-white sm:text-3xl">Dein Wohlbefindens-Score</h2>
+                <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                  Dein Wohlbefindens-Score
+                </h2>
               </div>
             </header>
 
@@ -128,10 +130,10 @@ export function WHO5Flow() {
                     severity === 'GOOD'
                       ? 'bg-green-400'
                       : severity === 'MODERATE'
-                      ? 'bg-yellow-400'
-                      : severity === 'POOR'
-                      ? 'bg-orange-400'
-                      : 'bg-red-400'
+                        ? 'bg-yellow-400'
+                        : severity === 'POOR'
+                          ? 'bg-orange-400'
+                          : 'bg-red-400'
                   }`}
                   initial={{ width: 0 }}
                   animate={{ width: `${score}%` }}
@@ -146,11 +148,15 @@ export function WHO5Flow() {
                 <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/25 ring-2 ring-amber-400/30">
                   <Info className="h-6 w-6 text-amber-200" />
                 </div>
-                <h4 className="text-lg font-bold text-white sm:text-xl">Schnelltest zur ersten Orientierung</h4>
+                <h4 className="text-lg font-bold text-white sm:text-xl">
+                  Schnelltest zur ersten Orientierung
+                </h4>
                 <p className="mt-2 max-w-xl text-sm text-white/85 sm:text-base">
-                  Der WHO-5 ist ein kurzer Screening-Test zur ersten Einschätzung deines allgemeinen Wohlbefindens.
-                  Für eine <strong>detaillierte Analyse deiner psychischen Gesundheit</strong>, insbesondere zu Depressionen und Angststörungen,
-                  empfehlen wir die vollständige Ersteinschätzung mit PHQ-9 und GAD-7.
+                  Der WHO-5 ist ein kurzer Screening-Test zur ersten Einschätzung deines allgemeinen
+                  Wohlbefindens. Für eine{' '}
+                  <strong>detaillierte Analyse deiner psychischen Gesundheit</strong>, insbesondere
+                  zu Depressionen und Angststörungen, empfehlen wir die vollständige
+                  Ersteinschätzung mit PHQ-9 und GAD-7.
                 </p>
                 <Button
                   asChild
@@ -182,12 +188,20 @@ export function WHO5Flow() {
 
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     {recommendations.shouldDoFullScreening && (
-                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
+                      <Button
+                        asChild
+                        size="lg"
+                        className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                      >
                         <Link href="/triage">Vollständige Ersteinschätzung</Link>
                       </Button>
                     )}
                     {recommendations.shouldSeekHelp && (
-                      <Button asChild size="lg" className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto">
+                      <Button
+                        asChild
+                        size="lg"
+                        className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                      >
                         <Link href="/therapists">Therapeut:innen finden</Link>
                       </Button>
                     )}
@@ -231,7 +245,9 @@ export function WHO5Flow() {
                     </ul>
                   </div>
                   <p className="text-[10px] italic">
-                    {who5ScientificInfo.citation} | Sensitivität: {(who5ScientificInfo.validation.sensitivity * 100).toFixed(0)}%, Spezifität: {(who5ScientificInfo.validation.specificity * 100).toFixed(0)}%
+                    {who5ScientificInfo.citation} | Sensitivität:{' '}
+                    {(who5ScientificInfo.validation.sensitivity * 100).toFixed(0)}%, Spezifität:{' '}
+                    {(who5ScientificInfo.validation.specificity * 100).toFixed(0)}%
                   </p>
                 </div>
               </details>
@@ -239,7 +255,7 @@ export function WHO5Flow() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Question flow
@@ -269,7 +285,9 @@ export function WHO5Flow() {
           {/* Progress */}
           <div className="mb-6">
             <div className="mb-2 flex items-center justify-between text-xs text-white/70 sm:text-sm">
-              <span className="font-medium text-white">Frage {questionIndex + 1} von {who5Questions.length}</span>
+              <span className="font-medium text-white">
+                Frage {questionIndex + 1} von {who5Questions.length}
+              </span>
               <span>{progress}%</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
@@ -313,7 +331,7 @@ export function WHO5Flow() {
               {/* Answer Options */}
               <div className="space-y-2 sm:space-y-3">
                 {who5ResponseOptions.map((option) => {
-                  const isSelected = answers[questionIndex] === option.value
+                  const isSelected = answers[questionIndex] === option.value;
 
                   return (
                     <button
@@ -344,7 +362,7 @@ export function WHO5Flow() {
                         {option.value}
                       </div>
                     </button>
-                  )
+                  );
                 })}
               </div>
 
@@ -368,5 +386,5 @@ export function WHO5Flow() {
         </div>
       </div>
     </div>
-  )
+  );
 }

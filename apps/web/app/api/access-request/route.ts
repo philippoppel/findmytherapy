@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { z } from 'zod'
-import { queueNotification } from '../../../lib/notifications'
-import { captureError } from '../../../lib/monitoring'
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
+import { queueNotification } from '../../../lib/notifications';
+import { captureError } from '../../../lib/monitoring';
 
 const accessRequestSchema = z.object({
   firstName: z.string().min(1, 'Vorname ist erforderlich'),
@@ -11,14 +11,14 @@ const accessRequestSchema = z.object({
   role: z.enum(['THERAPIST', 'ORGANISATION', 'PRIVATE']),
   company: z.string().optional(),
   notes: z.string().optional(),
-})
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const body = await request.json();
 
     // Validierung
-    const validated = accessRequestSchema.parse(body)
+    const validated = accessRequestSchema.parse(body);
 
     // Zusätzliche Validierung: Company ist erforderlich wenn role = ORGANISATION
     if (validated.role === 'ORGANISATION' && !validated.company?.trim()) {
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
             },
           ],
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
     // In Datenbank speichern
@@ -48,13 +48,13 @@ export async function POST(request: NextRequest) {
         notes: validated.notes || null,
         status: 'NEW',
       },
-    })
+    });
 
     await queueNotification('access-request', {
       id: accessRequest.id,
       role: accessRequest.role,
       company: accessRequest.company ?? undefined,
-    })
+    });
 
     return NextResponse.json(
       {
@@ -62,10 +62,10 @@ export async function POST(request: NextRequest) {
         message: 'Ihre Anfrage wurde erfolgreich übermittelt',
         id: accessRequest.id,
       },
-      { status: 201 }
-    )
+      { status: 201 },
+    );
   } catch (error) {
-    captureError(error, { location: 'api/access-request' })
+    captureError(error, { location: 'api/access-request' });
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -74,8 +74,8 @@ export async function POST(request: NextRequest) {
           message: 'Validierungsfehler',
           errors: error.errors,
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
     return NextResponse.json(
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

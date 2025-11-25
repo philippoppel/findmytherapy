@@ -57,9 +57,7 @@ export function MicrositePricing({
                 ? `${formatPrice(priceMin)} - ${formatPrice(priceMax)}`
                 : formatPrice(priceMin || priceMax!)}
             </dd>
-            {pricingNote && (
-              <dd className="text-sm text-gray-600 mt-1">{pricingNote}</dd>
-            )}
+            {pricingNote && <dd className="text-sm text-gray-600 mt-1">{pricingNote}</dd>}
           </div>
         )}
 
@@ -93,9 +91,7 @@ export function MicrositePricing({
               <span className="text-orange-600">Warteliste</span>
             )}
             {responseTime && (
-              <span className="block text-sm text-gray-600 mt-1">
-                Antwortzeit: {responseTime}
-              </span>
+              <span className="block text-sm text-gray-600 mt-1">Antwortzeit: {responseTime}</span>
             )}
             {availabilityNote && (
               <span className="block text-sm text-gray-600 mt-1">{availabilityNote}</span>

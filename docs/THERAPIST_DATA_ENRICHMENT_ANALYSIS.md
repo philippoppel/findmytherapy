@@ -59,6 +59,7 @@ Dieses Dokument analysiert Möglichkeiten, zusätzliche Details für jeden Thera
 **Ansatz**: Google-Suche nach jedem Therapeuten + strukturierte Datenextraktion
 
 **Technische Umsetzung**:
+
 ```typescript
 // Pseudo-Code für automatische Anreicherung
 for (const therapist of therapists) {
@@ -84,11 +85,13 @@ for (const therapist of therapists) {
 ```
 
 **Vorteile**:
+
 - ✅ Automatisierbar
 - ✅ Kann viele zusätzliche Details finden
 - ✅ Legitim (öffentlich verfügbare Daten)
 
 **Nachteile**:
+
 - ⚠️ Nicht alle Therapeuten haben Website
 - ⚠️ Datenqualität variiert stark
 - ⚠️ Rate Limits bei Google-API beachten
@@ -103,6 +106,7 @@ for (const therapist of therapists) {
 **Ansatz**: psyonline.at als zusätzliche Datenquelle nutzen
 
 **Verfügbare Daten auf psyonline.at**:
+
 - Detaillierte Profile mit Foto
 - Ausführliche Beschreibungen
 - Preise
@@ -111,6 +115,7 @@ for (const therapist of therapists) {
 - Kontaktdaten
 
 **Technische Umsetzung**:
+
 ```typescript
 // Name-Matching zwischen BMSGPK und psyonline.at
 const psyonlineProfile = await searchPsyonline({
@@ -130,11 +135,13 @@ if (psyonlineProfile && isMatch(psyonlineProfile, therapist)) {
 ```
 
 **Vorteile**:
+
 - ✅ Hohe Datenqualität
 - ✅ Strukturierte Daten
 - ✅ Viele Therapeuten sind dort gelistet
 
 **Nachteile**:
+
 - ⚠️ Nicht alle BMSGPK-Therapeuten sind auf psyonline.at
 - ⚠️ Matching-Probleme (gleiche Namen)
 - ⚠️ Rechtliche Grauzone (AGBs prüfen)
@@ -149,6 +156,7 @@ if (psyonlineProfile && isMatch(psyonlineProfile, therapist)) {
 **Ansatz**: Therapeuten per Email kontaktieren und um Profil-Vervollständigung bitten
 
 **Technische Umsetzung**:
+
 ```typescript
 // 1. Email-Kampagne an alle importierten Therapeuten
 const emailTemplate = `
@@ -176,6 +184,7 @@ await sendEmail(therapist.email, emailTemplate);
 ```
 
 **Vorteile**:
+
 - ✅ Rechtlich absolut sauber
 - ✅ Therapeuten können selbst entscheiden
 - ✅ Hohe Datenqualität (direkt von der Quelle)
@@ -183,6 +192,7 @@ await sendEmail(therapist.email, emailTemplate);
 - ✅ DSGVO-konform
 
 **Nachteile**:
+
 - ⚠️ Zeitaufwändig
 - ⚠️ Niedrige Response-Rate (geschätzt 5-15%)
 - ⚠️ Erfordert Email-System mit Claim-Prozess
@@ -196,10 +206,12 @@ await sendEmail(therapist.email, emailTemplate);
 **Ansatz**: Für jeden Therapeuten manuell googeln und Daten sammeln
 
 **Vorteile**:
+
 - ✅ Höchste Datenqualität
 - ✅ Keine technischen Probleme
 
 **Nachteile**:
+
 - ❌ Nicht skalierbar (4000+ Therapeuten!)
 - ❌ Sehr zeitaufwändig
 - ❌ Fehleranfällig
@@ -211,6 +223,7 @@ await sendEmail(therapist.email, emailTemplate);
 ## 4. Empfehlung: Hybrid-Ansatz
 
 ### Phase 1: Automatisierte Basisanreicherung 🤖
+
 ```typescript
 // Script: scripts/enrich-therapist-profiles-web.ts
 
@@ -224,6 +237,7 @@ await sendEmail(therapist.email, emailTemplate);
 ```
 
 ### Phase 2: Therapeuten-Aktivierung 📧
+
 ```typescript
 // Email-Kampagne an alle Therapeuten
 
@@ -234,6 +248,7 @@ await sendEmail(therapist.email, emailTemplate);
 ```
 
 ### Phase 3: Manuelle Nachbearbeitung ✋
+
 ```typescript
 // Für wichtige/populäre Therapeuten
 
@@ -247,6 +262,7 @@ await sendEmail(therapist.email, emailTemplate);
 ## 5. Implementierungs-Roadmap
 
 ### Script 1: Web-Enrichment (Semi-automatisch)
+
 ```bash
 # Neues Script erstellen
 scripts/enrich-from-web.ts
@@ -260,6 +276,7 @@ scripts/enrich-from-web.ts
 ```
 
 ### Script 2: Email-Kampagne
+
 ```bash
 # Profil-Claim System
 apps/web/app/claim/[token]/page.tsx
@@ -272,6 +289,7 @@ apps/web/app/claim/[token]/page.tsx
 ```
 
 ### Script 3: Data Quality Check
+
 ```bash
 scripts/validate-therapist-data.ts
 
@@ -287,17 +305,20 @@ scripts/validate-therapist-data.ts
 ## 6. Rechtliche & ethische Überlegungen
 
 ### ✅ Erlaubt & Empfohlen:
+
 - Google-Suche nach öffentlichen Informationen
 - Scraping von öffentlich zugänglichen Websites (mit Respekt für robots.txt)
 - Verwendung von offiziellen Registerdaten (BMSGPK)
 - Direkter Kontakt mit Therapeuten per Email (mit Opt-out)
 
 ### ⚠️ Grauzone (AGBs prüfen):
+
 - Scraping von psyonline.at oder ähnlichen Verzeichnissen
 - Verwendung von geschützten Datenbanken
 - Automatisierte Anfragen ohne Rate Limiting
 
 ### ❌ Nicht erlaubt:
+
 - Scraping hinter Login-Walls
 - Verwendung von persönlichen Daten ohne Einwilligung
 - Aggressive Scraping-Techniken (DDoS-ähnlich)
@@ -308,6 +329,7 @@ scripts/validate-therapist-data.ts
 ## 7. Datenqualität & Validierung
 
 ### Validierungs-Pipeline:
+
 ```typescript
 interface ValidationResult {
   field: string;
@@ -340,17 +362,20 @@ interface ValidationResult {
 ## 8. Nächste Schritte
 
 ### Sofort umsetzbar (Option C):
+
 1. ✅ Email-System für Therapeuten-Aktivierung aufsetzen
 2. ✅ Profil-Claim Prozess implementieren
 3. ✅ Email-Kampagne starten
 
 ### Mittelfristig (Option A):
+
 1. 🔧 Google Custom Search API einrichten
 2. 🔧 Web-Scraping Script entwickeln
 3. 🔧 AI-basierte Datenextraktion implementieren
 4. 🔧 Batch-Verarbeitung mit Monitoring
 
 ### Optional (Option B):
+
 1. ❓ psyonline.at AGBs prüfen
 2. ❓ Matching-Algorithmus entwickeln
 3. ❓ Scraping-Script testen (respektvoll)
@@ -372,18 +397,20 @@ interface ValidationResult {
 ## Technische Hinweise
 
 ### Rate Limiting:
+
 ```typescript
 // Respektvolle Scraping-Konfiguration
 const CONFIG = {
-  requestsPerSecond: 1,      // Max 1 Anfrage pro Sekunde
+  requestsPerSecond: 1, // Max 1 Anfrage pro Sekunde
   delayBetweenBatches: 5000, // 5 Sekunden Pause nach je 10 Anfragen
   maxRetries: 3,
-  timeout: 10000,            // 10 Sekunden Timeout
+  timeout: 10000, // 10 Sekunden Timeout
   respectRobotsTxt: true,
 };
 ```
 
 ### Monitoring:
+
 ```typescript
 // Metrics zu tracken
 interface EnrichmentMetrics {

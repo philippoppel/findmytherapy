@@ -1,13 +1,13 @@
-import type { Metadata } from 'next'
-import { HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react'
+import type { Metadata } from 'next';
+import { HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
 
-import { ClientRegistrationForm } from './ClientRegistrationForm'
+import { ClientRegistrationForm } from './ClientRegistrationForm';
 
 export const metadata: Metadata = {
   title: 'Konto erstellen – FindMyTherapy',
   description:
     'Registriere dich als Kund:in für FindMyTherapy. Behalte deine Kurse, Empfehlungen und Support-Kontakte im Blick.',
-}
+};
 
 export default function ClientSignupPage() {
   return (
@@ -23,8 +23,8 @@ export default function ClientSignupPage() {
             Zugang zu Programmen, Care-Team & Empfehlungen
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            Lege deinen Account an, sichere dir Kursmaterialien, persönliche Empfehlungen aus der Ersteinschätzung und den
-            direkten Draht zum Care-Team.
+            Lege deinen Account an, sichere dir Kursmaterialien, persönliche Empfehlungen aus der
+            Ersteinschätzung und den direkten Draht zum Care-Team.
           </p>
         </div>
 
@@ -62,12 +62,13 @@ export default function ClientSignupPage() {
             <div className="rounded-2xl border border-primary/30 bg-primary-50/50 p-6">
               <h3 className="font-semibold text-neutral-900">Kostenlos starten</h3>
               <p className="mt-2 text-sm text-neutral-700">
-                Erstelle deinen Account in wenigen Minuten und erhalte sofort Zugang zu allen Funktionen.
+                Erstelle deinen Account in wenigen Minuten und erhalte sofort Zugang zu allen
+                Funktionen.
               </p>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

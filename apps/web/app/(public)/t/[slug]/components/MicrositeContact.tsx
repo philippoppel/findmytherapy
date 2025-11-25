@@ -21,11 +21,7 @@ const leadSchema = z.object({
 
 type LeadFormData = z.infer<typeof leadSchema>;
 
-export function MicrositeContact({
-  slug,
-  therapistName,
-  acceptingClients,
-}: MicrositeContactProps) {
+export function MicrositeContact({ slug, therapistName, acceptingClients }: MicrositeContactProps) {
   const [formData, setFormData] = useState<LeadFormData>({
     name: '',
     email: '',
@@ -124,9 +120,7 @@ export function MicrositeContact({
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Anfrage gesendet!
-          </h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Anfrage gesendet!</h3>
           <p className="text-sm text-gray-600 mb-4">
             {therapistName} wird sich in Kürze bei Ihnen melden.
           </p>

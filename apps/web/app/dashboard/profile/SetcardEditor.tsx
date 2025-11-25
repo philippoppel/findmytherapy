@@ -1,67 +1,72 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { Alert, Button, FormField, Input, Textarea } from '@mental-health/ui'
-import { Loader2 } from 'lucide-react'
-import { setcardPayloadSchema, splitToList, parseCurrencyInput, formatCurrencyInput } from '../../../lib/therapist/setcard'
-import type { SetcardPayload } from '../../../lib/therapist/setcard'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Alert, Button, FormField, Input, Textarea } from '@mental-health/ui';
+import { Loader2 } from 'lucide-react';
+import {
+  setcardPayloadSchema,
+  splitToList,
+  parseCurrencyInput,
+  formatCurrencyInput,
+} from '../../../lib/therapist/setcard';
+import type { SetcardPayload } from '../../../lib/therapist/setcard';
 
 type SetcardFormValues = {
-  displayName: string
-  title: string
-  headline: string
-  profileImageUrl: string
-  videoUrl: string
-  acceptingClients: boolean
-  online: boolean
-  services: string
-  specialties: string
-  modalities: string
-  languages: string
-  approachSummary: string
-  experienceSummary: string
-  responseTime: string
-  availabilityNote: string
-  pricingNote: string
-  about: string
-  city: string
-  country: string
-  priceMin: string
-  priceMax: string
-  yearsExperience: string
+  displayName: string;
+  title: string;
+  headline: string;
+  profileImageUrl: string;
+  videoUrl: string;
+  acceptingClients: boolean;
+  online: boolean;
+  services: string;
+  specialties: string;
+  modalities: string;
+  languages: string;
+  approachSummary: string;
+  experienceSummary: string;
+  responseTime: string;
+  availabilityNote: string;
+  pricingNote: string;
+  about: string;
+  city: string;
+  country: string;
+  priceMin: string;
+  priceMax: string;
+  yearsExperience: string;
   // Gallery
-  galleryImage1: string
-  galleryImage2: string
-  galleryImage3: string
-  galleryImage4: string
-  galleryImage5: string
+  galleryImage1: string;
+  galleryImage2: string;
+  galleryImage3: string;
+  galleryImage4: string;
+  galleryImage5: string;
   // Social Media
-  socialLinkedin: string
-  socialInstagram: string
-  socialFacebook: string
-  websiteUrl: string
+  socialLinkedin: string;
+  socialInstagram: string;
+  socialFacebook: string;
+  websiteUrl: string;
   // Additional Info
-  qualifications: string
-  ageGroups: string
-  acceptedInsurance: string
-  privatePractice: boolean
-}
+  qualifications: string;
+  ageGroups: string;
+  acceptedInsurance: string;
+  privatePractice: boolean;
+};
 
 type SetcardEditorProps = {
-  initialValues: SetcardFormValues
-  onSuccessfulUpdate?: (payload: SetcardPayload) => void
-}
+  initialValues: SetcardFormValues;
+  onSuccessfulUpdate?: (payload: SetcardPayload) => void;
+};
 
 const toPayload = (values: SetcardFormValues): SetcardPayload => {
-  const services = splitToList(values.services)
-  const specialties = splitToList(values.specialties)
-  const modalities = splitToList(values.modalities)
-  const languages = splitToList(values.languages)
-  const qualifications = splitToList(values.qualifications)
-  const ageGroups = splitToList(values.ageGroups)
-  const acceptedInsurance = splitToList(values.acceptedInsurance)
-  const parsedYears = values.yearsExperience ? Number.parseInt(values.yearsExperience, 10) : NaN
+  const services = splitToList(values.services);
+  const specialties = splitToList(values.specialties);
+  const modalities = splitToList(values.modalities);
+  const languages = splitToList(values.languages);
+  const qualifications = splitToList(values.qualifications);
+  const ageGroups = splitToList(values.ageGroups);
+  const acceptedInsurance = splitToList(values.acceptedInsurance);
+  const parsedYears = values.yearsExperience ? Number.parseInt(values.yearsExperience, 10) : NaN;
 
   // Collect non-empty gallery images
   const galleryImages = [
@@ -71,8 +76,8 @@ const toPayload = (values: SetcardFormValues): SetcardPayload => {
     values.galleryImage4,
     values.galleryImage5,
   ]
-    .map(url => url?.trim())
-    .filter(url => url && url.length > 0)
+    .map((url) => url?.trim())
+    .filter((url) => url && url.length > 0);
 
   return {
     displayName: values.displayName.trim(),
@@ -109,8 +114,8 @@ const toPayload = (values: SetcardFormValues): SetcardPayload => {
     ageGroups,
     acceptedInsurance,
     privatePractice: values.privatePractice,
-  }
-}
+  };
+};
 
 const mapPayloadToFormValues = (payload: SetcardPayload): SetcardFormValues => ({
   displayName: payload.displayName,
@@ -134,7 +139,8 @@ const mapPayloadToFormValues = (payload: SetcardPayload): SetcardFormValues => (
   country: payload.country ?? '',
   priceMin: formatCurrencyInput(payload.priceMin),
   priceMax: formatCurrencyInput(payload.priceMax),
-  yearsExperience: typeof payload.yearsExperience === 'number' ? String(payload.yearsExperience) : '',
+  yearsExperience:
+    typeof payload.yearsExperience === 'number' ? String(payload.yearsExperience) : '',
   // Gallery
   galleryImage1: payload.galleryImages?.[0] ?? '',
   galleryImage2: payload.galleryImages?.[1] ?? '',
@@ -151,7 +157,7 @@ const mapPayloadToFormValues = (payload: SetcardPayload): SetcardFormValues => (
   ageGroups: payload.ageGroups?.join('\n') ?? '',
   acceptedInsurance: payload.acceptedInsurance?.join('\n') ?? '',
   privatePractice: payload.privatePractice ?? false,
-})
+});
 
 export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEditorProps) {
   const {
@@ -163,65 +169,65 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
     clearErrors,
   } = useForm<SetcardFormValues>({
     defaultValues: initialValues,
-  })
+  });
 
-  const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleFormSubmit = async (values: SetcardFormValues) => {
-    clearErrors()
-    setErrorMessage(null)
+    clearErrors();
+    setErrorMessage(null);
 
-    const payload = toPayload(values)
-    const validation = setcardPayloadSchema.safeParse(payload)
+    const payload = toPayload(values);
+    const validation = setcardPayloadSchema.safeParse(payload);
 
     if (!validation.success) {
-      setStatus('error')
-      const firstIssue = validation.error.issues[0]
+      setStatus('error');
+      const firstIssue = validation.error.issues[0];
       if (firstIssue?.path?.length) {
-        const field = firstIssue.path[0]
+        const field = firstIssue.path[0];
         if (typeof field === 'string') {
           setError(field as keyof SetcardFormValues, {
             type: 'manual',
             message: firstIssue.message,
-          })
+          });
         }
       }
-      setErrorMessage('Bitte überprüfe deine Eingaben und versuche es erneut.')
-      return
+      setErrorMessage('Bitte überprüfe deine Eingaben und versuche es erneut.');
+      return;
     }
 
     try {
-      setStatus('saving')
+      setStatus('saving');
       const response = await fetch('/api/therapist/profile', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(validation.data),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (!response.ok || !result.success) {
-        setStatus('error')
-        setErrorMessage(result.message ?? 'Die Setcard konnte nicht gespeichert werden.')
-        return
+        setStatus('error');
+        setErrorMessage(result.message ?? 'Die Setcard konnte nicht gespeichert werden.');
+        return;
       }
 
-      const updatedFormValues = mapPayloadToFormValues(validation.data)
-      reset(updatedFormValues)
-      setStatus('success')
+      const updatedFormValues = mapPayloadToFormValues(validation.data);
+      reset(updatedFormValues);
+      setStatus('success');
 
       if (onSuccessfulUpdate) {
-        onSuccessfulUpdate(validation.data)
+        onSuccessfulUpdate(validation.data);
       }
     } catch (error) {
-      console.error('Failed to update setcard', error)
-      setStatus('error')
-      setErrorMessage('Beim Speichern ist ein Fehler aufgetreten.')
+      console.error('Failed to update setcard', error);
+      setStatus('error');
+      setErrorMessage('Beim Speichern ist ein Fehler aufgetreten.');
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
@@ -249,7 +255,11 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         {/* Status Messages */}
         {status === 'success' && (
           <div className="mt-3">
-            <Alert variant="success" title="Erfolgreich gespeichert" description="Deine Änderungen wurden gespeichert." />
+            <Alert
+              variant="success"
+              title="Erfolgreich gespeichert"
+              description="Deine Änderungen wurden gespeichert."
+            />
           </div>
         )}
         {status === 'error' && errorMessage && (
@@ -263,8 +273,18 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-primary-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <svg
+              className="h-5 w-5 text-primary-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
             </svg>
           </div>
           <div>
@@ -277,22 +297,44 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             <Input {...register('displayName')} placeholder="z. B. Dr.in Lena Huber" />
           </FormField>
           <FormField id="title" label="Titel" required>
-            <Input {...register('title')} placeholder="z. B. Klinische Psychologin & Gesundheitspsychologin" />
+            <Input
+              {...register('title')}
+              placeholder="z. B. Klinische Psychologin & Gesundheitspsychologin"
+            />
           </FormField>
-          <FormField id="headline" label="Headline" required helperText="Kurzer Satz, der deinen Schwerpunkt zusammenfasst.">
-            <Input {...register('headline')} placeholder="z. B. Ressourcen aktivieren und neue Stabilität finden" />
+          <FormField
+            id="headline"
+            label="Headline"
+            required
+            helperText="Kurzer Satz, der deinen Schwerpunkt zusammenfasst."
+          >
+            <Input
+              {...register('headline')}
+              placeholder="z. B. Ressourcen aktivieren und neue Stabilität finden"
+            />
           </FormField>
           <FormField
             id="profileImageUrl"
             label="Profilbild URL"
             helperText="Erlaubt sind volle URLs oder relative Pfade."
           >
-            <Input {...register('profileImageUrl')} placeholder="/images/therapeut:innen/mein-bild.jpg" />
+            <Input
+              {...register('profileImageUrl')}
+              placeholder="/images/therapeut:innen/mein-bild.jpg"
+            />
           </FormField>
-          <FormField id="videoUrl" label="Vorstellungsvideo (optional)" helperText="YouTube- oder Vimeo-Link.">
+          <FormField
+            id="videoUrl"
+            label="Vorstellungsvideo (optional)"
+            helperText="YouTube- oder Vimeo-Link."
+          >
             <Input {...register('videoUrl')} placeholder="https://www.youtube.com/watch?v=..." />
           </FormField>
-          <FormField id="responseTime" label="Antwortzeit" helperText="z. B. Antwort innerhalb von 24 Stunden.">
+          <FormField
+            id="responseTime"
+            label="Antwortzeit"
+            helperText="z. B. Antwort innerhalb von 24 Stunden."
+          >
             <Input {...register('responseTime')} placeholder="Antwort innerhalb von 24 Stunden" />
           </FormField>
         </div>
@@ -302,17 +344,33 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-pink-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            <svg
+              className="h-5 w-5 text-pink-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
             </svg>
           </div>
           <div>
             <h3 className="text-lg font-bold text-neutral-900">Galerie</h3>
-            <p className="text-sm text-muted">Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)</p>
+            <p className="text-sm text-muted">
+              Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4">
-          <FormField id="galleryImage1" label="Bild 1 (URL)" helperText="Vollständige URL oder relativer Pfad">
+          <FormField
+            id="galleryImage1"
+            label="Bild 1 (URL)"
+            helperText="Vollständige URL oder relativer Pfad"
+          >
             <Input {...register('galleryImage1')} placeholder="/images/praxis-empfang.jpg" />
           </FormField>
           <FormField id="galleryImage2" label="Bild 2 (URL)" helperText="Optional">
@@ -334,8 +392,18 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-indigo-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            <svg
+              className="h-5 w-5 text-indigo-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+              />
             </svg>
           </div>
           <div>
@@ -344,17 +412,45 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField id="websiteUrl" label="Website" helperText="Deine Praxis-Website oder persönliche Website">
+          <FormField
+            id="websiteUrl"
+            label="Website"
+            helperText="Deine Praxis-Website oder persönliche Website"
+          >
             <Input {...register('websiteUrl')} placeholder="https://meine-praxis.at" type="url" />
           </FormField>
-          <FormField id="socialLinkedin" label="LinkedIn" helperText="Vollständige LinkedIn-Profil-URL">
-            <Input {...register('socialLinkedin')} placeholder="https://linkedin.com/in/..." type="url" />
+          <FormField
+            id="socialLinkedin"
+            label="LinkedIn"
+            helperText="Vollständige LinkedIn-Profil-URL"
+          >
+            <Input
+              {...register('socialLinkedin')}
+              placeholder="https://linkedin.com/in/..."
+              type="url"
+            />
           </FormField>
-          <FormField id="socialInstagram" label="Instagram" helperText="Vollständige Instagram-Profil-URL">
-            <Input {...register('socialInstagram')} placeholder="https://instagram.com/..." type="url" />
+          <FormField
+            id="socialInstagram"
+            label="Instagram"
+            helperText="Vollständige Instagram-Profil-URL"
+          >
+            <Input
+              {...register('socialInstagram')}
+              placeholder="https://instagram.com/..."
+              type="url"
+            />
           </FormField>
-          <FormField id="socialFacebook" label="Facebook" helperText="Vollständige Facebook-Seiten-URL">
-            <Input {...register('socialFacebook')} placeholder="https://facebook.com/..." type="url" />
+          <FormField
+            id="socialFacebook"
+            label="Facebook"
+            helperText="Vollständige Facebook-Seiten-URL"
+          >
+            <Input
+              {...register('socialFacebook')}
+              placeholder="https://facebook.com/..."
+              type="url"
+            />
           </FormField>
         </div>
       </section>
@@ -363,8 +459,18 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-primary-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <svg
+              className="h-5 w-5 text-primary-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
             </svg>
           </div>
           <div>
@@ -397,8 +503,18 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-purple-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            <svg
+              className="h-5 w-5 text-purple-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
             </svg>
           </div>
           <div>
@@ -415,10 +531,20 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           <Textarea rows={3} {...register('services')} />
         </FormField>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField id="specialties" label="Schwerpunkte" required helperText="Eine Spezialisierung pro Zeile.">
+          <FormField
+            id="specialties"
+            label="Schwerpunkte"
+            required
+            helperText="Eine Spezialisierung pro Zeile."
+          >
             <Textarea rows={3} {...register('specialties')} />
           </FormField>
-          <FormField id="modalities" label="Modalitäten" required helperText="z. B. Verhaltenstherapie, Achtsamkeit.">
+          <FormField
+            id="modalities"
+            label="Modalitäten"
+            required
+            helperText="z. B. Verhaltenstherapie, Achtsamkeit."
+          >
             <Textarea rows={3} {...register('modalities')} />
           </FormField>
         </div>
@@ -439,8 +565,18 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-emerald-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            <svg
+              className="h-5 w-5 text-emerald-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              />
             </svg>
           </div>
           <div>
@@ -453,21 +589,33 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           label="Ausbildung & Qualifikationen"
           helperText="Eine Qualifikation pro Zeile, z. B. 'Master in Klinischer Psychologie', 'Systemische Familientherapie'"
         >
-          <Textarea rows={4} {...register('qualifications')} placeholder="Master in Klinischer Psychologie&#10;Systemische Familientherapie&#10;Traumatherapie (EMDR)" />
+          <Textarea
+            rows={4}
+            {...register('qualifications')}
+            placeholder="Master in Klinischer Psychologie&#10;Systemische Familientherapie&#10;Traumatherapie (EMDR)"
+          />
         </FormField>
         <FormField
           id="ageGroups"
           label="Zielgruppen / Altersgruppen"
           helperText="Eine Zielgruppe pro Zeile, z. B. 'Erwachsene', 'Jugendliche', 'Kinder'"
         >
-          <Textarea rows={3} {...register('ageGroups')} placeholder="Erwachsene&#10;Jugendliche (ab 14 Jahren)&#10;Paare" />
+          <Textarea
+            rows={3}
+            {...register('ageGroups')}
+            placeholder="Erwachsene&#10;Jugendliche (ab 14 Jahren)&#10;Paare"
+          />
         </FormField>
         <FormField
           id="acceptedInsurance"
           label="Akzeptierte Versicherungen"
           helperText="Eine Versicherung pro Zeile, oder 'Alle Kassen', 'Privat'"
         >
-          <Textarea rows={3} {...register('acceptedInsurance')} placeholder="Alle Kassen&#10;Private Zusatzversicherungen&#10;Selbstzahler" />
+          <Textarea
+            rows={3}
+            {...register('acceptedInsurance')}
+            placeholder="Alle Kassen&#10;Private Zusatzversicherungen&#10;Selbstzahler"
+          />
         </FormField>
         <label className="flex items-center gap-3 rounded-lg border border-divider bg-surface-1 px-4 py-3 text-sm font-medium text-default">
           <input
@@ -483,9 +631,24 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <section className="rounded-xl border border-neutral-200 bg-white shadow-sm p-6 space-y-5">
         <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
           <div className="h-10 w-10 rounded-lg bg-amber-50 flex items-center justify-center">
-            <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className="h-5 w-5 text-amber-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
           </div>
           <div>
@@ -507,7 +670,13 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             <Input type="number" step="1" min="0" {...register('priceMax')} placeholder="120" />
           </FormField>
           <FormField id="yearsExperience" label="Jahre Erfahrung">
-            <Input type="number" min="0" max="60" {...register('yearsExperience')} placeholder="8" />
+            <Input
+              type="number"
+              min="0"
+              max="60"
+              {...register('yearsExperience')}
+              placeholder="8"
+            />
           </FormField>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -544,7 +713,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
         </Button>
       </div>
     </form>
-  )
+  );
 }
 
-export type { SetcardFormValues }
+export type { SetcardFormValues };

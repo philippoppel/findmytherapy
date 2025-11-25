@@ -1,17 +1,14 @@
-'use client'
+'use client';
 
 type BackButtonProps = {
-  children: React.ReactNode
-  className?: string
-}
+  children: React.ReactNode;
+  className?: string;
+};
 
 export function BackButton({ children, className }: BackButtonProps) {
   return (
-    <button
-      onClick={() => window.history.back()}
-      className={className}
-    >
+    <button onClick={() => window.history.back()} className={className}>
       {children}
     </button>
-  )
+  );
 }

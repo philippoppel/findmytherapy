@@ -4,23 +4,23 @@
  * POST /api/dossiers/:id/links - Generate new signed URL for accessing dossier
  */
 
-import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
-import { prisma } from '@/lib/prisma'
-import { auth } from '@/lib/auth'
-import { captureError } from '@/lib/monitoring'
-import { generateSignedDossierURL } from '@/lib/storage'
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth';
+import { captureError } from '@/lib/monitoring';
+import { generateSignedDossierURL } from '@/lib/storage';
 
 interface RouteContext {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 const createLinkSchema = z.object({
   therapistUserId: z.string().cuid(),
   expiresInHours: z.number().min(1).max(168).optional().default(72), // Max 1 week
-})
+});
 
 /**
  * POST /api/dossiers/:id/links
@@ -29,20 +29,20 @@ const createLinkSchema = z.object({
  */
 export async function POST(request: NextRequest, context: RouteContext) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },
-        { status: 401 }
-      )
+        { status: 401 },
+      );
     }
 
-    const dossierId = context.params.id
+    const dossierId = context.params.id;
 
     // Parse request body
-    const body = await request.json()
-    const { therapistUserId, expiresInHours } = createLinkSchema.parse(body)
+    const body = await request.json();
+    const { therapistUserId, expiresInHours } = createLinkSchema.parse(body);
 
     // Fetch the dossier
     const dossier = await prisma.sessionZeroDossier.findUnique({
@@ -53,24 +53,18 @@ export async function POST(request: NextRequest, context: RouteContext) {
         recommendedTherapists: true,
         expiresAt: true,
       },
-    })
+    });
 
     if (!dossier) {
-      return NextResponse.json(
-        { success: false, error: 'Dossier not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ success: false, error: 'Dossier not found' }, { status: 404 });
     }
 
     // Check authorization (admin or client owner)
-    const isAdmin = session.user.role === 'ADMIN'
-    const isClient = session.user.id === dossier.clientId
+    const isAdmin = session.user.role === 'ADMIN';
+    const isClient = session.user.id === dossier.clientId;
 
     if (!isAdmin && !isClient) {
-      return NextResponse.json(
-        { success: false, error: 'Access denied' },
-        { status: 403 }
-      )
+      return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 });
     }
 
     // Check if dossier has expired
@@ -81,8 +75,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
           error: 'Dossier has expired',
           code: 'DOSSIER_EXPIRED',
         },
-        { status: 410 }
-      )
+        { status: 410 },
+      );
     }
 
     // Verify therapist exists and is verified
@@ -95,7 +89,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
         id: true,
         displayName: true,
       },
-    })
+    });
 
     if (!therapistProfile) {
       return NextResponse.json(
@@ -103,8 +97,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
           success: false,
           error: 'Therapist not found or not verified',
         },
-        { status: 404 }
-      )
+        { status: 404 },
+      );
     }
 
     // Check if therapist is in recommended list
@@ -115,16 +109,16 @@ export async function POST(request: NextRequest, context: RouteContext) {
           error: 'Therapist not in recommended list for this dossier',
           code: 'THERAPIST_NOT_RECOMMENDED',
         },
-        { status: 403 }
-      )
+        { status: 403 },
+      );
     }
 
     // Generate signed URL
     const { url, expiresAt } = await generateSignedDossierURL(
       dossierId,
       therapistUserId,
-      expiresInHours
-    )
+      expiresInHours,
+    );
 
     return NextResponse.json({
       success: true,
@@ -134,9 +128,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
         therapistId: therapistProfile.id,
         therapistName: therapistProfile.displayName,
       },
-    })
+    });
   } catch (error) {
-    captureError(error, { location: 'api/dossiers/:id/links POST' })
+    captureError(error, { location: 'api/dossiers/:id/links POST' });
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -145,17 +139,17 @@ export async function POST(request: NextRequest, context: RouteContext) {
           error: 'Validation error',
           details: error.errors,
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
-    console.error('[DOSSIERS] Error creating signed link:', error)
+    console.error('[DOSSIERS] Error creating signed link:', error);
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to create signed link',
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

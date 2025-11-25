@@ -59,20 +59,18 @@ type Env = z.infer<typeof envSchema>;
 
 let cachedEnv: Env | null = null;
 
-const toBoolean = (value: string | undefined): boolean =>
-  value === 'true' || value === '1';
+const toBoolean = (value: string | undefined): boolean => value === 'true' || value === '1';
 
 const buildFallbackEnvInput = (
   sanitizedEnv: Record<string, string | undefined>,
-  nodeEnv: string
+  nodeEnv: string,
 ) => ({
   NODE_ENV: nodeEnv,
   DATABASE_URL:
     sanitizedEnv.DATABASE_URL ?? 'postgresql://postgres:password@localhost:5432/mental_health_dev',
   REDIS_URL: sanitizedEnv.REDIS_URL ?? 'redis://localhost:6379',
   NEXTAUTH_URL: sanitizedEnv.NEXTAUTH_URL ?? 'http://localhost:3000',
-  NEXTAUTH_SECRET:
-    sanitizedEnv.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
+  NEXTAUTH_SECRET: sanitizedEnv.NEXTAUTH_SECRET ?? 'development-nextauth-secret-please-change-me',
   EMAIL_FROM: sanitizedEnv.EMAIL_FROM ?? 'noreply@mental-health-platform.test',
   EMAIL_PROVIDER_API_KEY: sanitizedEnv.EMAIL_PROVIDER_API_KEY ?? 'test-email-api-key',
   EMAIL_SMTP_HOST: sanitizedEnv.EMAIL_SMTP_HOST ?? 'localhost',
@@ -133,8 +131,8 @@ export const env = (() => {
         nodeEnv !== 'production'
           ? '[config] Environment not fully configured yet:'
           : isBuildPhase
-              ? '[config] NEXT_PHASE indicates build step – using fallback environment values:'
-              : '[config] ALLOW_INCOMPLETE_ENV=1 detected – using fallback environment values:';
+            ? '[config] NEXT_PHASE indicates build step – using fallback environment values:'
+            : '[config] ALLOW_INCOMPLETE_ENV=1 detected – using fallback environment values:';
       console.warn(reason, (error as Error).message);
 
       return envSchema.parse(buildFallbackEnvInput(sanitizedEnv, nodeEnv));

@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
-import { TeamSection } from '@/app/components/marketing/TeamSection'
-import { teamContent } from '@/app/marketing-content'
+import type { Metadata } from 'next';
+import { TeamSection } from '@/app/components/marketing/TeamSection';
+import { teamContent } from '@/app/marketing-content';
 
 export const metadata: Metadata = {
   title: 'Über uns – Team | FindMyTherapy',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
       'Lerne das Team hinter FindMyTherapy kennen. Wir verbinden Menschen mit passender Unterstützung für mentale Gesundheit.',
     type: 'website',
   },
-}
+};
 
 export default function AboutPage() {
   return (
@@ -25,9 +25,8 @@ export default function AboutPage() {
               Über FindMyTherapy
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Wir verbinden Menschen mit passender Unterstützung für mentale
-              Gesundheit – mit Orientierung, Transparenz und evidenzbasiertem
-              Wissen.
+              Wir verbinden Menschen mit passender Unterstützung für mentale Gesundheit – mit
+              Orientierung, Transparenz und evidenzbasiertem Wissen.
             </p>
           </div>
 
@@ -38,16 +37,14 @@ export default function AboutPage() {
             </h2>
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                FindMyTherapy ist eine evidenzbasierte Plattform für mentale
-                Gesundheit in Österreich. Wir bieten digitale Ersteinschätzung
-                mit validierten Fragebögen (PHQ-9, GAD-7), Therapeuten-Matching
-                und therapeutisch fundierte Online-Kurse.
+                FindMyTherapy ist eine evidenzbasierte Plattform für mentale Gesundheit in
+                Österreich. Wir bieten digitale Ersteinschätzung mit validierten Fragebögen (PHQ-9,
+                GAD-7), Therapeuten-Matching und therapeutisch fundierte Online-Kurse.
               </p>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                Unser Ziel ist es, die Suche nach passender Unterstützung zu
-                vereinfachen und gleichzeitig verifiziertes Wissen von
-                anerkannten Psychotherapeut:innen zugänglich zu machen – auch
-                für akute Notfälle wie Panikattacken.
+                Unser Ziel ist es, die Suche nach passender Unterstützung zu vereinfachen und
+                gleichzeitig verifiziertes Wissen von anerkannten Psychotherapeut:innen zugänglich
+                zu machen – auch für akute Notfälle wie Panikattacken.
               </p>
             </div>
           </div>
@@ -81,8 +78,8 @@ export default function AboutPage() {
                   Evidenzbasiert
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Alle Inhalte und Methoden basieren auf wissenschaftlichen
-                  Erkenntnissen und werden von Expert:innen verifiziert.
+                  Alle Inhalte und Methoden basieren auf wissenschaftlichen Erkenntnissen und werden
+                  von Expert:innen verifiziert.
                 </p>
               </div>
 
@@ -106,8 +103,8 @@ export default function AboutPage() {
                   Datenschutz
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  100% DSGVO-konform mit EU-Datenschutz. Deine Daten bleiben
-                  sicher und werden niemals weitergegeben.
+                  100% DSGVO-konform mit EU-Datenschutz. Deine Daten bleiben sicher und werden
+                  niemals weitergegeben.
                 </p>
               </div>
 
@@ -131,8 +128,8 @@ export default function AboutPage() {
                   Transparenz
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Klare Qualitätskriterien, nachvollziehbare Empfehlungen und
-                  offene Kommunikation über unsere Prozesse.
+                  Klare Qualitätskriterien, nachvollziehbare Empfehlungen und offene Kommunikation
+                  über unsere Prozesse.
                 </p>
               </div>
             </div>
@@ -140,5 +137,5 @@ export default function AboutPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
-import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@mental-health/ui'
-import { SectionHeading } from '../marketing/SectionHeading'
-import { Reveal } from '../marketing/Reveal'
-import { InteractiveCard } from '../InteractiveCard'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { blogPosts } from '@/lib/blogData';
+import { Badge } from '@mental-health/ui';
+import { SectionHeading } from '../marketing/SectionHeading';
+import { Reveal } from '../marketing/Reveal';
+import { InteractiveCard } from '../InteractiveCard';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function BlogFeatureSection() {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const recentPosts = blogPosts.slice(0, 4)
-  const [featuredPost, ...otherPosts] = recentPosts
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const recentPosts = blogPosts.slice(0, 4);
+  const [featuredPost, ...otherPosts] = recentPosts;
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white via-primary-50/20 to-surface py-20 sm:py-24 lg:py-32">
@@ -42,7 +42,10 @@ export function BlogFeatureSection() {
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {featuredPost && (
-            <Reveal as={InteractiveCard} className="lg:row-span-2 h-full border border-primary-100/40 bg-white/95">
+            <Reveal
+              as={InteractiveCard}
+              className="lg:row-span-2 h-full border border-primary-100/40 bg-white/95"
+            >
               <Link
                 href={`/blog/${featuredPost.slug}`}
                 className="flex h-full flex-col overflow-hidden focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
@@ -105,10 +108,7 @@ export function BlogFeatureSection() {
                 className="border border-primary-100/40 bg-white/95 p-0"
                 delay={150 + index * 60}
               >
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="flex items-stretch gap-4 p-4 sm:p-5"
-                >
+                <Link href={`/blog/${post.slug}`} className="flex items-stretch gap-4 p-4 sm:p-5">
                   {post.featuredImage && (
                     <div className="relative hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl sm:block">
                       <Image
@@ -150,29 +150,44 @@ export function BlogFeatureSection() {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }
 
 function CalendarIcon() {
   return (
     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
     </svg>
-  )
+  );
 }
 
 function ClockIcon() {
   return (
     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
-  )
+  );
 }
 
 function ArrowIcon() {
   return (
     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
     </svg>
-  )
+  );
 }

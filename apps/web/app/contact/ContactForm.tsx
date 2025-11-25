@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { CalendarPlus, CheckCircle2, Loader2, PhoneCall } from 'lucide-react'
-import { Button, Input, Textarea } from '@mental-health/ui'
+import { useState } from 'react';
+import { CalendarPlus, CheckCircle2, Loader2, PhoneCall } from 'lucide-react';
+import { Button, Input, Textarea } from '@mental-health/ui';
 
-type Topic = 'orientation' | 'matching' | 'corporate' | 'support'
+type Topic = 'orientation' | 'matching' | 'corporate' | 'support';
 
 type FormState = {
-  name: string
-  email: string
-  phone: string
-  topic: Topic
-  message: string
-  preferredSlot: string
-}
+  name: string;
+  email: string;
+  phone: string;
+  topic: Topic;
+  message: string;
+  preferredSlot: string;
+};
 
 const initialState: FormState = {
   name: '',
@@ -22,33 +22,35 @@ const initialState: FormState = {
   topic: 'orientation',
   message: '',
   preferredSlot: 'morning',
-}
+};
 
 export function ContactForm() {
-  const [form, setForm] = useState(initialState)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [form, setForm] = useState(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const handleChange = (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: event.target.value,
-    }))
-  }
+  const handleChange =
+    (field: keyof FormState) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
 
   const handleSelectChange = (field: keyof FormState) => (value: string) => {
     setForm((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsSubmitting(true)
-    setStatus('idle')
-    setErrorMessage('')
+    event.preventDefault();
+    setIsSubmitting(true);
+    setStatus('idle');
+    setErrorMessage('');
 
     try {
       const response = await fetch('/api/contact', {
@@ -57,24 +59,24 @@ export function ContactForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(form),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten')
+        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
       }
 
-      setStatus('success')
-      setForm(initialState)
+      setStatus('success');
+      setForm(initialState);
     } catch (error) {
-      console.error('Error submitting contact form:', error)
-      setStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten')
+      console.error('Error submitting contact form:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="rounded-3xl border border-divider bg-white p-8 shadow-lg">
@@ -85,7 +87,8 @@ export function ContactForm() {
         </div>
         <h2 className="text-2xl font-semibold text-default">Nachricht an das Care-Team</h2>
         <p className="text-sm text-muted">
-          Sende uns dein Anliegen – wir melden uns werktags innerhalb von 45 Minuten mit einer persönlichen Antwort oder einem Terminvorschlag.
+          Sende uns dein Anliegen – wir melden uns werktags innerhalb von 45 Minuten mit einer
+          persönlichen Antwort oder einem Terminvorschlag.
         </p>
       </header>
 
@@ -97,7 +100,10 @@ export function ContactForm() {
           <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
           <div>
             <p className="font-semibold">Vielen Dank! Deine Nachricht ist eingegangen.</p>
-            <p>Das Care-Team meldet sich telefonisch oder per E-Mail, je nachdem, welche Kontaktmöglichkeit du angegeben hast.</p>
+            <p>
+              Das Care-Team meldet sich telefonisch oder per E-Mail, je nachdem, welche
+              Kontaktmöglichkeit du angegeben hast.
+            </p>
           </div>
         </div>
       )}
@@ -107,7 +113,12 @@ export function ContactForm() {
           role="alert"
           className="mt-4 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
         >
-          <div className="mt-0.5 h-5 w-5 flex-none rounded-full border-2 border-red-600 flex items-center justify-center text-red-600 font-bold" aria-hidden>!</div>
+          <div
+            className="mt-0.5 h-5 w-5 flex-none rounded-full border-2 border-red-600 flex items-center justify-center text-red-600 font-bold"
+            aria-hidden
+          >
+            !
+          </div>
           <div>
             <p className="font-semibold">Fehler beim Senden</p>
             <p>{errorMessage || 'Bitte versuche es später erneut oder kontaktiere uns direkt.'}</p>
@@ -153,7 +164,9 @@ export function ContactForm() {
           </label>
 
           <fieldset className="space-y-2">
-            <legend className="text-sm font-medium text-default">Wann passt es dir für einen Rückruf?</legend>
+            <legend className="text-sm font-medium text-default">
+              Wann passt es dir für einen Rückruf?
+            </legend>
             <div className="grid grid-cols-2 gap-2 text-xs">
               {[
                 { value: 'morning', label: 'Vormittag' },
@@ -161,7 +174,7 @@ export function ContactForm() {
                 { value: 'evening', label: 'Abends' },
                 { value: 'flexible', label: 'Flexibel' },
               ].map((slot) => {
-                const isActive = form.preferredSlot === slot.value
+                const isActive = form.preferredSlot === slot.value;
                 return (
                   <button
                     key={slot.value}
@@ -175,7 +188,7 @@ export function ContactForm() {
                   >
                     {slot.label}
                   </button>
-                )
+                );
               })}
             </div>
           </fieldset>
@@ -190,7 +203,7 @@ export function ContactForm() {
               { value: 'corporate', label: 'Unternehmen & Teams' },
               { value: 'support', label: 'Technische Unterstützung' },
             ].map((topic) => {
-              const isActive = form.topic === topic.value
+              const isActive = form.topic === topic.value;
               return (
                 <button
                   key={topic.value}
@@ -204,7 +217,7 @@ export function ContactForm() {
                 >
                   {topic.label}
                 </button>
-              )
+              );
             })}
           </div>
         </fieldset>
@@ -236,10 +249,11 @@ export function ContactForm() {
             )}
           </Button>
           <p className="text-xs text-muted">
-            Deine Anfrage bleibt vertraulich. Im Livebetrieb erfolgt die Antwort innerhalb von 45 Minuten.
+            Deine Anfrage bleibt vertraulich. Im Livebetrieb erfolgt die Antwort innerhalb von 45
+            Minuten.
           </p>
         </div>
       </form>
     </div>
-  )
+  );
 }

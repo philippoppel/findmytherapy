@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Kostenlose Ersteinschätzung – Mentale Gesundheit | FindMyTherapy',
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     description:
       'PHQ-9 & GAD-7 Test in 5 Minuten. Ampel-Ergebnis mit konkreten Empfehlungen. Kostenlos & DSGVO-konform.',
   },
-}
+};
 
 export default function TriageLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  return <>{children}</>;
 }

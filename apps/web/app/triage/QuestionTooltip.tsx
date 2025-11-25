@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { useState, useRef, useEffect } from 'react'
-import { Info, HelpCircle } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react';
+import { Info, HelpCircle } from 'lucide-react';
 
 type QuestionTooltipProps = {
-  helpText?: string
-  scientificContext?: string
-  variant?: 'icon' | 'inline'
-  className?: string
-}
+  helpText?: string;
+  scientificContext?: string;
+  variant?: 'icon' | 'inline';
+  className?: string;
+};
 
 export function QuestionTooltip({
   helpText,
@@ -16,9 +16,9 @@ export function QuestionTooltip({
   variant = 'icon',
   className = '',
 }: QuestionTooltipProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const tooltipRef = useRef<HTMLDivElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -28,21 +28,21 @@ export function QuestionTooltip({
         !tooltipRef.current.contains(event.target as Node) &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isOpen])
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   if (!helpText && !scientificContext) {
-    return null
+    return null;
   }
 
   if (variant === 'inline') {
@@ -60,7 +60,7 @@ export function QuestionTooltip({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -99,5 +99,5 @@ export function QuestionTooltip({
         </div>
       )}
     </div>
-  )
+  );
 }

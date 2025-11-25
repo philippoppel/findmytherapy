@@ -183,6 +183,7 @@ pnpm e2e -- tests/visual --update-snapshots
 ## Was getestet wird
 
 ### ✅ Unit Tests (200+)
+
 - React Komponenten
 - Business Logic
 - Utility-Funktionen
@@ -190,6 +191,7 @@ pnpm e2e -- tests/visual --update-snapshots
 - Scoring-Algorithmen
 
 ### ✅ Integration Tests (67+)
+
 - **DB Layer:**
   - User Model (Constraints, Relations, Indexes)
   - TherapistProfile Model (Arrays, Pricing, Soft Deletes)
@@ -198,6 +200,7 @@ pnpm e2e -- tests/visual --update-snapshots
   - Triage API (Contract, Status Codes, Error Handling)
 
 ### ✅ E2E Tests (25+)
+
 - Login Flow
 - Triage Flow
 - Therapist Search & Filter
@@ -205,6 +208,7 @@ pnpm e2e -- tests/visual --update-snapshots
 - Responsive Behavior
 
 ### ✅ Visual Tests (15+)
+
 - Page Screenshots (Homepage, Login, Triage, etc.)
 - Responsive Layouts (Mobile, Tablet, Desktop)
 - Text Overflow Detection
@@ -213,6 +217,7 @@ pnpm e2e -- tests/visual --update-snapshots
 ## Performance
 
 **Typische Test-Zeiten:**
+
 - Unit Tests: ~30s
 - Integration Tests: ~45s (mit DB)
 - E2E Tests: ~2-3min
@@ -221,6 +226,7 @@ pnpm e2e -- tests/visual --update-snapshots
 ## Nächste Schritte
 
 1. **Teste jetzt:**
+
    ```bash
    pnpm --filter web test -- --testPathIgnorePatterns=integration
    ```
@@ -242,6 +248,7 @@ pnpm e2e -- tests/visual --update-snapshots
 ## Fragen?
 
 Bei Problemen:
+
 1. Prüfe diese Dokumentation
 2. Schaue in existierende Tests
 3. Erstelle ein Issue mit Test-Logs

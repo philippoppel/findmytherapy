@@ -11,7 +11,7 @@
  * - Mehr Response-Varianten gegen Wiederholungen
  */
 
-import type { ChatMessage, ConversationState, KnowledgeReference } from './types'
+import type { ChatMessage, ConversationState, KnowledgeReference } from './types';
 import {
   KEYWORD_PATTERNS,
   RESPONSE_TEMPLATES,
@@ -19,21 +19,21 @@ import {
   NEGATION_WORDS,
   THIRD_PERSON_INDICATORS,
   IDIOMS_AND_PHRASES,
-} from './responses'
-import { searchKnowledgeBase } from './rag'
+} from './responses';
+import { searchKnowledgeBase } from './rag';
 
 /**
  * Generiert eine zufällige ID
  */
 function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**
  * Wählt zufällig ein Element aus einem Array
  */
 function randomChoice<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 /**
@@ -45,7 +45,7 @@ function normalizeText(text: string): string {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Entfernt Diakritika
     .replace(/[.,!?;:]/g, '') // Entfernt Satzzeichen
-    .trim()
+    .trim();
 }
 
 /**
@@ -53,8 +53,8 @@ function normalizeText(text: string): string {
  * Redewendungen sollen NICHT als Krise erkannt werden
  */
 function containsIdiom(text: string): boolean {
-  const normalized = normalizeText(text)
-  return IDIOMS_AND_PHRASES.some((idiom) => normalized.includes(normalizeText(idiom)))
+  const normalized = normalizeText(text);
+  return IDIOMS_AND_PHRASES.some((idiom) => normalized.includes(normalizeText(idiom)));
 }
 
 /**
@@ -62,17 +62,17 @@ function containsIdiom(text: string): boolean {
  * z.B. "Ich will NICHT sterben" sollte keine Krise sein
  */
 function hasNegationBeforeKeyword(text: string, keyword: string): boolean {
-  const normalized = normalizeText(text)
-  const keywordIndex = normalized.indexOf(normalizeText(keyword))
+  const normalized = normalizeText(text);
+  const keywordIndex = normalized.indexOf(normalizeText(keyword));
 
   if (keywordIndex === -1) {
-    return false
+    return false;
   }
 
   // Prüfe die 20 Zeichen vor dem Keyword auf Negationswörter
-  const before = normalized.substring(Math.max(0, keywordIndex - 20), keywordIndex)
+  const before = normalized.substring(Math.max(0, keywordIndex - 20), keywordIndex);
 
-  return NEGATION_WORDS.some((negation) => before.includes(negation))
+  return NEGATION_WORDS.some((negation) => before.includes(negation));
 }
 
 /**
@@ -80,10 +80,8 @@ function hasNegationBeforeKeyword(text: string, keyword: string): boolean {
  * z.B. "Mein Freund hat Suizidgedanken" sollte anders behandelt werden
  */
 function isThirdPerson(text: string): boolean {
-  const normalized = normalizeText(text)
-  return THIRD_PERSON_INDICATORS.some((indicator) =>
-    normalized.includes(normalizeText(indicator))
-  )
+  const normalized = normalizeText(text);
+  return THIRD_PERSON_INDICATORS.some((indicator) => normalized.includes(normalizeText(indicator)));
 }
 
 /**
@@ -91,77 +89,77 @@ function isThirdPerson(text: string): boolean {
  * Verwendet für Tippfehler-Toleranz
  */
 function levenshteinDistance(str1: string, str2: string): number {
-  const matrix: number[][] = []
+  const matrix: number[][] = [];
 
   for (let i = 0; i <= str2.length; i++) {
-    matrix[i] = [i]
+    matrix[i] = [i];
   }
 
   for (let j = 0; j <= str1.length; j++) {
-    matrix[0][j] = j
+    matrix[0][j] = j;
   }
 
   for (let i = 1; i <= str2.length; i++) {
     for (let j = 1; j <= str1.length; j++) {
       if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1]
+        matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
           matrix[i - 1][j - 1] + 1,
           matrix[i][j - 1] + 1,
-          matrix[i - 1][j] + 1
-        )
+          matrix[i - 1][j] + 1,
+        );
       }
     }
   }
 
-  return matrix[str2.length][str1.length]
+  return matrix[str2.length][str1.length];
 }
 
 /**
  * Prüft ob ein Keyword mit Fuzzy Matching im Text vorkommt
  */
 function fuzzyMatch(text: string, keyword: string): boolean {
-  const normalizedText = normalizeText(text)
-  const normalizedKeyword = normalizeText(keyword)
+  const normalizedText = normalizeText(text);
+  const normalizedKeyword = normalizeText(keyword);
 
   // Exaktes Match
   if (normalizedText.includes(normalizedKeyword)) {
-    return true
+    return true;
   }
 
   // Fuzzy Match für längere Keywords (>4 Zeichen)
   if (normalizedKeyword.length > 4) {
-    const words = normalizedText.split(/\s+/)
+    const words = normalizedText.split(/\s+/);
     for (const word of words) {
-      const distance = levenshteinDistance(word, normalizedKeyword)
-      const threshold = Math.floor(normalizedKeyword.length * 0.3) // 30% Tippfehler-Toleranz
+      const distance = levenshteinDistance(word, normalizedKeyword);
+      const threshold = Math.floor(normalizedKeyword.length * 0.3); // 30% Tippfehler-Toleranz
 
       if (distance <= threshold) {
-        return true
+        return true;
       }
     }
   }
 
-  return false
+  return false;
 }
 
 /**
  * Prüft ob der Text sehr kurz ist (nur Füllwörter wie "ja", "okay", "hmm")
  */
 function isVeryShortResponse(text: string): boolean {
-  const normalized = normalizeText(text)
-  const shortResponses = ['ja', 'nein', 'ok', 'okay', 'hmm', 'mhm', 'aha', 'hm', 'joa', 'naja']
+  const normalized = normalizeText(text);
+  const shortResponses = ['ja', 'nein', 'ok', 'okay', 'hmm', 'mhm', 'aha', 'hm', 'joa', 'naja'];
 
   // Wenn Text nur aus einem dieser Wörter besteht
-  return shortResponses.includes(normalized) || normalized.length <= 3
+  return shortResponses.includes(normalized) || normalized.length <= 3;
 }
 
 /**
  * Erkennung, ob die Eingabe nach konkreten Infos/How-Tos klingt
  */
 function looksLikeInformationRequest(text: string): boolean {
-  const normalized = normalizeText(text)
+  const normalized = normalizeText(text);
   const questionWords = [
     'wie',
     'wo',
@@ -175,7 +173,7 @@ function looksLikeInformationRequest(text: string): boolean {
     'was',
     'ist',
     'kann',
-  ]
+  ];
   const infoPatterns = [
     'kann ich',
     'wie mache',
@@ -194,49 +192,45 @@ function looksLikeInformationRequest(text: string): boolean {
     'details zu',
     'wissenschaftlich',
     'validiert',
-  ]
+  ];
 
   if (text.trim().endsWith('?')) {
-    return true
+    return true;
   }
 
   if (questionWords.some((word) => normalized.startsWith(word))) {
-    return true
+    return true;
   }
 
   if (infoPatterns.some((pattern) => normalized.includes(pattern))) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 function buildKnowledgeResponse(
-  userInput: string
+  userInput: string,
 ): { text: string; references: KnowledgeReference[] } | null {
-  const hits = searchKnowledgeBase(userInput, 3)
+  const hits = searchKnowledgeBase(userInput, 3);
   if (!hits.length) {
-    return null
+    return null;
   }
 
   const references: KnowledgeReference[] = hits.map(({ entry, score }) => ({
     title: entry.title,
     url: entry.url,
     score,
-  }))
+  }));
 
-  const top = hits[0].entry
-  const url = top.url.startsWith('http') ? top.url : `${top.url}`
-  const sections = [
-    `${top.title}: ${top.summary}`,
-    top.content,
-    `Mehr Infos: ${url}`,
-  ]
+  const top = hits[0].entry;
+  const url = top.url.startsWith('http') ? top.url : `${top.url}`;
+  const sections = [`${top.title}: ${top.summary}`, top.content, `Mehr Infos: ${url}`];
 
   return {
     text: sections.filter(Boolean).join('\n\n'),
     references,
-  }
+  };
 }
 
 /**
@@ -244,45 +238,51 @@ function buildKnowledgeResponse(
  * VERBESSERT: Negations-, Idiom- und Dritte-Person-Checks für Krisenkeywords
  */
 export function detectKeywords(userInput: string): string[] {
-  const detected: { category: string; priority: number; matches: number }[] = []
+  const detected: { category: string; priority: number; matches: number }[] = [];
 
   // WICHTIG: Erst Idiom-Check - wenn Redewendung, Krisen-Keywords ignorieren
-  const isIdiomText = containsIdiom(userInput)
+  const isIdiomText = containsIdiom(userInput);
 
   // Dritte-Person-Check
-  const isAboutOthers = isThirdPerson(userInput)
+  const isAboutOthers = isThirdPerson(userInput);
 
   for (const pattern of KEYWORD_PATTERNS) {
-    const isCrisisCategory = ['crisis', 'self_harm', 'violence_others', 'eating_disorder', 'substance_abuse'].includes(pattern.category)
+    const isCrisisCategory = [
+      'crisis',
+      'self_harm',
+      'violence_others',
+      'eating_disorder',
+      'substance_abuse',
+    ].includes(pattern.category);
 
     const matches = pattern.keywords.filter((keyword) => {
-      const hasMatch = fuzzyMatch(userInput, keyword)
+      const hasMatch = fuzzyMatch(userInput, keyword);
 
       if (!hasMatch) {
-        return false
+        return false;
       }
 
       // Für Krisen-Keywords: Zusätzliche Sicherheitschecks
       if (isCrisisCategory) {
         // Skip wenn es eine Redewendung ist
         if (isIdiomText) {
-          return false
+          return false;
         }
 
         // Skip wenn Negation vor Keyword steht
         if (hasNegationBeforeKeyword(userInput, keyword)) {
-          return false
+          return false;
         }
 
         // Wenn über dritte Person gesprochen wird, nicht als Krise werten
         // ABER: Trotzdem matchen für spätere "Hilfe für Angehörige" Response
         if (isAboutOthers) {
-          return false
+          return false;
         }
       }
 
-      return true
-    })
+      return true;
+    });
 
     if (pattern.requiresAllKeywords) {
       // Alle Keywords müssen vorkommen
@@ -291,7 +291,7 @@ export function detectKeywords(userInput: string): string[] {
           category: pattern.category,
           priority: pattern.priority,
           matches: matches.length,
-        })
+        });
       }
     } else {
       // Mindestens ein Keyword muss vorkommen
@@ -300,7 +300,7 @@ export function detectKeywords(userInput: string): string[] {
           category: pattern.category,
           priority: pattern.priority,
           matches: matches.length,
-        })
+        });
       }
     }
   }
@@ -308,44 +308,48 @@ export function detectKeywords(userInput: string): string[] {
   // Sortiere nach Priorität und Anzahl Matches
   return detected
     .sort((a, b) => {
-      if (b.priority !== a.priority) return b.priority - a.priority
-      return b.matches - a.matches
+      if (b.priority !== a.priority) return b.priority - a.priority;
+      return b.matches - a.matches;
     })
-    .map((d) => d.category)
+    .map((d) => d.category);
 }
 
 /**
  * Bestimmt die Sentiment-Analyse basierend auf erkannten Keywords
  */
 function analyzeSentiment(categories: string[]): ChatMessage['metadata']['sentiment'] {
-  if (categories.some(c => ['crisis', 'self_harm', 'violence_others', 'eating_disorder', 'substance_abuse'].includes(c))) {
-    return 'crisis'
+  if (
+    categories.some((c) =>
+      ['crisis', 'self_harm', 'violence_others', 'eating_disorder', 'substance_abuse'].includes(c),
+    )
+  ) {
+    return 'crisis';
   }
   if (
     categories.some((c) =>
-      ['depression', 'anxiety', 'burnout', 'self_worth', 'loneliness'].includes(c)
+      ['depression', 'anxiety', 'burnout', 'self_worth', 'loneliness'].includes(c),
     )
   ) {
-    return 'concerning'
+    return 'concerning';
   }
   if (categories.some((c) => ['help_seeking', 'therapy_inquiry'].includes(c))) {
-    return 'positive'
+    return 'positive';
   }
-  return 'neutral'
+  return 'neutral';
 }
 
 /**
  * Wählt eine noch nicht verwendete Response aus
  */
 function chooseUnusedResponse(responses: string[], usedResponses: string[]): string {
-  const unused = responses.filter((r) => !usedResponses.includes(r))
+  const unused = responses.filter((r) => !usedResponses.includes(r));
 
   // Wenn alle verwendet, zurücksetzen
   if (unused.length === 0) {
-    return randomChoice(responses)
+    return randomChoice(responses);
   }
 
-  return randomChoice(unused)
+  return randomChoice(unused);
 }
 
 /**
@@ -354,24 +358,34 @@ function chooseUnusedResponse(responses: string[], usedResponses: string[]): str
  */
 export function generateResponse(
   userInput: string,
-  state: ConversationState
+  state: ConversationState,
 ): { response: string; metadata: ChatMessage['metadata']; usedResponse?: string } {
-  const detectedCategories = detectKeywords(userInput)
-  const sentiment = analyzeSentiment(detectedCategories)
-  const userMsgCount = state.userMessageCount
+  const detectedCategories = detectKeywords(userInput);
+  const sentiment = analyzeSentiment(detectedCategories);
+  const userMsgCount = state.userMessageCount;
 
   // Check: Sehr kurze Antwort? (ja, okay, hmm)
-  const isShortResponse = isVeryShortResponse(userInput)
+  const isShortResponse = isVeryShortResponse(userInput);
 
   // Check: Dritte Person? (Angehörige suchen Hilfe)
-  const isAboutOthers = isThirdPerson(userInput)
+  const isAboutOthers = isThirdPerson(userInput);
 
   // SPEZIALFALL: Über dritte Person wird gesprochen (Angehörige)
-  if (isAboutOthers && detectedCategories.some(c => ['crisis', 'self_harm', 'violence_others', 'eating_disorder', 'substance_abuse', 'depression', 'anxiety'].includes(c))) {
-    const response = chooseUnusedResponse(
-      GENERAL_RESPONSES.help_for_others,
-      state.usedResponses
+  if (
+    isAboutOthers &&
+    detectedCategories.some((c) =>
+      [
+        'crisis',
+        'self_harm',
+        'violence_others',
+        'eating_disorder',
+        'substance_abuse',
+        'depression',
+        'anxiety',
+      ].includes(c),
     )
+  ) {
+    const response = chooseUnusedResponse(GENERAL_RESPONSES.help_for_others, state.usedResponses);
 
     return {
       response,
@@ -381,7 +395,7 @@ export function generateResponse(
         sentiment: 'concerning',
       },
       usedResponse: response,
-    }
+    };
   }
 
   // KRISENFALL - HÖCHSTE PRIORITÄT (SOFORT)
@@ -389,13 +403,13 @@ export function generateResponse(
     // Find template for the specific detected category (prioritize more specific ones)
     const template = RESPONSE_TEMPLATES.find((t) =>
       ['violence_others', 'eating_disorder', 'substance_abuse', 'self_harm', 'crisis'].some(
-        cat => detectedCategories.includes(cat) && t.category === cat
-      )
-    )
+        (cat) => detectedCategories.includes(cat) && t.category === cat,
+      ),
+    );
     if (template) {
-      const response = randomChoice(template.responses)
-      const followUp = template.followUp || ''
-      const fullResponse = followUp ? `${response}\n\n${followUp}` : response
+      const response = randomChoice(template.responses);
+      const followUp = template.followUp || '';
+      const fullResponse = followUp ? `${response}\n\n${followUp}` : response;
 
       return {
         response: fullResponse,
@@ -405,7 +419,7 @@ export function generateResponse(
           sentiment,
         },
         usedResponse: response,
-      }
+      };
     }
   }
 
@@ -413,12 +427,12 @@ export function generateResponse(
   // NEU: Verwende kontextuelle Follow-Ups basierend auf letztem Thema
   if (isShortResponse && userMsgCount > 1) {
     // Prüfe ob wir ein letztes Thema haben für kontextuellen Follow-Up
-    const lastTopic = state.recentTopics[state.recentTopics.length - 1]
-    const contextualFollowUps = GENERAL_RESPONSES.contextual_followup as Record<string, string[]>
+    const lastTopic = state.recentTopics[state.recentTopics.length - 1];
+    const contextualFollowUps = GENERAL_RESPONSES.contextual_followup as Record<string, string[]>;
 
     if (lastTopic && contextualFollowUps[lastTopic]) {
       // Verwende kontextuelle Follow-Up-Frage
-      const response = randomChoice(contextualFollowUps[lastTopic])
+      const response = randomChoice(contextualFollowUps[lastTopic]);
       return {
         response,
         metadata: {
@@ -426,14 +440,14 @@ export function generateResponse(
           sentiment: state.lastUserSentiment || 'neutral',
         },
         usedResponse: response,
-      }
+      };
     }
 
     // Fallback: Allgemeine Acknowledgment
     const response = chooseUnusedResponse(
       GENERAL_RESPONSES.acknowledgment_short,
-      state.usedResponses
-    )
+      state.usedResponses,
+    );
 
     return {
       response,
@@ -442,7 +456,7 @@ export function generateResponse(
         sentiment: 'neutral',
       },
       usedResponse: response,
-    }
+    };
   }
 
   // INFO-FRAGEN -> Knowledge Base priorisieren
@@ -454,15 +468,15 @@ export function generateResponse(
     'work',
     'stress',
     'privacy',
-  ]
+  ];
   const shouldTriggerKnowledgeBase =
-    looksLikeInformationRequest(userInput) && !isShortResponse && userInput.length > 6
+    looksLikeInformationRequest(userInput) && !isShortResponse && userInput.length > 6;
   const canPrioritizeKnowledge =
     detectedCategories.length === 0 ||
-    detectedCategories.every((cat) => infoFriendlyCategories.includes(cat))
+    detectedCategories.every((cat) => infoFriendlyCategories.includes(cat));
 
   if (shouldTriggerKnowledgeBase && canPrioritizeKnowledge) {
-    const knowledge = buildKnowledgeResponse(userInput)
+    const knowledge = buildKnowledgeResponse(userInput);
 
     if (knowledge) {
       return {
@@ -472,32 +486,32 @@ export function generateResponse(
           sentiment: 'neutral',
           references: knowledge.references,
         },
-      }
+      };
     }
   }
 
   // KATEGORIEN MIT HOHER PRIORITÄT für Assessment-Empfehlung
-  const highPriorityConcerns = ['depression', 'anxiety', 'burnout', 'self_worth', 'loneliness']
+  const highPriorityConcerns = ['depression', 'anxiety', 'burnout', 'self_worth', 'loneliness'];
   const hasHighPriorityConcern = detectedCategories.some((cat) =>
-    highPriorityConcerns.includes(cat)
-  )
+    highPriorityConcerns.includes(cat),
+  );
 
   // NORMALE RESPONSE basierend auf erkannten Keywords
   if (detectedCategories.length > 0) {
-    const mainCategory = detectedCategories[0]
-    const template = RESPONSE_TEMPLATES.find((t) => t.category === mainCategory)
+    const mainCategory = detectedCategories[0];
+    const template = RESPONSE_TEMPLATES.find((t) => t.category === mainCategory);
 
     if (template && template.responses && template.responses.length > 0) {
       // Wähle unbenutzte Response
-      const response = chooseUnusedResponse(template.responses, state.usedResponses)
-      const followUp = template.followUp
-      let fullResponse = response
-      let suggestedAction = template.suggestedAction
+      const response = chooseUnusedResponse(template.responses, state.usedResponses);
+      const followUp = template.followUp;
+      let fullResponse = response;
+      let suggestedAction = template.suggestedAction;
 
       // Message 1: Nur empathische Response (kein Test-Angebot)
       if (userMsgCount === 1) {
-        fullResponse = response
-        suggestedAction = undefined
+        fullResponse = response;
+        suggestedAction = undefined;
       }
       // Message 2-3: Test anbieten bei HIGH PRIORITY concerns ODER mehreren concerns
       // WICHTIG: Kann mehrmals angeboten werden (nicht nur einmal)
@@ -507,28 +521,25 @@ export function generateResponse(
         state.assessmentOfferCount < 2 && // Maximal 2x anbieten
         (hasHighPriorityConcern || state.detectedConcerns.length >= 2 || sentiment === 'concerning')
       ) {
-        fullResponse = followUp ? `${response}\n\n${followUp}` : response
-        suggestedAction = 'take_assessment'
+        fullResponse = followUp ? `${response}\n\n${followUp}` : response;
+        suggestedAction = 'take_assessment';
       }
       // Message 6+: Nochmal anbieten wenn immer noch nicht gemacht und Concern besteht
-      else if (
-        userMsgCount >= 6 &&
-        state.assessmentOfferCount < 3 &&
-        hasHighPriorityConcern
-      ) {
-        fullResponse = followUp ? `${response}\n\n${followUp}` : response
-        suggestedAction = 'take_assessment'
+      else if (userMsgCount >= 6 && state.assessmentOfferCount < 3 && hasHighPriorityConcern) {
+        fullResponse = followUp ? `${response}\n\n${followUp}` : response;
+        suggestedAction = 'take_assessment';
       }
       // Sonst: Nur Response
       else {
-        fullResponse = response
-        suggestedAction = undefined
+        fullResponse = response;
+        suggestedAction = undefined;
       }
 
       // Krisenprävention bei concerning Sentiment (sanfter Footer)
       if (sentiment === 'concerning' && !fullResponse.includes('Telefonseelsorge')) {
-        const crisisFooter = '\n\n💙 Falls es akut schlimmer wird: Telefonseelsorge 142 (24/7, anonym)'
-        fullResponse = fullResponse + crisisFooter
+        const crisisFooter =
+          '\n\n💙 Falls es akut schlimmer wird: Telefonseelsorge 142 (24/7, anonym)';
+        fullResponse = fullResponse + crisisFooter;
       }
 
       return {
@@ -539,17 +550,14 @@ export function generateResponse(
           sentiment,
         },
         usedResponse: response,
-      }
+      };
     }
   }
 
   // KEINE SPEZIFISCHEN KEYWORDS ERKANNT - allgemeine empathische Response
   if (userMsgCount === 1) {
     // Erste Message: Acknowledgment
-    const response = chooseUnusedResponse(
-      GENERAL_RESPONSES.acknowledgment,
-      state.usedResponses
-    )
+    const response = chooseUnusedResponse(GENERAL_RESPONSES.acknowledgment, state.usedResponses);
 
     return {
       response,
@@ -558,13 +566,10 @@ export function generateResponse(
         sentiment: 'neutral',
       },
       usedResponse: response,
-    }
+    };
   } else {
     // Weitere Messages: Nachfragen
-    const response = chooseUnusedResponse(
-      GENERAL_RESPONSES.unclear,
-      state.usedResponses
-    )
+    const response = chooseUnusedResponse(GENERAL_RESPONSES.unclear, state.usedResponses);
 
     return {
       response,
@@ -573,7 +578,7 @@ export function generateResponse(
         sentiment: 'neutral',
       },
       usedResponse: response,
-    }
+    };
   }
 }
 
@@ -583,7 +588,7 @@ export function generateResponse(
 export function createMessage(
   role: 'user' | 'assistant',
   content: string,
-  metadata?: ChatMessage['metadata']
+  metadata?: ChatMessage['metadata'],
 ): ChatMessage {
   return {
     id: generateId(),
@@ -591,14 +596,14 @@ export function createMessage(
     content,
     timestamp: new Date(),
     metadata,
-  }
+  };
 }
 
 /**
  * Initialer Conversation State (Deutsch-Only)
  */
 export function createInitialState(): ConversationState {
-  const greeting = randomChoice(GENERAL_RESPONSES.greeting)
+  const greeting = randomChoice(GENERAL_RESPONSES.greeting);
 
   return {
     messages: [
@@ -617,7 +622,7 @@ export function createInitialState(): ConversationState {
     recentTopics: [],
     lastUserSentiment: undefined,
     concernIntensity: undefined,
-  }
+  };
 }
 
 /**
@@ -625,30 +630,30 @@ export function createInitialState(): ConversationState {
  */
 function calculateConcernIntensity(
   detectedCategories: string[],
-  sentiment: ChatMessage['metadata']['sentiment']
+  sentiment: ChatMessage['metadata']['sentiment'],
 ): 'mild' | 'moderate' | 'severe' | undefined {
-  if (sentiment === 'crisis') return 'severe'
+  if (sentiment === 'crisis') return 'severe';
 
-  const severeConcerns = ['self_harm', 'violence_others', 'eating_disorder', 'substance_abuse']
-  const moderateConcerns = ['depression', 'anxiety', 'burnout', 'self_worth']
+  const severeConcerns = ['self_harm', 'violence_others', 'eating_disorder', 'substance_abuse'];
+  const moderateConcerns = ['depression', 'anxiety', 'burnout', 'self_worth'];
 
   if (detectedCategories.some((cat) => severeConcerns.includes(cat))) {
-    return 'severe'
+    return 'severe';
   }
 
   if (detectedCategories.some((cat) => moderateConcerns.includes(cat))) {
-    return detectedCategories.length >= 2 ? 'severe' : 'moderate'
+    return detectedCategories.length >= 2 ? 'severe' : 'moderate';
   }
 
   if (detectedCategories.length >= 2) {
-    return 'moderate'
+    return 'moderate';
   }
 
   if (detectedCategories.length === 1) {
-    return 'mild'
+    return 'mild';
   }
 
-  return undefined
+  return undefined;
 }
 
 /**
@@ -658,60 +663,59 @@ function calculateConcernIntensity(
  */
 export function processUserMessage(
   userInput: string,
-  currentState: ConversationState
+  currentState: ConversationState,
 ): ConversationState {
   // User-Message Count erhöhen
-  const newUserMessageCount = currentState.userMessageCount + 1
+  const newUserMessageCount = currentState.userMessageCount + 1;
 
   // User-Message hinzufügen
-  const userMessage = createMessage('user', userInput)
+  const userMessage = createMessage('user', userInput);
 
   // Response generieren (mit neuem Count)
   const updatedState = {
     ...currentState,
     userMessageCount: newUserMessageCount,
-  }
+  };
 
-  const { response, metadata, usedResponse } = generateResponse(userInput, updatedState)
-  const assistantMessage = createMessage('assistant', response, metadata)
+  const { response, metadata, usedResponse } = generateResponse(userInput, updatedState);
+  const assistantMessage = createMessage('assistant', response, metadata);
 
   // State updaten
   const newDetectedConcerns = [
     ...new Set([...currentState.detectedConcerns, ...(metadata?.detectedTopics || [])]),
-  ]
+  ];
 
   const newStage: ConversationState['conversationStage'] =
     metadata?.suggestedAction === 'take_assessment'
       ? 'assessment_offer'
       : currentState.conversationStage === 'greeting'
         ? 'listening'
-        : currentState.conversationStage
+        : currentState.conversationStage;
 
   const hasOfferedAssessment =
-    currentState.hasOfferedAssessment || metadata?.suggestedAction === 'take_assessment'
+    currentState.hasOfferedAssessment || metadata?.suggestedAction === 'take_assessment';
 
   // Assessment Offer Count erhöhen wenn angeboten
   const assessmentOfferCount =
     metadata?.suggestedAction === 'take_assessment'
       ? currentState.assessmentOfferCount + 1
-      : currentState.assessmentOfferCount
+      : currentState.assessmentOfferCount;
 
   // Response-Memory updaten
   const newUsedResponses = usedResponse
     ? [...currentState.usedResponses, usedResponse]
-    : currentState.usedResponses
+    : currentState.usedResponses;
 
   // NEU: Recent Topics tracken (letzte 5)
-  const newRecentTopics = [
-    ...currentState.recentTopics,
-    ...(metadata?.detectedTopics || []),
-  ].slice(-5)
+  const newRecentTopics = [...currentState.recentTopics, ...(metadata?.detectedTopics || [])].slice(
+    -5,
+  );
 
   // NEU: Intensität berechnen
   const newConcernIntensity = calculateConcernIntensity(
     metadata?.detectedTopics || [],
-    metadata?.sentiment
-  )
+    metadata?.sentiment,
+  );
 
   return {
     messages: [...currentState.messages, userMessage, assistantMessage],
@@ -726,10 +730,10 @@ export function processUserMessage(
     recentTopics: newRecentTopics,
     lastUserSentiment: metadata?.sentiment,
     concernIntensity: newConcernIntensity || currentState.concernIntensity,
-  }
+  };
 }
 
 /**
  * Exportiere Types für externe Verwendung
  */
-export type { ChatMessage, ConversationState } from './types'
+export type { ChatMessage, ConversationState } from './types';

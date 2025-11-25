@@ -1,12 +1,12 @@
 // Austrian cities for SEO landing pages
 export interface City {
-  slug: string
-  name: string
-  state: string // Bundesland
-  population: number
-  description: string
-  metaDescription: string
-  keywords: string[]
+  slug: string;
+  name: string;
+  state: string; // Bundesland
+  population: number;
+  description: string;
+  metaDescription: string;
+  keywords: string[];
 }
 
 export const austrianCities: City[] = [
@@ -140,12 +140,7 @@ export const austrianCities: City[] = [
       'Wels bietet als zweitgrößte Stadt Oberösterreichs eine solide psychotherapeutische Infrastruktur mit verschiedenen Therapierichtungen.',
     metaDescription:
       'Therapeut:innen in Wels finden. Psychotherapie in Oberösterreich für alle Bereiche. Jetzt passende Hilfe finden.',
-    keywords: [
-      'Psychotherapie Wels',
-      'Therapeut Wels',
-      'Therapie Wels',
-      'Psychologe Wels',
-    ],
+    keywords: ['Psychotherapie Wels', 'Therapeut Wels', 'Therapie Wels', 'Psychologe Wels'],
   },
   {
     slug: 'st-poelten',
@@ -179,12 +174,12 @@ export const austrianCities: City[] = [
       'Psychologe Vorarlberg',
     ],
   },
-]
+];
 
 export function getCityBySlug(slug: string): City | undefined {
-  return austrianCities.find((city) => city.slug === slug)
+  return austrianCities.find((city) => city.slug === slug);
 }
 
 export function getAllCitySlugs(): string[] {
-  return austrianCities.map((city) => city.slug)
+  return austrianCities.map((city) => city.slug);
 }

@@ -18,55 +18,55 @@
  *   --force: Auch Therapeuten mit bereits vorhandenen Daten neu verarbeiten
  */
 
-import { PrismaClient } from '@prisma/client'
-import { chromium } from 'playwright'
+import { PrismaClient } from '@prisma/client';
+import { chromium } from 'playwright';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 // Parse CLI arguments
-const args = process.argv.slice(2)
-const isDryRun = args.includes('--dry-run')
-const force = args.includes('--force')
-const debug = args.includes('--debug')
-const limitArg = args.find(arg => arg.startsWith('--limit='))
-const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : undefined
+const args = process.argv.slice(2);
+const isDryRun = args.includes('--dry-run');
+const force = args.includes('--force');
+const debug = args.includes('--debug');
+const limitArg = args.find((arg) => arg.startsWith('--limit='));
+const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : undefined;
 
 interface EnrichmentResult {
-  therapistId: string
-  therapistName: string
-  websiteUrl?: string
-  socialLinkedin?: string
-  socialInstagram?: string
-  socialFacebook?: string
-  confidence: 'high' | 'medium' | 'low'
-  source: string
-  error?: string
+  therapistId: string;
+  therapistName: string;
+  websiteUrl?: string;
+  socialLinkedin?: string;
+  socialInstagram?: string;
+  socialFacebook?: string;
+  confidence: 'high' | 'medium' | 'low';
+  source: string;
+  error?: string;
 }
 
 interface EnrichmentStats {
-  total: number
-  processed: number
-  enriched: number
-  failed: number
-  skipped: number
-  websiteFound: number
-  linkedinFound: number
-  instagramFound: number
-  facebookFound: number
+  total: number;
+  processed: number;
+  enriched: number;
+  failed: number;
+  skipped: number;
+  websiteFound: number;
+  linkedinFound: number;
+  instagramFound: number;
+  facebookFound: number;
 }
 
 /**
  * Hauptfunktion
  */
 async function main() {
-  console.log('🌐 Web-Enrichment für Therapeuten-Profile\n')
-  console.log('='.repeat(80))
-  console.log(`Mode: ${isDryRun ? '🔸 DRY RUN' : '🔴 LIVE'}`)
-  console.log(`Force re-enrich: ${force ? 'YES' : 'NO'}`)
+  console.log('🌐 Web-Enrichment für Therapeuten-Profile\n');
+  console.log('='.repeat(80));
+  console.log(`Mode: ${isDryRun ? '🔸 DRY RUN' : '🔴 LIVE'}`);
+  console.log(`Force re-enrich: ${force ? 'YES' : 'NO'}`);
   if (limit) {
-    console.log(`Limit: ${limit} profiles`)
+    console.log(`Limit: ${limit} profiles`);
   }
-  console.log('='.repeat(80) + '\n')
+  console.log('='.repeat(80) + '\n');
 
   // Fetch profiles to enrich
   const whereClause = force
@@ -80,7 +80,7 @@ async function main() {
           { socialInstagram: null },
           { socialFacebook: null },
         ],
-      }
+      };
 
   const profiles = await prisma.therapistProfile.findMany({
     where: whereClause,
@@ -95,14 +95,14 @@ async function main() {
     },
     take: limit,
     orderBy: { displayName: 'asc' },
-  })
+  });
 
   if (profiles.length === 0) {
-    console.log('✅ Alle Profile sind bereits angereichert!')
-    return
+    console.log('✅ Alle Profile sind bereits angereichert!');
+    return;
   }
 
-  console.log(`Gefunden: ${profiles.length} Profile zum Anreichern\n`)
+  console.log(`Gefunden: ${profiles.length} Profile zum Anreichern\n`);
 
   const stats: EnrichmentStats = {
     total: profiles.length,
@@ -114,66 +114,66 @@ async function main() {
     linkedinFound: 0,
     instagramFound: 0,
     facebookFound: 0,
-  }
+  };
 
   // Start browser
-  console.log('🚀 Starte Browser...\n')
-  const browser = await chromium.launch({ headless: true })
+  console.log('🚀 Starte Browser...\n');
+  const browser = await chromium.launch({ headless: true });
 
   try {
     for (let i = 0; i < profiles.length; i++) {
-      const profile = profiles[i]
-      const progress = `[${i + 1}/${profiles.length}]`
+      const profile = profiles[i];
+      const progress = `[${i + 1}/${profiles.length}]`;
 
       if (!profile.displayName) {
-        console.log(`${progress} ⏭️  SKIPPED: Kein Name für ${profile.id}`)
-        stats.skipped++
-        continue
+        console.log(`${progress} ⏭️  SKIPPED: Kein Name für ${profile.id}`);
+        stats.skipped++;
+        continue;
       }
 
       console.log(
         `${progress} 🔍 Verarbeite: ${profile.displayName}${profile.city ? ` (${profile.city})` : ''}`,
-      )
+      );
 
       try {
-        const result = await enrichTherapistFromWeb(browser, profile)
+        const result = await enrichTherapistFromWeb(browser, profile);
 
         if (result.error) {
-          console.log(`         ❌ FEHLER: ${result.error}`)
-          stats.failed++
-          continue
+          console.log(`         ❌ FEHLER: ${result.error}`);
+          stats.failed++;
+          continue;
         }
 
         const hasNewData =
           result.websiteUrl ||
           result.socialLinkedin ||
           result.socialInstagram ||
-          result.socialFacebook
+          result.socialFacebook;
 
         if (!hasNewData) {
-          console.log(`         ⏭️  Keine neuen Daten gefunden`)
-          stats.skipped++
-          continue
+          console.log(`         ⏭️  Keine neuen Daten gefunden`);
+          stats.skipped++;
+          continue;
         }
 
         // Log found data
         if (result.websiteUrl) {
-          console.log(`         🌐 Website: ${result.websiteUrl}`)
-          stats.websiteFound++
+          console.log(`         🌐 Website: ${result.websiteUrl}`);
+          stats.websiteFound++;
         }
         if (result.socialLinkedin) {
-          console.log(`         💼 LinkedIn: ${result.socialLinkedin}`)
-          stats.linkedinFound++
+          console.log(`         💼 LinkedIn: ${result.socialLinkedin}`);
+          stats.linkedinFound++;
         }
         if (result.socialInstagram) {
-          console.log(`         📷 Instagram: ${result.socialInstagram}`)
-          stats.instagramFound++
+          console.log(`         📷 Instagram: ${result.socialInstagram}`);
+          stats.instagramFound++;
         }
         if (result.socialFacebook) {
-          console.log(`         👥 Facebook: ${result.socialFacebook}`)
-          stats.facebookFound++
+          console.log(`         👥 Facebook: ${result.socialFacebook}`);
+          stats.facebookFound++;
         }
-        console.log(`         📊 Confidence: ${result.confidence}`)
+        console.log(`         📊 Confidence: ${result.confidence}`);
 
         // Update database (unless dry run)
         if (!isDryRun) {
@@ -185,39 +185,39 @@ async function main() {
               socialInstagram: result.socialInstagram || profile.socialInstagram,
               socialFacebook: result.socialFacebook || profile.socialFacebook,
             },
-          })
-          console.log(`         💾 In Datenbank gespeichert`)
+          });
+          console.log(`         💾 In Datenbank gespeichert`);
         } else {
-          console.log(`         🔸 DRY RUN: Würde in DB speichern`)
+          console.log(`         🔸 DRY RUN: Würde in DB speichern`);
         }
 
-        stats.enriched++
+        stats.enriched++;
       } catch (error) {
         console.error(
           `         ❌ ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        )
-        stats.failed++
+        );
+        stats.failed++;
       }
 
-      stats.processed++
+      stats.processed++;
 
       // Rate limiting: Wait 2-3 seconds between requests to be respectful
       if (i < profiles.length - 1) {
-        const delay = 2000 + Math.random() * 1000
-        console.log(`         ⏱️  Warte ${Math.round(delay / 1000)}s...\n`)
-        await new Promise(resolve => setTimeout(resolve, delay))
+        const delay = 2000 + Math.random() * 1000;
+        console.log(`         ⏱️  Warte ${Math.round(delay / 1000)}s...\n`);
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   } finally {
-    await browser.close()
+    await browser.close();
   }
 
   // Print summary
-  printSummary(stats)
+  printSummary(stats);
 
   if (isDryRun) {
-    console.log('\n⚠️  Dies war ein DRY RUN. Keine Änderungen wurden gespeichert.')
-    console.log('Führe ohne --dry-run aus um Änderungen zu speichern.')
+    console.log('\n⚠️  Dies war ein DRY RUN. Keine Änderungen wurden gespeichert.');
+    console.log('Führe ohne --dry-run aus um Änderungen zu speichern.');
   }
 }
 
@@ -227,9 +227,9 @@ async function main() {
 async function enrichTherapistFromWeb(
   browser: any,
   profile: {
-    id: string
-    displayName: string | null
-    city: string | null
+    id: string;
+    displayName: string | null;
+    city: string | null;
   },
 ): Promise<EnrichmentResult> {
   const result: EnrichmentResult = {
@@ -237,82 +237,84 @@ async function enrichTherapistFromWeb(
     therapistName: profile.displayName || 'Unknown',
     confidence: 'low',
     source: 'google-search',
-  }
+  };
 
-  let page
+  let page;
   try {
     // Create context with user agent to avoid bot detection
     const context = await browser.newContext({
       userAgent:
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    })
+    });
 
-    page = await context.newPage()
+    page = await context.newPage();
 
     // Construct search query (using DuckDuckGo instead of Google to avoid CAPTCHA)
-    const searchQuery = `${profile.displayName} Psychotherapeut${profile.city ? ` ${profile.city}` : ''} Österreich`
-    const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`
+    const searchQuery = `${profile.displayName} Psychotherapeut${profile.city ? ` ${profile.city}` : ''} Österreich`;
+    const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`;
 
     // Navigate to DuckDuckGo search
-    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
 
     // Wait a bit for results to load
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(1000);
 
     // Debug: Take screenshot if debug mode
     if (debug) {
-      await page.screenshot({ path: `/tmp/duckduckgo-search-${profile.id}.png` })
-      console.log(`         🔍 Debug: Screenshot saved to /tmp/duckduckgo-search-${profile.id}.png`)
+      await page.screenshot({ path: `/tmp/duckduckgo-search-${profile.id}.png` });
+      console.log(
+        `         🔍 Debug: Screenshot saved to /tmp/duckduckgo-search-${profile.id}.png`,
+      );
     }
 
     // Extract search results (DuckDuckGo HTML version has different selectors)
     const searchResults = await page.evaluate(() => {
-      const results: Array<{ url: string; title: string; snippet: string }> = []
-      const resultElements = document.querySelectorAll('.result')
+      const results: Array<{ url: string; title: string; snippet: string }> = [];
+      const resultElements = document.querySelectorAll('.result');
 
       resultElements.forEach((element: Element) => {
-        const linkElement = element.querySelector('.result__a')
-        const snippetElement = element.querySelector('.result__snippet')
+        const linkElement = element.querySelector('.result__a');
+        const snippetElement = element.querySelector('.result__snippet');
 
         if (linkElement) {
-          const url = linkElement.getAttribute('href') || ''
+          const url = linkElement.getAttribute('href') || '';
 
           results.push({
             url: url,
             title: linkElement.textContent || '',
             snippet: snippetElement?.textContent || '',
-          })
+          });
         }
-      })
+      });
 
-      return results.slice(0, 10) // Top 10 results
-    })
+      return results.slice(0, 10); // Top 10 results
+    });
 
     if (debug) {
-      console.log(`         🔍 Debug: Found ${searchResults.length} search results`)
+      console.log(`         🔍 Debug: Found ${searchResults.length} search results`);
       searchResults.forEach((r, i) => {
-        console.log(`         ${i + 1}. ${r.title}`)
-        console.log(`            ${r.url}`)
-      })
+        console.log(`         ${i + 1}. ${r.title}`);
+        console.log(`            ${r.url}`);
+      });
     }
 
     // Analyze results
-    const analysis = analyzeSearchResults(searchResults, profile.displayName || '')
+    const analysis = analyzeSearchResults(searchResults, profile.displayName || '');
 
-    result.websiteUrl = analysis.websiteUrl
-    result.socialLinkedin = analysis.socialLinkedin
-    result.socialInstagram = analysis.socialInstagram
-    result.socialFacebook = analysis.socialFacebook
-    result.confidence = analysis.confidence
+    result.websiteUrl = analysis.websiteUrl;
+    result.socialLinkedin = analysis.socialLinkedin;
+    result.socialInstagram = analysis.socialInstagram;
+    result.socialFacebook = analysis.socialFacebook;
+    result.confidence = analysis.confidence;
   } catch (error) {
-    result.error = error instanceof Error ? error.message : 'Unknown error'
+    result.error = error instanceof Error ? error.message : 'Unknown error';
   } finally {
     if (page) {
-      await page.close()
+      await page.close();
     }
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -322,11 +324,11 @@ function analyzeSearchResults(
   results: Array<{ url: string; title: string; snippet: string }>,
   therapistName: string,
 ): {
-  websiteUrl?: string
-  socialLinkedin?: string
-  socialInstagram?: string
-  socialFacebook?: string
-  confidence: 'high' | 'medium' | 'low'
+  websiteUrl?: string;
+  socialLinkedin?: string;
+  socialInstagram?: string;
+  socialFacebook?: string;
+  confidence: 'high' | 'medium' | 'low';
 } {
   const analysis = {
     websiteUrl: undefined as string | undefined,
@@ -334,16 +336,16 @@ function analyzeSearchResults(
     socialInstagram: undefined as string | undefined,
     socialFacebook: undefined as string | undefined,
     confidence: 'low' as 'high' | 'medium' | 'low',
-  }
+  };
 
   // Extract name parts for matching
-  const nameParts = therapistName.toLowerCase().split(/\s+/)
-  const lastName = nameParts[nameParts.length - 1]
+  const nameParts = therapistName.toLowerCase().split(/\s+/);
+  const lastName = nameParts[nameParts.length - 1];
 
   for (const result of results) {
-    const url = result.url.toLowerCase()
-    const title = result.title.toLowerCase()
-    const snippet = result.snippet.toLowerCase()
+    const url = result.url.toLowerCase();
+    const title = result.title.toLowerCase();
+    const snippet = result.snippet.toLowerCase();
 
     // Skip unwanted domains
     if (
@@ -354,38 +356,37 @@ function analyzeSearchResults(
       url.includes('gesundheit.gv.at') ||
       url.includes('psychotherapie.ehealth.gv.at')
     ) {
-      continue
+      continue;
     }
 
     // LinkedIn
     if (url.includes('linkedin.com/in/') && !analysis.socialLinkedin) {
-      analysis.socialLinkedin = result.url
-      continue
+      analysis.socialLinkedin = result.url;
+      continue;
     }
 
     // Instagram
     if (url.includes('instagram.com/') && !analysis.socialInstagram) {
-      analysis.socialInstagram = result.url
-      continue
+      analysis.socialInstagram = result.url;
+      continue;
     }
 
     // Facebook
     if (url.includes('facebook.com/') && !url.includes('/pages') && !analysis.socialFacebook) {
-      analysis.socialFacebook = result.url
-      continue
+      analysis.socialFacebook = result.url;
+      continue;
     }
 
     // Personal website - look for therapist name in URL or title
     if (!analysis.websiteUrl) {
-      const containsName =
-        url.includes(lastName) || title.includes(therapistName.toLowerCase())
+      const containsName = url.includes(lastName) || title.includes(therapistName.toLowerCase());
 
       const isProfessionalSite =
         url.includes('therapie') ||
         url.includes('psychotherap') ||
         url.includes('praxis') ||
         title.includes('psychotherap') ||
-        snippet.includes('psychotherap')
+        snippet.includes('psychotherap');
 
       if (containsName || isProfessionalSite) {
         // Exclude directory sites
@@ -395,49 +396,49 @@ function analyzeSearchResults(
           !url.includes('therapeuten.at') &&
           !url.includes('therapie.de')
         ) {
-          analysis.websiteUrl = result.url
+          analysis.websiteUrl = result.url;
 
           // Higher confidence if name is in URL
           if (containsName && isProfessionalSite) {
-            analysis.confidence = 'high'
+            analysis.confidence = 'high';
           } else if (containsName || isProfessionalSite) {
-            analysis.confidence = 'medium'
+            analysis.confidence = 'medium';
           }
         }
       }
     }
   }
 
-  return analysis
+  return analysis;
 }
 
 /**
  * Print summary statistics
  */
 function printSummary(stats: EnrichmentStats) {
-  console.log('\n' + '='.repeat(80))
-  console.log('📊 ZUSAMMENFASSUNG')
-  console.log('='.repeat(80))
-  console.log(`Total verarbeitet: ${stats.processed}/${stats.total}`)
+  console.log('\n' + '='.repeat(80));
+  console.log('📊 ZUSAMMENFASSUNG');
+  console.log('='.repeat(80));
+  console.log(`Total verarbeitet: ${stats.processed}/${stats.total}`);
   console.log(
     `✅ Erfolgreich angereichert: ${stats.enriched} (${((stats.enriched / stats.total) * 100).toFixed(1)}%)`,
-  )
-  console.log(`   - Websites gefunden: ${stats.websiteFound}`)
-  console.log(`   - LinkedIn gefunden: ${stats.linkedinFound}`)
-  console.log(`   - Instagram gefunden: ${stats.instagramFound}`)
-  console.log(`   - Facebook gefunden: ${stats.facebookFound}`)
+  );
+  console.log(`   - Websites gefunden: ${stats.websiteFound}`);
+  console.log(`   - LinkedIn gefunden: ${stats.linkedinFound}`);
+  console.log(`   - Instagram gefunden: ${stats.instagramFound}`);
+  console.log(`   - Facebook gefunden: ${stats.facebookFound}`);
   console.log(
     `❌ Fehlgeschlagen: ${stats.failed} (${((stats.failed / stats.total) * 100).toFixed(1)}%)`,
-  )
-  console.log(`⏭️  Übersprungen: ${stats.skipped}`)
-  console.log('='.repeat(80))
+  );
+  console.log(`⏭️  Übersprungen: ${stats.skipped}`);
+  console.log('='.repeat(80));
 }
 
 main()
-  .catch(error => {
-    console.error('Fatal error:', error)
-    process.exit(1)
+  .catch((error) => {
+    console.error('Fatal error:', error);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

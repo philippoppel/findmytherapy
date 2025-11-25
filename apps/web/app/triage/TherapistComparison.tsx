@@ -1,34 +1,34 @@
-'use client'
+'use client';
 
-import { X, Star, MapPin, Globe, Clock } from 'lucide-react'
-import { Button } from '@mental-health/ui'
-import Image from 'next/image'
+import { X, Star, MapPin, Globe, Clock } from 'lucide-react';
+import { Button } from '@mental-health/ui';
+import Image from 'next/image';
 
 type TherapistRecommendation = {
-  id: string
-  name: string
-  title: string
-  headline?: string
-  focus: string[]
-  availability: string
-  location: string
-  rating: number
-  reviews: number
-  formatTags: Array<'online' | 'praesenz' | 'hybrid'>
-  services?: string[]
-  responseTime?: string
-  yearsExperience?: number
-  languages?: string[]
-  image?: string | null
-}
+  id: string;
+  name: string;
+  title: string;
+  headline?: string;
+  focus: string[];
+  availability: string;
+  location: string;
+  rating: number;
+  reviews: number;
+  formatTags: Array<'online' | 'praesenz' | 'hybrid'>;
+  services?: string[];
+  responseTime?: string;
+  yearsExperience?: number;
+  languages?: string[];
+  image?: string | null;
+};
 
 type TherapistComparisonProps = {
-  therapists: TherapistRecommendation[]
-  onClose: () => void
-}
+  therapists: TherapistRecommendation[];
+  onClose: () => void;
+};
 
 export function TherapistComparison({ therapists, onClose }: TherapistComparisonProps) {
-  if (therapists.length === 0) return null
+  if (therapists.length === 0) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -139,7 +139,9 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                         </span>
                       ))}
                       {therapist.focus.length > 4 && (
-                        <span className="text-xs text-muted">+{therapist.focus.length - 4} weitere</span>
+                        <span className="text-xs text-muted">
+                          +{therapist.focus.length - 4} weitere
+                        </span>
                       )}
                     </div>
                   </td>
@@ -208,7 +210,9 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
                     <div className="space-y-1">
-                      <div className="text-xs font-medium text-default">{therapist.availability}</div>
+                      <div className="text-xs font-medium text-default">
+                        {therapist.availability}
+                      </div>
                       {therapist.responseTime && (
                         <div className="flex items-center justify-center gap-1 text-xs text-muted">
                           <Clock className="h-3 w-3" aria-hidden />
@@ -270,5 +274,5 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
         </div>
       </div>
     </div>
-  )
+  );
 }

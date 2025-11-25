@@ -1,50 +1,50 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useRef } from 'react'
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion'
-import { Button } from '@mental-health/ui'
-import type { heroContent } from '../../marketing-content'
-import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
-import { useAnchorNavigation } from '../useAnchorNavigation'
-import { MatchingLink } from '../matching/MatchingLink'
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRef } from 'react';
+import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
+import { Button } from '@mental-health/ui';
+import type { heroContent } from '../../marketing-content';
+import { Reveal } from './Reveal';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
+import { useAnchorNavigation } from '../useAnchorNavigation';
+import { MatchingLink } from '../matching/MatchingLink';
 
 interface HeroProps {
-  content: typeof heroContent
+  content: typeof heroContent;
 }
 
 export function MarketingHero({ content }: HeroProps) {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const handleAnchorNavigation = useAnchorNavigation()
-  const heroRef = useRef<HTMLDivElement | null>(null)
-  const mouseX = useMotionValue(50)
-  const mouseY = useMotionValue(50)
-  const smoothX = useSpring(mouseX, { stiffness: 110, damping: 26, mass: 0.6 })
-  const smoothY = useSpring(mouseY, { stiffness: 110, damping: 26, mass: 0.6 })
-  const spotlight = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(255,255,255,0.28), transparent 60%)`
-  const accentGlow = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(56,189,248,0.28), transparent 65%)`
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const handleAnchorNavigation = useAnchorNavigation();
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const mouseX = useMotionValue(50);
+  const mouseY = useMotionValue(50);
+  const smoothX = useSpring(mouseX, { stiffness: 110, damping: 26, mass: 0.6 });
+  const smoothY = useSpring(mouseY, { stiffness: 110, damping: 26, mass: 0.6 });
+  const spotlight = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(255,255,255,0.28), transparent 60%)`;
+  const accentGlow = useMotionTemplate`radial-gradient(circle at ${smoothX}% ${smoothY}%, rgba(56,189,248,0.28), transparent 65%)`;
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return
-    const bounds = heroRef.current?.getBoundingClientRect()
-    if (!bounds) return
-    const relativeX = ((event.clientX - bounds.left) / bounds.width) * 100
-    const relativeY = ((event.clientY - bounds.top) / bounds.height) * 100
-    mouseX.set(relativeX)
-    mouseY.set(relativeY)
-  }
+    if (prefersReducedMotion) return;
+    const bounds = heroRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+    const relativeX = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const relativeY = ((event.clientY - bounds.top) / bounds.height) * 100;
+    mouseX.set(relativeX);
+    mouseY.set(relativeY);
+  };
 
   const resetPointer = () => {
-    mouseX.set(50)
-    mouseY.set(50)
-  }
+    mouseX.set(50);
+    mouseY.set(50);
+  };
 
   const floatingOrbs = [
     { position: 'top-[-10%] left-1/4 h-56 w-56 bg-primary-500/25', duration: 16, delay: 0 },
     { position: 'bottom-[-18%] right-1/4 h-64 w-64 bg-secondary-400/20', duration: 18, delay: 0.4 },
-  ]
+  ];
 
   return (
     <section
@@ -104,7 +104,12 @@ export function MarketingHero({ content }: HeroProps) {
               aria-hidden
               className={`pointer-events-none absolute z-[3] rounded-full blur-3xl ${orb.position}`}
               animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.9, 1.1, 0.9], y: [0, -14, 0] }}
-              transition={{ duration: orb.duration, delay: orb.delay, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{
+                duration: orb.duration,
+                delay: orb.delay,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
             />
           ))}
         </>
@@ -169,7 +174,10 @@ export function MarketingHero({ content }: HeroProps) {
                     size="lg"
                     className="w-full border-2 border-red-400/60 bg-red-500/20 text-white shadow-xl backdrop-blur-md transition-all hover:-translate-y-1 hover:scale-105 hover:border-red-400/80 hover:bg-red-500/30 hover:shadow-2xl sm:px-10 sm:py-6 sm:text-lg"
                   >
-                    <Link href={content.emergencyCta.href} className="flex items-center justify-center gap-2">
+                    <Link
+                      href={content.emergencyCta.href}
+                      className="flex items-center justify-center gap-2"
+                    >
                       <svg
                         className="h-5 w-5"
                         fill="none"
@@ -199,11 +207,7 @@ export function MarketingHero({ content }: HeroProps) {
                   <motion.div
                     key={metric.label}
                     className="flex w-full max-w-sm flex-col items-center rounded-2xl border border-white/20 bg-white/10 px-8 py-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur"
-                    whileHover={
-                      prefersReducedMotion
-                        ? undefined
-                        : { y: -8, scale: 1.03 }
-                    }
+                    whileHover={prefersReducedMotion ? undefined : { y: -8, scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 140, damping: 18 }}
                   >
                     <dd className="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
@@ -220,5 +224,5 @@ export function MarketingHero({ content }: HeroProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,30 +1,25 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { BlogPost } from '@/lib/blogData'
-import { Badge } from '@mental-health/ui'
-import { ArrowRight, Clock, TrendingUp, Sparkles } from 'lucide-react'
+import Link from 'next/link';
+import Image from 'next/image';
+import { BlogPost } from '@/lib/blogData';
+import { Badge } from '@mental-health/ui';
+import { ArrowRight, Clock, TrendingUp, Sparkles } from 'lucide-react';
 
 interface RelatedArticlesProps {
-  currentPost: BlogPost
-  allPosts: BlogPost[]
-  variant?: 'default' | 'sidebar' | 'inline'
-  maxPosts?: number
-  showNextArticle?: boolean
+  currentPost: BlogPost;
+  allPosts: BlogPost[];
+  variant?: 'default' | 'sidebar' | 'inline';
+  maxPosts?: number;
+  showNextArticle?: boolean;
 }
 
 // Calculate relevance score for a post
-function calculateRelevanceScore(
-  candidatePost: BlogPost,
-  currentPost: BlogPost
-): number {
-  let score = 0
+function calculateRelevanceScore(candidatePost: BlogPost, currentPost: BlogPost): number {
+  let score = 0;
 
   // Tag overlap - most important factor (0-50 points)
   if (currentPost.tags && candidatePost.tags) {
-    const matchingTags = candidatePost.tags.filter((tag) =>
-      currentPost.tags.includes(tag)
-    )
-    score += matchingTags.length * 15 // 15 points per matching tag
+    const matchingTags = candidatePost.tags.filter((tag) => currentPost.tags.includes(tag));
+    score += matchingTags.length * 15; // 15 points per matching tag
   }
 
   // Keyword overlap (0-30 points)
@@ -33,46 +28,41 @@ function calculateRelevanceScore(
       currentPost.keywords.some(
         (currentKw) =>
           currentKw.toLowerCase().includes(kw.toLowerCase()) ||
-          kw.toLowerCase().includes(currentKw.toLowerCase())
-      )
-    )
-    score += Math.min(matchingKeywords.length * 5, 30)
+          kw.toLowerCase().includes(currentKw.toLowerCase()),
+      ),
+    );
+    score += Math.min(matchingKeywords.length * 5, 30);
   }
 
   // Same category bonus (20 points)
   if (candidatePost.category === currentPost.category) {
-    score += 20
+    score += 20;
   }
 
   // Recency bonus - newer posts get slight boost (0-10 points)
-  const candidateDate = new Date(candidatePost.publishedAt).getTime()
-  const now = Date.now()
-  const daysSincePublished = (now - candidateDate) / (1000 * 60 * 60 * 24)
+  const candidateDate = new Date(candidatePost.publishedAt).getTime();
+  const now = Date.now();
+  const daysSincePublished = (now - candidateDate) / (1000 * 60 * 60 * 24);
   if (daysSincePublished < 30) {
-    score += 10
+    score += 10;
   } else if (daysSincePublished < 90) {
-    score += 5
+    score += 5;
   }
 
   // Same author bonus - for content series (5 points)
   if (candidatePost.authorId === currentPost.authorId) {
-    score += 5
+    score += 5;
   }
 
-  return score
+  return score;
 }
 
 // Get the next article for "Continue reading" CTA
-function getNextArticle(
-  currentPost: BlogPost,
-  allPosts: BlogPost[]
-): BlogPost | null {
+function getNextArticle(currentPost: BlogPost, allPosts: BlogPost[]): BlogPost | null {
   // First check for manually specified related posts
   if (currentPost.relatedPosts && currentPost.relatedPosts.length > 0) {
-    const firstRelated = allPosts.find(
-      (p) => p.slug === currentPost.relatedPosts![0]
-    )
-    if (firstRelated) return firstRelated
+    const firstRelated = allPosts.find((p) => p.slug === currentPost.relatedPosts![0]);
+    if (firstRelated) return firstRelated;
   }
 
   // Otherwise, get the highest-scored related post
@@ -82,9 +72,9 @@ function getNextArticle(
       post,
       score: calculateRelevanceScore(post, currentPost),
     }))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score);
 
-  return candidates.length > 0 ? candidates[0].post : null
+  return candidates.length > 0 ? candidates[0].post : null;
 }
 
 export function RelatedArticles({
@@ -101,24 +91,24 @@ export function RelatedArticles({
       post,
       score: calculateRelevanceScore(post, currentPost),
       isManuallySpecified: currentPost.relatedPosts?.includes(post.slug),
-    }))
+    }));
 
   // Sort: manually specified first, then by score
   scoredPosts.sort((a, b) => {
-    if (a.isManuallySpecified && !b.isManuallySpecified) return -1
-    if (!a.isManuallySpecified && b.isManuallySpecified) return 1
-    return b.score - a.score
-  })
+    if (a.isManuallySpecified && !b.isManuallySpecified) return -1;
+    if (!a.isManuallySpecified && b.isManuallySpecified) return 1;
+    return b.score - a.score;
+  });
 
   // Determine how many posts to show based on variant
-  const postLimit = maxPosts || (variant === 'sidebar' ? 5 : variant === 'inline' ? 2 : 6)
-  const relatedPosts = scoredPosts.slice(0, postLimit).map((sp) => sp.post)
+  const postLimit = maxPosts || (variant === 'sidebar' ? 5 : variant === 'inline' ? 2 : 6);
+  const relatedPosts = scoredPosts.slice(0, postLimit).map((sp) => sp.post);
 
   if (relatedPosts.length === 0) {
-    return null
+    return null;
   }
 
-  const nextArticle = showNextArticle ? getNextArticle(currentPost, allPosts) : null
+  const nextArticle = showNextArticle ? getNextArticle(currentPost, allPosts) : null;
 
   // Inline variant - compact horizontal scroll for mid-article recommendations
   if (variant === 'inline') {
@@ -126,9 +116,7 @@ export function RelatedArticles({
       <div className="my-6 rounded-2xl border border-primary-100 bg-gradient-to-r from-primary-50/50 to-secondary-50/50 p-4 sm:my-10 sm:p-6">
         <div className="mb-3 flex items-center gap-2 sm:mb-4">
           <Sparkles className="h-4 w-4 text-primary-600" />
-          <span className="text-sm font-semibold text-primary-700">
-            Verwandte Themen
-          </span>
+          <span className="text-sm font-semibold text-primary-700">Verwandte Themen</span>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 sm:gap-4">
           {relatedPosts.map((post) => (
@@ -151,15 +139,13 @@ export function RelatedArticles({
                 <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 line-clamp-2">
                   {post.title}
                 </h4>
-                <span className="mt-1 text-xs text-neutral-500">
-                  {post.readingTime}
-                </span>
+                <span className="mt-1 text-xs text-neutral-500">{post.readingTime}</span>
               </div>
             </Link>
           ))}
         </div>
       </div>
-    )
+    );
   }
 
   // Sidebar variant - YouTube-style vertical list with enhanced visuals
@@ -203,9 +189,7 @@ export function RelatedArticles({
 
               {/* Category & metadata */}
               <div className="mt-1.5 flex items-center gap-1.5 text-xs text-neutral-500">
-                <span className="font-medium text-primary-600/80">
-                  {post.category}
-                </span>
+                <span className="font-medium text-primary-600/80">{post.category}</span>
                 <span>•</span>
                 <span>
                   {new Date(post.publishedAt).toLocaleDateString('de-AT', {
@@ -227,7 +211,7 @@ export function RelatedArticles({
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
-    )
+    );
   }
 
   // Generate schema.org ItemList for SEO
@@ -248,7 +232,7 @@ export function RelatedArticles({
         image: post.featuredImage?.src,
       },
     })),
-  }
+  };
 
   // Default variant - grid layout at bottom with Next Article CTA
   return (
@@ -341,10 +325,7 @@ export function RelatedArticles({
 
             <div className="flex flex-1 flex-col p-4">
               {/* Category Badge */}
-              <Badge
-                variant="neutral"
-                className="mb-2 self-start text-xs font-medium"
-              >
+              <Badge variant="neutral" className="mb-2 self-start text-xs font-medium">
                 {post.category}
               </Badge>
 
@@ -379,7 +360,7 @@ export function RelatedArticles({
         </Link>
       </div>
     </section>
-  )
+  );
 }
 
 // Export helper for inline recommendations
@@ -387,8 +368,8 @@ export function InlineRecommendation({
   currentPost,
   allPosts,
 }: {
-  currentPost: BlogPost
-  allPosts: BlogPost[]
+  currentPost: BlogPost;
+  allPosts: BlogPost[];
 }) {
   return (
     <RelatedArticles
@@ -398,5 +379,5 @@ export function InlineRecommendation({
       maxPosts={2}
       showNextArticle={false}
     />
-  )
+  );
 }

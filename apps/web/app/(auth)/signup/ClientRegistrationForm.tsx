@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
-import { useMemo, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
-import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react'
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 
-import { Button, Input } from '@mental-health/ui'
-import { track } from '../../../lib/analytics'
+import { Button, Input } from '@mental-health/ui';
+import { track } from '../../../lib/analytics';
 
 type FormState = {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  confirmPassword: string
-  marketingOptIn: boolean
-  acceptTerms: boolean
-}
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  marketingOptIn: boolean;
+  acceptTerms: boolean;
+};
 
-type FormErrors = Partial<Record<keyof FormState, string>>
+type FormErrors = Partial<Record<keyof FormState, string>>;
 
 const initialState: FormState = {
   firstName: '',
@@ -29,15 +29,15 @@ const initialState: FormState = {
   confirmPassword: '',
   marketingOptIn: true,
   acceptTerms: false,
-}
+};
 
 export function ClientRegistrationForm() {
-  const router = useRouter()
-  const [form, setForm] = useState<FormState>(initialState)
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState<string>('')
+  const router = useRouter();
+  const [form, setForm] = useState<FormState>(initialState);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState<string>('');
 
   const passwordHints = useMemo(
     () => [
@@ -46,66 +46,64 @@ export function ClientRegistrationForm() {
       { rule: 'Mindestens ein Kleinbuchstabe', ok: /[a-z]/.test(form.password) },
       { rule: 'Mindestens eine Zahl', ok: /\d/.test(form.password) },
     ],
-    [form.password]
-  )
+    [form.password],
+  );
 
-  const handleChange =
-    (field: keyof FormState) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      setForm((prev) => ({ ...prev, [field]: value }))
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
+  const handleChange = (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
 
   const validate = () => {
-    const nextErrors: FormErrors = {}
+    const nextErrors: FormErrors = {};
 
     if (!form.firstName.trim()) {
-      nextErrors.firstName = 'Pflichtfeld'
+      nextErrors.firstName = 'Pflichtfeld';
     }
     if (!form.lastName.trim()) {
-      nextErrors.lastName = 'Pflichtfeld'
+      nextErrors.lastName = 'Pflichtfeld';
     }
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben'
+      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben';
     }
     if (!form.password.trim()) {
-      nextErrors.password = 'Bitte Passwort vergeben'
+      nextErrors.password = 'Bitte Passwort vergeben';
     } else {
       if (form.password.length < 8) {
-        nextErrors.password = 'Mindestens 8 Zeichen'
+        nextErrors.password = 'Mindestens 8 Zeichen';
       } else if (!/[A-Z]/.test(form.password)) {
-        nextErrors.password = 'Mindestens ein Großbuchstabe'
+        nextErrors.password = 'Mindestens ein Großbuchstabe';
       } else if (!/[a-z]/.test(form.password)) {
-        nextErrors.password = 'Mindestens ein Kleinbuchstabe'
+        nextErrors.password = 'Mindestens ein Kleinbuchstabe';
       } else if (!/\d/.test(form.password)) {
-        nextErrors.password = 'Mindestens eine Zahl'
+        nextErrors.password = 'Mindestens eine Zahl';
       }
     }
     if (!form.confirmPassword.trim()) {
-      nextErrors.confirmPassword = 'Bitte Passwort bestätigen'
+      nextErrors.confirmPassword = 'Bitte Passwort bestätigen';
     } else if (form.password !== form.confirmPassword) {
-      nextErrors.confirmPassword = 'Passwörter stimmen nicht überein'
+      nextErrors.confirmPassword = 'Passwörter stimmen nicht überein';
     }
     if (!form.acceptTerms) {
-      nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu'
+      nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu';
     }
 
-    return nextErrors
-  }
+    return nextErrors;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setStatus('idle')
-    setMessage('')
+    event.preventDefault();
+    setStatus('idle');
+    setMessage('');
 
-    const validation = validate()
+    const validation = validate();
     if (Object.keys(validation).length > 0) {
-      setErrors(validation)
-      return
+      setErrors(validation);
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       const response = await fetch('/api/clients/register', {
@@ -122,56 +120,57 @@ export function ClientRegistrationForm() {
           acceptTerms: form.acceptTerms,
           marketingOptIn: form.marketingOptIn,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
         if (Array.isArray(data?.errors)) {
-          const apiErrors: FormErrors = {}
+          const apiErrors: FormErrors = {};
 
           for (const error of data.errors) {
-            const field = Array.isArray(error?.path) ? error.path[0] : undefined
+            const field = Array.isArray(error?.path) ? error.path[0] : undefined;
             if (typeof field === 'string' && field in initialState) {
-              apiErrors[field as keyof FormState] = typeof error.message === 'string' ? error.message : undefined
+              apiErrors[field as keyof FormState] =
+                typeof error.message === 'string' ? error.message : undefined;
             }
           }
 
-          setErrors((prev) => ({ ...prev, ...apiErrors }))
+          setErrors((prev) => ({ ...prev, ...apiErrors }));
         }
 
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten')
+        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
       }
 
       track('client_registration_submitted', {
         marketingOptIn: form.marketingOptIn,
-      })
+      });
 
-      setStatus('success')
-      setMessage('Account erstellt – du wirst jetzt angemeldet …')
+      setStatus('success');
+      setMessage('Account erstellt – du wirst jetzt angemeldet …');
 
       const signInResult = await signIn('credentials', {
         redirect: false,
         email: form.email.trim(),
         password: form.password,
-      })
+      });
 
       if (signInResult?.error) {
-        setMessage('Account erstellt. Bitte melde dich jetzt an.')
-        router.push('/login?status=registered')
-        return
+        setMessage('Account erstellt. Bitte melde dich jetzt an.');
+        router.push('/login?status=registered');
+        return;
       }
 
-      router.push('/dashboard')
-      router.refresh()
+      router.push('/dashboard');
+      router.refresh();
     } catch (error) {
-      console.error('Error registering client:', error)
-      setStatus('error')
-      setMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten')
+      console.error('Error registering client:', error);
+      setStatus('error');
+      setMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
@@ -255,7 +254,9 @@ export function ClientRegistrationForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1 text-sm text-neutral-700">
-            <label htmlFor="password" className="font-medium text-default">Passwort</label>
+            <label htmlFor="password" className="font-medium text-default">
+              Passwort
+            </label>
             <Input
               id="password"
               type="password"
@@ -269,7 +270,9 @@ export function ClientRegistrationForm() {
             {errors.password && <span className="text-xs text-red-600">{errors.password}</span>}
           </div>
           <div className="space-y-1 text-sm text-neutral-700">
-            <label htmlFor="confirmPassword" className="font-medium text-default">Passwort bestätigen</label>
+            <label htmlFor="confirmPassword" className="font-medium text-default">
+              Passwort bestätigen
+            </label>
             <Input
               id="confirmPassword"
               type="password"
@@ -306,7 +309,8 @@ export function ClientRegistrationForm() {
             className="mt-1 h-4 w-4 rounded border border-divider"
           />
           <span>
-            Ich möchte Updates zu neuen Kursen, Notfall-Features und Angeboten erhalten. Abmeldung jederzeit möglich.
+            Ich möchte Updates zu neuen Kursen, Notfall-Features und Angeboten erhalten. Abmeldung
+            jederzeit möglich.
           </span>
         </label>
 
@@ -353,5 +357,5 @@ export function ClientRegistrationForm() {
         </p>
       </form>
     </div>
-  )
+  );
 }

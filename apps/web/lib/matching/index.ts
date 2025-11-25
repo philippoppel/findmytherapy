@@ -10,25 +10,15 @@ export type {
   Coordinates,
   FilterReason,
   FilteredTherapist,
-} from './types'
+} from './types';
 
-export {
-  DEFAULT_WEIGHTS,
-  PROBLEM_AREA_MAPPING,
-  AVAILABILITY_STATUS_WEEKS,
-} from './types'
+export { DEFAULT_WEIGHTS, PROBLEM_AREA_MAPPING, AVAILABILITY_STATUS_WEEKS } from './types';
 
 // Score Calculator
-export {
-  calculateMatchScore,
-  calculateDistanceKm,
-} from './score-calculator'
+export { calculateMatchScore, calculateDistanceKm } from './score-calculator';
 
 // Explanation Generator
-export {
-  generateMatchExplanation,
-  generateShortExplanation,
-} from './explanation-generator'
+export { generateMatchExplanation, generateShortExplanation } from './explanation-generator';
 
 // Matching Service
 export {
@@ -36,4 +26,4 @@ export {
   saveMatchingPreferences,
   createMatchingResponse,
   cleanupExpiredPreferences,
-} from './matching-service'
+} from './matching-service';

@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Filter, X } from 'lucide-react'
-import { Button } from '@mental-health/ui'
+import { useState } from 'react';
+import { Filter, X } from 'lucide-react';
+import { Button } from '@mental-health/ui';
 
 type FilterState = {
-  formats: string[]
-  specialties: string[]
-  languages: string[]
-}
+  formats: string[];
+  specialties: string[];
+  languages: string[];
+};
 
 type TherapistFiltersProps = {
-  availableSpecialties: string[]
-  availableLanguages: string[]
-  onFilterChange: (filters: FilterState) => void
-  className?: string
-}
+  availableSpecialties: string[];
+  availableLanguages: string[];
+  onFilterChange: (filters: FilterState) => void;
+  className?: string;
+};
 
 export function TherapistFilters({
   availableSpecialties,
@@ -23,18 +23,18 @@ export function TherapistFilters({
   onFilterChange,
   className = '',
 }: TherapistFiltersProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
     formats: [],
     specialties: [],
     languages: [],
-  })
+  });
 
   const formatOptions = [
     { value: 'online', label: 'Online' },
     { value: 'praesenz', label: 'Präsenz' },
     { value: 'hybrid', label: 'Hybrid' },
-  ]
+  ];
 
   const toggleFilter = (category: keyof FilterState, value: string) => {
     const newFilters = {
@@ -42,23 +42,23 @@ export function TherapistFilters({
       [category]: filters[category].includes(value)
         ? filters[category].filter((item) => item !== value)
         : [...filters[category], value],
-    }
-    setFilters(newFilters)
-    onFilterChange(newFilters)
-  }
+    };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
 
   const clearAllFilters = () => {
     const emptyFilters = {
       formats: [],
       specialties: [],
       languages: [],
-    }
-    setFilters(emptyFilters)
-    onFilterChange(emptyFilters)
-  }
+    };
+    setFilters(emptyFilters);
+    onFilterChange(emptyFilters);
+  };
 
   const activeFilterCount =
-    filters.formats.length + filters.specialties.length + filters.languages.length
+    filters.formats.length + filters.specialties.length + filters.languages.length;
 
   return (
     <div className={`rounded-2xl border border-divider bg-white/90 ${className}`}>
@@ -81,8 +81,8 @@ export function TherapistFilters({
             variant="ghost"
             size="sm"
             onClick={(e) => {
-              e.stopPropagation()
-              clearAllFilters()
+              e.stopPropagation();
+              clearAllFilters();
             }}
           >
             <X className="mr-1 h-3 w-3" aria-hidden />
@@ -172,5 +172,5 @@ export function TherapistFilters({
         </div>
       )}
     </div>
-  )
+  );
 }

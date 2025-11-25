@@ -99,4 +99,4 @@ export const PrismaClient = jest.fn().mockImplementation(() => ({
   },
   $disconnect: jest.fn(),
   $connect: jest.fn(),
-}))
+}));

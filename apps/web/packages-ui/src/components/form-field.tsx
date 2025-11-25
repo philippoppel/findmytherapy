@@ -49,7 +49,11 @@ const FormField = ({
     <div className={cn('form-control', className)}>
       <label htmlFor={id} className={cn(errorText ? 'text-danger' : undefined)}>
         {label}
-        {required ? <span aria-hidden className="text-danger">*</span> : null}
+        {required ? (
+          <span aria-hidden className="text-danger">
+            *
+          </span>
+        ) : null}
       </label>
       {clonedChild}
       {helperText && !errorText ? (

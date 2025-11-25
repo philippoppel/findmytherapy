@@ -1,48 +1,48 @@
-'use client'
+'use client';
 
-import { useRef } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Star, MapPin, CheckCircle2 } from 'lucide-react'
-import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
-import { PlaceholderImage } from '../therapist-search/PlaceholderImage'
-import type { TherapistWithListing } from '../therapist-search/types'
+import { useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Star, MapPin, CheckCircle2 } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
+import { PlaceholderImage } from '../therapist-search/PlaceholderImage';
+import type { TherapistWithListing } from '../therapist-search/types';
 
 interface FeaturedTherapistsClientProps {
-  therapists: TherapistWithListing[]
+  therapists: TherapistWithListing[];
   stats: {
-    total: number
-    accepting: number
-    online: number
-  }
+    total: number;
+    accepting: number;
+    online: number;
+  };
 }
 
 function formatLocation(city?: string | null, online?: boolean) {
-  const parts: string[] = []
-  if (city) parts.push(city)
-  if (online) parts.push('Online')
-  if (parts.length === 0) return 'Standort auf Anfrage'
-  return parts.join(' & ')
+  const parts: string[] = [];
+  if (city) parts.push(city);
+  if (online) parts.push('Online');
+  if (parts.length === 0) return 'Standort auf Anfrage';
+  return parts.join(' & ');
 }
 
 export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapistsClientProps) {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const sectionRef = useRef<HTMLElement>(null)
-  const safeTherapists = Array.isArray(therapists) ? therapists : []
-  const hasTherapists = safeTherapists.length > 0
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const safeTherapists = Array.isArray(therapists) ? therapists : [];
+  const hasTherapists = safeTherapists.length > 0;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
-  })
+  });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '15%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   if (!hasTherapists) {
-    return null
+    return null;
   }
 
   return (
@@ -300,7 +300,7 @@ export function FeaturedTherapistsClient({ therapists, stats }: FeaturedTherapis
         </Reveal>
       </div>
     </section>
-  )
+  );
 }
 
 function UsersIcon({ className }: { className?: string }) {
@@ -313,5 +313,5 @@ function UsersIcon({ className }: { className?: string }) {
         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
       />
     </svg>
-  )
+  );
 }

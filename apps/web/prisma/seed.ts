@@ -1,42 +1,42 @@
-import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
-import { seedAccounts, seedCourses, seedTherapists } from './seed-data'
+import { seedAccounts, seedCourses, seedTherapists } from './seed-data';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const passwordCache = new Map<string, string>()
+const passwordCache = new Map<string, string>();
 
 const hashPassword = async (password: string) => {
   if (passwordCache.has(password)) {
-    return passwordCache.get(password)!
+    return passwordCache.get(password)!;
   }
 
-  const hashed = await bcrypt.hash(password, 10)
-  passwordCache.set(password, hashed)
-  return hashed
-}
+  const hashed = await bcrypt.hash(password, 10);
+  passwordCache.set(password, hashed);
+  return hashed;
+};
 
 async function main() {
-  console.log('🌱 Starting database seed...')
+  console.log('🌱 Starting database seed...');
 
-  await prisma.verificationToken.deleteMany()
-  await prisma.session.deleteMany()
-  await prisma.account.deleteMany()
-  await prisma.auditLog.deleteMany()
-  await prisma.emergencyAlert.deleteMany()
-  await prisma.match.deleteMany()
-  await prisma.triageSession.deleteMany()
-  await prisma.triageSnapshot.deleteMany()
-  await prisma.payout.deleteMany()
-  await prisma.enrollment.deleteMany()
-  await prisma.order.deleteMany()
-  await prisma.lesson.deleteMany()
-  await prisma.course.deleteMany()
-  await prisma.appointment.deleteMany()
-  await prisma.listing.deleteMany()
-  await prisma.therapistProfile.deleteMany()
-  await prisma.user.deleteMany()
+  await prisma.verificationToken.deleteMany();
+  await prisma.session.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.emergencyAlert.deleteMany();
+  await prisma.match.deleteMany();
+  await prisma.triageSession.deleteMany();
+  await prisma.triageSnapshot.deleteMany();
+  await prisma.payout.deleteMany();
+  await prisma.enrollment.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.lesson.deleteMany();
+  await prisma.course.deleteMany();
+  await prisma.appointment.deleteMany();
+  await prisma.listing.deleteMany();
+  await prisma.therapistProfile.deleteMany();
+  await prisma.user.deleteMany();
 
   const admin = await prisma.user.create({
     data: {
@@ -49,7 +49,7 @@ async function main() {
       lastName: seedAccounts.admin.lastName,
       marketingOptIn: false,
     },
-  })
+  });
 
   const client = await prisma.user.create({
     data: {
@@ -62,15 +62,15 @@ async function main() {
       lastName: seedAccounts.client.lastName,
       marketingOptIn: true,
     },
-  })
+  });
 
   const therapistMap = new Map<
     string,
     {
-      userId: string
-      profileId: string
+      userId: string;
+      profileId: string;
     }
-  >()
+  >();
 
   for (const therapist of seedTherapists) {
     const created = await prisma.user.create({
@@ -121,13 +121,13 @@ async function main() {
       include: {
         therapistProfile: true,
       },
-    })
+    });
 
     if (created.therapistProfile) {
       therapistMap.set(therapist.email, {
         userId: created.id,
         profileId: created.therapistProfile.id,
-      })
+      });
 
       await prisma.therapistProfileVersion.create({
         data: {
@@ -160,7 +160,7 @@ async function main() {
             country: created.therapistProfile.country,
           },
         },
-      })
+      });
 
       if (therapist.listing) {
         await prisma.listing.create({
@@ -171,17 +171,17 @@ async function main() {
             currentPeriodStart: new Date(),
             currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           },
-        })
+        });
       }
     }
   }
 
-  const createdCourses = []
+  const createdCourses = [];
 
   for (const course of seedCourses) {
-    const author = therapistMap.get(course.therapistEmail)
+    const author = therapistMap.get(course.therapistEmail);
     if (!author) {
-      continue
+      continue;
     }
 
     const createdCourse = await prisma.course.create({
@@ -195,9 +195,9 @@ async function main() {
         status: course.status,
         mediaManifest: course.mediaManifest,
       },
-    })
+    });
 
-    createdCourses.push(createdCourse)
+    createdCourses.push(createdCourse);
 
     for (const [index, lesson] of course.lessons.entries()) {
       await prisma.lesson.create({
@@ -208,18 +208,18 @@ async function main() {
           order: index + 1,
           assetRef: `courses/${createdCourse.id}/lesson-${index + 1}.mp4`,
         },
-      })
+      });
     }
   }
 
   if (createdCourses.length > 0) {
-    const primaryCourse = createdCourses[0]
+    const primaryCourse = createdCourses[0];
     await prisma.enrollment.create({
       data: {
         clientId: client.id,
         courseId: primaryCourse.id,
       },
-    })
+    });
 
     await prisma.order.create({
       data: {
@@ -233,7 +233,7 @@ async function main() {
           courseTitle: primaryCourse.title,
         },
       },
-    })
+    });
   }
 
   await prisma.triageSession.create({
@@ -248,10 +248,10 @@ async function main() {
         recommendedTherapists: seedTherapists.length,
       },
     },
-  })
+  });
 
-  const firstTherapist = therapistMap.get(seedTherapists[0]?.email ?? '')
-  const secondTherapist = therapistMap.get(seedTherapists[1]?.email ?? '')
+  const firstTherapist = therapistMap.get(seedTherapists[0]?.email ?? '');
+  const secondTherapist = therapistMap.get(seedTherapists[1]?.email ?? '');
 
   if (firstTherapist) {
     await prisma.match.create({
@@ -262,7 +262,7 @@ async function main() {
         reason: ['Spezialisierung passt', 'Online-Therapie verfügbar', 'Sprache: Deutsch'],
         status: 'NEW',
       },
-    })
+    });
   }
 
   if (secondTherapist) {
@@ -274,19 +274,19 @@ async function main() {
         reason: ['Traumatherapie-Erfahrung', 'Passende Preisrange'],
         status: 'NEW',
       },
-    })
+    });
   }
 
   // Create sample appointments for first therapist
   if (firstTherapist) {
-    const now = new Date()
-    const tomorrow = new Date(now)
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    tomorrow.setHours(10, 0, 0, 0)
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(10, 0, 0, 0);
 
-    const nextWeek = new Date(now)
-    nextWeek.setDate(nextWeek.getDate() + 7)
-    nextWeek.setHours(14, 30, 0, 0)
+    const nextWeek = new Date(now);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    nextWeek.setHours(14, 30, 0, 0);
 
     await prisma.appointment.create({
       data: {
@@ -300,7 +300,7 @@ async function main() {
         location: 'online',
         meetingLink: 'https://meet.example.com/room-abc123',
       },
-    })
+    });
 
     await prisma.appointment.create({
       data: {
@@ -314,7 +314,7 @@ async function main() {
         location: 'online',
         meetingLink: 'https://meet.example.com/room-xyz789',
       },
-    })
+    });
   }
 
   await prisma.auditLog.create({
@@ -325,23 +325,23 @@ async function main() {
       entityId: 'seed-script',
       ip: '127.0.0.1',
     },
-  })
+  });
 
-  console.log('✅ Database seeded successfully!')
-  console.log('\n📧 Login credentials:')
-  console.log(`${seedAccounts.admin.email} / ${seedAccounts.admin.password}`)
-  console.log(`${seedAccounts.client.email} / ${seedAccounts.client.password}`)
+  console.log('✅ Database seeded successfully!');
+  console.log('\n📧 Login credentials:');
+  console.log(`${seedAccounts.admin.email} / ${seedAccounts.admin.password}`);
+  console.log(`${seedAccounts.client.email} / ${seedAccounts.client.password}`);
   seedTherapists.forEach((therapist) => {
-    console.log(`${therapist.email} / ${therapist.password}`)
-  })
+    console.log(`${therapist.email} / ${therapist.password}`);
+  });
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error('Error seeding database:', e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error('Error seeding database:', e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

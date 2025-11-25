@@ -1,33 +1,33 @@
-'use client'
+'use client';
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
-import { Reveal } from './Reveal'
-import { KnowledgeHubSection } from './KnowledgeHubSection'
-import { TherapistSEOShowcase } from './TherapistSEOShowcase'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { Reveal } from './Reveal';
+import { KnowledgeHubSection } from './KnowledgeHubSection';
+import { TherapistSEOShowcase } from './TherapistSEOShowcase';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function TwoPillarSection() {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const sectionRef = useRef<HTMLElement>(null)
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Scroll-based animations
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
-  })
+  });
 
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
-  })
+  });
 
   // Parallax effects for background elements
-  const y1 = useTransform(smoothProgress, [0, 1], ['0%', '20%'])
-  const y2 = useTransform(smoothProgress, [0, 1], ['0%', '-20%'])
-  const scale = useTransform(smoothProgress, [0, 0.5, 1], [0.8, 1, 0.8])
-  const opacity = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+  const y1 = useTransform(smoothProgress, [0, 1], ['0%', '20%']);
+  const y2 = useTransform(smoothProgress, [0, 1], ['0%', '-20%']);
+  const scale = useTransform(smoothProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const opacity = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
     <section
@@ -200,7 +200,11 @@ export function TwoPillarSection() {
               <motion.a
                 href="/therapists"
                 className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors hover:bg-primary-700"
-                whileHover={{ scale: 1.05, y: -2, boxShadow: '0 20px 40px -12px rgba(59, 130, 246, 0.4)' }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -2,
+                  boxShadow: '0 20px 40px -12px rgba(59, 130, 246, 0.4)',
+                }}
                 whileTap={{ scale: 0.95 }}
               >
                 Therapeut:in finden
@@ -219,7 +223,7 @@ export function TwoPillarSection() {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }
 
 function HeartIcon({ className }: { className?: string }) {
@@ -227,5 +231,5 @@ function HeartIcon({ className }: { className?: string }) {
     <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden>
       <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
     </svg>
-  )
+  );
 }

@@ -1,10 +1,22 @@
-'use client'
+'use client';
 
-import { useId, useState } from 'react'
-import { cn } from '@mental-health/ui'
-import type { LucideIcon } from 'lucide-react'
-import { BarChart3, Briefcase, ClipboardCheck, DollarSign, FileText, Globe, Mic, Sparkles, TrendingUp, Users, Video } from 'lucide-react'
-import type { FeatureIconKey, FeatureTab } from '../../marketing-content'
+import { useId, useState } from 'react';
+import { cn } from '@mental-health/ui';
+import type { LucideIcon } from 'lucide-react';
+import {
+  BarChart3,
+  Briefcase,
+  ClipboardCheck,
+  DollarSign,
+  FileText,
+  Globe,
+  Mic,
+  Sparkles,
+  TrendingUp,
+  Users,
+  Video,
+} from 'lucide-react';
+import type { FeatureIconKey, FeatureTab } from '../../marketing-content';
 
 const FEATURE_ICON_MAP: Record<FeatureIconKey, LucideIcon> = {
   mic: Mic,
@@ -18,17 +30,17 @@ const FEATURE_ICON_MAP: Record<FeatureIconKey, LucideIcon> = {
   clipboardCheck: ClipboardCheck,
   trendingUp: TrendingUp,
   dollarSign: DollarSign,
-}
+};
 
 interface FeatureTabsProps {
-  tabs: FeatureTab[]
+  tabs: FeatureTab[];
 }
 
 export function FeatureTabs({ tabs }: FeatureTabsProps) {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.value ?? '')
-  const tabsId = useId()
+  const [activeTab, setActiveTab] = useState(tabs[0]?.value ?? '');
+  const tabsId = useId();
 
-  const activeContent = tabs.find((tab) => tab.value === activeTab) ?? tabs[0]
+  const activeContent = tabs.find((tab) => tab.value === activeTab) ?? tabs[0];
 
   return (
     <section id="features" className="py-16 sm:py-20 lg:py-24">
@@ -44,13 +56,17 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
                   Alles für deine mentale Gesundheit
                 </h2>
                 <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted">
-                  Von der ersten Einschätzung bis zur passenden Unterstützung – transparent, sicher und wissenschaftlich fundiert.
+                  Von der ersten Einschätzung bis zur passenden Unterstützung – transparent, sicher
+                  und wissenschaftlich fundiert.
                 </p>
               </div>
             </div>
 
             <div className="md:hidden">
-              <label htmlFor={`${tabsId}-mobile-select`} className="text-sm font-semibold text-default">
+              <label
+                htmlFor={`${tabsId}-mobile-select`}
+                className="text-sm font-semibold text-default"
+              >
                 Modul auswählen
               </label>
               <div className="mt-2 rounded-2xl border border-divider bg-surface-2 p-3 shadow-inner shadow-secondary/10">
@@ -58,7 +74,12 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
                   id={`${tabsId}-mobile-select`}
                   value={activeTab}
                   onChange={(event) => setActiveTab(event.target.value)}
-                  style={{ minHeight: '44px', WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
+                  style={{
+                    minHeight: '44px',
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'none',
+                    appearance: 'none',
+                  }}
                   className="w-full rounded-xl border border-transparent bg-white px-4 py-[0.875rem] text-sm font-semibold text-default shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/60"
                 >
                   {tabs.map((tab) => (
@@ -109,13 +130,13 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
               <div className="space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-3">
                   {(() => {
-                    const IconComponent = FEATURE_ICON_MAP[activeContent.icon] ?? Mic
+                    const IconComponent = FEATURE_ICON_MAP[activeContent.icon] ?? Mic;
                     return (
                       <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                         <IconComponent className="h-6 w-6" aria-hidden />
                         <span className="sr-only">{activeContent.label}</span>
                       </span>
-                    )
+                    );
                   })()}
                   <div className="min-w-0 flex-1">
                     <h3 className="text-balance text-xl font-semibold text-default sm:text-2xl">
@@ -163,5 +184,5 @@ export function FeatureTabs({ tabs }: FeatureTabsProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

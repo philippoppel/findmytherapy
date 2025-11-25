@@ -1,33 +1,37 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react'
-import { ScoringExplainer } from './ScoringExplainer'
-import { populationBenchmarks, findClosestBenchmark } from '../../lib/triage/scientific-benchmarks'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
+import { ScoringExplainer } from './ScoringExplainer';
+import { populationBenchmarks, findClosestBenchmark } from '../../lib/triage/scientific-benchmarks';
 
-type AmpelColor = 'green' | 'yellow' | 'red'
+type AmpelColor = 'green' | 'yellow' | 'red';
 
 type AmpelVisualizationProps = {
-  color: AmpelColor
-  phq9Score: number
-  gad7Score: number
-  phq9Severity: string
-  gad7Severity: string
-  className?: string
-}
+  color: AmpelColor;
+  phq9Score: number;
+  gad7Score: number;
+  phq9Severity: string;
+  gad7Severity: string;
+  className?: string;
+};
 
-const ampelConfig: Record<AmpelColor, {
-  label: string
-  description: string
-  bgColor: string
-  borderColor: string
-  lightColor: string
-  textColor: string
-}> = {
+const ampelConfig: Record<
+  AmpelColor,
+  {
+    label: string;
+    description: string;
+    bgColor: string;
+    borderColor: string;
+    lightColor: string;
+    textColor: string;
+  }
+> = {
   green: {
     label: 'Grün – Geringe Belastung',
-    description: 'Minimale bis leichte Symptome. Präventive Maßnahmen und Selbsthilfe-Programme werden empfohlen.',
+    description:
+      'Minimale bis leichte Symptome. Präventive Maßnahmen und Selbsthilfe-Programme werden empfohlen.',
     bgColor: 'bg-emerald-50',
     borderColor: 'border-emerald-300',
     lightColor: 'bg-emerald-500',
@@ -35,7 +39,8 @@ const ampelConfig: Record<AmpelColor, {
   },
   yellow: {
     label: 'Gelb – Mittlere Belastung',
-    description: 'Mittelschwere Symptome mit spürbarer Beeinträchtigung. Professionelle Unterstützung wird empfohlen.',
+    description:
+      'Mittelschwere Symptome mit spürbarer Beeinträchtigung. Professionelle Unterstützung wird empfohlen.',
     bgColor: 'bg-amber-50',
     borderColor: 'border-amber-300',
     lightColor: 'bg-amber-500',
@@ -43,21 +48,26 @@ const ampelConfig: Record<AmpelColor, {
   },
   red: {
     label: 'Rot – Hohe Belastung',
-    description: 'Schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe erforderlich.',
+    description:
+      'Schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe erforderlich.',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-300',
     lightColor: 'bg-red-500',
     textColor: 'text-red-900',
   },
-}
+};
 
-const ampelDetailsContent: Record<AmpelColor, {
-  meaning: string
-  nextSteps: string[]
-  resources: string[]
-}> = {
+const ampelDetailsContent: Record<
+  AmpelColor,
+  {
+    meaning: string;
+    nextSteps: string[];
+    resources: string[];
+  }
+> = {
   green: {
-    meaning: 'Deine Einschätzung zeigt minimale bis keine Symptome. Das ist ein gutes Zeichen für dein aktuelles Wohlbefinden.',
+    meaning:
+      'Deine Einschätzung zeigt minimale bis keine Symptome. Das ist ein gutes Zeichen für dein aktuelles Wohlbefinden.',
     nextSteps: [
       'Präventive Maßnahmen: Achte weiterhin auf dein Wohlbefinden',
       'Selbstfürsorge: Integriere regelmäßige Entspannung in deinen Alltag',
@@ -70,7 +80,8 @@ const ampelDetailsContent: Record<AmpelColor, {
     ],
   },
   yellow: {
-    meaning: 'Deine Einschätzung zeigt mittelschwere Symptome, die im Alltag spürbar sind. Professionelle Unterstützung kann hilfreich sein.',
+    meaning:
+      'Deine Einschätzung zeigt mittelschwere Symptome, die im Alltag spürbar sind. Professionelle Unterstützung kann hilfreich sein.',
     nextSteps: [
       'Therapeutische Unterstützung: Erwäge eine professionelle Beratung oder Psychotherapie',
       'Strukturierte Programme: Nutze angeleitete Selbsthilfe-Programme',
@@ -83,7 +94,8 @@ const ampelDetailsContent: Record<AmpelColor, {
     ],
   },
   red: {
-    meaning: 'Deine Einschätzung zeigt schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe ist erforderlich.',
+    meaning:
+      'Deine Einschätzung zeigt schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe ist erforderlich.',
     nextSteps: [
       'SOFORT: Kontaktiere professionelle Hilfe bei akuter Gefahr (Notruf 144, Telefonseelsorge 142)',
       'Therapeutische Behandlung: Vereinbare zeitnah einen Termin bei Therapeut:in oder Psychiater:in',
@@ -97,7 +109,7 @@ const ampelDetailsContent: Record<AmpelColor, {
       'Unser Care-Team für sofortige Unterstützung',
     ],
   },
-}
+};
 
 export function AmpelVisualization({
   color,
@@ -107,11 +119,11 @@ export function AmpelVisualization({
   gad7Severity,
   className = '',
 }: AmpelVisualizationProps) {
-  const config = ampelConfig[color]
-  const populationAvg = populationBenchmarks[0]
-  const closestBenchmark = findClosestBenchmark(phq9Score, gad7Score)
-  const [showDetails, setShowDetails] = useState(false)
-  const details = ampelDetailsContent[color]
+  const config = ampelConfig[color];
+  const populationAvg = populationBenchmarks[0];
+  const closestBenchmark = findClosestBenchmark(phq9Score, gad7Score);
+  const [showDetails, setShowDetails] = useState(false);
+  const details = ampelDetailsContent[color];
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -139,7 +151,9 @@ export function AmpelVisualization({
             {/* Gelb */}
             <motion.div
               className={`mb-3 h-12 w-12 rounded-full border-2 border-gray-700 sm:h-16 sm:w-16 ${
-                color === 'yellow' ? 'bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.8)]' : 'bg-gray-800'
+                color === 'yellow'
+                  ? 'bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.8)]'
+                  : 'bg-gray-800'
               }`}
               initial={{ scale: 0.9 }}
               animate={{
@@ -156,7 +170,9 @@ export function AmpelVisualization({
             {/* Grün */}
             <motion.div
               className={`h-12 w-12 rounded-full border-2 border-gray-700 sm:h-16 sm:w-16 ${
-                color === 'green' ? 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)]' : 'bg-gray-800'
+                color === 'green'
+                  ? 'bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)]'
+                  : 'bg-gray-800'
               }`}
               initial={{ scale: 0.9 }}
               animate={{
@@ -176,7 +192,9 @@ export function AmpelVisualization({
         {/* Status Label */}
         <div className="mb-4 text-center">
           <h3 className={`text-xl font-bold sm:text-2xl ${config.textColor}`}>{config.label}</h3>
-          <p className={`mt-2 text-xs sm:text-sm ${config.textColor} opacity-90`}>{config.description}</p>
+          <p className={`mt-2 text-xs sm:text-sm ${config.textColor} opacity-90`}>
+            {config.description}
+          </p>
         </div>
 
         {/* Interaktive Details - Ausklappbar */}
@@ -205,7 +223,9 @@ export function AmpelVisualization({
             >
               {/* Bedeutung */}
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-default">Was bedeutet diese Einschätzung?</h4>
+                <h4 className="text-sm font-semibold text-default">
+                  Was bedeutet diese Einschätzung?
+                </h4>
                 <p className="mt-2 text-xs text-muted">{details.meaning}</p>
               </div>
 
@@ -243,7 +263,9 @@ export function AmpelVisualization({
         {/* Scores */}
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="rounded-xl border border-divider bg-white/70 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted">PHQ-9 (Depression)</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+              PHQ-9 (Depression)
+            </p>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="text-3xl font-bold text-default">{phq9Score}</span>
               <span className="text-sm text-muted">von 27</span>
@@ -258,7 +280,9 @@ export function AmpelVisualization({
           </div>
 
           <div className="rounded-xl border border-divider bg-white/70 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted">GAD-7 (Angst)</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+              GAD-7 (Angst)
+            </p>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="text-3xl font-bold text-default">{gad7Score}</span>
               <span className="text-sm text-muted">von 21</span>
@@ -331,7 +355,8 @@ export function AmpelVisualization({
           <div className="mt-3 text-[10px] text-muted space-y-1">
             <p>⌀ = Durchschnitt Allgemeinbevölkerung: {populationAvg.description}</p>
             <p>
-              Am nächsten liegst du bei: <strong>{closestBenchmark.label}</strong> – {closestBenchmark.description}
+              Am nächsten liegst du bei: <strong>{closestBenchmark.label}</strong> –{' '}
+              {closestBenchmark.description}
             </p>
           </div>
         </div>
@@ -340,5 +365,5 @@ export function AmpelVisualization({
       {/* Scoring Explainer - Ausklappbar */}
       <ScoringExplainer />
     </div>
-  )
+  );
 }

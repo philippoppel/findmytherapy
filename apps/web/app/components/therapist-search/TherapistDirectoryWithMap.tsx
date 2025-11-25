@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 /**
  * Therapist Directory with Map View
@@ -11,37 +11,37 @@
  * - Filter sync between views
  */
 
-import { useState, useEffect, useMemo } from 'react'
-import { Map, List, MapPin } from 'lucide-react'
-import type { TherapistCard } from '../../therapists/types'
-import { UnifiedTherapistSearch } from './UnifiedTherapistSearch'
-import { TherapistMap, type TherapistMapMarker } from '../map/TherapistMap'
+import { useState, useEffect, useMemo } from 'react';
+import { Map, List, MapPin } from 'lucide-react';
+import type { TherapistCard } from '../../therapists/types';
+import { UnifiedTherapistSearch } from './UnifiedTherapistSearch';
+import { TherapistMap, type TherapistMapMarker } from '../map/TherapistMap';
 
 export type TherapistDirectoryWithMapProps = {
-  therapists: TherapistCard[]
-  totalCount: number
-  defaultView?: 'split' | 'map' | 'list'
-}
+  therapists: TherapistCard[];
+  totalCount: number;
+  defaultView?: 'split' | 'map' | 'list';
+};
 
 export function TherapistDirectoryWithMap({
   therapists: initialTherapists,
   totalCount,
   defaultView = 'split',
 }: TherapistDirectoryWithMapProps) {
-  const [allTherapists, setAllTherapists] = useState<TherapistCard[]>(initialTherapists)
-  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(initialTherapists)
-  const [view, setView] = useState<'split' | 'map' | 'list'>(defaultView)
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | undefined>()
-  const [searchRadius] = useState<number | undefined>() // TODO: Implement radius filter
-  const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const [hasMore, setHasMore] = useState(allTherapists.length < totalCount)
+  const [allTherapists, setAllTherapists] = useState<TherapistCard[]>(initialTherapists);
+  const [filteredTherapists, setFilteredTherapists] = useState<TherapistCard[]>(initialTherapists);
+  const [view, setView] = useState<'split' | 'map' | 'list'>(defaultView);
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | undefined>();
+  const [searchRadius] = useState<number | undefined>(); // TODO: Implement radius filter
+  const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(allTherapists.length < totalCount);
 
   // Convert therapist cards to map markers
   const mapMarkers: TherapistMapMarker[] = useMemo(() => {
     return filteredTherapists
-      .filter(t => t.coordinates && t.coordinates.lat !== 0 && t.coordinates.lng !== 0)
-      .map(t => ({
+      .filter((t) => t.coordinates && t.coordinates.lat !== 0 && t.coordinates.lng !== 0)
+      .map((t) => ({
         id: t.id,
         name: t.name,
         latitude: t.coordinates!.lat,
@@ -51,22 +51,22 @@ export function TherapistDirectoryWithMap({
         profileUrl: `/therapists/${t.id}`,
         imageUrl: t.image || undefined,
         specialties: t.focus,
-      }))
-  }, [filteredTherapists])
+      }));
+  }, [filteredTherapists]);
 
   // Calculate map center from filtered therapists
   useEffect(() => {
-    if (mapMarkers.length === 0) return
+    if (mapMarkers.length === 0) return;
 
     // Use first therapist with coordinates as center
-    const firstWithCoords = mapMarkers[0]
+    const firstWithCoords = mapMarkers[0];
     if (firstWithCoords) {
       setMapCenter({
         lat: firstWithCoords.latitude,
         lng: firstWithCoords.longitude,
-      })
+      });
     }
-  }, [mapMarkers])
+  }, [mapMarkers]);
 
   // Unused for now but kept for future extension
   // const handleFilteredResults = (filtered: TherapistCard[], searchCenter?: { lat: number; lng: number }, radius?: number) => {
@@ -80,33 +80,31 @@ export function TherapistDirectoryWithMap({
   // }
 
   const handleMarkerClick = (therapist: TherapistMapMarker) => {
-    setSelectedTherapistId(therapist.id)
+    setSelectedTherapistId(therapist.id);
     // Scroll to therapist card in list
-    const element = document.getElementById(`therapist-${therapist.id}`)
+    const element = document.getElementById(`therapist-${therapist.id}`);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }
+  };
 
   const loadMore = async () => {
-    if (isLoadingMore || !hasMore) return
+    if (isLoadingMore || !hasMore) return;
 
-    setIsLoadingMore(true)
+    setIsLoadingMore(true);
     try {
-      const response = await fetch(
-        `/api/therapists?limit=50&offset=${allTherapists.length}`
-      )
-      if (!response.ok) throw new Error('Failed to load more therapists')
+      const response = await fetch(`/api/therapists?limit=50&offset=${allTherapists.length}`);
+      if (!response.ok) throw new Error('Failed to load more therapists');
 
-      const data = await response.json()
-      setAllTherapists(prev => [...prev, ...data.therapists])
-      setHasMore(data.hasMore)
+      const data = await response.json();
+      setAllTherapists((prev) => [...prev, ...data.therapists]);
+      setHasMore(data.hasMore);
     } catch (error) {
-      console.error('Error loading more therapists:', error)
+      console.error('Error loading more therapists:', error);
     } finally {
-      setIsLoadingMore(false)
+      setIsLoadingMore(false);
     }
-  }
+  };
 
   return (
     <div className="w-full">
@@ -155,9 +153,7 @@ export function TherapistDirectoryWithMap({
             <button
               onClick={() => setView('list')}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                view === 'list'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-white/10 text-white/70'
+                view === 'list' ? 'bg-primary-500 text-white' : 'bg-white/10 text-white/70'
               }`}
               aria-label="Listenansicht"
             >
@@ -167,9 +163,7 @@ export function TherapistDirectoryWithMap({
             <button
               onClick={() => setView('map')}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                view === 'map'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-white/10 text-white/70'
+                view === 'map' ? 'bg-primary-500 text-white' : 'bg-white/10 text-white/70'
               }`}
               aria-label="Kartenansicht"
             >
@@ -199,10 +193,7 @@ export function TherapistDirectoryWithMap({
 
           {/* List */}
           <div>
-            <TherapistListView
-              therapists={filteredTherapists}
-              selectedId={selectedTherapistId}
-            />
+            <TherapistListView therapists={filteredTherapists} selectedId={selectedTherapistId} />
           </div>
         </div>
 
@@ -229,10 +220,7 @@ export function TherapistDirectoryWithMap({
         {/* Mobile: List View */}
         {view === 'list' && (
           <div className="md:hidden">
-            <TherapistListView
-              therapists={filteredTherapists}
-              selectedId={selectedTherapistId}
-            />
+            <TherapistListView therapists={filteredTherapists} selectedId={selectedTherapistId} />
           </div>
         )}
 
@@ -251,15 +239,20 @@ export function TherapistDirectoryWithMap({
               </h3>
 
               <p className="text-sm text-white/70 mb-6">
-                Mit deinen aktuellen Filtern konnten wir leider keine passenden Therapeut:innen finden.
+                Mit deinen aktuellen Filtern konnten wir leider keine passenden Therapeut:innen
+                finden.
               </p>
 
               <div className="space-y-3 mb-6 text-left">
-                <p className="text-sm font-medium text-white/90">💡 Tipps für bessere Ergebnisse:</p>
+                <p className="text-sm font-medium text-white/90">
+                  💡 Tipps für bessere Ergebnisse:
+                </p>
                 <ul className="space-y-2 text-sm text-white/70">
                   <li className="flex items-start gap-2">
                     <span className="text-primary-400 mt-0.5">•</span>
-                    <span>Erweitere den Suchradius oder aktiviere &ldquo;Online&rdquo; für mehr Optionen</span>
+                    <span>
+                      Erweitere den Suchradius oder aktiviere &ldquo;Online&rdquo; für mehr Optionen
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary-400 mt-0.5">•</span>
@@ -299,7 +292,7 @@ export function TherapistDirectoryWithMap({
         )}
       </div>
     </div>
-  )
+  );
 }
 
 /**
@@ -310,12 +303,12 @@ function TherapistListView({
   therapists,
   selectedId,
 }: {
-  therapists: TherapistCard[]
-  selectedId: string | null
+  therapists: TherapistCard[];
+  selectedId: string | null;
 }) {
   return (
     <div className="space-y-4">
-      {therapists.map(therapist => (
+      {therapists.map((therapist) => (
         <div
           key={therapist.id}
           id={`therapist-${therapist.id}`}
@@ -331,31 +324,30 @@ function TherapistListView({
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 /**
  * Simplified Therapist Card for List View
  */
 function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
-  const availabilityColor = {
-    'Sofort verfügbar': 'bg-green-500/20 text-green-300 border-green-500/30',
-    'Verfügbar': 'bg-green-500/20 text-green-300 border-green-500/30',
-    'Begrenzte Kapazität': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-    'Warteliste': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
-    'Aktuell nicht verfügbar': 'bg-gray-500/20 text-gray-300 border-gray-500/30',
-  }[therapist.availability] || 'bg-gray-500/20 text-gray-300 border-gray-500/30'
+  const availabilityColor =
+    {
+      'Sofort verfügbar': 'bg-green-500/20 text-green-300 border-green-500/30',
+      Verfügbar: 'bg-green-500/20 text-green-300 border-green-500/30',
+      'Begrenzte Kapazität': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+      Warteliste: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+      'Aktuell nicht verfügbar': 'bg-gray-500/20 text-gray-300 border-gray-500/30',
+    }[therapist.availability] || 'bg-gray-500/20 text-gray-300 border-gray-500/30';
 
-  const priceLabel = therapist.priceMin && therapist.priceMax
-    ? `€${Math.floor(therapist.priceMin / 100)} - €${Math.floor(therapist.priceMax / 100)}`
-    : null
+  const priceLabel =
+    therapist.priceMin && therapist.priceMax
+      ? `€${Math.floor(therapist.priceMin / 100)} - €${Math.floor(therapist.priceMax / 100)}`
+      : null;
 
   return (
     <div className="group relative rounded-xl border border-white/10 bg-white/5 backdrop-blur transition-all hover:bg-white/10 hover:border-white/20 hover:shadow-lg">
-      <a
-        href={`/therapists/${therapist.id}`}
-        className="block p-4"
-      >
+      <a href={`/therapists/${therapist.id}`} className="block p-4">
         <div className="flex gap-4">
           {/* Avatar/Image */}
           <div className="flex-shrink-0 relative">
@@ -382,9 +374,7 @@ function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2 mb-1">
-              <h3 className="font-semibold text-white text-base truncate">
-                {therapist.name}
-              </h3>
+              <h3 className="font-semibold text-white text-base truncate">{therapist.name}</h3>
               {therapist.rating > 0 && (
                 <div className="flex items-center gap-1 text-xs text-yellow-400">
                   <span>★</span>
@@ -397,7 +387,9 @@ function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
 
             {/* Availability Badge */}
             <div className="mb-2">
-              <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium border ${availabilityColor}`}>
+              <span
+                className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium border ${availabilityColor}`}
+              >
                 {therapist.availability}
               </span>
             </div>
@@ -424,12 +416,8 @@ function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
                   {therapist.location}
                 </span>
               )}
-              {therapist.experience && (
-                <span>{therapist.experience}</span>
-              )}
-              {priceLabel && (
-                <span className="text-primary-400 font-medium">{priceLabel}</span>
-              )}
+              {therapist.experience && <span>{therapist.experience}</span>}
+              {priceLabel && <span className="text-primary-400 font-medium">{priceLabel}</span>}
               {therapist.distanceInKm !== undefined && (
                 <span className="text-primary-400 font-medium">
                   {therapist.distanceInKm.toFixed(1)} km
@@ -450,9 +438,9 @@ function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
         </a>
         <button
           onClick={(e) => {
-            e.preventDefault()
+            e.preventDefault();
             // TODO: Implement quick contact
-            alert('Kontakt-Funktion kommt bald!')
+            alert('Kontakt-Funktion kommt bald!');
           }}
           className="rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white/80 hover:bg-white/10 transition-colors"
         >
@@ -460,5 +448,5 @@ function TherapistCardSimple({ therapist }: { therapist: TherapistCard }) {
         </button>
       </div>
     </div>
-  )
+  );
 }

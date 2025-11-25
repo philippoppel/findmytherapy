@@ -2,7 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LayoutDashboard, Shield, User, LogOut, Menu, X, Compass, Globe, Mail, BarChart3 } from 'lucide-react';
+import {
+  Home,
+  LayoutDashboard,
+  Shield,
+  User,
+  LogOut,
+  Menu,
+  X,
+  Compass,
+  Globe,
+  Mail,
+  BarChart3,
+} from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { FEATURES } from '@/lib/features';
@@ -10,7 +22,9 @@ import { FEATURES } from '@/lib/features';
 const baseNavigation = [
   { name: 'Dashboard', href: '/dashboard/therapist', icon: LayoutDashboard },
   { name: 'Profil', href: '/dashboard/profile', icon: User },
-  ...(FEATURES.MICROSITE ? [{ name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe }] : []),
+  ...(FEATURES.MICROSITE
+    ? [{ name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe }]
+    : []),
   { name: 'Analytics', href: '/dashboard/therapist/analytics', icon: BarChart3 },
   { name: 'Kontaktanfragen', href: '/dashboard/therapist/leads', icon: Mail },
   { name: 'Sicherheit', href: '/dashboard/security', icon: Shield },
@@ -57,7 +71,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
-            <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-105" aria-label="FindMyTherapy Startseite">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 transition-transform hover:scale-105"
+              aria-label="FindMyTherapy Startseite"
+            >
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000 shadow-lg shadow-primary-500/30">
                 <Compass className="h-5 w-5 text-white" />
               </div>
@@ -135,7 +153,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <nav className="space-y-1 p-4">
                 {navigation.map((item) => {
                   const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
-                  const showBadge = item.href === '/dashboard/therapist/leads' && unreadLeadsCount > 0;
+                  const showBadge =
+                    item.href === '/dashboard/therapist/leads' && unreadLeadsCount > 0;
                   return (
                     <Link
                       key={item.href}
@@ -171,9 +190,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          {children}
-        </main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );

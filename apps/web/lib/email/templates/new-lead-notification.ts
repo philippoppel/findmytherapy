@@ -13,7 +13,11 @@ export interface LeadEmailData {
   leadsUrl: string;
 }
 
-export function generateLeadNotificationEmail(data: LeadEmailData): { subject: string; html: string; text: string } {
+export function generateLeadNotificationEmail(data: LeadEmailData): {
+  subject: string;
+  html: string;
+  text: string;
+} {
   const subject = `Neue Kontaktanfrage von ${data.leadName}`;
 
   const html = `

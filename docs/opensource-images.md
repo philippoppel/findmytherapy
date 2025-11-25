@@ -9,6 +9,7 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ### Hero-Image für Homepage (PRIORITÄT #1)
 
 **Option 1: Warmes Therapie-Gespräch**
+
 - **URL**: https://unsplash.com/photos/NDfqqq_7QWM
 - **Download**: https://unsplash.com/photos/NDfqqq_7QWM/download?force=true&w=1920
 - **Beschreibung**: Therapeutin im Gespräch, warmes natürliches Licht
@@ -16,6 +17,7 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 - **Lizenz**: Unsplash (kostenlos, kommerzielle Nutzung erlaubt)
 
 **Option 2: Gemütlicher Praxis-Raum**
+
 - **URL**: https://unsplash.com/photos/v2osk-MazP4
 - **Download**: https://unsplash.com/photos/v2osk-MazP4/download?force=true&w=1920
 - **Beschreibung**: Moderne, warme Therapie-Praxis mit Pflanzen
@@ -23,6 +25,7 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 - **Lizenz**: Unsplash
 
 **Option 3: Vertrauensvolle Beratung**
+
 - **URL**: https://unsplash.com/photos/5QgIuuBxKwM
 - **Download**: https://unsplash.com/photos/5QgIuuBxKwM/download?force=true&w=1920
 - **Beschreibung**: Professionelles Beratungsgespräch, warme Atmosphäre
@@ -36,31 +39,37 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ### Diverse Headshots (alle von Unsplash)
 
 **Frau, 30-40 Jahre, freundlich**
+
 - **URL**: https://unsplash.com/photos/rDEOVtE7vOs
 - **Download**: https://unsplash.com/photos/rDEOVtE7vOs/download?force=true&w=800
 - **Optimale Größe**: 400x400px (crop zu Quadrat)
 
 **Mann, 35-45 Jahre, professionell**
+
 - **URL**: https://unsplash.com/photos/WNoLnJo7tS8
 - **Download**: https://unsplash.com/photos/WNoLnJo7tS8/download?force=true&w=800
 - **Optimale Größe**: 400x400px
 
 **Frau, 45-55 Jahre, erfahren**
+
 - **URL**: https://unsplash.com/photos/mEZ3PoFGs_k
 - **Download**: https://unsplash.com/photos/mEZ3PoFGs_k/download?force=true&w=800
 - **Optimale Größe**: 400x400px
 
 **Mann, 50-60 Jahre, vertrauenswürdig**
+
 - **URL**: https://unsplash.com/photos/d2MSDujJl2g
 - **Download**: https://unsplash.com/photos/d2MSDujJl2g/download?force=true&w=800
 - **Optimale Größe**: 400x400px
 
 **Frau, 25-35 Jahre, modern**
+
 - **URL**: https://unsplash.com/photos/7YVZYZeITc8
 - **Download**: https://unsplash.com/photos/7YVZYZeITc8/download?force=true&w=800
 - **Optimale Größe**: 400x400px
 
 **Non-binary Person, jung**
+
 - **URL**: https://unsplash.com/photos/2EGNqazbAMk
 - **Download**: https://unsplash.com/photos/2EGNqazbAMk/download?force=true&w=800
 - **Optimale Größe**: 400x400px
@@ -70,16 +79,19 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 🏢 Praxis & Büro-Szenen
 
 **Moderne Praxis mit Pflanzen**
+
 - **URL**: https://unsplash.com/photos/L7en7Lb-Ovc
 - **Download**: https://unsplash.com/photos/L7en7Lb-Ovc/download?force=true&w=1200
 - **Verwendung**: About-Seite, Team-Hintergrund
 
 **Gemütlicher Wartebereich**
+
 - **URL**: https://unsplash.com/photos/ylyco-JdOOE
 - **Download**: https://unsplash.com/photos/ylyco-JdOOE/download?force=true&w=1200
 - **Verwendung**: Therapist-Benefits Section
 
 **Helles Büro mit Sofas**
+
 - **URL**: https://unsplash.com/photos/wDIhhaP6Q8k
 - **Download**: https://unsplash.com/photos/wDIhhaP6Q8k/download?force=true&w=1200
 - **Verwendung**: Homepage Sections
@@ -89,21 +101,25 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 🤝 Emotionale Momente & Support
 
 **Umarmung / Trost**
+
 - **URL**: https://unsplash.com/photos/GnY_mW1Q6Xc
 - **Download**: https://unsplash.com/photos/GnY_mW1Q6Xc/download?force=true&w=1200
 - **Verwendung**: Client-Benefits, emotionale Sections
 
 **Händchenhalten / Support**
+
 - **URL**: https://unsplash.com/photos/KdeqA3aTnBY
 - **Download**: https://unsplash.com/photos/KdeqA3aTnBY/download?force=true&w=1200
 - **Verwendung**: Trust-Building, Support-Sections
 
 **Hoffnung / Neuanfang**
+
 - **URL**: https://unsplash.com/photos/ng93s-lQ2e0
 - **Download**: https://unsplash.com/photos/ng93s-lQ2e0/download?force=true&w=1200
 - **Verwendung**: Success Stories, Testimonials
 
 **Frieden / Meditation**
+
 - **URL**: https://unsplash.com/photos/E6HjQaB7UEA
 - **Download**: https://unsplash.com/photos/E6HjQaB7UEA/download?force=true&w=1200
 - **Verwendung**: Assessment/Triage Sections
@@ -113,16 +129,19 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 🌿 Beruhigende Hintergründe & Natur
 
 **Sonnenaufgang durch Bäume**
+
 - **URL**: https://unsplash.com/photos/vZJdYl5JVXY
 - **Download**: https://unsplash.com/photos/vZJdYl5JVXY/download?force=true&w=1920
 - **Verwendung**: Hero-Background alternativ
 
 **Warmes Licht durch Fenster**
+
 - **URL**: https://unsplash.com/photos/bzdhc5b3Bxs
 - **Download**: https://unsplash.com/photos/bzdhc5b3Bxs/download?force=true&w=1920
 - **Verwendung**: Background-Overlays
 
 **Sanfte Pflanzen / Sukkulenten**
+
 - **URL**: https://unsplash.com/photos/cXEbssSQ5qE
 - **Download**: https://unsplash.com/photos/cXEbssSQ5qE/download?force=true&w=1200
 - **Verwendung**: Card-Backgrounds, Details
@@ -132,16 +151,19 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 👥 Team & Collaboration
 
 **Team-Meeting, casual**
+
 - **URL**: https://unsplash.com/photos/QckxruozjRg
 - **Download**: https://unsplash.com/photos/QckxruozjRg/download?force=true&w=1200
 - **Verwendung**: Team-Section (als Platzhalter)
 
 **Collaborative Work**
+
 - **URL**: https://unsplash.com/photos/1K6IQsQbizI
 - **Download**: https://unsplash.com/photos/1K6IQsQbizI/download?force=true&w=1200
 - **Verwendung**: Team-Section, About-Page
 
 **Diverse Team**
+
 - **URL**: https://unsplash.com/photos/PGdW_bHDbpI
 - **Download**: https://unsplash.com/photos/PGdW_bHDbpI/download?force=true&w=1200
 - **Verwendung**: Team-Section
@@ -151,11 +173,13 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 📱 UI/UX & Digital Health
 
 **Person mit Tablet (Healthcare)**
+
 - **URL**: https://unsplash.com/photos/kTdjCHqh4KI
 - **Download**: https://unsplash.com/photos/kTdjCHqh4KI/download?force=true&w=1200
 - **Verwendung**: Digital-Assessment Sections
 
 **Smartphone App Konzept**
+
 - **URL**: https://unsplash.com/photos/AQs-ckwVzCE
 - **Download**: https://unsplash.com/photos/AQs-ckwVzCE/download?force=true&w=1200
 - **Verwendung**: Mobile-Features
@@ -167,6 +191,7 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ### Hero Background Video
 
 **Warmes Licht durch Vorhang**
+
 - **URL**: https://www.pexels.com/video/sunlight-through-curtains-4065893/
 - **Download**: https://www.pexels.com/download/video/4065893/?h=1080&w=1920
 - **Beschreibung**: Subtile Lichtbewegung, 15 Sekunden Loop
@@ -174,12 +199,14 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 - **Lizenz**: Pexels (kostenlos)
 
 **Pflanzen im Wind**
+
 - **URL**: https://www.pexels.com/video/green-leaves-5662875/
 - **Download**: https://www.pexels.com/download/video/5662875/?h=1080&w=1920
 - **Beschreibung**: Beruhigende Bewegung, Loop-fähig
 - **Größe**: 1920x1080, MP4
 
 **Meditation/Yoga (B-Roll)**
+
 - **URL**: https://www.pexels.com/video/woman-meditating-3205534/
 - **Download**: https://www.pexels.com/download/video/3205534/?h=1080&w=1920
 - **Beschreibung**: Person in Meditation, friedlich
@@ -190,18 +217,22 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ## 📊 Kollektionen für Themenbereiche
 
 ### Depression & Hoffnung
+
 - https://unsplash.com/collections/10816933/hope-and-recovery
 - Kuratierte Sammlung mit passenden Bildern
 
 ### Anxiety & Calm
+
 - https://unsplash.com/collections/4599351/calm-and-peaceful
 - Beruhigende, friedliche Bilder
 
 ### Therapy Sessions
+
 - https://unsplash.com/collections/11356546/mental-health-therapy
 - Authentische Therapie-Szenen
 
 ### Wellness & Self-Care
+
 - https://unsplash.com/collections/1280690/wellness
 - Self-Care und Wohlbefinden
 
@@ -212,12 +243,14 @@ Dieses Dokument enthält **direkte Links** zu hochwertigen, kostenlosen Bildern 
 ### Schritt 1: Herunterladen
 
 Für **Unsplash**:
+
 ```bash
 # Direkt-Download (1920px Breite, optimiert)
 wget "https://unsplash.com/photos/PHOTO_ID/download?force=true&w=1920" -O image-name.jpg
 ```
 
 Für **Pexels**:
+
 - Klicken Sie auf "Download" Button
 - Wählen Sie "Free Download"
 - Größe: "Large" oder "Original"
@@ -225,10 +258,12 @@ Für **Pexels**:
 ### Schritt 2: Optimieren
 
 **Online Tools**:
+
 - **TinyJPG**: https://tinyjpg.com (drag & drop)
 - **Squoosh**: https://squoosh.app (WebP Konvertierung)
 
 **Ziel-Dateigröße**:
+
 - Hero: < 300KB
 - Profilbilder: < 80KB
 - Cards: < 150KB
@@ -265,7 +300,7 @@ background-plants-calm.jpg
 ### Schritt 5: Next.js Image Component verwenden
 
 ```tsx
-import Image from 'next/image'
+import Image from 'next/image';
 
 <Image
   src="/images/hero/homepage-hero-therapy.jpg"
@@ -275,7 +310,7 @@ import Image from 'next/image'
   className="rounded-2xl"
   priority // für Hero-Images
   quality={85}
-/>
+/>;
 ```
 
 ---
@@ -283,6 +318,7 @@ import Image from 'next/image'
 ## ✅ Integration Checkliste
 
 ### Homepage Hero
+
 - [ ] Hero-Image heruntergeladen (Option 1, 2 oder 3)
 - [ ] Optimiert (< 300KB)
 - [ ] WebP Version erstellt
@@ -291,6 +327,7 @@ import Image from 'next/image'
 - [ ] Alt-Text hinzugefügt
 
 ### Therapeuten-Profile
+
 - [ ] 6 diverse Profilbilder heruntergeladen
 - [ ] Zu 400x400px Quadrat gecroppt
 - [ ] Optimiert (< 80KB pro Bild)
@@ -299,12 +336,14 @@ import Image from 'next/image'
 - [ ] Platzhalter in Code ersetzt
 
 ### Team-Section
+
 - [ ] Team-Bilder heruntergeladen (oder echte Fotos verwendet)
 - [ ] Optimiert
 - [ ] In `/public/images/team/` gespeichert
 - [ ] In `TeamSection.tsx` integriert
 
 ### Backgrounds & Decorative
+
 - [ ] 2-3 beruhigende Hintergrundbilder
 - [ ] Optimiert für Performance
 - [ ] Als CSS-Backgrounds oder Image-Tags integriert
@@ -314,6 +353,7 @@ import Image from 'next/image'
 ## 📝 Lizenzen & Attribution
 
 ### Unsplash License
+
 - ✅ **Kostenlose** Nutzung (auch kommerziell)
 - ✅ **Keine Attribution** erforderlich (aber nett)
 - ✅ **Unbegrenzte** Downloads
@@ -321,12 +361,14 @@ import Image from 'next/image'
 - ❌ Nicht zu Stock-Photo-Sammlungen kompilieren
 
 **Beispiel Attribution** (optional aber empfohlen):
+
 ```html
 <!-- In Footer oder Credits -->
 Foto von [Photographer Name] auf Unsplash
 ```
 
 ### Pexels License
+
 - ✅ **Kostenlose** Nutzung (auch kommerziell)
 - ✅ **Keine Attribution** erforderlich
 - ✅ Videos und Fotos
@@ -339,6 +381,7 @@ Foto von [Photographer Name] auf Unsplash
 ### Farbtemperatur anpassen (für konsistenten Look)
 
 **Mit Photoshop/GIMP**:
+
 1. Bild öffnen
 2. Filter → Camera Raw / Color Balance
 3. Temperatur: +5 bis +10 (wärmer)
@@ -346,6 +389,7 @@ Foto von [Photographer Name] auf Unsplash
 5. Sättigung: -10 bis -15 (softer)
 
 **Mit Online-Tool (Photopea)**:
+
 1. Öffnen Sie https://www.photopea.com
 2. Datei → Öffnen → Ihr Bild
 3. Filter → Camera RAW Filter
@@ -354,6 +398,7 @@ Foto von [Photographer Name] auf Unsplash
 ### Batch-Bearbeitung (mehrere Bilder)
 
 **Mit ImageMagick** (Command Line):
+
 ```bash
 # Alle JPGs im Ordner wärmer machen
 for img in *.jpg; do
@@ -396,21 +441,25 @@ done
 ## 💡 Pro-Tipps
 
 ### 1. Konsistenz ist Key
+
 - Wählen Sie Bilder mit **ähnlicher Farbtemperatur**
 - Gleicher Stil (natürlich vs. staged)
 - Ähnliche Belichtung
 
 ### 2. Performance First
+
 - **Immer** WebP-Versionen zusätzlich
 - Lazy Loading für below-the-fold Bilder
 - Responsive Images (srcset)
 
 ### 3. Accessibility
+
 - **Aussagekräftige Alt-Texte**
 - Nicht "image1.jpg" sondern "Therapeutin im Gespräch mit Klientin"
 - Beschreiben Sie, was zu sehen ist
 
 ### 4. Legal
+
 - Obwohl keine Attribution nötig: Ein Credits-Link ist professionell
 - Speichern Sie Screenshot der Lizenz-Seite
 - Beachten Sie Model-Releases bei Stockphotos
@@ -422,6 +471,7 @@ done
 Wenn Sie **jetzt sofort** starten möchten:
 
 1. **Hero-Image** (5 Min):
+
    ```bash
    cd /Users/philippoppel/Desktop/mental-health-platform/apps/web/public/images
    mkdir -p hero
@@ -437,8 +487,9 @@ Wenn Sie **jetzt sofort** starten möchten:
 
 3. **Integrieren** (5 Min):
    - Ersetzen Sie in `MarketingHero.tsx`:
+
    ```tsx
-   src="/images/hero/therapy-hero.jpg"
+   src = '/images/hero/therapy-hero.jpg';
    ```
 
 4. **Testen** (2 Min):

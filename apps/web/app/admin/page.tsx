@@ -4,57 +4,58 @@ import { updateTherapistStatus } from './actions';
 import { Users, Bell, ShieldAlert, TrendingUp } from 'lucide-react';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const fetchAdminData = async () => {
-  const [userCount, therapistCount, pendingTherapists, recentAlerts, therapistProfiles] = await Promise.all([
-    prisma.user.count(),
-    prisma.therapistProfile.count({
-      where: { deletedAt: null },
-    }),
-    prisma.therapistProfile.count({
-      where: { status: 'PENDING', deletedAt: null },
-    }),
-    prisma.emergencyAlert.findMany({
-      orderBy: { triggeredAt: 'desc' },
-      take: 5,
-      include: {
-        client: {
-          select: {
-            email: true,
+  const [userCount, therapistCount, pendingTherapists, recentAlerts, therapistProfiles] =
+    await Promise.all([
+      prisma.user.count(),
+      prisma.therapistProfile.count({
+        where: { deletedAt: null },
+      }),
+      prisma.therapistProfile.count({
+        where: { status: 'PENDING', deletedAt: null },
+      }),
+      prisma.emergencyAlert.findMany({
+        orderBy: { triggeredAt: 'desc' },
+        take: 5,
+        include: {
+          client: {
+            select: {
+              email: true,
+            },
+          },
+          handler: {
+            select: {
+              email: true,
+            },
           },
         },
-        handler: {
-          select: {
-            email: true,
+      }),
+      prisma.therapistProfile.findMany({
+        where: { deletedAt: null },
+        orderBy: { updatedAt: 'desc' },
+        select: {
+          id: true,
+          status: true,
+          adminNotes: true,
+          city: true,
+          country: true,
+          online: true,
+          specialties: true,
+          modalities: true,
+          about: true,
+          availabilityNote: true,
+          pricingNote: true,
+          updatedAt: true,
+          user: {
+            select: {
+              email: true,
+            },
           },
         },
-      },
-    }),
-    prisma.therapistProfile.findMany({
-      where: { deletedAt: null },
-      orderBy: { updatedAt: 'desc' },
-      select: {
-        id: true,
-        status: true,
-        adminNotes: true,
-        city: true,
-        country: true,
-        online: true,
-        specialties: true,
-        modalities: true,
-        about: true,
-        availabilityNote: true,
-        pricingNote: true,
-        updatedAt: true,
-        user: {
-          select: {
-            email: true,
-          },
-        },
-      },
-    }),
-  ]);
+      }),
+    ]);
 
   return {
     userCount,
@@ -87,7 +88,12 @@ export default async function AdminDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard icon={Users} label="Gesamt-Nutzer:innen" value={stats.userCount} />
           <StatCard icon={TrendingUp} label="Therapeut:innen aktiv" value={stats.therapistCount} />
-          <StatCard icon={ShieldAlert} label="Ausstehende Verifizierungen" value={stats.pendingTherapists} tone="warning" />
+          <StatCard
+            icon={ShieldAlert}
+            label="Ausstehende Verifizierungen"
+            value={stats.pendingTherapists}
+            tone="warning"
+          />
         </div>
       </section>
 
@@ -114,12 +120,10 @@ export default async function AdminDashboardPage() {
               >
                 <input type="hidden" name="profileId" value={profile.id} />
                 <div className="flex flex-col gap-1">
-                  <p className="text-sm font-semibold text-gray-900">
-                    {profile.user.email}
-                  </p>
+                  <p className="text-sm font-semibold text-gray-900">{profile.user.email}</p>
                   <p className="text-xs text-gray-600">
-                    {profile.city ? `${profile.city}, ${profile.country}` : profile.country}{' '}
-                    • {profile.online ? 'Online verfügbar' : 'Nur vor Ort'}
+                    {profile.city ? `${profile.city}, ${profile.country}` : profile.country} •{' '}
+                    {profile.online ? 'Online verfügbar' : 'Nur vor Ort'}
                   </p>
                   {profile.specialties.length > 0 && (
                     <p className="text-xs text-gray-500">
@@ -132,14 +136,10 @@ export default async function AdminDashboardPage() {
                     </p>
                   )}
                   {profile.availabilityNote && (
-                    <p className="text-xs text-primary">
-                      Termine: {profile.availabilityNote}
-                    </p>
+                    <p className="text-xs text-primary">Termine: {profile.availabilityNote}</p>
                   )}
                   {profile.pricingNote && (
-                    <p className="text-xs text-primary">
-                      Preise: {profile.pricingNote}
-                    </p>
+                    <p className="text-xs text-primary">Preise: {profile.pricingNote}</p>
                   )}
                   <p className="text-xs text-gray-400">
                     Zuletzt aktualisiert: {profile.updatedAt.toLocaleString('de-AT')}
@@ -216,7 +216,9 @@ export default async function AdminDashboardPage() {
                 </p>
                 <p className="text-xs text-gray-500">
                   Ausgelöst am {alert.triggeredAt.toLocaleString('de-AT')}
-                  {alert.handler ? ` • Bearbeitet von ${alert.handler.email}` : ' • Noch nicht bearbeitet'}
+                  {alert.handler
+                    ? ` • Bearbeitet von ${alert.handler.email}`
+                    : ' • Noch nicht bearbeitet'}
                 </p>
               </li>
             ))}
@@ -242,7 +244,9 @@ const toneClasses: Record<NonNullable<StatCardProps['tone']>, string> = {
 function StatCard({ icon: Icon, label, value, tone = 'default' }: StatCardProps) {
   return (
     <div className="bg-white rounded-lg shadow p-5 flex items-center gap-4">
-      <div className={`h-12 w-12 rounded-full flex items-center justify-center ${toneClasses[tone]}`}>
+      <div
+        className={`h-12 w-12 rounded-full flex items-center justify-center ${toneClasses[tone]}`}
+      >
         <Icon className="h-6 w-6" />
       </div>
       <div>

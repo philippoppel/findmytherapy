@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import type { ReactNode } from 'react'
-import { cn } from '@mental-health/ui'
+import type { ReactNode } from 'react';
+import { cn } from '@mental-health/ui';
 
-type Alignment = 'left' | 'center'
+type Alignment = 'left' | 'center';
 
 interface SectionHeadingProps {
-  eyebrow?: string
-  title: string
-  description?: string
-  align?: Alignment
-  actions?: ReactNode
-  className?: string
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: Alignment;
+  actions?: ReactNode;
+  className?: string;
 }
 
 export function SectionHeading({
@@ -23,9 +23,7 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   const alignmentStyles =
-    align === 'center'
-      ? 'mx-auto text-center items-center'
-      : 'text-left items-start'
+    align === 'center' ? 'mx-auto text-center items-center' : 'text-left items-start';
 
   return (
     <div
@@ -45,9 +43,7 @@ export function SectionHeading({
         {title}
       </h2>
       {description ? (
-        <p className="text-pretty text-lg leading-relaxed text-muted">
-          {description}
-        </p>
+        <p className="text-pretty text-lg leading-relaxed text-muted">{description}</p>
       ) : null}
       {actions ? (
         <div
@@ -60,5 +56,5 @@ export function SectionHeading({
         </div>
       ) : null}
     </div>
-  )
+  );
 }

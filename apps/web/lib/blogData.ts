@@ -1,64 +1,64 @@
 export type BlogPostSection = {
-  heading: string
-  paragraphs: string[]
-  list?: string[]
-}
+  heading: string;
+  paragraphs: string[];
+  list?: string[];
+};
 
 export type FAQItem = {
-  question: string
-  answer: string
-}
+  question: string;
+  answer: string;
+};
 
 export type HowToStep = {
-  name: string
-  text: string
-}
+  name: string;
+  text: string;
+};
 
 export type Author = {
-  id: string
-  name: string
-  slug: string
-  title: string
-  credentials: string
-  bio: string
-  avatar: string
-  email?: string
+  id: string;
+  name: string;
+  slug: string;
+  title: string;
+  credentials: string;
+  bio: string;
+  avatar: string;
+  email?: string;
   social?: {
-    linkedin?: string
-    twitter?: string
-    website?: string
-  }
-  expertise: string[]
-}
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+  };
+  expertise: string[];
+};
 
 export type FeaturedImage = {
-  src: string
-  alt: string
-  width: number
-  height: number
-}
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
 
 export type BlogPost = {
-  slug: string
-  title: string
-  excerpt: string
-  summary: string[]
-  category: string
-  publishedAt: string
-  updatedAt?: string
-  readingTime: string
-  author: string // Legacy - display name
-  authorId: string // Link to Author profile
-  keywords: string[]
-  tags: string[]
-  featuredImage: FeaturedImage
-  sections: BlogPostSection[]
-  relatedPosts?: string[] // Slugs of related posts
-  faq?: FAQItem[] // FAQ for FAQ Schema
-  howTo?: HowToStep[] // HowTo steps for HowTo Schema
-  medicalReviewedBy?: string // Author ID for medical review
-  lastReviewed?: string // Last medical review date
-}
+  slug: string;
+  title: string;
+  excerpt: string;
+  summary: string[];
+  category: string;
+  publishedAt: string;
+  updatedAt?: string;
+  readingTime: string;
+  author: string; // Legacy - display name
+  authorId: string; // Link to Author profile
+  keywords: string[];
+  tags: string[];
+  featuredImage: FeaturedImage;
+  sections: BlogPostSection[];
+  relatedPosts?: string[]; // Slugs of related posts
+  faq?: FAQItem[]; // FAQ for FAQ Schema
+  howTo?: HowToStep[]; // HowTo steps for HowTo Schema
+  medicalReviewedBy?: string; // Author ID for medical review
+  lastReviewed?: string; // Last medical review date
+};
 
 export const blogPosts: BlogPost[] = [
   {
@@ -95,33 +95,43 @@ export const blogPosts: BlogPost[] = [
       'Selbsthilfe',
       'Atemtechniken',
     ],
-    relatedPosts: ['akuthilfe-panikattacken', 'atemtechniken-bei-angst', 'angststoerungen-formen-symptome-behandlung'],
+    relatedPosts: [
+      'akuthilfe-panikattacken',
+      'atemtechniken-bei-angst',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-15',
     faq: [
       {
         question: 'Sind Panikattacken gefährlich?',
-        answer: 'Nein, auch wenn sie sich schrecklich anfühlen. Eine Panikattacke kann einem nicht das Leben nehmen und führt weder zum Herzinfarkt noch zum „Durchdrehen". Die körperlichen Symptome – Herzrasen, hoher Blutdruck, Hyperventilation etc. – sind vorübergehend und hinterlassen keine bleibenden Schäden. Allerdings sollte man, besonders beim ersten Auftreten, immer ärztlich abklären lassen, ob nicht doch etwas Körperliches vorliegt.',
+        answer:
+          'Nein, auch wenn sie sich schrecklich anfühlen. Eine Panikattacke kann einem nicht das Leben nehmen und führt weder zum Herzinfarkt noch zum „Durchdrehen". Die körperlichen Symptome – Herzrasen, hoher Blutdruck, Hyperventilation etc. – sind vorübergehend und hinterlassen keine bleibenden Schäden. Allerdings sollte man, besonders beim ersten Auftreten, immer ärztlich abklären lassen, ob nicht doch etwas Körperliches vorliegt.',
       },
       {
         question: 'Wie häufig kommen Panikattacken vor?',
-        answer: 'Gelegentliche Panikattacken sind relativ häufig. Schätzungen zufolge erleben pro Jahr etwa 10 % der Erwachsenen mindestens eine Panikattacke. Die eigentliche Panikstörung (wiederholte Attacken plus anhaltende Angst davor) betrifft rund 3–5 % der Menschen irgendwann im Leben. Frauen entwickeln etwas häufiger eine Panikstörung als Männer.',
+        answer:
+          'Gelegentliche Panikattacken sind relativ häufig. Schätzungen zufolge erleben pro Jahr etwa 10 % der Erwachsenen mindestens eine Panikattacke. Die eigentliche Panikstörung (wiederholte Attacken plus anhaltende Angst davor) betrifft rund 3–5 % der Menschen irgendwann im Leben. Frauen entwickeln etwas häufiger eine Panikstörung als Männer.',
       },
       {
         question: 'Was ist der Unterschied zwischen einer Panikattacke und einem Herzinfarkt?',
-        answer: 'Die Symptome können sich ähneln (Brustschmerz, Luftnot, Schweißausbruch etc.), doch ein Herzinfarkt ist lebensbedrohlich, eine Panikattacke nicht. Bei einem Herzinfarkt liegt ein Verschluss einer Herzarterie vor; der Schmerz und die Beschwerden hören nicht einfach auf, sondern erfordern eine medizinische Notfallbehandlung. Eine Panikattacke hingegen resultiert „nur" aus einer überschießenden Alarmreaktion des Körpers auf Angst und vergeht von selbst wieder.',
+        answer:
+          'Die Symptome können sich ähneln (Brustschmerz, Luftnot, Schweißausbruch etc.), doch ein Herzinfarkt ist lebensbedrohlich, eine Panikattacke nicht. Bei einem Herzinfarkt liegt ein Verschluss einer Herzarterie vor; der Schmerz und die Beschwerden hören nicht einfach auf, sondern erfordern eine medizinische Notfallbehandlung. Eine Panikattacke hingegen resultiert „nur" aus einer überschießenden Alarmreaktion des Körpers auf Angst und vergeht von selbst wieder.',
       },
       {
         question: 'Braucht man Medikamente gegen Panikattacken?',
-        answer: 'Nicht zwingend. Therapie (vor allem Verhaltenstherapie) gilt als Behandlung erster Wahl, weil sie an den Ursachen ansetzt und nachhaltige Bewältigungsstrategien vermittelt. Medikamente wie Antidepressiva können aber unterstützend sinnvoll sein, insbesondere wenn die Angst sehr stark ist. Bestimmte Antidepressiva (z. B. SSRIs) haben sich bei Panikstörung als wirksam erwiesen und machen nicht abhängig.',
+        answer:
+          'Nicht zwingend. Therapie (vor allem Verhaltenstherapie) gilt als Behandlung erster Wahl, weil sie an den Ursachen ansetzt und nachhaltige Bewältigungsstrategien vermittelt. Medikamente wie Antidepressiva können aber unterstützend sinnvoll sein, insbesondere wenn die Angst sehr stark ist. Bestimmte Antidepressiva (z. B. SSRIs) haben sich bei Panikstörung als wirksam erwiesen und machen nicht abhängig.',
       },
       {
         question: 'Was kann ich selbst tun, um Panikattacken vorzubeugen?',
-        answer: 'Stress reduzieren ist ein wichtiger Faktor – sorgen Sie für regelmäßige Entspannung und ausreichend Schlaf. Körperliche Aktivität hilft erwiesenermaßen: Ausdauerbewegung wie Joggen, Radfahren oder Schwimmen verbessert die Angstbewältigung. Vermeiden Sie übermäßig viel Koffein, Nikotin und Alkohol, da diese Stoffe das Nervensystem anregen und Paniksymptome begünstigen können.',
+        answer:
+          'Stress reduzieren ist ein wichtiger Faktor – sorgen Sie für regelmäßige Entspannung und ausreichend Schlaf. Körperliche Aktivität hilft erwiesenermaßen: Ausdauerbewegung wie Joggen, Radfahren oder Schwimmen verbessert die Angstbewältigung. Vermeiden Sie übermäßig viel Koffein, Nikotin und Alkohol, da diese Stoffe das Nervensystem anregen und Paniksymptome begünstigen können.',
       },
       {
         question: 'Wann sollte ich professionelle Hilfe suchen?',
-        answer: 'Grundsätzlich immer dann, wenn Panikattacken Ihr Leben wesentlich beeinträchtigen oder Ihre Lebensqualität mindern. Spätestens wenn Sie wegen der ständigen Angst bestimmte Orte meiden, sich sozial zurückziehen oder in dauernder Sorge vor der nächsten Attacke leben, ist es ratsam, einen Psychotherapeuten aufzusuchen. Scheuen Sie sich nicht davor – Angststörungen sind gut erforscht und behandelbar, und je früher man anfängt, desto schneller stellt sich Besserung ein.',
+        answer:
+          'Grundsätzlich immer dann, wenn Panikattacken Ihr Leben wesentlich beeinträchtigen oder Ihre Lebensqualität mindern. Spätestens wenn Sie wegen der ständigen Angst bestimmte Orte meiden, sich sozial zurückziehen oder in dauernder Sorge vor der nächsten Attacke leben, ist es ratsam, einen Psychotherapeuten aufzusuchen. Scheuen Sie sich nicht davor – Angststörungen sind gut erforscht und behandelbar, und je früher man anfängt, desto schneller stellt sich Besserung ein.',
       },
     ],
     howTo: [
@@ -393,7 +403,11 @@ export const blogPosts: BlogPost[] = [
       'Employee Assistance Program',
       'Ressourcen für Teams',
     ],
-    relatedPosts: ['burnout-erkennen-vorbeugen', 'mental-health-strategien-alltag', 'burnout-praevention-forschung'],
+    relatedPosts: [
+      'burnout-erkennen-vorbeugen',
+      'mental-health-strategien-alltag',
+      'burnout-praevention-forschung',
+    ],
     sections: [
       {
         heading: 'Herausforderungen in Unternehmen',
@@ -438,7 +452,13 @@ export const blogPosts: BlogPost[] = [
     readingTime: '8 Min.',
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
-    tags: ['Therapieformen', 'Verhaltenstherapie', 'Tiefenpsychologie', 'Systemische Therapie', 'Psychotherapie Österreich'],
+    tags: [
+      'Therapieformen',
+      'Verhaltenstherapie',
+      'Tiefenpsychologie',
+      'Systemische Therapie',
+      'Psychotherapie Österreich',
+    ],
     featuredImage: {
       src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Therapeutische Beratungssituation symbolisiert verschiedene Therapieformen',
@@ -558,13 +578,29 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Psychotherapie',
     ],
-    relatedPosts: ['therapieformen-vergleich', 'depression-verstehen-bewaeltigen', 'angststoerungen-formen-symptome-behandlung'],
+    relatedPosts: [
+      'therapieformen-vergleich',
+      'depression-verstehen-bewaeltigen',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-06-02',
     faq: [
-      { question: 'Wie lange dauert eine kognitive Verhaltenstherapie?', answer: 'Eine typische KVT-Behandlung umfasst 15-25 Sitzungen bei wöchentlichen Terminen. Je nach Schweregrad und Störungsbild kann die Therapie auch kürzer (bei leichten Ängsten) oder länger (bei komplexen Störungen) dauern.' },
-      { question: 'Für welche Störungen ist KVT besonders wirksam?', answer: 'KVT zeigt besonders hohe Wirksamkeit bei Angststörungen (70-90% Erfolgsrate), Depressionen, Zwangsstörungen, PTBS und Essstörungen. Sie ist die am besten erforschte Therapieform mit über 500 kontrollierten Studien.' },
-      { question: 'Was ist der Unterschied zwischen KVT und tiefenpsychologischen Verfahren?', answer: 'KVT arbeitet primär im Hier und Jetzt mit konkreten Problemen und vermittelt aktive Selbsthilfe-Strategien. Tiefenpsychologische Verfahren fokussieren stärker auf unbewusste Konflikte und die Vergangenheit. KVT ist kürzer und strukturierter.' }
+      {
+        question: 'Wie lange dauert eine kognitive Verhaltenstherapie?',
+        answer:
+          'Eine typische KVT-Behandlung umfasst 15-25 Sitzungen bei wöchentlichen Terminen. Je nach Schweregrad und Störungsbild kann die Therapie auch kürzer (bei leichten Ängsten) oder länger (bei komplexen Störungen) dauern.',
+      },
+      {
+        question: 'Für welche Störungen ist KVT besonders wirksam?',
+        answer:
+          'KVT zeigt besonders hohe Wirksamkeit bei Angststörungen (70-90% Erfolgsrate), Depressionen, Zwangsstörungen, PTBS und Essstörungen. Sie ist die am besten erforschte Therapieform mit über 500 kontrollierten Studien.',
+      },
+      {
+        question: 'Was ist der Unterschied zwischen KVT und tiefenpsychologischen Verfahren?',
+        answer:
+          'KVT arbeitet primär im Hier und Jetzt mit konkreten Problemen und vermittelt aktive Selbsthilfe-Strategien. Tiefenpsychologische Verfahren fokussieren stärker auf unbewusste Konflikte und die Vergangenheit. KVT ist kürzer und strukturierter.',
+      },
     ],
     sections: [
       {
@@ -603,7 +639,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Wirksamkeit: Was sagt die Forschung?',
         paragraphs: [
-          'KVT ist für zahlreiche psychische Störungen als wirksam nachgewiesen. Die Effektstärken (Cohen\'s d) liegen meist im mittleren bis hohen Bereich:',
+          "KVT ist für zahlreiche psychische Störungen als wirksam nachgewiesen. Die Effektstärken (Cohen's d) liegen meist im mittleren bis hohen Bereich:",
         ],
         list: [
           'Panikstörung: d = 0,88 (sehr hohe Wirksamkeit, etwa 80% Remissionsrate)',
@@ -678,7 +714,11 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Alltag',
     ],
-    relatedPosts: ['burnout-praevention-forschung', 'depression-verstehen-bewaeltigen', 'meditation-anfaenger-3-minuten'],
+    relatedPosts: [
+      'burnout-praevention-forschung',
+      'depression-verstehen-bewaeltigen',
+      'meditation-anfaenger-3-minuten',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-06-18',
     sections: [
@@ -821,7 +861,11 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Arbeitspsychologie',
     ],
-    relatedPosts: ['burnout-erkennen-vorbeugen', 'mental-health-strategien-alltag', 'depression-verstehen-bewaeltigen'],
+    relatedPosts: [
+      'burnout-erkennen-vorbeugen',
+      'mental-health-strategien-alltag',
+      'depression-verstehen-bewaeltigen',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-07-05',
     sections: [
@@ -948,7 +992,11 @@ export const blogPosts: BlogPost[] = [
       'Gesundheitssystem',
       'Prävention',
     ],
-    relatedPosts: ['wirksamkeit-psychotherapie-studien', 'kassenzuschuss-psychotherapie-oesterreich', 'wartezeiten-psychotherapie-wien'],
+    relatedPosts: [
+      'wirksamkeit-psychotherapie-studien',
+      'kassenzuschuss-psychotherapie-oesterreich',
+      'wartezeiten-psychotherapie-wien',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-07-22',
     sections: [
@@ -1086,7 +1134,11 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Therapieerfolg',
     ],
-    relatedPosts: ['therapieformen-vergleich', 'kognitive-verhaltenstherapie-erklaert', 'depression-verstehen-bewaeltigen'],
+    relatedPosts: [
+      'therapieformen-vergleich',
+      'kognitive-verhaltenstherapie-erklaert',
+      'depression-verstehen-bewaeltigen',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-08-10',
     sections: [
@@ -1242,7 +1294,14 @@ export const blogPosts: BlogPost[] = [
     readingTime: '11 Min.',
     author: 'Thomas Kaufmann BA pth.',
     authorId: 'thomas-kaufmann',
-    tags: ['Psychotherapie', 'Psychologie', 'Psychiatrie', 'Ausbildung', 'Gesundheitsberufe', 'Österreich'],
+    tags: [
+      'Psychotherapie',
+      'Psychologie',
+      'Psychiatrie',
+      'Ausbildung',
+      'Gesundheitsberufe',
+      'Österreich',
+    ],
     featuredImage: {
       src: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Verschiedene Berufsgruppen im Bereich psychische Gesundheit',
@@ -1260,7 +1319,11 @@ export const blogPosts: BlogPost[] = [
       'Gesundheitsberufe',
       'Psychotherapiegesetz',
     ],
-    relatedPosts: ['psychologe-vs-psychotherapeut', 'therapieformen-vergleich', 'richtigen-therapeuten-finden'],
+    relatedPosts: [
+      'psychologe-vs-psychotherapeut',
+      'therapieformen-vergleich',
+      'richtigen-therapeuten-finden',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-09-05',
     sections: [
@@ -1345,9 +1408,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         heading: 'Wann zu wem? Entscheidungshilfe',
-        paragraphs: [
-          'Die Wahl der passenden Berufsgruppe hängt von der Problemstellung ab:',
-        ],
+        paragraphs: ['Die Wahl der passenden Berufsgruppe hängt von der Problemstellung ab:'],
         list: [
           'Psychotherapeut:in: Bei psychischen Störungen (Depression, Angst, Trauma, Beziehungsprobleme), Lebenskrisen, psychosomatischen Beschwerden – primäre Anlaufstelle für Gesprächstherapie',
           'Psychiater:in: Bei Verdacht auf schwere psychische Erkrankungen (Psychosen, bipolare Störung), wenn Medikamente erwogen werden, bei akuten Krisen mit Eigen- oder Fremdgefährdung',
@@ -1451,7 +1512,11 @@ export const blogPosts: BlogPost[] = [
       'evidenzbasiert',
       'Primärversorgung',
     ],
-    relatedPosts: ['digitale-ersteinschaetzung-mental-health', 'depression-verstehen-bewaeltigen', 'angststoerungen-formen-symptome-behandlung'],
+    relatedPosts: [
+      'digitale-ersteinschaetzung-mental-health',
+      'depression-verstehen-bewaeltigen',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-11-08',
     sections: [
@@ -1679,9 +1744,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         heading: 'Notfallnummern Österreich',
-        paragraphs: [
-          'Bei akuter Krise stehen rund um die Uhr kostenlose Helplines zur Verfügung:',
-        ],
+        paragraphs: ['Bei akuter Krise stehen rund um die Uhr kostenlose Helplines zur Verfügung:'],
         list: [
           'Telefonseelsorge: 142 (24/7, anonym, kostenlos)',
           'Psychiatrische Soforthilfe (PSD Wien): 01 31330',
@@ -1725,7 +1788,11 @@ export const blogPosts: BlogPost[] = [
       'PHQ-9 Test',
       'Depressive Episode',
     ],
-    relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen', 'angststoerungen-formen-symptome-behandlung'],
+    relatedPosts: [
+      'akuthilfe-panikattacken',
+      'burnout-erkennen-vorbeugen',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [
@@ -1828,13 +1895,14 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'angststoerungen-formen-symptome-behandlung',
     title: 'Angststörungen: Formen, Symptome und Behandlungsmöglichkeiten',
-    excerpt: 'Die verschiedenen Formen von Angststörungen, ihre Symptome und evidenzbasierte Behandlungsansätze – ein umfassender Leitfaden.',
+    excerpt:
+      'Die verschiedenen Formen von Angststörungen, ihre Symptome und evidenzbasierte Behandlungsansätze – ein umfassender Leitfaden.',
     summary: [
       'Angststörungen umfassen verschiedene Formen: Generalisierte Angststörung, Panikstörung, soziale Phobie und spezifische Phobien',
       'Charakteristisch sind übermäßige, anhaltende Angst und Vermeidungsverhalten, die den Alltag beeinträchtigen',
       'Etwa 15-20% der Menschen erleben im Leben eine Angststörung, Frauen häufiger als Männer',
       'Kognitive Verhaltenstherapie mit Expositionsübungen ist die wirksamste Behandlung',
-      'Medikamentöse Unterstützung durch SSRIs kann bei mittelschweren bis schweren Fällen sinnvoll sein'
+      'Medikamentöse Unterstützung durch SSRIs kann bei mittelschweren bis schweren Fällen sinnvoll sein',
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-17',
@@ -1842,39 +1910,101 @@ export const blogPosts: BlogPost[] = [
     readingTime: '17 Min.',
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
-    tags: ['Angststörung', 'GAD', 'Soziale Phobie', 'Panikstörung', 'Verhaltenstherapie', 'Exposition'],
+    tags: [
+      'Angststörung',
+      'GAD',
+      'Soziale Phobie',
+      'Panikstörung',
+      'Verhaltenstherapie',
+      'Exposition',
+    ],
     featuredImage: {
       src: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Besorgt wirkende Person in Menschenmenge, symbolisiert soziale Angst',
       width: 1200,
-      height: 630
+      height: 630,
     },
-    keywords: ['Angststörung', 'Generalisierte Angststörung', 'GAD-7', 'Soziale Phobie', 'Panikstörung', 'Angst Behandlung Österreich', 'Verhaltenstherapie Angst'],
+    keywords: [
+      'Angststörung',
+      'Generalisierte Angststörung',
+      'GAD-7',
+      'Soziale Phobie',
+      'Panikstörung',
+      'Angst Behandlung Österreich',
+      'Verhaltenstherapie Angst',
+    ],
     relatedPosts: ['akuthilfe-panikattacken', 'atemtechniken-bei-angst'],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [
-      { question: 'Was ist der Unterschied zwischen normaler Angst und einer Angststörung?', answer: 'Normale Angst ist eine angemessene Reaktion auf reale Bedrohungen und hilft uns, vorsichtig zu sein. Eine Angststörung liegt vor, wenn Angst unverhältnismäßig stark, anhaltend und ohne angemessenen Auslöser auftritt und das tägliche Leben deutlich beeinträchtigt. Die Angst ist nicht mehr funktional, sondern wird zur Belastung.' },
-      { question: 'Welche ist die häufigste Angststörung?', answer: 'Die Generalisierte Angststörung (GAD) und spezifische Phobien sind am häufigsten. Etwa 5-7% der Bevölkerung erleben im Laufe eines Jahres eine GAD, gekennzeichnet durch ständige, übermäßige Sorgen zu verschiedenen Lebensbereichen.' },
-      { question: 'Können Angststörungen geheilt werden?', answer: 'Ja, Angststörungen sind sehr gut behandelbar. Kognitive Verhaltenstherapie zeigt Erfolgsraten von 60-80%. Viele Menschen werden nach einer Therapie vollständig symptomfrei, andere lernen, ihre Angst so gut zu managen, dass sie kaum noch beeinträchtigt.' }
+      {
+        question: 'Was ist der Unterschied zwischen normaler Angst und einer Angststörung?',
+        answer:
+          'Normale Angst ist eine angemessene Reaktion auf reale Bedrohungen und hilft uns, vorsichtig zu sein. Eine Angststörung liegt vor, wenn Angst unverhältnismäßig stark, anhaltend und ohne angemessenen Auslöser auftritt und das tägliche Leben deutlich beeinträchtigt. Die Angst ist nicht mehr funktional, sondern wird zur Belastung.',
+      },
+      {
+        question: 'Welche ist die häufigste Angststörung?',
+        answer:
+          'Die Generalisierte Angststörung (GAD) und spezifische Phobien sind am häufigsten. Etwa 5-7% der Bevölkerung erleben im Laufe eines Jahres eine GAD, gekennzeichnet durch ständige, übermäßige Sorgen zu verschiedenen Lebensbereichen.',
+      },
+      {
+        question: 'Können Angststörungen geheilt werden?',
+        answer:
+          'Ja, Angststörungen sind sehr gut behandelbar. Kognitive Verhaltenstherapie zeigt Erfolgsraten von 60-80%. Viele Menschen werden nach einer Therapie vollständig symptomfrei, andere lernen, ihre Angst so gut zu managen, dass sie kaum noch beeinträchtigt.',
+      },
     ],
     sections: [
-      { heading: 'Was sind Angststörungen?', paragraphs: ['Angststörungen sind psychische Erkrankungen, bei denen Angst das zentrale Symptom ist – allerdings nicht als hilfreiche Warnreaktion, sondern als übermäßige, lang anhaltende oder unangemessene Angst, die das Leben einschränkt. Angststörungen gehören zu den häufigsten psychischen Erkrankungen weltweit.', 'Anders als bei normaler Angst, die vor realen Gefahren schützt, tritt bei Angststörungen die Angst ohne tatsächliche Bedrohung oder in einem unverhältnismäßigen Ausmaß auf. Betroffene wissen oft selbst, dass ihre Angst übertrieben ist, können sie aber nicht kontrollieren. Das führt häufig zu Vermeidungsverhalten, wodurch sich die Angst langfristig verstärkt.'] },
-      { heading: 'Formen von Angststörungen', paragraphs: ['Es gibt verschiedene Arten von Angststörungen, die sich in Auslösern und Symptomen unterscheiden:'], list: ['Generalisierte Angststörung (GAD): Anhaltende, unkontrollierbare Sorgen über viele Lebensbereiche (Gesundheit, Finanzen, Familie, Arbeit). Die Angst ist nicht auf spezifische Situationen beschränkt.', 'Panikstörung: Wiederkehrende, unerwartete Panikattacken mit intensiven körperlichen Symptomen. Oft entwickelt sich Angst vor der nächsten Attacke (Erwartungsangst).', 'Soziale Angststörung (Soziale Phobie): Ausgeprägte Angst vor sozialen Situationen, in denen man bewertet werden könnte. Befürchtung, sich zu blamieren oder abgelehnt zu werden.', 'Spezifische Phobien: Intensive Angst vor bestimmten Objekten oder Situationen (z.B. Höhe, Tiere, Fliegen, Blut, enge Räume). Die Angst wird durch den spezifischen Auslöser hervorgerufen.', 'Agoraphobie: Angst vor Situationen, aus denen eine Flucht schwierig wäre oder Hilfe nicht verfügbar ist (Menschenmengen, öffentliche Verkehrsmittel, weite Plätze).'] },
-      { heading: 'Symptome und Diagnose', paragraphs: ['Angststörungen zeigen sich auf mehreren Ebenen:', 'Psychische Symptome: Ständige Sorgen, Gefühl der Bedrohung, Nervosität, Reizbarkeit, Konzentrationsprobleme, Angst vor Kontrollverlust oder dem Sterben.', 'Körperliche Symptome: Herzrasen, Schwitzen, Zittern, Schwindel, Atemnot, Übelkeit, Muskelverspannungen, Schlafstörungen.', 'Verhaltenssymptome: Vermeidung angstauslösender Situationen, Rückversicherungsverhalten, sozialer Rückzug.', 'Zur Diagnose nutzen Fachpersonen strukturierte Interviews und Fragebögen wie den GAD-7 (für generalisierte Angst) oder die Liebowitz Social Anxiety Scale (für soziale Angst).'] },
-      { heading: 'Behandlung: Verhaltenstherapie und Exposition', paragraphs: ['Die wirksamste Behandlung ist die Kognitive Verhaltenstherapie (KVT), besonders mit Expositionsübungen. Dabei lernen Betroffene, sich schrittweise den angstauslösenden Situationen zu stellen, statt sie zu vermeiden. Durch wiederholte Exposition bei gleichzeitigem Ausbleiben der befürchteten Katastrophe lernt das Gehirn, dass die Situation nicht gefährlich ist.', 'Zusätzlich werden in der Therapie angstauslösende Gedankenmuster identifiziert und durch realistischere Bewertungen ersetzt. Entspannungstechniken und Atemübungen helfen, körperliche Angstsymptome zu reduzieren.', 'Bei mittelschweren bis schweren Angststörungen können Medikamente (vor allem SSRIs wie Sertralin oder Escitalopram) unterstützend eingesetzt werden. Sie ersetzen nicht die Therapie, können aber die Symptome so weit lindern, dass Therapie und Exposition besser möglich sind.'] }
-    ]
+      {
+        heading: 'Was sind Angststörungen?',
+        paragraphs: [
+          'Angststörungen sind psychische Erkrankungen, bei denen Angst das zentrale Symptom ist – allerdings nicht als hilfreiche Warnreaktion, sondern als übermäßige, lang anhaltende oder unangemessene Angst, die das Leben einschränkt. Angststörungen gehören zu den häufigsten psychischen Erkrankungen weltweit.',
+          'Anders als bei normaler Angst, die vor realen Gefahren schützt, tritt bei Angststörungen die Angst ohne tatsächliche Bedrohung oder in einem unverhältnismäßigen Ausmaß auf. Betroffene wissen oft selbst, dass ihre Angst übertrieben ist, können sie aber nicht kontrollieren. Das führt häufig zu Vermeidungsverhalten, wodurch sich die Angst langfristig verstärkt.',
+        ],
+      },
+      {
+        heading: 'Formen von Angststörungen',
+        paragraphs: [
+          'Es gibt verschiedene Arten von Angststörungen, die sich in Auslösern und Symptomen unterscheiden:',
+        ],
+        list: [
+          'Generalisierte Angststörung (GAD): Anhaltende, unkontrollierbare Sorgen über viele Lebensbereiche (Gesundheit, Finanzen, Familie, Arbeit). Die Angst ist nicht auf spezifische Situationen beschränkt.',
+          'Panikstörung: Wiederkehrende, unerwartete Panikattacken mit intensiven körperlichen Symptomen. Oft entwickelt sich Angst vor der nächsten Attacke (Erwartungsangst).',
+          'Soziale Angststörung (Soziale Phobie): Ausgeprägte Angst vor sozialen Situationen, in denen man bewertet werden könnte. Befürchtung, sich zu blamieren oder abgelehnt zu werden.',
+          'Spezifische Phobien: Intensive Angst vor bestimmten Objekten oder Situationen (z.B. Höhe, Tiere, Fliegen, Blut, enge Räume). Die Angst wird durch den spezifischen Auslöser hervorgerufen.',
+          'Agoraphobie: Angst vor Situationen, aus denen eine Flucht schwierig wäre oder Hilfe nicht verfügbar ist (Menschenmengen, öffentliche Verkehrsmittel, weite Plätze).',
+        ],
+      },
+      {
+        heading: 'Symptome und Diagnose',
+        paragraphs: [
+          'Angststörungen zeigen sich auf mehreren Ebenen:',
+          'Psychische Symptome: Ständige Sorgen, Gefühl der Bedrohung, Nervosität, Reizbarkeit, Konzentrationsprobleme, Angst vor Kontrollverlust oder dem Sterben.',
+          'Körperliche Symptome: Herzrasen, Schwitzen, Zittern, Schwindel, Atemnot, Übelkeit, Muskelverspannungen, Schlafstörungen.',
+          'Verhaltenssymptome: Vermeidung angstauslösender Situationen, Rückversicherungsverhalten, sozialer Rückzug.',
+          'Zur Diagnose nutzen Fachpersonen strukturierte Interviews und Fragebögen wie den GAD-7 (für generalisierte Angst) oder die Liebowitz Social Anxiety Scale (für soziale Angst).',
+        ],
+      },
+      {
+        heading: 'Behandlung: Verhaltenstherapie und Exposition',
+        paragraphs: [
+          'Die wirksamste Behandlung ist die Kognitive Verhaltenstherapie (KVT), besonders mit Expositionsübungen. Dabei lernen Betroffene, sich schrittweise den angstauslösenden Situationen zu stellen, statt sie zu vermeiden. Durch wiederholte Exposition bei gleichzeitigem Ausbleiben der befürchteten Katastrophe lernt das Gehirn, dass die Situation nicht gefährlich ist.',
+          'Zusätzlich werden in der Therapie angstauslösende Gedankenmuster identifiziert und durch realistischere Bewertungen ersetzt. Entspannungstechniken und Atemübungen helfen, körperliche Angstsymptome zu reduzieren.',
+          'Bei mittelschweren bis schweren Angststörungen können Medikamente (vor allem SSRIs wie Sertralin oder Escitalopram) unterstützend eingesetzt werden. Sie ersetzen nicht die Therapie, können aber die Symptome so weit lindern, dass Therapie und Exposition besser möglich sind.',
+        ],
+      },
+    ],
   },
   {
     slug: 'burnout-erkennen-vorbeugen',
     title: 'Burnout erkennen und vorbeugen: Ein Praxisleitfaden',
-    excerpt: 'Warnsignale erkennen, Burnout von Depression unterscheiden und wirksame Präventionsstrategien – ein Praxisleitfaden.',
+    excerpt:
+      'Warnsignale erkennen, Burnout von Depression unterscheiden und wirksame Präventionsstrategien – ein Praxisleitfaden.',
     summary: [
       'Burnout ist ein Zustand emotionaler, körperlicher und mentaler Erschöpfung durch chronischen Stress',
       'Charakteristisch sind drei Dimensionen: Erschöpfung, Zynismus/Distanzierung und verringerte Leistungsfähigkeit',
       'Burnout unterscheidet sich von Depression durch den klaren Bezug zu Arbeit oder Überlastungssituation',
       'Prävention umfasst Stressmanagement, gesunde Grenzen, soziale Unterstützung und Selbstfürsorge',
-      'Behandlung erfolgt durch Psychotherapie, Stressreduktion und ggf. medizinische Rehabilitation'
+      'Behandlung erfolgt durch Psychotherapie, Stressreduktion und ggf. medizinische Rehabilitation',
     ],
     category: 'Ratgeber',
     publishedAt: '2025-01-17',
@@ -1887,29 +2017,98 @@ export const blogPosts: BlogPost[] = [
       src: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Erschöpfte Person am Schreibtisch, symbolisiert Burnout und Überlastung',
       width: 1200,
-      height: 630
+      height: 630,
     },
-    keywords: ['Burnout', 'Burnout Symptome', 'Burnout Test', 'Burnout Prävention', 'Erschöpfung', 'Work-Life-Balance', 'Stress Arbeit'],
-    relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
+    keywords: [
+      'Burnout',
+      'Burnout Symptome',
+      'Burnout Test',
+      'Burnout Prävention',
+      'Erschöpfung',
+      'Work-Life-Balance',
+      'Stress Arbeit',
+    ],
+    relatedPosts: [
+      'depression-verstehen-bewaeltigen',
+      'richtigen-therapeuten-finden',
+      'meditation-anfaenger-3-minuten',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     faq: [
-      { question: 'Was ist der Unterschied zwischen Burnout und Depression?', answer: 'Burnout entsteht durch chronischen Stress, meist im beruflichen Kontext, und bessert sich typischerweise bei Distanz zur Stressquelle (z.B. im Urlaub). Depression ist eine eigenständige Erkrankung, die alle Lebensbereiche betrifft und nicht automatisch durch Urlaub verschwindet. Allerdings kann aus einem Burnout eine Depression entstehen.' },
-      { question: 'Ist Burnout eine offizielle Diagnose?', answer: 'Nein, Burnout ist keine eigenständige medizinische Diagnose nach ICD-11 oder DSM-5. Die WHO führt Burnout als "Syndrom aufgrund von chronischem Stress am Arbeitsplatz" in der ICD-11 unter "Probleme im Zusammenhang mit Beschäftigung und Arbeitslosigkeit". Für Krankschreibung wird meist eine Erschöpfungsdepression oder Anpassungsstörung diagnostiziert.' },
-      { question: 'Kann man Burnout vorbeugen?', answer: 'Ja! Präventionsstrategien umfassen: Realistische Zielsetzungen, Grenzen setzen (Nein-Sagen lernen), regelmäßige Pausen, Work-Life-Balance pflegen, soziale Unterstützung suchen, Stressbewältigungstechniken erlernen und Frühwarnsignale ernst nehmen.' }
+      {
+        question: 'Was ist der Unterschied zwischen Burnout und Depression?',
+        answer:
+          'Burnout entsteht durch chronischen Stress, meist im beruflichen Kontext, und bessert sich typischerweise bei Distanz zur Stressquelle (z.B. im Urlaub). Depression ist eine eigenständige Erkrankung, die alle Lebensbereiche betrifft und nicht automatisch durch Urlaub verschwindet. Allerdings kann aus einem Burnout eine Depression entstehen.',
+      },
+      {
+        question: 'Ist Burnout eine offizielle Diagnose?',
+        answer:
+          'Nein, Burnout ist keine eigenständige medizinische Diagnose nach ICD-11 oder DSM-5. Die WHO führt Burnout als "Syndrom aufgrund von chronischem Stress am Arbeitsplatz" in der ICD-11 unter "Probleme im Zusammenhang mit Beschäftigung und Arbeitslosigkeit". Für Krankschreibung wird meist eine Erschöpfungsdepression oder Anpassungsstörung diagnostiziert.',
+      },
+      {
+        question: 'Kann man Burnout vorbeugen?',
+        answer:
+          'Ja! Präventionsstrategien umfassen: Realistische Zielsetzungen, Grenzen setzen (Nein-Sagen lernen), regelmäßige Pausen, Work-Life-Balance pflegen, soziale Unterstützung suchen, Stressbewältigungstechniken erlernen und Frühwarnsignale ernst nehmen.',
+      },
     ],
     sections: [
-      { heading: 'Was ist Burnout?', paragraphs: ['Burnout beschreibt einen Zustand totaler Erschöpfung – emotional, körperlich und mental – als Folge von chronischem Stress, der nicht bewältigt wurde. Der Begriff stammt aus den 1970er-Jahren und beschrieb ursprünglich die Erschöpfung von Pflegekräften und Sozialarbeitern. Heute ist Burnout ein weit verbreitetes Phänomen in vielen Berufsfeldern.', 'Burnout entwickelt sich schleichend über Monate oder Jahre. Anfangs versuchen Betroffene, durch noch mehr Einsatz gegenzusteuern, was die Erschöpfung weiter verstärkt. Die drei Kerndimensionen nach dem Maslach Burnout Inventory sind: 1) Emotionale Erschöpfung, 2) Depersonalisation/Zynismus (Distanzierung von der Arbeit), 3) Reduzierte persönliche Leistungsfähigkeit.'] },
-      { heading: 'Die 12 Phasen des Burnout', paragraphs: ['Nach Freudenberger entwickelt sich Burnout typischerweise in Phasen:'], list: ['1-3: Anfangsphase: Zwang, sich zu beweisen, verstärkter Einsatz, Vernachlässigung eigener Bedürfnisse', '4-6: Mittlere Phase: Verdrängung von Problemen, Rückzug, innere Leere, erste körperliche Symptome', '7-9: Kritische Phase: Verhaltensänderungen, Depersonalisation, innere Leere verstärkt sich', '10-12: Endphase: Verzweiflung, Depression, totale Erschöpfung, Zusammenbruch'] },
-      { heading: 'Warnsignale und Symptome', paragraphs: ['Burnout zeigt sich vielfältig. Wichtig ist, Frühwarnsignale ernst zu nehmen:'], list: ['Emotionale Warnsignale: Ständige Müdigkeit, Gefühl der Überforderung, Verlust von Freude an der Arbeit, Reizbarkeit, Zynismus', 'Körperliche Symptome: Chronische Erschöpfung, Schlafstörungen, Kopfschmerzen, Muskelverspannungen, Magen-Darm-Probleme, häufige Infekte', 'Kognitive Symptome: Konzentrationsprobleme, Vergesslichkeit, Entscheidungsschwierigkeiten, negative Gedankenmuster', 'Verhaltenssymptome: Sozialer Rückzug, Leistungsabfall, Prokrastination, erhöhter Konsum von Kaffee/Alkohol/Nikotin'] },
-      { heading: 'Prävention: Was schützt vor Burnout?', paragraphs: ['Burnout-Prävention setzt an mehreren Ebenen an:'], list: ['Arbeitsorganisation: Realistische Ziele, klare Prioritäten, Delegieren lernen, regelmäßige Pausen einplanen', 'Grenzen setzen: Nein sagen lernen, Arbeitszeit begrenzen, E-Mails nach Feierabend ignorieren', 'Work-Life-Balance: Hobbys pflegen, soziale Kontakte, Erholung ernst nehmen', 'Stressbewältigung: Entspannungstechniken (Meditation, Yoga), Sport, Achtsamkeit', 'Soziale Unterstützung: Probleme ansprechen, Hilfe suchen, Netzwerk pflegen', 'Selbstfürsorge: Ausreichend Schlaf, gesunde Ernährung, regelmäßige Bewegung'] }
-    ]
+      {
+        heading: 'Was ist Burnout?',
+        paragraphs: [
+          'Burnout beschreibt einen Zustand totaler Erschöpfung – emotional, körperlich und mental – als Folge von chronischem Stress, der nicht bewältigt wurde. Der Begriff stammt aus den 1970er-Jahren und beschrieb ursprünglich die Erschöpfung von Pflegekräften und Sozialarbeitern. Heute ist Burnout ein weit verbreitetes Phänomen in vielen Berufsfeldern.',
+          'Burnout entwickelt sich schleichend über Monate oder Jahre. Anfangs versuchen Betroffene, durch noch mehr Einsatz gegenzusteuern, was die Erschöpfung weiter verstärkt. Die drei Kerndimensionen nach dem Maslach Burnout Inventory sind: 1) Emotionale Erschöpfung, 2) Depersonalisation/Zynismus (Distanzierung von der Arbeit), 3) Reduzierte persönliche Leistungsfähigkeit.',
+        ],
+      },
+      {
+        heading: 'Die 12 Phasen des Burnout',
+        paragraphs: ['Nach Freudenberger entwickelt sich Burnout typischerweise in Phasen:'],
+        list: [
+          '1-3: Anfangsphase: Zwang, sich zu beweisen, verstärkter Einsatz, Vernachlässigung eigener Bedürfnisse',
+          '4-6: Mittlere Phase: Verdrängung von Problemen, Rückzug, innere Leere, erste körperliche Symptome',
+          '7-9: Kritische Phase: Verhaltensänderungen, Depersonalisation, innere Leere verstärkt sich',
+          '10-12: Endphase: Verzweiflung, Depression, totale Erschöpfung, Zusammenbruch',
+        ],
+      },
+      {
+        heading: 'Warnsignale und Symptome',
+        paragraphs: [
+          'Burnout zeigt sich vielfältig. Wichtig ist, Frühwarnsignale ernst zu nehmen:',
+        ],
+        list: [
+          'Emotionale Warnsignale: Ständige Müdigkeit, Gefühl der Überforderung, Verlust von Freude an der Arbeit, Reizbarkeit, Zynismus',
+          'Körperliche Symptome: Chronische Erschöpfung, Schlafstörungen, Kopfschmerzen, Muskelverspannungen, Magen-Darm-Probleme, häufige Infekte',
+          'Kognitive Symptome: Konzentrationsprobleme, Vergesslichkeit, Entscheidungsschwierigkeiten, negative Gedankenmuster',
+          'Verhaltenssymptome: Sozialer Rückzug, Leistungsabfall, Prokrastination, erhöhter Konsum von Kaffee/Alkohol/Nikotin',
+        ],
+      },
+      {
+        heading: 'Prävention: Was schützt vor Burnout?',
+        paragraphs: ['Burnout-Prävention setzt an mehreren Ebenen an:'],
+        list: [
+          'Arbeitsorganisation: Realistische Ziele, klare Prioritäten, Delegieren lernen, regelmäßige Pausen einplanen',
+          'Grenzen setzen: Nein sagen lernen, Arbeitszeit begrenzen, E-Mails nach Feierabend ignorieren',
+          'Work-Life-Balance: Hobbys pflegen, soziale Kontakte, Erholung ernst nehmen',
+          'Stressbewältigung: Entspannungstechniken (Meditation, Yoga), Sport, Achtsamkeit',
+          'Soziale Unterstützung: Probleme ansprechen, Hilfe suchen, Netzwerk pflegen',
+          'Selbstfürsorge: Ausreichend Schlaf, gesunde Ernährung, regelmäßige Bewegung',
+        ],
+      },
+    ],
   },
   {
     slug: 'richtigen-therapeuten-finden',
     title: 'Den richtigen Therapeuten finden: 5 Schritte zum passenden Match',
-    excerpt: 'Therapeut finden in Österreich: 5 Schritte zum passenden Match – mit oder ohne Kassenzuschuss.',
-    summary: ['Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor in der Therapie', 'In Österreich gibt es verschiedene Therapierichtungen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie u.a.', 'Kassentherapeuten haben lange Wartezeiten (3-12 Monate), Wahltherapeuten bieten kürzere Wartezeiten mit Zuschuss', 'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen', 'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen'],
+    excerpt:
+      'Therapeut finden in Österreich: 5 Schritte zum passenden Match – mit oder ohne Kassenzuschuss.',
+    summary: [
+      'Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor in der Therapie',
+      'In Österreich gibt es verschiedene Therapierichtungen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie u.a.',
+      'Kassentherapeuten haben lange Wartezeiten (3-12 Monate), Wahltherapeuten bieten kürzere Wartezeiten mit Zuschuss',
+      'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen',
+      'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen',
+    ],
     category: 'Therapeutensuche',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -1917,19 +2116,60 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Therapeutensuche', 'Psychotherapie Österreich', 'Kassentherapeut', 'Wahltherapeut'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Therapeutisches Gespräch zwischen Therapeut und Klient', width: 1200, height: 630 },
-    keywords: ['Therapeut finden Wien', 'Psychotherapeut finden Österreich', 'Kassentherapeut', 'Wahltherapeut', 'Psychotherapie Kassenzuschuss'],
-    relatedPosts: ['kassenzuschuss-psychotherapie-oesterreich', 'serioese-online-therapie-erkennen', 'psychologe-vs-psychotherapeut', 'wartezeiten-psychotherapie-wien'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Therapeutisches Gespräch zwischen Therapeut und Klient',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Therapeut finden Wien',
+      'Psychotherapeut finden Österreich',
+      'Kassentherapeut',
+      'Wahltherapeut',
+      'Psychotherapie Kassenzuschuss',
+    ],
+    relatedPosts: [
+      'kassenzuschuss-psychotherapie-oesterreich',
+      'serioese-online-therapie-erkennen',
+      'psychologe-vs-psychotherapeut',
+      'wartezeiten-psychotherapie-wien',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
-    faq: [{ question: 'Was ist wichtiger: Die Therapiemethode oder die Person des Therapeuten?', answer: 'Studien zeigen klar: Die therapeutische Beziehung ist der stärkste Prädiktor für Therapieerfolg – wichtiger als die spezifische Methode. "Chemistry" zwischen Therapeut und Klient ist entscheidend. Wählen Sie einen Therapeuten, bei dem Sie sich wohl und verstanden fühlen.' }],
-    sections: [{ heading: 'Warum die Wahl des Therapeuten so wichtig ist', paragraphs: ['Der wichtigste Erfolgsfaktor in der Psychotherapie ist nicht die angewandte Methode, sondern die Qualität der therapeutischen Beziehung. Studien zeigen, dass etwa 30% des Therapieerfolgs auf die Beziehung zwischen Therapeut und Klient zurückzuführen ist. Wenn Sie sich bei Ihrem Therapeuten nicht wohl, verstanden oder sicher fühlen, wird die Therapie weniger wirksam sein – unabhängig davon, wie qualifiziert die Person ist.'] }, { heading: '5 Schritte zum passenden Therapeuten', paragraphs: ['1. Therapierichtung wählen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie, Humanistische Verfahren. 2. Kasse oder Privat: Entscheiden Sie, ob Kassentherapeut (lange Wartezeit, keine Kosten) oder Wahltherapeut (kurze Wartezeit, Teilzuschuss). 3. Erstgespräch vereinbaren: Nutzen Sie 1-2 Probesitzungen. 4. Passung prüfen: Fühlen Sie sich wohl? Verstanden? Respektiert? 5. Entscheiden: Bei Zweifeln weitersuchen – die Chemie muss stimmen.'] }]
+    faq: [
+      {
+        question: 'Was ist wichtiger: Die Therapiemethode oder die Person des Therapeuten?',
+        answer:
+          'Studien zeigen klar: Die therapeutische Beziehung ist der stärkste Prädiktor für Therapieerfolg – wichtiger als die spezifische Methode. "Chemistry" zwischen Therapeut und Klient ist entscheidend. Wählen Sie einen Therapeuten, bei dem Sie sich wohl und verstanden fühlen.',
+      },
+    ],
+    sections: [
+      {
+        heading: 'Warum die Wahl des Therapeuten so wichtig ist',
+        paragraphs: [
+          'Der wichtigste Erfolgsfaktor in der Psychotherapie ist nicht die angewandte Methode, sondern die Qualität der therapeutischen Beziehung. Studien zeigen, dass etwa 30% des Therapieerfolgs auf die Beziehung zwischen Therapeut und Klient zurückzuführen ist. Wenn Sie sich bei Ihrem Therapeuten nicht wohl, verstanden oder sicher fühlen, wird die Therapie weniger wirksam sein – unabhängig davon, wie qualifiziert die Person ist.',
+        ],
+      },
+      {
+        heading: '5 Schritte zum passenden Therapeuten',
+        paragraphs: [
+          '1. Therapierichtung wählen: Verhaltenstherapie, Psychoanalyse, Systemische Therapie, Humanistische Verfahren. 2. Kasse oder Privat: Entscheiden Sie, ob Kassentherapeut (lange Wartezeit, keine Kosten) oder Wahltherapeut (kurze Wartezeit, Teilzuschuss). 3. Erstgespräch vereinbaren: Nutzen Sie 1-2 Probesitzungen. 4. Passung prüfen: Fühlen Sie sich wohl? Verstanden? Respektiert? 5. Entscheiden: Bei Zweifeln weitersuchen – die Chemie muss stimmen.',
+        ],
+      },
+    ],
   },
   {
     slug: 'atemtechniken-bei-angst',
     title: '5 wirksame Atemtechniken bei Angst und Panik',
-    excerpt: 'Kontrolliertes Atmen ist eine der effektivsten Sofortmaßnahmen bei Angst. Diese 5 evidenzbasierten Atemtechniken helfen, Angstsymptome schnell zu reduzieren und das Nervensystem zu beruhigen.',
-    summary: ['Kontrollierte Atmung aktiviert das parasympathische Nervensystem und wirkt beruhigend', 'Die 4-7-8-Atmung, Bauchatmung und Box-Breathing sind wissenschaftlich fundierte Techniken', 'Regelmäßiges Üben (5-10 Min täglich) verstärkt die Wirkung in Angstsituationen', 'Atemtechniken können Herzrate und Blutdruck senken sowie Stresshormone reduzieren'],
+    excerpt:
+      'Kontrolliertes Atmen ist eine der effektivsten Sofortmaßnahmen bei Angst. Diese 5 evidenzbasierten Atemtechniken helfen, Angstsymptome schnell zu reduzieren und das Nervensystem zu beruhigen.',
+    summary: [
+      'Kontrollierte Atmung aktiviert das parasympathische Nervensystem und wirkt beruhigend',
+      'Die 4-7-8-Atmung, Bauchatmung und Box-Breathing sind wissenschaftlich fundierte Techniken',
+      'Regelmäßiges Üben (5-10 Min täglich) verstärkt die Wirkung in Angstsituationen',
+      'Atemtechniken können Herzrate und Blutdruck senken sowie Stresshormone reduzieren',
+    ],
     category: 'Selbsthilfe',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -1937,25 +2177,86 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Atemtechniken', 'Angst', 'Panik', 'Selbsthilfe', 'Entspannung'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person praktiziert Atemübungen in ruhiger Umgebung', width: 1200, height: 630 },
-    keywords: ['Atemübungen Angst', 'Atemtechniken Panik', '4-7-8 Atmung', 'Bauchatmung', 'Box Breathing'],
-    relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'angststoerungen-formen-symptome-behandlung'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person praktiziert Atemübungen in ruhiger Umgebung',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Atemübungen Angst',
+      'Atemtechniken Panik',
+      '4-7-8 Atmung',
+      'Bauchatmung',
+      'Box Breathing',
+    ],
+    relatedPosts: [
+      'akuthilfe-panikattacken',
+      'meditation-anfaenger-3-minuten',
+      'angststoerungen-formen-symptome-behandlung',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-01-17',
     howTo: [
-      { name: '4-7-8-Atmung', text: '4 Sekunden durch die Nase einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend bei akuter Angst.' },
-      { name: 'Bauchatmung (Zwerchfellatmung)', text: 'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.' },
-      { name: 'Box-Breathing (4-4-4-4)', text: '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Gleichmäßiger Rhythmus beruhigt und fokussiert.' },
-      { name: 'Verlängerte Ausatmung', text: 'Normal einatmen, dann doppelt so lange ausatmen (z.B. 4 Sekunden ein, 8 Sekunden aus). Aktiviert den Parasympathikus und reduziert Herzfrequenz.' },
-      { name: 'Atemzählung', text: 'Atem beobachten und zählen: 1 beim Einatmen, 2 beim Ausatmen. Bis 10 zählen, dann von vorne beginnen. Fokussiert den Geist und unterbricht Angstspiralen.' }
+      {
+        name: '4-7-8-Atmung',
+        text: '4 Sekunden durch die Nase einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend bei akuter Angst.',
+      },
+      {
+        name: 'Bauchatmung (Zwerchfellatmung)',
+        text: 'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.',
+      },
+      {
+        name: 'Box-Breathing (4-4-4-4)',
+        text: '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Gleichmäßiger Rhythmus beruhigt und fokussiert.',
+      },
+      {
+        name: 'Verlängerte Ausatmung',
+        text: 'Normal einatmen, dann doppelt so lange ausatmen (z.B. 4 Sekunden ein, 8 Sekunden aus). Aktiviert den Parasympathikus und reduziert Herzfrequenz.',
+      },
+      {
+        name: 'Atemzählung',
+        text: 'Atem beobachten und zählen: 1 beim Einatmen, 2 beim Ausatmen. Bis 10 zählen, dann von vorne beginnen. Fokussiert den Geist und unterbricht Angstspiralen.',
+      },
     ],
-    sections: [{ heading: 'Warum Atmung bei Angst hilft', paragraphs: ['Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.'] }, { heading: '1. Die 4-7-8-Atmung', paragraphs: ['Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.'] }, { heading: '2. Bauchatmung (Zwerchfellatmung)', paragraphs: ['Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.'] }, { heading: '3. Box-Breathing (4-4-4-4)', paragraphs: ['4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.'] }]
+    sections: [
+      {
+        heading: 'Warum Atmung bei Angst hilft',
+        paragraphs: [
+          'Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.',
+        ],
+      },
+      {
+        heading: '1. Die 4-7-8-Atmung',
+        paragraphs: [
+          'Durch die Nase 4 Sekunden einatmen, 7 Sekunden Atem anhalten, 8 Sekunden durch den Mund ausatmen. 4 Zyklen wiederholen. Wirkt schnell beruhigend.',
+        ],
+      },
+      {
+        heading: '2. Bauchatmung (Zwerchfellatmung)',
+        paragraphs: [
+          'Hand auf den Bauch legen. Langsam durch die Nase in den Bauch atmen (Hand hebt sich), durch den Mund ausatmen (Hand senkt sich). Verhindert flache Brustatmung.',
+        ],
+      },
+      {
+        heading: '3. Box-Breathing (4-4-4-4)',
+        paragraphs: [
+          '4 Sekunden einatmen, 4 Sekunden halten, 4 Sekunden ausatmen, 4 Sekunden halten. Rhythmus beruhigt und fokussiert. Wird auch von Navy SEALs genutzt.',
+        ],
+      },
+    ],
   },
   {
     slug: 'psychologe-vs-psychotherapeut',
     title: 'Psychologe oder Psychotherapeut? Schnellübersicht für die erste Orientierung',
-    excerpt: 'In 7 Minuten verstehen: Wer darf therapieren, wer verschreibt Medikamente, zu wem gehe ich zuerst? Die kompakte Übersicht für alle, die schnell Klarheit brauchen.',
-    summary: ['Psychologen haben ein Psychologie-Studium, dürfen aber nicht automatisch therapieren', 'Psychotherapeuten haben eine mehrjährige psychotherapeutische Ausbildung und sind zur Therapie berechtigt', 'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben', 'Für ausführliche Infos siehe unseren umfassenden Artikel zu allen Berufsgruppen'],
+    excerpt:
+      'In 7 Minuten verstehen: Wer darf therapieren, wer verschreibt Medikamente, zu wem gehe ich zuerst? Die kompakte Übersicht für alle, die schnell Klarheit brauchen.',
+    summary: [
+      'Psychologen haben ein Psychologie-Studium, dürfen aber nicht automatisch therapieren',
+      'Psychotherapeuten haben eine mehrjährige psychotherapeutische Ausbildung und sind zur Therapie berechtigt',
+      'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben',
+      'Für ausführliche Infos siehe unseren umfassenden Artikel zu allen Berufsgruppen',
+    ],
     category: 'Wissen',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -1963,16 +2264,62 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Psychologe', 'Psychotherapeut', 'Psychiater', 'Schnellübersicht', 'Erste Hilfe'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Unterschiedliche Berufsgruppen in der psychischen Gesundheitsversorgung', width: 1200, height: 630 },
-    keywords: ['Psychologe oder Psychotherapeut', 'zu wem gehen', 'erste Orientierung', 'schnelle Übersicht Therapie'],
-    relatedPosts: ['psychologe-psychotherapeut-psychiater-unterschiede', 'richtigen-therapeuten-finden', 'serioese-online-therapie-erkennen'],
-    sections: [{ heading: 'Die drei Berufsgruppen im Überblick', paragraphs: ['In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.'] }, { heading: 'Psychologe', paragraphs: ['Ausbildung: Universitätsstudium der Psychologie (5 Jahre Bachelor + Master). Tätigkeit: Psychologische Diagnostik, Beratung, Coaching. KEINE Psychotherapie ohne Zusatzausbildung. Kassenleistung: Klinisch-psychologische Diagnostik teilweise auf Kasse.'] }, { heading: 'Psychotherapeut', paragraphs: ['Ausbildung: Propädeutikum + Fachspezifikum in einer anerkannten Therapiemethode (mind. 5 Jahre berufsbegleitend). Tätigkeit: Psychotherapie bei psychischen Erkrankungen. Kassenleistung: Auf Kasse bei Kassenstellen oder Zuschuss bei Wahltherapeuten (€30-40 pro Sitzung).'] }, { heading: 'Psychiater', paragraphs: ['Ausbildung: Medizinstudium + Facharztausbildung Psychiatrie (mind. 12 Jahre). Tätigkeit: Diagnose und medikamentöse Behandlung psychischer Erkrankungen. Kann Medikamente verschreiben. Kassenleistung: Volle Kassenleistung bei Kassenärzten.'] }]
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Unterschiedliche Berufsgruppen in der psychischen Gesundheitsversorgung',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Psychologe oder Psychotherapeut',
+      'zu wem gehen',
+      'erste Orientierung',
+      'schnelle Übersicht Therapie',
+    ],
+    relatedPosts: [
+      'psychologe-psychotherapeut-psychiater-unterschiede',
+      'richtigen-therapeuten-finden',
+      'serioese-online-therapie-erkennen',
+    ],
+    sections: [
+      {
+        heading: 'Die drei Berufsgruppen im Überblick',
+        paragraphs: [
+          'In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.',
+        ],
+      },
+      {
+        heading: 'Psychologe',
+        paragraphs: [
+          'Ausbildung: Universitätsstudium der Psychologie (5 Jahre Bachelor + Master). Tätigkeit: Psychologische Diagnostik, Beratung, Coaching. KEINE Psychotherapie ohne Zusatzausbildung. Kassenleistung: Klinisch-psychologische Diagnostik teilweise auf Kasse.',
+        ],
+      },
+      {
+        heading: 'Psychotherapeut',
+        paragraphs: [
+          'Ausbildung: Propädeutikum + Fachspezifikum in einer anerkannten Therapiemethode (mind. 5 Jahre berufsbegleitend). Tätigkeit: Psychotherapie bei psychischen Erkrankungen. Kassenleistung: Auf Kasse bei Kassenstellen oder Zuschuss bei Wahltherapeuten (€30-40 pro Sitzung).',
+        ],
+      },
+      {
+        heading: 'Psychiater',
+        paragraphs: [
+          'Ausbildung: Medizinstudium + Facharztausbildung Psychiatrie (mind. 12 Jahre). Tätigkeit: Diagnose und medikamentöse Behandlung psychischer Erkrankungen. Kann Medikamente verschreiben. Kassenleistung: Volle Kassenleistung bei Kassenärzten.',
+        ],
+      },
+    ],
   },
   {
     slug: 'kassenzuschuss-psychotherapie-oesterreich',
     title: 'Kassenzuschuss für Psychotherapie in Österreich 2025',
-    excerpt: 'Psychotherapie ist teuer. In Österreich können Sie als Versicherter einen Zuschuss beantragen. Dieser Guide erklärt, wie viel Zuschuss Sie bekommen, wie Sie ihn beantragen und was Sie beachten müssen.',
-    summary: ['Kassenzuschuss beträgt €30-40 pro Sitzung bei Wahltherapeuten (Stand 2025)', 'Voraussetzungen: Psychotherapeut muss in Therapeutenliste eingetragen sein', 'Antrag: Nach jeder Sitzung Honorarnote einreichen bei der Krankenkasse', 'Kassentherapeuten: Kostenlos, aber Wartezeit 3-12 Monate', 'Zusatzversicherungen können weitere Kosten übernehmen'],
+    excerpt:
+      'Psychotherapie ist teuer. In Österreich können Sie als Versicherter einen Zuschuss beantragen. Dieser Guide erklärt, wie viel Zuschuss Sie bekommen, wie Sie ihn beantragen und was Sie beachten müssen.',
+    summary: [
+      'Kassenzuschuss beträgt €30-40 pro Sitzung bei Wahltherapeuten (Stand 2025)',
+      'Voraussetzungen: Psychotherapeut muss in Therapeutenliste eingetragen sein',
+      'Antrag: Nach jeder Sitzung Honorarnote einreichen bei der Krankenkasse',
+      'Kassentherapeuten: Kostenlos, aber Wartezeit 3-12 Monate',
+      'Zusatzversicherungen können weitere Kosten übernehmen',
+    ],
     category: 'Finanzierung',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -1980,21 +2327,68 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Kassenzuschuss', 'Psychotherapie Kosten', 'Österreich', 'ÖGK', 'Krankenkasse'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Krankenkassenkarte und Dokumente symbolisieren Gesundheitsfinanzierung', width: 1200, height: 630 },
-    keywords: ['Kassenzuschuss Psychotherapie', 'Psychotherapie Kosten Österreich', 'ÖGK Zuschuss', 'Wahltherapeut Zuschuss'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Krankenkassenkarte und Dokumente symbolisieren Gesundheitsfinanzierung',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Kassenzuschuss Psychotherapie',
+      'Psychotherapie Kosten Österreich',
+      'ÖGK Zuschuss',
+      'Wahltherapeut Zuschuss',
+    ],
     relatedPosts: ['richtigen-therapeuten-finden', 'wartezeiten-psychotherapie-wien'],
     faq: [
-      { question: 'Wie viel Kassenzuschuss bekomme ich für Psychotherapie?', answer: 'Die ÖGK erstattet €30-40 pro Sitzung bei Wahltherapeuten. Bei einem durchschnittlichen Honorar von €80-120 liegt Ihr Eigenanteil bei €40-90 pro Sitzung. Andere Kassen (SVS, BVAEB) haben ähnliche Sätze.' },
-      { question: 'Wie beantrage ich den Zuschuss für Psychotherapie?', answer: 'Nach jeder Therapiesitzung erhalten Sie eine Honorarnote von Ihrem Therapeuten. Diese reichen Sie bei Ihrer Krankenkasse ein (online oder per Post). Der Zuschuss wird innerhalb von 2-4 Wochen überwiesen.' },
-      { question: 'Was ist der Unterschied zwischen Kassentherapeut und Wahltherapeut?', answer: 'Bei Kassentherapeuten entstehen keine Kosten, dafür beträgt die Wartezeit 3-12 Monate. Bei Wahltherapeuten zahlen Sie selbst und bekommen einen Teilzuschuss, haben aber kürzere Wartezeiten.' }
+      {
+        question: 'Wie viel Kassenzuschuss bekomme ich für Psychotherapie?',
+        answer:
+          'Die ÖGK erstattet €30-40 pro Sitzung bei Wahltherapeuten. Bei einem durchschnittlichen Honorar von €80-120 liegt Ihr Eigenanteil bei €40-90 pro Sitzung. Andere Kassen (SVS, BVAEB) haben ähnliche Sätze.',
+      },
+      {
+        question: 'Wie beantrage ich den Zuschuss für Psychotherapie?',
+        answer:
+          'Nach jeder Therapiesitzung erhalten Sie eine Honorarnote von Ihrem Therapeuten. Diese reichen Sie bei Ihrer Krankenkasse ein (online oder per Post). Der Zuschuss wird innerhalb von 2-4 Wochen überwiesen.',
+      },
+      {
+        question: 'Was ist der Unterschied zwischen Kassentherapeut und Wahltherapeut?',
+        answer:
+          'Bei Kassentherapeuten entstehen keine Kosten, dafür beträgt die Wartezeit 3-12 Monate. Bei Wahltherapeuten zahlen Sie selbst und bekommen einen Teilzuschuss, haben aber kürzere Wartezeiten.',
+      },
     ],
-    sections: [{ heading: 'Zwei Wege: Kasse oder Zuschuss', paragraphs: ['In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).'] }, { heading: 'Höhe des Kassenzuschusses', paragraphs: ['Österreichische Gesundheitskasse (ÖGK): €30-40 pro Sitzung. SVS, BVAEB: Ähnliche Sätze. Wahltherapeut-Honorar: €80-120 pro Sitzung. Eigenanteil: €40-90 pro Sitzung.'] }, { heading: 'So beantragen Sie den Zuschuss', paragraphs: ['1. Therapeut aus Liste wählen (muss eingetragen sein). 2. Nach jeder Sitzung Honorarnote vom Therapeut holen. 3. Honorarnote bei Krankenkasse einreichen (online oder per Post). 4. Zuschuss wird überwiesen (meist 2-4 Wochen).'] }]
+    sections: [
+      {
+        heading: 'Zwei Wege: Kasse oder Zuschuss',
+        paragraphs: [
+          'In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).',
+        ],
+      },
+      {
+        heading: 'Höhe des Kassenzuschusses',
+        paragraphs: [
+          'Österreichische Gesundheitskasse (ÖGK): €30-40 pro Sitzung. SVS, BVAEB: Ähnliche Sätze. Wahltherapeut-Honorar: €80-120 pro Sitzung. Eigenanteil: €40-90 pro Sitzung.',
+        ],
+      },
+      {
+        heading: 'So beantragen Sie den Zuschuss',
+        paragraphs: [
+          '1. Therapeut aus Liste wählen (muss eingetragen sein). 2. Nach jeder Sitzung Honorarnote vom Therapeut holen. 3. Honorarnote bei Krankenkasse einreichen (online oder per Post). 4. Zuschuss wird überwiesen (meist 2-4 Wochen).',
+        ],
+      },
+    ],
   },
   {
     slug: 'serioese-online-therapie-erkennen',
     title: 'Seriöse Online-Therapie erkennen: Worauf Sie achten müssen',
-    excerpt: 'Online-Therapie boomt, aber nicht alle Angebote sind seriös. Dieser Leitfaden hilft Ihnen, qualifizierte Online-Therapeuten zu erkennen und unseriöse Anbieter zu meiden.',
-    summary: ['Online-Therapie ist evidenzbasiert wirksam bei vielen psychischen Erkrankungen', 'Seriöse Anbieter: Therapeuten sind staatlich zertifiziert, transparent über Qualifikationen', 'Warnsignale: Keine Zulassung erkennbar, unrealistische Heilversprechen, Vorauszahlung ohne Probesitzung', 'Videotelefonie ist der Goldstandard, Chattherapie nur als Ergänzung'],
+    excerpt:
+      'Online-Therapie boomt, aber nicht alle Angebote sind seriös. Dieser Leitfaden hilft Ihnen, qualifizierte Online-Therapeuten zu erkennen und unseriöse Anbieter zu meiden.',
+    summary: [
+      'Online-Therapie ist evidenzbasiert wirksam bei vielen psychischen Erkrankungen',
+      'Seriöse Anbieter: Therapeuten sind staatlich zertifiziert, transparent über Qualifikationen',
+      'Warnsignale: Keine Zulassung erkennbar, unrealistische Heilversprechen, Vorauszahlung ohne Probesitzung',
+      'Videotelefonie ist der Goldstandard, Chattherapie nur als Ergänzung',
+    ],
     category: 'Digitale Gesundheit',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -2002,16 +2396,51 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Online-Therapie', 'Videotherapie', 'Digitale Gesundheit', 'Telemedizin'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person nimmt an Online-Therapie-Sitzung per Video teil', width: 1200, height: 630 },
-    keywords: ['Online Therapie Österreich', 'Videotherapie seriös', 'Online Psychotherapie', 'Teletherapie'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person nimmt an Online-Therapie-Sitzung per Video teil',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Online Therapie Österreich',
+      'Videotherapie seriös',
+      'Online Psychotherapie',
+      'Teletherapie',
+    ],
     relatedPosts: ['richtigen-therapeuten-finden', 'psychologe-vs-psychotherapeut'],
-    sections: [{ heading: 'Was ist seriöse Online-Therapie?', paragraphs: ['Online-Therapie (auch Videotherapie oder Teletherapie) ist Psychotherapie per Videoanruf. Studien zeigen: Bei Depressionen, Angststörungen und vielen anderen Erkrankungen ist sie genauso wirksam wie Präsenztherapie.'] }, { heading: 'Erkennungsmerkmale seriöser Anbieter', paragraphs: ['Staatliche Zertifizierung: Therapeut ist im Psychotherapeutenregister eingetragen. Transparenz: Qualifikationen klar ersichtlich. Erstgespräch: Angebot einer unverbindlichen Kennenlernens Sitzung. Datenschutz: DSGVO-konforme Videoplattform. Grenzen: Klare Kommunikation, wann Online-Therapie NICHT geeignet ist.'] }, { heading: 'Warnsignale unseriöser Anbieter', paragraphs: ['Keine erkennbare Zulassung. Heilversprechen ("In 4 Wochen geheilt!"). Hohe Vorauszahlung ohne Probesitzung. Nur Chat, kein Video. Kein persönlicher Therapeut (wechselnde Personen). Druck zum Abschluss ("Nur heute!").'] }]
+    sections: [
+      {
+        heading: 'Was ist seriöse Online-Therapie?',
+        paragraphs: [
+          'Online-Therapie (auch Videotherapie oder Teletherapie) ist Psychotherapie per Videoanruf. Studien zeigen: Bei Depressionen, Angststörungen und vielen anderen Erkrankungen ist sie genauso wirksam wie Präsenztherapie.',
+        ],
+      },
+      {
+        heading: 'Erkennungsmerkmale seriöser Anbieter',
+        paragraphs: [
+          'Staatliche Zertifizierung: Therapeut ist im Psychotherapeutenregister eingetragen. Transparenz: Qualifikationen klar ersichtlich. Erstgespräch: Angebot einer unverbindlichen Kennenlernens Sitzung. Datenschutz: DSGVO-konforme Videoplattform. Grenzen: Klare Kommunikation, wann Online-Therapie NICHT geeignet ist.',
+        ],
+      },
+      {
+        heading: 'Warnsignale unseriöser Anbieter',
+        paragraphs: [
+          'Keine erkennbare Zulassung. Heilversprechen ("In 4 Wochen geheilt!"). Hohe Vorauszahlung ohne Probesitzung. Nur Chat, kein Video. Kein persönlicher Therapeut (wechselnde Personen). Druck zum Abschluss ("Nur heute!").',
+        ],
+      },
+    ],
   },
   {
     slug: 'meditation-anfaenger-3-minuten',
     title: 'Meditation für Anfänger: Die 3-Minuten-Atemmeditation',
-    excerpt: 'Sie möchten mit Meditation beginnen, wissen aber nicht wie? Diese einfache 3-Minuten-Übung ist perfekt für Einsteiger und lässt sich überall durchführen – wissenschaftlich fundiert und sofort umsetzbar.',
-    summary: ['Meditation reduziert nachweislich Stress, Angst und verbessert emotionale Regulation', 'Die 3-Minuten-Atemmeditation ist eine Einsteigerübung, die jederzeit durchführbar ist', 'Regelmäßigkeit ist wichtiger als Länge – täglich 3 Minuten sind besser als einmal wöchentlich 30 Minuten', 'Häufige Anfängerfehler: Erwartung der Gedankenleere, Perfektionismus, zu lange Sitzungen'],
+    excerpt:
+      'Sie möchten mit Meditation beginnen, wissen aber nicht wie? Diese einfache 3-Minuten-Übung ist perfekt für Einsteiger und lässt sich überall durchführen – wissenschaftlich fundiert und sofort umsetzbar.',
+    summary: [
+      'Meditation reduziert nachweislich Stress, Angst und verbessert emotionale Regulation',
+      'Die 3-Minuten-Atemmeditation ist eine Einsteigerübung, die jederzeit durchführbar ist',
+      'Regelmäßigkeit ist wichtiger als Länge – täglich 3 Minuten sind besser als einmal wöchentlich 30 Minuten',
+      'Häufige Anfängerfehler: Erwartung der Gedankenleere, Perfektionismus, zu lange Sitzungen',
+    ],
     category: 'Selbsthilfe',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -2019,23 +2448,74 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Meditation', 'Achtsamkeit', 'Anfänger', 'Stressreduktion', 'Selbsthilfe'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Person meditiert in ruhiger Umgebung', width: 1200, height: 630 },
-    keywords: ['Meditation Anfänger', 'Meditation lernen', 'Achtsamkeit', 'Atemmeditation', '3-Minuten-Meditation'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Person meditiert in ruhiger Umgebung',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Meditation Anfänger',
+      'Meditation lernen',
+      'Achtsamkeit',
+      'Atemmeditation',
+      '3-Minuten-Meditation',
+    ],
     relatedPosts: ['atemtechniken-bei-angst', 'burnout-erkennen-vorbeugen'],
     howTo: [
-      { name: 'Sitzposition einnehmen', text: 'Setzen Sie sich aufrecht hin (Stuhl oder Boden). Hände locker auf den Oberschenkeln ablegen. Rücken gerade, Schultern entspannt.' },
-      { name: 'Augen schließen', text: 'Schließen Sie sanft die Augen oder richten Sie einen weichen Blick auf einen Punkt vor sich. Dies reduziert äußere Ablenkungen.' },
-      { name: 'Aufmerksamkeit auf den Atem richten', text: 'Spüren Sie, wie der Atem ein- und ausströmt. Beobachten Sie das Heben und Senken des Bauches oder die Luft an der Nasenspitze.' },
-      { name: 'Gedanken ziehen lassen', text: 'Wenn Gedanken kommen, nicht bekämpfen. Beobachten Sie sie wie Wolken und kehren Sie sanft zum Atem zurück. Das ist die eigentliche Übung!' },
-      { name: 'Abschluss nach 3 Minuten', text: 'Nach 3 Minuten (Timer nutzen): Langsam die Augen öffnen, kurz nachspüren. Bemerken Sie den Unterschied zu vorher.' }
+      {
+        name: 'Sitzposition einnehmen',
+        text: 'Setzen Sie sich aufrecht hin (Stuhl oder Boden). Hände locker auf den Oberschenkeln ablegen. Rücken gerade, Schultern entspannt.',
+      },
+      {
+        name: 'Augen schließen',
+        text: 'Schließen Sie sanft die Augen oder richten Sie einen weichen Blick auf einen Punkt vor sich. Dies reduziert äußere Ablenkungen.',
+      },
+      {
+        name: 'Aufmerksamkeit auf den Atem richten',
+        text: 'Spüren Sie, wie der Atem ein- und ausströmt. Beobachten Sie das Heben und Senken des Bauches oder die Luft an der Nasenspitze.',
+      },
+      {
+        name: 'Gedanken ziehen lassen',
+        text: 'Wenn Gedanken kommen, nicht bekämpfen. Beobachten Sie sie wie Wolken und kehren Sie sanft zum Atem zurück. Das ist die eigentliche Übung!',
+      },
+      {
+        name: 'Abschluss nach 3 Minuten',
+        text: 'Nach 3 Minuten (Timer nutzen): Langsam die Augen öffnen, kurz nachspüren. Bemerken Sie den Unterschied zu vorher.',
+      },
     ],
-    sections: [{ heading: 'Warum Meditation?', paragraphs: ['Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.'] }, { heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt', paragraphs: ['1. Sitzposition: Aufrecht sitzen (Stuhl oder Boden), Hände locker auf den Oberschenkeln. 2. Augen schließen oder weichen Blick. 3. Aufmerksamkeit auf Atem richten: Spüren Sie, wie Atem ein- und ausströmt. 4. Gedanken kommen lassen: Nicht bekämpfen, einfach zurück zum Atem. 5. Nach 3 Minuten: Langsam Augen öffnen, kurz nachspüren.'] }, { heading: 'Häufige Anfängerfehler', paragraphs: ['Erwartung der Gedankenleere: Gedanken sind normal! Ziel ist, sie zu beobachten, nicht zu stoppen. Zu lange Sitzungen: Anfänger scheitern oft an 20-Minuten-Sessions. Start 3 Minuten! Perfektionismus: Es gibt kein "falsch". Abschweifen ist Teil der Übung.'] }]
+    sections: [
+      {
+        heading: 'Warum Meditation?',
+        paragraphs: [
+          'Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.',
+        ],
+      },
+      {
+        heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt',
+        paragraphs: [
+          '1. Sitzposition: Aufrecht sitzen (Stuhl oder Boden), Hände locker auf den Oberschenkeln. 2. Augen schließen oder weichen Blick. 3. Aufmerksamkeit auf Atem richten: Spüren Sie, wie Atem ein- und ausströmt. 4. Gedanken kommen lassen: Nicht bekämpfen, einfach zurück zum Atem. 5. Nach 3 Minuten: Langsam Augen öffnen, kurz nachspüren.',
+        ],
+      },
+      {
+        heading: 'Häufige Anfängerfehler',
+        paragraphs: [
+          'Erwartung der Gedankenleere: Gedanken sind normal! Ziel ist, sie zu beobachten, nicht zu stoppen. Zu lange Sitzungen: Anfänger scheitern oft an 20-Minuten-Sessions. Start 3 Minuten! Perfektionismus: Es gibt kein "falsch". Abschweifen ist Teil der Übung.',
+        ],
+      },
+    ],
   },
   {
     slug: 'wartezeiten-psychotherapie-wien',
     title: 'Wartezeiten Psychotherapie: Wien vs. andere Bundesländer',
-    excerpt: 'Die Wartezeiten auf einen Therapieplatz in Österreich sind lang. Dieser Artikel vergleicht die Situation in Wien mit anderen Bundesländern und gibt Tipps, wie Sie schneller einen Platz finden.',
-    summary: ['Durchschnittliche Wartezeit auf Kassentherapeut: 3-12 Monate, regional sehr unterschiedlich', 'Wien hat die meisten Therapeuten, aber auch die höchste Nachfrage – Wartezeit 4-8 Monate', 'Ländliche Regionen: Weniger Therapeuten, längere Anfahrtswege, oft noch längere Wartezeiten', 'Schneller zum Platz: Wahltherapeut, Privatambulanz, Online-Therapie, mehrere Anfragen parallel'],
+    excerpt:
+      'Die Wartezeiten auf einen Therapieplatz in Österreich sind lang. Dieser Artikel vergleicht die Situation in Wien mit anderen Bundesländern und gibt Tipps, wie Sie schneller einen Platz finden.',
+    summary: [
+      'Durchschnittliche Wartezeit auf Kassentherapeut: 3-12 Monate, regional sehr unterschiedlich',
+      'Wien hat die meisten Therapeuten, aber auch die höchste Nachfrage – Wartezeit 4-8 Monate',
+      'Ländliche Regionen: Weniger Therapeuten, längere Anfahrtswege, oft noch längere Wartezeiten',
+      'Schneller zum Platz: Wahltherapeut, Privatambulanz, Online-Therapie, mehrere Anfragen parallel',
+    ],
     category: 'Therapeutensuche',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
@@ -2043,14 +2523,50 @@ export const blogPosts: BlogPost[] = [
     author: 'MMag. Dr. Gregor Studlar BA',
     authorId: 'gregor-studlar',
     tags: ['Wartezeit', 'Therapeutensuche', 'Wien', 'Österreich', 'Kassentherapeut'],
-    featuredImage: { src: 'https://images.unsplash.com/photo-1495954380655-c0b98c3e4b72?auto=format&fit=crop&w=1200&h=630&q=80', alt: 'Uhr symbolisiert Wartezeit auf Therapieplatz', width: 1200, height: 630 },
-    keywords: ['Psychotherapie Wartezeit Österreich', 'Therapeut Wartezeit Wien', 'Kassentherapeut Wartezeit', 'Therapieplatz finden'],
+    featuredImage: {
+      src: 'https://images.unsplash.com/photo-1495954380655-c0b98c3e4b72?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Uhr symbolisiert Wartezeit auf Therapieplatz',
+      width: 1200,
+      height: 630,
+    },
+    keywords: [
+      'Psychotherapie Wartezeit Österreich',
+      'Therapeut Wartezeit Wien',
+      'Kassentherapeut Wartezeit',
+      'Therapieplatz finden',
+    ],
     relatedPosts: ['richtigen-therapeuten-finden', 'kassenzuschuss-psychotherapie-oesterreich'],
-    sections: [{ heading: 'Die Situation in Österreich', paragraphs: ['Österreich hat einen Versorgungsengpass in der Psychotherapie. Auf einen Kassentherapieplatz warten Betroffene durchschnittlich 3-12 Monate. Die Situation variiert stark nach Bundesland und Therapiemethode.'] }, { heading: 'Wien: Viele Therapeuten, hohe Nachfrage', paragraphs: ['Wien hat die höchste Therapeutendichte Österreichs (ca. 40% aller österreichischen Therapeuten). Trotzdem: Wartezeit 4-8 Monate für Kassenplätze. Grund: Hohe Nachfrage, viele Studierende und junge Erwachsene. Vorteil: Große Auswahl, viele Wahltherapeuten, kürzere Wartezeiten bei privater Finanzierung.'] }, { heading: 'Andere Bundesländer', paragraphs: ['Niederösterreich, Oberösterreich: Mittlere Versorgung, Wartezeit 6-10 Monate. Kärnten, Steiermark, Tirol: Unterschiedlich, Zentren (Graz, Klagenfurt, Innsbruck) besser versorgt als Umland. Burgenland, Vorarlberg: Geringste Therapeutendichte, längste Wartezeiten (8-12 Monate).'] }, { heading: 'So kommen Sie schneller zum Therapieplatz', paragraphs: ['1. Mehrere Anfragen parallel stellen. 2. Wahltherapeut nutzen (Zuschuss beantragen). 3. Online-Therapie in Erwägung ziehen. 4. Privatambulanz oder Ausbildungsinstitute (günstigere Honorare). 5. Krisenintervention bei akuter Gefahr (keine Wartezeit).'] }]
+    sections: [
+      {
+        heading: 'Die Situation in Österreich',
+        paragraphs: [
+          'Österreich hat einen Versorgungsengpass in der Psychotherapie. Auf einen Kassentherapieplatz warten Betroffene durchschnittlich 3-12 Monate. Die Situation variiert stark nach Bundesland und Therapiemethode.',
+        ],
+      },
+      {
+        heading: 'Wien: Viele Therapeuten, hohe Nachfrage',
+        paragraphs: [
+          'Wien hat die höchste Therapeutendichte Österreichs (ca. 40% aller österreichischen Therapeuten). Trotzdem: Wartezeit 4-8 Monate für Kassenplätze. Grund: Hohe Nachfrage, viele Studierende und junge Erwachsene. Vorteil: Große Auswahl, viele Wahltherapeuten, kürzere Wartezeiten bei privater Finanzierung.',
+        ],
+      },
+      {
+        heading: 'Andere Bundesländer',
+        paragraphs: [
+          'Niederösterreich, Oberösterreich: Mittlere Versorgung, Wartezeit 6-10 Monate. Kärnten, Steiermark, Tirol: Unterschiedlich, Zentren (Graz, Klagenfurt, Innsbruck) besser versorgt als Umland. Burgenland, Vorarlberg: Geringste Therapeutendichte, längste Wartezeiten (8-12 Monate).',
+        ],
+      },
+      {
+        heading: 'So kommen Sie schneller zum Therapieplatz',
+        paragraphs: [
+          '1. Mehrere Anfragen parallel stellen. 2. Wahltherapeut nutzen (Zuschuss beantragen). 3. Online-Therapie in Erwägung ziehen. 4. Privatambulanz oder Ausbildungsinstitute (günstigere Honorare). 5. Krisenintervention bei akuter Gefahr (keine Wartezeit).',
+        ],
+      },
+    ],
   },
   {
     slug: 'selbsttherapie-chatgpt-chancen-risiken',
-    title: 'Selbsttherapie mit ChatGPT: Chancen, Risiken und warum KI keinen Psychotherapeuten ersetzt',
+    title:
+      'Selbsttherapie mit ChatGPT: Chancen, Risiken und warum KI keinen Psychotherapeuten ersetzt',
     excerpt:
       'Immer mehr Menschen nutzen KI wie ChatGPT für psychische Unterstützung. Doch kann eine generative KI professionelle Psychotherapie ersetzen? Ein wissenschaftlich fundierter Überblick über Chancen, Risiken und Grenzen.',
     summary: [
@@ -2080,29 +2596,38 @@ export const blogPosts: BlogPost[] = [
       'KI Chatbot Therapie',
       'Digitale Psychotherapie',
     ],
-    relatedPosts: ['therapieformen-vergleich', 'richtigen-therapeuten-finden', 'digitale-ersteinschaetzung-mental-health'],
+    relatedPosts: [
+      'therapieformen-vergleich',
+      'richtigen-therapeuten-finden',
+      'digitale-ersteinschaetzung-mental-health',
+    ],
     medicalReviewedBy: 'gregor-studlar',
     lastReviewed: '2025-11-18',
     faq: [
       {
         question: 'Kann ChatGPT eine Psychotherapie ersetzen?',
-        answer: 'Nein. ChatGPT kann zwar Informationen vermitteln und als Gesprächspartner fungieren, aber es fehlen echte Empathie, therapeutische Ausbildung und die Fähigkeit zur Krisenintervention. Generative KI kann keine professionelle Therapie ersetzen und sollte höchstens als Ergänzung genutzt werden.',
+        answer:
+          'Nein. ChatGPT kann zwar Informationen vermitteln und als Gesprächspartner fungieren, aber es fehlen echte Empathie, therapeutische Ausbildung und die Fähigkeit zur Krisenintervention. Generative KI kann keine professionelle Therapie ersetzen und sollte höchstens als Ergänzung genutzt werden.',
       },
       {
         question: 'Ist es gefährlich, ChatGPT für psychische Probleme zu nutzen?',
-        answer: 'Es kann gefährlich sein, besonders in Krisensituationen. Studien zeigen, dass KI-Chatbots Suizidabsichten oft nicht erkennen und unangemessene Antworten geben können. Bei ernsthaften psychischen Problemen sollte immer professionelle Hilfe gesucht werden.',
+        answer:
+          'Es kann gefährlich sein, besonders in Krisensituationen. Studien zeigen, dass KI-Chatbots Suizidabsichten oft nicht erkennen und unangemessene Antworten geben können. Bei ernsthaften psychischen Problemen sollte immer professionelle Hilfe gesucht werden.',
       },
       {
         question: 'Wofür kann ChatGPT bei mentaler Gesundheit hilfreich sein?',
-        answer: 'ChatGPT kann für Psychoedukation (Wissen über psychische Störungen), als Tagebuch-Assistent, zur Reflexion zwischen Therapiesitzungen oder als niedrigschwelliger Erstkontakt nützlich sein. Es sollte jedoch immer als Ergänzung und nicht als Ersatz für professionelle Hilfe betrachtet werden.',
+        answer:
+          'ChatGPT kann für Psychoedukation (Wissen über psychische Störungen), als Tagebuch-Assistent, zur Reflexion zwischen Therapiesitzungen oder als niedrigschwelliger Erstkontakt nützlich sein. Es sollte jedoch immer als Ergänzung und nicht als Ersatz für professionelle Hilfe betrachtet werden.',
       },
       {
         question: 'Sind meine Gespräche mit ChatGPT vertraulich?',
-        answer: 'Nein, anders als bei einem Therapeuten unterliegen Gespräche mit ChatGPT keiner Schweigepflicht. Die Daten werden auf Servern gespeichert und könnten theoretisch eingesehen werden. Es gibt keine rechtliche Vertraulichkeit wie bei einer professionellen Therapie.',
+        answer:
+          'Nein, anders als bei einem Therapeuten unterliegen Gespräche mit ChatGPT keiner Schweigepflicht. Die Daten werden auf Servern gespeichert und könnten theoretisch eingesehen werden. Es gibt keine rechtliche Vertraulichkeit wie bei einer professionellen Therapie.',
       },
       {
         question: 'Warum neigt KI dazu, Nutzer zu bestätigen statt herauszufordern?',
-        answer: 'KI-Modelle sind darauf trainiert, hilfreiche und gefällige Antworten zu geben (Sycophancy). Im therapeutischen Kontext ist das problematisch, da gute Therapeuten auch widersprechen und Denkmuster hinterfragen. KI verstärkt im Zweifel negative Sichtweisen, anstatt gegenzusteuern.',
+        answer:
+          'KI-Modelle sind darauf trainiert, hilfreiche und gefällige Antworten zu geben (Sycophancy). Im therapeutischen Kontext ist das problematisch, da gute Therapeuten auch widersprechen und Denkmuster hinterfragen. KI verstärkt im Zweifel negative Sichtweisen, anstatt gegenzusteuern.',
       },
     ],
     sections: [
@@ -2569,9 +3094,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         heading: '4. Grounding: Soforthilfe im Akutfall',
-        paragraphs: [
-          'Die 5-4-3-2-1-Methode bringt dich zurück in die Gegenwart:',
-        ],
+        paragraphs: ['Die 5-4-3-2-1-Methode bringt dich zurück in die Gegenwart:'],
         list: [
           '5 Dinge sehen',
           '4 Dinge spüren',
@@ -2828,8 +3351,8 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
-]
+];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug)
+  return blogPosts.find((post) => post.slug === slug);
 }

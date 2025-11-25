@@ -5,10 +5,7 @@ import { prisma } from '@/lib/prisma';
  * GET /api/debug/microsite/[slug]
  * Debug endpoint to check microsite visibility issues
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params;
 
@@ -92,7 +89,7 @@ export async function GET(
         error: 'Debug check failed',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

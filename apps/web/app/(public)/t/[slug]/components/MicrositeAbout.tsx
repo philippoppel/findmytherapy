@@ -4,11 +4,7 @@ interface MicrositeAboutProps {
   experienceSummary?: string | null;
 }
 
-export function MicrositeAbout({
-  about,
-  approachSummary,
-  experienceSummary,
-}: MicrositeAboutProps) {
+export function MicrositeAbout({ about, approachSummary, experienceSummary }: MicrositeAboutProps) {
   if (!about && !approachSummary && !experienceSummary) {
     return null;
   }

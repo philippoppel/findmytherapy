@@ -181,6 +181,7 @@ DATABASE_URL="<URL>" pnpm prisma studio
 ```
 
 Prüfe ob:
+
 - ✅ Tabellen existieren
 - ✅ Seed-Daten geladen sind
 - ✅ User-Accounts angelegt sind
@@ -202,6 +203,7 @@ Oder im Vercel Dashboard unter "Deployments" → "Logs"
 **Fehler**: "Cannot find module @prisma/client"
 
 **Lösung**:
+
 ```bash
 # In vercel.json sicherstellen:
 "buildCommand": "pnpm install && pnpm prisma generate && pnpm turbo build --filter=web"
@@ -212,6 +214,7 @@ Oder im Vercel Dashboard unter "Deployments" → "Logs"
 **Fehler**: "Invalid environment configuration: DATABASE_URL: Required"
 
 **Lösung**:
+
 1. Gehe zu Vercel Dashboard → Settings → Environment Variables
 2. Stelle sicher, dass ALLE erforderlichen Variablen gesetzt sind
 3. Wähle Environment: Production, Preview, Development (alle 3!)
@@ -222,6 +225,7 @@ Oder im Vercel Dashboard unter "Deployments" → "Logs"
 **Fehler**: "Can't reach database server at ..."
 
 **Lösung**:
+
 - Prüfe `DATABASE_URL` Format: `postgresql://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require`
 - Bei Vercel Postgres: Füge `?sslmode=require` ans Ende der URL
 - Bei externen DBs: Stelle sicher, dass Vercel IPs erlaubt sind (0.0.0.0/0 für Start)
@@ -231,6 +235,7 @@ Oder im Vercel Dashboard unter "Deployments" → "Logs"
 **Fehler**: "Missing secret in configuration"
 
 **Lösung**:
+
 ```bash
 # Generiere ein neues Secret
 openssl rand -base64 32
@@ -241,6 +246,7 @@ openssl rand -base64 32
 ### Problem: Emails werden nicht versendet
 
 **Lösung für MVP**:
+
 - Verwende Resend.com (100 Emails/Tag kostenlos)
 - Registriere dich bei https://resend.com
 - Erstelle API Key
@@ -264,6 +270,7 @@ openssl rand -base64 32
 ### Edge Caching aktivieren
 
 In `apps/web/next.config.js` bereits konfiguriert:
+
 ```js
 experimental: {
   serverActions: true,
@@ -273,6 +280,7 @@ experimental: {
 ### ISR (Incremental Static Regeneration)
 
 Für statische Seiten wie Blog:
+
 ```tsx
 export const revalidate = 3600; // 1 Stunde
 ```
@@ -314,19 +322,19 @@ pnpm add @vercel/speed-insights --filter web
 ```tsx
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-<SpeedInsights />
+<SpeedInsights />;
 ```
 
 ---
 
 ## Kosten-Übersicht (Stand 2025)
 
-| Service | Free Tier | Pro |
-|---------|-----------|-----|
-| Vercel Hosting | 100GB Bandwidth | $20/Monat |
-| Vercel Postgres | 256MB Storage | $20/Monat |
-| Vercel Blob | 500MB | $0.15/GB |
-| Build Minutes | 6000/Monat | Unlimited |
+| Service         | Free Tier       | Pro       |
+| --------------- | --------------- | --------- |
+| Vercel Hosting  | 100GB Bandwidth | $20/Monat |
+| Vercel Postgres | 256MB Storage   | $20/Monat |
+| Vercel Blob     | 500MB           | $0.15/GB  |
+| Build Minutes   | 6000/Monat      | Unlimited |
 
 **MVP-Empfehlung**: Free Tier ist ausreichend für Pilotphasen & erste 1000 Nutzer.
 

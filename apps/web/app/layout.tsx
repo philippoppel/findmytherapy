@@ -1,19 +1,20 @@
-import { Plus_Jakarta_Sans } from 'next/font/google'
-import './globals.css'
-import './marketing-theme.css'
-import type { Metadata } from 'next'
-import Script from 'next/script'
-import { SessionProvider } from '../components/providers/SessionProvider'
-import { ErrorBoundary } from './components/ErrorBoundary'
-import { CookieConsentBanner } from '../components/CookieConsentBanner'
+import { Plus_Jakarta_Sans } from 'next/font/google';
+import './globals.css';
+import './marketing-theme.css';
+import type { Metadata } from 'next';
+import Script from 'next/script';
+import { SessionProvider } from '../components/providers/SessionProvider';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { CookieConsentBanner } from '../components/CookieConsentBanner';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-plus-jakarta-sans',
-})
+});
 
-const analyticsConsoleLog = process.env.NODE_ENV !== 'production' ? "console.info('[analytics]', event, payload);" : ''
+const analyticsConsoleLog =
+  process.env.NODE_ENV !== 'production' ? "console.info('[analytics]', event, payload);" : '';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://findmytherapy.net'),
@@ -21,7 +22,8 @@ export const metadata: Metadata = {
     default: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe.',
     template: '%s | FindMyTherapy',
   },
-  description: 'FindMyTherapy verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
+  description:
+    'FindMyTherapy verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
   keywords: [
     // Hauptkeywords
     'Therapeut finden Österreich',
@@ -93,7 +95,8 @@ export const metadata: Metadata = {
     locale: 'de_AT',
     siteName: 'FindMyTherapy',
     title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe',
-    description: 'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
+    description:
+      'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
     images: [
       {
         url: 'https://findmytherapy.net/images/og-image.jpg',
@@ -108,16 +111,13 @@ export const metadata: Metadata = {
     site: '@findmytherapy',
     creator: '@findmytherapy',
     title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe',
-    description: 'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
+    description:
+      'Finde qualifizierte Psychotherapeut:innen in Österreich. Digitale Ersteinschätzung, Therapeuten-Matching und Wissen für deine mentale Gesundheit.',
     images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
-}
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de-AT" suppressHydrationWarning>
       <head>
@@ -126,18 +126,8 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
 
         {/* Preload critical resources */}
-        <link
-          rel="preload"
-          href="/videos/hero-therapy.mp4"
-          as="video"
-          type="video/mp4"
-        />
-        <link
-          rel="preload"
-          href="/images/therapists/therapy-1.jpg"
-          as="image"
-          type="image/jpeg"
-        />
+        <link rel="preload" href="/videos/hero-therapy.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/images/therapists/therapy-1.jpg" as="image" type="image/jpeg" />
 
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -145,9 +135,7 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakartaSans.className} bg-white`} suppressHydrationWarning>
         <ErrorBoundary>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          <SessionProvider>{children}</SessionProvider>
         </ErrorBoundary>
         <CookieConsentBanner />
         <Script id="analytics-placeholder" strategy="lazyOnload">
@@ -163,5 +151,5 @@ export default function RootLayout({
         </Script>
       </body>
     </html>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Target, Grid3x3, Sparkles, Check, Compass } from 'lucide-react'
-import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion'
-import { MatchingLink } from '@/app/components/matching/MatchingLink'
+import { motion } from 'framer-motion';
+import { Target, Grid3x3, Sparkles, Check, Compass } from 'lucide-react';
+import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion';
+import { MatchingLink } from '@/app/components/matching/MatchingLink';
 
 export function TherapistSearchChoice() {
-  const prefersReducedMotion = usePrefersReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const handleScrollToSearch = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    const element = document.getElementById('therapist-list')
+    e.preventDefault();
+    const element = document.getElementById('therapist-list');
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
+  };
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white via-surface/30 to-white py-12 sm:py-16">
@@ -73,9 +73,7 @@ export function TherapistSearchChoice() {
                 <span className="text-xl font-semibold leading-tight text-neutral-900">
                   FindMyTherapy
                 </span>
-                <span className="text-sm font-medium text-muted">
-                  Mentale Orientierung
-                </span>
+                <span className="text-sm font-medium text-muted">Mentale Orientierung</span>
               </div>
             </div>
           </div>
@@ -84,7 +82,8 @@ export function TherapistSearchChoice() {
             Wie möchtest du suchen?
           </h1>
           <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            Wähle zwischen einer geführten Suche mit personalisierten Empfehlungen oder durchsuche alle Profile selbst.
+            Wähle zwischen einer geführten Suche mit personalisierten Empfehlungen oder durchsuche
+            alle Profile selbst.
           </p>
         </motion.div>
 
@@ -121,26 +120,31 @@ export function TherapistSearchChoice() {
                 </div>
 
                 {/* Content */}
-                <h3 className="mb-3 text-2xl font-bold text-neutral-900">
-                  Geführte Suche
-                </h3>
+                <h3 className="mb-3 text-2xl font-bold text-neutral-900">Geführte Suche</h3>
                 <p className="mb-5 text-base leading-relaxed text-muted">
-                  Beantworte ein paar Fragen und erhalte personalisierte Empfehlungen mit Match-Prozenten – sortiert nach Passgenauigkeit.
+                  Beantworte ein paar Fragen und erhalte personalisierte Empfehlungen mit
+                  Match-Prozenten – sortiert nach Passgenauigkeit.
                 </p>
 
                 {/* Features List */}
                 <ul className="mb-6 space-y-2.5">
                   <li className="flex items-start gap-2.5">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
-                    <span className="text-sm text-neutral-700">4-Schritt-Wizard mit intelligenten Fragen</span>
+                    <span className="text-sm text-neutral-700">
+                      4-Schritt-Wizard mit intelligenten Fragen
+                    </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
-                    <span className="text-sm text-neutral-700">Ergebnisse sortiert nach Match-Prozent</span>
+                    <span className="text-sm text-neutral-700">
+                      Ergebnisse sortiert nach Match-Prozent
+                    </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
-                    <span className="text-sm text-neutral-700">Detaillierte Erklärungen für jedes Match</span>
+                    <span className="text-sm text-neutral-700">
+                      Detaillierte Erklärungen für jedes Match
+                    </span>
                   </li>
                 </ul>
 
@@ -168,11 +172,7 @@ export function TherapistSearchChoice() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <a
-              href="#therapist-list"
-              onClick={handleScrollToSearch}
-              className="block h-full"
-            >
+            <a href="#therapist-list" onClick={handleScrollToSearch} className="block h-full">
               <motion.div
                 className="group relative h-full overflow-hidden rounded-3xl border-2 border-neutral-200/60 bg-gradient-to-br from-white via-neutral-50/20 to-white p-6 shadow-xl shadow-neutral-500/5 transition-all hover:border-neutral-300 hover:shadow-2xl hover:shadow-neutral-500/10 sm:p-8"
                 whileHover={
@@ -194,11 +194,10 @@ export function TherapistSearchChoice() {
                 </div>
 
                 {/* Content */}
-                <h3 className="mb-3 text-2xl font-bold text-neutral-900">
-                  Alle durchsuchen
-                </h3>
+                <h3 className="mb-3 text-2xl font-bold text-neutral-900">Alle durchsuchen</h3>
                 <p className="mb-5 text-base leading-relaxed text-muted">
-                  Durchsuche und filtere alle verifizierten Therapeut:innen nach Standort, Spezialgebieten, Format und mehr. Volle Kontrolle.
+                  Durchsuche und filtere alle verifizierten Therapeut:innen nach Standort,
+                  Spezialgebieten, Format und mehr. Volle Kontrolle.
                 </p>
 
                 {/* Features List */}
@@ -209,11 +208,15 @@ export function TherapistSearchChoice() {
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-neutral-600" />
-                    <span className="text-sm text-neutral-700">Erweiterte Filter & Suchfunktion</span>
+                    <span className="text-sm text-neutral-700">
+                      Erweiterte Filter & Suchfunktion
+                    </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-neutral-600" />
-                    <span className="text-sm text-neutral-700">Frei durch alle Therapeut:innen scrollen</span>
+                    <span className="text-sm text-neutral-700">
+                      Frei durch alle Therapeut:innen scrollen
+                    </span>
                   </li>
                 </ul>
 
@@ -244,10 +247,11 @@ export function TherapistSearchChoice() {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <p className="text-sm text-subtle">
-            💡 Tipp: Die geführte Suche hilft dir, die passendsten Therapeut:innen basierend auf deinen spezifischen Bedürfnissen zu finden.
+            💡 Tipp: Die geführte Suche hilft dir, die passendsten Therapeut:innen basierend auf
+            deinen spezifischen Bedürfnissen zu finden.
           </p>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

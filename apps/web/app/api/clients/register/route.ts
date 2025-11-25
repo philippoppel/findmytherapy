@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
-import { prisma } from '@/lib/prisma'
-import { queueNotification } from '../../../../lib/notifications'
-import { captureError } from '../../../../lib/monitoring'
+import { prisma } from '@/lib/prisma';
+import { queueNotification } from '../../../../lib/notifications';
+import { captureError } from '../../../../lib/monitoring';
 
 const clientSchema = z
   .object({
@@ -28,17 +28,17 @@ const clientSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwörter stimmen nicht überein',
     path: ['confirmPassword'],
-  })
+  });
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const payload = clientSchema.parse(body)
+    const body = await request.json();
+    const payload = clientSchema.parse(body);
 
     const existingUser = await prisma.user.findUnique({
       where: { email: payload.email.toLowerCase() },
       select: { id: true },
-    })
+    });
 
     if (existingUser) {
       return NextResponse.json(
@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
             },
           ],
         },
-        { status: 409 }
-      )
+        { status: 409 },
+      );
     }
 
-    const passwordHash = await bcrypt.hash(payload.password, 10)
+    const passwordHash = await bcrypt.hash(payload.password, 10);
 
     const user = await prisma.user.create({
       data: {
@@ -68,7 +68,6 @@ export async function POST(request: NextRequest) {
         marketingOptIn: Boolean(payload.marketingOptIn),
         role: 'CLIENT',
         locale: 'de-AT',
-
       },
       select: {
         id: true,
@@ -76,14 +75,14 @@ export async function POST(request: NextRequest) {
         firstName: true,
         lastName: true,
       },
-    })
+    });
 
     await queueNotification('client-registration', {
       userId: user.id,
       email: user.email,
       firstName: user.firstName,
       marketingOptIn: Boolean(payload.marketingOptIn),
-    })
+    });
 
     return NextResponse.json(
       {
@@ -91,10 +90,10 @@ export async function POST(request: NextRequest) {
         message: 'Account erstellt. Du kannst dich jetzt anmelden.',
         userId: user.id,
       },
-      { status: 201 }
-    )
+      { status: 201 },
+    );
   } catch (error) {
-    captureError(error, { location: 'api/clients/register' })
+    captureError(error, { location: 'api/clients/register' });
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -103,17 +102,17 @@ export async function POST(request: NextRequest) {
           message: 'Validierungsfehler',
           errors: error.errors,
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
-    console.error('Error registering client:', error)
+    console.error('Error registering client:', error);
     return NextResponse.json(
       {
         success: false,
         message: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.',
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

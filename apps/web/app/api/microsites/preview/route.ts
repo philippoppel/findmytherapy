@@ -15,10 +15,7 @@ export async function POST(_request: NextRequest) {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     // Fetch therapist profile (including unpublished)
@@ -85,7 +82,7 @@ export async function POST(_request: NextRequest) {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -128,16 +125,13 @@ export async function POST(_request: NextRequest) {
       isPreview: true,
     };
 
-    return NextResponse.json(
-      { success: true, data: micrositeData },
-      { status: 200 }
-    );
+    return NextResponse.json({ success: true, data: micrositeData }, { status: 200 });
   } catch (error) {
     captureError(error, { location: 'api/microsites/preview:post' });
 
     return NextResponse.json(
       { success: false, message: 'Vorschau konnte nicht geladen werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -3,6 +3,7 @@
 ## Zusammenfassung
 
 Die adaptive Triage wurde wissenschaftlich korrekt implementiert gemäß **Option 1**:
+
 - PHQ-2/GAD-2 Scores <3: **"Screening unauffällig"** - kein vollständiger Score wird berechnet
 - PHQ-2/GAD-2 Scores ≥3: Vollständige PHQ-9/GAD-7 Fragebögen werden durchgeführt
 - **Kein Padding mit Nullen** bei unvollständigen Fragebögen
@@ -15,20 +16,22 @@ Die adaptive Triage wurde wissenschaftlich korrekt implementiert gemäß **Optio
 
 ```typescript
 // FALSCH: Padding mit Nullen
-const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded]
-const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded]
+const fullPHQ9Answers = [...answers.phq2, ...answers.phq9Expanded];
+const fullGAD7Answers = [...answers.gad2, ...answers.gad7Expanded];
 
-while (fullPHQ9Answers.length < 9) fullPHQ9Answers.push(0)  // NICHT valide!
-while (fullGAD7Answers.length < 7) fullGAD7Answers.push(0)  // NICHT valide!
+while (fullPHQ9Answers.length < 9) fullPHQ9Answers.push(0); // NICHT valide!
+while (fullGAD7Answers.length < 7) fullGAD7Answers.push(0); // NICHT valide!
 ```
 
 **Warum das falsch war:**
+
 1. ✗ Fehlende Antworten wurden fälschlicherweise als 0 ("überhaupt nicht") angenommen
 2. ✗ PHQ-2/GAD-2 sind **Screening-Tools**, keine vollständigen Assessments
 3. ✗ Wichtige Symptome (z.B. Suizidgedanken in PHQ-9 Item 9) konnten übersehen werden
 4. ✗ Der berechnete Score war systematisch zu niedrig und **nicht wissenschaftlich valide**
 
 **Gefährliches Beispiel:**
+
 ```
 Person:
 - PHQ-2: Frage 1 = 0, Frage 2 = 2 → Score = 2 (< 3)
@@ -47,25 +50,26 @@ Person:
 
 ```typescript
 const checkExpansionNeeded = () => {
-  const { needsFullPHQ9, needsFullGAD7, phq2Score, gad2Score } = adaptiveFlow
+  const { needsFullPHQ9, needsFullGAD7, phq2Score, gad2Score } = adaptiveFlow;
 
   if (needsFullPHQ9 || needsFullGAD7) {
     // Scores ≥3: Vollständiges Assessment durchführen
-    setAssessmentType('full')
-    setCurrentPhase('expanded')
-    setExpandedSections({ phq9: needsFullPHQ9, gad7: needsFullGAD7 })
+    setAssessmentType('full');
+    setCurrentPhase('expanded');
+    setExpandedSections({ phq9: needsFullPHQ9, gad7: needsFullGAD7 });
   } else {
     // Scores <3: NUR Screening-Ergebnis anzeigen
     // KEIN Padding mit Nullen!
-    setAssessmentType('screening')
+    setAssessmentType('screening');
     setScreeningResult({
       phq2Score,
       gad2Score,
       message: 'Screening unauffällig',
-      interpretation: 'Basierend auf validiertem Kurzscreening (PHQ-2/GAD-2) zeigen sich minimale Symptome.',
-    })
+      interpretation:
+        'Basierend auf validiertem Kurzscreening (PHQ-2/GAD-2) zeigen sich minimale Symptome.',
+    });
   }
-}
+};
 ```
 
 ---
@@ -75,22 +79,26 @@ const checkExpansionNeeded = () => {
 ### PHQ-2 (Patient Health Questionnaire-2)
 
 **Validierung:**
+
 - Sensitivität: **83%** für Major Depression
 - Spezifität: **92%** für Major Depression
 - Cutoff: **≥3** Punkte
 
 **Quelle:**
-- Kroenke, K., Spitzer, R. L., & Williams, J. B. (2003). The Patient Health Questionnaire-2: validity of a two-item depression screener. *Medical care*, 1284-1292.
+
+- Kroenke, K., Spitzer, R. L., & Williams, J. B. (2003). The Patient Health Questionnaire-2: validity of a two-item depression screener. _Medical care_, 1284-1292.
 
 ### GAD-2 (Generalized Anxiety Disorder-2)
 
 **Validierung:**
+
 - Sensitivität: **86%** für Angststörungen
 - Spezifität: **83%** für Angststörungen
 - Cutoff: **≥3** Punkte
 
 **Quelle:**
-- Kroenke, K., Spitzer, R. L., Williams, J. B., Monahan, P. O., & Löwe, B. (2007). Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. *Annals of internal medicine*, 146(5), 317-325.
+
+- Kroenke, K., Spitzer, R. L., Williams, J. B., Monahan, P. O., & Löwe, B. (2007). Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. _Annals of internal medicine_, 146(5), 317-325.
 
 ---
 
@@ -99,6 +107,7 @@ const checkExpansionNeeded = () => {
 ### 1. API-Route (`/api/triage`)
 
 **Änderungen:**
+
 - Discriminated Union für `assessmentType: 'screening' | 'full'`
 - Separate Schemas für Screening-Only vs. Full Assessment
 - Keine Datenpersistierung für Screening-Only (nur minimale Logs)
@@ -110,7 +119,7 @@ const fullTriagePayloadSchema = z.object({
   phq9Answers: z.array(z.number().int().min(0).max(3)).length(9),
   gad7Answers: z.array(z.number().int().min(0).max(3)).length(7),
   // ...
-})
+});
 
 // Schema for screening-only
 const screeningOnlyPayloadSchema = z.object({
@@ -118,12 +127,13 @@ const screeningOnlyPayloadSchema = z.object({
   phq2Answers: z.array(z.number().int().min(0).max(3)).length(2),
   gad2Answers: z.array(z.number().int().min(0).max(3)).length(2),
   // ...
-})
+});
 ```
 
 ### 2. AdaptiveTriageFlow.tsx
 
 **Änderungen:**
+
 - Neue State-Variablen: `assessmentType`, `screeningResult`
 - Separate Summary-Views für Screening vs. Full Assessment
 - Validierung: Bei Full Assessment MUSS Array-Länge exakt sein (kein Padding!)
@@ -131,13 +141,14 @@ const screeningOnlyPayloadSchema = z.object({
 ```typescript
 // Verify we have complete answers (no padding!)
 if (fullPHQ9Answers.length !== 9 || fullGAD7Answers.length !== 7) {
-  throw new Error('Incomplete questionnaire data - this should not happen')
+  throw new Error('Incomplete questionnaire data - this should not happen');
 }
 ```
 
 ### 3. User Experience
 
 **Screening-Only Ergebnis zeigt:**
+
 - ✅ PHQ-2 und GAD-2 Scores
 - ✅ Wissenschaftlicher Hinweis über Screening-Instrumente
 - ✅ Option, trotzdem vollständiges Assessment durchzuführen
@@ -145,6 +156,7 @@ if (fullPHQ9Answers.length !== 9 || fullGAD7Answers.length !== 7) {
 - ✅ **KEINEN** falschen PHQ-9/GAD-7 Gesamtscore
 
 **Full Assessment Ergebnis zeigt:**
+
 - ✅ Vollständige PHQ-9 und GAD-7 Scores
 - ✅ Ampel-Visualisierung
 - ✅ Risikoeinschätzung
@@ -155,11 +167,11 @@ if (fullPHQ9Answers.length !== 9 || fullGAD7Answers.length !== 7) {
 
 ## Wissenschaftliche Korrektheit
 
-| Szenario | Implementierung | Wissenschaftlich korrekt? |
-|----------|----------------|---------------------------|
-| **PHQ-2/GAD-2 Score ≥3** | Vollständige PHQ-9/GAD-7 durchführen | ✅ Ja |
-| **PHQ-2/GAD-2 Score <3** | Nur Screening-Ergebnis anzeigen, **kein** vollständiger Score | ✅ Ja |
-| **Vorherige Version** | Score mit Nullen padden | ❌ Nein - wissenschaftlich nicht valide |
+| Szenario                 | Implementierung                                               | Wissenschaftlich korrekt?               |
+| ------------------------ | ------------------------------------------------------------- | --------------------------------------- |
+| **PHQ-2/GAD-2 Score ≥3** | Vollständige PHQ-9/GAD-7 durchführen                          | ✅ Ja                                   |
+| **PHQ-2/GAD-2 Score <3** | Nur Screening-Ergebnis anzeigen, **kein** vollständiger Score | ✅ Ja                                   |
+| **Vorherige Version**    | Score mit Nullen padden                                       | ❌ Nein - wissenschaftlich nicht valide |
 
 ---
 
@@ -168,6 +180,7 @@ if (fullPHQ9Answers.length !== 9 || fullGAD7Answers.length !== 7) {
 ### Szenario 1: Screening unauffällig (Score <3)
 
 **Nutzer sieht:**
+
 ```
 ✅ Screening unauffällig
 
@@ -187,6 +200,7 @@ Falls du trotzdem Unterstützung suchst, kannst du das vollständige Assessment 
 ### Szenario 2: Screening auffällig (Score ≥3)
 
 **Nutzer wird automatisch weitergeleitet zu:**
+
 - Fragen 3-9 des PHQ-9 (wenn PHQ-2 ≥3)
 - Fragen 3-7 des GAD-7 (wenn GAD-2 ≥3)
 - Anschließend: Vollständiger Score und Empfehlungen
@@ -196,11 +210,13 @@ Falls du trotzdem Unterstützung suchst, kannst du das vollständige Assessment 
 ## Deployment & Testing
 
 ### Build Status
+
 ✅ Build erfolgreich (`pnpm build`)
 ✅ TypeScript-Kompilierung erfolgreich
 ✅ Keine breaking changes
 
 ### Zu testen:
+
 1. Screening-Pfad (PHQ-2 Score = 0-2, GAD-2 Score = 0-2)
 2. Expansion-Pfad (PHQ-2 Score ≥3 oder GAD-2 Score ≥3)
 3. Option "Vollständiges Assessment durchführen" aus Screening-Ergebnis
@@ -211,15 +227,15 @@ Falls du trotzdem Unterstützung suchst, kannst du das vollständige Assessment 
 
 ## Referenzen
 
-1. **Kroenke, K., Spitzer, R. L., & Williams, J. B. (2001).** The PHQ-9: validity of a brief depression severity measure. *Journal of general internal medicine*, 16(9), 606-613.
+1. **Kroenke, K., Spitzer, R. L., & Williams, J. B. (2001).** The PHQ-9: validity of a brief depression severity measure. _Journal of general internal medicine_, 16(9), 606-613.
 
-2. **Kroenke, K., Spitzer, R. L., & Williams, J. B. (2003).** The Patient Health Questionnaire-2: validity of a two-item depression screener. *Medical care*, 1284-1292.
+2. **Kroenke, K., Spitzer, R. L., & Williams, J. B. (2003).** The Patient Health Questionnaire-2: validity of a two-item depression screener. _Medical care_, 1284-1292.
 
-3. **Spitzer, R. L., Kroenke, K., Williams, J. B., & Löwe, B. (2006).** A brief measure for assessing generalized anxiety disorder: the GAD-7. *Archives of internal medicine*, 166(10), 1092-1097.
+3. **Spitzer, R. L., Kroenke, K., Williams, J. B., & Löwe, B. (2006).** A brief measure for assessing generalized anxiety disorder: the GAD-7. _Archives of internal medicine_, 166(10), 1092-1097.
 
-4. **Kroenke, K., Spitzer, R. L., Williams, J. B., Monahan, P. O., & Löwe, B. (2007).** Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. *Annals of internal medicine*, 146(5), 317-325.
+4. **Kroenke, K., Spitzer, R. L., Williams, J. B., Monahan, P. O., & Löwe, B. (2007).** Anxiety disorders in primary care: prevalence, impairment, comorbidity, and detection. _Annals of internal medicine_, 146(5), 317-325.
 
-5. **Löwe, B., Decker, O., Müller, S., et al. (2008).** Validation and standardization of the Generalized Anxiety Disorder Screener (GAD-7) in the general population. *Medical care*, 46(3), 266-274.
+5. **Löwe, B., Decker, O., Müller, S., et al. (2008).** Validation and standardization of the Generalized Anxiety Disorder Screener (GAD-7) in the general population. _Medical care_, 46(3), 266-274.
 
 ---
 

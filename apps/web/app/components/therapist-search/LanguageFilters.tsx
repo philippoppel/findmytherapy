@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import React from 'react'
+import React from 'react';
 
 export type LanguageFiltersProps = {
-  availableLanguages: string[]
-  selectedLanguages: Set<string>
-  onChange: (languages: Set<string>) => void
-}
+  availableLanguages: string[];
+  selectedLanguages: Set<string>;
+  onChange: (languages: Set<string>) => void;
+};
 
 export function LanguageFilters({
   availableLanguages,
@@ -14,17 +14,17 @@ export function LanguageFilters({
   onChange,
 }: LanguageFiltersProps) {
   const handleToggle = (language: string) => {
-    const newLanguages = new Set(selectedLanguages)
+    const newLanguages = new Set(selectedLanguages);
     if (newLanguages.has(language)) {
-      newLanguages.delete(language)
+      newLanguages.delete(language);
     } else {
-      newLanguages.add(language)
+      newLanguages.add(language);
     }
-    onChange(newLanguages)
-  }
+    onChange(newLanguages);
+  };
 
   if (availableLanguages.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -32,7 +32,7 @@ export function LanguageFilters({
       <p className="mb-3 text-sm font-medium text-white/90">Sprachen</p>
       <div className="flex flex-wrap gap-2">
         {availableLanguages.map((language) => {
-          const isSelected = selectedLanguages.has(language)
+          const isSelected = selectedLanguages.has(language);
           return (
             <button
               key={language}
@@ -47,9 +47,9 @@ export function LanguageFilters({
             >
               {language}
             </button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

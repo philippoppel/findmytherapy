@@ -1,16 +1,15 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { Mail, ArrowLeft } from 'lucide-react'
-import { CrisisResources } from '../triage/CrisisResources'
-import { ChatWidget } from '../../components/support/ChatWidget'
-import { FeatureGate } from '@/components/FeatureGate'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Mail, ArrowLeft } from 'lucide-react';
+import { CrisisResources } from '../triage/CrisisResources';
+import { ChatWidget } from '../../components/support/ChatWidget';
+import { FeatureGate } from '@/components/FeatureGate';
 
 export const metadata: Metadata = {
   title: 'Kontakt – FindMyTherapy',
   description:
     'Kontaktiere das FindMyTherapy Care-Team per E-Mail oder Chat. Notfallnummern und Sofort-Hilfe verfügbar.',
-}
-
+};
 
 export default function ContactPage() {
   return (
@@ -67,5 +66,5 @@ export default function ContactPage() {
         <ChatWidget />
       </FeatureGate>
     </div>
-  )
+  );
 }

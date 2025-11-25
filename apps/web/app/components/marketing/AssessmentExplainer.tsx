@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
-import { Brain, ClipboardList } from 'lucide-react'
-import { SectionHeading } from './SectionHeading'
-import { Reveal } from './Reveal'
+import { Brain, ClipboardList } from 'lucide-react';
+import { SectionHeading } from './SectionHeading';
+import { Reveal } from './Reveal';
 
 const tools = [
   {
     name: 'PHQ-9',
     icon: ClipboardList,
-    description: 'Patient Health Questionnaire – misst, wie stark depressive Symptome deinen Alltag beeinflussen.',
+    description:
+      'Patient Health Questionnaire – misst, wie stark depressive Symptome deinen Alltag beeinflussen.',
     details: [
       '9 Fragen, die in internationalen Leitlinien empfohlen werden',
       'Erkennt leichte, mittlere und schwere Ausprägungen',
@@ -18,14 +19,15 @@ const tools = [
   {
     name: 'GAD-7',
     icon: Brain,
-    description: 'Generalized Anxiety Disorder Scale – zeigt, wie stark Anspannung, Grübeln und Sorgen präsent sind.',
+    description:
+      'Generalized Anxiety Disorder Scale – zeigt, wie stark Anspannung, Grübeln und Sorgen präsent sind.',
     details: [
       '7 Fragen zu typischen Anzeichen von Angst und Anspannung',
       'Unterstützt Entscheidungen, ob Selbsthilfe oder Therapie sinnvoll ist',
       'Kann bei Verlaufsmessungen helfen, Erfolge zu dokumentieren',
     ],
   },
-]
+];
 
 export function AssessmentExplainer() {
   return (
@@ -48,7 +50,9 @@ export function AssessmentExplainer() {
                   </span>
                   <h3 className="text-xl font-semibold text-default">{tool.name}</h3>
                 </div>
-                <p className="mt-4 text-pretty text-base leading-relaxed text-muted">{tool.description}</p>
+                <p className="mt-4 text-pretty text-base leading-relaxed text-muted">
+                  {tool.description}
+                </p>
                 <ul className="mt-4 space-y-2 text-sm leading-relaxed text-default">
                   {tool.details.map((detail) => (
                     <li key={detail} className="flex items-start gap-2">
@@ -63,5 +67,5 @@ export function AssessmentExplainer() {
         </div>
       </div>
     </section>
-  )
+  );
 }

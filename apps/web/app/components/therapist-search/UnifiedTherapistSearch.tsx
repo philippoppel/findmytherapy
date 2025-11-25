@@ -1,59 +1,59 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect, useRef } from 'react'
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react'
-import type { TherapistCard } from '../../therapists/types'
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react';
+import type { TherapistCard } from '../../therapists/types';
 import {
   useTherapistFiltering,
   type FormatFilter,
   type TherapistFilters,
-} from '../../hooks/useTherapistFiltering'
-import type { Coordinates } from '../../therapists/location-data'
-import { LocationInput } from './LocationInput'
-import { SpecializationFilters } from './SpecializationFilters'
-import { LanguageFilters } from './LanguageFilters'
-import { PriceRangeFilter } from './PriceRangeFilter'
-import { InsuranceFilters } from './InsuranceFilters'
-import { SortOptions } from './SortOptions'
+} from '../../hooks/useTherapistFiltering';
+import type { Coordinates } from '../../therapists/location-data';
+import { LocationInput } from './LocationInput';
+import { SpecializationFilters } from './SpecializationFilters';
+import { LanguageFilters } from './LanguageFilters';
+import { PriceRangeFilter } from './PriceRangeFilter';
+import { InsuranceFilters } from './InsuranceFilters';
+import { SortOptions } from './SortOptions';
 
 export type UnifiedTherapistSearchProps = {
-  therapists: TherapistCard[]
-  onFilteredResults: (therapists: TherapistCard[]) => void
-  className?: string
-}
+  therapists: TherapistCard[];
+  onFilteredResults: (therapists: TherapistCard[]) => void;
+  className?: string;
+};
 
 const FORMAT_LABELS: Record<FormatFilter, string> = {
   online: 'Online',
   praesenz: 'Präsenz',
   hybrid: 'Hybrid',
-}
+};
 
 export function UnifiedTherapistSearch({
   therapists,
   onFilteredResults,
   className = '',
 }: UnifiedTherapistSearchProps) {
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   // Use ref to keep callback stable across renders
-  const onFilteredResultsRef = useRef(onFilteredResults)
+  const onFilteredResultsRef = useRef(onFilteredResults);
 
   useEffect(() => {
-    onFilteredResultsRef.current = onFilteredResults
-  }, [onFilteredResults])
+    onFilteredResultsRef.current = onFilteredResults;
+  }, [onFilteredResults]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isFilterModalOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isFilterModalOpen])
+      document.body.style.overflow = '';
+    };
+  }, [isFilterModalOpen]);
 
   const {
     filters,
@@ -77,30 +77,30 @@ export function UnifiedTherapistSearch({
     availableLanguages,
     availableInsuranceProviders,
     priceRangeStats,
-  } = useTherapistFiltering({ therapists })
+  } = useTherapistFiltering({ therapists });
 
   // Update parent with filtered results
   useEffect(() => {
-    onFilteredResultsRef.current(filteredTherapists)
-  }, [filteredTherapists])
+    onFilteredResultsRef.current(filteredTherapists);
+  }, [filteredTherapists]);
 
   const handleFormatToggle = (format: FormatFilter) => {
-    const newFormats = new Set(filters.formats)
+    const newFormats = new Set(filters.formats);
     if (newFormats.has(format)) {
-      newFormats.delete(format)
+      newFormats.delete(format);
     } else {
-      newFormats.add(format)
+      newFormats.add(format);
     }
-    setFormats(newFormats)
-  }
+    setFormats(newFormats);
+  };
 
   const activeFilterCount = () => {
-    let count = 0
-    if (filters.formats.size > 0) count += filters.formats.size
-    if (filters.specializations.size > 0) count += filters.specializations.size
-    if (filters.nearbyOnly) count += 1
-    return count
-  }
+    let count = 0;
+    if (filters.formats.size > 0) count += filters.formats.size;
+    if (filters.specializations.size > 0) count += filters.specializations.size;
+    if (filters.nearbyOnly) count += 1;
+    return count;
+  };
 
   const advancedFiltersProps: AdvancedFiltersContentProps = {
     filters,
@@ -117,7 +117,7 @@ export function UnifiedTherapistSearch({
     onPriceRangeChange: setPriceRange,
     onAcceptsInsuranceChange: setAcceptsInsurance,
     onInsuranceProvidersChange: setInsuranceProviders,
-  }
+  };
 
   return (
     <div className={className}>
@@ -142,7 +142,7 @@ export function UnifiedTherapistSearch({
         <p className="mb-2 text-xs font-medium uppercase tracking-wider text-white/70">Format</p>
         <div className="grid grid-cols-3 gap-2">
           {(Object.keys(FORMAT_LABELS) as FormatFilter[]).map((format) => {
-            const isSelected = filters.formats.has(format)
+            const isSelected = filters.formats.has(format);
             return (
               <button
                 key={format}
@@ -157,7 +157,7 @@ export function UnifiedTherapistSearch({
               >
                 {FORMAT_LABELS[format]}
               </button>
-            )
+            );
           })}
         </div>
       </div>
@@ -218,7 +218,12 @@ export function UnifiedTherapistSearch({
 
       {/* Mobile Filter Modal (Bottom Sheet) */}
       {isFilterModalOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+        >
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
@@ -243,7 +248,9 @@ export function UnifiedTherapistSearch({
               <div className="flex items-center justify-between border-b border-white/10 p-4">
                 <div className="flex items-center gap-2">
                   <SlidersHorizontal className="h-5 w-5 text-primary-400" aria-hidden="true" />
-                  <h2 id="modal-title" className="text-lg font-semibold text-white">Erweiterte Filter</h2>
+                  <h2 id="modal-title" className="text-lg font-semibold text-white">
+                    Erweiterte Filter
+                  </h2>
                 </div>
                 <button
                   type="button"
@@ -256,7 +263,10 @@ export function UnifiedTherapistSearch({
               </div>
 
               {/* Content - Scrollable */}
-              <div className="flex-1 overflow-y-auto overscroll-contain p-4" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div
+                className="flex-1 overflow-y-auto overscroll-contain p-4"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
                 <AdvancedFiltersContent {...advancedFiltersProps} />
               </div>
 
@@ -328,25 +338,25 @@ export function UnifiedTherapistSearch({
         {totalCount} {totalCount === 1 ? 'Profil' : 'Profile'}
       </div>
     </div>
-  )
+  );
 }
 
 type AdvancedFiltersContentProps = {
-  filters: TherapistFilters
-  availableSpecializations: string[]
-  availableLanguages: string[]
-  availableInsuranceProviders: string[]
-  priceRangeStats: { min: number; max: number } | null
-  onLocationChange: (value: string) => void
-  onCoordinatesChange: (coords: Coordinates | null) => void
-  onNearbyOnlyChange: (nearbyOnly: boolean) => void
-  onRadiusChange: (radius: number) => void
-  onSpecializationsChange: (specializations: Set<string>) => void
-  onLanguagesChange: (languages: Set<string>) => void
-  onPriceRangeChange: (range: { min: number; max: number } | null) => void
-  onAcceptsInsuranceChange: (accepts: boolean) => void
-  onInsuranceProvidersChange: (providers: Set<string>) => void
-}
+  filters: TherapistFilters;
+  availableSpecializations: string[];
+  availableLanguages: string[];
+  availableInsuranceProviders: string[];
+  priceRangeStats: { min: number; max: number } | null;
+  onLocationChange: (value: string) => void;
+  onCoordinatesChange: (coords: Coordinates | null) => void;
+  onNearbyOnlyChange: (nearbyOnly: boolean) => void;
+  onRadiusChange: (radius: number) => void;
+  onSpecializationsChange: (specializations: Set<string>) => void;
+  onLanguagesChange: (languages: Set<string>) => void;
+  onPriceRangeChange: (range: { min: number; max: number } | null) => void;
+  onAcceptsInsuranceChange: (accepts: boolean) => void;
+  onInsuranceProvidersChange: (providers: Set<string>) => void;
+};
 
 function AdvancedFiltersContent({
   filters,
@@ -408,5 +418,5 @@ function AdvancedFiltersContent({
         />
       </div>
     </div>
-  )
+  );
 }

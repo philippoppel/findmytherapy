@@ -1,14 +1,14 @@
 // Mental health conditions for SEO landing pages
 export interface Condition {
-  slug: string
-  name: string
-  shortName: string
-  description: string
-  metaDescription: string
-  keywords: string[]
-  symptoms: string[]
-  treatments: string[]
-  relatedConditions: string[]
+  slug: string;
+  name: string;
+  shortName: string;
+  description: string;
+  metaDescription: string;
+  keywords: string[];
+  symptoms: string[];
+  treatments: string[];
+  relatedConditions: string[];
 }
 
 export const mentalHealthConditions: Condition[] = [
@@ -264,12 +264,12 @@ export const mentalHealthConditions: Condition[] = [
     ],
     relatedConditions: ['depression', 'angststoerung'],
   },
-]
+];
 
 export function getConditionBySlug(slug: string): Condition | undefined {
-  return mentalHealthConditions.find((condition) => condition.slug === slug)
+  return mentalHealthConditions.find((condition) => condition.slug === slug);
 }
 
 export function getAllConditionSlugs(): string[] {
-  return mentalHealthConditions.map((condition) => condition.slug)
+  return mentalHealthConditions.map((condition) => condition.slug);
 }

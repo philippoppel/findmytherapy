@@ -1,34 +1,34 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
 import {
   mentalHealthConditions,
   getAllConditionSlugs,
   getConditionBySlug,
-} from '@/lib/seo/conditions'
-import { austrianCities } from '@/lib/seo/cities'
+} from '@/lib/seo/conditions';
+import { austrianCities } from '@/lib/seo/cities';
 
 type ConditionPageProps = {
   params: {
-    condition: string
-  }
-}
+    condition: string;
+  };
+};
 
 export function generateStaticParams() {
   return getAllConditionSlugs().map((slug) => ({
     condition: slug,
-  }))
+  }));
 }
 
 export function generateMetadata({ params }: ConditionPageProps): Metadata {
-  const condition = getConditionBySlug(params.condition)
+  const condition = getConditionBySlug(params.condition);
 
   if (!condition) {
     return {
       title: 'Thema nicht gefunden | FindMyTherapy',
-    }
+    };
   }
 
   return {
@@ -60,25 +60,25 @@ export function generateMetadata({ params }: ConditionPageProps): Metadata {
       description: condition.metaDescription,
       images: ['https://findmytherapy.net/images/og-image.jpg'],
     },
-  }
+  };
 }
 
 export default async function ConditionPage({ params }: ConditionPageProps) {
-  const condition = getConditionBySlug(params.condition)
+  const condition = getConditionBySlug(params.condition);
 
   if (!condition) {
-    notFound()
+    notFound();
   }
 
   // Fetch therapists specializing in this condition
   let therapists: Array<{
-    id: string
-    displayName: string | null
-    title: string | null
-    city: string | null
-    profileImageUrl: string | null
-    specialties: string[]
-  }> = []
+    id: string;
+    displayName: string | null;
+    title: string | null;
+    city: string | null;
+    profileImageUrl: string | null;
+    specialties: string[];
+  }> = [];
 
   try {
     therapists = await prisma.therapistProfile.findMany({
@@ -99,15 +99,15 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
         specialties: true,
       },
       take: 12,
-    })
+    });
   } catch (error) {
-    console.warn('Could not fetch therapists for condition page:', error)
+    console.warn('Could not fetch therapists for condition page:', error);
   }
 
   // Get related conditions
   const relatedConditions = condition.relatedConditions
     .map((slug) => getConditionBySlug(slug))
-    .filter(Boolean)
+    .filter(Boolean);
 
   // Schema.org MedicalCondition
   const medicalConditionSchema = {
@@ -129,7 +129,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
       '@type': 'MedicalSpecialty',
       name: 'Psychotherapy',
     },
-  }
+  };
 
   // Schema.org FAQPage for symptoms & treatments
   const faqSchema = {
@@ -161,7 +161,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
         },
       },
     ],
-  }
+  };
 
   // Breadcrumb Schema
   const breadcrumbSchema = {
@@ -187,7 +187,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
         item: `https://findmytherapy.net/themen/${condition.slug}`,
       },
     ],
-  }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
@@ -207,9 +207,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
             <span className="text-white">{condition.name}</span>
           </nav>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            {condition.name}
-          </h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{condition.name}</h1>
           <p className="text-xl sm:text-2xl text-primary-100 max-w-3xl leading-relaxed">
             {condition.description}
           </p>
@@ -220,12 +218,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
               className="inline-flex items-center px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors shadow-lg"
             >
               Passende:n Therapeut:in finden
-              <svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -251,7 +244,8 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
             Symptome bei {condition.name}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-3xl">
-            {condition.name} kann sich durch verschiedene Symptome zeigen. Wenn mehrere dieser Anzeichen über längere Zeit auftreten, kann professionelle Hilfe sinnvoll sein.
+            {condition.name} kann sich durch verschiedene Symptome zeigen. Wenn mehrere dieser
+            Anzeichen über längere Zeit auftreten, kann professionelle Hilfe sinnvoll sein.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -276,9 +270,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
                       />
                     </svg>
                   </div>
-                  <span className="text-gray-900 dark:text-white font-medium">
-                    {symptom}
-                  </span>
+                  <span className="text-gray-900 dark:text-white font-medium">{symptom}</span>
                 </div>
               </div>
             ))}
@@ -293,7 +285,8 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
             Behandlungsmöglichkeiten
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-3xl">
-            Es gibt verschiedene wissenschaftlich fundierte Therapiemethoden für {condition.name}. Die passende Behandlung wird individuell mit Ihrem Therapeuten abgestimmt.
+            Es gibt verschiedene wissenschaftlich fundierte Therapiemethoden für {condition.name}.
+            Die passende Behandlung wird individuell mit Ihrem Therapeuten abgestimmt.
           </p>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -346,12 +339,7 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
                 className="mt-4 sm:mt-0 inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 Alle anzeigen
-                <svg
-                  className="ml-2 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -443,7 +431,8 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
                 Was sind typische Symptome bei {condition.name}?
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Typische Symptome sind: {condition.symptoms.slice(0, 5).join(', ')}. Diese können unterschiedlich stark ausgeprägt sein.
+                Typische Symptome sind: {condition.symptoms.slice(0, 5).join(', ')}. Diese können
+                unterschiedlich stark ausgeprägt sein.
               </p>
             </div>
 
@@ -452,7 +441,9 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
                 Wie wird {condition.name} behandelt?
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                {condition.name} kann mit verschiedenen Therapiemethoden behandelt werden: {condition.treatments.join(', ')}. Ein:e spezialisierte:r Therapeut:in kann die beste Behandlung für Ihre individuelle Situation empfehlen.
+                {condition.name} kann mit verschiedenen Therapiemethoden behandelt werden:{' '}
+                {condition.treatments.join(', ')}. Ein:e spezialisierte:r Therapeut:in kann die
+                beste Behandlung für Ihre individuelle Situation empfehlen.
               </p>
             </div>
 
@@ -461,8 +452,12 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
                 Wo finde ich Hilfe bei {condition.name} in Österreich?
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Bei FindMyTherapy finden Sie spezialisierte Psychotherapeut:innen für {condition.name} in ganz Österreich. Nutzen Sie unseren{' '}
-                <Link href="/triage" className="text-primary-600 dark:text-primary-400 hover:underline">
+                Bei FindMyTherapy finden Sie spezialisierte Psychotherapeut:innen für{' '}
+                {condition.name} in ganz Österreich. Nutzen Sie unseren{' '}
+                <Link
+                  href="/triage"
+                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                >
                   Matching-Service
                 </Link>
                 , um den passenden Therapeuten zu finden.
@@ -550,19 +545,15 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
             Bereit, den ersten Schritt zu machen?
           </h2>
           <p className="text-xl text-primary-100 mb-10 max-w-2xl mx-auto">
-            Finden Sie eine:n spezialisierte:n Therapeut:in für {condition.name}. Unser Matching-Service hilft Ihnen dabei, die passende Unterstützung zu finden.
+            Finden Sie eine:n spezialisierte:n Therapeut:in für {condition.name}. Unser
+            Matching-Service hilft Ihnen dabei, die passende Unterstützung zu finden.
           </p>
           <Link
             href="/triage"
             className="inline-flex items-center px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors shadow-lg text-lg"
           >
             Jetzt Therapeut:in finden
-            <svg
-              className="ml-2 w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -588,5 +579,5 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </main>
-  )
+  );
 }

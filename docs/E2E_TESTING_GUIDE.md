@@ -12,6 +12,7 @@
 **Warum?** Damit du Microsites öffentlich testen kannst ohne Login.
 
 **Schritte:**
+
 1. Gehe zu https://vercel.com/philipps-projects-0f51423d/findmytherapy-qyva
 2. Settings → Deployment Protection
 3. Wähle "Only Preview Deployments" oder "Disabled"
@@ -22,11 +23,13 @@
 ### 2. Test-Accounts vorbereiten
 
 Du brauchst Zugriff auf:
+
 - ✅ **Admin Account** (für Profil-Konfiguration & Dossier-Erstellung)
 - ✅ **Therapeut Account** (für Dossier-Zugriff)
 - ✅ **Client Account** (für Triage & Consent)
 
 **Accounts checken:**
+
 ```bash
 # Zeige alle vorhandenen Users
 DATABASE_URL="<production-db-url>" node -e "
@@ -134,6 +137,7 @@ WHERE "micrositeSlug" = 'dr-maria-mueller';
 ```
 
 **Script ausführen:**
+
 ```bash
 cd /Users/philippoppel/Desktop/mental-health-platform/packages/db
 
@@ -154,6 +158,7 @@ npx prisma db execute --file /tmp/setup-microsite.sql --schema prisma/schema.pri
 #### Test 1: Öffentlichen Zugriff auf Microsite testen
 
 1. **Öffne die Microsite-URL**
+
    ```
    https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-mueller
    ```
@@ -212,6 +217,7 @@ npx prisma db execute --file /tmp/setup-microsite.sql --schema prisma/schema.pri
    - ❌ NICHT: Fehlermeldung oder Redirect zu 500-Seite
 
 4. **Verifikation in Database:**
+
    ```sql
    SELECT
      l."name",
@@ -240,10 +246,12 @@ npx prisma db execute --file /tmp/setup-microsite.sql --schema prisma/schema.pri
 #### Test 3: Analytics Tracking (im Hintergrund)
 
 **Automatisch beim Seitenaufruf:**
+
 - Die `<MicrositeAnalytics>` Komponente sollte beim Laden einen Track-Event senden
 - Client-seitig: Netzwerk-Tab in Browser DevTools öffnen → POST zu `/api/microsites/track`
 
 **Verifikation:**
+
 ```sql
 SELECT
   v."occurredAt",
@@ -258,6 +266,7 @@ LIMIT 5;
 ```
 
 **Sollte zeigen:**
+
 - ✅ Neue Einträge bei jedem Seitenaufruf
 - ✅ `occurredAt`: Zeitstempel des Besuchs
 - ✅ `sessionId`: Eindeutige Session-ID
@@ -267,7 +276,9 @@ LIMIT 5;
 #### Test 4: Slug-Redirect (nach Slug-Änderung)
 
 **Setup:**
+
 1. Ändere den Slug zu einem neuen Wert:
+
    ```sql
    -- Erstelle Redirect für alte URL
    INSERT INTO "TherapistMicrositeRedirect" ("id", "fromSlug", "toSlug", "createdAt")
@@ -280,6 +291,7 @@ LIMIT 5;
    ```
 
 2. **Öffne alte URL:**
+
    ```
    https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-mueller
    ```
@@ -294,16 +306,19 @@ LIMIT 5;
 #### Test 5: SEO & Social Media Preview
 
 **LinkedIn Preview:**
+
 1. Öffne: https://www.linkedin.com/post-inspector/
 2. Gib URL ein: `https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-mueller`
 3. Klicke "Inspect"
 
 **Erwartetes Ergebnis:**
+
 - ✅ Titel: "Dr. Maria Müller - Klinische Psychologin | FindMyTherapy"
 - ✅ Beschreibung: "Spezialistin für Angst, Depression und Burnout"
 - ✅ Bild: Profilbild (wenn hochgeladen)
 
 **Twitter/X Card Validator:**
+
 1. Öffne: https://cards-dev.twitter.com/validator
 2. Gleiche URL einfügen
 3. Preview sollte ähnlich zu LinkedIn sein
@@ -312,13 +327,13 @@ LIMIT 5;
 
 ### Troubleshooting Microsite
 
-| Problem | Ursache | Lösung |
-|---------|---------|--------|
-| **404 Not Found** | Slug nicht vorhanden oder falsch geschrieben | Prüfe `micrositeSlug` in DB |
-| **Seite leer / keine Daten** | Profil nicht gefüllt | Fülle `displayName`, `about`, `specialties` |
-| **"Not Published"** | Status nicht PUBLISHED | Setze `micrositeStatus = 'PUBLISHED'` |
-| **401 Unauthorized** | Deployment Protection aktiv | Deaktiviere in Vercel Settings |
-| **Formular sendet nicht** | CORS oder API-Fehler | Check Browser Console + Netzwerk-Tab |
+| Problem                      | Ursache                                      | Lösung                                      |
+| ---------------------------- | -------------------------------------------- | ------------------------------------------- |
+| **404 Not Found**            | Slug nicht vorhanden oder falsch geschrieben | Prüfe `micrositeSlug` in DB                 |
+| **Seite leer / keine Daten** | Profil nicht gefüllt                         | Fülle `displayName`, `about`, `specialties` |
+| **"Not Published"**          | Status nicht PUBLISHED                       | Setze `micrositeStatus = 'PUBLISHED'`       |
+| **401 Unauthorized**         | Deployment Protection aktiv                  | Deaktiviere in Vercel Settings              |
+| **Formular sendet nicht**    | CORS oder API-Fehler                         | Check Browser Console + Netzwerk-Tab        |
 
 ---
 
@@ -329,6 +344,7 @@ LIMIT 5;
 #### 1. Client mit Triage Session & Consent
 
 **Prüfe vorhandene Daten:**
+
 ```sql
 -- Zeige Clients mit Triage Sessions
 SELECT
@@ -347,6 +363,7 @@ ORDER BY ts."createdAt" DESC;
 ```
 
 **Falls keine Triage vorhanden, erstelle eine:**
+
 ```sql
 -- Erstelle Test-Triage für bestehenden Client
 INSERT INTO "TriageSession" (
@@ -431,6 +448,7 @@ ORDER BY tp."createdAt" DESC;
 ```
 
 **Wichtig:** Notiere dir:
+
 - ✅ `user_id` des Clients (für Login)
 - ✅ `triage_id` der Triage Session
 - ✅ `profile_id` des Therapeuten (für recommendedTherapistIds)
@@ -475,6 +493,7 @@ ORDER BY tp."createdAt" DESC;
    - Tab "Console"
 
 3. **Führe API-Call aus:**
+
    ```javascript
    // Dossier erstellen
    fetch('/api/dossiers', {
@@ -483,21 +502,22 @@ ORDER BY tp."createdAt" DESC;
        'Content-Type': 'application/json',
      },
      body: JSON.stringify({
-       triageSessionId: '<deine-triage-id>',  // Ersetzen!
-       recommendedTherapistIds: ['<therapist-profile-id>'],  // Ersetzen!
-       trigger: 'ADMIN'
+       triageSessionId: '<deine-triage-id>', // Ersetzen!
+       recommendedTherapistIds: ['<therapist-profile-id>'], // Ersetzen!
+       trigger: 'ADMIN',
+     }),
+   })
+     .then((r) => r.json())
+     .then((data) => {
+       console.log('✅ Dossier erstellt:', data);
+       window.dossierId = data.data.dossierId;
+       console.log('Dossier ID:', window.dossierId);
      })
-   })
-   .then(r => r.json())
-   .then(data => {
-     console.log('✅ Dossier erstellt:', data);
-     window.dossierId = data.data.dossierId;
-     console.log('Dossier ID:', window.dossierId);
-   })
-   .catch(err => console.error('❌ Fehler:', err));
+     .catch((err) => console.error('❌ Fehler:', err));
    ```
 
 4. **Erwartete Console-Ausgabe:**
+
    ```json
    {
      "success": true,
@@ -534,11 +554,12 @@ ORDER BY tp."createdAt" DESC;
    - Klicke auf Dossier um Details zu sehen
 
 3. **Option B: Via Browser Console + API**
+
    ```javascript
    // Dossier abrufen
-   fetch('/api/dossiers/<dossierId>')  // Ersetze <dossierId>
-     .then(r => r.json())
-     .then(data => {
+   fetch('/api/dossiers/<dossierId>') // Ersetze <dossierId>
+     .then((r) => r.json())
+     .then((data) => {
        console.log('✅ Dossier-Daten:', data);
 
        // Zeige wichtige Infos
@@ -546,16 +567,17 @@ ORDER BY tp."createdAt" DESC;
        console.log('📊 Scores:', {
          PHQ9: p.phq9Score + '/27 (' + p.phq9Severity + ')',
          GAD7: p.gad7Score + '/21 (' + p.gad7Severity + ')',
-         Risk: p.riskLevel
+         Risk: p.riskLevel,
        });
        console.log('🚩 Red Flags:', p.redFlags);
        console.log('🎯 Themes:', p.themes);
        console.log('👤 Client:', p.clientAlias);
      })
-     .catch(err => console.error('❌ Fehler:', err));
+     .catch((err) => console.error('❌ Fehler:', err));
    ```
 
 4. **Erwartete Console-Ausgabe:**
+
    ```javascript
    {
      "success": true,
@@ -600,23 +622,27 @@ ORDER BY tp."createdAt" DESC;
    - Therapeut der NICHT in `recommendedTherapistIds` war
 
 2. **Versuche Dossier abzurufen:**
+
    ```javascript
    fetch('/api/dossiers/<dossierId>')
-     .then(r => r.json())
-     .then(data => console.log('Response:', data))
+     .then((r) => r.json())
+     .then((data) => console.log('Response:', data));
    ```
 
 3. **Erwartetes Ergebnis:**
+
    ```json
    {
      "success": false,
      "error": "Access denied"
    }
    ```
+
    - ✅ Status: 403 Forbidden
    - ✅ Kein Zugriff auf entschlüsselte Daten
 
 4. **Verifikation in Database:**
+
    ```sql
    -- Letzter Access Log sollte DENIED sein
    SELECT
@@ -640,21 +666,22 @@ ORDER BY tp."createdAt" DESC;
 #### Test 4: Signierte URL generieren & nutzen
 
 1. **Als Admin eingeloggt:**
+
    ```javascript
    // Neue signierte URL für Therapeut generieren
    fetch('/api/dossiers/<dossierId>/links', {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({
-       therapistUserId: '<user-id-of-therapist>',  // Ersetzen!
-       expiresInHours: 72
-     })
+       therapistUserId: '<user-id-of-therapist>', // Ersetzen!
+       expiresInHours: 72,
+     }),
    })
-   .then(r => r.json())
-   .then(data => {
-     console.log('✅ Signierte URL:', data.data.url);
-     // Kopiere die URL
-   });
+     .then((r) => r.json())
+     .then((data) => {
+       console.log('✅ Signierte URL:', data.data.url);
+       // Kopiere die URL
+     });
    ```
 
 2. **Öffne die signierte URL in neuem Inkognito-Tab**
@@ -673,6 +700,7 @@ ORDER BY tp."createdAt" DESC;
 #### Test 5: Abgelaufenes Dossier testen
 
 1. **Setze Ablaufdatum in Vergangenheit:**
+
    ```sql
    UPDATE "SessionZeroDossier"
    SET "expiresAt" = NOW() - INTERVAL '1 day'
@@ -680,10 +708,11 @@ ORDER BY tp."createdAt" DESC;
    ```
 
 2. **Versuche Zugriff:**
+
    ```javascript
    fetch('/api/dossiers/<dossierId>')
-     .then(r => r.json())
-     .then(data => console.log('Response:', data));
+     .then((r) => r.json())
+     .then((data) => console.log('Response:', data));
    ```
 
 3. **Erwartetes Ergebnis:**
@@ -695,6 +724,7 @@ ORDER BY tp."createdAt" DESC;
      "expiresAt": "2025-11-09T..."
    }
    ```
+
    - ✅ Status: 410 Gone
    - ✅ Access Log mit Status: "EXPIRED"
 
@@ -720,6 +750,7 @@ ORDER BY dal."accessedAt" DESC;
 ```
 
 **Sollte zeigen:**
+
 - ✅ Alle Zugriffe (SUCCESS, DENIED, EXPIRED)
 - ✅ IP-Hash ist 64 Zeichen lang (SHA-256)
 - ✅ Channel: WEB_DASHBOARD oder SIGNED_LINK
@@ -729,14 +760,14 @@ ORDER BY dal."accessedAt" DESC;
 
 ### Troubleshooting Dossier
 
-| Problem | Ursache | Lösung |
-|---------|---------|--------|
-| **"Consent required"** | ClientConsent fehlt oder REVOKED | Erstelle Consent mit Scope DOSSIER_SHARING |
-| **"Triage session not found"** | Falsche ID oder Session existiert nicht | Prüfe TriageSession Tabelle |
-| **"Dossier bereits vorhanden"** | Pro Triage nur 1 Dossier erlaubt | Neuen Triage erstellen ODER altes Dossier löschen |
-| **"Decryption failed"** | DOSSIER_ENCRYPTION_KEY fehlt/falsch | Prüfe Vercel Env Vars |
-| **403 bei Zugriff** | User nicht in recommendedTherapistIds | Prüfe Therapeut-ID in Dossier |
-| **Network Error bei API** | NextAuth Session abgelaufen | Logout/Login neu durchführen |
+| Problem                         | Ursache                                 | Lösung                                            |
+| ------------------------------- | --------------------------------------- | ------------------------------------------------- |
+| **"Consent required"**          | ClientConsent fehlt oder REVOKED        | Erstelle Consent mit Scope DOSSIER_SHARING        |
+| **"Triage session not found"**  | Falsche ID oder Session existiert nicht | Prüfe TriageSession Tabelle                       |
+| **"Dossier bereits vorhanden"** | Pro Triage nur 1 Dossier erlaubt        | Neuen Triage erstellen ODER altes Dossier löschen |
+| **"Decryption failed"**         | DOSSIER_ENCRYPTION_KEY fehlt/falsch     | Prüfe Vercel Env Vars                             |
+| **403 bei Zugriff**             | User nicht in recommendedTherapistIds   | Prüfe Therapeut-ID in Dossier                     |
+| **Network Error bei API**       | NextAuth Session abgelaufen             | Logout/Login neu durchführen                      |
 
 ---
 
@@ -795,26 +826,35 @@ ORDER BY dal."accessedAt" DESC;
 ### Browser DevTools
 
 **Console Shortcuts:**
+
 ```javascript
 // Schnell-Check: Bin ich eingeloggt?
-fetch('/api/auth/session').then(r => r.json()).then(console.log);
+fetch('/api/auth/session')
+  .then((r) => r.json())
+  .then(console.log);
 
 // Alle Dossiers auflisten
-fetch('/api/dossiers').then(r => r.json()).then(console.log);
+fetch('/api/dossiers')
+  .then((r) => r.json())
+  .then(console.log);
 
 // Therapeuten-Profil abrufen
-fetch('/api/microsites/dr-maria-mueller/route').then(r => r.json()).then(console.log);
+fetch('/api/microsites/dr-maria-mueller/route')
+  .then((r) => r.json())
+  .then(console.log);
 ```
 
 ### Network Tab monitoring
 
 **Wichtige Requests:**
+
 - `POST /api/dossiers` → Dossier-Erstellung
 - `GET /api/dossiers/:id` → Dossier-Abruf
 - `POST /api/microsites/:slug/leads` → Lead-Submission
 - `POST /api/microsites/track` → Analytics-Tracking
 
 **Was du sehen solltest:**
+
 - ✅ Status 200/201 bei Erfolg
 - ✅ Keine CORS-Fehler
 - ✅ Response enthält expected data structure
@@ -824,6 +864,7 @@ fetch('/api/microsites/dr-maria-mueller/route').then(r => r.json()).then(console
 ## ✅ Testing Checklist
 
 ### Microsite Feature
+
 - [ ] Therapeuten-Profil mit Microsite konfiguriert
 - [ ] Microsite öffnet sich unter `/t/<slug>`
 - [ ] Alle Sections werden angezeigt (Hero, About, Expertise, etc.)
@@ -834,6 +875,7 @@ fetch('/api/microsites/dr-maria-mueller/route').then(r => r.json()).then(console
 - [ ] Slug-Redirect funktioniert (falls konfiguriert)
 
 ### Dossier Feature
+
 - [ ] ClientConsent kann erstellt werden
 - [ ] Dossier kann über API erstellt werden
 - [ ] Verschlüsselung funktioniert (encryptedPayload nicht lesbar)
@@ -846,6 +888,7 @@ fetch('/api/microsites/dr-maria-mueller/route').then(r => r.json()).then(console
 - [ ] Admin sieht echten Client-Namen, Therapeut nur Alias
 
 ### Integration
+
 - [ ] Triage → Dossier → Therapeut-Empfehlung Flow funktioniert
 - [ ] Client kann Therapeuten-Microsite aus Empfehlung öffnen
 - [ ] Lead von Microsite wird Therapeut zugeordnet
@@ -856,6 +899,7 @@ fetch('/api/microsites/dr-maria-mueller/route').then(r => r.json()).then(console
 ## 📸 Was du dokumentieren solltest (Screenshots)
 
 Für Bug-Reports oder Feature-Demos:
+
 1. ✅ Microsite Hero Section
 2. ✅ Kontaktformular mit Erfolgsmeldung
 3. ✅ Dossier-Erstellung (Response in Console)

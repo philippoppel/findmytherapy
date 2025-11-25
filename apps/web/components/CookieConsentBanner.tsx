@@ -1,58 +1,58 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { Cookie, ChevronDown, ChevronUp, X } from 'lucide-react'
-import { Button } from '@mental-health/ui'
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Cookie, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { Button } from '@mental-health/ui';
 import {
   shouldShowCookieBanner,
   acceptAllCookies,
   rejectAllCookies,
   saveCookieConsent,
   cookieCategoryInfo,
-} from '../lib/cookies'
+} from '../lib/cookies';
 
 const disableCookieBanner =
-  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DISABLE_COOKIE_BANNER === 'true'
+  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DISABLE_COOKIE_BANNER === 'true';
 
 export function CookieConsentBanner() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [showDetails, setShowDetails] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [preferences, setPreferences] = useState({
     essential: true,
     analytics: false,
     errorTracking: false,
-  })
+  });
 
   useEffect(() => {
     // Show banner if consent not given (unless explicitly disabled for tests)
     if (!disableCookieBanner) {
-      setIsVisible(shouldShowCookieBanner())
+      setIsVisible(shouldShowCookieBanner());
     }
-  }, [])
+  }, []);
 
   const handleAcceptAll = () => {
-    acceptAllCookies()
-    setIsVisible(false)
-  }
+    acceptAllCookies();
+    setIsVisible(false);
+  };
 
   const handleRejectAll = () => {
-    rejectAllCookies()
-    setIsVisible(false)
-  }
+    rejectAllCookies();
+    setIsVisible(false);
+  };
 
   const handleSavePreferences = () => {
-    saveCookieConsent(preferences)
-    setIsVisible(false)
-  }
+    saveCookieConsent(preferences);
+    setIsVisible(false);
+  };
 
   const handleClose = () => {
     // Close = same as reject all (GDPR compliant)
-    rejectAllCookies()
-    setIsVisible(false)
-  }
+    rejectAllCookies();
+    setIsVisible(false);
+  };
 
-  if (!isVisible || disableCookieBanner) return null
+  if (!isVisible || disableCookieBanner) return null;
 
   return (
     <>
@@ -67,7 +67,10 @@ export function CookieConsentBanner() {
       />
 
       {/* Banner */}
-      <div className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-5xl p-4 sm:p-6" data-testid="cookie-consent-banner">
+      <div
+        className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-5xl p-4 sm:p-6"
+        data-testid="cookie-consent-banner"
+      >
         <div className="relative rounded-2xl border border-gray-200 bg-white shadow-2xl">
           {/* Close button */}
           <button
@@ -86,12 +89,12 @@ export function CookieConsentBanner() {
                 <Cookie className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <h2 className="mb-2 text-xl font-semibold text-gray-900">
-                  Cookies & Datenschutz
-                </h2>
+                <h2 className="mb-2 text-xl font-semibold text-gray-900">Cookies & Datenschutz</h2>
                 <p className="text-sm leading-relaxed text-gray-600">
-                  Wir nutzen Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Essenziell notwendige Cookies sind für die Grundfunktionen erforderlich.
-                  Mit Ihrer Zustimmung können wir zusätzlich Analytics und Fehlererfassung aktivieren, um unseren Service zu verbessern.
+                  Wir nutzen Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Essenziell
+                  notwendige Cookies sind für die Grundfunktionen erforderlich. Mit Ihrer Zustimmung
+                  können wir zusätzlich Analytics und Fehlererfassung aktivieren, um unseren Service
+                  zu verbessern.
                 </p>
               </div>
             </div>
@@ -149,7 +152,8 @@ export function CookieConsentBanner() {
                   <div className="space-y-2">
                     {cookieCategoryInfo.essential.cookies.map((cookie) => (
                       <div key={cookie.name} className="text-xs text-gray-500">
-                        <span className="font-mono font-medium">{cookie.name}</span> - {cookie.purpose} ({cookie.duration})
+                        <span className="font-mono font-medium">{cookie.name}</span> -{' '}
+                        {cookie.purpose} ({cookie.duration})
                       </div>
                     ))}
                   </div>
@@ -161,7 +165,10 @@ export function CookieConsentBanner() {
                     <h3 className="font-semibold text-gray-900">
                       {cookieCategoryInfo.analytics.title}
                     </h3>
-                    <label className="relative inline-flex cursor-pointer items-center" aria-label="Analytics aktivieren/deaktivieren">
+                    <label
+                      className="relative inline-flex cursor-pointer items-center"
+                      aria-label="Analytics aktivieren/deaktivieren"
+                    >
                       <input
                         type="checkbox"
                         checked={preferences.analytics}
@@ -180,7 +187,8 @@ export function CookieConsentBanner() {
                   <div className="space-y-2">
                     {cookieCategoryInfo.analytics.cookies.map((cookie) => (
                       <div key={cookie.name} className="text-xs text-gray-500">
-                        <span className="font-mono font-medium">{cookie.name}</span> - {cookie.purpose} ({cookie.duration})
+                        <span className="font-mono font-medium">{cookie.name}</span> -{' '}
+                        {cookie.purpose} ({cookie.duration})
                       </div>
                     ))}
                   </div>
@@ -192,7 +200,10 @@ export function CookieConsentBanner() {
                     <h3 className="font-semibold text-gray-900">
                       {cookieCategoryInfo.errorTracking.title}
                     </h3>
-                    <label className="relative inline-flex cursor-pointer items-center" aria-label="Fehlererfassung aktivieren/deaktivieren">
+                    <label
+                      className="relative inline-flex cursor-pointer items-center"
+                      aria-label="Fehlererfassung aktivieren/deaktivieren"
+                    >
                       <input
                         type="checkbox"
                         checked={preferences.errorTracking}
@@ -211,7 +222,8 @@ export function CookieConsentBanner() {
                   <div className="space-y-2">
                     {cookieCategoryInfo.errorTracking.cookies.map((cookie) => (
                       <div key={cookie.name} className="text-xs text-gray-500">
-                        <span className="font-mono font-medium">{cookie.name}</span> - {cookie.purpose} ({cookie.duration})
+                        <span className="font-mono font-medium">{cookie.name}</span> -{' '}
+                        {cookie.purpose} ({cookie.duration})
                       </div>
                     ))}
                   </div>
@@ -229,12 +241,7 @@ export function CookieConsentBanner() {
                 >
                   Auswahl speichern
                 </Button>
-                <Button
-                  onClick={handleAcceptAll}
-                  variant="outline"
-                  className="flex-1"
-                  size="lg"
-                >
+                <Button onClick={handleAcceptAll} variant="outline" className="flex-1" size="lg">
                   Alle akzeptieren
                 </Button>
                 <Button
@@ -265,5 +272,5 @@ export function CookieConsentBanner() {
         </div>
       </div>
     </>
-  )
+  );
 }

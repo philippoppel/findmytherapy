@@ -25,6 +25,7 @@ Dieses Dokument beschreibt die Implementierung der Ende-zu-Ende-Verschlüsselung
 ### 1. Datenbankschema (`packages/db/prisma/schema.prisma`)
 
 Neue Modelle:
+
 - `SessionZeroDossier`: Speichert verschlüsselte Dossiers
 - `DossierAccessLog`: Protokolliert alle Zugriffe (DSGVO-konform)
 - `ClientConsent`: Verwaltet Einwilligungen zur Datenweitergabe
@@ -32,6 +33,7 @@ Neue Modelle:
 ### 2. Verschlüsselungs-Utilities (`apps/web/lib/encryption.ts`)
 
 Funktionen:
+
 - `encryptDossierData()`: Verschlüsselt Dossier-Payloads
 - `decryptDossierData()`: Entschlüsselt Dossier-Payloads
 - `buildDossierPayload()`: Erstellt strukturierte Dossier-Daten aus Triage-Sessions
@@ -40,6 +42,7 @@ Funktionen:
 ### 3. Storage-Abstraktion (`apps/web/lib/storage.ts`)
 
 Funktionen:
+
 - `generateSignedDossierURL()`: Erstellt JWT-signierte URLs mit Ablaufdatum
 - `verifySignedDossierToken()`: Verifiziert signierte Tokens
 - Unterstützt lokalen Filesystem-Storage (dev) und S3 (production-ready)
@@ -47,21 +50,27 @@ Funktionen:
 ### 4. API-Endpoints
 
 #### POST `/api/dossiers`
+
 Erstellt ein neues verschlüsseltes Dossier:
+
 - Validiert Einwilligung (ClientConsent)
 - Verschlüsselt sensible Daten
 - Generiert signierte URLs für empfohlene Therapeut:innen
 - Verhindert Duplikate
 
 #### GET `/api/dossiers/:id`
+
 Ruft ein Dossier ab (mit Zugriffskontrolle):
+
 - Verifiziert Berechtigung (Admin, Client, oder empfohlener Therapeut)
 - Prüft Ablaufdatum
 - Entschlüsselt Daten
 - Protokolliert Zugriff in DossierAccessLog
 
 #### POST `/api/dossiers/:id/links`
+
 Generiert neue signierte URLs:
+
 - Nur für Admin oder Dossier-Besitzer
 - Verifiziert Therapeut-Status (VERIFIED)
 - Prüft Empfehlungsliste
@@ -95,9 +104,9 @@ const response = await fetch('/api/dossiers', {
     recommendedTherapistIds: ['<therapist-id-1>', '<therapist-id-2>'],
     trigger: 'AUTO', // oder 'ADMIN', 'WORKER'
   }),
-})
+});
 
-const { data } = await response.json()
+const { data } = await response.json();
 // data.dossierId, data.signedUrls, data.expiresAt
 ```
 
@@ -105,8 +114,8 @@ const { data } = await response.json()
 
 ```typescript
 // Als Therapeut oder Admin
-const response = await fetch(`/api/dossiers/${dossierId}`)
-const { data } = await response.json()
+const response = await fetch(`/api/dossiers/${dossierId}`);
+const { data } = await response.json();
 
 // data.payload enthält entschlüsselte Daten:
 // - PHQ-9/GAD-7 Scores
@@ -126,9 +135,9 @@ const response = await fetch(`/api/dossiers/${dossierId}/links`, {
     therapistUserId: '<user-id>',
     expiresInHours: 72,
   }),
-})
+});
 
-const { data } = await response.json()
+const { data } = await response.json();
 // data.url, data.expiresAt
 ```
 
@@ -158,6 +167,7 @@ Alle Tests befinden sich in `apps/web/tests/`:
 - `integration/api/dossiers/create.test.ts`: Dossier-Erstellung
 
 Tests ausführen:
+
 ```bash
 npm run test
 ```
@@ -165,29 +175,35 @@ npm run test
 ## Compliance & DSGVO
 
 ### Datenminimierung
+
 - Nur notwendige Daten werden verschlüsselt
 - Metadaten (z.B. riskLevel) bleiben unverschlüsselt für effiziente Queries
 
 ### Transparenz
+
 - Jeder Zugriff wird in `DossierAccessLog` protokolliert
 - Clients können ihre Zugriffsprotokolle einsehen
 
 ### Recht auf Löschung
+
 - Dossiers haben Ablaufdatum (72h default)
 - Consent kann widerrufen werden → Dossier wird gelöscht
 
 ### Datenübertragbarkeit
+
 - JSON-Export des Dossiers verfügbar
 - Entschlüsselte Daten können als strukturiertes JSON exportiert werden
 
 ## Zukünftige Verbesserungen
 
 ### MVP+ (nächste Phase)
+
 - [ ] PDF-Generierung mit React-PDF
 - [ ] E-Mail-Benachrichtigung an Therapeut:innen
 - [ ] Dashboard für Therapeut:innen zum Anzeigen von Dossiers
 
 ### Scale
+
 - [ ] AWS KMS Integration für Schlüsselverwaltung
 - [ ] Automatischer Cleanup-Job für abgelaufene Dossiers
 - [ ] Versionierung von Dossiers (bei Re-Assessment)
@@ -196,6 +212,7 @@ npm run test
 ## Support
 
 Bei Fragen oder Problemen:
+
 1. Dokumentation prüfen: `docs/features/session-zero-dossier.md`
 2. Tests als Beispiele verwenden
 3. Issue im Repository erstellen

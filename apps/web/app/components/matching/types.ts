@@ -1,25 +1,25 @@
 export interface WizardFormData {
   // Schritt 1: Problemfelder
-  problemAreas: string[]
+  problemAreas: string[];
 
   // Schritt 2: Standort & Format
-  format: 'ONLINE' | 'IN_PERSON' | 'BOTH'
-  postalCode: string
-  city: string
-  latitude?: number
-  longitude?: number
-  maxDistanceKm: number
+  format: 'ONLINE' | 'IN_PERSON' | 'BOTH';
+  postalCode: string;
+  city: string;
+  latitude?: number;
+  longitude?: number;
+  maxDistanceKm: number;
 
   // Schritt 3: Präferenzen
-  languages: string[]
-  insuranceType: 'PUBLIC' | 'PRIVATE' | 'SELF_PAY' | 'ANY'
-  maxWaitWeeks?: number
+  languages: string[];
+  insuranceType: 'PUBLIC' | 'PRIVATE' | 'SELF_PAY' | 'ANY';
+  maxWaitWeeks?: number;
 
   // Schritt 4: Optionale Details
-  preferredMethods: string[]
-  therapistGender: 'male' | 'female' | 'any'
-  priceMax?: number // in Euro (wird zu Cent konvertiert)
-  communicationStyle: 'DIRECT' | 'GENTLE' | 'ANY'
+  preferredMethods: string[];
+  therapistGender: 'male' | 'female' | 'any';
+  priceMax?: number; // in Euro (wird zu Cent konvertiert)
+  communicationStyle: 'DIRECT' | 'GENTLE' | 'ANY';
 }
 
 export const defaultFormData: WizardFormData = {
@@ -33,7 +33,7 @@ export const defaultFormData: WizardFormData = {
   preferredMethods: [],
   therapistGender: 'any',
   communicationStyle: 'ANY',
-}
+};
 
 // Problemfelder für die Auswahl
 export const PROBLEM_AREAS = [
@@ -50,7 +50,7 @@ export const PROBLEM_AREAS = [
   { id: 'zwang', label: 'Zwangsstörungen', icon: '🔄' },
   { id: 'adhs', label: 'ADHS & Konzentration', icon: '🎯' },
   { id: 'arbeit', label: 'Berufliche Probleme', icon: '💼' },
-]
+];
 
 // Therapiemethoden
 export const THERAPY_METHODS = [
@@ -62,7 +62,7 @@ export const THERAPY_METHODS = [
   { id: 'achtsamkeit', label: 'Achtsamkeitsbasierte Therapie' },
   { id: 'koerper', label: 'Körpertherapie' },
   { id: 'gestalt', label: 'Gestalttherapie' },
-]
+];
 
 // Sprachen
 export const LANGUAGES = [
@@ -75,7 +75,7 @@ export const LANGUAGES = [
   { id: 'Arabisch', label: 'Arabisch' },
   { id: 'Französisch', label: 'Französisch' },
   { id: 'Spanisch', label: 'Spanisch' },
-]
+];
 
 // Wartezeit-Optionen
 export const WAIT_TIME_OPTIONS = [
@@ -84,4 +84,4 @@ export const WAIT_TIME_OPTIONS = [
   { value: 2, label: 'Innerhalb 2 Wochen' },
   { value: 4, label: 'Innerhalb 1 Monat' },
   { value: 8, label: 'Innerhalb 2 Monaten' },
-]
+];

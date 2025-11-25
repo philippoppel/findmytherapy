@@ -44,6 +44,7 @@ $ pnpm --filter web test -- --listTests
 **Gesamt: 26 Test-Dateien**
 
 Davon:
+
 - 16 bestehende Tests (app/, lib/)
 - 3 neue Integration Tests
 - 7 neue Test-Verzeichnisse und Files
@@ -55,6 +56,7 @@ Davon:
 **Problem:** `packages-ui/` ist kein eigenständiges pnpm workspace package.
 
 **Lösung:**
+
 ```json
 // In packages-ui/package.json das script hinzufügen:
 {
@@ -77,6 +79,7 @@ Davon:
 **Problem:** Integration Tests benötigen PostgreSQL.
 
 **Lösung für lokale Entwicklung:**
+
 ```bash
 # Postgres starten
 docker run -d \
@@ -97,8 +100,9 @@ DATABASE_URL="postgresql://postgres:password@localhost:5432/test_db" pnpm db:pus
 **Status:** ✅ Playwright erkennt diese nicht automatisch
 
 **Lösung:** Bereits in `playwright.config.ts` konfiguriert:
+
 ```typescript
-testDir: './tests/e2e'
+testDir: './tests/e2e';
 ```
 
 ## Tests ausführen
@@ -189,6 +193,7 @@ jobs:
 ### Sofort (um Tests lauffähig zu machen):
 
 1. **packages-ui/package.json ergänzen:**
+
    ```bash
    # Dependencies für UI-Tests hinzufügen
    cd packages-ui
@@ -196,6 +201,7 @@ jobs:
    ```
 
 2. **Postgres für lokale Tests starten:**
+
    ```bash
    docker run -d \
      --name postgres-test \
@@ -209,6 +215,7 @@ jobs:
    ```
 
 3. **Ersten Test-Run machen:**
+
    ```bash
    # Unit Tests (sollten laufen)
    pnpm --filter web test -- --testPathIgnorePatterns=integration
@@ -221,6 +228,7 @@ jobs:
 ### Optional (für vollständige Coverage):
 
 4. **Visual Baselines generieren:**
+
    ```bash
    pnpm dev &  # Server starten
    pnpm e2e -- tests/visual  # Baselines erstellen
@@ -261,7 +269,7 @@ jobs:
 
 ### Was Dependencies braucht:
 
-- ⚠️ packages-ui Tests (fehlt @testing-library/*)
+- ⚠️ packages-ui Tests (fehlt @testing-library/\*)
 - ⚠️ Integration Tests (braucht laufende Postgres)
 
 ### Geschätzte Zeit bis Lauffähigkeit:

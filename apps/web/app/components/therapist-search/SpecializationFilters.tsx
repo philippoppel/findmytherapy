@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { Check } from 'lucide-react'
+import { Check } from 'lucide-react';
 
 export type SpecializationFiltersProps = {
-  availableSpecializations: string[]
-  selectedSpecializations: Set<string>
-  onChange: (specializations: Set<string>) => void
-  className?: string
-}
+  availableSpecializations: string[];
+  selectedSpecializations: Set<string>;
+  onChange: (specializations: Set<string>) => void;
+  className?: string;
+};
 
 export function SpecializationFilters({
   availableSpecializations,
@@ -16,17 +16,17 @@ export function SpecializationFilters({
   className = '',
 }: SpecializationFiltersProps) {
   const handleToggle = (specialization: string) => {
-    const newSet = new Set(selectedSpecializations)
+    const newSet = new Set(selectedSpecializations);
     if (newSet.has(specialization)) {
-      newSet.delete(specialization)
+      newSet.delete(specialization);
     } else {
-      newSet.add(specialization)
+      newSet.add(specialization);
     }
-    onChange(newSet)
-  }
+    onChange(newSet);
+  };
 
   if (availableSpecializations.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -36,7 +36,7 @@ export function SpecializationFilters({
       </p>
       <div className="flex flex-wrap gap-2">
         {availableSpecializations.map((specialization) => {
-          const isSelected = selectedSpecializations.has(specialization)
+          const isSelected = selectedSpecializations.has(specialization);
           return (
             <button
               key={specialization}
@@ -52,9 +52,9 @@ export function SpecializationFilters({
               {isSelected && <Check className="h-3 w-3" aria-hidden />}
               <span>{specialization}</span>
             </button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

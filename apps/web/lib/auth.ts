@@ -32,7 +32,8 @@ type ExtendedUser = {
   marketingOptIn?: boolean | null;
 };
 
-const isExtendedUser = (value: unknown): value is ExtendedUser => typeof value === 'object' && value !== null;
+const isExtendedUser = (value: unknown): value is ExtendedUser =>
+  typeof value === 'object' && value !== null;
 
 const authConfig: NextAuthConfig = {
   secret: env.NEXTAUTH_SECRET,
@@ -189,7 +190,8 @@ const authConfig: NextAuthConfig = {
         }
         const twoFAEnabled = 'twoFAEnabled' in user ? user.twoFAEnabled : undefined;
         const twoFASecret = 'twoFASecret' in user ? user.twoFASecret : undefined;
-        token.twoFAEnabled = typeof twoFAEnabled !== 'undefined' ? Boolean(twoFAEnabled) : Boolean(twoFASecret);
+        token.twoFAEnabled =
+          typeof twoFAEnabled !== 'undefined' ? Boolean(twoFAEnabled) : Boolean(twoFASecret);
         if ('firstName' in user && typeof user.firstName === 'string') {
           token.firstName = user.firstName;
         }
@@ -211,13 +213,13 @@ const authConfig: NextAuthConfig = {
         session.user.locale = (token.locale as string) ?? 'de-AT';
         session.user.twoFAEnabled = Boolean(token.twoFAEnabled);
         session.user.firstName =
-          typeof token.firstName === 'string' ? token.firstName : session.user.firstName ?? null;
+          typeof token.firstName === 'string' ? token.firstName : (session.user.firstName ?? null);
         session.user.lastName =
-          typeof token.lastName === 'string' ? token.lastName : session.user.lastName ?? null;
+          typeof token.lastName === 'string' ? token.lastName : (session.user.lastName ?? null);
         session.user.marketingOptIn =
           typeof token.marketingOptIn === 'boolean'
             ? token.marketingOptIn
-            : session.user.marketingOptIn ?? false;
+            : (session.user.marketingOptIn ?? false);
       }
 
       return session;
@@ -239,9 +241,10 @@ export async function auth() {
 
   // Try to read our custom JWE token
   try {
-    const cookieName = process.env.NODE_ENV === 'production'
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token';
+    const cookieName =
+      process.env.NODE_ENV === 'production'
+        ? '__Secure-next-auth.session-token'
+        : 'next-auth.session-token';
 
     const cookieStore = await cookies();
     const token = cookieStore.get(cookieName)?.value;

@@ -1,27 +1,27 @@
-import { redirect } from 'next/navigation'
-import { auth } from '../../lib/auth'
+import { redirect } from 'next/navigation';
+import { auth } from '../../lib/auth';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
-  const session = await auth()
+  const session = await auth();
 
   if (!session?.user) {
-    redirect('/login')
+    redirect('/login');
   }
 
   // Redirect based on role to the correct dashboard
   if (session.user.role === 'THERAPIST') {
-    redirect('/dashboard/therapist')
+    redirect('/dashboard/therapist');
   }
 
   if (session.user.role === 'ADMIN') {
-    redirect('/admin')
+    redirect('/admin');
   }
 
   if (session.user.role === 'CLIENT') {
-    redirect('/dashboard/client')
+    redirect('/dashboard/client');
   }
 
   // Fallback for unknown roles
@@ -30,32 +30,22 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-neutral-200 bg-white p-8 shadow-xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-neutral-900">
-              Willkommen im Dashboard
-            </h1>
-            <p className="mt-2 text-muted">
-              Du bist erfolgreich eingeloggt! 🎉
-            </p>
+            <h1 className="text-3xl font-bold text-neutral-900">Willkommen im Dashboard</h1>
+            <p className="mt-2 text-muted">Du bist erfolgreich eingeloggt! 🎉</p>
           </div>
 
           <div className="space-y-4 rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100 p-6">
-            <h2 className="text-xl font-semibold text-neutral-900">
-              Deine Session-Daten
-            </h2>
+            <h2 className="text-xl font-semibold text-neutral-900">Deine Session-Daten</h2>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="rounded-lg bg-white p-4 shadow-sm">
                 <p className="text-sm font-medium text-muted">E-Mail</p>
-                <p className="mt-1 text-lg font-semibold text-neutral-900">
-                  {session.user.email}
-                </p>
+                <p className="mt-1 text-lg font-semibold text-neutral-900">{session.user.email}</p>
               </div>
 
               <div className="rounded-lg bg-white p-4 shadow-sm">
                 <p className="text-sm font-medium text-muted">Rolle</p>
-                <p className="mt-1 text-lg font-semibold text-neutral-900">
-                  {session.user.role}
-                </p>
+                <p className="mt-1 text-lg font-semibold text-neutral-900">{session.user.role}</p>
               </div>
 
               {session.user.firstName && (
@@ -69,9 +59,7 @@ export default async function DashboardPage() {
 
               <div className="rounded-lg bg-white p-4 shadow-sm">
                 <p className="text-sm font-medium text-muted">User ID</p>
-                <p className="mt-1 text-sm font-mono text-neutral-900">
-                  {session.user.id}
-                </p>
+                <p className="mt-1 text-sm font-mono text-neutral-900">{session.user.id}</p>
               </div>
             </div>
 
@@ -104,5 +92,5 @@ export default async function DashboardPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

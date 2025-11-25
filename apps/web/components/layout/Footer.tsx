@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import { Compass, Mail, ShieldCheck, Lock, Award, Users } from 'lucide-react'
-import { FEATURES } from '@/lib/features'
+import Link from 'next/link';
+import { Compass, Mail, ShieldCheck, Lock, Award, Users } from 'lucide-react';
+import { FEATURES } from '@/lib/features';
 
 export function Footer() {
   const footerLinks = {
@@ -23,7 +23,7 @@ export function Footer() {
         { name: 'AGB', href: '/terms' },
       ],
     },
-  }
+  };
 
   return (
     <footer
@@ -31,7 +31,10 @@ export function Footer() {
       itemScope
       itemType="https://schema.org/WPFooter"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-200/80 to-transparent" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-200/80 to-transparent"
+      />
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand Section */}
@@ -75,7 +78,9 @@ export function Footer() {
                       className="inline-flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm text-muted transition hover:bg-surface-2/60 hover:text-default"
                     >
                       {link.name}
-                      <span aria-hidden className="text-xs text-subtle">↗</span>
+                      <span aria-hidden className="text-xs text-subtle">
+                        ↗
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -85,11 +90,17 @@ export function Footer() {
         </div>
 
         {/* Trust Badges Section */}
-        <section className="mt-12 rounded-3xl border border-divider bg-surface-1/70 p-6 shadow-soft" aria-label="Vertrauensindikatoren">
+        <section
+          className="mt-12 rounded-3xl border border-divider bg-surface-1/70 p-6 shadow-soft"
+          aria-label="Vertrauensindikatoren"
+        >
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {/* Verified Therapists */}
             <article className="flex flex-col items-center text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600" aria-hidden="true">
+              <div
+                className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600"
+                aria-hidden="true"
+              >
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <h4 className="mb-1 text-sm font-semibold text-default">Geprüfte Therapeut:innen</h4>
@@ -98,7 +109,10 @@ export function Footer() {
 
             {/* Data Protection */}
             <article className="flex flex-col items-center text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600" aria-hidden="true">
+              <div
+                className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600"
+                aria-hidden="true"
+              >
                 <Lock className="h-5 w-5" />
               </div>
               <h4 className="mb-1 text-sm font-semibold text-default">DSGVO-konform</h4>
@@ -107,7 +121,10 @@ export function Footer() {
 
             {/* Quality Standards */}
             <article className="flex flex-col items-center text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600" aria-hidden="true">
+              <div
+                className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600"
+                aria-hidden="true"
+              >
                 <Award className="h-5 w-5" />
               </div>
               <h4 className="mb-1 text-sm font-semibold text-default">Qualitätsstandards</h4>
@@ -116,7 +133,10 @@ export function Footer() {
 
             {/* Austrian Focus */}
             <article className="flex flex-col items-center text-center">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600" aria-hidden="true">
+              <div
+                className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-600"
+                aria-hidden="true"
+              >
                 <Users className="h-5 w-5" />
               </div>
               <h4 className="mb-1 text-sm font-semibold text-default">Österreich-Fokus</h4>
@@ -132,11 +152,13 @@ export function Footer() {
               © {new Date().getFullYear()} FindMyTherapy. Der klare Weg zur richtigen Hilfe.
             </p>
             <div className="flex items-center gap-4">
-              <span className="rounded-full bg-surface-2/70 px-3 py-1 text-sm text-default">🇦🇹 Österreich</span>
+              <span className="rounded-full bg-surface-2/70 px-3 py-1 text-sm text-default">
+                🇦🇹 Österreich
+              </span>
             </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -92,13 +92,13 @@ describe('MyModel', () => {
 
 ```typescript
 // tests/e2e/my-flow.spec.ts
-import { test, expect } from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
 test('user can complete flow', async ({ page }) => {
-  await page.goto('/start')
-  await page.getByRole('button', { name: 'Next' }).click()
-  await expect(page).toHaveURL(/\/success/)
-})
+  await page.goto('/start');
+  await page.getByRole('button', { name: 'Next' }).click();
+  await expect(page).toHaveURL(/\/success/);
+});
 ```
 
 ## Mehr Informationen

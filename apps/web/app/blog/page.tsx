@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Search, X, Calendar, Clock, ArrowRight, ArrowLeft } from 'lucide-react'
-import { blogPosts } from '../../lib/blogData'
-import { NewsletterForm } from '@/app/components/forms/NewsletterForm'
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Search, X, Calendar, Clock, ArrowRight, ArrowLeft } from 'lucide-react';
+import { blogPosts } from '../../lib/blogData';
+import { NewsletterForm } from '@/app/components/forms/NewsletterForm';
 
 // Sort blog posts by date (newest first)
 const sortedBlogPosts = [...blogPosts].sort((a, b) => {
-  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-})
+  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+});
 
-const categories = Array.from(new Set(blogPosts.map((post) => post.category)))
-const categoryToSlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-')
-const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' })
+const categories = Array.from(new Set(blogPosts.map((post) => post.category)));
+const categoryToSlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
+const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' });
 
 // Structured Data
 const blogStructuredData = {
@@ -29,7 +29,7 @@ const blogStructuredData = {
     name: 'FindMyTherapy',
     url: 'https://findmytherapy.net',
   },
-}
+};
 
 const breadcrumbStructuredData = {
   '@context': 'https://schema.org',
@@ -38,36 +38,36 @@ const breadcrumbStructuredData = {
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://findmytherapy.net' },
     { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://findmytherapy.net/blog' },
   ],
-}
+};
 
 export default function BlogPage() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Filter posts
   const filteredPosts = useMemo(() => {
     return sortedBlogPosts.filter((post) => {
-      if (selectedCategory && post.category !== selectedCategory) return false
+      if (selectedCategory && post.category !== selectedCategory) return false;
       if (searchQuery) {
-        const query = searchQuery.toLowerCase()
+        const query = searchQuery.toLowerCase();
         return (
           post.title.toLowerCase().includes(query) ||
           post.excerpt.toLowerCase().includes(query) ||
           post.tags.some((tag) => tag.toLowerCase().includes(query)) ||
           post.category.toLowerCase().includes(query)
-        )
+        );
       }
-      return true
-    })
-  }, [searchQuery, selectedCategory])
+      return true;
+    });
+  }, [searchQuery, selectedCategory]);
 
-  const [featuredPost, ...restPosts] = filteredPosts
-  const gridPosts = restPosts.slice(0, 8)
+  const [featuredPost, ...restPosts] = filteredPosts;
+  const gridPosts = restPosts.slice(0, 8);
 
   const clearFilters = () => {
-    setSearchQuery('')
-    setSelectedCategory(null)
-  }
+    setSearchQuery('');
+    setSelectedCategory(null);
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -311,10 +311,12 @@ export default function BlogPage() {
 
             {/* View All by Category */}
             <section className="mb-12 rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="mb-4 text-lg font-bold text-neutral-900">Nach Kategorie durchsuchen</h2>
+              <h2 className="mb-4 text-lg font-bold text-neutral-900">
+                Nach Kategorie durchsuchen
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => {
-                  const count = blogPosts.filter((p) => p.category === category).length
+                  const count = blogPosts.filter((p) => p.category === category).length;
                   return (
                     <Link
                       key={category}
@@ -326,7 +328,7 @@ export default function BlogPage() {
                         {count}
                       </span>
                     </Link>
-                  )
+                  );
                 })}
               </div>
             </section>
@@ -357,5 +359,5 @@ export default function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
       />
     </div>
-  )
+  );
 }

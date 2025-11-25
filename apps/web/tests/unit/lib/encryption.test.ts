@@ -9,10 +9,10 @@ import {
   generateSecureToken,
   buildDossierPayload,
   type DossierPayload,
-} from '../../../lib/encryption'
+} from '../../../lib/encryption';
 
 // Mock environment variable
-process.env.DOSSIER_ENCRYPTION_KEY = 'test-encryption-key-for-unit-tests-must-be-secure'
+process.env.DOSSIER_ENCRYPTION_KEY = 'test-encryption-key-for-unit-tests-must-be-secure';
 
 describe('Encryption Utilities', () => {
   describe('encryptDossierData / decryptDossierData', () => {
@@ -21,35 +21,35 @@ describe('Encryption Utilities', () => {
         message: 'Hello, World!',
         number: 42,
         nested: { value: true },
-      }
+      };
 
-      const { encryptedData, keyId } = encryptDossierData(testData)
+      const { encryptedData, keyId } = encryptDossierData(testData);
 
-      expect(encryptedData).toBeTruthy()
-      expect(typeof encryptedData).toBe('string')
-      expect(keyId).toBe('primary')
+      expect(encryptedData).toBeTruthy();
+      expect(typeof encryptedData).toBe('string');
+      expect(keyId).toBe('primary');
 
       // Encrypted data should not contain original data
-      expect(encryptedData).not.toContain('Hello, World!')
+      expect(encryptedData).not.toContain('Hello, World!');
 
       // Decrypt and verify
-      const decrypted = decryptDossierData(encryptedData, keyId)
-      expect(decrypted).toEqual(testData)
-    })
+      const decrypted = decryptDossierData(encryptedData, keyId);
+      expect(decrypted).toEqual(testData);
+    });
 
     it('should produce different encrypted outputs for same data', () => {
-      const testData = { value: 'test' }
+      const testData = { value: 'test' };
 
-      const result1 = encryptDossierData(testData)
-      const result2 = encryptDossierData(testData)
+      const result1 = encryptDossierData(testData);
+      const result2 = encryptDossierData(testData);
 
       // Different IVs should produce different encrypted outputs
-      expect(result1.encryptedData).not.toBe(result2.encryptedData)
+      expect(result1.encryptedData).not.toBe(result2.encryptedData);
 
       // But both should decrypt to the same data
-      expect(decryptDossierData(result1.encryptedData)).toEqual(testData)
-      expect(decryptDossierData(result2.encryptedData)).toEqual(testData)
-    })
+      expect(decryptDossierData(result1.encryptedData)).toEqual(testData);
+      expect(decryptDossierData(result2.encryptedData)).toEqual(testData);
+    });
 
     it('should handle complex nested objects', () => {
       const complexData: DossierPayload = {
@@ -82,79 +82,79 @@ describe('Encryption Utilities', () => {
         ],
         createdAt: new Date().toISOString(),
         triageSessionId: 'test-session-id',
-      }
+      };
 
-      const { encryptedData } = encryptDossierData(complexData)
-      const decrypted = decryptDossierData<DossierPayload>(encryptedData)
+      const { encryptedData } = encryptDossierData(complexData);
+      const decrypted = decryptDossierData<DossierPayload>(encryptedData);
 
-      expect(decrypted).toEqual(complexData)
-      expect(decrypted.phq9Score).toBe(15)
-      expect(decrypted.redFlags).toHaveLength(1)
-      expect(decrypted.themes).toHaveLength(2)
-    })
+      expect(decrypted).toEqual(complexData);
+      expect(decrypted.phq9Score).toBe(15);
+      expect(decrypted.redFlags).toHaveLength(1);
+      expect(decrypted.themes).toHaveLength(2);
+    });
 
     it('should throw error on tampered encrypted data', () => {
-      const testData = { value: 'test' }
-      const { encryptedData } = encryptDossierData(testData)
+      const testData = { value: 'test' };
+      const { encryptedData } = encryptDossierData(testData);
 
       // Tamper with encrypted data
-      const tampered = encryptedData.slice(0, -10) + 'xxxxxxxxxx'
+      const tampered = encryptedData.slice(0, -10) + 'xxxxxxxxxx';
 
       expect(() => {
-        decryptDossierData(tampered)
-      }).toThrow()
-    })
+        decryptDossierData(tampered);
+      }).toThrow();
+    });
 
     it('should throw error on invalid encrypted data format', () => {
       expect(() => {
-        decryptDossierData('invalid-format')
-      }).toThrow('Invalid encrypted data format')
-    })
-  })
+        decryptDossierData('invalid-format');
+      }).toThrow('Invalid encrypted data format');
+    });
+  });
 
   describe('hashIPAddress', () => {
     it('should hash IP addresses consistently', () => {
-      const ip = '192.168.1.1'
-      const hash1 = hashIPAddress(ip)
-      const hash2 = hashIPAddress(ip)
+      const ip = '192.168.1.1';
+      const hash1 = hashIPAddress(ip);
+      const hash2 = hashIPAddress(ip);
 
-      expect(hash1).toBe(hash2)
-      expect(hash1).toHaveLength(64) // SHA256 produces 64 hex characters
-    })
+      expect(hash1).toBe(hash2);
+      expect(hash1).toHaveLength(64); // SHA256 produces 64 hex characters
+    });
 
     it('should produce different hashes for different IPs', () => {
-      const ip1 = '192.168.1.1'
-      const ip2 = '192.168.1.2'
+      const ip1 = '192.168.1.1';
+      const ip2 = '192.168.1.2';
 
-      const hash1 = hashIPAddress(ip1)
-      const hash2 = hashIPAddress(ip2)
+      const hash1 = hashIPAddress(ip1);
+      const hash2 = hashIPAddress(ip2);
 
-      expect(hash1).not.toBe(hash2)
-    })
+      expect(hash1).not.toBe(hash2);
+    });
 
     it('should not contain original IP in hash', () => {
-      const ip = '192.168.1.1'
-      const hash = hashIPAddress(ip)
+      const ip = '192.168.1.1';
+      const hash = hashIPAddress(ip);
 
-      expect(hash).not.toContain(ip)
-      expect(hash).not.toContain('192')
-    })
-  })
+      expect(hash).not.toContain(ip);
+      expect(hash).not.toContain('192');
+    });
+  });
 
   describe('generateSecureToken', () => {
     it('should generate random tokens', () => {
-      const token1 = generateSecureToken()
-      const token2 = generateSecureToken()
+      const token1 = generateSecureToken();
+      const token2 = generateSecureToken();
 
-      expect(token1).not.toBe(token2)
-      expect(token1).toHaveLength(64) // 32 bytes = 64 hex characters
-    })
+      expect(token1).not.toBe(token2);
+      expect(token1).toHaveLength(64); // 32 bytes = 64 hex characters
+    });
 
     it('should generate tokens of specified length', () => {
-      const token = generateSecureToken(16)
-      expect(token).toHaveLength(32) // 16 bytes = 32 hex characters
-    })
-  })
+      const token = generateSecureToken(16);
+      expect(token).toHaveLength(32); // 16 bytes = 32 hex characters
+    });
+  });
 
   describe('buildDossierPayload', () => {
     it('should build complete dossier payload from triage data', () => {
@@ -175,28 +175,28 @@ describe('Encryption Utilities', () => {
           hasSuicidalIdeation: false,
         },
         createdAt: new Date(),
-      }
+      };
 
       const client = {
         id: 'test-client-id',
         email: 'test@example.com',
         firstName: 'Test',
         lastName: 'User',
-      }
+      };
 
-      const payload = buildDossierPayload(triageSession, client)
+      const payload = buildDossierPayload(triageSession, client);
 
-      expect(payload.clientAlias).toBe('Test User')
-      expect(payload.clientEmail).toBe('test@example.com')
-      expect(payload.phq9Score).toBe(12)
-      expect(payload.gad7Score).toBe(9)
-      expect(payload.riskLevel).toBe('MEDIUM')
-      expect(payload.requiresEmergency).toBe(false)
-      expect(payload.hasSuicidalIdeation).toBe(false)
-      expect(payload.themes).toHaveLength(2)
-      expect(payload.themes[0].name).toBe('Depression')
-      expect(payload.themes[1].name).toBe('Angst')
-    })
+      expect(payload.clientAlias).toBe('Test User');
+      expect(payload.clientEmail).toBe('test@example.com');
+      expect(payload.phq9Score).toBe(12);
+      expect(payload.gad7Score).toBe(9);
+      expect(payload.riskLevel).toBe('MEDIUM');
+      expect(payload.requiresEmergency).toBe(false);
+      expect(payload.hasSuicidalIdeation).toBe(false);
+      expect(payload.themes).toHaveLength(2);
+      expect(payload.themes[0].name).toBe('Depression');
+      expect(payload.themes[1].name).toBe('Angst');
+    });
 
     it('should identify red flags correctly', () => {
       const triageSession = {
@@ -216,35 +216,31 @@ describe('Encryption Utilities', () => {
           hasSuicidalIdeation: true,
         },
         createdAt: new Date(),
-      }
+      };
 
       const client = {
         id: 'test-client-id',
         email: 'test@example.com',
         firstName: 'Test',
         lastName: 'User',
-      }
+      };
 
-      const payload = buildDossierPayload(triageSession, client)
+      const payload = buildDossierPayload(triageSession, client);
 
-      expect(payload.riskLevel).toBe('CRITICAL')
-      expect(payload.hasSuicidalIdeation).toBe(true)
-      expect(payload.redFlags.length).toBeGreaterThan(0)
+      expect(payload.riskLevel).toBe('CRITICAL');
+      expect(payload.hasSuicidalIdeation).toBe(true);
+      expect(payload.redFlags.length).toBeGreaterThan(0);
 
-      const suicidalFlag = payload.redFlags.find(
-        (f) => f.code === 'SUICIDAL_IDEATION'
-      )
-      expect(suicidalFlag).toBeDefined()
-      expect(suicidalFlag?.severity).toBe('CRITICAL')
+      const suicidalFlag = payload.redFlags.find((f) => f.code === 'SUICIDAL_IDEATION');
+      expect(suicidalFlag).toBeDefined();
+      expect(suicidalFlag?.severity).toBe('CRITICAL');
 
-      const depressionFlag = payload.redFlags.find(
-        (f) => f.code === 'SEVERE_DEPRESSION'
-      )
-      expect(depressionFlag).toBeDefined()
+      const depressionFlag = payload.redFlags.find((f) => f.code === 'SEVERE_DEPRESSION');
+      expect(depressionFlag).toBeDefined();
 
-      const anxietyFlag = payload.redFlags.find((f) => f.code === 'SEVERE_ANXIETY')
-      expect(anxietyFlag).toBeDefined()
-    })
+      const anxietyFlag = payload.redFlags.find((f) => f.code === 'SEVERE_ANXIETY');
+      expect(anxietyFlag).toBeDefined();
+    });
 
     it('should handle clients without names', () => {
       const triageSession = {
@@ -261,19 +257,19 @@ describe('Encryption Utilities', () => {
         availability: [],
         meta: {},
         createdAt: new Date(),
-      }
+      };
 
       const client = {
         id: 'test-client-id',
         email: 'test@example.com',
         firstName: null,
         lastName: null,
-      }
+      };
 
-      const payload = buildDossierPayload(triageSession, client)
+      const payload = buildDossierPayload(triageSession, client);
 
-      expect(payload.clientAlias).toBe('Klient:in')
-      expect(payload.clientEmail).toBe('test@example.com')
-    })
-  })
-})
+      expect(payload.clientAlias).toBe('Klient:in');
+      expect(payload.clientEmail).toBe('test@example.com');
+    });
+  });
+});

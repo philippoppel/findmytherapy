@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { Button } from '@mental-health/ui'
-import { Briefcase, ClipboardCheck, Globe, TrendingUp, CheckCircle2 } from 'lucide-react'
-import type { therapistBenefits } from '../../marketing-content'
-import { Reveal } from './Reveal'
-import { InteractiveCard } from '../InteractiveCard'
+import Link from 'next/link';
+import { Button } from '@mental-health/ui';
+import { Briefcase, ClipboardCheck, Globe, TrendingUp, CheckCircle2 } from 'lucide-react';
+import type { therapistBenefits } from '../../marketing-content';
+import { Reveal } from './Reveal';
+import { InteractiveCard } from '../InteractiveCard';
 
 interface TherapistBenefitsProps {
-  content: typeof therapistBenefits
+  content: typeof therapistBenefits;
 }
 
 const ICON_MAP = {
@@ -16,7 +16,7 @@ const ICON_MAP = {
   globe: Globe,
   briefcase: Briefcase,
   trendingUp: TrendingUp,
-} as const
+} as const;
 
 export function TherapistBenefits({ content }: TherapistBenefitsProps) {
   return (
@@ -36,7 +36,7 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
 
         <div className="grid gap-10 lg:gap-12">
           {content.benefits.map((benefit, index) => {
-            const IconComponent = ICON_MAP[benefit.icon]
+            const IconComponent = ICON_MAP[benefit.icon];
 
             return (
               <Reveal
@@ -97,7 +97,7 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
                   </ul>
                 </div>
               </Reveal>
-            )
+            );
           })}
         </div>
 
@@ -111,5 +111,5 @@ export function TherapistBenefits({ content }: TherapistBenefitsProps) {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }

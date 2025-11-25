@@ -53,14 +53,10 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
               </span>
             </div>
 
-            {profile.title && (
-              <p className="text-xl text-gray-600 mb-4">{profile.title}</p>
-            )}
+            {profile.title && <p className="text-xl text-gray-600 mb-4">{profile.title}</p>}
 
             {profile.headline && (
-              <p className="text-lg text-gray-700 mb-4 max-w-2xl">
-                {profile.headline}
-              </p>
+              <p className="text-lg text-gray-700 mb-4 max-w-2xl">{profile.headline}</p>
             )}
 
             {/* Meta Info */}
@@ -78,7 +74,10 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
             </div>
 
             {/* Social Media Links */}
-            {(profile.websiteUrl || profile.socialLinkedin || profile.socialInstagram || profile.socialFacebook) && (
+            {(profile.websiteUrl ||
+              profile.socialLinkedin ||
+              profile.socialInstagram ||
+              profile.socialFacebook) && (
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
                 {profile.websiteUrl && (
                   <a

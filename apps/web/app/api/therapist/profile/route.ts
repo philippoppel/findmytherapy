@@ -1,10 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma, Prisma } from '@/lib/prisma'
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma, Prisma } from '@/lib/prisma';
 
-import { auth } from '../../../../lib/auth'
-import { captureError } from '../../../../lib/monitoring'
-import { setcardPayloadSchema, sanitizeStringArray, safeNullableString, type SetcardPayload } from '../../../../lib/therapist/setcard'
-import { z } from 'zod'
+import { auth } from '../../../../lib/auth';
+import { captureError } from '../../../../lib/monitoring';
+import {
+  setcardPayloadSchema,
+  sanitizeStringArray,
+  safeNullableString,
+  type SetcardPayload,
+} from '../../../../lib/therapist/setcard';
+import { z } from 'zod';
 
 const profileSelect = {
   id: true,
@@ -44,11 +49,11 @@ const profileSelect = {
   privatePractice: true,
   status: true,
   updatedAt: true,
-} as const
+} as const;
 
 type TherapistProfileSetcard = Prisma.TherapistProfileGetPayload<{
-  select: typeof profileSelect
-}>
+  select: typeof profileSelect;
+}>;
 
 const serializeProfile = (profile: TherapistProfileSetcard) => ({
   id: profile.id,
@@ -88,76 +93,70 @@ const serializeProfile = (profile: TherapistProfileSetcard) => ({
   privatePractice: profile.privatePractice,
   status: profile.status,
   updatedAt: profile.updatedAt,
-})
+});
 
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert.' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert.' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findUnique({
       where: { userId: session.user.id },
       select: profileSelect,
-    })
+    });
 
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden.' },
-        { status: 404 }
-      )
+        { status: 404 },
+      );
     }
 
-    return NextResponse.json({ success: true, profile: serializeProfile(profile) })
+    return NextResponse.json({ success: true, profile: serializeProfile(profile) });
   } catch (error) {
-    captureError(error, { location: 'api/therapist/profile:get' })
+    captureError(error, { location: 'api/therapist/profile:get' });
 
     return NextResponse.json(
       { success: false, message: 'Profil konnte nicht geladen werden.' },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }
 
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert.' },
-        { status: 401 }
-      )
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert.' }, { status: 401 });
     }
 
     const existingProfile = await prisma.therapistProfile.findUnique({
       where: { userId: session.user.id },
       select: profileSelect,
-    })
+    });
 
     if (!existingProfile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden.' },
-        { status: 404 }
-      )
+        { status: 404 },
+      );
     }
 
-    const body = await request.json()
-    const payload: SetcardPayload = setcardPayloadSchema.parse(body)
+    const body = await request.json();
+    const payload: SetcardPayload = setcardPayloadSchema.parse(body);
 
-    const cleanedServices = sanitizeStringArray(payload.services)
-    const cleanedModalities = sanitizeStringArray(payload.modalities)
-    const cleanedSpecialties = sanitizeStringArray(payload.specialties)
-    const cleanedLanguages = sanitizeStringArray(payload.languages)
-    const cleanedQualifications = sanitizeStringArray(payload.qualifications)
-    const cleanedAgeGroups = sanitizeStringArray(payload.ageGroups)
-    const cleanedAcceptedInsurance = sanitizeStringArray(payload.acceptedInsurance)
-    const cleanedGalleryImages = sanitizeStringArray(payload.galleryImages)
+    const cleanedServices = sanitizeStringArray(payload.services);
+    const cleanedModalities = sanitizeStringArray(payload.modalities);
+    const cleanedSpecialties = sanitizeStringArray(payload.specialties);
+    const cleanedLanguages = sanitizeStringArray(payload.languages);
+    const cleanedQualifications = sanitizeStringArray(payload.qualifications);
+    const cleanedAgeGroups = sanitizeStringArray(payload.ageGroups);
+    const cleanedAcceptedInsurance = sanitizeStringArray(payload.acceptedInsurance);
+    const cleanedGalleryImages = sanitizeStringArray(payload.galleryImages);
 
     const updatedProfile = await prisma.therapistProfile.update({
       where: { id: existingProfile.id },
@@ -198,7 +197,7 @@ export async function PATCH(request: NextRequest) {
         privatePractice: payload.privatePractice,
       },
       select: profileSelect,
-    })
+    });
 
     await prisma.therapistProfileVersion.create({
       data: {
@@ -206,11 +205,11 @@ export async function PATCH(request: NextRequest) {
         authorId: session.user.id,
         data: serializeProfile(updatedProfile),
       },
-    })
+    });
 
-    return NextResponse.json({ success: true, profile: serializeProfile(updatedProfile) })
+    return NextResponse.json({ success: true, profile: serializeProfile(updatedProfile) });
   } catch (error) {
-    captureError(error, { location: 'api/therapist/profile:patch' })
+    captureError(error, { location: 'api/therapist/profile:patch' });
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -219,13 +218,13 @@ export async function PATCH(request: NextRequest) {
           message: 'Validierungsfehler in den Setcard-Daten.',
           errors: error.flatten(),
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
     return NextResponse.json(
       { success: false, message: 'Setcard konnte nicht aktualisiert werden.' },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

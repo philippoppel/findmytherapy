@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { Button } from '@mental-health/ui'
-import { Sparkles, Users, Video, CheckCircle2 } from 'lucide-react'
-import type { clientBenefits } from '../../marketing-content'
-import { Reveal } from './Reveal'
-import { InteractiveCard } from '../InteractiveCard'
+import Link from 'next/link';
+import { Button } from '@mental-health/ui';
+import { Sparkles, Users, Video, CheckCircle2 } from 'lucide-react';
+import type { clientBenefits } from '../../marketing-content';
+import { Reveal } from './Reveal';
+import { InteractiveCard } from '../InteractiveCard';
 
 interface ClientBenefitsProps {
-  content: typeof clientBenefits
+  content: typeof clientBenefits;
 }
 
 const ICON_MAP = {
   sparkles: Sparkles,
   users: Users,
   video: Video,
-} as const
+} as const;
 
 export function ClientBenefits({ content }: ClientBenefitsProps) {
   return (
@@ -35,7 +35,7 @@ export function ClientBenefits({ content }: ClientBenefitsProps) {
 
         <div className="grid gap-10 lg:gap-12">
           {content.benefits.map((benefit, index) => {
-            const IconComponent = ICON_MAP[benefit.icon]
+            const IconComponent = ICON_MAP[benefit.icon];
 
             return (
               <Reveal
@@ -96,7 +96,7 @@ export function ClientBenefits({ content }: ClientBenefitsProps) {
                   </ul>
                 </div>
               </Reveal>
-            )
+            );
           })}
         </div>
 
@@ -110,5 +110,5 @@ export function ClientBenefits({ content }: ClientBenefitsProps) {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }

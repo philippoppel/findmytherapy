@@ -11,6 +11,7 @@ Die CI/CD Pipeline ist jetzt vollständig konfiguriert und funktionsfähig. Alle
 ## ✅ Was jetzt funktioniert
 
 ### 1. Lokale Tests
+
 - ✅ **Unit Tests:** 200+ Tests passed (60s)
 - ✅ **Integration Tests:** DB-Tests mit Postgres
 - ✅ **E2E Tests:** Playwright End-to-End Tests
@@ -22,18 +23,19 @@ Die CI/CD Pipeline ist jetzt vollständig konfiguriert und funktionsfähig. Alle
 
 ```yaml
 jobs:
-  lint:              ✅ OPERATIONAL (Läuft ESLint + Prettier)
-  unit-tests:        ✅ FIXED (Nur Unit Tests, mit Test Path Filters)
-  build:             ✅ OPERATIONAL (Build + Artifacts)
+  lint: ✅ OPERATIONAL (Läuft ESLint + Prettier)
+  unit-tests: ✅ FIXED (Nur Unit Tests, mit Test Path Filters)
+  build: ✅ OPERATIONAL (Build + Artifacts)
   integration-tests: ✅ FIXED (Unabhängig von unit-tests)
-  e2e-tests:         ✅ OPERATIONAL (Bei PRs zu main/develop)
-  visual-tests:      ✅ OPERATIONAL (Bei PRs zu main/develop)
-  security-scan:     ✅ OPERATIONAL (npm audit + dependency-check)
+  e2e-tests: ✅ OPERATIONAL (Bei PRs zu main/develop)
+  visual-tests: ✅ OPERATIONAL (Bei PRs zu main/develop)
+  security-scan: ✅ OPERATIONAL (npm audit + dependency-check)
 ```
 
 ### 3. Branch Protection Rules
 
 #### Main Branch 🔒
+
 - ✅ **Required Status Checks:**
   - Lint
   - Unit Tests
@@ -49,6 +51,7 @@ jobs:
 - ❌ **Branch Deletion:** Verboten
 
 #### Develop Branch 🔓
+
 - ✅ **Required Status Checks:** (wie main)
 - ⚠️ **PR Reviews:** Nicht erforderlich (für schnelleres Arbeiten)
 - ❌ **Force Pushes:** Verboten
@@ -57,6 +60,7 @@ jobs:
 ### 4. Git Hooks (Husky)
 
 #### Pre-Commit Hook
+
 ```bash
 - Läuft lint-staged
 - Fixiert ESLint Errors automatisch
@@ -64,6 +68,7 @@ jobs:
 ```
 
 #### Pre-Push Hook
+
 ```bash
 - Nur bei Push zu main/develop
 - Läuft Lint
@@ -77,9 +82,11 @@ jobs:
 ## 🔧 Durchgeführte Fixes
 
 ### Fix 1: Unit Tests Job ✅
+
 **Problem:** Integration Tests liefen fälschlicherweise im Unit Tests Job ohne Datenbank
 
 **Lösung:**
+
 ```yaml
 - name: Run unit tests
   run: |
@@ -94,38 +101,45 @@ jobs:
 ```
 
 **Features:**
+
 - ✅ Test Path Filters (nur Unit Tests)
 - ✅ JSON Output für Debugging
 - ✅ Debug-Ausgabe (welche Tests laufen)
 - ✅ Environment Variables (DATABASE_URL, REDIS_URL, etc.)
 
 ### Fix 2: Integration Tests Job ✅
+
 **Problem:** Integration Tests wurden nicht ausgeführt weil sie auf fehlgeschlagene Unit Tests warteten
 
 **Lösung:**
+
 ```yaml
 integration-tests:
-  needs: lint  # ← Geändert von "unit-tests"
+  needs: lint # ← Geändert von "unit-tests"
 ```
 
 **Vorteil:** Integration Tests laufen jetzt parallel zu Unit Tests
 
 ### Fix 3: UI Package Tests ✅
+
 **Problem:** Tests liefen mit `|| true` (Fehler wurden ignoriert)
 
 **Lösung:**
+
 ```yaml
 - name: Run UI package tests
-  continue-on-error: false  # ← Keine stillen Failures
+  continue-on-error: false # ← Keine stillen Failures
   run: pnpm --filter @mental-health/ui test -- --coverage --passWithNoTests
 ```
 
 **Vorteil:** UI Tests werden korrekt ausgeführt und Fehler werden gemeldet
 
 ### Fix 4: Test Result Artifacts ✅
+
 **Problem:** Nur Coverage wurde hochgeladen, keine Test Results
 
 **Lösung:**
+
 ```yaml
 - name: Upload test results and coverage
   if: always()
@@ -180,6 +194,7 @@ Lokal & CI:
 ```
 
 **Test Qualität:** ⭐⭐⭐⭐⭐ (5/5)
+
 - Keine Placeholder-Tests
 - Real-world Test Scenarios
 - Comprehensive Coverage
@@ -269,6 +284,7 @@ git push --no-verify
 ## 🐛 Troubleshooting
 
 ### Problem: Pre-Push Hook schlägt fehl
+
 ```bash
 # Lösung 1: Tests lokal fixen
 pnpm test
@@ -278,6 +294,7 @@ git push --no-verify
 ```
 
 ### Problem: CI schlägt fehl aber lokal läuft alles
+
 ```bash
 # Ursache 1: Environment Variables fehlen
 # → Checke .github/workflows/ci.yml ob alle Vars gesetzt sind
@@ -290,6 +307,7 @@ git push --no-verify
 ```
 
 ### Problem: PR kann nicht gemerged werden
+
 ```bash
 # Ursache: Status Checks schlagen fehl
 # → Checke GitHub Actions Logs
@@ -314,6 +332,7 @@ git pull origin main
 **Git Hooks:** ✅ **Pre-Commit & Pre-Push aktiv**
 
 ### Vorteile:
+
 - ✅ Kein kaputter Code auf main möglich
 - ✅ Alle Tests laufen automatisch
 - ✅ Code Quality wird automatisch sichergestellt
@@ -321,6 +340,7 @@ git pull origin main
 - ✅ Security Scans bei jedem Push
 
 ### Nächste Schritte (Optional):
+
 - [ ] Test Coverage Badge im README
 - [ ] Automated PR Comments mit Test Results
 - [ ] Visual Regression Baselines

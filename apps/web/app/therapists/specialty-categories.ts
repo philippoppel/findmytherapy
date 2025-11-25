@@ -6,12 +6,12 @@
  */
 
 export interface SpecialtyCategory {
-  id: string
-  name: string
-  description: string
-  keywords: string[]
-  icon?: string
-  color?: string
+  id: string;
+  name: string;
+  description: string;
+  keywords: string[];
+  icon?: string;
+  color?: string;
 }
 
 export const SPECIALTY_CATEGORIES: SpecialtyCategory[] = [
@@ -135,7 +135,7 @@ export const SPECIALTY_CATEGORIES: SpecialtyCategory[] = [
     icon: '🧘',
     color: '#C4B5FD',
   },
-]
+];
 
 /**
  * Normalize specialty string for matching
@@ -147,7 +147,7 @@ function normalizeSpecialty(specialty: string): string {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
     .replace(/[^\w\s-]/g, ' ') // Remove special chars
-    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/\s+/g, ' '); // Normalize whitespace
 }
 
 /**
@@ -155,43 +155,43 @@ function normalizeSpecialty(specialty: string): string {
  * Returns array of category IDs that match
  */
 export function categorizeSpecialty(specialty: string): string[] {
-  const normalized = normalizeSpecialty(specialty)
-  const matchingCategories: string[] = []
+  const normalized = normalizeSpecialty(specialty);
+  const matchingCategories: string[] = [];
 
   for (const category of SPECIALTY_CATEGORIES) {
     for (const keyword of category.keywords) {
       if (normalized.includes(keyword)) {
-        matchingCategories.push(category.id)
-        break
+        matchingCategories.push(category.id);
+        break;
       }
     }
   }
 
-  return matchingCategories
+  return matchingCategories;
 }
 
 /**
  * Group specialties by category
  */
 export function groupSpecialtiesByCategory(specialties: string[]): Map<string, string[]> {
-  const groups = new Map<string, string[]>()
+  const groups = new Map<string, string[]>();
 
   // Initialize with all categories
   for (const category of SPECIALTY_CATEGORIES) {
-    groups.set(category.id, [])
+    groups.set(category.id, []);
   }
 
   // Add an "other" category for uncategorized specialties
-  groups.set('other', [])
+  groups.set('other', []);
 
   for (const specialty of specialties) {
-    const categories = categorizeSpecialty(specialty)
+    const categories = categorizeSpecialty(specialty);
 
     if (categories.length === 0) {
-      groups.get('other')!.push(specialty)
+      groups.get('other')!.push(specialty);
     } else {
       for (const categoryId of categories) {
-        groups.get(categoryId)?.push(specialty)
+        groups.get(categoryId)?.push(specialty);
       }
     }
   }
@@ -199,30 +199,30 @@ export function groupSpecialtiesByCategory(specialties: string[]): Map<string, s
   // Remove empty categories
   for (const [categoryId, specialtiesList] of groups.entries()) {
     if (specialtiesList.length === 0 && categoryId !== 'other') {
-      groups.delete(categoryId)
+      groups.delete(categoryId);
     }
   }
 
-  return groups
+  return groups;
 }
 
 /**
  * Get category by ID
  */
 export function getCategoryById(id: string): SpecialtyCategory | undefined {
-  return SPECIALTY_CATEGORIES.find(cat => cat.id === id)
+  return SPECIALTY_CATEGORIES.find((cat) => cat.id === id);
 }
 
 /**
  * Get all category IDs
  */
 export function getAllCategoryIds(): string[] {
-  return SPECIALTY_CATEGORIES.map(cat => cat.id)
+  return SPECIALTY_CATEGORIES.map((cat) => cat.id);
 }
 
 /**
  * Get all category names for display
  */
 export function getAllCategoryNames(): Array<{ id: string; name: string }> {
-  return SPECIALTY_CATEGORIES.map(cat => ({ id: cat.id, name: cat.name }))
+  return SPECIALTY_CATEGORIES.map((cat) => ({ id: cat.id, name: cat.name }));
 }

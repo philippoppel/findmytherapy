@@ -1,9 +1,9 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
-const baseStringArray = z.array(z.string().trim().min(2).max(160))
+const baseStringArray = z.array(z.string().trim().min(2).max(160));
 
-export const stringArraySchema = baseStringArray.min(1).max(12)
-export const languagesArraySchema = z.array(z.string().trim().min(2).max(32)).min(1).max(6)
+export const stringArraySchema = baseStringArray.min(1).max(12);
+export const languagesArraySchema = z.array(z.string().trim().min(2).max(32)).min(1).max(6);
 
 export const imageUrlSchema = z
   .string()
@@ -12,7 +12,7 @@ export const imageUrlSchema = z
   .max(500)
   .refine((value) => value.startsWith('http') || value.startsWith('/'), {
     message: 'Bitte gib eine gültige URL oder einen relativen Pfad an.',
-  })
+  });
 
 export const optionalUrlSchema = z
   .string()
@@ -21,16 +21,16 @@ export const optionalUrlSchema = z
   .max(500)
   .refine((value) => /^https?:\/\//.test(value), {
     message: 'Bitte gib eine vollständige URL an.',
-  })
+  });
 
 // Helper to transform empty strings to null
 const emptyStringToNull = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((val) => {
     if (typeof val === 'string' && val.trim() === '') {
-      return null
+      return null;
     }
-    return val
-  }, schema)
+    return val;
+  }, schema);
 
 export const setcardPayloadSchema = z
   .object({
@@ -75,51 +75,45 @@ export const setcardPayloadSchema = z
         code: z.ZodIssueCode.custom,
         message: 'Der Maximalpreis muss größer oder gleich dem Mindestpreis sein.',
         path: ['priceMax'],
-      })
+      });
     }
-  })
+  });
 
-export type SetcardPayload = z.infer<typeof setcardPayloadSchema>
+export type SetcardPayload = z.infer<typeof setcardPayloadSchema>;
 
 export const sanitizeStringArray = (values: string[]) =>
-  Array.from(
-    new Set(
-      values
-        .map((value) => value.trim())
-        .filter((value) => value.length > 0)
-    )
-  )
+  Array.from(new Set(values.map((value) => value.trim()).filter((value) => value.length > 0)));
 
 export const safeNullableString = (value: string | null | undefined) =>
-  typeof value === 'string' && value.trim().length > 0 ? value.trim() : null
+  typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
 
 export const splitToList = (value: string) =>
   value
     .split(/[\n,]+/)
     .map((item) => item.trim())
-    .filter((item) => item.length > 0)
+    .filter((item) => item.length > 0);
 
-export const joinList = (values: string[]) => values.join('\n')
+export const joinList = (values: string[]) => values.join('\n');
 
 export const parseCurrencyInput = (value: string): number | null => {
-  const normalized = value.trim().replace(',', '.')
+  const normalized = value.trim().replace(',', '.');
   if (!normalized) {
-    return null
+    return null;
   }
 
-  const parsed = Number.parseFloat(normalized)
+  const parsed = Number.parseFloat(normalized);
   if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
-    return null
+    return null;
   }
 
-  return Math.round(parsed * 100)
-}
+  return Math.round(parsed * 100);
+};
 
 export const formatCurrencyInput = (value?: number | null) => {
   if (typeof value !== 'number') {
-    return ''
+    return '';
   }
 
-  const euros = value / 100
-  return Number.isInteger(euros) ? euros.toString() : euros.toFixed(2)
-}
+  const euros = value / 100;
+  return Number.isInteger(euros) ? euros.toString() : euros.toFixed(2);
+};

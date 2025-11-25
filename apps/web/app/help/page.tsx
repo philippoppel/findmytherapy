@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Hilfe & FAQ – Häufige Fragen | FindMyTherapy',
@@ -38,11 +38,10 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Hilfe & FAQ – Häufige Fragen zu Psychotherapie',
-    description:
-      'Antworten auf häufig gestellte Fragen zu Psychotherapie in Österreich.',
+    description: 'Antworten auf häufig gestellte Fragen zu Psychotherapie in Österreich.',
     images: ['https://findmytherapy.net/images/og-image.jpg'],
   },
-}
+};
 
 // FAQ categories with questions and answers
 const faqCategories = [
@@ -156,10 +155,10 @@ const faqCategories = [
       },
     ],
   },
-]
+];
 
 // Flatten all FAQs for schema
-const allFaqs = faqCategories.flatMap((category) => category.faqs)
+const allFaqs = faqCategories.flatMap((category) => category.faqs);
 
 export default function HelpPage() {
   // FAQPage Schema for all questions
@@ -174,7 +173,7 @@ export default function HelpPage() {
         text: faq.answer,
       },
     })),
-  }
+  };
 
   // Breadcrumb Schema
   const breadcrumbSchema = {
@@ -194,7 +193,7 @@ export default function HelpPage() {
         item: 'https://findmytherapy.net/help',
       },
     ],
-  }
+  };
 
   return (
     <div className="marketing-theme bg-surface text-default">
@@ -216,9 +215,8 @@ export default function HelpPage() {
             Wie können wir dir helfen?
           </h1>
           <p className="text-base text-neutral-700 max-w-2xl mx-auto">
-            Unser Support-Team begleitet dich vom Erstkontakt bis zur laufenden
-            Therapie. Hier findest du Antworten auf die häufigsten Fragen zu
-            Psychotherapie in Österreich.
+            Unser Support-Team begleitet dich vom Erstkontakt bis zur laufenden Therapie. Hier
+            findest du Antworten auf die häufigsten Fragen zu Psychotherapie in Österreich.
           </p>
         </header>
 
@@ -256,12 +254,8 @@ export default function HelpPage() {
                     key={faq.question}
                     className="rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft"
                   >
-                    <h3 className="text-lg font-semibold text-neutral-950">
-                      {faq.question}
-                    </h3>
-                    <p className="mt-2 text-sm text-neutral-700 leading-relaxed">
-                      {faq.answer}
-                    </p>
+                    <h3 className="text-lg font-semibold text-neutral-950">{faq.question}</h3>
+                    <p className="mt-2 text-sm text-neutral-700 leading-relaxed">{faq.answer}</p>
                   </li>
                 ))}
               </ul>
@@ -271,12 +265,10 @@ export default function HelpPage() {
 
         {/* CTA Section */}
         <section className="rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 p-8 text-white text-center">
-          <h2 className="text-2xl font-bold mb-3">
-            Noch Fragen? Wir helfen gerne!
-          </h2>
+          <h2 className="text-2xl font-bold mb-3">Noch Fragen? Wir helfen gerne!</h2>
           <p className="text-primary-100 mb-6 max-w-xl mx-auto">
-            Unser Care-Team ist für dich da. Egal ob du Unterstützung bei der
-            Therapeutensuche brauchst oder allgemeine Fragen hast.
+            Unser Care-Team ist für dich da. Egal ob du Unterstützung bei der Therapeutensuche
+            brauchst oder allgemeine Fragen hast.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -296,9 +288,7 @@ export default function HelpPage() {
 
         {/* Direct Contact */}
         <section className="rounded-2xl border border-primary/20 bg-primary-50/80 p-6 text-sm text-primary">
-          <h2 className="text-lg font-semibold text-primary">
-            Direkter Kontakt
-          </h2>
+          <h2 className="text-lg font-semibold text-primary">Direkter Kontakt</h2>
           <p className="mt-2">
             Schreib uns an{' '}
             <a
@@ -320,9 +310,7 @@ export default function HelpPage() {
 
         {/* Related Links */}
         <section className="border-t border-divider pt-8">
-          <h2 className="text-xl font-semibold text-neutral-950 mb-4">
-            Weitere hilfreiche Seiten
-          </h2>
+          <h2 className="text-xl font-semibold text-neutral-950 mb-4">Weitere hilfreiche Seiten</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/blog"
@@ -345,9 +333,7 @@ export default function HelpPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-neutral-950">Blog</h3>
-                <p className="text-sm text-neutral-600">
-                  Artikel zu psychischer Gesundheit
-                </p>
+                <p className="text-sm text-neutral-600">Artikel zu psychischer Gesundheit</p>
               </div>
             </Link>
             <Link
@@ -371,9 +357,7 @@ export default function HelpPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-neutral-950">So funktioniert&apos;s</h3>
-                <p className="text-sm text-neutral-600">
-                  Der Weg zu deiner Therapie
-                </p>
+                <p className="text-sm text-neutral-600">Der Weg zu deiner Therapie</p>
               </div>
             </Link>
             <Link
@@ -397,9 +381,7 @@ export default function HelpPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-neutral-950">Datenschutz</h3>
-                <p className="text-sm text-neutral-600">
-                  Wie wir deine Daten schützen
-                </p>
+                <p className="text-sm text-neutral-600">Wie wir deine Daten schützen</p>
               </div>
             </Link>
           </div>
@@ -416,5 +398,5 @@ export default function HelpPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </div>
-  )
+  );
 }

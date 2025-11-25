@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { SecuritySettings } from '../../../components/security/totp-settings';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const ALLOWED_ROLES: import('@/lib/prisma').UserRole[] = ['THERAPIST', 'ADMIN'];
 
@@ -28,7 +28,10 @@ export default async function SecurityPage() {
       </header>
 
       <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
-        <SecuritySettings email={user?.email ?? session.user.email} totpEnabled={Boolean(user?.twoFASecret)} />
+        <SecuritySettings
+          email={user?.email ?? session.user.email}
+          totpEnabled={Boolean(user?.twoFASecret)}
+        />
       </div>
     </div>
   );

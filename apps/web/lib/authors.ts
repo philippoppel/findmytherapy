@@ -1,4 +1,4 @@
-import { Author } from './blogData'
+import { Author } from './blogData';
 
 export const authors: Record<string, Author> = {
   'gregor-studlar': {
@@ -6,7 +6,8 @@ export const authors: Record<string, Author> = {
     name: 'MMag. Dr. Gregor Studlar BA',
     slug: 'gregor-studlar',
     title: 'Psychotherapeut (Verhaltenstherapie) • Founder FindMyTherapy',
-    credentials: 'Klinische Psychologie & Gesundheitspsychologie • Psychotherapeut (Verhaltenstherapie)',
+    credentials:
+      'Klinische Psychologie & Gesundheitspsychologie • Psychotherapeut (Verhaltenstherapie)',
     bio: 'Dr. Gregor Studlar ist Psychotherapeut mit Schwerpunkt Verhaltenstherapie und verfügt über umfassende klinische Erfahrung am Neuromed Campus. Seine Expertise umfasst die Behandlung von Angststörungen, Depression und Burnout. Als Gründer von FindMyTherapy verbindet er evidenzbasierte Psychotherapie mit digitalen Lösungen für bessere Versorgung.',
     avatar: '/images/team/gregorstudlar.jpg',
     email: 'gregor.studlar@findmytherapy.net',
@@ -31,11 +32,7 @@ export const authors: Record<string, Author> = {
     credentials: 'Verifiziert von klinischen Psycholog:innen',
     bio: 'Unser interdisziplinäres Team aus Psycholog:innen, Therapeut:innen und Gesundheitsexpert:innen arbeitet daran, evidenzbasiertes Wissen zu mentaler Gesundheit zugänglich zu machen.',
     avatar: '/images/team/gregorstudlar.jpg',
-    expertise: [
-      'Mentale Gesundheit',
-      'Psychotherapie',
-      'Digitale Gesundheit',
-    ],
+    expertise: ['Mentale Gesundheit', 'Psychotherapie', 'Digitale Gesundheit'],
   },
   'thomas-kaufmann': {
     id: 'thomas-kaufmann',
@@ -58,12 +55,12 @@ export const authors: Record<string, Author> = {
       'Traumafokussierte Therapie',
     ],
   },
-}
+};
 
 export function getAuthorById(id: string): Author | undefined {
-  return authors[id]
+  return authors[id];
 }
 
 export function getAllAuthors(): Author[] {
-  return Object.values(authors)
+  return Object.values(authors);
 }

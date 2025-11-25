@@ -23,6 +23,7 @@
 ## Schritt 1: Hero-Video herunterladen (3 Min) 🎬
 
 ### Option A: Warmes Therapie-Gespräch (EMPFOHLEN)
+
 1. **Öffne**: https://www.pexels.com/video/therapist-talking-to-a-patient-7579010/
 2. **Klicke**: "Free Download" → Wähle "HD 1920x1080"
 3. **Speichere als**: `apps/web/public/videos/hero-therapy.mp4`
@@ -37,14 +38,20 @@
 **Zeilen 121-128**: Kommentare hinzufügen (Bild deaktivieren)
 
 **Vorher**:
+
 ```tsx
-{/* SCHRITT 1: Wenn Video vorhanden, diesen Block auskommentieren */}
-{/*
+{
+  /* SCHRITT 1: Wenn Video vorhanden, diesen Block auskommentieren */
+}
+{
+  /*
 <video autoPlay muted loop playsInline ...>
-*/}
+*/
+}
 ```
 
 **Nachher**:
+
 ```tsx
 {/* Video ist jetzt aktiv */}
 <video autoPlay muted loop playsInline ...>
@@ -61,6 +68,7 @@ npm run dev
 Öffne http://localhost:3000
 
 **Was du sehen solltest**:
+
 - ✅ Hero-Video spielt automatisch ab (oder Bild, falls Video übersprungen)
 - ✅ Warme Beige/Cream-Farben überall
 - ✅ Team-Bilder am Ende der Seite
@@ -72,12 +80,14 @@ npm run dev
 ## ✅ Checkliste
 
 **Bereits erledigt**:
+
 - ✅ Hero-Bild ist vorhanden (`therapy-1.jpg`)
 - ✅ Team-Fotos sind vorhanden (alle 3)
 - ✅ Warmes Design ist implementiert
 - ✅ Code ist vorbereitet
 
 **Noch zu tun** (5 Minuten):
+
 - [ ] Hero-Video heruntergeladen (`hero-therapy.mp4`)
 - [ ] Hero-Video in Code aktiviert (Kommentare entfernt)
 - [ ] `npm run dev` ausgeführt
@@ -88,20 +98,26 @@ npm run dev
 ## 📚 Weitere Ressourcen
 
 ### Mehr Bilder hinzufügen (Optional)
+
 Siehe `/docs/opensource-images.md` für 20+ weitere kostenlose Bilder:
+
 - Therapie-Szenen
 - Praxis-Räume
 - Menschen in verschiedenen Situationen
 
 ### Video-Optimierung (Optional)
+
 Siehe `/docs/video-integration-guide.md` für:
+
 - Alternative Videos
 - Komprimierung
 - Mobile-Optimierung
 - Vollbild-Hintergrund-Video
 
 ### Design-System (Optional)
+
 Siehe `/docs/redesign-summary.md` für:
+
 - Vollständige Übersicht aller Änderungen
 - Farbpalette Details
 - Typografie-System
@@ -112,16 +128,19 @@ Siehe `/docs/redesign-summary.md` für:
 ## 🐛 Probleme?
 
 ### Bild wird nicht angezeigt
+
 - **Überprüfe Dateipfad**: Exakte Schreibweise wichtig
 - **Überprüfe Dateiformat**: `.jpg` oder `.jpeg`
 - **Browser-Cache leeren**: Cmd+Shift+R (Mac) / Ctrl+Shift+R (Windows)
 
 ### Video spielt nicht ab
+
 - **Überprüfe Dateigröße**: Sollte unter 20MB sein
 - **Überprüfe Dateiformat**: Muss `.mp4` sein
 - **Überprüfe Code**: Kommentare richtig entfernt?
 
 ### Ordner existiert nicht
+
 ```bash
 mkdir -p apps/web/public/videos
 mkdir -p apps/web/public/images/therapists

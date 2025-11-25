@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import { Home, ArrowLeft, Search } from 'lucide-react'
-import { FEATURES } from '@/lib/features'
+import Link from 'next/link';
+import { Home, ArrowLeft, Search } from 'lucide-react';
+import { FEATURES } from '@/lib/features';
 
 export default function NotFound() {
   return (
@@ -12,9 +12,7 @@ export default function NotFound() {
             <div className="h-64 w-64 rounded-full bg-gradient-to-br from-primary-100 via-primary-200 to-primary-100 opacity-20 blur-3xl" />
           </div>
           <div className="relative">
-            <h1 className="text-9xl font-bold tracking-tight text-gray-900 sm:text-[12rem]">
-              404
-            </h1>
+            <h1 className="text-9xl font-bold tracking-tight text-gray-900 sm:text-[12rem]">404</h1>
             <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-600 bg-clip-text text-9xl font-bold tracking-tight text-transparent opacity-20 blur-sm sm:text-[12rem]">
               404
             </div>
@@ -27,8 +25,8 @@ export default function NotFound() {
             Seite nicht gefunden
           </h2>
           <p className="text-lg leading-relaxed text-gray-700">
-            Die Seite, die du suchst, existiert nicht oder wurde verschoben.
-            Keine Sorge – wir helfen dir zurück auf den richtigen Weg.
+            Die Seite, die du suchst, existiert nicht oder wurde verschoben. Keine Sorge – wir
+            helfen dir zurück auf den richtigen Weg.
           </p>
         </div>
 
@@ -93,5 +91,5 @@ export default function NotFound() {
         </p>
       </div>
     </div>
-  )
+  );
 }

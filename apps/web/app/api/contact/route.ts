@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { z } from 'zod'
-import { queueNotification } from '../../../lib/notifications'
-import { captureError } from '../../../lib/monitoring'
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
+import { queueNotification } from '../../../lib/notifications';
+import { captureError } from '../../../lib/monitoring';
 
 const contactSchema = z.object({
   name: z.string().min(1, 'Name ist erforderlich'),
@@ -11,14 +11,14 @@ const contactSchema = z.object({
   topic: z.enum(['orientation', 'matching', 'corporate', 'support']),
   message: z.string().min(10, 'Nachricht muss mindestens 10 Zeichen lang sein'),
   preferredSlot: z.string(),
-})
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const body = await request.json();
 
     // Validierung
-    const validated = contactSchema.parse(body)
+    const validated = contactSchema.parse(body);
 
     // In Datenbank speichern
     const contactRequest = await prisma.contactRequest.create({
@@ -31,12 +31,12 @@ export async function POST(request: NextRequest) {
         preferredSlot: validated.preferredSlot,
         status: 'NEW',
       },
-    })
+    });
 
     await queueNotification('contact-request', {
       id: contactRequest.id,
       topic: contactRequest.topic,
-    })
+    });
 
     return NextResponse.json(
       {
@@ -44,10 +44,10 @@ export async function POST(request: NextRequest) {
         message: 'Ihre Anfrage wurde erfolgreich übermittelt',
         id: contactRequest.id,
       },
-      { status: 201 }
-    )
+      { status: 201 },
+    );
   } catch (error) {
-    captureError(error, { location: 'api/contact' })
+    captureError(error, { location: 'api/contact' });
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
           message: 'Validierungsfehler',
           errors: error.errors,
         },
-        { status: 400 }
-      )
+        { status: 400 },
+      );
     }
 
     return NextResponse.json(
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }

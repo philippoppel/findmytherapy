@@ -1,41 +1,41 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from 'react'
-import { MessageCircle, Send, X, AlertTriangle, Phone, Info, Shield } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef } from 'react';
+import { MessageCircle, Send, X, AlertTriangle, Phone, Info, Shield } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   createInitialState,
   processUserMessage,
   type ChatMessage,
   type ConversationState,
-} from '@/lib/chatbot/engine'
+} from '@/lib/chatbot/engine';
 
-type PersistedMessage = Omit<ChatMessage, 'timestamp'> & { timestamp: string }
+type PersistedMessage = Omit<ChatMessage, 'timestamp'> & { timestamp: string };
 type PersistedState = Omit<ConversationState, 'messages'> & {
-  messages: PersistedMessage[]
-}
+  messages: PersistedMessage[];
+};
 
-const STORAGE_KEY = 'findmytherapy-chat-state'
+const STORAGE_KEY = 'findmytherapy-chat-state';
 
 export function ChatWidget() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-  const [state, setState] = useState<ConversationState | null>(null)
-  const [isTyping, setIsTyping] = useState(false)
-  const [showInfoPanel, setShowInfoPanel] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [state, setState] = useState<ConversationState | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const [showInfoPanel, setShowInfoPanel] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Initialisiere State aus localStorage oder erstelle neuen
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
+    const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const persisted = JSON.parse(stored) as PersistedState
+        const persisted = JSON.parse(stored) as PersistedState;
         const messages: ChatMessage[] = persisted.messages.map((msg) => ({
           ...msg,
           timestamp: new Date(msg.timestamp),
-        }))
+        }));
 
         const migrated: ConversationState = {
           ...persisted,
@@ -50,82 +50,82 @@ export function ChatWidget() {
           recentTopics: persisted.recentTopics || [],
           lastUserSentiment: persisted.lastUserSentiment,
           concernIntensity: persisted.concernIntensity,
-        }
+        };
 
-        setState(migrated)
+        setState(migrated);
       } catch {
-        setState(createInitialState())
+        setState(createInitialState());
       }
     } else {
-      setState(createInitialState())
+      setState(createInitialState());
     }
-  }, [])
+  }, []);
 
   // Speichere State in localStorage
   useEffect(() => {
     if (state) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
-  }, [state])
+  }, [state]);
 
   // Auto-scroll zu neuen Nachrichten
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [state?.messages])
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [state?.messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!inputValue.trim() || !state) return
+    e.preventDefault();
+    if (!inputValue.trim() || !state) return;
 
-    const userInput = inputValue.trim()
-    setInputValue('')
-    setIsTyping(true)
+    const userInput = inputValue.trim();
+    setInputValue('');
+    setIsTyping(true);
 
     try {
       // Generiere Response zuerst (ohne State-Update)
-      const newState = processUserMessage(userInput, state)
-      const lastMessage = newState.messages[newState.messages.length - 1]
-      const responseLength = lastMessage?.content?.length || 0
+      const newState = processUserMessage(userInput, state);
+      const lastMessage = newState.messages[newState.messages.length - 1];
+      const responseLength = lastMessage?.content?.length || 0;
 
       // Realistischere Typing-Verzögerung basierend auf Response-Länge
       // Basis: 800ms + 20ms pro Zeichen (simuliert ca. 50 WPM Typing-Speed)
       // Max: 3 Sekunden für sehr lange Responses
-      const typingDelay = Math.min(800 + responseLength * 20, 3000)
+      const typingDelay = Math.min(800 + responseLength * 20, 3000);
 
-      await new Promise((resolve) => setTimeout(resolve, typingDelay))
+      await new Promise((resolve) => setTimeout(resolve, typingDelay));
 
-      setState(newState)
+      setState(newState);
     } finally {
-      setIsTyping(false)
+      setIsTyping(false);
     }
-  }
+  };
 
   const handleActionClick = (action: ChatMessage['metadata']['suggestedAction']) => {
     if (action === 'take_assessment') {
-      router.push('/triage')
+      router.push('/triage');
     } else if (action === 'crisis_resources') {
       // Scroll to crisis resources or show modal
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (action === 'contact_support') {
-      router.push('/contact')
+      router.push('/contact');
     }
-  }
+  };
 
   const resetChat = () => {
     const confirmed = confirm(
-      'Möchtest du das Gespräch wirklich zurücksetzen? Die bisherige Konversation geht verloren.'
-    )
+      'Möchtest du das Gespräch wirklich zurücksetzen? Die bisherige Konversation geht verloren.',
+    );
     if (confirmed) {
-      localStorage.removeItem(STORAGE_KEY)
-      setState(createInitialState())
+      localStorage.removeItem(STORAGE_KEY);
+      setState(createInitialState());
     }
-  }
+  };
 
-  if (!state) return null
+  if (!state) return null;
 
-  const hasUnreadMessages = state.messages.length > 1 && !isOpen
-  const latestMessage = state.messages[state.messages.length - 1]
-  const isCrisis = latestMessage?.metadata?.sentiment === 'crisis'
+  const hasUnreadMessages = state.messages.length > 1 && !isOpen;
+  const latestMessage = state.messages[state.messages.length - 1];
+  const isCrisis = latestMessage?.metadata?.sentiment === 'crisis';
 
   return (
     <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end gap-3">
@@ -165,12 +165,7 @@ export function ChatWidget() {
                 aria-label="Chat zurücksetzen"
                 title="Chat zurücksetzen"
               >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -259,7 +254,9 @@ export function ChatWidget() {
 
                   {message.metadata?.references && message.metadata.references.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-neutral-200 space-y-2">
-                      <p className="text-xs font-semibold text-muted tracking-wide uppercase">Weiterlesen:</p>
+                      <p className="text-xs font-semibold text-muted tracking-wide uppercase">
+                        Weiterlesen:
+                      </p>
                       {message.metadata.references.map((reference) => (
                         <a
                           key={`${message.id}-${reference.url}`}
@@ -270,7 +267,9 @@ export function ChatWidget() {
                         >
                           <span>{reference.title}</span>
                           <span className="text-muted">
-                            {reference.url.startsWith('http') ? reference.url : reference.url.replace(/^\//, '/')}
+                            {reference.url.startsWith('http')
+                              ? reference.url
+                              : reference.url.replace(/^\//, '/')}
                           </span>
                         </a>
                       ))}
@@ -285,9 +284,18 @@ export function ChatWidget() {
               <div className="flex justify-start">
                 <div className="bg-white border border-neutral-200 rounded-2xl px-4 py-3 shadow-sm">
                   <div className="flex gap-1.5">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="w-2 h-2 bg-primary/70 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    <div
+                      className="w-2 h-2 bg-primary rounded-full animate-bounce"
+                      style={{ animationDelay: '0ms' }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-primary/70 rounded-full animate-bounce"
+                      style={{ animationDelay: '150ms' }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-primary/40 rounded-full animate-bounce"
+                      style={{ animationDelay: '300ms' }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -305,9 +313,11 @@ export function ChatWidget() {
                   <div>
                     <h3 className="font-semibold text-default mb-1">100% Datenschutz garantiert</h3>
                     <p className="text-muted leading-relaxed">
-                      Alle deine Nachrichten werden <strong>ausschließlich lokal</strong> in deinem Browser gespeichert.
-                      Es werden <strong>keine personenbezogenen Daten</strong> an Server übertragen oder in einer Datenbank gespeichert.
-                      Wenn du den Chat zurücksetzt oder deinen Browser-Cache löschst, sind alle Daten unwiderruflich gelöscht.
+                      Alle deine Nachrichten werden <strong>ausschließlich lokal</strong> in deinem
+                      Browser gespeichert. Es werden <strong>keine personenbezogenen Daten</strong>{' '}
+                      an Server übertragen oder in einer Datenbank gespeichert. Wenn du den Chat
+                      zurücksetzt oder deinen Browser-Cache löschst, sind alle Daten unwiderruflich
+                      gelöscht.
                     </p>
                   </div>
                 </div>
@@ -315,11 +325,14 @@ export function ChatWidget() {
                 <div className="flex items-start gap-3">
                   <Info className="h-5 w-5 text-info mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-default mb-1">Wie funktioniert dieser Chat?</h3>
+                    <h3 className="font-semibold text-default mb-1">
+                      Wie funktioniert dieser Chat?
+                    </h3>
                     <p className="text-muted leading-relaxed">
-                      Dies ist ein <strong>regelbasiertes Support-Tool</strong> (keine künstliche Intelligenz).
-                      Ich erkenne Schlüsselwörter in deinen Nachrichten und antworte nach vordefinierten Mustern.
-                      Deshalb können meine Antworten manchmal unpassend oder generisch wirken – das ist völlig normal für diese Technologie.
+                      Dies ist ein <strong>regelbasiertes Support-Tool</strong> (keine künstliche
+                      Intelligenz). Ich erkenne Schlüsselwörter in deinen Nachrichten und antworte
+                      nach vordefinierten Mustern. Deshalb können meine Antworten manchmal unpassend
+                      oder generisch wirken – das ist völlig normal für diese Technologie.
                     </p>
                   </div>
                 </div>
@@ -329,7 +342,8 @@ export function ChatWidget() {
                   <div>
                     <h3 className="font-semibold text-default mb-1">Was ist der Zweck?</h3>
                     <p className="text-muted leading-relaxed">
-                      Mein Ziel ist es, dir <strong>erste Orientierung</strong> zu geben und dich an die richtigen Ressourcen weiterzuleiten:
+                      Mein Ziel ist es, dir <strong>erste Orientierung</strong> zu geben und dich an
+                      die richtigen Ressourcen weiterzuleiten:
                     </p>
                     <ul className="mt-2 space-y-1 text-muted">
                       <li>• Ersteinschätzung deiner Situation</li>
@@ -338,7 +352,9 @@ export function ChatWidget() {
                       <li>• Verlinkung zu hilfreichen Ressourcen</li>
                     </ul>
                     <p className="text-muted leading-relaxed mt-2">
-                      Bei wichtigen Anliegen empfehle ich dir, die <strong>Ersteinschätzung zu machen</strong> oder unser <strong>Care-Team zu kontaktieren</strong>.
+                      Bei wichtigen Anliegen empfehle ich dir, die{' '}
+                      <strong>Ersteinschätzung zu machen</strong> oder unser{' '}
+                      <strong>Care-Team zu kontaktieren</strong>.
                     </p>
                   </div>
                 </div>
@@ -383,7 +399,7 @@ export function ChatWidget() {
         aria-controls="findmytherapy-chat-widget"
       >
         <MessageCircle className="h-5 w-5 md:h-5 md:w-5 transition-transform group-hover:rotate-12" />
-        <span className="hidden sm:inline">{isOpen ? 'Schließen' : 'Wie geht\'s dir?'}</span>
+        <span className="hidden sm:inline">{isOpen ? 'Schließen' : "Wie geht's dir?"}</span>
         <span className="sm:hidden">{isOpen ? '✕' : 'Chat'}</span>
 
         {/* Unread Badge */}
@@ -394,5 +410,5 @@ export function ChatWidget() {
         )}
       </button>
     </div>
-  )
+  );
 }

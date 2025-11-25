@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
-import { Button, cn } from '@mental-health/ui'
-import { Reveal } from './Reveal'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { Button, cn } from '@mental-health/ui';
+import { Reveal } from './Reveal';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 type JourneyStep = {
-  phase: string
-  title: string
-  kicker: string
-  description: string
-  highlights: string[]
-}
+  phase: string;
+  title: string;
+  kicker: string;
+  description: string;
+  highlights: string[];
+};
 
 const journeySteps: JourneyStep[] = [
   {
@@ -54,17 +54,17 @@ const journeySteps: JourneyStep[] = [
       'Begleitender Support per Mail oder Chat bei Fragen & Krisen',
     ],
   },
-]
+];
 
 export function JourneyShowcase() {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const sectionRef = useRef<HTMLDivElement | null>(null)
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
-  })
-  const glowOpacity = useTransform(scrollYProgress, [0, 1], [0.35, 0.85])
-  const [activeStep, setActiveStep] = useState(0)
+  });
+  const glowOpacity = useTransform(scrollYProgress, [0, 1], [0.35, 0.85]);
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
     <section
@@ -98,8 +98,9 @@ export function JourneyShowcase() {
                 Ein fließender Ablauf – von Unsicherheit zu professioneller Hilfe.
               </h2>
               <p className="mt-4 text-pretty text-base leading-relaxed text-muted sm:text-lg">
-                Unsere Plattform verbindet digitale Ersteinschätzung, persönliches Matching und begleitende Programme.
-                Alle Inhalte bleiben crawlbar und suchmaschinenfreundlich – SEO-optimiert ohne technische Spielereien.
+                Unsere Plattform verbindet digitale Ersteinschätzung, persönliches Matching und
+                begleitende Programme. Alle Inhalte bleiben crawlbar und suchmaschinenfreundlich –
+                SEO-optimiert ohne technische Spielereien.
               </p>
             </div>
           </Reveal>
@@ -107,15 +108,13 @@ export function JourneyShowcase() {
           <Reveal delay={100}>
             <div className="mt-8 flex flex-col gap-4">
               <Button asChild size="lg">
-                <Link href="/triage">
-                  Ersteinschätzung testen
-                </Link>
+                <Link href="/triage">Ersteinschätzung testen</Link>
               </Button>
               <button
                 type="button"
                 className="inline-flex items-center justify-start gap-2 text-sm font-semibold text-primary transition hover:text-primary-600"
                 onClick={() => {
-                  document.getElementById('therapists')?.scrollIntoView({ behavior: 'smooth' })
+                  document.getElementById('therapists')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
                 Verified Therapists ansehen
@@ -127,11 +126,7 @@ export function JourneyShowcase() {
           <Reveal delay={180}>
             <motion.figure
               className="mt-10 overflow-hidden rounded-3xl border border-primary-100/70 bg-white/80 shadow-soft-lg"
-              animate={
-                prefersReducedMotion
-                  ? undefined
-                  : { y: [-4, 8, -4] }
-              }
+              animate={prefersReducedMotion ? undefined : { y: [-4, 8, -4] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
             >
               <Image
@@ -168,15 +163,15 @@ export function JourneyShowcase() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 interface JourneyStepCardProps {
-  step: JourneyStep
-  index: number
-  activeStep: number
-  setActiveStep: (index: number) => void
-  prefersReducedMotion: boolean
+  step: JourneyStep;
+  index: number;
+  activeStep: number;
+  setActiveStep: (index: number) => void;
+  prefersReducedMotion: boolean;
 }
 
 function JourneyStepCard({
@@ -186,16 +181,16 @@ function JourneyStepCard({
   setActiveStep,
   prefersReducedMotion,
 }: JourneyStepCardProps) {
-  const cardRef = useRef<HTMLDivElement | null>(null)
-  const inView = useInView(cardRef, { amount: 0.5, margin: '-10% 0px -10% 0px' })
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(cardRef, { amount: 0.5, margin: '-10% 0px -10% 0px' });
 
   useEffect(() => {
     if (inView) {
-      setActiveStep(index)
+      setActiveStep(index);
     }
-  }, [inView, index, setActiveStep])
+  }, [inView, index, setActiveStep]);
 
-  const isActive = activeStep === index
+  const isActive = activeStep === index;
 
   return (
     <motion.article
@@ -208,11 +203,7 @@ function JourneyStepCard({
         isActive ? 'border-primary-200 shadow-2xl' : 'border-white/40',
       )}
       onPointerEnter={() => setActiveStep(index)}
-      whileHover={
-        prefersReducedMotion
-          ? undefined
-          : { y: -8, scale: 1.01 }
-      }
+      whileHover={prefersReducedMotion ? undefined : { y: -8, scale: 1.01 }}
       transition={{ type: 'spring', stiffness: 120, damping: 18 }}
     >
       {!prefersReducedMotion && (
@@ -230,16 +221,15 @@ function JourneyStepCard({
           </span>
           <span className="text-xs font-semibold text-primary/80">{step.kicker}</span>
         </div>
-        <h3 className="mt-4 text-2xl font-semibold text-neutral-900 sm:text-3xl">
-          {step.title}
-        </h3>
-        <p className="mt-3 text-pretty text-base leading-relaxed text-muted">
-          {step.description}
-        </p>
+        <h3 className="mt-4 text-2xl font-semibold text-neutral-900 sm:text-3xl">{step.title}</h3>
+        <p className="mt-3 text-pretty text-base leading-relaxed text-muted">{step.description}</p>
         <ul className="mt-6 space-y-2 text-sm leading-relaxed text-neutral-900 sm:text-base">
           {step.highlights.map((highlight) => (
             <li key={highlight} className="flex items-start gap-2 text-pretty">
-              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" aria-hidden />
+              <span
+                className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary"
+                aria-hidden
+              />
               <span>{highlight}</span>
             </li>
           ))}
@@ -253,5 +243,5 @@ function JourneyStepCard({
         </div>
       </div>
     </motion.article>
-  )
+  );
 }

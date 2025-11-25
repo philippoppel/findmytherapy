@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Brain,
   MapPin,
@@ -24,7 +24,7 @@ import {
   Zap,
   Flower2,
   X,
-} from 'lucide-react'
+} from 'lucide-react';
 import {
   WizardFormData,
   defaultFormData,
@@ -32,8 +32,8 @@ import {
   THERAPY_METHODS,
   LANGUAGES,
   WAIT_TIME_OPTIONS,
-} from './types'
-import { useMatchingWizard } from './MatchingWizardContext'
+} from './types';
+import { useMatchingWizard } from './MatchingWizardContext';
 
 // Wizard-Schritte
 const STEPS = [
@@ -41,135 +41,150 @@ const STEPS = [
   { id: 2, title: 'Standort', description: 'Wo suchen Sie?' },
   { id: 3, title: 'Präferenzen', description: 'Ihre Wünsche' },
   { id: 4, title: 'Details', description: 'Optionale Angaben' },
-]
+];
 
 interface FilterOption {
-  value: string
-  label: string
-  count: number
-  available: boolean
+  value: string;
+  label: string;
+  count: number;
+  available: boolean;
 }
 
 interface FilterOptions {
-  languages: FilterOption[]
-  insuranceTypes: FilterOption[]
-  problemAreas: FilterOption[]
-  formats: FilterOption[]
+  languages: FilterOption[];
+  insuranceTypes: FilterOption[];
+  problemAreas: FilterOption[];
+  formats: FilterOption[];
 }
 
 export function MatchingWizard() {
-  const { isOpen, closeWizard, setResults, setFormData: setContextFormData, setShowResults, showResults } = useMatchingWizard()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState<WizardFormData>(defaultFormData)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null)
-  const [isLoadingFilters, setIsLoadingFilters] = useState(false)
+  const {
+    isOpen,
+    closeWizard,
+    setResults,
+    setFormData: setContextFormData,
+    setShowResults,
+    showResults,
+  } = useMatchingWizard();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<WizardFormData>(defaultFormData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
+  const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
   // Form-Update-Handler
   const updateForm = (updates: Partial<WizardFormData>) => {
-    setFormData((prev) => ({ ...prev, ...updates }))
-  }
+    setFormData((prev) => ({ ...prev, ...updates }));
+  };
 
   // Toggle für Array-Felder
   const toggleArrayItem = (field: keyof WizardFormData, item: string) => {
-    const current = formData[field] as string[]
-    const updated = current.includes(item)
-      ? current.filter((i) => i !== item)
-      : [...current, item]
-    updateForm({ [field]: updated })
-  }
+    const current = formData[field] as string[];
+    const updated = current.includes(item) ? current.filter((i) => i !== item) : [...current, item];
+    updateForm({ [field]: updated });
+  };
 
   // Lade verfügbare Filter-Optionen
   const fetchFilterOptions = useCallback(async () => {
-    setIsLoadingFilters(true)
+    setIsLoadingFilters(true);
     try {
-      const params = new URLSearchParams()
+      const params = new URLSearchParams();
 
       // Füge aktuelle Filter hinzu
       if (formData.languages.length > 0) {
-        formData.languages.forEach(lang => params.append('languages', lang))
+        formData.languages.forEach((lang) => params.append('languages', lang));
       }
       if (formData.insuranceType && formData.insuranceType !== 'ANY') {
-        params.set('insuranceType', formData.insuranceType)
+        params.set('insuranceType', formData.insuranceType);
       }
       if (formData.format) {
-        params.set('format', formData.format)
+        params.set('format', formData.format);
       }
       if (formData.problemAreas.length > 0) {
-        formData.problemAreas.forEach(area => params.append('problemAreas', area))
+        formData.problemAreas.forEach((area) => params.append('problemAreas', area));
       }
 
-      const response = await fetch(`/api/match/filter-options?${params.toString()}`)
+      const response = await fetch(`/api/match/filter-options?${params.toString()}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch filter options')
+        throw new Error('Failed to fetch filter options');
       }
 
-      const options: FilterOptions = await response.json()
-      setFilterOptions(options)
+      const options: FilterOptions = await response.json();
+      setFilterOptions(options);
     } catch (err) {
-      console.error('Error fetching filter options:', err)
+      console.error('Error fetching filter options:', err);
       // Fallback zu statischen Optionen wenn API fehlschlägt
       setFilterOptions({
-        languages: LANGUAGES.map(l => ({ value: l.id, label: l.label, count: 0, available: true })),
+        languages: LANGUAGES.map((l) => ({
+          value: l.id,
+          label: l.label,
+          count: 0,
+          available: true,
+        })),
         insuranceTypes: [
           { value: 'ANY', label: 'Egal', count: 0, available: true },
           { value: 'PUBLIC', label: 'Krankenkasse', count: 0, available: true },
           { value: 'PRIVATE', label: 'Privat', count: 0, available: true },
           { value: 'SELF_PAY', label: 'Selbstzahler', count: 0, available: true },
         ],
-        problemAreas: PROBLEM_AREAS.map(p => ({ value: p.id, label: p.label, count: 0, available: true })),
+        problemAreas: PROBLEM_AREAS.map((p) => ({
+          value: p.id,
+          label: p.label,
+          count: 0,
+          available: true,
+        })),
         formats: [
           { value: 'BOTH', label: 'Beides', count: 0, available: true },
           { value: 'IN_PERSON', label: 'Präsenz', count: 0, available: true },
           { value: 'ONLINE', label: 'Online', count: 0, available: true },
         ],
-      })
+      });
     } finally {
-      setIsLoadingFilters(false)
+      setIsLoadingFilters(false);
     }
-  }, [formData])
+  }, [formData]);
 
   // Lade Filter-Optionen wenn sich relevante Form-Daten ändern
   useEffect(() => {
     if (isOpen && (currentStep === 2 || currentStep === 3)) {
-      fetchFilterOptions()
+      fetchFilterOptions();
     }
-  }, [isOpen, currentStep, formData.format, formData.insuranceType, fetchFilterOptions])
+  }, [isOpen, currentStep, formData.format, formData.insuranceType, fetchFilterOptions]);
 
   // Initiales Laden wenn Wizard geöffnet wird
   useEffect(() => {
     if (isOpen) {
-      fetchFilterOptions()
+      fetchFilterOptions();
     }
-  }, [isOpen, fetchFilterOptions])
+  }, [isOpen, fetchFilterOptions]);
 
   // Weiter zum nächsten Schritt
   const nextStep = () => {
     if (currentStep < 4) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   // Zurück zum vorherigen Schritt
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     }
-  }
+  };
 
   // Reset wizard
   const resetWizard = () => {
-    setCurrentStep(1)
-    setFormData(defaultFormData)
-    setError(null)
-    setIsLoading(false)
-  }
+    setCurrentStep(1);
+    setFormData(defaultFormData);
+    setError(null);
+    setIsLoading(false);
+  };
 
   // Formular absenden
   const handleSubmit = async () => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const response = await fetch('/api/match', {
@@ -186,65 +201,72 @@ export function MatchingWizard() {
           postalCode: formData.postalCode || undefined,
           city: formData.city || undefined,
           maxWaitWeeks: formData.maxWaitWeeks,
-          preferredMethods: formData.preferredMethods.length > 0 ? formData.preferredMethods : undefined,
-          therapistGender: formData.therapistGender !== 'any' ? formData.therapistGender : undefined,
-          communicationStyle: formData.communicationStyle !== 'ANY' ? formData.communicationStyle : undefined,
+          preferredMethods:
+            formData.preferredMethods.length > 0 ? formData.preferredMethods : undefined,
+          therapistGender:
+            formData.therapistGender !== 'any' ? formData.therapistGender : undefined,
+          communicationStyle:
+            formData.communicationStyle !== 'ANY' ? formData.communicationStyle : undefined,
           priceMax: formData.priceMax ? formData.priceMax * 100 : undefined, // Euro zu Cent
           limit: 10,
         }),
-      })
+      });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || `Fehler beim Matching (${response.status})`)
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Fehler beim Matching (${response.status})`);
       }
 
-      const result = await response.json()
+      const result = await response.json();
 
       // Validierung der Ergebnisse
       if (!result || typeof result !== 'object') {
-        throw new Error('Ungültige Antwort vom Server')
+        throw new Error('Ungültige Antwort vom Server');
       }
 
       // Store results in context
-      setResults(result)
-      setContextFormData(formData)
-      setShowResults(true)
+      setResults(result);
+      setContextFormData(formData);
+      setShowResults(true);
 
       // Reset wizard for next use
-      resetWizard()
+      resetWizard();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten'
-      console.error('Matching error:', errorMessage, err)
-      setError(errorMessage)
-      setIsLoading(false)
+      const errorMessage = err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten';
+      console.error('Matching error:', errorMessage, err);
+      setError(errorMessage);
+      setIsLoading(false);
     }
-  }
+  };
 
   // Validierung für "Weiter"-Button
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return formData.problemAreas.length > 0
+        return formData.problemAreas.length > 0;
       case 2:
-        return formData.format === 'ONLINE' || formData.postalCode.length >= 4 || formData.city.length >= 2
+        return (
+          formData.format === 'ONLINE' ||
+          formData.postalCode.length >= 4 ||
+          formData.city.length >= 2
+        );
       case 3:
-        return formData.languages.length > 0
+        return formData.languages.length > 0;
       case 4:
-        return true
+        return true;
       default:
-        return false
+        return false;
     }
-  }
+  };
 
   // Handle close
   const handleClose = () => {
-    resetWizard()
-    closeWizard()
-  }
+    resetWizard();
+    closeWizard();
+  };
 
   // Hide wizard when results are showing or when not open
-  if (!isOpen || showResults) return null
+  if (!isOpen || showResults) return null;
 
   return (
     <AnimatePresence>
@@ -275,7 +297,8 @@ export function MatchingWizard() {
                 Finden Sie Ihren Therapeuten
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-                Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für Sie.
+                Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für
+                Sie.
               </p>
             </div>
 
@@ -285,11 +308,17 @@ export function MatchingWizard() {
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-5 h-5 mt-0.5 text-red-600">
                     <svg fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-red-800 mb-1">Fehler beim Matching</h3>
+                    <h3 className="text-sm font-semibold text-red-800 mb-1">
+                      Fehler beim Matching
+                    </h3>
                     <p className="text-sm text-red-700">{error}</p>
                   </div>
                   <button
@@ -298,7 +327,11 @@ export function MatchingWizard() {
                     aria-label="Fehler schließen"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -315,10 +348,7 @@ export function MatchingWizard() {
               </div>
               <div className="flex justify-between relative">
                 {STEPS.map((step) => (
-                  <div
-                    key={step.id}
-                    className="flex flex-col items-center flex-1"
-                  >
+                  <div key={step.id} className="flex flex-col items-center flex-1">
                     <div
                       className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-semibold shadow-md transition-all duration-300 ${
                         step.id < currentStep
@@ -330,9 +360,11 @@ export function MatchingWizard() {
                     >
                       {step.id < currentStep ? '✓' : step.id}
                     </div>
-                    <div className={`mt-2 text-[10px] sm:text-xs font-medium text-center px-1 transition-colors ${
-                      step.id <= currentStep ? 'text-gray-900' : 'text-gray-400'
-                    }`}>
+                    <div
+                      className={`mt-2 text-[10px] sm:text-xs font-medium text-center px-1 transition-colors ${
+                        step.id <= currentStep ? 'text-gray-900' : 'text-gray-400'
+                      }`}
+                    >
                       {step.title}
                     </div>
                   </div>
@@ -354,9 +386,12 @@ export function MatchingWizard() {
                   {currentStep === 1 && (
                     <div>
                       <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Was beschäftigt Sie?</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                          Was beschäftigt Sie?
+                        </h3>
                         <p className="text-sm sm:text-base text-gray-600">
-                          Wählen Sie ein oder mehrere Bereiche aus, in denen Sie Unterstützung suchen.
+                          Wählen Sie ein oder mehrere Bereiche aus, in denen Sie Unterstützung
+                          suchen.
                         </p>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -371,15 +406,19 @@ export function MatchingWizard() {
                             }`}
                           >
                             <div className="flex items-start gap-3">
-                              <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
-                                formData.problemAreas.includes(area.id)
-                                  ? 'bg-white shadow-sm'
-                                  : 'bg-gray-50 group-hover:bg-amber-50'
-                              }`}>
+                              <div
+                                className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
+                                  formData.problemAreas.includes(area.id)
+                                    ? 'bg-white shadow-sm'
+                                    : 'bg-gray-50 group-hover:bg-amber-50'
+                                }`}
+                              >
                                 <span className="text-2xl">{area.icon}</span>
                               </div>
                               <div className="flex-1 min-w-0">
-                                <span className="text-sm font-semibold text-gray-900 block leading-tight">{area.label}</span>
+                                <span className="text-sm font-semibold text-gray-900 block leading-tight">
+                                  {area.label}
+                                </span>
                               </div>
                               {formData.problemAreas.includes(area.id) && (
                                 <div className="absolute top-2 right-2 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
@@ -418,21 +457,30 @@ export function MatchingWizard() {
                           ].map((format) => (
                             <button
                               key={format.id}
-                              onClick={() => updateForm({ format: format.id as WizardFormData['format'] })}
+                              onClick={() =>
+                                updateForm({ format: format.id as WizardFormData['format'] })
+                              }
                               className={`group p-4 rounded-xl border-2 text-center transition-all duration-200 ${
                                 formData.format === format.id
                                   ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
                                   : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                               }`}
                             >
-                              <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center transition-all ${
-                                formData.format === format.id
-                                  ? 'bg-white shadow-sm'
-                                  : 'bg-gray-50 group-hover:bg-amber-50'
-                              }`}>
-                                <format.Icon className={`w-6 h-6 ${formData.format === format.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                              <div
+                                className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center transition-all ${
+                                  formData.format === format.id
+                                    ? 'bg-white shadow-sm'
+                                    : 'bg-gray-50 group-hover:bg-amber-50'
+                                }`}
+                              >
+                                <format.Icon
+                                  className={`w-6 h-6 ${formData.format === format.id ? 'text-amber-600' : 'text-gray-600'}`}
+                                  strokeWidth={2}
+                                />
                               </div>
-                              <div className="text-sm font-semibold text-gray-900">{format.label}</div>
+                              <div className="text-sm font-semibold text-gray-900">
+                                {format.label}
+                              </div>
                               <div className="text-xs text-gray-500 mt-0.5">{format.desc}</div>
                             </button>
                           ))}
@@ -451,11 +499,11 @@ export function MatchingWizard() {
                               type="text"
                               value={formData.postalCode || formData.city}
                               onChange={(e) => {
-                                const value = e.target.value
+                                const value = e.target.value;
                                 if (/^\d+$/.test(value)) {
-                                  updateForm({ postalCode: value, city: '' })
+                                  updateForm({ postalCode: value, city: '' });
                                 } else {
-                                  updateForm({ city: value, postalCode: '' })
+                                  updateForm({ city: value, postalCode: '' });
                                 }
                               }}
                               placeholder="z.B. 1010 oder Wien"
@@ -467,7 +515,8 @@ export function MatchingWizard() {
                           <div className="bg-gray-50 rounded-xl p-4">
                             <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                               <Ruler className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                              Maximale Entfernung: <span className="text-amber-600">{formData.maxDistanceKm} km</span>
+                              Maximale Entfernung:{' '}
+                              <span className="text-amber-600">{formData.maxDistanceKm} km</span>
                             </label>
                             <input
                               type="range"
@@ -475,7 +524,9 @@ export function MatchingWizard() {
                               max="100"
                               step="5"
                               value={formData.maxDistanceKm}
-                              onChange={(e) => updateForm({ maxDistanceKm: parseInt(e.target.value) })}
+                              onChange={(e) =>
+                                updateForm({ maxDistanceKm: parseInt(e.target.value) })
+                              }
                               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
                             />
                             <div className="flex justify-between text-xs text-gray-500 mt-2">
@@ -493,7 +544,9 @@ export function MatchingWizard() {
                   {currentStep === 3 && (
                     <div>
                       <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Ihre Präferenzen</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                          Ihre Präferenzen
+                        </h3>
                         <p className="text-sm sm:text-base text-gray-600">
                           Helfen Sie uns, die passenden Therapeut:innen zu finden.
                         </p>
@@ -508,19 +561,32 @@ export function MatchingWizard() {
                         {isLoadingFilters ? (
                           <div className="flex flex-wrap gap-2">
                             {[1, 2, 3, 4, 5].map((i) => (
-                              <div key={i} className="h-10 w-24 bg-gray-200 rounded-xl animate-pulse" />
+                              <div
+                                key={i}
+                                className="h-10 w-24 bg-gray-200 rounded-xl animate-pulse"
+                              />
                             ))}
                           </div>
                         ) : (
                           <div className="flex flex-wrap gap-2">
-                            {(filterOptions?.languages || LANGUAGES.map(l => ({ value: l.id, label: l.label, count: 0, available: true }))).map((lang) => {
-                              const isSelected = formData.languages.includes(lang.value)
-                              const isDisabled = !lang.available && !isSelected
+                            {(
+                              filterOptions?.languages ||
+                              LANGUAGES.map((l) => ({
+                                value: l.id,
+                                label: l.label,
+                                count: 0,
+                                available: true,
+                              }))
+                            ).map((lang) => {
+                              const isSelected = formData.languages.includes(lang.value);
+                              const isDisabled = !lang.available && !isSelected;
 
                               return (
                                 <button
                                   key={lang.value}
-                                  onClick={() => !isDisabled && toggleArrayItem('languages', lang.value)}
+                                  onClick={() =>
+                                    !isDisabled && toggleArrayItem('languages', lang.value)
+                                  }
                                   disabled={isDisabled}
                                   className={`group relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                                     isSelected
@@ -529,18 +595,24 @@ export function MatchingWizard() {
                                         ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-60'
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
                                   }`}
-                                  title={isDisabled ? 'Aktuell keine Therapeut:innen verfügbar' : undefined}
+                                  title={
+                                    isDisabled
+                                      ? 'Aktuell keine Therapeut:innen verfügbar'
+                                      : undefined
+                                  }
                                 >
                                   <span className="flex items-center gap-2">
                                     {lang.label}
                                     {lang.count > 0 && (
-                                      <span className={`text-xs ${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
+                                      <span
+                                        className={`text-xs ${isSelected ? 'text-white/80' : 'text-gray-500'}`}
+                                      >
                                         ({lang.count})
                                       </span>
                                     )}
                                   </span>
                                 </button>
-                              )
+                              );
                             })}
                           </div>
                         )}
@@ -566,14 +638,21 @@ export function MatchingWizard() {
                               { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
                               { id: 'SELF_PAY', label: 'Selbstzahler', Icon: CreditCard },
                             ].map((ins) => {
-                              const option = filterOptions?.insuranceTypes.find(o => o.value === ins.id)
-                              const isSelected = formData.insuranceType === ins.id
-                              const isDisabled = option && !option.available && !isSelected
+                              const option = filterOptions?.insuranceTypes.find(
+                                (o) => o.value === ins.id,
+                              );
+                              const isSelected = formData.insuranceType === ins.id;
+                              const isDisabled = option && !option.available && !isSelected;
 
                               return (
                                 <button
                                   key={ins.id}
-                                  onClick={() => !isDisabled && updateForm({ insuranceType: ins.id as WizardFormData['insuranceType'] })}
+                                  onClick={() =>
+                                    !isDisabled &&
+                                    updateForm({
+                                      insuranceType: ins.id as WizardFormData['insuranceType'],
+                                    })
+                                  }
                                   disabled={isDisabled}
                                   className={`group p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                                     isSelected
@@ -582,12 +661,21 @@ export function MatchingWizard() {
                                         ? 'border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed'
                                         : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
                                   }`}
-                                  title={isDisabled ? 'Aktuell keine Therapeut:innen verfügbar' : undefined}
+                                  title={
+                                    isDisabled
+                                      ? 'Aktuell keine Therapeut:innen verfügbar'
+                                      : undefined
+                                  }
                                 >
                                   <div className="flex items-center justify-center h-8 mb-1">
-                                    <ins.Icon className={`w-5 h-5 ${isSelected ? 'text-amber-600' : isDisabled ? 'text-gray-400' : 'text-gray-600'}`} strokeWidth={2} />
+                                    <ins.Icon
+                                      className={`w-5 h-5 ${isSelected ? 'text-amber-600' : isDisabled ? 'text-gray-400' : 'text-gray-600'}`}
+                                      strokeWidth={2}
+                                    />
                                   </div>
-                                  <div className={`text-sm font-medium ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}>
+                                  <div
+                                    className={`text-sm font-medium ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}
+                                  >
                                     {ins.label}
                                   </div>
                                   {option && option.count > 0 && (
@@ -596,7 +684,7 @@ export function MatchingWizard() {
                                     </div>
                                   )}
                                 </button>
-                              )
+                              );
                             })}
                           </div>
                         )}
@@ -631,9 +719,12 @@ export function MatchingWizard() {
                   {currentStep === 4 && (
                     <div>
                       <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Optionale Details</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                          Optionale Details
+                        </h3>
                         <p className="text-sm sm:text-base text-gray-600">
-                          Diese Angaben sind optional und helfen uns, noch bessere Matches zu finden.
+                          Diese Angaben sind optional und helfen uns, noch bessere Matches zu
+                          finden.
                         </p>
                       </div>
 
@@ -641,7 +732,8 @@ export function MatchingWizard() {
                       <div className="mb-6">
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                           <Brain className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Bevorzugte Therapiemethoden <span className="text-gray-400 font-normal">(optional)</span>
+                          Bevorzugte Therapiemethoden{' '}
+                          <span className="text-gray-400 font-normal">(optional)</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {THERAPY_METHODS.map((method) => (
@@ -664,7 +756,8 @@ export function MatchingWizard() {
                       <div className="mb-6">
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                           <User className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Bevorzugtes Geschlecht <span className="text-gray-400 font-normal">(optional)</span>
+                          Bevorzugtes Geschlecht{' '}
+                          <span className="text-gray-400 font-normal">(optional)</span>
                         </div>
                         <div className="grid grid-cols-3 gap-3">
                           {[
@@ -674,7 +767,11 @@ export function MatchingWizard() {
                           ].map((gender) => (
                             <button
                               key={gender.id}
-                              onClick={() => updateForm({ therapistGender: gender.id as WizardFormData['therapistGender'] })}
+                              onClick={() =>
+                                updateForm({
+                                  therapistGender: gender.id as WizardFormData['therapistGender'],
+                                })
+                              }
                               className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                                 formData.therapistGender === gender.id
                                   ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
@@ -682,9 +779,14 @@ export function MatchingWizard() {
                               }`}
                             >
                               <div className="flex items-center justify-center h-8 mb-1">
-                                <gender.Icon className={`w-5 h-5 ${formData.therapistGender === gender.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                                <gender.Icon
+                                  className={`w-5 h-5 ${formData.therapistGender === gender.id ? 'text-amber-600' : 'text-gray-600'}`}
+                                  strokeWidth={2}
+                                />
                               </div>
-                              <div className="text-sm font-medium text-gray-900">{gender.label}</div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {gender.label}
+                              </div>
                             </button>
                           ))}
                         </div>
@@ -694,7 +796,8 @@ export function MatchingWizard() {
                       <div className="mb-6">
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                           <Euro className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Maximaler Preis pro Sitzung <span className="text-gray-400 font-normal">(optional)</span>
+                          Maximaler Preis pro Sitzung{' '}
+                          <span className="text-gray-400 font-normal">(optional)</span>
                         </div>
                         <input
                           type="number"
@@ -713,7 +816,8 @@ export function MatchingWizard() {
                       <div>
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
                           <MessageCircle className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Kommunikationsstil <span className="text-gray-400 font-normal">(optional)</span>
+                          Kommunikationsstil{' '}
+                          <span className="text-gray-400 font-normal">(optional)</span>
                         </div>
                         <div className="grid grid-cols-3 gap-3">
                           {[
@@ -723,7 +827,12 @@ export function MatchingWizard() {
                           ].map((style) => (
                             <button
                               key={style.id}
-                              onClick={() => updateForm({ communicationStyle: style.id as WizardFormData['communicationStyle'] })}
+                              onClick={() =>
+                                updateForm({
+                                  communicationStyle:
+                                    style.id as WizardFormData['communicationStyle'],
+                                })
+                              }
                               className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
                                 formData.communicationStyle === style.id
                                   ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
@@ -731,7 +840,10 @@ export function MatchingWizard() {
                               }`}
                             >
                               <div className="flex items-center justify-center h-8 mb-1">
-                                <style.Icon className={`w-5 h-5 ${formData.communicationStyle === style.id ? 'text-amber-600' : 'text-gray-600'}`} strokeWidth={2} />
+                                <style.Icon
+                                  className={`w-5 h-5 ${formData.communicationStyle === style.id ? 'text-amber-600' : 'text-gray-600'}`}
+                                  strokeWidth={2}
+                                />
                               </div>
                               <div className="text-sm font-medium text-gray-900">{style.label}</div>
                             </button>
@@ -778,8 +890,20 @@ export function MatchingWizard() {
                     {isLoading ? (
                       <span className="flex items-center gap-2">
                         <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
                         </svg>
                         Suche läuft...
                       </span>
@@ -807,5 +931,5 @@ export function MatchingWizard() {
         </div>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }

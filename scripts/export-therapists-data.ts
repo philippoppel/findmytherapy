@@ -14,163 +14,171 @@
  *   - therapists-stats-{timestamp}.json
  */
 
-import { PrismaClient } from '@prisma/client'
-import { writeFileSync } from 'fs'
+import { PrismaClient } from '@prisma/client';
+import { writeFileSync } from 'fs';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 interface TherapistExportRow {
-  id: string
-  displayName: string
-  firstName: string
-  lastName: string
-  email: string
-  status: string
-  isPublic: boolean
+  id: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  status: string;
+  isPublic: boolean;
 
   // Contact & Location
-  city: string
-  latitude: string
-  longitude: string
+  city: string;
+  latitude: string;
+  longitude: string;
 
   // Professional Info
-  title: string
-  licenseId: string
-  licenseAuthority: string
-  yearsExperience: string
+  title: string;
+  licenseId: string;
+  licenseAuthority: string;
+  yearsExperience: string;
 
   // Profile Content
-  headline: string
-  about: string
-  profileImageUrl: string
-  videoUrl: string
+  headline: string;
+  about: string;
+  profileImageUrl: string;
+  videoUrl: string;
 
   // Practice Details
-  modalities: string
-  specialties: string
-  languages: string
-  ageGroups: string
-  services: string
-  qualifications: string
+  modalities: string;
+  specialties: string;
+  languages: string;
+  ageGroups: string;
+  services: string;
+  qualifications: string;
 
   // Pricing & Insurance
-  priceMin: string
-  priceMax: string
-  pricingNote: string
-  acceptedInsurance: string
-  privatePractice: string
+  priceMin: string;
+  priceMax: string;
+  pricingNote: string;
+  acceptedInsurance: string;
+  privatePractice: string;
 
   // Availability
-  online: string
-  acceptingClients: string
-  availabilityStatus: string
-  availabilityNote: string
-  estimatedWaitWeeks: string
+  online: string;
+  acceptingClients: string;
+  availabilityStatus: string;
+  availabilityNote: string;
+  estimatedWaitWeeks: string;
 
   // Web Presence
-  websiteUrl: string
-  socialLinkedin: string
-  socialInstagram: string
-  socialFacebook: string
+  websiteUrl: string;
+  socialLinkedin: string;
+  socialInstagram: string;
+  socialFacebook: string;
 
   // Microsite
-  micrositeSlug: string
-  micrositeStatus: string
+  micrositeSlug: string;
+  micrositeStatus: string;
 
   // Metadata
-  createdAt: string
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 
   // Completeness Flags (0 or 1)
-  has_profileImage: string
-  has_about: string
-  has_website: string
-  has_social: string
-  has_video: string
-  has_pricing: string
-  has_coordinates: string
-  has_availability: string
+  has_profileImage: string;
+  has_about: string;
+  has_website: string;
+  has_social: string;
+  has_video: string;
+  has_pricing: string;
+  has_coordinates: string;
+  has_availability: string;
 
   // Completeness Score (0-100)
-  completeness_score: string
+  completeness_score: string;
 }
 
 interface Stats {
-  total: number
-  publicProfiles: number
-  verifiedProfiles: number
+  total: number;
+  publicProfiles: number;
+  verifiedProfiles: number;
   fieldStats: {
     [key: string]: {
-      filled: number
-      empty: number
-      percentage: number
-    }
-  }
+      filled: number;
+      empty: number;
+      percentage: number;
+    };
+  };
   completenessDistribution: {
-    '0-25%': number
-    '26-50%': number
-    '51-75%': number
-    '76-100%': number
-  }
-  cityDistribution: { [key: string]: number }
-  stateDistribution: { [key: string]: number }
-  timestamp: string
+    '0-25%': number;
+    '26-50%': number;
+    '51-75%': number;
+    '76-100%': number;
+  };
+  cityDistribution: { [key: string]: number };
+  stateDistribution: { [key: string]: number };
+  timestamp: string;
 }
 
 /**
  * Calculate completeness score for a profile
  */
 function calculateCompleteness(profile: any): number {
-  let score = 0
-  let maxScore = 0
+  let score = 0;
+  let maxScore = 0;
 
   // Essential fields (weight: 2)
-  const essentialFields = [
-    'displayName', 'city', 'about', 'profileImageUrl'
-  ]
-  essentialFields.forEach(field => {
-    maxScore += 2
-    if (profile[field]) score += 2
-  })
+  const essentialFields = ['displayName', 'city', 'about', 'profileImageUrl'];
+  essentialFields.forEach((field) => {
+    maxScore += 2;
+    if (profile[field]) score += 2;
+  });
 
   // Important fields (weight: 1.5)
-  const importantFields = [
-    'websiteUrl', 'priceMin', 'priceMax', 'availabilityStatus'
-  ]
-  importantFields.forEach(field => {
-    maxScore += 1.5
-    if (profile[field]) score += 1.5
-  })
+  const importantFields = ['websiteUrl', 'priceMin', 'priceMax', 'availabilityStatus'];
+  importantFields.forEach((field) => {
+    maxScore += 1.5;
+    if (profile[field]) score += 1.5;
+  });
 
   // Additional fields (weight: 1)
   const additionalFields = [
-    'headline', 'videoUrl', 'socialLinkedin', 'socialInstagram',
-    'socialFacebook', 'latitude', 'longitude', 'yearsExperience',
-    'pricingNote', 'availabilityNote'
-  ]
-  additionalFields.forEach(field => {
-    maxScore += 1
-    if (profile[field]) score += 1
-  })
+    'headline',
+    'videoUrl',
+    'socialLinkedin',
+    'socialInstagram',
+    'socialFacebook',
+    'latitude',
+    'longitude',
+    'yearsExperience',
+    'pricingNote',
+    'availabilityNote',
+  ];
+  additionalFields.forEach((field) => {
+    maxScore += 1;
+    if (profile[field]) score += 1;
+  });
 
   // Array fields (weight: 1)
   const arrayFields = [
-    'modalities', 'specialties', 'languages', 'ageGroups',
-    'services', 'qualifications', 'acceptedInsurance'
-  ]
-  arrayFields.forEach(field => {
-    maxScore += 1
-    if (profile[field]?.length > 0) score += 1
-  })
+    'modalities',
+    'specialties',
+    'languages',
+    'ageGroups',
+    'services',
+    'qualifications',
+    'acceptedInsurance',
+  ];
+  arrayFields.forEach((field) => {
+    maxScore += 1;
+    if (profile[field]?.length > 0) score += 1;
+  });
 
-  return Math.round((score / maxScore) * 100)
+  return Math.round((score / maxScore) * 100);
 }
 
 /**
  * Convert profile to CSV row
  */
 function profileToRow(profile: any): TherapistExportRow {
-  const completeness = calculateCompleteness(profile)
+  const completeness = calculateCompleteness(profile);
 
   return {
     id: profile.id || '',
@@ -238,14 +246,15 @@ function profileToRow(profile: any): TherapistExportRow {
     has_profileImage: profile.profileImageUrl ? '1' : '0',
     has_about: profile.about ? '1' : '0',
     has_website: profile.websiteUrl ? '1' : '0',
-    has_social: (profile.socialLinkedin || profile.socialInstagram || profile.socialFacebook) ? '1' : '0',
+    has_social:
+      profile.socialLinkedin || profile.socialInstagram || profile.socialFacebook ? '1' : '0',
     has_video: profile.videoUrl ? '1' : '0',
-    has_pricing: (profile.priceMin && profile.priceMax) ? '1' : '0',
-    has_coordinates: (profile.latitude && profile.longitude) ? '1' : '0',
+    has_pricing: profile.priceMin && profile.priceMax ? '1' : '0',
+    has_coordinates: profile.latitude && profile.longitude ? '1' : '0',
     has_availability: profile.availabilityStatus ? '1' : '0',
 
     completeness_score: completeness.toString(),
-  }
+  };
 }
 
 /**
@@ -253,22 +262,22 @@ function profileToRow(profile: any): TherapistExportRow {
  */
 function rowToCSV(row: TherapistExportRow): string {
   return Object.values(row)
-    .map(val => `"${val}"`)
-    .join(',')
+    .map((val) => `"${val}"`)
+    .join(',');
 }
 
 /**
  * Main export function
  */
 async function main() {
-  console.log('📊 Exporting therapist data from production database...\n')
+  console.log('📊 Exporting therapist data from production database...\n');
 
-  const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0]
-  const csvFilename = `therapists-export-${timestamp}.csv`
-  const statsFilename = `therapists-stats-${timestamp}.json`
+  const timestamp = new Date().toISOString().replace(/:/g, '-').split('.')[0];
+  const csvFilename = `therapists-export-${timestamp}.csv`;
+  const statsFilename = `therapists-stats-${timestamp}.json`;
 
   // Fetch all therapist profiles
-  console.log('🔍 Fetching profiles...')
+  console.log('🔍 Fetching profiles...');
   const profiles = await prisma.therapistProfile.findMany({
     select: {
       id: true,
@@ -351,29 +360,26 @@ async function main() {
     orderBy: {
       displayName: 'asc',
     },
-  })
+  });
 
-  console.log(`✅ Found ${profiles.length} profiles\n`)
+  console.log(`✅ Found ${profiles.length} profiles\n`);
 
   // Convert to CSV
-  console.log('📝 Converting to CSV...')
-  const headers = Object.keys(profileToRow(profiles[0] || {}))
-  const csvRows = [
-    headers.join(','),
-    ...profiles.map(p => rowToCSV(profileToRow(p)))
-  ]
-  const csvContent = csvRows.join('\n')
+  console.log('📝 Converting to CSV...');
+  const headers = Object.keys(profileToRow(profiles[0] || {}));
+  const csvRows = [headers.join(','), ...profiles.map((p) => rowToCSV(profileToRow(p)))];
+  const csvContent = csvRows.join('\n');
 
   // Write CSV file
-  writeFileSync(csvFilename, csvContent, 'utf-8')
-  console.log(`✅ CSV exported to: ${csvFilename}\n`)
+  writeFileSync(csvFilename, csvContent, 'utf-8');
+  console.log(`✅ CSV exported to: ${csvFilename}\n`);
 
   // Calculate statistics
-  console.log('📊 Calculating statistics...')
+  console.log('📊 Calculating statistics...');
   const stats: Stats = {
     total: profiles.length,
-    publicProfiles: profiles.filter(p => p.isPublic).length,
-    verifiedProfiles: profiles.filter(p => p.status === 'VERIFIED').length,
+    publicProfiles: profiles.filter((p) => p.isPublic).length,
+    verifiedProfiles: profiles.filter((p) => p.status === 'VERIFIED').length,
     fieldStats: {},
     completenessDistribution: {
       '0-25%': 0,
@@ -384,107 +390,139 @@ async function main() {
     cityDistribution: {},
     stateDistribution: {},
     timestamp: new Date().toISOString(),
-  }
+  };
 
   // Field statistics
   const fields = [
-    'profileImageUrl', 'about', 'websiteUrl', 'videoUrl',
-    'priceMin', 'priceMax', 'latitude', 'longitude',
-    'socialLinkedin', 'socialInstagram', 'socialFacebook',
-    'availabilityStatus', 'headline', 'yearsExperience',
-    'micrositeSlug', 'pricingNote', 'availabilityNote'
-  ]
+    'profileImageUrl',
+    'about',
+    'websiteUrl',
+    'videoUrl',
+    'priceMin',
+    'priceMax',
+    'latitude',
+    'longitude',
+    'socialLinkedin',
+    'socialInstagram',
+    'socialFacebook',
+    'availabilityStatus',
+    'headline',
+    'yearsExperience',
+    'micrositeSlug',
+    'pricingNote',
+    'availabilityNote',
+  ];
 
-  fields.forEach(field => {
-    const filled = profiles.filter(p => {
-      const value = (p as any)[field]
-      return value !== null && value !== undefined && value !== ''
-    }).length
-    const empty = profiles.length - filled
+  fields.forEach((field) => {
+    const filled = profiles.filter((p) => {
+      const value = (p as any)[field];
+      return value !== null && value !== undefined && value !== '';
+    }).length;
+    const empty = profiles.length - filled;
     stats.fieldStats[field] = {
       filled,
       empty,
       percentage: Math.round((filled / profiles.length) * 100),
-    }
-  })
+    };
+  });
 
   // Completeness distribution
-  profiles.forEach(profile => {
-    const score = calculateCompleteness(profile)
-    if (score <= 25) stats.completenessDistribution['0-25%']++
-    else if (score <= 50) stats.completenessDistribution['26-50%']++
-    else if (score <= 75) stats.completenessDistribution['51-75%']++
-    else stats.completenessDistribution['76-100%']++
-  })
+  profiles.forEach((profile) => {
+    const score = calculateCompleteness(profile);
+    if (score <= 25) stats.completenessDistribution['0-25%']++;
+    else if (score <= 50) stats.completenessDistribution['26-50%']++;
+    else if (score <= 75) stats.completenessDistribution['51-75%']++;
+    else stats.completenessDistribution['76-100%']++;
+  });
 
   // City distribution (top 20)
-  const cities: { [key: string]: number } = {}
-  profiles.forEach(p => {
+  const cities: { [key: string]: number } = {};
+  profiles.forEach((p) => {
     if (p.city) {
-      cities[p.city] = (cities[p.city] || 0) + 1
+      cities[p.city] = (cities[p.city] || 0) + 1;
     }
-  })
+  });
   const topCities = Object.entries(cities)
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 20)
-  stats.cityDistribution = Object.fromEntries(topCities)
+    .slice(0, 20);
+  stats.cityDistribution = Object.fromEntries(topCities);
 
   // State distribution
-  const states: { [key: string]: number } = {}
-  profiles.forEach(p => {
+  const states: { [key: string]: number } = {};
+  profiles.forEach((p) => {
     if (p.state) {
-      states[p.state] = (states[p.state] || 0) + 1
+      states[p.state] = (states[p.state] || 0) + 1;
     }
-  })
-  stats.stateDistribution = states
+  });
+  stats.stateDistribution = states;
 
   // Write stats file
-  writeFileSync(statsFilename, JSON.stringify(stats, null, 2), 'utf-8')
-  console.log(`✅ Statistics exported to: ${statsFilename}\n`)
+  writeFileSync(statsFilename, JSON.stringify(stats, null, 2), 'utf-8');
+  console.log(`✅ Statistics exported to: ${statsFilename}\n`);
 
   // Print summary
-  console.log('=' .repeat(80))
-  console.log('📊 SUMMARY')
-  console.log('='.repeat(80))
-  console.log(`Total profiles: ${stats.total}`)
-  console.log(`Public profiles: ${stats.publicProfiles} (${Math.round(stats.publicProfiles / stats.total * 100)}%)`)
-  console.log(`Verified profiles: ${stats.verifiedProfiles} (${Math.round(stats.verifiedProfiles / stats.total * 100)}%)`)
-  console.log()
-  console.log('Field Completeness:')
-  console.log(`  Profile Image: ${stats.fieldStats.profileImageUrl.percentage}% (${stats.fieldStats.profileImageUrl.filled}/${stats.total})`)
-  console.log(`  About Text: ${stats.fieldStats.about.percentage}% (${stats.fieldStats.about.filled}/${stats.total})`)
-  console.log(`  Website: ${stats.fieldStats.websiteUrl.percentage}% (${stats.fieldStats.websiteUrl.filled}/${stats.total})`)
-  console.log(`  Pricing: ${stats.fieldStats.priceMin.percentage}% (${stats.fieldStats.priceMin.filled}/${stats.total})`)
-  console.log(`  Coordinates: ${stats.fieldStats.latitude.percentage}% (${stats.fieldStats.latitude.filled}/${stats.total})`)
-  console.log(`  LinkedIn: ${stats.fieldStats.socialLinkedin.percentage}% (${stats.fieldStats.socialLinkedin.filled}/${stats.total})`)
-  console.log(`  Instagram: ${stats.fieldStats.socialInstagram.percentage}% (${stats.fieldStats.socialInstagram.filled}/${stats.total})`)
-  console.log(`  Facebook: ${stats.fieldStats.socialFacebook.percentage}% (${stats.fieldStats.socialFacebook.filled}/${stats.total})`)
-  console.log()
-  console.log('Completeness Distribution:')
-  console.log(`  0-25%: ${stats.completenessDistribution['0-25%']} profiles`)
-  console.log(`  26-50%: ${stats.completenessDistribution['26-50%']} profiles`)
-  console.log(`  51-75%: ${stats.completenessDistribution['51-75%']} profiles`)
-  console.log(`  76-100%: ${stats.completenessDistribution['76-100%']} profiles`)
-  console.log()
-  console.log('Top 10 Cities:')
+  console.log('='.repeat(80));
+  console.log('📊 SUMMARY');
+  console.log('='.repeat(80));
+  console.log(`Total profiles: ${stats.total}`);
+  console.log(
+    `Public profiles: ${stats.publicProfiles} (${Math.round((stats.publicProfiles / stats.total) * 100)}%)`,
+  );
+  console.log(
+    `Verified profiles: ${stats.verifiedProfiles} (${Math.round((stats.verifiedProfiles / stats.total) * 100)}%)`,
+  );
+  console.log();
+  console.log('Field Completeness:');
+  console.log(
+    `  Profile Image: ${stats.fieldStats.profileImageUrl.percentage}% (${stats.fieldStats.profileImageUrl.filled}/${stats.total})`,
+  );
+  console.log(
+    `  About Text: ${stats.fieldStats.about.percentage}% (${stats.fieldStats.about.filled}/${stats.total})`,
+  );
+  console.log(
+    `  Website: ${stats.fieldStats.websiteUrl.percentage}% (${stats.fieldStats.websiteUrl.filled}/${stats.total})`,
+  );
+  console.log(
+    `  Pricing: ${stats.fieldStats.priceMin.percentage}% (${stats.fieldStats.priceMin.filled}/${stats.total})`,
+  );
+  console.log(
+    `  Coordinates: ${stats.fieldStats.latitude.percentage}% (${stats.fieldStats.latitude.filled}/${stats.total})`,
+  );
+  console.log(
+    `  LinkedIn: ${stats.fieldStats.socialLinkedin.percentage}% (${stats.fieldStats.socialLinkedin.filled}/${stats.total})`,
+  );
+  console.log(
+    `  Instagram: ${stats.fieldStats.socialInstagram.percentage}% (${stats.fieldStats.socialInstagram.filled}/${stats.total})`,
+  );
+  console.log(
+    `  Facebook: ${stats.fieldStats.socialFacebook.percentage}% (${stats.fieldStats.socialFacebook.filled}/${stats.total})`,
+  );
+  console.log();
+  console.log('Completeness Distribution:');
+  console.log(`  0-25%: ${stats.completenessDistribution['0-25%']} profiles`);
+  console.log(`  26-50%: ${stats.completenessDistribution['26-50%']} profiles`);
+  console.log(`  51-75%: ${stats.completenessDistribution['51-75%']} profiles`);
+  console.log(`  76-100%: ${stats.completenessDistribution['76-100%']} profiles`);
+  console.log();
+  console.log('Top 10 Cities:');
   Object.entries(stats.cityDistribution)
     .slice(0, 10)
     .forEach(([city, count]) => {
-      console.log(`  ${city}: ${count} profiles`)
-    })
-  console.log()
-  console.log('='.repeat(80))
-  console.log()
-  console.log(`✅ Export complete!`)
-  console.log(`   CSV: ${csvFilename}`)
-  console.log(`   Stats: ${statsFilename}`)
+      console.log(`  ${city}: ${count} profiles`);
+    });
+  console.log();
+  console.log('='.repeat(80));
+  console.log();
+  console.log(`✅ Export complete!`);
+  console.log(`   CSV: ${csvFilename}`);
+  console.log(`   Stats: ${statsFilename}`);
 }
 
 main()
-  .catch(error => {
-    console.error('Fatal error:', error)
-    process.exit(1)
+  .catch((error) => {
+    console.error('Fatal error:', error);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

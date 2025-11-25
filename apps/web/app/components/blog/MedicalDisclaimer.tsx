@@ -1,4 +1,4 @@
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle } from 'lucide-react';
 
 export function MedicalDisclaimer() {
   return (
@@ -16,16 +16,24 @@ export function MedicalDisclaimer() {
             Psychotherapeuten oder andere qualifizierte Gesundheitsdienstleister.
           </p>
           <p className="leading-relaxed">
-            Alle medizinischen Inhalte werden von lizenzierten Psychotherapeuten geprüft und basieren
-            auf wissenschaftlichen Leitlinien. Dennoch kann FindMyTherapy keine Haftung für die
-            Vollständigkeit, Richtigkeit und Aktualität der bereitgestellten Informationen übernehmen.
+            Alle medizinischen Inhalte werden von lizenzierten Psychotherapeuten geprüft und
+            basieren auf wissenschaftlichen Leitlinien. Dennoch kann FindMyTherapy keine Haftung für
+            die Vollständigkeit, Richtigkeit und Aktualität der bereitgestellten Informationen
+            übernehmen.
           </p>
           <p className="font-semibold text-neutral-900">
-            Im Notfall: Wählen Sie <a href="tel:144" className="underline">144</a> (Rettung)
-            oder <a href="tel:142" className="underline">142</a> (Telefonseelsorge, 24/7 kostenlos).
+            Im Notfall: Wählen Sie{' '}
+            <a href="tel:144" className="underline">
+              144
+            </a>{' '}
+            (Rettung) oder{' '}
+            <a href="tel:142" className="underline">
+              142
+            </a>{' '}
+            (Telefonseelsorge, 24/7 kostenlos).
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -34,6 +34,7 @@ pnpm test -- --coverage
 **Lokation:** `*.test.ts(x)` neben den Quellcode-Dateien
 
 **Verwendung:**
+
 ```bash
 # Alle Unit Tests
 pnpm --filter web test
@@ -46,12 +47,14 @@ pnpm --filter web test -- TriageFlow.test.tsx
 ```
 
 **Best Practices:**
+
 - Tests direkt neben der zu testenden Datei platzieren
 - Semantische Selektoren verwenden (`getByRole`, `getByLabelText`)
 - Accessibility prüfen
 - User-Interactions simulieren statt Implementierungsdetails zu testen
 
 **Beispiel:**
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -73,6 +76,7 @@ test('button handles click', async () => {
 **Lokation:** `apps/web/tests/integration/`
 
 **Verwendung:**
+
 ```bash
 # DB Integration Tests
 pnpm --filter web test -- tests/integration/db
@@ -82,35 +86,35 @@ pnpm --filter web test -- tests/integration/api
 ```
 
 **Setup:**
+
 - Benötigt PostgreSQL (lokal oder Docker)
 - Test-Datenbank wird automatisch bereinigt
 - Verwendet Test-Fixtures für konsistente Daten
 
 **Beispiel:**
+
 ```typescript
-import { getTestDbClient, setupDbTest, teardownDbTest } from '../../utils/db-test-client'
-import { createTestUser } from '../../fixtures/user.factory'
+import { getTestDbClient, setupDbTest, teardownDbTest } from '../../utils/db-test-client';
+import { createTestUser } from '../../fixtures/user.factory';
 
 describe('User Model', () => {
-  const prisma = getTestDbClient()
+  const prisma = getTestDbClient();
 
   beforeEach(async () => {
-    await setupDbTest() // Reinigt DB
-  })
+    await setupDbTest(); // Reinigt DB
+  });
 
   afterAll(async () => {
-    await teardownDbTest() // Disconnect
-  })
+    await teardownDbTest(); // Disconnect
+  });
 
   test('enforces unique email', async () => {
-    const userData = createTestUser({ email: 'test@example.com' })
-    await prisma.user.create({ data: userData })
+    const userData = createTestUser({ email: 'test@example.com' });
+    await prisma.user.create({ data: userData });
 
-    await expect(
-      prisma.user.create({ data: userData })
-    ).rejects.toThrow(/Unique constraint/)
-  })
-})
+    await expect(prisma.user.create({ data: userData })).rejects.toThrow(/Unique constraint/);
+  });
+});
 ```
 
 ### 3. E2E Tests (Playwright)
@@ -118,6 +122,7 @@ describe('User Model', () => {
 **Lokation:** `apps/web/tests/e2e/`
 
 **Verwendung:**
+
 ```bash
 # Alle E2E Tests
 pnpm e2e
@@ -133,24 +138,26 @@ pnpm e2e -- --debug
 ```
 
 **Best Practices:**
+
 - Semantische Selektoren verwenden (`getByRole`, `getByLabel`)
 - Auf `networkidle` warten
 - Page Object Model für Wiederverwendbarkeit
 - Test-Daten über Fixtures erstellen
 
 **Beispiel:**
+
 ```typescript
-import { test, expect } from '@playwright/test'
+import { test, expect } from '@playwright/test';
 
 test('user can login', async ({ page }) => {
-  await page.goto('/login')
+  await page.goto('/login');
 
-  await page.getByLabel('Email').fill('test@example.com')
-  await page.getByLabel('Password').fill('password123')
-  await page.getByRole('button', { name: 'Anmelden' }).click()
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('password123');
+  await page.getByRole('button', { name: 'Anmelden' }).click();
 
-  await expect(page).toHaveURL(/\/dashboard/)
-})
+  await expect(page).toHaveURL(/\/dashboard/);
+});
 ```
 
 ### 4. Visual Regression Tests (Playwright)
@@ -158,6 +165,7 @@ test('user can login', async ({ page }) => {
 **Lokation:** `apps/web/tests/visual/`
 
 **Verwendung:**
+
 ```bash
 # Visual Tests ausführen
 pnpm e2e -- tests/visual
@@ -167,21 +175,23 @@ pnpm e2e -- tests/visual --update-snapshots
 ```
 
 **Wann Baselines aktualisieren:**
+
 - Nach absichtlichen Design-Änderungen
 - Bei neuen Features mit UI-Komponenten
 - Immer in separatem PR mit "ui-changes" Label
 
 **Beispiel:**
+
 ```typescript
 test('homepage renders correctly', async ({ page }) => {
-  await page.goto('/')
-  await page.waitForLoadState('networkidle')
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
 
   await expect(page).toHaveScreenshot('homepage-desktop.png', {
     maxDiffPixels: 100,
-    fullPage: true
-  })
-})
+    fullPage: true,
+  });
+});
 ```
 
 ### 5. Accessibility Tests (Playwright + Axe)
@@ -189,12 +199,14 @@ test('homepage renders correctly', async ({ page }) => {
 **Lokation:** `apps/web/tests/e2e/docs-accessibility.spec.ts`
 
 **Verwendung:**
+
 ```bash
 # A11Y Tests
 pnpm e2e -- accessibility
 ```
 
 **Best Practices:**
+
 - Automatische Axe-Scans für alle wichtigen Pages
 - Keyboard-Navigation manuell testen
 - Focus-Management prüfen
@@ -207,17 +219,17 @@ pnpm e2e -- accessibility
 Test-Fixtures sind wiederverwendbare Factory-Funktionen für konsistente Test-Daten:
 
 ```typescript
-import { createTestUser, createTestTherapist } from '../../fixtures/user.factory'
-import { createLowRiskTriageSession } from '../../fixtures/triage.factory'
+import { createTestUser, createTestTherapist } from '../../fixtures/user.factory';
+import { createLowRiskTriageSession } from '../../fixtures/triage.factory';
 
 // User erstellen
-const user = await createTestUser({ email: 'custom@example.com' })
+const user = await createTestUser({ email: 'custom@example.com' });
 
 // Therapeut erstellen
-const therapist = await createTestTherapist()
+const therapist = await createTestTherapist();
 
 // Triage Session erstellen
-const triage = createLowRiskTriageSession(user.id)
+const triage = createLowRiskTriageSession(user.id);
 ```
 
 ### Test-DB Setup
@@ -345,44 +357,50 @@ open coverage/lcov-report/index.html
 ### Tests sind flaky
 
 **Ursachen:**
+
 - Race Conditions (nicht auf Async gewartet)
 - Shared State zwischen Tests
 - Timing-Abhängigkeiten
 
 **Lösungen:**
+
 ```typescript
 // ❌ BAD
-await page.click(button)
-await page.waitForTimeout(1000) // Vermeiden!
+await page.click(button);
+await page.waitForTimeout(1000); // Vermeiden!
 
 // ✅ GOOD
-await page.click(button)
-await page.waitForSelector('.success-message')
+await page.click(button);
+await page.waitForSelector('.success-message');
 ```
 
 ### Visual Tests schlagen fehl
 
 **Ursachen:**
+
 - Font-Rendering-Unterschiede
 - Animation-Timing
 - Browser-Version
 
 **Lösungen:**
+
 ```typescript
 await expect(page).toHaveScreenshot({
   maxDiffPixels: 100, // Toleranz erhöhen
-  animations: 'disabled' // Animationen deaktivieren
-})
+  animations: 'disabled', // Animationen deaktivieren
+});
 ```
 
 ### DB-Tests schlagen fehl
 
 **Ursachen:**
+
 - DB nicht gestartet
 - Migrations nicht ausgeführt
 - Test-Cleanup fehlt
 
 **Lösungen:**
+
 ```bash
 # DB-Status prüfen
 docker ps | grep postgres

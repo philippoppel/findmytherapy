@@ -80,9 +80,7 @@ export default function LeadsPage() {
                     {lead.phone && <div className="text-sm text-gray-500">{lead.phone}</div>}
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 max-w-md truncate">
-                      {lead.message}
-                    </div>
+                    <div className="text-sm text-gray-900 max-w-md truncate">{lead.message}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span

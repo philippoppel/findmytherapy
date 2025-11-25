@@ -29,9 +29,7 @@ export function MicrositeCourses({ courses, therapistName }: MicrositeCoursesPro
   return (
     <section className="bg-white rounded-lg shadow-sm p-8">
       <h2 className="text-3xl font-semibold mb-6 text-gray-900">Online-Kurse</h2>
-      <p className="text-gray-600 mb-6">
-        {therapistName} bietet folgende Online-Kurse an:
-      </p>
+      <p className="text-gray-600 mb-6">{therapistName} bietet folgende Online-Kurse an:</p>
 
       <div className="space-y-4">
         {courses.map((course) => (

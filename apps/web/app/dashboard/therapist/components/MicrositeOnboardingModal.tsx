@@ -52,7 +52,9 @@ export function MicrositeOnboardingModal() {
             </div>
             <div>
               <h2 className="text-2xl font-bold">Willkommen bei FindMyTherapy!</h2>
-              <p className="text-primary-100 text-sm">Ihre professionelle Online-Präsenz ist bereit</p>
+              <p className="text-primary-100 text-sm">
+                Ihre professionelle Online-Präsenz ist bereit
+              </p>
             </div>
           </div>
         </div>
@@ -65,8 +67,8 @@ export function MicrositeOnboardingModal() {
             </h3>
             <p className="text-gray-600 mb-4">
               Als verifizierter Therapeut erhalten Sie automatisch eine professionelle Website –
-              ohne Kosten, ohne technisches Know-how. Ihre Microsite hilft Ihnen, online gefunden zu werden
-              und neue Klient:innen zu gewinnen.
+              ohne Kosten, ohne technisches Know-how. Ihre Microsite hilft Ihnen, online gefunden zu
+              werden und neue Klient:innen zu gewinnen.
             </p>
           </div>
 
@@ -75,9 +77,7 @@ export function MicrositeOnboardingModal() {
             <div className="p-4 bg-primary-50 rounded-lg">
               <CheckCircle className="h-6 w-6 text-primary-600 mb-2" />
               <h4 className="font-medium text-gray-900 mb-1">Professionelle Website</h4>
-              <p className="text-sm text-gray-600">
-                Automatisch generiert aus Ihrem Profil
-              </p>
+              <p className="text-sm text-gray-600">Automatisch generiert aus Ihrem Profil</p>
             </div>
             <div className="p-4 bg-primary-100 rounded-lg">
               <CheckCircle className="h-6 w-6 text-primary-700 mb-2" />
@@ -89,17 +89,13 @@ export function MicrositeOnboardingModal() {
             <div className="p-4 bg-primary-50 rounded-lg">
               <CheckCircle className="h-6 w-6 text-primary-600 mb-2" />
               <h4 className="font-medium text-gray-900 mb-1">Suchmaschinen-Optimierung</h4>
-              <p className="text-sm text-gray-600">
-                Werden Sie automatisch in Google gefunden
-              </p>
+              <p className="text-sm text-gray-600">Werden Sie automatisch in Google gefunden</p>
             </div>
           </div>
 
           {/* Steps */}
           <div className="bg-gray-50 rounded-lg p-5 mb-6">
-            <h4 className="font-semibold text-gray-900 mb-4">
-              In 3 einfachen Schritten starten:
-            </h4>
+            <h4 className="font-semibold text-gray-900 mb-4">In 3 einfachen Schritten starten:</h4>
             <ol className="space-y-3">
               <li className="flex gap-3">
                 <span className="flex-shrink-0 flex items-center justify-center w-6 h-6 bg-primary-600 text-white rounded-full text-sm font-medium">

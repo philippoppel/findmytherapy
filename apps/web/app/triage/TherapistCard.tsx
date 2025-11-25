@@ -1,49 +1,65 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ChevronDown, ChevronUp, Star, User, MapPin, Clock, Globe, Calendar, CheckCircle } from 'lucide-react'
-import { Button } from '@mental-health/ui'
-import { AvailabilityBadge } from '@/app/components/AvailabilityBadge'
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  ChevronDown,
+  ChevronUp,
+  Star,
+  User,
+  MapPin,
+  Clock,
+  Globe,
+  Calendar,
+  CheckCircle,
+} from 'lucide-react';
+import { Button } from '@mental-health/ui';
+import { AvailabilityBadge } from '@/app/components/AvailabilityBadge';
 
 type TherapistRecommendation = {
-  id: string
-  name: string
-  title: string
-  headline?: string
-  focus: string[]
-  availability: string
-  location: string
-  rating: number
-  reviews: number
-  status: string
-  formatTags: Array<'online' | 'praesenz' | 'hybrid'>
-  highlights: string[]
-  acceptingClients?: boolean
-  services?: string[]
-  responseTime?: string
-  yearsExperience?: number
-  languages?: string[]
-  image?: string | null
-}
+  id: string;
+  name: string;
+  title: string;
+  headline?: string;
+  focus: string[];
+  availability: string;
+  location: string;
+  rating: number;
+  reviews: number;
+  status: string;
+  formatTags: Array<'online' | 'praesenz' | 'hybrid'>;
+  highlights: string[];
+  acceptingClients?: boolean;
+  services?: string[];
+  responseTime?: string;
+  yearsExperience?: number;
+  languages?: string[];
+  image?: string | null;
+};
 
 type TherapistCardProps = {
-  therapist: TherapistRecommendation
-  index: number
-  embedded?: boolean
-  isSelected?: boolean
-  onSelect?: (id: string) => void
-}
+  therapist: TherapistRecommendation;
+  index: number;
+  embedded?: boolean;
+  isSelected?: boolean;
+  onSelect?: (id: string) => void;
+};
 
-export function TherapistCard({ therapist, index, embedded = false, isSelected = false, onSelect }: TherapistCardProps) {
-  const [showDetails, setShowDetails] = useState(false)
+export function TherapistCard({
+  therapist,
+  index,
+  embedded = false,
+  isSelected = false,
+  onSelect,
+}: TherapistCardProps) {
+  const [showDetails, setShowDetails] = useState(false);
 
   const renderFormatTag = (tag: 'online' | 'praesenz' | 'hybrid') => {
-    if (tag === 'online') return 'Online'
-    if (tag === 'praesenz') return 'Vor Ort'
-    return 'Hybrid'
-  }
+    if (tag === 'online') return 'Online';
+    if (tag === 'praesenz') return 'Vor Ort';
+    return 'Hybrid';
+  };
 
   return (
     <article
@@ -96,20 +112,21 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
           <div className="space-y-2 text-center md:text-left">
             <div className="flex flex-wrap items-center justify-center gap-2 md:justify-start">
               <h3 className="text-xl font-semibold text-default">{therapist.name}</h3>
-              <AvailabilityBadge
-                acceptingClients={therapist.acceptingClients}
-                variant="compact"
-              />
+              <AvailabilityBadge acceptingClients={therapist.acceptingClients} variant="compact" />
             </div>
             <p className="text-sm text-muted">{therapist.title}</p>
-            {therapist.headline ? <p className="text-sm text-default">{therapist.headline}</p> : null}
+            {therapist.headline ? (
+              <p className="text-sm text-default">{therapist.headline}</p>
+            ) : null}
           </div>
 
           {therapist.rating > 0 && (
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
               <Star className="h-4 w-4 fill-amber-400 text-amber-500" />
               {therapist.rating.toFixed(1)}
-              {therapist.reviews > 0 ? <span className="text-amber-500">({therapist.reviews})</span> : null}
+              {therapist.reviews > 0 ? (
+                <span className="text-amber-500">({therapist.reviews})</span>
+              ) : null}
             </div>
           )}
         </header>
@@ -210,7 +227,10 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
                 </h5>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {therapist.focus.map((item) => (
-                    <span key={item} className="rounded-full border border-divider bg-white px-3 py-1 text-xs text-default">
+                    <span
+                      key={item}
+                      className="rounded-full border border-divider bg-white px-3 py-1 text-xs text-default"
+                    >
                       {item}
                     </span>
                   ))}
@@ -227,7 +247,9 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
               {therapist.yearsExperience && (
                 <div>
                   <h5 className="text-sm font-semibold text-default">Berufserfahrung</h5>
-                  <p className="mt-1 text-xs text-muted">{therapist.yearsExperience} Jahre praktische Erfahrung</p>
+                  <p className="mt-1 text-xs text-muted">
+                    {therapist.yearsExperience} Jahre praktische Erfahrung
+                  </p>
                 </div>
               )}
 
@@ -255,7 +277,10 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
                 </h5>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {therapist.formatTags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-800">
+                    <span
+                      key={tag}
+                      className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-800"
+                    >
                       {renderFormatTag(tag)}
                     </span>
                   ))}
@@ -278,5 +303,5 @@ export function TherapistCard({ therapist, index, embedded = false, isSelected =
         </div>
       </div>
     </article>
-  )
+  );
 }

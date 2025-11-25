@@ -1,64 +1,68 @@
-'use client'
+'use client';
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
-import { Search, X, Calendar, Clock, ArrowRight, Filter } from 'lucide-react'
-import type { BlogPost } from '../../../lib/blogData'
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { Search, X, Calendar, Clock, ArrowRight, Filter } from 'lucide-react';
+import type { BlogPost } from '../../../lib/blogData';
 
 interface BlogSearchProps {
-  posts: BlogPost[]
-  categories: string[]
+  posts: BlogPost[];
+  categories: string[];
 }
 
-const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' })
+const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' });
 
 export function BlogSearch({ posts, categories }: BlogSearchProps) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Sort posts by date (newest first) and filter
   const filteredPosts = useMemo(() => {
     // First sort by date
     const sorted = [...posts].sort((a, b) => {
-      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    })
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+    });
 
     // Then filter
     return sorted.filter((post) => {
       // Category filter
       if (selectedCategory && post.category !== selectedCategory) {
-        return false
+        return false;
       }
 
       // Search filter
       if (searchQuery) {
-        const query = searchQuery.toLowerCase()
-        const matchesTitle = post.title.toLowerCase().includes(query)
-        const matchesExcerpt = post.excerpt.toLowerCase().includes(query)
-        const matchesTags = post.tags.some((tag) => tag.toLowerCase().includes(query))
-        const matchesKeywords = post.keywords.some((keyword) => keyword.toLowerCase().includes(query))
-        const matchesCategory = post.category.toLowerCase().includes(query)
+        const query = searchQuery.toLowerCase();
+        const matchesTitle = post.title.toLowerCase().includes(query);
+        const matchesExcerpt = post.excerpt.toLowerCase().includes(query);
+        const matchesTags = post.tags.some((tag) => tag.toLowerCase().includes(query));
+        const matchesKeywords = post.keywords.some((keyword) =>
+          keyword.toLowerCase().includes(query),
+        );
+        const matchesCategory = post.category.toLowerCase().includes(query);
 
-        return matchesTitle || matchesExcerpt || matchesTags || matchesKeywords || matchesCategory
+        return matchesTitle || matchesExcerpt || matchesTags || matchesKeywords || matchesCategory;
       }
 
-      return true
-    })
-  }, [posts, searchQuery, selectedCategory])
+      return true;
+    });
+  }, [posts, searchQuery, selectedCategory]);
 
   const clearFilters = () => {
-    setSearchQuery('')
-    setSelectedCategory(null)
-  }
+    setSearchQuery('');
+    setSelectedCategory(null);
+  };
 
-  const hasActiveFilters = searchQuery || selectedCategory
+  const hasActiveFilters = searchQuery || selectedCategory;
 
   return (
     <section aria-labelledby="all-articles" className="space-y-8">
       <div className="space-y-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">Alle Artikel</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">
+            Alle Artikel
+          </p>
           <h2 id="all-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
             Durchsuche unsere Beiträge
           </h2>
@@ -68,7 +72,10 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
         <div className="space-y-4">
           {/* Search Input */}
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" aria-hidden />
+            <Search
+              className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400"
+              aria-hidden
+            />
             <input
               type="search"
               placeholder="Suche nach Titel, Thema oder Stichwort..."
@@ -98,7 +105,10 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
               Filter {selectedCategory && '(1)'}
             </button>
             {hasActiveFilters && (
-              <button onClick={clearFilters} className="text-sm font-medium text-neutral-500 hover:text-neutral-700">
+              <button
+                onClick={clearFilters}
+                className="text-sm font-medium text-neutral-500 hover:text-neutral-700"
+              >
                 Filter zurücksetzen
               </button>
             )}
@@ -131,7 +141,9 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
+                  onClick={() =>
+                    setSelectedCategory(selectedCategory === category ? null : category)
+                  }
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                     selectedCategory === category
                       ? 'bg-primary-900 text-white shadow-md'
@@ -170,7 +182,9 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
             >
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-neutral-500">
-                  <span className="rounded-full bg-primary-50 px-3 py-1 text-primary-900">{post.category}</span>
+                  <span className="rounded-full bg-primary-50 px-3 py-1 text-primary-900">
+                    {post.category}
+                  </span>
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5" aria-hidden />
                     {dateFormatter.format(new Date(post.publishedAt))}
@@ -181,7 +195,10 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
                   </span>
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900">
-                  <Link href={`/blog/${post.slug}`} className="transition group-hover:text-primary-700">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="transition group-hover:text-primary-700"
+                  >
                     {post.title}
                   </Link>
                 </h3>
@@ -193,7 +210,10 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
                   className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
                 >
                   Weiterlesen
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden />
+                  <ArrowRight
+                    className="h-4 w-4 transition group-hover:translate-x-1"
+                    aria-hidden
+                  />
                 </Link>
               </div>
             </article>
@@ -217,5 +237,5 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
         </div>
       )}
     </section>
-  )
+  );
 }

@@ -300,35 +300,42 @@ Wir bemühen uns, alle Anfragen innerhalb von 30 Tagen zu beantworten.`,
 export default function PrivacyPage() {
   return (
     <div className="marketing-theme bg-surface text-default">
-    <main className="mx-auto max-w-3xl space-y-10 px-4 py-16 sm:px-6 lg:px-8">
-      <header className="space-y-3">
-        <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">Datenschutzerklärung</h1>
-        <p className="text-sm text-neutral-700">
-          Verantwortlich: FindMyTherapy GmbH, Wien, Österreich. Stand: {new Date().getFullYear()}.
-        </p>
-      </header>
+      <main className="mx-auto max-w-3xl space-y-10 px-4 py-16 sm:px-6 lg:px-8">
+        <header className="space-y-3">
+          <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">Datenschutzerklärung</h1>
+          <p className="text-sm text-neutral-700">
+            Verantwortlich: FindMyTherapy GmbH, Wien, Österreich. Stand: {new Date().getFullYear()}.
+          </p>
+        </header>
 
-      <nav aria-label="Abschnittsnavigation" className="rounded-2xl border border-divider bg-surface-1 p-4 text-sm text-neutral-700">
-        <ul className="space-y-2">
+        <nav
+          aria-label="Abschnittsnavigation"
+          className="rounded-2xl border border-divider bg-surface-1 p-4 text-sm text-neutral-700"
+        >
+          <ul className="space-y-2">
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a className="text-link hover:underline" href={`#${section.id}`}>
+                  {section.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <section className="space-y-8">
           {sections.map((section) => (
-            <li key={section.id}>
-              <a className="text-link hover:underline" href={`#${section.id}`}>
-                {section.title}
-              </a>
-            </li>
+            <article
+              key={section.id}
+              id={section.id}
+              className="space-y-2 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft"
+            >
+              <h2 className="text-xl font-semibold text-neutral-950">{section.title}</h2>
+              <p className="text-sm leading-relaxed text-neutral-800">{section.body}</p>
+            </article>
           ))}
-        </ul>
-      </nav>
-
-      <section className="space-y-8">
-        {sections.map((section) => (
-          <article key={section.id} id={section.id} className="space-y-2 rounded-2xl border border-divider bg-surface-1 p-6 shadow-soft">
-            <h2 className="text-xl font-semibold text-neutral-950">{section.title}</h2>
-            <p className="text-sm leading-relaxed text-neutral-800">{section.body}</p>
-          </article>
-        ))}
-      </section>
-    </main>
+        </section>
+      </main>
     </div>
   );
 }

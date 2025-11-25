@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useCallback } from 'react'
+import { useCallback } from 'react';
 
 /**
  * Provides a click handler for in-page anchor links that scrolls smoothly without
@@ -10,31 +10,31 @@ export function useAnchorNavigation(offset = 96) {
   return useCallback(
     (event: React.MouseEvent<HTMLElement>, hash?: string) => {
       if (!hash || !hash.startsWith('#')) {
-        return
+        return;
       }
 
       if (typeof window === 'undefined') {
-        return
+        return;
       }
 
-      event.preventDefault()
+      event.preventDefault();
 
-      const target = document.querySelector(hash)
+      const target = document.querySelector(hash);
       if (!target) {
-        return
+        return;
       }
 
-      const yPosition = target.getBoundingClientRect().top + window.scrollY - offset
+      const yPosition = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({
         top: yPosition < 0 ? 0 : yPosition,
         behavior: 'smooth',
-      })
+      });
 
       if (window.location.hash) {
-        const { pathname, search } = window.location
-        window.history.replaceState(null, '', `${pathname}${search}`)
+        const { pathname, search } = window.location;
+        window.history.replaceState(null, '', `${pathname}${search}`);
       }
     },
-    [offset]
-  )
+    [offset],
+  );
 }

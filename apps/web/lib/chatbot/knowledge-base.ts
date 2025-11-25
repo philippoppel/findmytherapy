@@ -4,12 +4,12 @@
  */
 
 export interface KnowledgeBaseEntry {
-  id: string
-  title: string
-  url: string
-  summary: string
-  tags: string[]
-  content: string
+  id: string;
+  title: string;
+  url: string;
+  summary: string;
+  tags: string[];
+  content: string;
 }
 
 export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
@@ -519,4 +519,4 @@ Feedback erwünscht! Kontakt: /contact oder direkt an team@findmytherapy.com
 ✅ Open Science: Wir teilen unsere Methoden und Validierungsstudien
 ✅ Advisory Board mit klinischen Expert:innen (in Aufbau)`,
   },
-]
+];

@@ -16,7 +16,8 @@ const testTherapists = [
     priceMin: 9000, // €90
     priceMax: 12000, // €120
     acceptingClients: true,
-    approachSummary: 'Verhaltenstherapeutischer Ansatz mit Schwerpunkt auf kognitiver Umstrukturierung',
+    approachSummary:
+      'Verhaltenstherapeutischer Ansatz mit Schwerpunkt auf kognitiver Umstrukturierung',
     headline: 'Spezialistin für Angst und Depression',
   },
   {

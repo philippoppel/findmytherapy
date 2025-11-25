@@ -19,6 +19,7 @@ node scripts/optimize-team-images.js
 ```
 
 Das Script wird:
+
 - Alle Team-Bilder in `apps/web/public/images/team/` verarbeiten
 - Optimierte Versionen in `apps/web/public/images/team/optimized/` speichern
 - Automatisch die beste Qualität finden, um ~100KB zu erreichen
@@ -86,6 +87,7 @@ mogrify -quality 80 -strip *.jpg *.jpeg
 ## Erwartete Ergebnisse
 
 ### Vorher:
+
 - `gregorstudlar.jpg`: 411KB
 - `thomaskaufmann.jpeg`: 341KB
 - `philippoppel.jpeg`: 387KB
@@ -93,6 +95,7 @@ mogrify -quality 80 -strip *.jpg *.jpeg
 - **Gesamt: ~1.2MB**
 
 ### Nachher (Ziel):
+
 - `gregorstudlar.jpg`: ~100KB
 - `thomaskaufmann.jpeg`: ~100KB
 - `philippoppel.jpeg`: ~100KB
@@ -100,6 +103,7 @@ mogrify -quality 80 -strip *.jpg *.jpeg
 - **Gesamt: ~376KB**
 
 ### Performance-Gewinn:
+
 - **~68% kleiner** (850KB gespart)
 - **Schnellere Ladezeiten** auf Mobile
 - **Bessere SEO-Scores** (Page Speed)
@@ -140,16 +144,13 @@ done
 Dann in den Image-Komponenten WebP mit JPEG Fallback verwenden:
 
 ```tsx
-<Image
-  src="/images/team/gregorstudlar.webp"
-  fallback="/images/team/gregorstudlar.jpg"
-  alt="..."
-/>
+<Image src="/images/team/gregorstudlar.webp" fallback="/images/team/gregorstudlar.jpg" alt="..." />
 ```
 
 ### Next.js Image Optimization
 
 Next.js optimiert Bilder automatisch beim Serving. Die ursprüngliche Dateigröße zu reduzieren ist trotzdem wichtig für:
+
 - Schnelleres Deployment
 - Geringere Speichernutzung
 - Bessere Caching-Effizienz

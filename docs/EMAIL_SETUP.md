@@ -24,6 +24,7 @@ Die App nutzt **Resend** für E-Mail-Versand in Production auf Vercel. Resend is
 #### Option B: Sandbox Domain (für Testing)
 
 Resend bietet eine Sandbox-Domain für Tests:
+
 - Du kannst sofort loslegen
 - E-Mails werden nur an verifizierte E-Mail-Adressen gesendet
 - Gut für Development/Staging
@@ -45,6 +46,7 @@ EMAIL_FROM=noreply@findmytherapy.net  # oder deine eigene Domain
 ```
 
 **Wichtig:**
+
 - Setze diese für **Production** Environment
 - Optional auch für **Preview** wenn du E-Mails in Preview-Deployments testen willst
 
@@ -72,6 +74,7 @@ docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
 ```
 
 MailHog läuft auf:
+
 - SMTP: `localhost:1025`
 - Web UI: http://localhost:8025
 
@@ -90,16 +93,19 @@ EMAIL_FROM=noreply@findmytherapy.test
 Die App sendet folgende E-Mails:
 
 ### 1. Client Welcome Email
+
 - **Trigger:** Klient registriert sich
 - **Template:** `lib/email.ts:sendClientWelcomeEmail`
 - **Enthält:** Willkommen, Login-Link, nächste Schritte
 
 ### 2. Therapist Welcome Email
+
 - **Trigger:** Therapeut registriert sich
 - **Template:** `lib/email.ts:sendTherapistWelcomeEmail`
 - **Enthält:** Willkommen, Profil-Status, Dashboard-Link
 
 ### 3. Magic Link Email
+
 - **Trigger:** User fordert Login-Link an
 - **Template:** `lib/email.ts:sendMagicLinkEmail`
 - **Enthält:** Einmal-Login-Link
@@ -121,6 +127,7 @@ Die App sendet folgende E-Mails:
 ### Rate Limits
 
 **Resend Free-Tier:**
+
 - 100 E-Mails/Tag
 - 3.000 E-Mails/Monat
 - Bei Überschreitung: Upgrade auf bezahlten Plan
@@ -128,12 +135,15 @@ Die App sendet folgende E-Mails:
 ## Kosten
 
 ### Resend Pricing
+
 - **Free:** 3.000 E-Mails/Monat (gut für Start)
 - **Pro:** $20/Monat für 50.000 E-Mails
 - **Business:** Ab $80/Monat
 
 ### Alternative: SendGrid
+
 Falls Resend nicht passt, kannst du auch SendGrid verwenden:
+
 - Größerer Free-Tier (100 E-Mails/Tag)
 - Mehr Features (Marketing, Analytics)
 - Komplexer zu konfigurieren

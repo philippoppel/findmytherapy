@@ -10,6 +10,7 @@ Wenn du Code-Änderungen machst (egal ob manuell oder mit Claude/KI-Tools),
 ## 🔴 DATENBANK-ÄNDERUNGEN (Prisma Schema)
 
 ### ❌ NIEMALS NUR DIESE SCHRITTE:
+
 ```bash
 # ❌ FALSCH - Schema ändern und direkt committen
 # Bearbeite apps/web/prisma/schema.prisma
@@ -56,6 +57,7 @@ git push
 5. ❌ Committe NIEMALS Schema-Änderungen ohne Production-DB-Update
 
 **Warum ist das so wichtig?**
+
 - Vercel verwendet eine ANDERE Datenbank als die lokale Entwicklung
 - Prisma generiert den Client beim Build aus dem Schema
 - Wenn die Production-Datenbank nicht das Schema hat, bricht die gesamte API
@@ -68,11 +70,11 @@ git push
 
 **Es gibt NICHT eine einzige DATABASE_URL!**
 
-| Umgebung | DATABASE_URL |
-|----------|--------------|
-| **Lokal** | `postgresql://postgres:password@localhost:5432/mental_health_dev` |
+| Umgebung              | DATABASE_URL                                                          |
+| --------------------- | --------------------------------------------------------------------- |
+| **Lokal**             | `postgresql://postgres:password@localhost:5432/mental_health_dev`     |
 | **Vercel Production** | `postgres://[hash]:sk_xxx@db.prisma.io:5432/postgres?sslmode=require` |
-| **Vercel Preview** | Möglicherweise eine andere! |
+| **Vercel Preview**    | Möglicherweise eine andere!                                           |
 
 ### ✅ IMMER die richtige URL verwenden:
 
@@ -87,6 +89,7 @@ cat .env.vercel.production | grep DATABASE_URL
 ```
 
 ### ❌ NIEMALS annehmen:
+
 - ❌ "Die lokale DB ist die gleiche wie Production"
 - ❌ "Ein prisma db push lokal reicht"
 - ❌ "Vercel wird das Schema automatisch aktualisieren"
@@ -193,6 +196,7 @@ pnpm db:verify-production
 ## 🔒 Für Code-Reviews
 
 Jeder Pull Request mit Prisma-Schema-Änderungen **MUSS**:
+
 - [ ] `pnpm db:verify-production` ausgeführt haben
 - [ ] Screenshot vom `/api/health` Endpoint nach dem Update enthalten
 - [ ] Bestätigung dass Production-DB aktualisiert wurde

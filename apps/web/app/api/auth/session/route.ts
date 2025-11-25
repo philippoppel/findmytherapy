@@ -4,9 +4,10 @@ import { jwtDecrypt } from 'jose';
 
 export async function GET() {
   try {
-    const cookieName = process.env.NODE_ENV === 'production'
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token';
+    const cookieName =
+      process.env.NODE_ENV === 'production'
+        ? '__Secure-next-auth.session-token'
+        : 'next-auth.session-token';
 
     const cookieStore = await cookies();
     const token = cookieStore.get(cookieName)?.value;

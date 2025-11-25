@@ -4,7 +4,7 @@ import { CheckCircle2, TrendingUp, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const fetchListingInfo = async (userId: string) => {
   const profile = await prisma.therapistProfile.findUnique({
@@ -42,15 +42,19 @@ export default async function ListingPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-neutral-950">Ihr aktueller Plan</h2>
-              <p className="text-sm text-muted mt-1">Status und Details Ihres Listing-Abonnements</p>
+              <p className="text-sm text-muted mt-1">
+                Status und Details Ihres Listing-Abonnements
+              </p>
             </div>
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${
-              listing.status === 'ACTIVE'
-                ? 'bg-success-50 text-success-700'
-                : listing.status === 'PAST_DUE'
-                ? 'bg-warning-50 text-warning-700'
-                : 'bg-neutral-100 text-neutral-700'
-            }`}>
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${
+                listing.status === 'ACTIVE'
+                  ? 'bg-success-50 text-success-700'
+                  : listing.status === 'PAST_DUE'
+                    ? 'bg-warning-50 text-warning-700'
+                    : 'bg-neutral-100 text-neutral-700'
+              }`}
+            >
               {listing.status === 'ACTIVE' ? (
                 <>
                   <CheckCircle2 className="h-4 w-4" />
@@ -88,11 +92,7 @@ export default async function ListingPage() {
               <PlanCard
                 name="FREE"
                 price="Kostenlos"
-                features={[
-                  'Basis-Profil',
-                  'Standard-Sichtbarkeit',
-                  'E-Mail-Benachrichtigungen',
-                ]}
+                features={['Basis-Profil', 'Standard-Sichtbarkeit', 'E-Mail-Benachrichtigungen']}
                 isCurrent={listing.plan === 'FREE'}
               />
               <PlanCard
@@ -124,8 +124,8 @@ export default async function ListingPage() {
 
           <div className="bg-info-50 border border-info-200 rounded-lg p-4">
             <p className="text-sm text-info-900">
-              <strong>Hinweis:</strong> Änderungen am Abonnement nehmen wir derzeit gemeinsam mit Ihnen vor. In Kürze können
-              Sie hier direkt upgraden oder downgraden.
+              <strong>Hinweis:</strong> Änderungen am Abonnement nehmen wir derzeit gemeinsam mit
+              Ihnen vor. In Kürze können Sie hier direkt upgraden oder downgraden.
             </p>
           </div>
         </div>
@@ -134,7 +134,8 @@ export default async function ListingPage() {
           <TrendingUp className="h-16 w-16 text-neutral-400 mx-auto" />
           <h2 className="text-xl font-semibold text-neutral-950">Noch kein Listing aktiv</h2>
           <p className="text-neutral-700 max-w-md mx-auto">
-            Sie haben noch kein Listing-Abonnement. Aktivieren Sie ein Listing, um auf der Plattform sichtbar zu sein.
+            Sie haben noch kein Listing-Abonnement. Aktivieren Sie ein Listing, um auf der Plattform
+            sichtbar zu sein.
           </p>
           <button
             className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-hover transition-colors"
@@ -172,13 +173,15 @@ type PlanCardProps = {
 
 function PlanCard({ name, price, features, isCurrent, isRecommended }: PlanCardProps) {
   return (
-    <div className={`relative rounded-lg border p-6 ${
-      isCurrent
-        ? 'border-primary bg-primary-50'
-        : isRecommended
-        ? 'border-accent bg-accent-50'
-        : 'border-divider bg-white'
-    }`}>
+    <div
+      className={`relative rounded-lg border p-6 ${
+        isCurrent
+          ? 'border-primary bg-primary-50'
+          : isRecommended
+            ? 'border-accent bg-accent-50'
+            : 'border-divider bg-white'
+      }`}
+    >
       {isRecommended && !isCurrent && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
           <span className="inline-flex items-center px-3 py-1 rounded-full bg-accent text-white text-xs font-semibold uppercase tracking-wide">

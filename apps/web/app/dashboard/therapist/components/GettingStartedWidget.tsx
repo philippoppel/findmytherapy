@@ -17,7 +17,7 @@ const WIDGET_DISMISSED_KEY = 'getting-started-widget-dismissed';
 export function GettingStartedWidget({
   profileComplete,
   micrositePublished,
-  hasLeads
+  hasLeads,
 }: {
   profileComplete: boolean;
   micrositePublished: boolean;
@@ -54,7 +54,7 @@ export function GettingStartedWidget({
     },
   ];
 
-  const completedCount = checklist.filter(item => item.completed).length;
+  const completedCount = checklist.filter((item) => item.completed).length;
   const totalCount = checklist.length;
   const progress = Math.round((completedCount / totalCount) * 100);
   const isComplete = completedCount === totalCount;
@@ -85,11 +85,10 @@ export function GettingStartedWidget({
         </div>
 
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
-            Starten Sie durch!
-          </h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Starten Sie durch!</h3>
           <p className="text-gray-600 mb-4">
-            Vervollständigen Sie Ihre Einrichtung, um das volle Potenzial Ihrer Microsite auszuschöpfen.
+            Vervollständigen Sie Ihre Einrichtung, um das volle Potenzial Ihrer Microsite
+            auszuschöpfen.
           </p>
 
           {/* Progress Bar */}
@@ -114,9 +113,7 @@ export function GettingStartedWidget({
               <div
                 key={item.id}
                 className={`flex items-start gap-3 p-3 rounded-lg transition ${
-                  item.completed
-                    ? 'bg-white/50'
-                    : 'bg-white hover:shadow-md'
+                  item.completed ? 'bg-white/50' : 'bg-white hover:shadow-md'
                 }`}
               >
                 <div className="flex-shrink-0 mt-0.5">
@@ -128,12 +125,12 @@ export function GettingStartedWidget({
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className={`font-medium ${item.completed ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                  <div
+                    className={`font-medium ${item.completed ? 'text-gray-500 line-through' : 'text-gray-900'}`}
+                  >
                     {item.label}
                   </div>
-                  <div className="text-sm text-gray-600 mt-0.5">
-                    {item.description}
-                  </div>
+                  <div className="text-sm text-gray-600 mt-0.5">{item.description}</div>
                 </div>
 
                 {!item.completed && item.link && (

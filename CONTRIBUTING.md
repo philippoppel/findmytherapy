@@ -14,6 +14,7 @@ Danke für dein Interesse an FindMyTherapy! Dieses Dokument beschreibt unseren E
 ## Setup
 
 ### Voraussetzungen
+
 - Node.js 20.x
 - pnpm 9.x
 - Docker & Docker Compose
@@ -51,6 +52,7 @@ cp .env.example .env
 ```
 
 Wichtige Variablen:
+
 - `DATABASE_URL`: PostgreSQL Connection String
 - `NEXTAUTH_URL`: App-URL (lokal: `http://localhost:3000`)
 - `NEXTAUTH_SECRET`: Secret für Session-Verschlüsselung
@@ -97,9 +99,9 @@ git push origin feature/my-new-feature
 ```typescript
 // ✅ Gut
 interface User {
-  id: string
-  email: string
-  role: UserRole
+  id: string;
+  email: string;
+  role: UserRole;
 }
 
 // ❌ Schlecht
@@ -192,13 +194,13 @@ export function Counter() {
 
 ```typescript
 // user.test.ts
-import { calculateAge } from './user'
+import { calculateAge } from './user';
 
 describe('calculateAge', () => {
   it('should calculate age correctly', () => {
-    expect(calculateAge('1990-01-01')).toBe(34)
-  })
-})
+    expect(calculateAge('1990-01-01')).toBe(34);
+  });
+});
 ```
 
 ### E2E Tests (Playwright)
@@ -210,11 +212,11 @@ describe('calculateAge', () => {
 ```typescript
 // triage.spec.ts
 test('complete triage flow', async ({ page }) => {
-  await page.goto('/triage')
-  await page.click('text=Start')
+  await page.goto('/triage');
+  await page.click('text=Start');
   // ... weitere Steps
-  await expect(page).toHaveURL('/triage/results')
-})
+  await expect(page).toHaveURL('/triage/results');
+});
 ```
 
 ### Test-Befehle
@@ -241,6 +243,7 @@ Folge [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 **Types:**
+
 - `feat`: Neues Feature
 - `fix`: Bugfix
 - `docs`: Dokumentation
@@ -285,15 +288,18 @@ Husky führt automatisch vor jedem Commit aus:
 
 ```markdown
 ## Beschreibung
+
 Kurze Beschreibung der Änderungen
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Tests added/updated
 - [ ] Documentation updated
@@ -323,11 +329,13 @@ Bei jedem Push/PR laufen automatisch:
 ### Deployment
 
 **Production (main):**
+
 - Automatisch bei Merge in `main`
 - Vercel deployed automatisch
 - Domain: `https://findmytherapy.net`
 
 **Preview (PRs):**
+
 - Automatisch für jeden PR
 - Eigene Preview-URL
 - Ideal für Testing & Reviews

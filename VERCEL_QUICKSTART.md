@@ -101,6 +101,7 @@ S3_SECRET_ACCESS_KEY=dummy
 Klicke auf **"Deploy"**
 
 Vercel wird jetzt:
+
 - ✅ Code von GitHub holen
 - ✅ Dependencies installieren
 - ✅ Build durchführen
@@ -157,11 +158,11 @@ rm .env.production
 
 ### Test-Accounts (nach Seed):
 
-| Rolle | Email | Passwort |
-|-------|-------|----------|
-| Admin | admin@mental-health-platform.com | Admin123! |
-| Client | demo.client@example.com | Client123! |
-| Therapeut | dr.mueller@example.com | Therapist123! |
+| Rolle     | Email                            | Passwort      |
+| --------- | -------------------------------- | ------------- |
+| Admin     | admin@mental-health-platform.com | Admin123!     |
+| Client    | demo.client@example.com          | Client123!    |
+| Therapeut | dr.mueller@example.com           | Therapist123! |
 
 ### Test-Checkliste:
 
@@ -219,6 +220,7 @@ Für funktionierende Emails:
 ### Build schlägt fehl?
 
 **Fehler**: "Cannot find module"
+
 ```bash
 # Lösung: Stelle sicher dass vercel-build Script existiert
 # In package.json sollte sein:
@@ -228,6 +230,7 @@ Für funktionierende Emails:
 ### Database Connection Error?
 
 **Fehler**: "Can't reach database"
+
 ```bash
 # Lösung 1: Füge ?sslmode=require ans Ende der DATABASE_URL
 DATABASE_URL=postgresql://...?sslmode=require
@@ -238,6 +241,7 @@ DATABASE_URL=postgresql://...?sslmode=require
 ### NextAuth Error?
 
 **Fehler**: "Missing secret"
+
 ```bash
 # Generiere neues Secret:
 openssl rand -base64 32
@@ -265,10 +269,11 @@ pnpm add @vercel/analytics --filter web
 ```
 
 In `apps/web/app/layout.tsx`:
+
 ```tsx
 import { Analytics } from '@vercel/analytics/react';
 
-<Analytics />
+<Analytics />;
 ```
 
 ### Logs anzeigen
@@ -286,6 +291,7 @@ Im Dashboard: Deployments → Select Deployment → Logs
 ## 💰 Kosten
 
 **Free Tier**: Perfekt für MVP & Pilotphasen
+
 - 100 GB Bandwidth
 - Unlimited Requests
 - 6000 Build Minutes/Monat

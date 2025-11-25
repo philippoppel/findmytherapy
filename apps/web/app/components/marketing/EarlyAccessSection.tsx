@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { Check, Rocket } from 'lucide-react'
-import { Reveal } from './Reveal'
-import type { earlyAccessContent } from '../../marketing-content'
+import { Check, Rocket } from 'lucide-react';
+import { Reveal } from './Reveal';
+import type { earlyAccessContent } from '../../marketing-content';
 
 interface EarlyAccessProps {
-  content: typeof earlyAccessContent
+  content: typeof earlyAccessContent;
 }
 
 export function EarlyAccessSection({ content }: EarlyAccessProps) {
@@ -74,9 +74,7 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
                   </svg>
                 </div>
 
-                <h3 className="text-2xl font-semibold text-default">
-                  {content.mission.title}
-                </h3>
+                <h3 className="text-2xl font-semibold text-default">{content.mission.title}</h3>
 
                 <p className="mt-4 text-pretty leading-relaxed text-muted">
                   {content.mission.description}
@@ -88,7 +86,9 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
                       <span className="text-base font-bold">6+</span>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-default text-pretty">Monate Wartezeit</p>
+                      <p className="text-sm font-semibold text-default text-pretty">
+                        Monate Wartezeit
+                      </p>
                       <p className="text-xs text-muted text-pretty">Durchschnitt in Österreich</p>
                     </div>
                   </div>
@@ -108,8 +108,12 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
                       <Check className="h-5 w-5" aria-hidden />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-default text-pretty">Früher Zugang</p>
-                      <p className="text-xs text-muted text-pretty">Gemeinsam Versorgung verbessern</p>
+                      <p className="text-sm font-semibold text-default text-pretty">
+                        Früher Zugang
+                      </p>
+                      <p className="text-xs text-muted text-pretty">
+                        Gemeinsam Versorgung verbessern
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -119,5 +123,5 @@ export function EarlyAccessSection({ content }: EarlyAccessProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

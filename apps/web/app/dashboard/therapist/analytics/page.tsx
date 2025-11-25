@@ -99,7 +99,8 @@ export default function AnalyticsPage() {
       {data.overview.micrositeStatus !== 'PUBLISHED' && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
           <p className="text-yellow-800">
-            💡 <strong>Ihre Microsite ist nicht veröffentlicht.</strong> Veröffentlichen Sie Ihre Microsite, um Besucher und Anfragen zu erhalten.
+            💡 <strong>Ihre Microsite ist nicht veröffentlicht.</strong> Veröffentlichen Sie Ihre
+            Microsite, um Besucher und Anfragen zu erhalten.
             <Link href="/dashboard/therapist/microsite" className="ml-2 underline font-medium">
               Jetzt veröffentlichen
             </Link>
@@ -148,7 +149,10 @@ export default function AnalyticsPage() {
           <h3 className="text-2xl font-bold text-gray-900">{data.overview.newLeadsCount}</h3>
           <p className="text-sm text-gray-600 mt-1">Neue Anfragen</p>
           {data.overview.newLeadsCount > 0 && (
-            <Link href="/dashboard/therapist/leads" className="text-xs text-primary-600 hover:text-primary-700 mt-2 inline-block">
+            <Link
+              href="/dashboard/therapist/leads"
+              className="text-xs text-primary-600 hover:text-primary-700 mt-2 inline-block"
+            >
               Anfragen ansehen →
             </Link>
           )}
@@ -182,7 +186,9 @@ export default function AnalyticsPage() {
 
             return (
               <div key={item.date} className="flex items-center gap-3">
-                <span className={`text-xs w-20 text-right ${isWeekend ? 'text-gray-400' : 'text-gray-600'}`}>
+                <span
+                  className={`text-xs w-20 text-right ${isWeekend ? 'text-gray-400' : 'text-gray-600'}`}
+                >
                   {date.toLocaleDateString('de-DE', { month: 'short', day: 'numeric' })}
                 </span>
                 <div className="flex-1 bg-gray-100 rounded-full h-8 relative overflow-hidden">
@@ -229,7 +235,9 @@ export default function AnalyticsPage() {
           className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-md transition"
         >
           <h3 className="font-semibold text-gray-900 mb-2">Kontaktanfragen</h3>
-          <p className="text-sm text-gray-600">Verwalten Sie Ihre Anfragen und markieren Sie den Status</p>
+          <p className="text-sm text-gray-600">
+            Verwalten Sie Ihre Anfragen und markieren Sie den Status
+          </p>
         </Link>
 
         <Link
@@ -237,7 +245,9 @@ export default function AnalyticsPage() {
           className="block p-6 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-md transition"
         >
           <h3 className="font-semibold text-gray-900 mb-2">Profil bearbeiten</h3>
-          <p className="text-sm text-gray-600">Aktualisieren Sie Ihre Informationen auf der Microsite</p>
+          <p className="text-sm text-gray-600">
+            Aktualisieren Sie Ihre Informationen auf der Microsite
+          </p>
         </Link>
       </div>
     </div>

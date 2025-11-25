@@ -34,27 +34,35 @@ Server läuft auf: **http://localhost:3000** (oder 3001/3002)
 ### 3. Funktionen testen
 
 #### Test 1: Depression
+
 ```
 Du: "Ich fühle mich seit Wochen leer und antriebslos"
 ```
+
 → Chatbot gibt empathische Response und bietet Test an
 
 #### Test 2: Angst
+
 ```
 Du: "Ich habe ständig Panikattacken und Angst"
 ```
+
 → Chatbot erkennt Angst-Thema und empfiehlt GAD-7 Test
 
 #### Test 3: Krise (WICHTIG)
+
 ```
 Du: "Ich will nicht mehr leben"
 ```
+
 → Chatbot erkennt Krise und zeigt SOFORT Notfall-Kontakte
 
 #### Test 4: Allgemein
+
 ```
 Du: "Ich bin gestresst von der Arbeit"
 ```
+
 → Chatbot hört zu und bietet nach 2-3 Nachrichten Test an
 
 ### 4. Button-Funktionen testen
@@ -97,7 +105,7 @@ export const KEYWORD_PATTERNS: KeywordPattern[] = [
     priority: 75,
   },
   // ...
-]
+];
 ```
 
 ### Antworten ändern
@@ -108,14 +116,11 @@ Datei: `apps/web/lib/chatbot/responses.ts`
 export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
   {
     category: 'depression',
-    responses: [
-      'Deine neue empathische Antwort hier...',
-      'Noch eine Variante für Abwechslung...',
-    ],
+    responses: ['Deine neue empathische Antwort hier...', 'Noch eine Variante für Abwechslung...'],
     followUp: 'Optionaler Follow-up Text...',
     suggestedAction: 'take_assessment',
   },
-]
+];
 ```
 
 ### Begrüßung anpassen
@@ -124,11 +129,8 @@ Datei: `apps/web/lib/chatbot/responses.ts`
 
 ```typescript
 export const GENERAL_RESPONSES = {
-  greeting: [
-    'Deine neue Begrüßung!',
-    'Alternative Begrüßung für Abwechslung!',
-  ],
-}
+  greeting: ['Deine neue Begrüßung!', 'Alternative Begrüßung für Abwechslung!'],
+};
 ```
 
 ## 🔒 Datenschutz
@@ -136,6 +138,7 @@ export const GENERAL_RESPONSES = {
 ### Was wird gespeichert?
 
 Nur im **Browser localStorage** (NICHT auf Server):
+
 - Chat-Historie (Nachrichten)
 - Erkannte Themen
 - Konversations-Status
@@ -185,7 +188,7 @@ function trackChatEvent(event: string) {
     event_type: event,
     sentiment: 'neutral', // oder 'crisis', 'concerning'
     // NIEMALS: message_content
-  })
+  });
 }
 ```
 
@@ -194,6 +197,7 @@ function trackChatEvent(event: string) {
 ### Problem: Chatbot zeigt sich nicht
 
 **Lösung:**
+
 1. Prüfe ob `ChatWidget` im Layout eingebunden ist: `app/(marketing)/layout.tsx`
 2. Browser-Cache leeren
 3. Hard Reload: Cmd+Shift+R (Mac) / Ctrl+Shift+R (Windows)
@@ -201,6 +205,7 @@ function trackChatEvent(event: string) {
 ### Problem: Antworten kommen nicht
 
 **Lösung:**
+
 1. Browser-Konsole öffnen (F12)
 2. Nach Errors suchen
 3. localStorage prüfen: `localStorage.getItem('findmytherapy-chat-state')`
@@ -208,6 +213,7 @@ function trackChatEvent(event: string) {
 ### Problem: Build-Error
 
 **Lösung:**
+
 ```bash
 # Cache löschen
 rm -rf apps/web/.next
@@ -223,6 +229,7 @@ pnpm build
 ### Problem: Chatbot reagiert falsch
 
 **Lösung:**
+
 1. Keywords in `lib/chatbot/responses.ts` anpassen
 2. Response-Templates überarbeiten
 3. Prioritäten der Patterns anpassen

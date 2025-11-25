@@ -1,41 +1,41 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { BookOpenCheck, CalendarClock, ChevronDown, ChevronUp, Layers3, Play } from 'lucide-react'
+import { useState } from 'react';
+import Link from 'next/link';
+import { BookOpenCheck, CalendarClock, ChevronDown, ChevronUp, Layers3, Play } from 'lucide-react';
 
-import { Button, cn } from '@mental-health/ui'
-import { FEATURES } from '@/lib/features'
+import { Button, cn } from '@mental-health/ui';
+import { FEATURES } from '@/lib/features';
 
 export type CourseCard = {
-  slug: string
-  title: string
-  shortDescription: string
-  description: string
-  focus: string
-  duration: string
-  intensity: string
-  format: string
-  outcomes: string[]
-  price: number
-  currency: string
-  lessons: number
-}
+  slug: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  focus: string;
+  duration: string;
+  intensity: string;
+  format: string;
+  outcomes: string[];
+  price: number;
+  currency: string;
+  lessons: number;
+};
 
 type Props = {
-  courses: CourseCard[]
-}
+  courses: CourseCard[];
+};
 
 const formatPrice = (amount: number, currency: string) =>
-  new Intl.NumberFormat('de-AT', { style: 'currency', currency }).format(amount / 100)
+  new Intl.NumberFormat('de-AT', { style: 'currency', currency }).format(amount / 100);
 
 export function CourseCatalog({ courses }: Props) {
-  const [expandedSlug, setExpandedSlug] = useState<string | null>(null)
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {courses.map((course) => {
-        const isExpanded = expandedSlug === course.slug
+        const isExpanded = expandedSlug === course.slug;
 
         return (
           <article
@@ -82,7 +82,10 @@ export function CourseCatalog({ courses }: Props) {
                 <ul className="mt-2 space-y-2">
                   {course.outcomes.map((outcome) => (
                     <li key={outcome} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary" aria-hidden />
+                      <span
+                        className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary"
+                        aria-hidden
+                      />
                       <span>{outcome}</span>
                     </li>
                   ))}
@@ -137,8 +140,8 @@ export function CourseCatalog({ courses }: Props) {
               )}
             </div>
           </article>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

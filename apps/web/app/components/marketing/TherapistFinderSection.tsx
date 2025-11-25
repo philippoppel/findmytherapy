@@ -1,11 +1,11 @@
-import { Sparkles, Users } from 'lucide-react'
+import { Sparkles, Users } from 'lucide-react';
 
-import { TherapistDirectory } from '../../therapists/TherapistDirectorySimplified'
-import { getTherapistCards } from '../../therapists/getTherapistCards'
-import { TherapistSearchChoice } from '../../therapists/components/TherapistSearchChoice'
+import { TherapistDirectory } from '../../therapists/TherapistDirectorySimplified';
+import { getTherapistCards } from '../../therapists/getTherapistCards';
+import { TherapistSearchChoice } from '../../therapists/components/TherapistSearchChoice';
 // import type { TherapistCard } from '../../therapists/types'
-import { Reveal } from './Reveal'
-import { MatchingSection } from '../matching/MatchingSection'
+import { Reveal } from './Reveal';
+import { MatchingSection } from '../matching/MatchingSection';
 
 // Commented out for now - can be used later for stats display
 /* import type { TherapistCard } from '../../therapists/types'
@@ -37,10 +37,10 @@ function buildStats(therapists: TherapistCard[]) {
 
 export async function TherapistFinderSection() {
   // Load all therapists for proper filtering
-  const { therapists, total } = await getTherapistCards()
+  const { therapists, total } = await getTherapistCards();
 
   if (!therapists.length) {
-    return null
+    return null;
   }
 
   // const stats = buildStats(therapists) // TODO: Use stats for display if needed
@@ -60,15 +60,17 @@ export async function TherapistFinderSection() {
         name: therapist.name,
         jobTitle: therapist.title || 'Psychotherapeut:in',
         description: therapist.focus.join(', '),
-        address: therapist.city ? {
-          '@type': 'PostalAddress',
-          addressLocality: therapist.city,
-          addressCountry: 'AT',
-        } : undefined,
+        address: therapist.city
+          ? {
+              '@type': 'PostalAddress',
+              addressLocality: therapist.city,
+              addressCountry: 'AT',
+            }
+          : undefined,
         url: `https://findmytherapy.net/therapists/${therapist.id}`,
       },
     })),
-  }
+  };
 
   return (
     <div id="therapist-directory">
@@ -102,7 +104,8 @@ export async function TherapistFinderSection() {
                 Passende Therapeut:innen finden
               </h2>
               <p className="mx-auto max-w-3xl text-pretty text-base leading-relaxed text-white/80 sm:text-lg lg:mx-0 lg:text-xl">
-                Filtere nach Themen, Standort, Format oder Sprache – volle Kontrolle über deine Suche
+                Filtere nach Themen, Standort, Format oder Sprache – volle Kontrolle über deine
+                Suche
               </p>
             </div>
           </Reveal>
@@ -114,7 +117,8 @@ export async function TherapistFinderSection() {
               <div className="mb-6 flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/80 sm:flex-row sm:items-center sm:gap-4 lg:mb-8">
                 <Users className="h-5 w-5 flex-shrink-0 text-primary-300" />
                 <span className="leading-relaxed">
-                  Alle Profile aus unserem kuratierten Netzwerk. Filter aktualisieren die Ergebnisse in Echtzeit.
+                  Alle Profile aus unserem kuratierten Netzwerk. Filter aktualisieren die Ergebnisse
+                  in Echtzeit.
                 </span>
               </div>
 
@@ -131,5 +135,5 @@ export async function TherapistFinderSection() {
         />
       </section>
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Heart, Shield, Users } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { Heart, Shield, Users } from 'lucide-react';
 
 export function EncouragementBanner() {
   return (
@@ -37,8 +37,12 @@ export function EncouragementBanner() {
               <Shield className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-600" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">Verifiziert</p>
-              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">Staatlich geprüfte Therapeut:innen</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">
+                Verifiziert
+              </p>
+              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">
+                Staatlich geprüfte Therapeut:innen
+              </p>
             </div>
           </div>
 
@@ -47,8 +51,12 @@ export function EncouragementBanner() {
               <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-secondary-600" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">Persönlich</p>
-              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">Auf dich zugeschnitten</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">
+                Persönlich
+              </p>
+              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">
+                Auf dich zugeschnitten
+              </p>
             </div>
           </div>
 
@@ -57,12 +65,16 @@ export function EncouragementBanner() {
               <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-600" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">Vertraulich</p>
-              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">Geschützter Raum</p>
+              <p className="text-xs sm:text-sm font-semibold text-gray-900 break-words">
+                Vertraulich
+              </p>
+              <p className="text-[10px] sm:text-xs text-gray-600 break-words leading-tight">
+                Geschützter Raum
+              </p>
             </div>
           </div>
         </div>
       </div>
     </motion.div>
-  )
+  );
 }

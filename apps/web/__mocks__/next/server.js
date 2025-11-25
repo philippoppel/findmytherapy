@@ -1,44 +1,44 @@
 // Mock for next/server
 class MockNextRequest {
   constructor(url, init = {}) {
-    this.url = url
-    this.method = init.method || 'GET'
-    this._body = init.body
-    this._headers = new Map(Object.entries(init.headers || {}))
+    this.url = url;
+    this.method = init.method || 'GET';
+    this._body = init.body;
+    this._headers = new Map(Object.entries(init.headers || {}));
   }
 
   get headers() {
-    return this._headers
+    return this._headers;
   }
 
   async json() {
     if (typeof this._body === 'string') {
-      return JSON.parse(this._body)
+      return JSON.parse(this._body);
     }
-    return this._body
+    return this._body;
   }
 
   async text() {
     if (typeof this._body === 'string') {
-      return this._body
+      return this._body;
     }
-    return JSON.stringify(this._body)
+    return JSON.stringify(this._body);
   }
 }
 
 class MockNextResponse extends Response {
   constructor(body, init = {}) {
-    const actualBody = typeof body === 'string' ? body : JSON.stringify(body)
-    super(actualBody, init)
-    this._jsonBody = body
+    const actualBody = typeof body === 'string' ? body : JSON.stringify(body);
+    super(actualBody, init);
+    this._jsonBody = body;
   }
 
   async json() {
     if (this._jsonBody !== undefined) {
-      return this._jsonBody
+      return this._jsonBody;
     }
-    const text = await super.text()
-    return text ? JSON.parse(text) : null
+    const text = await super.text();
+    return text ? JSON.parse(text) : null;
   }
 
   static json(data, init = {}) {
@@ -48,12 +48,12 @@ class MockNextResponse extends Response {
         'Content-Type': 'application/json',
         ...(init.headers || {}),
       },
-    })
-    return response
+    });
+    return response;
   }
 
   static next(init) {
-    return new MockNextResponse(null, init)
+    return new MockNextResponse(null, init);
   }
 
   static redirect(url, status = 307) {
@@ -62,7 +62,7 @@ class MockNextResponse extends Response {
       headers: {
         Location: url,
       },
-    })
+    });
   }
 
   static rewrite(url) {
@@ -70,7 +70,7 @@ class MockNextResponse extends Response {
       headers: {
         'x-middleware-rewrite': url,
       },
-    })
+    });
   }
 }
 
@@ -78,4 +78,4 @@ module.exports = {
   __esModule: true,
   NextRequest: MockNextRequest,
   NextResponse: MockNextResponse,
-}
+};

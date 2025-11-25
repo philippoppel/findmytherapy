@@ -9,12 +9,14 @@
 ### MANDATORY STEPS (NO EXCEPTIONS):
 
 1. **After changing the schema file**, you MUST update the production database:
+
    ```bash
    cd apps/web
    pnpm db:verify-production
    ```
 
 2. **Verify the production database** is updated:
+
    ```bash
    curl https://findmytherapy-qyva.vercel.app/api/health
    ```
@@ -80,6 +82,7 @@ When you modify the Prisma schema, you MUST:
 4. **Warn the user** if you couldn't verify production DB
 
 Example response:
+
 ```
 I've added the new XYZ model to the Prisma schema.
 
@@ -101,12 +104,14 @@ You can now safely commit these changes.
 ## 🤖 SUMMARY FOR AI ASSISTANTS
 
 **YOU MUST:**
+
 - Read `CRITICAL_CHECKLIST.md` before any Prisma schema changes
 - Run `pnpm db:verify-production` after schema changes
 - Verify `/api/health` endpoint after updates
 - Explicitly confirm production DB was updated in your response
 
 **YOU MUST NOT:**
+
 - Commit schema changes without updating production DB
 - Assume local and production databases are in sync
 - Skip the verification steps

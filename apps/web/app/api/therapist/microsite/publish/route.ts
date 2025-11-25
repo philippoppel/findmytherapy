@@ -21,10 +21,7 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user || session.user.role !== 'THERAPIST') {
-      return NextResponse.json(
-        { success: false, message: 'Nicht autorisiert' },
-        { status: 401 }
-      );
+      return NextResponse.json({ success: false, message: 'Nicht autorisiert' }, { status: 401 });
     }
 
     const profile = await prisma.therapistProfile.findFirst({
@@ -46,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Profil nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -60,7 +57,7 @@ export async function POST(request: NextRequest) {
           success: false,
           message: 'Nur verifizierte Therapeuten können ihre Microsite veröffentlichen',
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -88,7 +85,7 @@ export async function POST(request: NextRequest) {
             message: 'Profil erfüllt nicht die Mindestanforderungen',
             errors,
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -100,7 +97,11 @@ export async function POST(request: NextRequest) {
       data: {
         micrositeStatus: newStatus,
         micrositeLastPublishedAt:
-          action === 'publish' ? new Date() : profile.micrositeStatus === 'PUBLISHED' ? undefined : null,
+          action === 'publish'
+            ? new Date()
+            : profile.micrositeStatus === 'PUBLISHED'
+              ? undefined
+              : null,
       },
       select: {
         micrositeSlug: true,
@@ -136,13 +137,13 @@ export async function POST(request: NextRequest) {
           message: 'Ungültige Aktion',
           errors: error.flatten().fieldErrors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { success: false, message: 'Status konnte nicht geändert werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

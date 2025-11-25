@@ -76,7 +76,9 @@ describe('updateTherapistStatus', () => {
     form.set('profileId', 'profile-789');
     form.set('status', 'UNKNOWN');
 
-    await expect(updateTherapistStatus(form)).rejects.toThrow('Ungültiges Formular für Status-Update');
+    await expect(updateTherapistStatus(form)).rejects.toThrow(
+      'Ungültiges Formular für Status-Update',
+    );
     expect(updateMock).not.toHaveBeenCalled();
     expect(revalidateMock).not.toHaveBeenCalled();
   });

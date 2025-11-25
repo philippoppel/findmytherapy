@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import type { partnerLogos } from '../../marketing-content'
+import type { partnerLogos } from '../../marketing-content';
 
 interface PartnerLogosProps {
-  partners: typeof partnerLogos
+  partners: typeof partnerLogos;
 }
 
 export function PartnerLogos({ partners }: PartnerLogosProps) {
@@ -35,5 +35,5 @@ export function PartnerLogos({ partners }: PartnerLogosProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

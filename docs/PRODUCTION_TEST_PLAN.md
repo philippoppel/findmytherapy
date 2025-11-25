@@ -3,12 +3,14 @@
 ## ✅ Deployment Status (Stand: 2025-11-10 20:30)
 
 ### Infrastructure
+
 - **GitHub Actions:** ✅ Erfolgreich deployed
 - **Vercel Deployment:** ✅ Live (https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app)
 - **Database Migrations:** ✅ Alle 6 Migrationen angewendet
 - **Environment Variables:** ✅ DOSSIER_ENCRYPTION_KEY, STORAGE_TYPE, LOCAL_STORAGE_PATH gesetzt
 
 ### Database Status
+
 ```
 ✅ TherapistMicrositeVisit: 0 records (ready)
 ✅ TherapistMicrositeLead: 0 records (ready)
@@ -30,9 +32,11 @@
 ### Feature 1: Therapist Microsite
 
 #### Prerequisites
+
 Um Microsites zu testen, muss zuerst ein Therapeut-Profil konfiguriert werden:
 
 **Option A: Via Admin UI (empfohlen)**
+
 1. Login als Admin auf https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app
 2. Gehe zu Admin Panel → Therapeuten
 3. Wähle ein Profil aus
@@ -49,6 +53,7 @@ Um Microsites zu testen, muss zuerst ein Therapeut-Profil konfiguriert werden:
    - `priceMin`, `priceMax` (in Cents)
 
 **Option B: Via Database (für Testing)**
+
 ```sql
 UPDATE "TherapistProfile"
 SET
@@ -70,16 +75,20 @@ WHERE "id" = '<your-therapist-id>';
 #### Test Cases
 
 **TC1: Microsite öffentlich abrufen**
+
 ```bash
 # URL Format: /t/{micrositeSlug}
 curl -I https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-mueller
 ```
+
 ✅ **Erwartung:**
+
 - Status 200 (oder 401 wenn Deployment Protection aktiv)
 - HTML mit Therapeuten-Profil
 - SEO Meta-Tags (OpenGraph, Schema.org)
 
 **TC2: Lead-Formular absenden**
+
 ```bash
 curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/api/microsites/dr-maria-mueller/leads \
   -H "Content-Type: application/json" \
@@ -91,12 +100,15 @@ curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.ver
     "consent": true
   }'
 ```
+
 ✅ **Erwartung:**
+
 - Status 201
 - Response: `{"success": true, "message": "Ihre Anfrage wurde erfolgreich gesendet", "leadId": "..."}`
 - Neuer Eintrag in `TherapistMicrositeLead` Tabelle
 
 **TC3: Analytics Tracking**
+
 ```bash
 curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/api/microsites/track \
   -H "Content-Type: application/json" \
@@ -106,24 +118,30 @@ curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.ver
     "sessionId": "test-session-123"
   }'
 ```
+
 ✅ **Erwartung:**
+
 - Status 200
 - Neuer Eintrag in `TherapistMicrositeVisit` Tabelle
 
 **TC4: SEO-Check**
+
 - Öffne: https://www.linkedin.com/post-inspector/
 - Gib URL ein: https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-mueller
 - ✅ **Erwartung:** Preview zeigt Bild, Titel, Beschreibung
 
 **TC5: Redirect-Test (nach Slug-Änderung)**
+
 ```sql
 -- Simuliere Slug-Änderung
 INSERT INTO "TherapistMicrositeRedirect" ("id", "fromSlug", "toSlug", "createdAt")
 VALUES ('test-redirect-1', 'dr-maria-old', 'dr-maria-mueller', NOW());
 ```
+
 ```bash
 curl -I https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/t/dr-maria-old
 ```
+
 ✅ **Erwartung:** 301/302 Redirect zu neuer URL
 
 ---
@@ -131,11 +149,13 @@ curl -I https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.a
 ### Feature 2: Session-Zero-Dossier
 
 #### Prerequisites
+
 1. **Client mit Consent:** Ein User mit `role: CLIENT` + `ClientConsent` für `DOSSIER_SHARING`
 2. **Triage Session:** Abgeschlossene `TriageSession` mit PHQ-9/GAD-7 Scores
 3. **Verifizierter Therapeut:** Mindestens ein `TherapistProfile` mit `status: VERIFIED`
 
 **Setup via SQL (für Testing):**
+
 ```sql
 -- 1. Create ClientConsent for existing client
 INSERT INTO "ClientConsent" ("id", "clientId", "scope", "status", "grantedAt", "source", "metadata")
@@ -166,6 +186,7 @@ LIMIT 1;
 #### Test Cases
 
 **TC1: Dossier erstellen (als Admin)**
+
 ```bash
 # Benötigt: Session Token (als Admin eingeloggt)
 curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/api/dossiers \
@@ -177,7 +198,9 @@ curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.ver
     "trigger": "ADMIN"
   }'
 ```
+
 ✅ **Erwartung:**
+
 - Status 201
 - Response enthält:
   ```json
@@ -201,6 +224,7 @@ curl -X POST https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.ver
 - Dossier in DB mit verschlüsseltem `encryptedPayload`
 
 **TC2: Dossier ohne Consent versuchen**
+
 ```bash
 # Löschen Sie zuerst den Consent:
 DELETE FROM "ClientConsent" WHERE "clientId" = '<client-id>';
@@ -208,17 +232,22 @@ DELETE FROM "ClientConsent" WHERE "clientId" = '<client-id>';
 # Dann versuchen Dossier zu erstellen
 curl -X POST .../api/dossiers ...
 ```
+
 ✅ **Erwartung:**
+
 - Status 403
 - `{"success": false, "error": "Client consent required for dossier sharing", "code": "CONSENT_REQUIRED"}`
 
 **TC3: Dossier abrufen (als berechtigter Therapeut)**
+
 ```bash
 # Benötigt: Session Token des Therapeuten, der in recommendedTherapistIds ist
 curl https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/api/dossiers/<dossierId> \
   -H "Cookie: next-auth.session-token=<therapist-session-token>"
 ```
+
 ✅ **Erwartung:**
+
 - Status 200
 - Entschlüsselte Payload mit:
   - PHQ-9/GAD-7 Scores und Antworten
@@ -228,17 +257,21 @@ curl https://findmytherapy-qyva-d3510xutv-philipps-projects-0f51423d.vercel.app/
 - Neuer Eintrag in `DossierAccessLog` mit Status `SUCCESS`
 
 **TC4: Dossier als nicht-berechtigter Therapeut abrufen**
+
 ```bash
 # Therapeut, der NICHT in recommendedTherapistIds ist
 curl https://.../api/dossiers/<dossierId> \
   -H "Cookie: next-auth.session-token=<other-therapist-token>"
 ```
+
 ✅ **Erwartung:**
+
 - Status 403
 - `{"success": false, "error": "Access denied"}`
 - Eintrag in `DossierAccessLog` mit Status `DENIED`
 
 **TC5: Signierte URL generieren**
+
 ```bash
 # Als Admin oder Client Owner
 curl -X POST https://.../api/dossiers/<dossierId>/links \
@@ -249,7 +282,9 @@ curl -X POST https://.../api/dossiers/<dossierId>/links \
     "expiresInHours": 72
   }'
 ```
+
 ✅ **Erwartung:**
+
 - Status 200
 - Response mit JWT-signierter URL:
   ```json
@@ -265,21 +300,26 @@ curl -X POST https://.../api/dossiers/<dossierId>/links \
   ```
 
 **TC6: Abgelaufenes Dossier abrufen**
+
 ```sql
 -- Setze expiresAt auf Vergangenheit
 UPDATE "SessionZeroDossier"
 SET "expiresAt" = NOW() - INTERVAL '1 day'
 WHERE "id" = '<dossier-id>';
 ```
+
 ```bash
 curl https://.../api/dossiers/<dossierId> ...
 ```
+
 ✅ **Erwartung:**
+
 - Status 410
 - `{"success": false, "error": "Dossier has expired", "code": "DOSSIER_EXPIRED"}`
 - Eintrag in `DossierAccessLog` mit Status `EXPIRED`
 
 **TC7: Access Log überprüfen**
+
 ```sql
 SELECT
   dal."accessedAt",
@@ -292,7 +332,9 @@ JOIN "User" u ON u."id" = dal."therapistUserId"
 WHERE dal."dossierId" = '<dossier-id>'
 ORDER BY dal."accessedAt" DESC;
 ```
+
 ✅ **Erwartung:**
+
 - IP-Adressen sind gehasht (SHA-256, 64 Zeichen)
 - Status: SUCCESS, DENIED, oder EXPIRED
 - Channel: WEB_DASHBOARD oder SIGNED_LINK
@@ -302,6 +344,7 @@ ORDER BY dal."accessedAt" DESC;
 ## 🔒 Security Checks
 
 ### Dossier Encryption
+
 ```sql
 -- Verschlüsselter Payload sollte nicht lesbar sein
 SELECT
@@ -310,20 +353,26 @@ SELECT
   "encryptionKeyId"
 FROM "SessionZeroDossier";
 ```
+
 ✅ **Erwartung:** `encryptedPayload` ist Hex-String (z.B. `a1b2c3...`) + nicht JSON
 
 ### IP Hashing
+
 ```sql
 SELECT DISTINCT "ipHash", LENGTH("ipHash") as hash_length
 FROM "DossierAccessLog";
 ```
+
 ✅ **Erwartung:** Alle `ipHash` sind 64 Zeichen lang (SHA-256)
 
 ### Environment Variables
+
 ```bash
 vercel env ls | grep DOSSIER
 ```
+
 ✅ **Erwartung:**
+
 - DOSSIER_ENCRYPTION_KEY ✅
 - STORAGE_TYPE ✅
 - LOCAL_STORAGE_PATH ✅
@@ -333,29 +382,37 @@ vercel env ls | grep DOSSIER
 ## 🐛 Troubleshooting
 
 ### Problem: 401 Unauthorized beim Microsite-Zugriff
+
 **Ursache:** Vercel Deployment Protection aktiv
 **Lösung:**
+
 - Vercel Dashboard → Settings → Deployment Protection → Disable
 - ODER: Custom Domain hinzufügen (umgeht Protection)
 
 ### Problem: "Microsite nicht gefunden"
+
 **Ursache:**
+
 - Slug nicht gesetzt
 - Status nicht PUBLISHED
 - Therapeut nicht VERIFIED
-**Lösung:** Siehe Prerequisites TC1
+  **Lösung:** Siehe Prerequisites TC1
 
 ### Problem: "Dossier bereits vorhanden"
+
 **Ursache:** Pro TriageSession kann nur 1 Dossier erstellt werden
 **Lösung:**
+
 - Neue TriageSession erstellen ODER
 - Bestehendes Dossier löschen (nur für Testing)
 
 ### Problem: Decryption Error
+
 **Ursache:**
+
 - DOSSIER_ENCRYPTION_KEY nicht gesetzt
 - Key wurde nach Verschlüsselung geändert
-**Lösung:**
+  **Lösung:**
 - Prüfe: `vercel env ls | grep DOSSIER_ENCRYPTION_KEY`
 - Bei Key-Änderung: Alte Dossiers sind nicht mehr entschlüsselbar
 
@@ -364,6 +421,7 @@ vercel env ls | grep DOSSIER
 ## 📊 Production Readiness Checklist
 
 ### Microsite Feature
+
 - [x] Migration deployed
 - [x] Tables existieren
 - [x] APIs funktionieren
@@ -372,6 +430,7 @@ vercel env ls | grep DOSSIER
 - [ ] Analytics-Dashboard für Therapeuten (geplant MVP+)
 
 ### Dossier Feature
+
 - [x] Migration deployed
 - [x] Tables existieren
 - [x] APIs funktionieren
@@ -383,6 +442,7 @@ vercel env ls | grep DOSSIER
 - [ ] Cleanup-Job für abgelaufene Dossiers (geplant Scale)
 
 ### Infrastructure
+
 - [x] Production DB migrations angewendet
 - [x] Vercel deployment erfolgreich
 - [x] Environment variables gesetzt

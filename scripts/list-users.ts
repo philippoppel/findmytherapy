@@ -1,6 +1,6 @@
-import { PrismaClient } from '@mental-health/db'
+import { PrismaClient } from '@mental-health/db';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
   const users = await prisma.user.findMany({
@@ -16,22 +16,24 @@ async function main() {
       createdAt: 'desc',
     },
     take: 20,
-  })
+  });
 
-  console.log('\n📋 Recent users in database:')
-  console.log('=====================================')
+  console.log('\n📋 Recent users in database:');
+  console.log('=====================================');
   users.forEach((user, index) => {
-    console.log(`${index + 1}. ${user.email} (${user.firstName} ${user.lastName}) - ${user.role} - ${user.createdAt.toISOString()}`)
-  })
-  console.log('=====================================\n')
-  console.log(`Total: ${users.length} users\n`)
+    console.log(
+      `${index + 1}. ${user.email} (${user.firstName} ${user.lastName}) - ${user.role} - ${user.createdAt.toISOString()}`,
+    );
+  });
+  console.log('=====================================\n');
+  console.log(`Total: ${users.length} users\n`);
 }
 
 main()
   .catch((e) => {
-    console.error('Error:', e)
-    process.exit(1)
+    console.error('Error:', e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

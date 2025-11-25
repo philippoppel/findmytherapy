@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 interface PlaceholderImageProps {
-  therapistId: string
-  displayName?: string
-  className?: string
+  therapistId: string;
+  displayName?: string;
+  className?: string;
 }
 
 // Professional gradient color schemes for therapist avatars
@@ -56,39 +56,43 @@ const gradients = [
     to: '#4F46E5', // indigo-600
     text: '#FFFFFF',
   },
-]
+];
 
 // Hash function to consistently select a gradient based on ID
 function getGradientIndex(id: string): number {
-  let hash = 0
+  let hash = 0;
   for (let i = 0; i < id.length; i++) {
-    hash = (hash << 5) - hash + id.charCodeAt(i)
-    hash = hash & hash
+    hash = (hash << 5) - hash + id.charCodeAt(i);
+    hash = hash & hash;
   }
-  return Math.abs(hash) % gradients.length
+  return Math.abs(hash) % gradients.length;
 }
 
 // Extract initials from display name
 function getInitials(name?: string): string {
-  if (!name) return 'T'
+  if (!name) return 'T';
 
-  const parts = name.trim().split(/\s+/)
+  const parts = name.trim().split(/\s+/);
 
   if (parts.length === 1) {
-    return parts[0].charAt(0).toUpperCase()
+    return parts[0].charAt(0).toUpperCase();
   }
 
   // For multiple names, take first letter of first and last name
-  const firstInitial = parts[0].charAt(0).toUpperCase()
-  const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase()
+  const firstInitial = parts[0].charAt(0).toUpperCase();
+  const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase();
 
-  return `${firstInitial}${lastInitial}`
+  return `${firstInitial}${lastInitial}`;
 }
 
-export function PlaceholderImage({ therapistId, displayName, className = '' }: PlaceholderImageProps) {
-  const index = getGradientIndex(therapistId)
-  const gradient = gradients[index]
-  const initials = getInitials(displayName)
+export function PlaceholderImage({
+  therapistId,
+  displayName,
+  className = '',
+}: PlaceholderImageProps) {
+  const index = getGradientIndex(therapistId);
+  const gradient = gradients[index];
+  const initials = getInitials(displayName);
 
   return (
     <div
@@ -101,7 +105,14 @@ export function PlaceholderImage({ therapistId, displayName, className = '' }: P
       <div className="absolute inset-0 opacity-10">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id={`pattern-${therapistId}`} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+            <pattern
+              id={`pattern-${therapistId}`}
+              x="0"
+              y="0"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
               <circle cx="20" cy="20" r="2" fill="white" opacity="0.5" />
             </pattern>
           </defs>
@@ -118,5 +129,5 @@ export function PlaceholderImage({ therapistId, displayName, className = '' }: P
         {initials}
       </span>
     </div>
-  )
+  );
 }

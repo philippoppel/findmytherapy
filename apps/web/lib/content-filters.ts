@@ -6,77 +6,72 @@
  * when specific features are disabled.
  */
 
-import { FEATURES } from './features'
-import type {
-  FeatureTab,
-  FeatureIconKey,
-} from '../app/marketing-content'
+import { FEATURES } from './features';
+import type { FeatureTab, FeatureIconKey } from '../app/marketing-content';
 
 type NavigationItem = {
-  label: string
-  href: string
-}
+  label: string;
+  href: string;
+};
 
 type Benefit = {
-  icon: FeatureIconKey
-  title: string
-  subtitle: string
-  description: string
-  highlights: string[]
-}
+  icon: FeatureIconKey;
+  title: string;
+  subtitle: string;
+  description: string;
+  highlights: string[];
+};
 
 type FAQItem = {
-  question: string
-  answer: string
-}
+  question: string;
+  answer: string;
+};
 
 type HeroContent = {
-  eyebrow: string
-  title: string
-  highlight: string
-  description: string
-  primaryCta: { label: string; href: string }
-  secondaryCta: { label: string; href: string }
-  tertiaryCta: { label: string; href: string }
-  metrics: Array<{ value: string; label: string }>
-  image: { src: string; alt: string }
-}
+  eyebrow: string;
+  title: string;
+  highlight: string;
+  description: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+  tertiaryCta: { label: string; href: string };
+  metrics: Array<{ value: string; label: string }>;
+  image: { src: string; alt: string };
+};
 
 type WhyContent = {
-  id: string
-  title: string
-  description: string
-  bullets: string[]
-  cta: { label: string; href: string }
-  image: { src: string; alt: string }
-}
+  id: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  cta: { label: string; href: string };
+  image: { src: string; alt: string };
+};
 
 type BenefitsContent = {
-  id: string
-  eyebrow: string
-  title: string
-  description: string
-  benefits: readonly Benefit[]
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  benefits: readonly Benefit[];
   cta: {
-    primary: { label: string; href: string }
-    secondary: { label: string; href: string }
-  }
-}
+    primary: { label: string; href: string };
+    secondary: { label: string; href: string };
+  };
+};
 
 /**
  * Filters navigation items based on enabled features
  * Removes links to disabled features
  */
-export function filterNavigationItems(
-  items: readonly NavigationItem[]
-): NavigationItem[] {
+export function filterNavigationItems(items: readonly NavigationItem[]): NavigationItem[] {
   return items.filter((item) => {
     // Remove triage/assessment links if feature is disabled
     if (!FEATURES.ASSESSMENT && (item.href === '/triage' || item.href === '#phq-info')) {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 }
 
 /**
@@ -87,14 +82,14 @@ export function filterFeatureTabs(tabs: readonly FeatureTab[]): FeatureTab[] {
   return tabs.filter((tab) => {
     // Remove triage tab if assessment is disabled
     if (!FEATURES.ASSESSMENT && (tab.value === 'triage' || tab.value === 'session-zero')) {
-      return false
+      return false;
     }
     // Remove microsite tab if microsite is disabled
     if (!FEATURES.MICROSITE && tab.value === 'microsite') {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 }
 
 /**
@@ -104,10 +99,10 @@ export function filterClientBenefits(benefits: readonly Benefit[]): Benefit[] {
   return benefits.filter((benefit) => {
     // Remove assessment benefit if feature is disabled
     if (!FEATURES.ASSESSMENT && benefit.title === 'Kostenlose Ersteinschätzung') {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 }
 
 /**
@@ -117,14 +112,14 @@ export function filterTherapistBenefits(benefits: readonly Benefit[]): Benefit[]
   return benefits.filter((benefit) => {
     // Remove assessment-related benefit
     if (!FEATURES.ASSESSMENT && benefit.title === 'Erstgespräch-Vorbericht') {
-      return false
+      return false;
     }
     // Remove microsite benefit
     if (!FEATURES.MICROSITE && benefit.title === 'Deine automatische Praxis-Webseite') {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 }
 
 /**
@@ -133,8 +128,8 @@ export function filterTherapistBenefits(benefits: readonly Benefit[]): Benefit[]
  */
 export function filterFAQItems(items: readonly FAQItem[]): FAQItem[] {
   return items.filter((item) => {
-    const question = item.question.toLowerCase()
-    const answer = item.answer.toLowerCase()
+    const question = item.question.toLowerCase();
+    const answer = item.answer.toLowerCase();
 
     // Remove assessment-related FAQs
     if (!FEATURES.ASSESSMENT) {
@@ -144,7 +139,7 @@ export function filterFAQItems(items: readonly FAQItem[]): FAQItem[] {
         answer.includes('phq-9') ||
         answer.includes('gad-7')
       ) {
-        return false
+        return false;
       }
     }
 
@@ -155,12 +150,12 @@ export function filterFAQItems(items: readonly FAQItem[]): FAQItem[] {
         question.includes('microsite') ||
         answer.includes('findmytherapy.com/t/')
       ) {
-        return false
+        return false;
       }
     }
 
-    return true
-  })
+    return true;
+  });
 }
 
 /**
@@ -168,75 +163,77 @@ export function filterFAQItems(items: readonly FAQItem[]): FAQItem[] {
  * Modifies CTAs, metrics, and description based on enabled features
  */
 export function getFilteredHeroContent(heroContent: HeroContent): HeroContent {
-  const filtered = { ...heroContent }
+  const filtered = { ...heroContent };
 
   // Adjust primary CTA if assessment is disabled
   if (!FEATURES.ASSESSMENT) {
     // Update eyebrow to remove assessment reference
-    filtered.eyebrow = 'Therapeut:innen-Vermittlung & Begleitung'
+    filtered.eyebrow = 'Therapeut:innen-Vermittlung & Begleitung';
 
     // Replace assessment-related metrics with therapist-focused metrics
     filtered.metrics = [
       { value: 'Verifiziert', label: 'Alle Profile geprüft' },
       { value: 'Transparent', label: 'Klare Spezialisierungen' },
       { value: '100% DSGVO', label: 'EU-Datenschutz' },
-    ]
+    ];
 
     // Adjust description to remove assessment references
     filtered.description = filtered.description
-      .replace(/Validierte Ampel-Ersteinschätzung \(PHQ-9, GAD-7, WHO-5\) in unter 5 Minuten – mit Kursen, /, '')
-      .replace(/mit Kursen, Therapeut:innen-Vermittlung oder Krisenhilfe/, 'mit Therapeut:innen-Vermittlung und professionellen Kursen')
+      .replace(
+        /Validierte Ampel-Ersteinschätzung \(PHQ-9, GAD-7, WHO-5\) in unter 5 Minuten – mit Kursen, /,
+        '',
+      )
+      .replace(
+        /mit Kursen, Therapeut:innen-Vermittlung oder Krisenhilfe/,
+        'mit Therapeut:innen-Vermittlung und professionellen Kursen',
+      );
   }
 
   // Adjust description if microsite is disabled
   if (!FEATURES.MICROSITE) {
-    filtered.description = filtered.description.replace(
-      /, eine kostenlose Praxis-Webseite/,
-      ''
-    )
+    filtered.description = filtered.description.replace(/, eine kostenlose Praxis-Webseite/, '');
   }
 
-  return filtered
+  return filtered;
 }
 
 /**
  * Gets why section content with feature-aware adjustments
  */
 export function getFilteredWhyContent(whyContent: WhyContent): WhyContent {
-  const filtered = { ...whyContent }
+  const filtered = { ...whyContent };
 
   if (!FEATURES.ASSESSMENT) {
     // Remove assessment-related bullet points
     filtered.bullets = filtered.bullets.filter(
       (bullet: string) =>
-        !bullet.includes('Ampel-Ersteinschätzung') &&
-        !bullet.includes('Fragebögen')
-    )
+        !bullet.includes('Ampel-Ersteinschätzung') && !bullet.includes('Fragebögen'),
+    );
 
     // Update CTA
     filtered.cta = {
       label: 'Therapeut:innen durchsuchen',
       href: '/therapists',
-    }
+    };
 
     // Adjust description
     filtered.description = filtered.description.replace(
       /Ersteinschätzung, Vermittlung und Begleitung/,
-      'Vermittlung und Begleitung'
-    )
+      'Vermittlung und Begleitung',
+    );
   }
 
-  return filtered
+  return filtered;
 }
 
 /**
  * Gets client benefits content with filtered benefits and adjusted CTAs
  */
 export function getFilteredClientBenefits(clientBenefits: BenefitsContent): BenefitsContent {
-  const filtered = { ...clientBenefits }
+  const filtered = { ...clientBenefits };
 
   // Filter benefits
-  filtered.benefits = filterClientBenefits(clientBenefits.benefits)
+  filtered.benefits = filterClientBenefits(clientBenefits.benefits);
 
   // Adjust CTAs if assessment is disabled
   if (!FEATURES.ASSESSMENT) {
@@ -249,42 +246,42 @@ export function getFilteredClientBenefits(clientBenefits: BenefitsContent): Bene
         label: 'Kurse ansehen',
         href: '/courses',
       },
-    }
+    };
   }
 
-  return filtered
+  return filtered;
 }
 
 /**
  * Gets therapist benefits content with filtered benefits
  */
 export function getFilteredTherapistBenefits(therapistBenefits: BenefitsContent): BenefitsContent {
-  const filtered = { ...therapistBenefits }
+  const filtered = { ...therapistBenefits };
 
   // Filter benefits
-  filtered.benefits = filterTherapistBenefits(therapistBenefits.benefits)
+  filtered.benefits = filterTherapistBenefits(therapistBenefits.benefits);
 
-  return filtered
+  return filtered;
 }
 
 type ContactCta = {
-  heading: string
-  subheading: string
-  primaryCta: { label: string; href: string }
-  secondaryCta: { label: string; href: string }
-}
+  heading: string;
+  subheading: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+};
 
 /**
  * Gets contact CTA content with feature-aware adjustments
  */
 export function getFilteredContactCta(contactCta: ContactCta): ContactCta {
-  const filtered = { ...contactCta }
+  const filtered = { ...contactCta };
 
   if (!FEATURES.ASSESSMENT) {
     // Remove reference to "Erstgespräch-Vorberichte" which requires assessment
     filtered.subheading = filtered.subheading
       .replace(/Erhalte Erstgespräch-Vorberichte vor jedem ersten Termin, /, '')
-      .replace(/eine kostenlose Praxis-Webseite und /, 'Eine kostenlose Praxis-Webseite, ')
+      .replace(/eine kostenlose Praxis-Webseite und /, 'Eine kostenlose Praxis-Webseite, ');
   }
 
   if (!FEATURES.MICROSITE) {
@@ -292,10 +289,10 @@ export function getFilteredContactCta(contactCta: ContactCta): ContactCta {
     filtered.subheading = filtered.subheading
       .replace(/, eine kostenlose Praxis-Webseite/, '')
       .replace(/eine kostenlose Praxis-Webseite und /, '')
-      .replace(/Eine kostenlose Praxis-Webseite, /, '')
+      .replace(/Eine kostenlose Praxis-Webseite, /, '');
   }
 
-  return filtered
+  return filtered;
 }
 
 /**
@@ -303,13 +300,13 @@ export function getFilteredContactCta(contactCta: ContactCta): ContactCta {
  * Convenience function that applies all filters at once
  */
 export function getFilteredMarketingContent(content: {
-  navigation: readonly NavigationItem[]
-  heroContent: HeroContent
-  whyContent: WhyContent
-  featureTabs: readonly FeatureTab[]
-  clientBenefits: BenefitsContent
-  therapistBenefits: BenefitsContent
-  faqItems: readonly FAQItem[]
+  navigation: readonly NavigationItem[];
+  heroContent: HeroContent;
+  whyContent: WhyContent;
+  featureTabs: readonly FeatureTab[];
+  clientBenefits: BenefitsContent;
+  therapistBenefits: BenefitsContent;
+  faqItems: readonly FAQItem[];
 }) {
   return {
     navigation: filterNavigationItems(content.navigation),
@@ -319,5 +316,5 @@ export function getFilteredMarketingContent(content: {
     clientBenefits: getFilteredClientBenefits(content.clientBenefits),
     therapistBenefits: getFilteredTherapistBenefits(content.therapistBenefits),
     faqItems: filterFAQItems(content.faqItems),
-  }
+  };
 }

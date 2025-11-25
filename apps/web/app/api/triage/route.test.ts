@@ -7,9 +7,9 @@
  * They need to be refactored to work with Jest or moved to E2E tests.
  */
 
-import { describe, it, expect, beforeEach, jest } from '@jest/globals'
-import { NextRequest } from 'next/server'
-import { POST } from './route'
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { NextRequest } from 'next/server';
+import { POST } from './route';
 
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
@@ -31,20 +31,20 @@ jest.mock('@/lib/prisma', () => ({
       findMany: jest.fn().mockResolvedValue([]),
     },
   },
-}))
+}));
 
 jest.mock('../../../lib/auth', () => ({
   auth: jest.fn().mockResolvedValue(null),
-}))
+}));
 
 jest.mock('../../../lib/monitoring', () => ({
   captureError: jest.fn(),
-}))
+}));
 
 describe('Triage API Route - Comprehensive Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
   describe('✅ Screening-Only Assessment (scores <3)', () => {
     it('should accept valid screening-only data with PHQ-2=2, GAD-2=1', async () => {
@@ -56,25 +56,25 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Score: 1,
         supportPreferences: [],
         availability: [],
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(200)
-      expect(data.success).toBe(true)
-      expect(data.assessmentType).toBe('screening')
-      expect(data.screeningResult.phq2Score).toBe(2)
-      expect(data.screeningResult.gad2Score).toBe(1)
-      expect(data.recommendations.therapists).toEqual([])
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
+      expect(data.assessmentType).toBe('screening');
+      expect(data.screeningResult.phq2Score).toBe(2);
+      expect(data.screeningResult.gad2Score).toBe(1);
+      expect(data.recommendations.therapists).toEqual([]);
       // Screening assessments should recommend courses for prevention
-      expect(Array.isArray(data.recommendations.courses)).toBe(true)
-    })
+      expect(Array.isArray(data.recommendations.courses)).toBe(true);
+    });
 
     it('should accept screening-only with PHQ-2=0, GAD-2=0 (no symptoms)', async () => {
       const requestBody = {
@@ -85,20 +85,20 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Score: 0,
         supportPreferences: ['course'],
         availability: ['online'],
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(200)
-      expect(data.success).toBe(true)
-      expect(data.assessmentType).toBe('screening')
-    })
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
+      expect(data.assessmentType).toBe('screening');
+    });
 
     it('should REJECT screening-only when score mismatch detected', async () => {
       const requestBody = {
@@ -109,22 +109,22 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Score: 1,
         supportPreferences: [],
         availability: [],
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-      expect(data.message).toContain('Score mismatch')
-      expect(data.details.phq2.calculated).toBe(2)
-      expect(data.details.phq2.provided).toBe(5)
-    })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.message).toContain('Score mismatch');
+      expect(data.details.phq2.calculated).toBe(2);
+      expect(data.details.phq2.provided).toBe(5);
+    });
 
     it('should LOG WARNING but not fail when screening scores ≥3 (UX override case)', async () => {
       const requestBody = {
@@ -135,28 +135,28 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Score: 1,
         supportPreferences: [],
         availability: [],
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(200)
-      expect(data.success).toBe(true)
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining('[TRIAGE] Screening-only submitted with scores ≥3'),
-        expect.objectContaining({ phq2Score: 4 })
-      )
+        expect.objectContaining({ phq2Score: 4 }),
+      );
 
-      consoleSpy.mockRestore()
-    })
-  })
+      consoleSpy.mockRestore();
+    });
+  });
 
   describe('✅ Full Assessment (complete PHQ-9 & GAD-7)', () => {
     it('should accept valid full assessment with all questions answered', async () => {
@@ -174,19 +174,19 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'MEDIUM',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(201)
-      expect(data.success).toBe(true)
-    })
+      expect(response.status).toBe(201);
+      expect(data.success).toBe(true);
+    });
 
     it('should accept full assessment with HIGH risk and suicidal ideation', async () => {
       const requestBody = {
@@ -203,19 +203,19 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: true,
         riskLevel: 'HIGH',
         requiresEmergency: true,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(201)
-      expect(data.success).toBe(true)
-    })
+      expect(response.status).toBe(201);
+      expect(data.success).toBe(true);
+    });
 
     it('should REJECT full assessment when PHQ-9 score mismatch', async () => {
       const requestBody = {
@@ -232,22 +232,22 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'MEDIUM',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-      expect(data.message).toContain('Score mismatch')
-      expect(data.details.phq9.calculated).toBe(8)
-      expect(data.details.phq9.provided).toBe(15)
-    })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.message).toContain('Score mismatch');
+      expect(data.details.phq9.calculated).toBe(8);
+      expect(data.details.phq9.provided).toBe(15);
+    });
 
     it('should REJECT full assessment when GAD-7 score mismatch', async () => {
       const requestBody = {
@@ -264,23 +264,23 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'MEDIUM',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-      expect(data.message).toContain('Score mismatch')
-      expect(data.details.gad7.calculated).toBe(7)
-      expect(data.details.gad7.provided).toBe(12)
-    })
-  })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+      expect(data.message).toContain('Score mismatch');
+      expect(data.details.gad7.calculated).toBe(7);
+      expect(data.details.gad7.provided).toBe(12);
+    });
+  });
 
   describe('⚠️ Partial Expansion (one side expanded, one side screening)', () => {
     it('should accept partial expansion: PHQ-9 full, GAD-7 screening (padded)', async () => {
@@ -299,19 +299,19 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'MEDIUM',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(201)
-      expect(data.success).toBe(true)
-    })
+      expect(response.status).toBe(201);
+      expect(data.success).toBe(true);
+    });
 
     it('should accept partial expansion: GAD-7 full, PHQ-9 screening (padded)', async () => {
       // This represents: PHQ-2 <3 (stayed at screening), GAD-2 ≥3 (expanded)
@@ -329,20 +329,20 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'MEDIUM',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(201)
-      expect(data.success).toBe(true)
-    })
-  })
+      expect(response.status).toBe(201);
+      expect(data.success).toBe(true);
+    });
+  });
 
   describe('❌ Schema Validation Errors', () => {
     it('should REJECT when assessmentType is missing', async () => {
@@ -352,19 +352,19 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Answers: [0, 1],
         phq2Score: 2,
         gad2Score: 1,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-    })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+    });
 
     it('should REJECT when PHQ-9 has wrong array length', async () => {
       const requestBody = {
@@ -379,19 +379,19 @@ describe('Triage API Route - Comprehensive Tests', () => {
         availability: [],
         riskLevel: 'LOW',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-    })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+    });
 
     it('should REJECT when answers contain invalid values (>3)', async () => {
       const requestBody = {
@@ -402,20 +402,20 @@ describe('Triage API Route - Comprehensive Tests', () => {
         gad2Score: 1,
         supportPreferences: [],
         availability: [],
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(400)
-      expect(data.success).toBe(false)
-    })
-  })
+      expect(response.status).toBe(400);
+      expect(data.success).toBe(false);
+    });
+  });
 
   describe('🔬 Scientific Correctness Validation', () => {
     it('should correctly calculate minimal severity (PHQ-9: 0-4)', async () => {
@@ -433,16 +433,16 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: false,
         riskLevel: 'LOW',
         requiresEmergency: false,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      expect(response.status).toBe(201)
-    })
+      const response = await POST(request);
+      expect(response.status).toBe(201);
+    });
 
     it('should correctly identify severe depression (PHQ-9: 20-27)', async () => {
       const requestBody = {
@@ -459,16 +459,16 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: true,
         riskLevel: 'HIGH',
         requiresEmergency: true,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      expect(response.status).toBe(201)
-    })
+      const response = await POST(request);
+      expect(response.status).toBe(201);
+    });
 
     it('should detect suicidal ideation from item 9', async () => {
       const requestBody = {
@@ -485,18 +485,18 @@ describe('Triage API Route - Comprehensive Tests', () => {
         hasSuicidalIdeation: true,
         riskLevel: 'HIGH',
         requiresEmergency: true,
-      }
+      };
 
       const request = new NextRequest('http://localhost:3000/api/triage', {
         method: 'POST',
         body: JSON.stringify(requestBody),
-      })
+      });
 
-      const response = await POST(request)
-      const data = await response.json()
+      const response = await POST(request);
+      const data = await response.json();
 
-      expect(response.status).toBe(201)
-      expect(data.success).toBe(true)
-    })
-  })
-})
+      expect(response.status).toBe(201);
+      expect(data.success).toBe(true);
+    });
+  });
+});

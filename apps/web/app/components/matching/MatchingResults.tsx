@@ -1,50 +1,51 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Target, Eye, Sparkles, Check, Star, ThumbsUp, Award, X, RotateCcw } from 'lucide-react'
-import type { MatchResult } from '@/lib/matching'
-import { EncouragementBanner } from './results-components/EncouragementBanner'
-import { NextStepsGuide } from './results-components/NextStepsGuide'
-import { MotivationalQuote } from './results-components/MotivationalQuote'
-import { ReassuranceBox } from './results-components/ReassuranceBox'
-import { AvailabilityBadge } from '@/app/components/AvailabilityBadge'
-import { useMatchingWizard } from './MatchingWizardContext'
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Target, Eye, Sparkles, Check, Star, ThumbsUp, Award, X, RotateCcw } from 'lucide-react';
+import type { MatchResult } from '@/lib/matching';
+import { EncouragementBanner } from './results-components/EncouragementBanner';
+import { NextStepsGuide } from './results-components/NextStepsGuide';
+import { MotivationalQuote } from './results-components/MotivationalQuote';
+import { ReassuranceBox } from './results-components/ReassuranceBox';
+import { AvailabilityBadge } from '@/app/components/AvailabilityBadge';
+import { useMatchingWizard } from './MatchingWizardContext';
 
 // Score zu Prozent und Farbe konvertieren
 function getScoreDisplay(score: number) {
-  const percent = Math.round(score * 100)
-  let color = 'text-gray-600'
-  let bgColor = 'bg-gray-100'
+  const percent = Math.round(score * 100);
+  let color = 'text-gray-600';
+  let bgColor = 'bg-gray-100';
 
   if (percent >= 80) {
-    color = 'text-green-700'
-    bgColor = 'bg-green-100'
+    color = 'text-green-700';
+    bgColor = 'bg-green-100';
   } else if (percent >= 60) {
-    color = 'text-primary-700'
-    bgColor = 'bg-primary-100'
+    color = 'text-primary-700';
+    bgColor = 'bg-primary-100';
   } else if (percent >= 40) {
-    color = 'text-yellow-700'
-    bgColor = 'bg-yellow-100'
+    color = 'text-yellow-700';
+    bgColor = 'bg-yellow-100';
   }
 
-  return { percent, color, bgColor }
+  return { percent, color, bgColor };
 }
 
 // Einzelne Match-Card Komponente
 function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
-  const { percent, color, bgColor } = getScoreDisplay(match.score)
-  const [showDetails, setShowDetails] = useState(false)
+  const { percent, color, bgColor } = getScoreDisplay(match.score);
+  const [showDetails, setShowDetails] = useState(false);
 
   // Initiale für Avatar
-  const initials = match.therapist.displayName
-    ?.split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2) || '?'
+  const initials =
+    match.therapist.displayName
+      ?.split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || '?';
 
   return (
     <motion.div
@@ -54,13 +55,13 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
       className="group bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl hover:border-amber-200 transition-all duration-300"
     >
       {/* Rang-Ribbon (nur Top 3) */}
-      {rank <= 3 && (
-        <div className="relative h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
-      )}
+      {rank <= 3 && <div className="relative h-1 bg-gradient-to-r from-amber-500 to-orange-500" />}
 
       <div className="p-5 sm:p-6">
         {/* Prominenter Match-Score Banner am oberen Rand */}
-        <div className={`mb-4 px-4 py-3 rounded-xl ${bgColor} border-2 ${percent >= 80 ? 'border-green-300' : percent >= 60 ? 'border-primary-300' : 'border-yellow-300'}`}>
+        <div
+          className={`mb-4 px-4 py-3 rounded-xl ${bgColor} border-2 ${percent >= 80 ? 'border-green-300' : percent >= 60 ? 'border-primary-300' : 'border-yellow-300'}`}
+        >
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Award className={`w-5 h-5 sm:w-6 sm:h-6 ${color}`} strokeWidth={2.5} />
@@ -124,7 +125,9 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
                 {match.therapist.displayName || 'Therapeut:in'}
               </h3>
               {match.therapist.title && (
-                <p className="text-xs sm:text-sm text-gray-600 break-words line-clamp-1">{match.therapist.title}</p>
+                <p className="text-xs sm:text-sm text-gray-600 break-words line-clamp-1">
+                  {match.therapist.title}
+                </p>
               )}
             </div>
           </div>
@@ -142,7 +145,9 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
 
         {/* Headline */}
         {match.therapist.headline && (
-          <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2 break-words">{match.therapist.headline}</p>
+          <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2 break-words">
+            {match.therapist.headline}
+          </p>
         )}
 
         {/* Warum passt dieser Therapeut? */}
@@ -150,7 +155,8 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
             <h4 className="text-sm font-bold text-gray-900">
-              Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu dir?
+              Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu
+              dir?
             </h4>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -171,17 +177,42 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           {/* Standort/Distanz */}
           {match.distanceKm !== undefined && (
             <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
               {match.distanceKm} km
             </span>
           )}
           {match.therapist.city && !match.distanceKm && (
             <span className="flex items-center gap-1 break-words max-w-full">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <svg
+                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
               </svg>
               {match.therapist.city}
             </span>
@@ -190,8 +221,18 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           {/* Online */}
           {match.therapist.online && (
             <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <svg
+                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
               Online
             </span>
@@ -200,7 +241,11 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
           {/* Bewertung */}
           {match.therapist.rating && match.therapist.rating > 0 && (
             <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-yellow-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
               {match.therapist.rating.toFixed(1)}
@@ -252,7 +297,9 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
                 {Object.entries(match.scoreBreakdown.components).map(([key, value]) => (
                   <div key={key} className="flex justify-between gap-2">
                     <span className="text-gray-500 capitalize break-words">{key}:</span>
-                    <span className="font-medium whitespace-nowrap">{Math.round(value.score * 100)}%</span>
+                    <span className="font-medium whitespace-nowrap">
+                      {Math.round(value.score * 100)}%
+                    </span>
                   </div>
                 ))}
               </div>
@@ -278,23 +325,23 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export function MatchingResults() {
-  const { results, showResults, closeWizard, openWizard } = useMatchingWizard()
+  const { results, showResults, closeWizard, openWizard } = useMatchingWizard();
 
-  if (!showResults || !results) return null
+  if (!showResults || !results) return null;
 
   const handleNewSearch = () => {
-    openWizard()
-  }
+    openWizard();
+  };
 
   const handleClose = () => {
-    closeWizard()
+    closeWizard();
     // Smooth scroll to top of page
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <AnimatePresence>
@@ -329,8 +376,8 @@ export function MatchingResults() {
                   {results.total === 0
                     ? 'Leider keine passenden Therapeut:innen gefunden.'
                     : results.total === 1
-                    ? 'Wir haben die perfekte Therapeut:in für dich gefunden!'
-                    : `Wir haben ${results.total} Therapeut:innen gefunden, die gut zu dir passen!`}
+                      ? 'Wir haben die perfekte Therapeut:in für dich gefunden!'
+                      : `Wir haben ${results.total} Therapeut:innen gefunden, die gut zu dir passen!`}
                 </p>
               </div>
             </div>
@@ -415,5 +462,5 @@ export function MatchingResults() {
         </div>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }

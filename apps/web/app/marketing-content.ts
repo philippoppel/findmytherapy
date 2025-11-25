@@ -313,12 +313,12 @@ export const featureTabs: FeatureTab[] = [
     points: [
       {
         title: 'Webseiten-Statistiken',
-        description: 'Seitenaufrufe und Klicks auf deiner Praxis-Webseite – verständlich aufbereitet.',
+        description:
+          'Seitenaufrufe und Klicks auf deiner Praxis-Webseite – verständlich aufbereitet.',
       },
       {
         title: 'Anfragen-Übersicht',
-        description:
-          'Anzahl der Anfragen und Interesse an deinen Angeboten – für bessere Planung.',
+        description: 'Anzahl der Anfragen und Interesse an deinen Angeboten – für bessere Planung.',
       },
       {
         title: 'Termin-Dashboard',
@@ -652,60 +652,60 @@ import {
   getFilteredClientBenefits,
   getFilteredTherapistBenefits,
   getFilteredContactCta,
-} from '@/lib/content-filters'
+} from '@/lib/content-filters';
 
 /**
  * Get navigation items with disabled features removed
  */
 export function getMarketingNavigation() {
-  return filterNavigationItems(marketingNavigation)
+  return filterNavigationItems(marketingNavigation);
 }
 
 /**
  * Get hero content with feature-aware adjustments
  */
 export function getHeroContent() {
-  return getFilteredHeroContent(heroContent)
+  return getFilteredHeroContent(heroContent);
 }
 
 /**
  * Get why content with feature-aware adjustments
  */
 export function getWhyContent() {
-  return getFilteredWhyContent(whyContent)
+  return getFilteredWhyContent(whyContent);
 }
 
 /**
  * Get feature tabs with disabled features removed
  */
 export function getFeatureTabs() {
-  return filterFeatureTabs(featureTabs)
+  return filterFeatureTabs(featureTabs);
 }
 
 /**
  * Get client benefits with disabled features removed
  */
 export function getClientBenefits() {
-  return getFilteredClientBenefits(clientBenefits)
+  return getFilteredClientBenefits(clientBenefits);
 }
 
 /**
  * Get therapist benefits with disabled features removed
  */
 export function getTherapistBenefits() {
-  return getFilteredTherapistBenefits(therapistBenefits)
+  return getFilteredTherapistBenefits(therapistBenefits);
 }
 
 /**
  * Get FAQ items with disabled feature questions removed
  */
 export function getFAQItems() {
-  return filterFAQItems(faqItems)
+  return filterFAQItems(faqItems);
 }
 
 /**
  * Get contact CTA with feature-aware adjustments
  */
 export function getContactCta() {
-  return getFilteredContactCta(contactCta)
+  return getFilteredContactCta(contactCta);
 }

@@ -6,17 +6,14 @@ import { captureError } from '@/lib/monitoring';
  * GET /api/microsites/[slug]
  * Public API endpoint to fetch microsite data for ISR
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params;
 
     if (!slug) {
       return NextResponse.json(
         { success: false, message: 'Slug ist erforderlich' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +29,7 @@ export async function GET(
           redirect: redirect.toSlug,
           message: 'Diese URL wurde verschoben',
         },
-        { status: 301 }
+        { status: 301 },
       );
     }
 
@@ -102,7 +99,7 @@ export async function GET(
     if (!profile) {
       return NextResponse.json(
         { success: false, message: 'Microsite nicht gefunden' },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -151,14 +148,14 @@ export async function GET(
         headers: {
           'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
         },
-      }
+      },
     );
   } catch (error) {
     captureError(error, { location: 'api/microsites/[slug]:get' });
 
     return NextResponse.json(
       { success: false, message: 'Microsite konnte nicht geladen werden' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

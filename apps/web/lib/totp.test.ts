@@ -24,13 +24,8 @@ process.env.S3_ACCESS_KEY_ID ??= 'minio';
 process.env.S3_SECRET_ACCESS_KEY ??= 'minio-secret';
 process.env.APP_BASE_URL ??= 'http://localhost:3000';
 
-const {
-  createTotpUri,
-  generateTotpSecret,
-  sealTotpSecret,
-  unsealTotpSecret,
-  verifyTotpCode,
-} = require('./totp') as typeof import('./totp');
+const { createTotpUri, generateTotpSecret, sealTotpSecret, unsealTotpSecret, verifyTotpCode } =
+  require('./totp') as typeof import('./totp');
 
 describe('totp helpers', () => {
   const fixedDate = new Date('2024-01-01T00:00:00Z');

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getTherapistCards } from '@/app/therapists/getTherapistCards'
+import { NextRequest, NextResponse } from 'next/server';
+import { getTherapistCards } from '@/app/therapists/getTherapistCards';
 
 // Force this route to be dynamic since it uses search params
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/therapists
@@ -13,14 +13,14 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
-    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 200)
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const searchParams = request.nextUrl.searchParams;
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 200);
+    const offset = parseInt(searchParams.get('offset') || '0');
 
     const { therapists, total } = await getTherapistCards({
       limit,
       offset,
-    })
+    });
 
     return NextResponse.json({
       therapists,
@@ -28,12 +28,9 @@ export async function GET(request: NextRequest) {
       limit,
       offset,
       hasMore: offset + therapists.length < total,
-    })
+    });
   } catch (error) {
-    console.error('Error fetching therapists:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch therapists' },
-      { status: 500 }
-    )
+    console.error('Error fetching therapists:', error);
+    return NextResponse.json({ error: 'Failed to fetch therapists' }, { status: 500 });
   }
 }

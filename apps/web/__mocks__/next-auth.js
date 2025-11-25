@@ -5,4 +5,4 @@ module.exports = {
   providers: {
     Credentials: jest.fn(() => ({})),
   },
-}
+};

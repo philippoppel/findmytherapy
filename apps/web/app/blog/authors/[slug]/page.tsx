@@ -1,36 +1,36 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
-import { getAllAuthors } from '@/lib/authors'
-import { blogPosts } from '@/lib/blogData'
-import { Badge } from '@mental-health/ui'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { getAllAuthors } from '@/lib/authors';
+import { blogPosts } from '@/lib/blogData';
+import { Badge } from '@mental-health/ui';
 
 type AuthorPageProps = {
   params: {
-    slug: string
-  }
-}
+    slug: string;
+  };
+};
 
 export function generateStaticParams() {
-  const authors = getAllAuthors()
+  const authors = getAllAuthors();
   return authors.map((author) => ({
     slug: author.slug,
-  }))
+  }));
 }
 
 export function generateMetadata({ params }: AuthorPageProps): Metadata {
-  const authors = getAllAuthors()
-  const author = authors.find((a) => a.slug === params.slug)
+  const authors = getAllAuthors();
+  const author = authors.find((a) => a.slug === params.slug);
 
   if (!author) {
     return {
       title: 'Autor nicht gefunden | FindMyTherapy Blog',
-    }
+    };
   }
 
-  const authorPosts = blogPosts.filter((post) => post.authorId === author.id)
-  const description = `${author.bio} ${authorPosts.length} Artikel auf FindMyTherapy.`
+  const authorPosts = blogPosts.filter((post) => post.authorId === author.id);
+  const description = `${author.bio} ${authorPosts.length} Artikel auf FindMyTherapy.`;
 
   return {
     title: `${author.name} – ${author.title} | FindMyTherapy Blog`,
@@ -57,7 +57,9 @@ export function generateMetadata({ params }: AuthorPageProps): Metadata {
       images: author.avatar
         ? [
             {
-              url: author.avatar.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`,
+              url: author.avatar.startsWith('http')
+                ? author.avatar
+                : `https://findmytherapy.net${author.avatar}`,
               width: 400,
               height: 400,
               alt: author.name,
@@ -77,22 +79,26 @@ export function generateMetadata({ params }: AuthorPageProps): Metadata {
       title: `${author.name} – ${author.title}`,
       description,
       images: author.avatar
-        ? [author.avatar.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`]
+        ? [
+            author.avatar.startsWith('http')
+              ? author.avatar
+              : `https://findmytherapy.net${author.avatar}`,
+          ]
         : ['https://findmytherapy.net/images/og-image.jpg'],
     },
-  }
+  };
 }
 
 export default function AuthorPage({ params }: AuthorPageProps) {
-  const authors = getAllAuthors()
-  const author = authors.find((a) => a.slug === params.slug)
+  const authors = getAllAuthors();
+  const author = authors.find((a) => a.slug === params.slug);
 
   if (!author) {
-    notFound()
+    notFound();
   }
 
   // Get all posts by this author
-  const authorPosts = blogPosts.filter((post) => post.authorId === author.id)
+  const authorPosts = blogPosts.filter((post) => post.authorId === author.id);
 
   // Extended Person Schema for E-E-A-T signals
   const authorStructuredData = {
@@ -103,7 +109,9 @@ export default function AuthorPage({ params }: AuthorPageProps) {
     jobTitle: author.title,
     description: author.bio,
     url: `https://findmytherapy.net/blog/authors/${author.slug}`,
-    image: author.avatar?.startsWith('http') ? author.avatar : `https://findmytherapy.net${author.avatar}`,
+    image: author.avatar?.startsWith('http')
+      ? author.avatar
+      : `https://findmytherapy.net${author.avatar}`,
     sameAs: Object.values(author.social || {}).filter(Boolean),
     knowsAbout: author.expertise.map((skill) => ({
       '@type': 'Thing',
@@ -131,7 +139,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
         url: `https://findmytherapy.net/blog/${post.slug}`,
       })),
     }),
-  }
+  };
 
   // Breadcrumb Schema
   const breadcrumbSchema = {
@@ -163,7 +171,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
         item: `https://findmytherapy.net/blog/authors/${author.slug}`,
       },
     ],
-  }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-16">
@@ -194,12 +202,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Avatar */}
             <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary-500/20 flex-shrink-0">
-              <Image
-                src={author.avatar}
-                alt={author.name}
-                fill
-                className="object-cover"
-              />
+              <Image src={author.avatar} alt={author.name} fill className="object-cover" />
             </div>
 
             {/* Bio */}
@@ -234,11 +237,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
                       className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                       aria-label="LinkedIn"
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                       </svg>
                     </a>
@@ -251,11 +250,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
                       className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                       aria-label="Twitter"
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                       </svg>
                     </a>
@@ -350,12 +345,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
             href="/blog"
             className="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -377,5 +367,5 @@ export default function AuthorPage({ params }: AuthorPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </main>
-  )
+  );
 }

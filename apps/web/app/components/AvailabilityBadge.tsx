@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { Clock, CheckCircle, AlertCircle, XCircle } from 'lucide-react'
+import { Clock, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
 
-type AvailabilityStatus = 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE'
+type AvailabilityStatus = 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE';
 
 interface AvailabilityBadgeProps {
-  status?: AvailabilityStatus | null
-  estimatedWaitWeeks?: number | null
-  acceptingClients?: boolean
-  variant?: 'compact' | 'default' | 'detailed'
-  className?: string
+  status?: AvailabilityStatus | null;
+  estimatedWaitWeeks?: number | null;
+  acceptingClients?: boolean;
+  variant?: 'compact' | 'default' | 'detailed';
+  className?: string;
 }
 
 export function AvailabilityBadge({
@@ -21,23 +21,25 @@ export function AvailabilityBadge({
 }: AvailabilityBadgeProps) {
   // Fallback: wenn kein Status, aber acceptingClients gesetzt ist
   if (!status && acceptingClients !== undefined) {
-    status = acceptingClients ? 'AVAILABLE' : 'WAITLIST'
+    status = acceptingClients ? 'AVAILABLE' : 'WAITLIST';
   }
 
   // Kein Status verfügbar
   if (!status) {
-    return null
+    return null;
   }
 
-  const config = getStatusConfig(status, estimatedWaitWeeks)
+  const config = getStatusConfig(status, estimatedWaitWeeks);
 
   if (variant === 'compact') {
     return (
       <div className={`inline-flex items-center gap-1.5 ${className}`}>
         <div className={`h-2.5 w-2.5 rounded-full ${config.dotColor} shadow-sm`} />
-        {variant !== 'compact' && <span className="text-xs font-medium text-gray-700">{config.label}</span>}
+        {variant !== 'compact' && (
+          <span className="text-xs font-medium text-gray-700">{config.label}</span>
+        )}
       </div>
-    )
+    );
   }
 
   if (variant === 'detailed') {
@@ -51,15 +53,17 @@ export function AvailabilityBadge({
           {config.sublabel && <span className="text-[10px] opacity-80">{config.sublabel}</span>}
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 ${config.bgColor} ${config.textColor} shadow-sm ${className}`}>
+    <div
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 ${config.bgColor} ${config.textColor} shadow-sm ${className}`}
+    >
       <config.icon className="h-3.5 w-3.5" />
       <span className="text-xs font-semibold">{config.label}</span>
     </div>
-  )
+  );
 }
 
 function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number | null) {
@@ -72,10 +76,10 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
         bgColor: 'bg-green-100',
         textColor: 'text-green-800',
         dotColor: 'bg-green-500',
-      }
+      };
 
     case 'LIMITED': {
-      const waitText = estimatedWaitWeeks ? `~${estimatedWaitWeeks} Wochen` : 'Begrenzt verfügbar'
+      const waitText = estimatedWaitWeeks ? `~${estimatedWaitWeeks} Wochen` : 'Begrenzt verfügbar';
       return {
         label: 'Eingeschränkt',
         sublabel: waitText,
@@ -83,11 +87,14 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
         bgColor: 'bg-amber-100',
         textColor: 'text-amber-800',
         dotColor: 'bg-amber-500',
-      }
+      };
     }
 
     case 'WAITLIST': {
-      const waitlistText = estimatedWaitWeeks && estimatedWaitWeeks > 0 ? `~${estimatedWaitWeeks} Wochen Wartezeit` : 'Warteliste'
+      const waitlistText =
+        estimatedWaitWeeks && estimatedWaitWeeks > 0
+          ? `~${estimatedWaitWeeks} Wochen Wartezeit`
+          : 'Warteliste';
       return {
         label: 'Warteliste',
         sublabel: waitlistText,
@@ -95,7 +102,7 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
         bgColor: 'bg-orange-100',
         textColor: 'text-orange-800',
         dotColor: 'bg-orange-500',
-      }
+      };
     }
 
     case 'UNAVAILABLE':
@@ -106,6 +113,6 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
         bgColor: 'bg-red-100',
         textColor: 'text-red-800',
         dotColor: 'bg-red-500',
-      }
+      };
   }
 }

@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { type ElementType, type PropsWithChildren, useEffect, useRef, useState } from 'react'
-import { cn } from '@mental-health/ui'
+import { type ElementType, type PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { cn } from '@mental-health/ui';
 
-type RevealVariant = 'up' | 'scale'
+type RevealVariant = 'up' | 'scale';
 
 interface RevealProps extends PropsWithChildren {
-  as?: ElementType
-  className?: string
-  delay?: number
-  variant?: RevealVariant
+  as?: ElementType;
+  className?: string;
+  delay?: number;
+  variant?: RevealVariant;
 }
 
 export function Reveal({
@@ -19,92 +19,91 @@ export function Reveal({
   delay = 0,
   variant = 'up',
 }: RevealProps) {
-  const ref = useRef<Element | null>(null)
-  const [visible, setVisible] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const ref = useRef<Element | null>(null);
+  const [visible, setVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
     // Check for reduced motion preference
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefersReducedMotion(mediaQuery.matches)
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
 
     const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches)
-    }
+      setPrefersReducedMotion(event.matches);
+    };
 
     if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', handleChange)
-      return () => mediaQuery.removeEventListener('change', handleChange)
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
     }
 
     if (typeof mediaQuery.addListener === 'function') {
-      mediaQuery.addListener(handleChange)
-      return () => mediaQuery.removeListener(handleChange)
+      mediaQuery.addListener(handleChange);
+      return () => mediaQuery.removeListener(handleChange);
     }
 
-    return () => {}
-  }, [])
+    return () => {};
+  }, []);
 
   useEffect(() => {
-    const element = ref.current
-    if (!element) return
+    const element = ref.current;
+    if (!element) return;
 
     // If user prefers reduced motion, show immediately
     if (prefersReducedMotion) {
-      setVisible(true)
-      return
+      setVisible(true);
+      return;
     }
 
     if (typeof window === 'undefined' || typeof window.IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return
+      setVisible(true);
+      return;
     }
 
-    let hasIntersected = false
+    let hasIntersected = false;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            hasIntersected = true
-            setVisible(true)
-            observer.disconnect()
+            hasIntersected = true;
+            setVisible(true);
+            observer.disconnect();
           }
-        })
+        });
       },
       { threshold: 0.15 },
-    )
+    );
 
-    observer.observe(element)
+    observer.observe(element);
 
     const fallbackTimer = window.setTimeout(() => {
       if (!hasIntersected) {
-        setVisible(true)
+        setVisible(true);
       }
-    }, 2000)
+    }, 2000);
 
     return () => {
-      observer.disconnect()
-      window.clearTimeout(fallbackTimer)
-    }
-  }, [prefersReducedMotion])
+      observer.disconnect();
+      window.clearTimeout(fallbackTimer);
+    };
+  }, [prefersReducedMotion]);
 
-  const variantClasses =
-    variant === 'scale'
-      ? 'opacity-0 scale-[0.97]'
-      : 'opacity-0 translate-y-4'
+  const variantClasses = variant === 'scale' ? 'opacity-0 scale-[0.97]' : 'opacity-0 translate-y-4';
 
-  const visibleClasses = 'opacity-100 translate-y-0 scale-100'
+  const visibleClasses = 'opacity-100 translate-y-0 scale-100';
 
   // Reduce delay on mobile
-  const effectiveDelay = prefersReducedMotion ? 0 : delay
+  const effectiveDelay = prefersReducedMotion ? 0 : delay;
 
   return (
     <Component
       ref={(node: Element | null) => {
-        ref.current = node
+        ref.current = node;
       }}
       className={cn(
-        prefersReducedMotion ? '' : 'transition-all duration-1000 md:duration-1000 will-change-transform motion-reduce:transition-none',
+        prefersReducedMotion
+          ? ''
+          : 'transition-all duration-1000 md:duration-1000 will-change-transform motion-reduce:transition-none',
         !visible && !prefersReducedMotion && variantClasses,
         visible && visibleClasses,
         prefersReducedMotion && 'opacity-100',
@@ -121,5 +120,5 @@ export function Reveal({
     >
       {children}
     </Component>
-  )
+  );
 }

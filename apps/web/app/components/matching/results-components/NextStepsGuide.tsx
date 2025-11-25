@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Phone, Mail, Calendar, MessageCircle } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { Phone, Mail, Calendar, MessageCircle } from 'lucide-react';
 
 export function NextStepsGuide() {
   const steps = [
     {
       icon: Phone,
       title: 'Profil ansehen',
-      description: 'Schau dir die Profile in Ruhe an. Lies über ihre Spezialisierungen und ihren Ansatz.',
+      description:
+        'Schau dir die Profile in Ruhe an. Lies über ihre Spezialisierungen und ihren Ansatz.',
     },
     {
       icon: MessageCircle,
@@ -18,14 +19,15 @@ export function NextStepsGuide() {
     {
       icon: Calendar,
       title: 'Erstgespräch vereinbaren',
-      description: 'Die meisten Therapeut:innen bieten ein kostenloses Erstgespräch an (15-30 Min).',
+      description:
+        'Die meisten Therapeut:innen bieten ein kostenloses Erstgespräch an (15-30 Min).',
     },
     {
       icon: Mail,
       title: 'Entscheidung in Ruhe treffen',
       description: 'Nach dem Erstgespräch entscheidest du, ob die Chemie stimmt. Kein Druck!',
     },
-  ]
+  ];
 
   return (
     <motion.div
@@ -38,7 +40,8 @@ export function NextStepsGuide() {
         Was jetzt? Deine nächsten Schritte
       </h3>
       <p className="mb-4 sm:mb-6 text-xs sm:text-sm md:text-base text-gray-600 break-words">
-        Du entscheidest das Tempo. Hier ist ein typischer Ablauf, aber es gibt kein Richtig oder Falsch:
+        Du entscheidest das Tempo. Hier ist ein typischer Ablauf, aber es gibt kein Richtig oder
+        Falsch:
       </p>
 
       <div className="space-y-3 sm:space-y-4">
@@ -55,10 +58,16 @@ export function NextStepsGuide() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
-                <span className="text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">Schritt {index + 1}</span>
-                <h4 className="text-sm sm:text-base font-semibold text-gray-900 break-words">{step.title}</h4>
+                <span className="text-xs sm:text-sm font-medium text-gray-500 whitespace-nowrap">
+                  Schritt {index + 1}
+                </span>
+                <h4 className="text-sm sm:text-base font-semibold text-gray-900 break-words">
+                  {step.title}
+                </h4>
               </div>
-              <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-600 break-words leading-relaxed">{step.description}</p>
+              <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-600 break-words leading-relaxed">
+                {step.description}
+              </p>
             </div>
           </motion.div>
         ))}
@@ -71,5 +80,5 @@ export function NextStepsGuide() {
         </p>
       </div>
     </motion.div>
-  )
+  );
 }

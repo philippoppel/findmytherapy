@@ -1,29 +1,29 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
-import { MapPin, Users, Phone, ArrowRight, CheckCircle2, Shield, Clock } from 'lucide-react'
-import { austrianCities, getCityBySlug, getAllCitySlugs } from '@/lib/seo/cities'
-import { prisma } from '@/lib/prisma'
-import { Button } from '@mental-health/ui'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { MapPin, Users, Phone, ArrowRight, CheckCircle2, Shield, Clock } from 'lucide-react';
+import { austrianCities, getCityBySlug, getAllCitySlugs } from '@/lib/seo/cities';
+import { prisma } from '@/lib/prisma';
+import { Button } from '@mental-health/ui';
 
 type CityPageProps = {
   params: {
-    city: string
-  }
-}
+    city: string;
+  };
+};
 
 export function generateStaticParams() {
-  return getAllCitySlugs().map((city) => ({ city }))
+  return getAllCitySlugs().map((city) => ({ city }));
 }
 
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
-  const city = getCityBySlug(params.city)
+  const city = getCityBySlug(params.city);
 
   if (!city) {
     return {
       title: 'Stadt nicht gefunden | FindMyTherapy',
-    }
+    };
   }
 
   return {
@@ -55,26 +55,26 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
       description: city.metaDescription,
       images: ['https://findmytherapy.net/images/og-image.jpg'],
     },
-  }
+  };
 }
 
 export default async function CityPage({ params }: CityPageProps) {
-  const city = getCityBySlug(params.city)
+  const city = getCityBySlug(params.city);
 
   if (!city) {
-    notFound()
+    notFound();
   }
 
   // Fetch therapists in this city
-  let therapistCount = 0
+  let therapistCount = 0;
   let featuredTherapists: Array<{
-    id: string
-    displayName: string | null
-    title: string | null
-    profileImageUrl: string | null
-    specialties: string[]
-    micrositeSlug: string | null
-  }> = []
+    id: string;
+    displayName: string | null;
+    title: string | null;
+    profileImageUrl: string | null;
+    specialties: string[];
+    micrositeSlug: string | null;
+  }> = [];
 
   try {
     const therapists = await prisma.therapistProfile.findMany({
@@ -96,9 +96,9 @@ export default async function CityPage({ params }: CityPageProps) {
         micrositeSlug: true,
       },
       take: 6,
-    })
+    });
 
-    featuredTherapists = therapists
+    featuredTherapists = therapists;
     therapistCount = await prisma.therapistProfile.count({
       where: {
         status: 'VERIFIED',
@@ -109,9 +109,9 @@ export default async function CityPage({ params }: CityPageProps) {
           mode: 'insensitive',
         },
       },
-    })
+    });
   } catch (error) {
-    console.warn('Could not fetch therapists for city page:', error)
+    console.warn('Could not fetch therapists for city page:', error);
   }
 
   // Common specialties for this city
@@ -122,7 +122,7 @@ export default async function CityPage({ params }: CityPageProps) {
     'Trauma & PTBS',
     'Beziehungsprobleme',
     'Essstörungen',
-  ]
+  ];
 
   // Schema.org structured data
   const citySchema = {
@@ -163,7 +163,7 @@ export default async function CityPage({ params }: CityPageProps) {
         },
       })),
     },
-  }
+  };
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -188,7 +188,7 @@ export default async function CityPage({ params }: CityPageProps) {
         item: `https://findmytherapy.net/stadt/${city.slug}`,
       },
     ],
-  }
+  };
 
   // FAQ data for this city
   const faqItems = [
@@ -208,7 +208,7 @@ export default async function CityPage({ params }: CityPageProps) {
       question: `Bieten Therapeut:innen in ${city.name} auch Online-Therapie an?`,
       answer: `Ja, viele Therapeut:innen in ${city.name} bieten auch Online-Sitzungen per Video an. Das ermöglicht flexible Termine und spart Anfahrtszeit. Bei FindMyTherapy kannst du gezielt nach Online-Angeboten filtern.`,
     },
-  ]
+  ];
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -221,7 +221,7 @@ export default async function CityPage({ params }: CityPageProps) {
         text: item.answer,
       },
     })),
-  }
+  };
 
   return (
     <>
@@ -278,7 +278,9 @@ export default async function CityPage({ params }: CityPageProps) {
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg">
                   <Users className="h-5 w-5 text-primary-300" />
                   <span>
-                    {therapistCount > 0 ? `${therapistCount} Therapeut:innen` : 'Therapeut:innen verfügbar'}
+                    {therapistCount > 0
+                      ? `${therapistCount} Therapeut:innen`
+                      : 'Therapeut:innen verfügbar'}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg">
@@ -379,7 +381,9 @@ export default async function CityPage({ params }: CityPageProps) {
                         <h3 className="font-semibold text-gray-900">
                           {therapist.displayName || 'Therapeut:in'}
                         </h3>
-                        <p className="text-sm text-gray-600">{therapist.title || 'Psychotherapeut:in'}</p>
+                        <p className="text-sm text-gray-600">
+                          {therapist.title || 'Psychotherapeut:in'}
+                        </p>
                         {therapist.specialties?.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2">
                             {therapist.specialties.slice(0, 2).map((s) => (
@@ -454,9 +458,7 @@ export default async function CityPage({ params }: CityPageProps) {
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Bereit für den ersten Schritt?
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Bereit für den ersten Schritt?</h2>
             <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
               Finde jetzt die passende therapeutische Unterstützung in {city.name}. Unsere digitale
               Ersteinschätzung hilft dir, den richtigen Ansatz zu finden.
@@ -483,5 +485,5 @@ export default async function CityPage({ params }: CityPageProps) {
         </section>
       </div>
     </>
-  )
+  );
 }

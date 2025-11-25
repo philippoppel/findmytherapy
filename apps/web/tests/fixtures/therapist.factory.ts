@@ -4,36 +4,36 @@
  * Factory functions for creating test therapist profiles
  */
 
-import { TherapistProfile, TherapistStatus } from '@prisma/client'
+import { TherapistProfile, TherapistStatus } from '@prisma/client';
 
 type CreateTherapistProfileInput = {
-  userId: string
-  status?: TherapistStatus
-  displayName?: string
-  title?: string
-  headline?: string
-  city?: string
-  country?: string
-  online?: boolean
-  acceptingClients?: boolean
-  yearsExperience?: number
-  priceMin?: number
-  priceMax?: number
-  specialties?: string[]
-  modalities?: string[]
-  languages?: string[]
-  isPublic?: boolean
-}
+  userId: string;
+  status?: TherapistStatus;
+  displayName?: string;
+  title?: string;
+  headline?: string;
+  city?: string;
+  country?: string;
+  online?: boolean;
+  acceptingClients?: boolean;
+  yearsExperience?: number;
+  priceMin?: number;
+  priceMax?: number;
+  specialties?: string[];
+  modalities?: string[];
+  languages?: string[];
+  isPublic?: boolean;
+};
 
-let profileCounter = 0
+let profileCounter = 0;
 
 /**
  * Create a test therapist profile
  */
 export function createTestTherapistProfile(
-  input: CreateTherapistProfileInput
+  input: CreateTherapistProfileInput,
 ): Omit<TherapistProfile, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
-  profileCounter++
+  profileCounter++;
 
   return {
     userId: input.userId,
@@ -62,11 +62,12 @@ export function createTestTherapistProfile(
     online: input.online ?? true,
     city: input.city || 'Wien',
     country: input.country || 'AT',
-    about: 'Ich bin eine erfahrene Psychotherapeutin mit Schwerpunkt auf Verhaltenstherapie und systemischen Ansätzen.',
+    about:
+      'Ich bin eine erfahrene Psychotherapeutin mit Schwerpunkt auf Verhaltenstherapie und systemischen Ansätzen.',
     availabilityNote: 'Termine von Mo-Fr 9:00-18:00 Uhr verfügbar',
     pricingNote: 'Kassenplätze nach Verfügbarkeit',
-    isPublic: input.isPublic ?? true
-  }
+    isPublic: input.isPublic ?? true,
+  };
 }
 
 /**
@@ -77,28 +78,25 @@ export function createPendingTherapistProfile(userId: string) {
     userId,
     status: 'PENDING',
     isPublic: false,
-    acceptingClients: false
-  })
+    acceptingClients: false,
+  });
 }
 
 /**
  * Create a verified therapist profile with specific specialties
  */
-export function createSpecializedTherapistProfile(
-  userId: string,
-  specialties: string[]
-) {
+export function createSpecializedTherapistProfile(userId: string, specialties: string[]) {
   return createTestTherapistProfile({
     userId,
     specialties,
     status: 'VERIFIED',
-    isPublic: true
-  })
+    isPublic: true,
+  });
 }
 
 /**
  * Reset the profile counter (useful for test isolation)
  */
 export function resetProfileCounter() {
-  profileCounter = 0
+  profileCounter = 0;
 }

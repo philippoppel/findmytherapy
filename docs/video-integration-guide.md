@@ -11,6 +11,7 @@ So fügen Sie ein **automatisch abspielendes Hero-Video** hinzu, das sofort beim
 Wählen Sie eine dieser **kostenlosen, hochwertigen** Optionen:
 
 #### **Option 1: Warmes Therapie-Gespräch** ⭐ EMPFOHLEN
+
 - **URL**: https://www.pexels.com/video/therapist-talking-to-a-patient-7579010/
 - **Download**: Klicken Sie auf "Free Download" → Wählen Sie "HD 1920x1080"
 - **Beschreibung**: Therapeutin im Gespräch, warme Atmosphäre, perfekt geloopt
@@ -18,6 +19,7 @@ Wählen Sie eine dieser **kostenlosen, hochwertigen** Optionen:
 - **Dauer**: 12 Sekunden
 
 #### **Option 2: Beruhigendes Licht (Abstract)**
+
 - **URL**: https://www.pexels.com/video/sunlight-streaming-through-curtains-4065893/
 - **Download**: "Free Download" → "HD 1920x1080"
 - **Beschreibung**: Sanftes Licht durch Vorhänge, sehr beruhigend
@@ -25,6 +27,7 @@ Wählen Sie eine dieser **kostenlosen, hochwertigen** Optionen:
 - **Dauer**: 15 Sekunden
 
 #### **Option 3: Moderne Praxis**
+
 - **URL**: https://www.pexels.com/video/modern-office-space-3255275/
 - **Download**: "Free Download" → "HD 1920x1080"
 - **Beschreibung**: Helles, modernes Büro mit Pflanzen
@@ -48,6 +51,7 @@ mkdir -p videos
 ```
 
 **Dateistruktur danach:**
+
 ```
 /public/
   └── videos/
@@ -64,9 +68,13 @@ Die Komponente ist bereits vorbereitet! Einfach die Kommentare entfernen:
 **Datei öffnen**: `/apps/web/app/components/marketing/MarketingHero.tsx`
 
 **Aktuell (Zeile 96-105)**:
+
 ```tsx
-{/* Video Option - Aktuell deaktiviert, aktivieren wenn Video verfügbar */}
-{/* <video
+{
+  /* Video Option - Aktuell deaktiviert, aktivieren wenn Video verfügbar */
+}
+{
+  /* <video
   autoPlay
   muted
   loop
@@ -75,12 +83,16 @@ Die Komponente ist bereits vorbereitet! Einfach die Kommentare entfernen:
 >
   <source src="/videos/hero-therapy.mp4" type="video/mp4" />
   <source src="/videos/hero-therapy.webm" type="video/webm" />
-</video> */}
+</video> */
+}
 ```
 
 **Ändern zu** (Kommentare entfernen):
+
 ```tsx
-{/* Video wird automatisch abgespielt */}
+{
+  /* Video wird automatisch abgespielt */
+}
 <video
   autoPlay
   muted
@@ -90,20 +102,25 @@ Die Komponente ist bereits vorbereitet! Einfach die Kommentare entfernen:
 >
   <source src="/videos/hero-therapy.mp4" type="video/mp4" />
   <source src="/videos/hero-therapy.webm" type="video/webm" />
-</video>
+</video>;
 ```
 
 **Dann das Bild auskommentieren** (Zeile 107-115):
+
 ```tsx
-{/* Fallback: Statisches Bild wenn Video nicht lädt */}
-{/* <Image
+{
+  /* Fallback: Statisches Bild wenn Video nicht lädt */
+}
+{
+  /* <Image
   src={content.image.src}
   alt={content.image.alt}
   width={1280}
   height={853}
   className="relative z-10 h-full w-full rounded-xl object-cover shadow-soft"
   priority
-/> */}
+/> */
+}
 ```
 
 ---
@@ -133,13 +150,7 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 >
   {/* Video Background - Vollbild */}
   <div className="absolute inset-0 z-0">
-    <video
-      autoPlay
-      muted
-      loop
-      playsInline
-      className="h-full w-full object-cover"
-    >
+    <video autoPlay muted loop playsInline className="h-full w-full object-cover">
       <source src="/videos/hero-background.mp4" type="video/mp4" />
     </video>
     {/* Overlay für bessere Text-Lesbarkeit */}
@@ -160,18 +171,21 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ### Dateigröße reduzieren (wichtig für Performance!)
 
 **Online Tool (einfachste Lösung)**:
+
 1. Öffnen Sie https://www.freeconvert.com/video-compressor
 2. Upload Ihr Video
 3. Ziel-Größe: ~5-10MB
 4. Download komprimierte Version
 
 **Mit HandBrake (Desktop App, kostenlos)**:
+
 1. Download: https://handbrake.fr/
 2. Öffnen Sie Ihr Video
 3. Preset: "Web" → "Gmail Large 3 Minutes 720p30"
 4. Start Encode
 
 **Ziel-Spezifikationen:**
+
 - **Auflösung**: 1920x1080 (Full HD)
 - **Dateigröße**: < 10MB
 - **Format**: MP4 (H.264)
@@ -185,35 +199,42 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ### Praxis & Office-Szenen
 
 **Modernes Büro mit Pflanzen**
+
 - **URL**: https://www.pexels.com/video/modern-office-plants-6774270/
 - **Download**: HD 1920x1080
 
 **Gemütlicher Raum**
+
 - **URL**: https://www.pexels.com/video/cozy-interior-design-5359634/
 - **Download**: HD 1920x1080
 
 ### Emotionale / Abstrakte Hintergründe
 
 **Sanftes Licht**
+
 - **URL**: https://www.pexels.com/video/light-bokeh-4706154/
 - **Download**: HD 1920x1080
 - **Perfekt für**: Beruhigende Backgrounds
 
 **Natur / Pflanzen**
+
 - **URL**: https://www.pexels.com/video/plants-in-breeze-5662875/
 - **Download**: HD 1920x1080
 
 **Sonnenaufgang durch Fenster**
+
 - **URL**: https://www.pexels.com/video/sunrise-window-view-6053647/
 - **Download**: HD 1920x1080
 
 ### Meditation / Wellness
 
 **Person in Meditation**
+
 - **URL**: https://www.pexels.com/video/woman-meditating-3205534/
 - **Download**: HD 1920x1080
 
 **Yoga / Stretching**
+
 - **URL**: https://www.pexels.com/video/woman-doing-yoga-3255205/
 - **Download**: HD 1920x1080
 
@@ -229,7 +250,7 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
   muted
   loop
   playsInline
-  poster="/images/hero/video-poster.jpg"  // ← Vorschaubild
+  poster="/images/hero/video-poster.jpg" // ← Vorschaubild
   className="..."
 >
   <source src="/videos/hero-therapy.mp4" type="video/mp4" />
@@ -272,10 +293,12 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ### Problem: Video wird nicht automatisch abgespielt
 
 **Lösung 1**: Sicherstellen dass `muted` gesetzt ist
+
 - Browser blockieren Autoplay mit Ton!
 - `muted` ist Pflicht für Autoplay
 
 **Lösung 2**: `playsInline` hinzufügen (wichtig für iOS)
+
 ```tsx
 <video autoPlay muted loop playsInline>
 ```
@@ -283,12 +306,14 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ### Problem: Video zu groß / lädt langsam
 
 **Lösung**: Video komprimieren (siehe "Video-Optimierung" oben)
+
 - Ziel: < 10MB
 - Tool: https://www.freeconvert.com/video-compressor
 
 ### Problem: Video sieht pixelig aus
 
 **Lösung**: Höhere Auflösung downloaden
+
 - Minimum: 1920x1080 (Full HD)
 - Optional: 4K, dann von Next.js downscalen lassen
 
@@ -317,17 +342,10 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ```tsx
 <video autoPlay muted loop playsInline>
   {/* Desktop: Full HD */}
-  <source
-    src="/videos/hero-therapy-hd.mp4"
-    type="video/mp4"
-    media="(min-width: 1024px)"
-  />
+  <source src="/videos/hero-therapy-hd.mp4" type="video/mp4" media="(min-width: 1024px)" />
 
   {/* Mobile: HD (kleiner) */}
-  <source
-    src="/videos/hero-therapy-mobile.mp4"
-    type="video/mp4"
-  />
+  <source src="/videos/hero-therapy-mobile.mp4" type="video/mp4" />
 </video>
 ```
 
@@ -336,6 +354,7 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ## ✅ Finale Checkliste
 
 ### Video Integration
+
 - [ ] Video von Pexels heruntergeladen
 - [ ] Video ins `/public/videos/` Verzeichnis kopiert
 - [ ] Video auf < 10MB komprimiert
@@ -345,12 +364,14 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 - [ ] Autoplay funktioniert
 
 ### Performance
+
 - [ ] Dateigröße < 10MB
 - [ ] WebM + MP4 beide vorhanden
 - [ ] Lazy loading für below-the-fold Videos
 - [ ] Mobile-Optimierung (optional)
 
 ### Accessibility
+
 - [ ] Poster-Image für Vorschau
 - [ ] Keine kritischen Infos nur im Video
 - [ ] Untertitel bei Sprache (falls zutreffend)
@@ -376,6 +397,7 @@ Falls Sie das Video als **Vollbild-Hintergrund** möchten (hinter dem Text):
 ## 💡 Pro-Tipp
 
 Für **maximalen Impact** kombinieren Sie:
+
 - ✅ Hero-Video (Option 1: Therapie-Gespräch)
 - ✅ Warme Farbpalette (bereits implementiert)
 - ✅ Emotionale Bilder in anderen Sections (siehe `/docs/opensource-images.md`)

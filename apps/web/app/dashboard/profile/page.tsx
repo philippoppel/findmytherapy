@@ -10,7 +10,7 @@ import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';
 import { MicrositePreviewButton } from './MicrositePreviewButton';
 
 // Force dynamic rendering for auth-protected page
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 const fetchTherapistProfile = async (userId: string) => {
   return prisma.therapistProfile.findUnique({
@@ -54,7 +54,9 @@ const statusTone: Record<string, string> = {
   REJECTED: 'bg-danger-50 text-danger-700 border-danger-200',
 };
 
-const buildInitialValues = (profile: NonNullable<Awaited<ReturnType<typeof fetchTherapistProfile>>>): SetcardFormValues => {
+const buildInitialValues = (
+  profile: NonNullable<Awaited<ReturnType<typeof fetchTherapistProfile>>>,
+): SetcardFormValues => {
   const fallbackNameParts = [
     profile.displayName,
     [profile.user?.firstName, profile.user?.lastName].filter(Boolean).join(' ').trim(),
@@ -85,7 +87,8 @@ const buildInitialValues = (profile: NonNullable<Awaited<ReturnType<typeof fetch
     country: profile.country ?? 'AT',
     priceMin: formatCurrencyInput(profile.priceMin),
     priceMax: formatCurrencyInput(profile.priceMax),
-    yearsExperience: typeof profile.yearsExperience === 'number' ? String(profile.yearsExperience) : '',
+    yearsExperience:
+      typeof profile.yearsExperience === 'number' ? String(profile.yearsExperience) : '',
     // Gallery
     galleryImage1: profile.galleryImages?.[0] ?? '',
     galleryImage2: profile.galleryImages?.[1] ?? '',
@@ -117,8 +120,8 @@ export default async function TherapistProfilePage() {
     profile.status === 'VERIFIED'
       ? 'Verifiziert'
       : profile.status === 'PENDING'
-      ? 'In Prüfung'
-      : 'Abgelehnt';
+        ? 'In Prüfung'
+        : 'Abgelehnt';
 
   const primaryListing = profile.listings[0];
   const initialValues = buildInitialValues(profile);
@@ -135,16 +138,15 @@ export default async function TherapistProfilePage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-neutral-900">Therapeuten-Profil</h1>
-                <p className="text-sm text-muted mt-0.5">
-                  Verwalte deine öffentliche Setcard
-                </p>
+                <p className="text-sm text-muted mt-0.5">Verwalte deine öffentliche Setcard</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <MicrositePreviewButton />
               <span
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm ${
-                  statusTone[profile.status] ?? 'bg-neutral-100 text-neutral-800 border border-neutral-200'
+                  statusTone[profile.status] ??
+                  'bg-neutral-100 text-neutral-800 border border-neutral-200'
                 }`}
               >
                 <ShieldCheck className="h-4 w-4" aria-hidden />
@@ -173,11 +175,7 @@ export default async function TherapistProfilePage() {
                 <h3 className="text-base font-bold text-neutral-900">Profilstatus</h3>
               </div>
               <dl className="space-y-3">
-                <QuickStat
-                  label="Status"
-                  value={statusLabel}
-                  icon={ShieldCheck}
-                />
+                <QuickStat label="Status" value={statusLabel} icon={ShieldCheck} />
                 <QuickStat
                   label="Aktualisiert"
                   value={profile.updatedAt.toLocaleDateString('de-AT')}
@@ -212,7 +210,11 @@ export default async function TherapistProfilePage() {
                 />
                 <QuickStat
                   label="Standort"
-                  value={profile.online ? `${profile.city ?? 'Online'} + Online` : profile.city ?? 'Nur vor Ort'}
+                  value={
+                    profile.online
+                      ? `${profile.city ?? 'Online'} + Online`
+                      : (profile.city ?? 'Nur vor Ort')
+                  }
                   icon={MapPin}
                 />
               </dl>
@@ -239,7 +241,9 @@ function QuickStat({ label, value, icon: Icon }: QuickStatProps) {
         </div>
       )}
       <div className="flex-1 min-w-0">
-        <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wide">{label}</div>
+        <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wide">
+          {label}
+        </div>
         <div className="text-sm text-neutral-900 font-medium mt-0.5 truncate">{value}</div>
       </div>
     </div>

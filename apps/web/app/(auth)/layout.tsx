@@ -1,11 +1,7 @@
-import Link from 'next/link'
-import { Compass } from 'lucide-react'
+import Link from 'next/link';
+import { Compass } from 'lucide-react';
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary-50 via-primary-50 to-primary-100">
       {/* Minimal Header */}
@@ -23,9 +19,7 @@ export default function AuthLayout({
               <span className="text-base font-semibold leading-tight text-neutral-900">
                 FindMyTherapy
               </span>
-              <span className="text-[10px] font-medium text-muted">
-                Mentale Orientierung
-              </span>
+              <span className="text-[10px] font-medium text-muted">Mentale Orientierung</span>
             </div>
           </Link>
 
@@ -39,16 +33,12 @@ export default function AuthLayout({
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Minimal Footer */}
       <footer className="border-t border-neutral-200 bg-white/60 py-6">
         <div className="mx-auto max-w-7xl px-4 text-center text-sm text-muted">
-          <p>
-            © {new Date().getFullYear()} FindMyTherapy. Der klare Weg zur richtigen Hilfe.
-          </p>
+          <p>© {new Date().getFullYear()} FindMyTherapy. Der klare Weg zur richtigen Hilfe.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
             <Link href="/privacy" className="hover:text-neutral-900">
               Datenschutz
@@ -63,5 +53,5 @@ export default function AuthLayout({
         </div>
       </footer>
     </div>
-  )
+  );
 }

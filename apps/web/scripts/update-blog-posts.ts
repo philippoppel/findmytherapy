@@ -96,11 +96,14 @@ const remainingPosts = [
       width: 1200,
       height: 630,
     },
-    relatedPosts: ['digitale-ersteinschaetzung-mental-health', 'wirksamkeit-psychotherapie-studien'],
+    relatedPosts: [
+      'digitale-ersteinschaetzung-mental-health',
+      'wirksamkeit-psychotherapie-studien',
+    ],
   },
-]
+];
 
-console.log('Blog post updates to apply:')
-console.log(JSON.stringify(remainingPosts, null, 2))
-console.log('\nThese updates need to be manually applied to lib/blogData.ts')
-console.log(`Total posts to update: ${remainingPosts.length}`)
+console.log('Blog post updates to apply:');
+console.log(JSON.stringify(remainingPosts, null, 2));
+console.log('\nThese updates need to be manually applied to lib/blogData.ts');
+console.log(`Total posts to update: ${remainingPosts.length}`);

@@ -161,9 +161,7 @@ export default function MicrositeDashboardPage() {
     <div className="p-8 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Meine Microsite</h1>
-        <p className="text-gray-600">
-          Verwalten Sie Ihre öffentliche Therapeuten-Microsite
-        </p>
+        <p className="text-gray-600">Verwalten Sie Ihre öffentliche Therapeuten-Microsite</p>
       </div>
 
       {message && (
@@ -198,9 +196,9 @@ export default function MicrositeDashboardPage() {
             <div className="flex-1 pr-8">
               <h3 className="font-semibold text-primary-900 mb-2">Was ist eine Microsite?</h3>
               <p className="text-sm text-primary-800 mb-3">
-                Ihre Microsite ist Ihre persönliche, professionelle Webseite auf FindMyTherapy.
-                Sie wird automatisch aus Ihrem Profil generiert und ist unter einer eigenen URL erreichbar
-                (z.B. findmytherapy.com/t/ihr-name).
+                Ihre Microsite ist Ihre persönliche, professionelle Webseite auf FindMyTherapy. Sie
+                wird automatisch aus Ihrem Profil generiert und ist unter einer eigenen URL
+                erreichbar (z.B. findmytherapy.com/t/ihr-name).
               </p>
               <div className="text-sm text-primary-800">
                 <strong>Vorteile:</strong>
@@ -229,9 +227,7 @@ export default function MicrositeDashboardPage() {
           </div>
           <span
             className={`px-4 py-2 rounded-full text-sm font-medium ${
-              status === 'PUBLISHED'
-                ? 'bg-green-100 text-green-800'
-                : 'bg-gray-100 text-gray-800'
+              status === 'PUBLISHED' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
             }`}
           >
             {status === 'PUBLISHED' ? '✓ Veröffentlicht' : 'Entwurf'}
@@ -248,11 +244,7 @@ export default function MicrositeDashboardPage() {
                 : 'bg-primary-600 text-white hover:bg-primary-700'
             } disabled:opacity-50 transition-colors`}
           >
-            {isPublishing
-              ? 'Lädt...'
-              : status === 'PUBLISHED'
-              ? 'Zurückziehen'
-              : 'Veröffentlichen'}
+            {isPublishing ? 'Lädt...' : status === 'PUBLISHED' ? 'Zurückziehen' : 'Veröffentlichen'}
           </button>
           <button
             onClick={handlePreview}
@@ -282,9 +274,7 @@ export default function MicrositeDashboardPage() {
               placeholder="ihr-name"
             />
           </div>
-          {slugChecking && (
-            <p className="text-sm text-gray-500 mt-1">Prüfe Verfügbarkeit...</p>
-          )}
+          {slugChecking && <p className="text-sm text-gray-500 mt-1">Prüfe Verfügbarkeit...</p>}
           {slugAvailable === true && customSlug !== slug && (
             <p className="text-sm text-green-600 mt-1">✓ Verfügbar</p>
           )}
@@ -310,10 +300,7 @@ export default function MicrositeDashboardPage() {
         <button
           onClick={handleSaveSlug}
           disabled={
-            isSaving ||
-            customSlug === slug ||
-            slugAvailable === false ||
-            customSlug.length < 3
+            isSaving || customSlug === slug || slugAvailable === false || customSlug.length < 3
           }
           className="px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >

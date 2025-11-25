@@ -9,9 +9,7 @@ export function MicrositeQualifications({ qualifications }: MicrositeQualificati
 
   return (
     <section className="bg-white rounded-lg shadow-sm p-8">
-      <h2 className="text-3xl font-semibold mb-6 text-gray-900">
-        Qualifikationen & Zertifikate
-      </h2>
+      <h2 className="text-3xl font-semibold mb-6 text-gray-900">Qualifikationen & Zertifikate</h2>
 
       <div className="space-y-3">
         {qualifications.map((qualification, index) => (

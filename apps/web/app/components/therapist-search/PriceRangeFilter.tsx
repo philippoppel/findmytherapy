@@ -1,72 +1,68 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
-import { Euro } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { Euro } from 'lucide-react';
 
 export type PriceRangeFilterProps = {
-  priceRange: { min: number; max: number } | null
-  onChange: (range: { min: number; max: number } | null) => void
-  priceRangeStats: { min: number; max: number } | null
-}
+  priceRange: { min: number; max: number } | null;
+  onChange: (range: { min: number; max: number } | null) => void;
+  priceRangeStats: { min: number; max: number } | null;
+};
 
-export function PriceRangeFilter({
-  priceRange,
-  onChange,
-  priceRangeStats,
-}: PriceRangeFilterProps) {
-  const [enabled, setEnabled] = useState(priceRange !== null)
+export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: PriceRangeFilterProps) {
+  const [enabled, setEnabled] = useState(priceRange !== null);
   const [minValue, setMinValue] = useState<string>(
-    priceRange?.min.toString() ?? priceRangeStats?.min.toString() ?? '50'
-  )
+    priceRange?.min.toString() ?? priceRangeStats?.min.toString() ?? '50',
+  );
   const [maxValue, setMaxValue] = useState<string>(
-    priceRange?.max.toString() ?? priceRangeStats?.max.toString() ?? '200'
-  )
+    priceRange?.max.toString() ?? priceRangeStats?.max.toString() ?? '200',
+  );
 
   useEffect(() => {
-    setEnabled(priceRange !== null)
+    setEnabled(priceRange !== null);
     if (priceRange) {
-      setMinValue(priceRange.min.toString())
-      setMaxValue(priceRange.max.toString())
+      setMinValue(priceRange.min.toString());
+      setMaxValue(priceRange.max.toString());
     }
-  }, [priceRange])
+  }, [priceRange]);
 
   const handleToggle = () => {
-    const newEnabled = !enabled
-    setEnabled(newEnabled)
+    const newEnabled = !enabled;
+    setEnabled(newEnabled);
 
     if (newEnabled) {
-      const min = parseInt(minValue) || priceRangeStats?.min || 50
-      const max = parseInt(maxValue) || priceRangeStats?.max || 200
-      onChange({ min, max })
+      const min = parseInt(minValue) || priceRangeStats?.min || 50;
+      const max = parseInt(maxValue) || priceRangeStats?.max || 200;
+      onChange({ min, max });
     } else {
-      onChange(null)
+      onChange(null);
     }
-  }
+  };
 
   const handleMinChange = (value: string) => {
-    setMinValue(value)
+    setMinValue(value);
     if (enabled && value) {
-      const min = parseInt(value)
-      const max = parseInt(maxValue)
+      const min = parseInt(value);
+      const max = parseInt(maxValue);
       if (!isNaN(min) && !isNaN(max)) {
-        onChange({ min, max })
+        onChange({ min, max });
       }
     }
-  }
+  };
 
   const handleMaxChange = (value: string) => {
-    setMaxValue(value)
+    setMaxValue(value);
     if (enabled && value) {
-      const min = parseInt(minValue)
-      const max = parseInt(value)
+      const min = parseInt(minValue);
+      const max = parseInt(value);
       if (!isNaN(min) && !isNaN(max)) {
-        onChange({ min, max })
+        onChange({ min, max });
       }
     }
-  }
+  };
 
   if (!priceRangeStats) {
-    return null
+    return null;
   }
 
   return (
@@ -138,5 +134,5 @@ export function PriceRangeFilter({
         </div>
       )}
     </div>
-  )
+  );
 }

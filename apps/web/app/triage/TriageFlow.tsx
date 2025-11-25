@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useCallback, useEffect, useMemo, useState, type ComponentType } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useCallback, useEffect, useMemo, useState, type ComponentType } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
   ArrowLeft,
@@ -14,9 +14,9 @@ import {
   AlertTriangle,
   Phone,
   Info,
-} from 'lucide-react'
-import { Button } from '@mental-health/ui'
-import { track } from '../../lib/analytics'
+} from 'lucide-react';
+import { Button } from '@mental-health/ui';
+import { track } from '../../lib/analytics';
 import {
   phq9Questions,
   gad7Questions,
@@ -30,39 +30,41 @@ import {
   phq9SeverityDescriptions,
   gad7SeverityLabels,
   gad7SeverityDescriptions,
-} from '../../lib/triage/questionnaires'
-import { QuestionTooltip } from './QuestionTooltip'
-import { AmpelVisualization } from './AmpelVisualization'
-import { CrisisResources } from './CrisisResources'
-import { ProgressChart } from './ProgressChart'
-import { TherapistCard } from './TherapistCard'
-import { TherapistComparison } from './TherapistComparison'
-import { TherapistFilters } from './TherapistFilters'
-import { HealthDataConsentDialog } from '../../components/HealthDataConsentDialog'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+} from '../../lib/triage/questionnaires';
+import { QuestionTooltip } from './QuestionTooltip';
+import { AmpelVisualization } from './AmpelVisualization';
+import { CrisisResources } from './CrisisResources';
+import { ProgressChart } from './ProgressChart';
+import { TherapistCard } from './TherapistCard';
+import { TherapistComparison } from './TherapistComparison';
+import { TherapistFilters } from './TherapistFilters';
+import { HealthDataConsentDialog } from '../../components/HealthDataConsentDialog';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type QuestionSection = {
-  id: string
-  type: 'phq9' | 'gad7' | 'support' | 'availability'
-  title: string
-  subtitle: string
-  icon: ComponentType<{ className?: string }>
-}
+  id: string;
+  type: 'phq9' | 'gad7' | 'support' | 'availability';
+  title: string;
+  subtitle: string;
+  icon: ComponentType<{ className?: string }>;
+};
 
 const questionSections: QuestionSection[] = [
   {
     id: 'phq9',
     type: 'phq9',
     title: 'PHQ-9: Depressive Symptome',
-    subtitle: 'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    subtitle:
+      'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
     icon: CheckCircle2,
   },
   {
     id: 'gad7',
     type: 'gad7',
     title: 'GAD-7: Angstsymptome',
-    subtitle: 'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    subtitle:
+      'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
     icon: Sparkles,
   },
   {
@@ -79,349 +81,348 @@ const questionSections: QuestionSection[] = [
     subtitle: 'Welche Optionen passen zu deinem Alltag?',
     icon: Calendar,
   },
-]
+];
 
 const riskLabelMap = {
   LOW: 'Niedrig',
   MEDIUM: 'Erhöht',
   HIGH: 'Hoch',
-} as const
+} as const;
 
 type Answers = {
-  phq9: number[]
-  gad7: number[]
-  support: string[]
-  availability: string[]
-}
+  phq9: number[];
+  gad7: number[];
+  support: string[];
+  availability: string[];
+};
 
 const initialAnswers: Answers = {
   phq9: [],
   gad7: [],
   support: [],
   availability: [],
-}
+};
 
 type TherapistRecommendation = {
-  id: string
-  name: string
-  title: string
-  headline?: string
-  focus: string[]
-  availability: string
-  location: string
-  rating: number
-  reviews: number
-  status: string
-  formatTags: Array<'online' | 'praesenz' | 'hybrid'>
-  highlights: string[]
-  acceptingClients?: boolean
-  services?: string[]
-  responseTime?: string
-  yearsExperience?: number
-  languages?: string[]
-  image?: string | null
-}
+  id: string;
+  name: string;
+  title: string;
+  headline?: string;
+  focus: string[];
+  availability: string;
+  location: string;
+  rating: number;
+  reviews: number;
+  status: string;
+  formatTags: Array<'online' | 'praesenz' | 'hybrid'>;
+  highlights: string[];
+  acceptingClients?: boolean;
+  services?: string[];
+  responseTime?: string;
+  yearsExperience?: number;
+  languages?: string[];
+  image?: string | null;
+};
 
 type CourseRecommendation = {
-  slug: string
-  title: string
-  shortDescription: string
-  focus: string
-  duration: string
-  format: string
-  outcomes: string[]
-  highlights: string[]
-}
+  slug: string;
+  title: string;
+  shortDescription: string;
+  focus: string;
+  duration: string;
+  format: string;
+  outcomes: string[];
+  highlights: string[];
+};
 
 type TriageFlowProps = {
-  embedded?: boolean
+  embedded?: boolean;
   historicalData?: Array<{
-    date: string
-    phq9Score: number
-    gad7Score: number
-  }>
-}
+    date: string;
+    phq9Score: number;
+    gad7Score: number;
+  }>;
+};
 
 type NextStepConfig = {
-  badgeLabel: string
-  containerClass: string
-  icon: ComponentType<{ className?: string }>
-  headline: string
-  description: string
-  actions: string[]
-}
+  badgeLabel: string;
+  containerClass: string;
+  icon: ComponentType<{ className?: string }>;
+  headline: string;
+  description: string;
+  actions: string[];
+};
 
 export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlowProps = {}) {
-  const { data: session } = useSession()
-  const router = useRouter()
-  const [hasConsent, setHasConsent] = useState(false)
-  const [showConsentDialog, setShowConsentDialog] = useState(true)
-  const [isCheckingConsent, setIsCheckingConsent] = useState(true)
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [hasConsent, setHasConsent] = useState(false);
+  const [showConsentDialog, setShowConsentDialog] = useState(true);
+  const [isCheckingConsent, setIsCheckingConsent] = useState(true);
 
-  const [sectionIndex, setSectionIndex] = useState(0)
-  const [questionIndex, setQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<Answers>(initialAnswers)
-  const [showSummary, setShowSummary] = useState(false)
+  const [sectionIndex, setSectionIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Answers>(initialAnswers);
+  const [showSummary, setShowSummary] = useState(false);
   const [recommendations, setRecommendations] = useState<{
-    therapists: TherapistRecommendation[]
-    courses: CourseRecommendation[]
-  }>({ therapists: [], courses: [] })
-  const [hasPersisted, setHasPersisted] = useState(false)
-  const [showCrisisBanner, setShowCrisisBanner] = useState(false)
-  const [selectedTherapists, setSelectedTherapists] = useState<string[]>([])
-  const [showComparison, setShowComparison] = useState(false)
+    therapists: TherapistRecommendation[];
+    courses: CourseRecommendation[];
+  }>({ therapists: [], courses: [] });
+  const [hasPersisted, setHasPersisted] = useState(false);
+  const [showCrisisBanner, setShowCrisisBanner] = useState(false);
+  const [selectedTherapists, setSelectedTherapists] = useState<string[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
   const [filters, setFilters] = useState<{
-    formats: string[]
-    specialties: string[]
-    languages: string[]
+    formats: string[];
+    specialties: string[];
+    languages: string[];
   }>({
     formats: [],
     specialties: [],
     languages: [],
-  })
+  });
 
   // Check if user has already given consent (only for logged-in users)
   useEffect(() => {
     const checkConsent = async () => {
       // Anonymous users don't need consent (data not stored with personal info)
       if (!session?.user?.id) {
-        setIsCheckingConsent(false)
-        setShowConsentDialog(false)
-        setHasConsent(true) // Allow anonymous usage without consent
-        return
+        setIsCheckingConsent(false);
+        setShowConsentDialog(false);
+        setHasConsent(true); // Allow anonymous usage without consent
+        return;
       }
 
       // For logged-in users, check if consent was already given
       try {
-        const response = await fetch('/api/consent?scope=DATA_PROCESSING')
+        const response = await fetch('/api/consent?scope=DATA_PROCESSING');
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           if (data.consents && data.consents.length > 0) {
-            setHasConsent(true)
-            setShowConsentDialog(false)
+            setHasConsent(true);
+            setShowConsentDialog(false);
           } else {
             // No consent yet, show dialog
-            setShowConsentDialog(true)
+            setShowConsentDialog(true);
           }
         }
       } catch (error) {
-        console.error('Error checking consent:', error)
+        console.error('Error checking consent:', error);
         // On error, don't block the user
-        setShowConsentDialog(false)
-        setHasConsent(true)
+        setShowConsentDialog(false);
+        setHasConsent(true);
       } finally {
-        setIsCheckingConsent(false)
+        setIsCheckingConsent(false);
       }
-    }
+    };
 
-    checkConsent()
-  }, [session])
+    checkConsent();
+  }, [session]);
 
   const handleConsent = () => {
-    setHasConsent(true)
-    setShowConsentDialog(false)
-    track('triage_consent_given', { source: 'triage_flow' })
-  }
+    setHasConsent(true);
+    setShowConsentDialog(false);
+    track('triage_consent_given', { source: 'triage_flow' });
+  };
 
   const handleDeclineConsent = () => {
-    track('triage_consent_declined', { source: 'triage_flow' })
+    track('triage_consent_declined', { source: 'triage_flow' });
     // Redirect back to home or show message
-    router.push('/')
-  }
+    router.push('/');
+  };
 
-  const currentSection = questionSections[sectionIndex]
+  const currentSection = questionSections[sectionIndex];
 
   const toggleTherapistSelection = (therapistId: string) => {
     setSelectedTherapists((prev) => {
       if (prev.includes(therapistId)) {
-        return prev.filter((id) => id !== therapistId)
+        return prev.filter((id) => id !== therapistId);
       } else {
         // Max 3 Therapeuten für Vergleich
         if (prev.length >= 3) {
-          return prev
+          return prev;
         }
-        return [...prev, therapistId]
+        return [...prev, therapistId];
       }
-    })
-  }
+    });
+  };
 
   // Filter Therapists
   const filteredTherapists = useMemo(() => {
-    let result = recommendations.therapists
+    let result = recommendations.therapists;
 
     // Format Filter
     if (filters.formats.length > 0) {
-      result = result.filter((t) =>
-        t.formatTags.some((tag) => filters.formats.includes(tag))
-      )
+      result = result.filter((t) => t.formatTags.some((tag) => filters.formats.includes(tag)));
     }
 
     // Specialty Filter
     if (filters.specialties.length > 0) {
-      result = result.filter((t) =>
-        t.focus.some((f) => filters.specialties.includes(f))
-      )
+      result = result.filter((t) => t.focus.some((f) => filters.specialties.includes(f)));
     }
 
     // Language Filter
     if (filters.languages.length > 0) {
-      result = result.filter((t) =>
-        t.languages?.some((l) => filters.languages.includes(l))
-      )
+      result = result.filter((t) => t.languages?.some((l) => filters.languages.includes(l)));
     }
 
-    return result
-  }, [recommendations.therapists, filters])
+    return result;
+  }, [recommendations.therapists, filters]);
 
   // Available filter options from all therapists
   const availableSpecialties = useMemo(() => {
-    const allSpecialties = recommendations.therapists.flatMap((t) => t.focus)
-    return Array.from(new Set(allSpecialties)).sort()
-  }, [recommendations.therapists])
+    const allSpecialties = recommendations.therapists.flatMap((t) => t.focus);
+    return Array.from(new Set(allSpecialties)).sort();
+  }, [recommendations.therapists]);
 
   const availableLanguages = useMemo(() => {
     const allLanguages = recommendations.therapists
       .flatMap((t) => t.languages || [])
-      .filter(Boolean)
-    return Array.from(new Set(allLanguages)).sort()
-  }, [recommendations.therapists])
+      .filter(Boolean);
+    return Array.from(new Set(allLanguages)).sort();
+  }, [recommendations.therapists]);
 
-  const selectedTherapistData = filteredTherapists.filter((t) =>
-    selectedTherapists.includes(t.id)
-  )
+  const selectedTherapistData = filteredTherapists.filter((t) => selectedTherapists.includes(t.id));
 
   const currentQuestions = useMemo(() => {
-    if (currentSection.type === 'phq9') return phq9Questions
-    if (currentSection.type === 'gad7') return gad7Questions
-    return []
-  }, [currentSection.type])
+    if (currentSection.type === 'phq9') return phq9Questions;
+    if (currentSection.type === 'gad7') return gad7Questions;
+    return [];
+  }, [currentSection.type]);
 
-  const totalQuestions = phq9Questions.length + gad7Questions.length + 2 // +2 for support and availability
-  const answeredQuestions = answers.phq9.length + answers.gad7.length + (answers.support.length > 0 ? 1 : 0) + (answers.availability.length > 0 ? 1 : 0)
-  const progress = Math.round((answeredQuestions / totalQuestions) * 100)
+  const totalQuestions = phq9Questions.length + gad7Questions.length + 2; // +2 for support and availability
+  const answeredQuestions =
+    answers.phq9.length +
+    answers.gad7.length +
+    (answers.support.length > 0 ? 1 : 0) +
+    (answers.availability.length > 0 ? 1 : 0);
+  const progress = Math.round((answeredQuestions / totalQuestions) * 100);
   const progressCopy = useMemo(() => {
     if (progress >= 90) {
-      return 'Fast geschafft – nur noch letzte Antworten.'
+      return 'Fast geschafft – nur noch letzte Antworten.';
     }
     if (progress >= 60) {
-      return 'Mehr als die Hälfte ist erledigt.'
+      return 'Mehr als die Hälfte ist erledigt.';
     }
     if (progress >= 30) {
-      return 'Guter Start – bleib kurz dran.'
+      return 'Guter Start – bleib kurz dran.';
     }
-    return 'Kurzer Check – das dauert nur eine Minute.'
-  }, [progress])
+    return 'Kurzer Check – das dauert nur eine Minute.';
+  }, [progress]);
 
-  const handleScaleAnswer = useCallback((value: number) => {
-    const sectionType = currentSection.type
-    if (sectionType !== 'phq9' && sectionType !== 'gad7') return
+  const handleScaleAnswer = useCallback(
+    (value: number) => {
+      const sectionType = currentSection.type;
+      if (sectionType !== 'phq9' && sectionType !== 'gad7') return;
 
-    setAnswers((prev) => {
-      const newAnswers = { ...prev }
-      const currentAnswers = [...newAnswers[sectionType]]
-      currentAnswers[questionIndex] = value
-      newAnswers[sectionType] = currentAnswers
-      return newAnswers
-    })
+      setAnswers((prev) => {
+        const newAnswers = { ...prev };
+        const currentAnswers = [...newAnswers[sectionType]];
+        currentAnswers[questionIndex] = value;
+        newAnswers[sectionType] = currentAnswers;
+        return newAnswers;
+      });
 
-    // PHQ-9 Item 9 (Suizidgedanken): Trigger Crisis Banner bei Antwort ≥1
-    if (sectionType === 'phq9' && questionIndex === 8 && value >= 1) {
-      setShowCrisisBanner(true)
-    }
-
-    // Auto-advance to next question
-    setTimeout(() => {
-      if (questionIndex < currentQuestions.length - 1) {
-        setQuestionIndex(questionIndex + 1)
-      } else {
-        // Move to next section
-        if (sectionIndex < questionSections.length - 1) {
-          setSectionIndex(sectionIndex + 1)
-          setQuestionIndex(0)
-        } else {
-          setShowSummary(true)
-        }
+      // PHQ-9 Item 9 (Suizidgedanken): Trigger Crisis Banner bei Antwort ≥1
+      if (sectionType === 'phq9' && questionIndex === 8 && value >= 1) {
+        setShowCrisisBanner(true);
       }
-    }, 300)
-  }, [currentSection.type, questionIndex, currentQuestions.length, sectionIndex])
+
+      // Auto-advance to next question
+      setTimeout(() => {
+        if (questionIndex < currentQuestions.length - 1) {
+          setQuestionIndex(questionIndex + 1);
+        } else {
+          // Move to next section
+          if (sectionIndex < questionSections.length - 1) {
+            setSectionIndex(sectionIndex + 1);
+            setQuestionIndex(0);
+          } else {
+            setShowSummary(true);
+          }
+        }
+      }, 300);
+    },
+    [currentSection.type, questionIndex, currentQuestions.length, sectionIndex],
+  );
 
   const toggleMultipleSelect = (option: string) => {
-    const sectionType = currentSection.type
-    if (sectionType !== 'support' && sectionType !== 'availability') return
+    const sectionType = currentSection.type;
+    if (sectionType !== 'support' && sectionType !== 'availability') return;
 
     setAnswers((prev) => {
-      const currentAnswers = prev[sectionType]
-      const alreadySelected = currentAnswers.includes(option)
+      const currentAnswers = prev[sectionType];
+      const alreadySelected = currentAnswers.includes(option);
 
       return {
         ...prev,
         [sectionType]: alreadySelected
           ? currentAnswers.filter((item) => item !== option)
           : [...currentAnswers, option],
-      }
-    })
-  }
+      };
+    });
+  };
 
   const nextSection = useCallback(() => {
     if (sectionIndex < questionSections.length - 1) {
-      setSectionIndex(sectionIndex + 1)
-      setQuestionIndex(0)
+      setSectionIndex(sectionIndex + 1);
+      setQuestionIndex(0);
     } else {
-      setShowSummary(true)
+      setShowSummary(true);
     }
-  }, [sectionIndex])
+  }, [sectionIndex]);
 
   const goNext = useCallback(() => {
     if (currentSection.type === 'phq9' || currentSection.type === 'gad7') {
       // For PHQ/GAD, check if current question is answered
-      const currentAnswer = answers[currentSection.type][questionIndex]
-      if (currentAnswer === undefined) return
+      const currentAnswer = answers[currentSection.type][questionIndex];
+      if (currentAnswer === undefined) return;
 
       if (questionIndex < currentQuestions.length - 1) {
-        setQuestionIndex(questionIndex + 1)
+        setQuestionIndex(questionIndex + 1);
       } else {
-        nextSection()
+        nextSection();
       }
     } else {
       // For multiple choice
-      nextSection()
+      nextSection();
     }
-  }, [answers, currentSection.type, currentQuestions.length, nextSection, questionIndex])
+  }, [answers, currentSection.type, currentQuestions.length, nextSection, questionIndex]);
 
   const goPrevious = useCallback(() => {
     if (currentSection.type === 'phq9' || currentSection.type === 'gad7') {
       if (questionIndex > 0) {
-        setQuestionIndex(questionIndex - 1)
+        setQuestionIndex(questionIndex - 1);
       } else if (sectionIndex > 0) {
-        setSectionIndex(sectionIndex - 1)
-        const prevSection = questionSections[sectionIndex - 1]
+        setSectionIndex(sectionIndex - 1);
+        const prevSection = questionSections[sectionIndex - 1];
         if (prevSection.type === 'phq9') {
-          setQuestionIndex(phq9Questions.length - 1)
+          setQuestionIndex(phq9Questions.length - 1);
         } else if (prevSection.type === 'gad7') {
-          setQuestionIndex(gad7Questions.length - 1)
+          setQuestionIndex(gad7Questions.length - 1);
         }
       }
     } else {
       if (sectionIndex > 0) {
-        setSectionIndex(sectionIndex - 1)
-        const prevSection = questionSections[sectionIndex - 1]
+        setSectionIndex(sectionIndex - 1);
+        const prevSection = questionSections[sectionIndex - 1];
         if (prevSection.type === 'phq9') {
-          setQuestionIndex(phq9Questions.length - 1)
+          setQuestionIndex(phq9Questions.length - 1);
         } else if (prevSection.type === 'gad7') {
-          setQuestionIndex(gad7Questions.length - 1)
+          setQuestionIndex(gad7Questions.length - 1);
         }
       }
     }
-  }, [currentSection.type, questionIndex, sectionIndex])
+  }, [currentSection.type, questionIndex, sectionIndex]);
 
   const resetFlow = () => {
-    setAnswers(initialAnswers)
-    setSectionIndex(0)
-    setQuestionIndex(0)
-    setShowSummary(false)
-    setRecommendations({ therapists: [], courses: [] })
-    setHasPersisted(false)
-  }
+    setAnswers(initialAnswers);
+    setSectionIndex(0);
+    setQuestionIndex(0);
+    setShowSummary(false);
+    setRecommendations({ therapists: [], courses: [] });
+    setHasPersisted(false);
+  };
 
   const {
     phq9Score,
@@ -434,13 +435,13 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
     phq9Item9Score,
     hasSuicidalIdeation,
   } = useMemo(() => {
-    const phq9Total = answers.phq9.reduce((sum, val) => sum + (val || 0), 0)
-    const gad7Total = answers.gad7.reduce((sum, val) => sum + (val || 0), 0)
-    const item9Score = answers.phq9[8] ?? 0
+    const phq9Total = answers.phq9.reduce((sum, val) => sum + (val || 0), 0);
+    const gad7Total = answers.gad7.reduce((sum, val) => sum + (val || 0), 0);
+    const item9Score = answers.phq9[8] ?? 0;
 
-    const phq9Sev = calculatePHQ9Severity(phq9Total)
-    const gad7Sev = calculateGAD7Severity(gad7Total)
-    const risk = assessRiskLevel(phq9Total, gad7Total, { phq9Item9Score: item9Score })
+    const phq9Sev = calculatePHQ9Severity(phq9Total);
+    const gad7Sev = calculateGAD7Severity(gad7Total);
+    const risk = assessRiskLevel(phq9Total, gad7Total, { phq9Item9Score: item9Score });
 
     return {
       phq9Score: phq9Total,
@@ -452,8 +453,8 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       requiresEmergency: risk.requiresEmergency,
       phq9Item9Score: item9Score,
       hasSuicidalIdeation: risk.hasSuicidalIdeation,
-    }
-  }, [answers.phq9, answers.gad7])
+    };
+  }, [answers.phq9, answers.gad7]);
 
   const nextStepConfig = useMemo<NextStepConfig>(() => {
     if (requiresEmergency) {
@@ -470,7 +471,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           'Telefonseelsorge 142 kontaktieren – rund um die Uhr, anonym und kostenlos.',
           'Eine Vertrauensperson informieren und nicht alleine bleiben.',
         ],
-      }
+      };
     }
 
     if (riskLevel === 'HIGH') {
@@ -486,7 +487,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           'Hausärzt:in oder Psychiater:in konsultieren, um eine kombinierte Behandlung zu prüfen.',
           'Digitale Programme nur ergänzend einsetzen, nicht als Ersatz für Therapie.',
         ],
-      }
+      };
     }
 
     if (riskLevel === 'MEDIUM') {
@@ -502,7 +503,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           'Zwischen den Terminen ein digitales Programm zur Stabilisierung nutzen.',
           'In 4–6 Wochen einen erneuten Check durchführen, um Veränderungen zu sehen.',
         ],
-      }
+      };
     }
 
     return {
@@ -517,8 +518,8 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         'Ein niedrigschwelliges Programm testen, um Resilienz weiter auszubauen.',
         'Bei Veränderungen oder erneuter Belastung die Ersteinschätzung wiederholen.',
       ],
-    }
-  }, [requiresEmergency, hasSuicidalIdeation, riskLevel])
+    };
+  }, [requiresEmergency, hasSuicidalIdeation, riskLevel]);
 
   const scoreBadges = useMemo(
     () => [
@@ -535,17 +536,17 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         value: `${gad7Score}/21 · ${gad7SeverityLabels[gad7Severity]}`,
       },
     ],
-    [riskLevel, phq9Score, phq9Severity, gad7Score, gad7Severity]
-  )
+    [riskLevel, phq9Score, phq9Severity, gad7Score, gad7Severity],
+  );
 
   const persistResults = useCallback(
     async ({ force = false }: { force?: boolean } = {}) => {
-      if (hasPersisted && !force) return
+      if (hasPersisted && !force) return;
 
       // For embedded mode, use mock data
       if (embedded) {
         setTimeout(() => {
-          setHasPersisted(true)
+          setHasPersisted(true);
           track('triage_completed', {
             phq9Score,
             gad7Score,
@@ -553,9 +554,9 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             source: 'embedded',
             requiresEmergency,
             hasSuicidalIdeation,
-          })
-        }, 1000)
-        return
+          });
+        }, 1000);
+        return;
       }
 
       try {
@@ -578,18 +579,18 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             phq9Item9Score,
             hasSuicidalIdeation,
           }),
-        })
+        });
 
-        const data = await response.json()
+        const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Die Ergebnisse konnten nicht gespeichert werden.')
+          throw new Error(data.message || 'Die Ergebnisse konnten nicht gespeichert werden.');
         }
 
         setRecommendations({
           therapists: data.recommendations?.therapists || [],
           courses: data.recommendations?.courses || [],
-        })
+        });
 
         track('triage_completed', {
           phq9Score,
@@ -599,15 +600,14 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           riskLevel,
           requiresEmergency,
           hasSuicidalIdeation,
-        })
-
+        });
       } catch (error) {
-        console.error('Failed to persist triage results', error)
+        console.error('Failed to persist triage results', error);
         track('triage_save_failed', {
           message: error instanceof Error ? error.message : 'unknown',
-        })
+        });
       } finally {
-        setHasPersisted(true)
+        setHasPersisted(true);
       }
     },
     [
@@ -622,56 +622,57 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       hasPersisted,
       phq9Item9Score,
       hasSuicidalIdeation,
-    ]
-  )
+    ],
+  );
 
   useEffect(() => {
-    if (!showSummary) return
-    void persistResults()
-  }, [showSummary, persistResults])
+    if (!showSummary) return;
+    void persistResults();
+  }, [showSummary, persistResults]);
 
   // Keyboard Navigation
   useEffect(() => {
-    if (showSummary) return // Disable keyboard nav on summary page
+    if (showSummary) return; // Disable keyboard nav on summary page
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      const isMultipleChoice = currentSection.type === 'support' || currentSection.type === 'availability'
+      const isMultipleChoice =
+        currentSection.type === 'support' || currentSection.type === 'availability';
 
       // Arrow Keys: Navigate between questions
       if (e.key === 'ArrowLeft') {
-        e.preventDefault()
-        goPrevious()
+        e.preventDefault();
+        goPrevious();
       } else if (e.key === 'ArrowRight' && !isMultipleChoice) {
-        e.preventDefault()
-        const currentAnswer = answers[currentSection.type as 'phq9' | 'gad7'][questionIndex]
+        e.preventDefault();
+        const currentAnswer = answers[currentSection.type as 'phq9' | 'gad7'][questionIndex];
         if (currentAnswer !== undefined) {
-          goNext()
+          goNext();
         }
       } else if (e.key === 'Enter' && !isMultipleChoice) {
-        e.preventDefault()
-        const currentAnswer = answers[currentSection.type as 'phq9' | 'gad7'][questionIndex]
+        e.preventDefault();
+        const currentAnswer = answers[currentSection.type as 'phq9' | 'gad7'][questionIndex];
         if (currentAnswer !== undefined) {
-          goNext()
+          goNext();
         }
       }
 
       // Number keys 0-3: Direct answer selection (only for PHQ/GAD)
       if (!isMultipleChoice && (currentSection.type === 'phq9' || currentSection.type === 'gad7')) {
-        const num = parseInt(e.key)
+        const num = parseInt(e.key);
         if (num >= 0 && num <= 3) {
-          e.preventDefault()
-          handleScaleAnswer(num)
+          e.preventDefault();
+          handleScaleAnswer(num);
         }
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [showSummary, currentSection, questionIndex, answers, goNext, goPrevious, handleScaleAnswer])
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showSummary, currentSection, questionIndex, answers, goNext, goPrevious, handleScaleAnswer]);
 
   // Summary view
   if (showSummary) {
-    const StepIcon = nextStepConfig.icon
+    const StepIcon = nextStepConfig.icon;
 
     return (
       <div className="space-y-6 lg:space-y-8">
@@ -708,9 +709,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                 {nextStepConfig.badgeLabel}
               </div>
               <h3 className="text-2xl font-semibold text-current">{nextStepConfig.headline}</h3>
-              <p className="text-sm leading-relaxed text-current">
-                {nextStepConfig.description}
-              </p>
+              <p className="text-sm leading-relaxed text-current">{nextStepConfig.description}</p>
             </header>
 
             <ul className="mt-6 space-y-3 text-sm leading-relaxed text-current">
@@ -736,9 +735,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         </div>
 
         {/* Crisis Resources if HIGH risk */}
-        {requiresEmergency && (
-          <CrisisResources />
-        )}
+        {requiresEmergency && <CrisisResources />}
 
         {/* Detailed Results */}
         <div className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10">
@@ -754,18 +751,23 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
               <p className="font-semibold">Wichtige Information zu Frage 9</p>
               <p className="mt-1">
-                Du hast angegeben, dass Gedanken an Selbstverletzung oder Tod vorhanden sind. Bitte nutze die oben genannten Krisenangebote und wende dich umgehend an Fachpersonen.
+                Du hast angegeben, dass Gedanken an Selbstverletzung oder Tod vorhanden sind. Bitte
+                nutze die oben genannten Krisenangebote und wende dich umgehend an Fachpersonen.
               </p>
             </div>
           )}
 
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-6">
-              <h4 className="text-lg font-semibold text-default">PHQ-9: {phq9SeverityLabels[phq9Severity]}</h4>
+              <h4 className="text-lg font-semibold text-default">
+                PHQ-9: {phq9SeverityLabels[phq9Severity]}
+              </h4>
               <p className="mt-2 text-sm text-muted">{phq9SeverityDescriptions[phq9Severity]}</p>
             </div>
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-6">
-              <h4 className="text-lg font-semibold text-default">GAD-7: {gad7SeverityLabels[gad7Severity]}</h4>
+              <h4 className="text-lg font-semibold text-default">
+                GAD-7: {gad7SeverityLabels[gad7Severity]}
+              </h4>
               <p className="mt-2 text-sm text-muted">{gad7SeverityDescriptions[gad7Severity]}</p>
             </div>
           </div>
@@ -773,21 +775,30 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           {/* Preferences */}
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Gewünschte Unterstützung</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Gewünschte Unterstützung
+              </p>
               <p className="mt-2 text-sm text-muted">
                 {answers.support.length
                   ? answers.support
-                      .map((item) => supportOptions.find((opt) => opt.value === item)?.label ?? item)
+                      .map(
+                        (item) => supportOptions.find((opt) => opt.value === item)?.label ?? item,
+                      )
                       .join(' · ')
                   : 'Keine Auswahl'}
               </p>
             </div>
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Verfügbarkeit</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Verfügbarkeit
+              </p>
               <p className="mt-2 text-sm text-muted">
                 {answers.availability.length
                   ? answers.availability
-                      .map((item) => availabilityOptions.find((opt) => opt.value === item)?.label ?? item)
+                      .map(
+                        (item) =>
+                          availabilityOptions.find((opt) => opt.value === item)?.label ?? item,
+                      )
                       .join(' · ')
                   : 'Keine Auswahl'}
               </p>
@@ -816,7 +827,8 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               {/* Filtered Results Count */}
               {filteredTherapists.length !== recommendations.therapists.length && (
                 <p className="text-sm text-muted">
-                  {filteredTherapists.length} von {recommendations.therapists.length} Therapeut:innen gefunden
+                  {filteredTherapists.length} von {recommendations.therapists.length}{' '}
+                  Therapeut:innen gefunden
                 </p>
               )}
 
@@ -861,7 +873,10 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {course.outcomes.map((item) => (
-                        <span key={item} className="rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">
+                        <span
+                          key={item}
+                          className="rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary"
+                        >
                           {item}
                         </span>
                       ))}
@@ -882,7 +897,9 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             <Info className="h-5 w-5 flex-none text-primary-600" aria-hidden />
             <div className="flex-1">
               <p className="text-sm text-primary-900">
-                <strong>Hinweis:</strong> Diese Ersteinschätzung ist keine medizinische Diagnose und ersetzt keine professionelle Beratung. Bei Fragen oder zur weiteren Abklärung wende dich bitte an qualifizierte Therapeut:innen oder Ärzt:innen.
+                <strong>Hinweis:</strong> Diese Ersteinschätzung ist keine medizinische Diagnose und
+                ersetzt keine professionelle Beratung. Bei Fragen oder zur weiteren Abklärung wende
+                dich bitte an qualifizierte Therapeut:innen oder Ärzt:innen.
               </p>
             </div>
           </div>
@@ -914,12 +931,13 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           />
         )}
       </div>
-    )
+    );
   }
 
   // Question flow
-  const currentQuestion = currentQuestions[questionIndex]
-  const isMultipleChoice = currentSection.type === 'support' || currentSection.type === 'availability'
+  const currentQuestion = currentQuestions[questionIndex];
+  const isMultipleChoice =
+    currentSection.type === 'support' || currentSection.type === 'availability';
 
   // Show consent dialog first
   if (showConsentDialog && !hasConsent && !isCheckingConsent) {
@@ -929,7 +947,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         onDecline={handleDeclineConsent}
         source="triage_flow"
       />
-    )
+    );
   }
 
   // Show loading while checking consent
@@ -941,7 +959,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           <p className="text-sm text-gray-600">Wird geladen...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -956,7 +974,9 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             <div className="flex-1">
               <h4 className="text-sm font-semibold text-primary-900">Wichtiger Hinweis</h4>
               <p className="mt-1 text-xs text-primary-800">
-                Diese Ersteinschätzung ist <strong>keine medizinische Diagnose</strong>, sondern dient zur Orientierung. Die Ergebnisse ersetzen keine professionelle Beratung durch Therapeut:innen oder Ärzt:innen.
+                Diese Ersteinschätzung ist <strong>keine medizinische Diagnose</strong>, sondern
+                dient zur Orientierung. Die Ergebnisse ersetzen keine professionelle Beratung durch
+                Therapeut:innen oder Ärzt:innen.
               </p>
             </div>
           </div>
@@ -973,7 +993,8 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             <div className="flex-1">
               <h4 className="font-bold text-red-900">Wichtig: Sofortige Unterstützung verfügbar</h4>
               <p className="mt-1 text-sm text-red-800">
-                Wir nehmen deine Antwort sehr ernst. Wenn du akut Hilfe brauchst, kontaktiere bitte sofort die Telefonseelsorge (142, kostenlos & anonym, 24/7) oder den Notruf (144).
+                Wir nehmen deine Antwort sehr ernst. Wenn du akut Hilfe brauchst, kontaktiere bitte
+                sofort die Telefonseelsorge (142, kostenlos & anonym, 24/7) oder den Notruf (144).
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a
@@ -997,141 +1018,151 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       )}
 
       <div
-      className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10 backdrop-blur"
-      aria-live="polite"
-    >
-      <header className="space-y-2">
-        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-          <Sparkles className="h-4 w-4" aria-hidden />
-          {currentSection.title}
-        </div>
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-2xl font-semibold text-default">
-              {isMultipleChoice ? currentSection.title : currentQuestion?.text}
-            </h3>
-            <p className="mt-1 text-sm text-muted">{currentSection.subtitle}</p>
+        className="rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10 backdrop-blur"
+        aria-live="polite"
+      >
+        <header className="space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+            <Sparkles className="h-4 w-4" aria-hidden />
+            {currentSection.title}
           </div>
-          {!isMultipleChoice && currentQuestion && (
-            <QuestionTooltip
-              helpText={currentQuestion.helpText}
-              scientificContext={currentQuestion.scientificContext}
-            />
-          )}
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <h3 className="text-2xl font-semibold text-default">
+                {isMultipleChoice ? currentSection.title : currentQuestion?.text}
+              </h3>
+              <p className="mt-1 text-sm text-muted">{currentSection.subtitle}</p>
+            </div>
+            {!isMultipleChoice && currentQuestion && (
+              <QuestionTooltip
+                helpText={currentQuestion.helpText}
+                scientificContext={currentQuestion.scientificContext}
+              />
+            )}
+          </div>
+        </header>
+
+        {/* Progress bar */}
+        <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-surface-2">
+          <motion.div
+            className="h-full rounded-full bg-primary"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            aria-hidden
+          />
         </div>
-      </header>
 
-      {/* Progress bar */}
-      <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-surface-2">
-        <motion.div
-          className="h-full rounded-full bg-primary"
-          initial={{ width: 0 }}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          aria-hidden
-        />
-      </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`${sectionIndex}-${questionIndex}`}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-          className="mt-6"
-        >
-          {isMultipleChoice ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {(currentSection.type === 'support' ? supportOptions : availabilityOptions).map((option) => {
-                  const selected = answers[currentSection.type].includes(option.value)
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${sectionIndex}-${questionIndex}`}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="mt-6"
+          >
+            {isMultipleChoice ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {(currentSection.type === 'support' ? supportOptions : availabilityOptions).map(
+                    (option) => {
+                      const selected = answers[currentSection.type].includes(option.value);
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => toggleMultipleSelect(option.value)}
+                          className={`flex flex-col items-start gap-2 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                            selected
+                              ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
+                              : 'border-divider bg-surface-1/95 hover:border-primary/30'
+                          }`}
+                        >
+                          <span
+                            className={`text-base font-semibold ${selected ? 'text-primary' : 'text-default'}`}
+                          >
+                            {option.label}
+                          </span>
+                          <span className="text-sm text-muted">{option.description}</span>
+                        </button>
+                      );
+                    },
+                  )}
+                </div>
+                <div className="flex items-center justify-between pt-4">
+                  <Button
+                    variant="ghost"
+                    onClick={goPrevious}
+                    disabled={sectionIndex === 0 && questionIndex === 0}
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
+                    Zurück
+                  </Button>
+                  <Button onClick={goNext}>
+                    Weiter
+                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {standardResponseOptions.map((option) => {
+                  const isSelected = answers[currentSection.type][questionIndex] === option.value;
                   return (
                     <button
                       key={option.value}
                       type="button"
-                      onClick={() => toggleMultipleSelect(option.value)}
-                      className={`flex flex-col items-start gap-2 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
-                        selected
-                          ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
-                          : 'border-divider bg-surface-1/95 hover:border-primary/30'
-                      }`}
-                    >
-                      <span className={`text-base font-semibold ${selected ? 'text-primary' : 'text-default'}`}>
-                        {option.label}
-                      </span>
-                      <span className="text-sm text-muted">{option.description}</span>
-                    </button>
-                  )
-                })}
-              </div>
-              <div className="flex items-center justify-between pt-4">
-                <Button variant="ghost" onClick={goPrevious} disabled={sectionIndex === 0 && questionIndex === 0}>
-                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
-                  Zurück
-                </Button>
-                <Button onClick={goNext}>
-                  Weiter
-                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {standardResponseOptions.map((option) => {
-                const isSelected = answers[currentSection.type][questionIndex] === option.value
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => handleScaleAnswer(option.value)}
-                    className={`flex w-full items-center justify-between gap-3 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
-                      isSelected
-                        ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
-                        : 'border-divider bg-surface-1/95 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-primary/10'
-                    }`}
-                  >
-                    <div>
-                      <p className={`text-base font-semibold ${isSelected ? 'text-primary' : 'text-default'}`}>
-                        {option.label}
-                      </p>
-                      <p className="text-sm text-muted">{option.description}</p>
-                    </div>
-                    <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold ${
+                      onClick={() => handleScaleAnswer(option.value)}
+                      className={`flex w-full items-center justify-between gap-3 rounded-2xl border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
                         isSelected
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-divider bg-white text-primary'
+                          ? 'border-primary bg-primary/10 shadow-sm shadow-primary/20'
+                          : 'border-divider bg-surface-1/95 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-primary/10'
                       }`}
                     >
-                      {option.value}
-                    </div>
+                      <div>
+                        <p
+                          className={`text-base font-semibold ${isSelected ? 'text-primary' : 'text-default'}`}
+                        >
+                          {option.label}
+                        </p>
+                        <p className="text-sm text-muted">{option.description}</p>
+                      </div>
+                      <div
+                        className={`flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold ${
+                          isSelected
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-divider bg-white text-primary'
+                        }`}
+                      >
+                        {option.value}
+                      </div>
+                    </button>
+                  );
+                })}
+                <div className="flex items-center justify-between pt-4 text-xs text-subtle">
+                  <button
+                    type="button"
+                    onClick={goPrevious}
+                    disabled={sectionIndex === 0 && questionIndex === 0}
+                    className="rounded-full border border-divider bg-surface-1 px-3 py-1.5 font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Zurück
                   </button>
-                )
-              })}
-              <div className="flex items-center justify-between pt-4 text-xs text-subtle">
-                <button
-                  type="button"
-                  onClick={goPrevious}
-                  disabled={sectionIndex === 0 && questionIndex === 0}
-                  className="rounded-full border border-divider bg-surface-1 px-3 py-1.5 font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Zurück
-                </button>
-                <div className="flex flex-col items-center gap-1">
-                  <span>
-                    Fortschritt: {progress}% · {progressCopy}
-                  </span>
-                  <span className="text-[10px] text-subtle opacity-60">
-                    Tipp: Tastatur 0-3, ← →, Enter
-                  </span>
+                  <div className="flex flex-col items-center gap-1">
+                    <span>
+                      Fortschritt: {progress}% · {progressCopy}
+                    </span>
+                    <span className="text-[10px] text-subtle opacity-60">
+                      Tipp: Tastatur 0-3, ← →, Enter
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
-  </div>
-  )
+  );
 }

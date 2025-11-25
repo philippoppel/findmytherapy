@@ -1,10 +1,10 @@
-const nextJest = require('next/jest')
-const dotenv = require('dotenv')
+const nextJest = require('next/jest');
+const dotenv = require('dotenv');
 
 // Load test environment variables
-dotenv.config({ path: '.env.test' })
+dotenv.config({ path: '.env.test' });
 
-const createJestConfig = nextJest({ dir: './' })
+const createJestConfig = nextJest({ dir: './' });
 
 const customJestConfig = {
   testEnvironment: 'node',
@@ -21,21 +21,12 @@ const customJestConfig = {
     '^@mental-health/(.*)$': '<rootDir>/../../packages/$1/src',
   },
   // Only run integration tests
-  testMatch: [
-    '<rootDir>/tests/integration/**/*.test.ts',
-    '<rootDir>/app/api/**/*.test.ts',
-  ],
-  testPathIgnorePatterns: [
-    '<rootDir>/.next/',
-    '<rootDir>/node_modules/',
-  ],
+  testMatch: ['<rootDir>/tests/integration/**/*.test.ts', '<rootDir>/app/api/**/*.test.ts'],
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   maxWorkers: 1, // Run serially to avoid DB lock contention during TRUNCATE
   // Longer timeout for DB operations
   testTimeout: 30000,
-  collectCoverageFrom: [
-    'app/api/**/*.ts',
-    'lib/**/*.ts',
-  ],
-}
+  collectCoverageFrom: ['app/api/**/*.ts', 'lib/**/*.ts'],
+};
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = createJestConfig(customJestConfig);

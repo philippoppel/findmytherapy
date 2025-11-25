@@ -36,7 +36,9 @@ const roleForVariant: Record<AlertVariant, 'status' | 'alert'> = {
   danger: 'alert',
 };
 
-export interface AlertProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'>, VariantProps<typeof alertVariants> {
+export interface AlertProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'>,
+    VariantProps<typeof alertVariants> {
   title?: React.ReactNode;
   description?: React.ReactNode;
   icon?: React.ReactNode;
@@ -81,13 +83,14 @@ const AlertTitle = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWith
 
 AlertTitle.displayName = 'AlertTitle';
 
-const AlertDescription = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
-  ({ className, children, ...props }, ref) => (
-    <p ref={ref} className={cn('alert-description', className)} {...props}>
-      {children}
-    </p>
-  ),
-);
+const AlertDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.ComponentPropsWithoutRef<'p'>
+>(({ className, children, ...props }, ref) => (
+  <p ref={ref} className={cn('alert-description', className)} {...props}>
+    {children}
+  </p>
+));
 
 AlertDescription.displayName = 'AlertDescription';
 

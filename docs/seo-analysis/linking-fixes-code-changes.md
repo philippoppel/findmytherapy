@@ -5,6 +5,7 @@
 ### CRITICAL FIXES (Do First)
 
 #### 1. akuthilfe-panikattacken (Line ~1478)
+
 ```typescript
 // CURRENT (links to NON-Foundation):
 relatedPosts: ['kognitive-verhaltenstherapie-erklaert', 'mental-health-strategien-alltag'],
@@ -14,6 +15,7 @@ relatedPosts: ['angststoerungen-formen-symptome-behandlung', 'atemtechniken-bei-
 ```
 
 #### 2. depression-verstehen-bewaeltigen (Line ~1621)
+
 ```typescript
 // CURRENT:
 relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen'],
@@ -23,6 +25,7 @@ relatedPosts: ['akuthilfe-panikattacken', 'burnout-erkennen-vorbeugen', 'angstst
 ```
 
 #### 3. burnout-erkennen-vorbeugen (Line ~1784)
+
 ```typescript
 // CURRENT:
 relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden'],
@@ -32,13 +35,14 @@ relatedPosts: ['depression-verstehen-bewaeltigen', 'richtigen-therapeuten-finden
 ```
 
 #### 4. richtigen-therapeuten-finden (Line ~1812)
+
 ```typescript
 // CURRENT:
 relatedPosts: ['kassenzuschuss-psychotherapie-oesterreich', 'serioese-online-therapie-erkennen'],
 
 // CHANGE TO (add missing clusters + bidirectional):
 relatedPosts: [
-  'kassenzuschuss-psychotherapie-oesterreich', 
+  'kassenzuschuss-psychotherapie-oesterreich',
   'serioese-online-therapie-erkennen',
   'psychologe-vs-psychotherapeut',
   'wartezeiten-psychotherapie-wien'
@@ -46,6 +50,7 @@ relatedPosts: [
 ```
 
 #### 5. atemtechniken-bei-angst (Line ~1831)
+
 ```typescript
 // CURRENT:
 relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten'],
@@ -55,6 +60,7 @@ relatedPosts: ['akuthilfe-panikattacken', 'meditation-anfaenger-3-minuten', 'ang
 ```
 
 #### 6. psychologe-vs-psychotherapeut (Line ~1849)
+
 ```typescript
 // CURRENT:
 relatedPosts: ['richtigen-therapeuten-finden'],
@@ -67,26 +73,28 @@ relatedPosts: ['richtigen-therapeuten-finden', 'serioese-online-therapie-erkenne
 
 ## Summary of Changes
 
-| Post Slug | Current Links | New Links | Change |
-|-----------|--------------|-----------|--------|
-| akuthilfe-panikattacken | 2 (non-Foundation) | 2 (Foundation) | Replace all |
-| depression-verstehen-bewaeltigen | 2 | 3 | Add 1 |
-| angststoerungen-formen-symptome-behandlung | 2 | 2 | No change (others will link to it) |
-| burnout-erkennen-vorbeugen | 2 | 4 | Add 2 |
-| richtigen-therapeuten-finden | 2 | 4 | Add 2 |
-| atemtechniken-bei-angst | 2 | 3 | Add 1 |
-| psychologe-vs-psychotherapeut | 1 | 2 | Add 1 |
-| kassenzuschuss-psychotherapie-oesterreich | 2 | 2 | No change |
-| serioese-online-therapie-erkennen | 2 | 2 | No change |
-| meditation-anfaenger-3-minuten | 2 | 2 | No change |
-| wartezeiten-psychotherapie-wien | 2 | 2 | No change |
+| Post Slug                                  | Current Links      | New Links      | Change                             |
+| ------------------------------------------ | ------------------ | -------------- | ---------------------------------- |
+| akuthilfe-panikattacken                    | 2 (non-Foundation) | 2 (Foundation) | Replace all                        |
+| depression-verstehen-bewaeltigen           | 2                  | 3              | Add 1                              |
+| angststoerungen-formen-symptome-behandlung | 2                  | 2              | No change (others will link to it) |
+| burnout-erkennen-vorbeugen                 | 2                  | 4              | Add 2                              |
+| richtigen-therapeuten-finden               | 2                  | 4              | Add 2                              |
+| atemtechniken-bei-angst                    | 2                  | 3              | Add 1                              |
+| psychologe-vs-psychotherapeut              | 1                  | 2              | Add 1                              |
+| kassenzuschuss-psychotherapie-oesterreich  | 2                  | 2              | No change                          |
+| serioese-online-therapie-erkennen          | 2                  | 2              | No change                          |
+| meditation-anfaenger-3-minuten             | 2                  | 2              | No change                          |
+| wartezeiten-psychotherapie-wien            | 2                  | 2              | No change                          |
 
-**Total Links After Changes:** 
+**Total Links After Changes:**
+
 - Before: 21 links
 - After: 28 links
 - Increase: +33%
 
 **Average Links per Post:**
+
 - Before: 1.91
 - After: 2.55
 - Still below ideal (3-4), but significant improvement
@@ -97,20 +105,20 @@ relatedPosts: ['richtigen-therapeuten-finden', 'serioese-online-therapie-erkenne
 
 Based on grep search results:
 
-| Post | Approximate Line | relatedPosts Line |
-|------|-----------------|-------------------|
-| akuthilfe-panikattacken (original) | 65 | 97 |
-| akuthilfe-panikattacken (Foundation) | 1447 | 1478 |
-| depression-verstehen-bewaeltigen | 1589 | 1621 |
-| angststoerungen-formen-symptome-behandlung | 1722 | 1745 |
-| burnout-erkennen-vorbeugen | 1761 | 1784 |
-| richtigen-therapeuten-finden | 1800 | 1812 |
-| atemtechniken-bei-angst | 1819 | 1831 |
-| psychologe-vs-psychotherapeut | 1837 | 1849 |
-| kassenzuschuss-psychotherapie-oesterreich | 1853 | 1865 |
-| serioese-online-therapie-erkennen | 1869 | 1881 |
-| meditation-anfaenger-3-minuten | 1885 | 1897 |
-| wartezeiten-psychotherapie-wien | 1901 | 1913 |
+| Post                                       | Approximate Line | relatedPosts Line |
+| ------------------------------------------ | ---------------- | ----------------- |
+| akuthilfe-panikattacken (original)         | 65               | 97                |
+| akuthilfe-panikattacken (Foundation)       | 1447             | 1478              |
+| depression-verstehen-bewaeltigen           | 1589             | 1621              |
+| angststoerungen-formen-symptome-behandlung | 1722             | 1745              |
+| burnout-erkennen-vorbeugen                 | 1761             | 1784              |
+| richtigen-therapeuten-finden               | 1800             | 1812              |
+| atemtechniken-bei-angst                    | 1819             | 1831              |
+| psychologe-vs-psychotherapeut              | 1837             | 1849              |
+| kassenzuschuss-psychotherapie-oesterreich  | 1853             | 1865              |
+| serioese-online-therapie-erkennen          | 1869             | 1881              |
+| meditation-anfaenger-3-minuten             | 1885             | 1897              |
+| wartezeiten-psychotherapie-wien            | 1901             | 1913              |
 
 **Note:** Line numbers are approximate and may shift as you edit the file.
 
@@ -119,6 +127,7 @@ Based on grep search results:
 ## Testing After Changes
 
 1. **Verify no syntax errors:**
+
    ```bash
    npm run typecheck
    # or
@@ -126,6 +135,7 @@ Based on grep search results:
    ```
 
 2. **Check blog builds:**
+
    ```bash
    npm run build
    ```

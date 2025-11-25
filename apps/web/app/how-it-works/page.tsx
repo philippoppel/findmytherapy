@@ -27,7 +27,8 @@ export default function HowItWorksPage() {
           In drei Schritten zu deinem passenden Unterstützungsangebot
         </h1>
         <p className="mx-auto max-w-2xl text-base text-neutral-700">
-          FindMyTherapy kombiniert individuelles Matching, telemedizinische Tools und ein Care-Team, das dich auf deinem Weg begleitet.
+          FindMyTherapy kombiniert individuelles Matching, telemedizinische Tools und ein Care-Team,
+          das dich auf deinem Weg begleitet.
         </p>
       </section>
 
@@ -50,7 +51,8 @@ export default function HowItWorksPage() {
         <header className="space-y-2">
           <h2 className="text-2xl font-semibold text-neutral-950">Unsere Qualitätsstandards</h2>
           <p className="text-sm text-neutral-800">
-            Wir arbeiten mit approbierten Psychotherapeut:innen, Klinischen Psycholog:innen und zertifizierten Coaches zusammen.
+            Wir arbeiten mit approbierten Psychotherapeut:innen, Klinischen Psycholog:innen und
+            zertifizierten Coaches zusammen.
           </p>
         </header>
         <ul className="grid gap-4 text-sm text-neutral-800 md:grid-cols-2">

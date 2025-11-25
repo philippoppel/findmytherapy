@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Button, Input } from '@mental-health/ui'
-import { Loader2, CheckCircle2, Mail } from 'lucide-react'
+import { useState } from 'react';
+import { Button, Input } from '@mental-health/ui';
+import { Loader2, CheckCircle2, Mail } from 'lucide-react';
 
 export function ForgotPasswordForm() {
-  const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsSubmitting(true)
-    setStatus('idle')
-    setErrorMessage('')
+    event.preventDefault();
+    setIsSubmitting(true);
+    setStatus('idle');
+    setErrorMessage('');
 
     try {
       const response = await fetch('/api/password-reset/request', {
@@ -23,24 +23,24 @@ export function ForgotPasswordForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten')
+        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
       }
 
-      setStatus('success')
-      setEmail('')
+      setStatus('success');
+      setEmail('');
     } catch (error) {
-      console.error('Error requesting password reset:', error)
-      setStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten')
+      console.error('Error requesting password reset:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   if (status === 'success') {
     return (
@@ -52,12 +52,10 @@ export function ForgotPasswordForm() {
           <div>
             <h3 className="text-lg font-semibold text-emerald-900">E-Mail versendet!</h3>
             <p className="mt-2 text-sm text-emerald-800">
-              Wir haben dir einen Link zum Zurücksetzen deines Passworts an deine E-Mail-Adresse gesendet.
-              Bitte überprüfe dein Postfach (auch den Spam-Ordner).
+              Wir haben dir einen Link zum Zurücksetzen deines Passworts an deine E-Mail-Adresse
+              gesendet. Bitte überprüfe dein Postfach (auch den Spam-Ordner).
             </p>
-            <p className="mt-3 text-sm text-emerald-800">
-              Der Link ist 1 Stunde gültig.
-            </p>
+            <p className="mt-3 text-sm text-emerald-800">Der Link ist 1 Stunde gültig.</p>
             <button
               onClick={() => setStatus('idle')}
               className="mt-4 text-sm font-medium text-emerald-700 hover:text-emerald-900 underline"
@@ -67,7 +65,7 @@ export function ForgotPasswordForm() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -76,11 +74,10 @@ export function ForgotPasswordForm() {
         <Mail className="h-4 w-4" aria-hidden />
         Passwort zurücksetzen
       </div>
-      <h2 className="mt-4 text-2xl font-semibold text-default">
-        Passwort vergessen?
-      </h2>
+      <h2 className="mt-4 text-2xl font-semibold text-default">Passwort vergessen?</h2>
       <p className="mt-2 text-sm text-muted">
-        Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines Passworts.
+        Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines
+        Passworts.
       </p>
 
       {status === 'error' && (
@@ -88,7 +85,12 @@ export function ForgotPasswordForm() {
           role="alert"
           className="mt-4 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
         >
-          <div className="mt-0.5 h-5 w-5 flex-none rounded-full border-2 border-red-600 flex items-center justify-center text-red-600 font-bold" aria-hidden>!</div>
+          <div
+            className="mt-0.5 h-5 w-5 flex-none rounded-full border-2 border-red-600 flex items-center justify-center text-red-600 font-bold"
+            aria-hidden
+          >
+            !
+          </div>
           <div>
             <p className="font-semibold">Fehler</p>
             <p>{errorMessage}</p>
@@ -126,5 +128,5 @@ export function ForgotPasswordForm() {
         </p>
       </form>
     </div>
-  )
+  );
 }

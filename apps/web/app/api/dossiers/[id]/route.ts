@@ -4,16 +4,16 @@
  * GET /api/dossiers/:id - Get decrypted dossier data
  */
 
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { auth } from '@/lib/auth'
-import { captureError } from '@/lib/monitoring'
-import { decryptDossierData, type DossierPayload, hashIPAddress } from '@/lib/encryption'
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth';
+import { captureError } from '@/lib/monitoring';
+import { decryptDossierData, type DossierPayload, hashIPAddress } from '@/lib/encryption';
 
 interface RouteContext {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 /**
@@ -23,16 +23,16 @@ interface RouteContext {
  */
 export async function GET(request: NextRequest, context: RouteContext) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },
-        { status: 401 }
-      )
+        { status: 401 },
+      );
     }
 
-    const dossierId = context.params.id
+    const dossierId = context.params.id;
 
     // Fetch the dossier
     const dossier = await prisma.sessionZeroDossier.findUnique({
@@ -53,25 +53,16 @@ export async function GET(request: NextRequest, context: RouteContext) {
           },
         },
       },
-    })
+    });
 
     if (!dossier) {
-      return NextResponse.json(
-        { success: false, error: 'Dossier not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ success: false, error: 'Dossier not found' }, { status: 404 });
     }
 
     // Check if dossier has expired
     if (new Date() > dossier.expiresAt) {
       // Log expired access attempt
-      await logDossierAccess(
-        request,
-        dossierId,
-        session.user.id,
-        'EXPIRED',
-        'Dossier has expired'
-      )
+      await logDossierAccess(request, dossierId, session.user.id, 'EXPIRED', 'Dossier has expired');
 
       return NextResponse.json(
         {
@@ -80,25 +71,23 @@ export async function GET(request: NextRequest, context: RouteContext) {
           code: 'DOSSIER_EXPIRED',
           expiresAt: dossier.expiresAt.toISOString(),
         },
-        { status: 410 }
-      )
+        { status: 410 },
+      );
     }
 
     // Check authorization
-    const isAdmin = session.user.role === 'ADMIN'
-    const isClient = session.user.id === dossier.clientId
-    let isRecommendedTherapist = false
+    const isAdmin = session.user.role === 'ADMIN';
+    const isClient = session.user.id === dossier.clientId;
+    let isRecommendedTherapist = false;
 
     if (session.user.role === 'THERAPIST') {
       const therapistProfile = await prisma.therapistProfile.findUnique({
         where: { userId: session.user.id },
         select: { id: true, status: true },
-      })
+      });
 
       if (therapistProfile && therapistProfile.status === 'VERIFIED') {
-        isRecommendedTherapist = dossier.recommendedTherapists.includes(
-          therapistProfile.id
-        )
+        isRecommendedTherapist = dossier.recommendedTherapists.includes(therapistProfile.id);
       }
     }
 
@@ -109,41 +98,32 @@ export async function GET(request: NextRequest, context: RouteContext) {
         dossierId,
         session.user.id,
         'DENIED',
-        'User not authorized to access this dossier'
-      )
+        'User not authorized to access this dossier',
+      );
 
-      return NextResponse.json(
-        { success: false, error: 'Access denied' },
-        { status: 403 }
-      )
+      return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 });
     }
 
     // Decrypt the payload
-    let payload: DossierPayload
+    let payload: DossierPayload;
     try {
       payload = decryptDossierData<DossierPayload>(
         dossier.encryptedPayload,
-        dossier.encryptionKeyId
-      )
+        dossier.encryptionKeyId,
+      );
     } catch (error) {
-      console.error('[DOSSIERS] Decryption failed:', error)
+      console.error('[DOSSIERS] Decryption failed:', error);
       return NextResponse.json(
         {
           success: false,
           error: 'Failed to decrypt dossier data',
         },
-        { status: 500 }
-      )
+        { status: 500 },
+      );
     }
 
     // Log successful access
-    await logDossierAccess(
-      request,
-      dossierId,
-      session.user.id,
-      'SUCCESS',
-      null
-    )
+    await logDossierAccess(request, dossierId, session.user.id, 'SUCCESS', null);
 
     // Return dossier data
     return NextResponse.json({
@@ -161,24 +141,25 @@ export async function GET(request: NextRequest, context: RouteContext) {
         metadata: {
           client: {
             id: dossier.client.id,
-            name: isAdmin || isClient
-              ? `${dossier.client.firstName || ''} ${dossier.client.lastName || ''}`.trim()
-              : payload.clientAlias,
+            name:
+              isAdmin || isClient
+                ? `${dossier.client.firstName || ''} ${dossier.client.lastName || ''}`.trim()
+                : payload.clientAlias,
             email: isAdmin || isClient ? dossier.client.email : undefined,
           },
         },
       },
-    })
+    });
   } catch (error) {
-    captureError(error, { location: 'api/dossiers/:id GET' })
-    console.error('[DOSSIERS] Error retrieving dossier:', error)
+    captureError(error, { location: 'api/dossiers/:id GET' });
+    console.error('[DOSSIERS] Error retrieving dossier:', error);
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to retrieve dossier',
       },
-      { status: 500 }
-    )
+      { status: 500 },
+    );
   }
 }
 
@@ -190,11 +171,12 @@ async function logDossierAccess(
   dossierId: string,
   userId: string,
   status: 'SUCCESS' | 'DENIED' | 'EXPIRED',
-  reason: string | null
+  reason: string | null,
 ): Promise<void> {
   try {
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
-    const userAgent = request.headers.get('user-agent') || undefined
+    const ip =
+      request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || undefined;
 
     await prisma.dossierAccessLog.create({
       data: {
@@ -206,9 +188,9 @@ async function logDossierAccess(
         status,
         reason,
       },
-    })
+    });
   } catch (error) {
-    console.error('[DOSSIERS] Failed to log access:', error)
+    console.error('[DOSSIERS] Failed to log access:', error);
     // Don't throw - logging failure shouldn't break the request
   }
 }

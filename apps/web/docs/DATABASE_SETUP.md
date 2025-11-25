@@ -7,17 +7,21 @@ Dieses Projekt verwendet PostgreSQL als Datenbank. Es ist **kritisch wichtig**, 
 ## Umgebungen
 
 ### Lokale Entwicklung
+
 ```bash
 DATABASE_URL="postgresql://postgres:password@localhost:5432/mental_health_dev"
 ```
 
 ### Vercel Production
+
 Die Production-Umgebung verwendet eine Prisma-gehostete PostgreSQL-Datenbank:
+
 ```bash
 DATABASE_URL="postgres://[user]:[password]@db.prisma.io:5432/postgres?sslmode=require"
 ```
 
 **WICHTIG**: Die exakte URL kann mit folgendem Befehl abgerufen werden:
+
 ```bash
 vercel env pull .env.vercel.production --environment=production
 ```
@@ -29,17 +33,21 @@ vercel env pull .env.vercel.production --environment=production
 **Ursache**: Das Prisma-Schema wurde nicht auf die Produktionsdatenbank angewendet.
 
 **Lösung**:
+
 1. Hole die Production DATABASE_URL:
+
    ```bash
    vercel env pull .env.vercel.production --environment=production
    ```
 
 2. Prüfe welche URL verwendet wird:
+
    ```bash
    grep DATABASE_URL .env.vercel.production
    ```
 
 3. Wende das Schema auf die richtige Datenbank an:
+
    ```bash
    cd apps/web
    DATABASE_URL="[die URL aus Schritt 2]" pnpm exec prisma db push
@@ -55,7 +63,9 @@ vercel env pull .env.vercel.production --environment=production
 **Symptom**: Schema-Updates funktionieren lokal, aber nicht in Production.
 
 **Lösung**:
+
 - Verwende IMMER den Health-Check-Endpoint um zu verifizieren welche Datenbank verwendet wird:
+
   ```bash
   curl https://[your-domain].vercel.app/api/health
   ```
@@ -79,6 +89,7 @@ vercel env pull .env.vercel.production --environment=production
 ### Schritt-für-Schritt Anleitung
 
 1. **Lokale Änderungen am Schema** (`apps/web/prisma/schema.prisma`)
+
    ```bash
    # Schema lokal testen
    DATABASE_URL="postgresql://postgres:password@localhost:5432/mental_health_dev" \
@@ -86,6 +97,7 @@ vercel env pull .env.vercel.production --environment=production
    ```
 
 2. **Schema in Production deployen**
+
    ```bash
    # Production URL holen
    vercel env pull .env.vercel.production --environment=production
@@ -96,6 +108,7 @@ vercel env pull .env.vercel.production --environment=production
    ```
 
 3. **Deployment auslösen**
+
    ```bash
    git add apps/web/prisma/schema.prisma
    git commit -m "Update database schema"
@@ -103,6 +116,7 @@ vercel env pull .env.vercel.production --environment=production
    ```
 
 4. **Verifizieren**
+
    ```bash
    # Health-Check aufrufen
    curl https://[your-domain].vercel.app/api/health
@@ -118,11 +132,13 @@ vercel env pull .env.vercel.production --environment=production
 Das Projekt enthält automatische Schema-Validierung:
 
 ### Health-Check Endpoint
+
 ```bash
 GET /api/health
 ```
 
 Dieser Endpoint prüft:
+
 - ✅ Datenbankverbindung
 - ✅ Existenz kritischer Tabellen
 - ✅ Basis-Statistiken
@@ -132,10 +148,10 @@ Dieser Endpoint prüft:
 Die Datei `lib/db-health-check.ts` enthält Funktionen zur Schema-Validierung:
 
 ```typescript
-import { validateDatabaseSchema } from '@/lib/db-health-check'
+import { validateDatabaseSchema } from '@/lib/db-health-check';
 
 // In kritischen API-Routes verwenden
-await validateDatabaseSchema()
+await validateDatabaseSchema();
 ```
 
 ## Fehlerbehebung
@@ -145,6 +161,7 @@ await validateDatabaseSchema()
 **Symptom**: "Type 'MatchingPreferences' does not exist"
 
 **Lösung**:
+
 ```bash
 cd apps/web
 pnpm exec prisma generate
@@ -155,12 +172,15 @@ pnpm exec prisma generate
 **Symptom**: Änderungen erscheinen nicht in Production
 
 **Lösung**:
+
 1. Vercel Environment Variables überprüfen:
+
    ```bash
    vercel env ls
    ```
 
 2. Production DATABASE_URL verifizieren:
+
    ```bash
    vercel env pull .env.vercel.production --environment=production
    cat .env.vercel.production | grep DATABASE_URL
@@ -194,6 +214,7 @@ Setup eines Cron-Jobs für regelmäßige Health-Checks:
 ### Sentry Integration
 
 Fehler in der Matching-API werden automatisch mit detaillierten Informationen geloggt:
+
 - Datenbank-URL (teilweise maskiert)
 - Fehlende Tabellen
 - Stack Traces
@@ -203,16 +224,19 @@ Fehler in der Matching-API werden automatisch mit detaillierten Informationen ge
 Falls die Production-Datenbank nicht erreichbar ist:
 
 1. **Status prüfen**:
+
    ```bash
    curl https://[your-domain].vercel.app/api/health
    ```
 
 2. **Vercel Logs prüfen**:
+
    ```bash
    vercel logs --follow
    ```
 
 3. **Datenbank direkt testen**:
+
    ```bash
    vercel env pull .env.vercel.production --environment=production
    source .env.vercel.production

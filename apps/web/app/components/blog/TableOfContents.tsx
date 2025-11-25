@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { BlogPostSection } from '@/lib/blogData'
+import { useEffect, useState } from 'react';
+import { BlogPostSection } from '@/lib/blogData';
 
 interface TableOfContentsProps {
-  sections: BlogPostSection[]
+  sections: BlogPostSection[];
 }
 
 function slugify(text: string): string {
@@ -13,35 +13,35 @@ function slugify(text: string): string {
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/--+/g, '-')
-    .trim()
+    .trim();
 }
 
 export function TableOfContents({ sections }: TableOfContentsProps) {
-  const [activeId, setActiveId] = useState<string>('')
+  const [activeId, setActiveId] = useState<string>('');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
+            setActiveId(entry.target.id);
           }
-        })
+        });
       },
-      { rootMargin: '-20% 0% -35% 0%' }
-    )
+      { rootMargin: '-20% 0% -35% 0%' },
+    );
 
     sections.forEach((section) => {
-      const id = slugify(section.heading)
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
-    })
+      const id = slugify(section.heading);
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
 
-    return () => observer.disconnect()
-  }, [sections])
+    return () => observer.disconnect();
+  }, [sections]);
 
   if (sections.length <= 2) {
-    return null // Don't show TOC for short articles
+    return null; // Don't show TOC for short articles
   }
 
   return (
@@ -65,8 +65,8 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
 
       <ol className="space-y-2">
         {sections.map((section, index) => {
-          const id = slugify(section.heading)
-          const isActive = activeId === id
+          const id = slugify(section.heading);
+          const isActive = activeId === id;
 
           return (
             <li key={index}>
@@ -78,27 +78,26 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
                     : 'text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400'
                 }`}
                 onClick={(e) => {
-                  e.preventDefault()
-                  const element = document.getElementById(id)
+                  e.preventDefault();
+                  const element = document.getElementById(id);
                   if (element) {
-                    const offset = 80 // Header height
-                    const elementPosition = element.getBoundingClientRect().top
-                    const offsetPosition =
-                      elementPosition + window.pageYOffset - offset
+                    const offset = 80; // Header height
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
 
                     window.scrollTo({
                       top: offsetPosition,
                       behavior: 'smooth',
-                    })
+                    });
                   }
                 }}
               >
                 {section.heading}
               </a>
             </li>
-          )
+          );
         })}
       </ol>
     </nav>
-  )
+  );
 }

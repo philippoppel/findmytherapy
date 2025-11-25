@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { InteractiveCard } from '../InteractiveCard'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { InteractiveCard } from '../InteractiveCard';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function TherapistSEOShowcase() {
-  const prefersReducedMotion = usePrefersReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <div className="flex h-full flex-col gap-6">
@@ -22,7 +22,8 @@ export function TherapistSEOShowcase() {
           SEO-optimierte Präsenz
         </h2>
         <p className="text-center text-base leading-relaxed text-muted">
-          Professionelle Microsites für jede:n Therapeut:in. Von SEO-Expert:innen optimiert für maximale Sichtbarkeit.
+          Professionelle Microsites für jede:n Therapeut:in. Von SEO-Expert:innen optimiert für
+          maximale Sichtbarkeit.
         </p>
       </div>
 
@@ -126,7 +127,8 @@ export function TherapistSEOShowcase() {
           {
             icon: SearchIcon,
             title: 'Von SEO-Expert:innen optimiert',
-            description: 'Dein Profil wird bei Google gefunden – ohne dass du selbst Hand anlegen musst.',
+            description:
+              'Dein Profil wird bei Google gefunden – ohne dass du selbst Hand anlegen musst.',
             delay: 0.2,
           },
           {
@@ -249,7 +251,7 @@ export function TherapistSEOShowcase() {
         </motion.p>
       </motion.div>
     </div>
-  )
+  );
 }
 
 function SparklesIcon() {
@@ -262,7 +264,7 @@ function SparklesIcon() {
         d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
       />
     </svg>
-  )
+  );
 }
 
 function GlobeIcon({ className }: { className?: string }) {
@@ -275,7 +277,7 @@ function GlobeIcon({ className }: { className?: string }) {
         d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
       />
     </svg>
-  )
+  );
 }
 
 function SearchIcon({ className }: { className?: string }) {
@@ -288,7 +290,7 @@ function SearchIcon({ className }: { className?: string }) {
         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
       />
     </svg>
-  )
+  );
 }
 
 function UserGroupIcon({ className }: { className?: string }) {
@@ -301,7 +303,7 @@ function UserGroupIcon({ className }: { className?: string }) {
         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
       />
     </svg>
-  )
+  );
 }
 
 function ChartIcon({ className }: { className?: string }) {
@@ -314,7 +316,7 @@ function ChartIcon({ className }: { className?: string }) {
         d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
       />
     </svg>
-  )
+  );
 }
 
 function ShieldCheckIcon({ className }: { className?: string }) {
@@ -327,13 +329,18 @@ function ShieldCheckIcon({ className }: { className?: string }) {
         d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
       />
     </svg>
-  )
+  );
 }
 
 function ArrowIcon() {
   return (
     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
     </svg>
-  )
+  );
 }

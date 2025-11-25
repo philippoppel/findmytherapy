@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Shield, Lock, Eye, FileText, CheckCircle2, AlertTriangle } from 'lucide-react'
-import { Button } from '@mental-health/ui'
+import { useState } from 'react';
+import Link from 'next/link';
+import { Shield, Lock, Eye, FileText, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Button } from '@mental-health/ui';
 
 interface HealthDataConsentDialogProps {
-  onConsent: () => void
-  onDecline: () => void
-  source?: string
+  onConsent: () => void;
+  onDecline: () => void;
+  source?: string;
 }
 
 export function HealthDataConsentDialog({
@@ -16,11 +16,11 @@ export function HealthDataConsentDialog({
   onDecline,
   source = 'triage_flow',
 }: HealthDataConsentDialogProps) {
-  const [hasRead, setHasRead] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [hasRead, setHasRead] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleConsent = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       // Save consent to database
       const response = await fetch('/api/consent', {
@@ -34,23 +34,23 @@ export function HealthDataConsentDialog({
             timestamp: new Date().toISOString(),
           },
         }),
-      })
+      });
 
       if (response.ok) {
-        onConsent()
+        onConsent();
       } else {
-        console.error('Failed to save consent')
+        console.error('Failed to save consent');
         // Still allow user to proceed even if DB save fails
-        onConsent()
+        onConsent();
       }
     } catch (error) {
-      console.error('Error saving consent:', error)
+      console.error('Error saving consent:', error);
       // Still allow user to proceed
-      onConsent()
+      onConsent();
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <>
@@ -86,8 +86,8 @@ export function HealthDataConsentDialog({
                 <div className="space-y-2 text-sm text-amber-900">
                   <p className="font-semibold">Wichtiger Hinweis zu Gesundheitsdaten</p>
                   <p>
-                    Die Ersteinschätzung erfasst Informationen zu Ihrem psychischen Befinden
-                    (PHQ-9 und GAD-7 Fragebögen). Da Sie eingeloggt sind, werden diese Daten{' '}
+                    Die Ersteinschätzung erfasst Informationen zu Ihrem psychischen Befinden (PHQ-9
+                    und GAD-7 Fragebögen). Da Sie eingeloggt sind, werden diese Daten{' '}
                     <strong>mit Ihrem Account verknüpft gespeichert</strong> und gehören zu den
                     besonders schützenswerten Gesundheitsdaten gemäß Art. 9 DSGVO.
                   </p>
@@ -111,8 +111,8 @@ export function HealthDataConsentDialog({
                     PHQ-9 Fragebogen (Depressive Symptome)
                   </h4>
                   <p className="text-gray-700">
-                    9 Fragen zu depressiven Symptomen in den letzten 2 Wochen (z.B. Niedergeschlagenheit,
-                    Interessenverlust, Müdigkeit).
+                    9 Fragen zu depressiven Symptomen in den letzten 2 Wochen (z.B.
+                    Niedergeschlagenheit, Interessenverlust, Müdigkeit).
                   </p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
@@ -300,5 +300,5 @@ export function HealthDataConsentDialog({
         </div>
       </div>
     </>
-  )
+  );
 }

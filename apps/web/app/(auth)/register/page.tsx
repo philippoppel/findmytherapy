@@ -1,12 +1,12 @@
-import type { Metadata } from 'next'
-import { CalendarCheck, FileText, HeartHandshake, ShieldCheck, Users } from 'lucide-react'
-import { RegistrationForm } from './RegistrationForm'
+import type { Metadata } from 'next';
+import { CalendarCheck, FileText, HeartHandshake, ShieldCheck, Users } from 'lucide-react';
+import { RegistrationForm } from './RegistrationForm';
 
 export const metadata: Metadata = {
   title: 'Registrierung – FindMyTherapy',
   description:
     'Registriere dich für den FindMyTherapy-Zugang. Wähle dein Profil aus und wir melden uns mit dem passenden Onboarding.',
-}
+};
 
 export default function RegisterPage() {
   return (
@@ -22,8 +22,8 @@ export default function RegisterPage() {
             FindMyTherapy Zugang – Pilot anfordern
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            Egal ob Therapeut:in, Unternehmen oder Privatperson: Hinterlasse uns ein paar Eckdaten und wir aktivieren dir
-            den passenden Zugang inklusive abgestimmter Storyline.
+            Egal ob Therapeut:in, Unternehmen oder Privatperson: Hinterlasse uns ein paar Eckdaten
+            und wir aktivieren dir den passenden Zugang inklusive abgestimmter Storyline.
           </p>
         </div>
 
@@ -44,7 +44,8 @@ export default function RegisterPage() {
                   <span className="font-medium">DSGVO-konform</span>
                 </dt>
                 <dd className="pl-8 pt-2 text-sm text-neutral-700">
-                  Alle Angaben dienen ausschließlich zur Abstimmung deines Zugangs und werden nicht extern geteilt.
+                  Alle Angaben dienen ausschließlich zur Abstimmung deines Zugangs und werden nicht
+                  extern geteilt.
                 </dd>
 
                 <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
@@ -52,7 +53,8 @@ export default function RegisterPage() {
                   <span className="font-medium">Flexible Termine</span>
                 </dt>
                 <dd className="pl-8 pt-2 text-sm text-neutral-700">
-                  Wir koordinieren optional einen gemeinsamen Walkthrough oder liefern eine aufgezeichnete Tour.
+                  Wir koordinieren optional einen gemeinsamen Walkthrough oder liefern eine
+                  aufgezeichnete Tour.
                 </dd>
 
                 <dt className="mt-6 flex items-start gap-3 text-neutral-900 first:mt-0">
@@ -60,7 +62,8 @@ export default function RegisterPage() {
                   <span className="font-medium">Individuelle Empfehlungen</span>
                 </dt>
                 <dd className="pl-8 pt-2 text-sm text-neutral-700">
-                  Wir stimmen Inhalte auf deine Zielgruppe, Use-Cases und vorhandene Infrastruktur ab.
+                  Wir stimmen Inhalte auf deine Zielgruppe, Use-Cases und vorhandene Infrastruktur
+                  ab.
                 </dd>
               </dl>
             </div>
@@ -72,7 +75,8 @@ export default function RegisterPage() {
                 <div className="flex-1">
                   <h2 className="font-semibold text-neutral-900">Compliance-Unterlagen</h2>
                   <p className="mt-1 text-sm text-neutral-700">
-                    Pilot-Therapeut:innen erhalten DSGVO-, Vertrags- und Notfallhinweise als Download für die Freischaltung.
+                    Pilot-Therapeut:innen erhalten DSGVO-, Vertrags- und Notfallhinweise als
+                    Download für die Freischaltung.
                   </p>
                   <a
                     href="/compliance/findmytherapy-pilot-compliance-pack.pdf"
@@ -95,5 +99,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </section>
-  )
+  );
 }

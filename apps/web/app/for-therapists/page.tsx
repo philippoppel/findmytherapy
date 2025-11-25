@@ -1,5 +1,5 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import {
   Users,
   Calendar,
@@ -13,13 +13,13 @@ import {
   Mail,
   BarChart3,
   Shield,
-} from 'lucide-react'
+} from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Für Therapeut:innen – FindMyTherapy',
   description:
     'Digitale Praxis-Tools, qualifizierte Klient:innen und administrative Entlastung. Starte kostenlos und erreiche Menschen, die aktiv nach Unterstützung suchen.',
-}
+};
 
 const benefits = [
   {
@@ -58,12 +58,13 @@ const benefits = [
     description:
       'Alle Daten bleiben in der EU. Höchste Datenschutz-Standards für dich und deine Klient:innen.',
   },
-]
+];
 
 const features = [
   {
     title: 'Matching-Algorithmus',
-    description: 'Automatische Empfehlungen basierend auf Symptomen, Präferenzen und Verfügbarkeit.',
+    description:
+      'Automatische Empfehlungen basierend auf Symptomen, Präferenzen und Verfügbarkeit.',
   },
   {
     title: 'Praxis-Dashboard',
@@ -75,9 +76,10 @@ const features = [
   },
   {
     title: 'Flexible Integration',
-    description: 'Funktioniert neben deiner bestehenden Praxis-Software – kein Systemwechsel nötig.',
+    description:
+      'Funktioniert neben deiner bestehenden Praxis-Software – kein Systemwechsel nötig.',
   },
-]
+];
 
 const pricingTiers = [
   {
@@ -111,14 +113,14 @@ const pricingTiers = [
     href: 'mailto:therapists@findmytherapy.net?subject=PRO%20Plan%20Interesse',
     highlighted: true,
   },
-]
+];
 
 const stats = [
   { value: '100%', label: 'DSGVO-konform' },
   { value: 'PHQ-9/GAD-7', label: 'Validierte Tests' },
   { value: '< 5 Min', label: 'Matching-Zeit' },
   { value: 'EU-Server', label: 'Datenspeicherung' },
-]
+];
 
 export default function ForTherapistsPage() {
   return (
@@ -133,7 +135,10 @@ export default function ForTherapistsPage() {
       <section className="relative px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 flex justify-end">
-            <Link href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
+            <Link
+              href="/"
+              className="text-sm font-medium text-white/70 transition hover:text-white"
+            >
               Zur Startseite
             </Link>
           </div>
@@ -150,8 +155,9 @@ export default function ForTherapistsPage() {
               </h1>
 
               <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/85 sm:text-xl">
-                Erreiche qualifizierte Klient:innen mit validierter Ersteinschätzung, spare Zeit durch administrative
-                Entlastung und nutze digitale Tools für nachhaltige Therapieerfolge.
+                Erreiche qualifizierte Klient:innen mit validierter Ersteinschätzung, spare Zeit
+                durch administrative Entlastung und nutze digitale Tools für nachhaltige
+                Therapieerfolge.
               </p>
 
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -175,7 +181,10 @@ export default function ForTherapistsPage() {
               {/* Stats */}
               <div className="grid grid-cols-2 gap-4 pt-8 sm:grid-cols-4">
                 {stats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div
+                    key={stat.label}
+                    className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                  >
                     <div className="text-2xl font-bold text-primary-300">{stat.value}</div>
                     <div className="mt-1 text-sm text-white/70">{stat.label}</div>
                   </div>
@@ -225,8 +234,8 @@ export default function ForTherapistsPage() {
                 Alles Wichtige auf einen Blick
               </h2>
               <p className="mt-4 max-w-2xl text-lg text-white/85">
-                Lade unser Infopaket herunter und erfahre im Detail, wie FindMyTherapy deine Praxis unterstützt:
-                Matching-Prozess, Pricing, Tools und rechtliche Rahmenbedingungen.
+                Lade unser Infopaket herunter und erfahre im Detail, wie FindMyTherapy deine Praxis
+                unterstützt: Matching-Prozess, Pricing, Tools und rechtliche Rahmenbedingungen.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a
@@ -349,8 +358,8 @@ export default function ForTherapistsPage() {
               Bereit, deine Praxis zu erweitern?
             </h2>
             <p className="mt-4 text-lg text-white/85">
-              Vereinbare ein unverbindliches 30-Minuten Gespräch. Wir zeigen dir, wie Matching funktioniert und
-              beantworten all deine Fragen.
+              Vereinbare ein unverbindliches 30-Minuten Gespräch. Wir zeigen dir, wie Matching
+              funktioniert und beantworten all deine Fragen.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
@@ -368,5 +377,5 @@ export default function ForTherapistsPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

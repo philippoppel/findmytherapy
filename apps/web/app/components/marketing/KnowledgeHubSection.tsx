@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { blogPosts } from '@/lib/blogData'
-import { InteractiveCard } from '../InteractiveCard'
-import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { blogPosts } from '@/lib/blogData';
+import { InteractiveCard } from '../InteractiveCard';
+import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function KnowledgeHubSection() {
-  const prefersReducedMotion = usePrefersReducedMotion()
-  const highlightPosts = blogPosts.slice(0, 4)
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const highlightPosts = blogPosts.slice(0, 4);
   const valueProps = [
     'Soforthilfe von erfahrenen Therapeut:innen',
     'Konkrete Übungen und Schritt-für-Schritt-Pläne',
     'Neue Artikel und Interviews jede Woche',
     'Alles kostenlos und ohne Anmeldung',
-  ]
+  ];
 
   return (
     <div className="flex h-full flex-col gap-6">
@@ -38,7 +38,8 @@ export function KnowledgeHubSection() {
           Soforthilfe zum Nachlesen
         </h2>
         <p className="mb-6 text-base leading-relaxed text-muted">
-          Unser Blog liefert dir verständliche Antworten rund um mentale Gesundheit – von Akutsituationen bis Prävention. Jede Seite ist von Expert:innen geprüft.
+          Unser Blog liefert dir verständliche Antworten rund um mentale Gesundheit – von
+          Akutsituationen bis Prävention. Jede Seite ist von Expert:innen geprüft.
         </p>
         <ul className="space-y-3 text-sm text-neutral-700">
           {valueProps.map((point) => (
@@ -138,7 +139,7 @@ export function KnowledgeHubSection() {
         </Link>
       </motion.div>
     </div>
-  )
+  );
 }
 
 function BookOpenIcon() {
@@ -151,7 +152,7 @@ function BookOpenIcon() {
         d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
       />
     </svg>
-  )
+  );
 }
 
 function CheckCircleIcon({ className }: { className?: string }) {
@@ -163,13 +164,18 @@ function CheckCircleIcon({ className }: { className?: string }) {
         clipRule="evenodd"
       />
     </svg>
-  )
+  );
 }
 
 function ArrowIcon() {
   return (
     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 8l4 4m0 0l-4 4m4-4H3"
+      />
     </svg>
-  )
+  );
 }

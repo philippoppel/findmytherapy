@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { ArrowUpDown } from 'lucide-react'
-import type { SortOption } from '../../hooks/useTherapistFiltering'
+import React from 'react';
+import { ArrowUpDown } from 'lucide-react';
+import type { SortOption } from '../../hooks/useTherapistFiltering';
 
 export type SortOptionsProps = {
-  sortBy: SortOption
-  onChange: (sortBy: SortOption) => void
-}
+  sortBy: SortOption;
+  onChange: (sortBy: SortOption) => void;
+};
 
 const SORT_OPTIONS: { value: SortOption; label: string; description: string }[] = [
   {
@@ -45,10 +45,10 @@ const SORT_OPTIONS: { value: SortOption; label: string; description: string }[] 
     label: 'Bewertung',
     description: 'Beste Bewertungen',
   },
-]
+];
 
 export function SortOptions({ sortBy, onChange }: SortOptionsProps) {
-  const currentOption = SORT_OPTIONS.find((opt) => opt.value === sortBy)
+  const currentOption = SORT_OPTIONS.find((opt) => opt.value === sortBy);
 
   return (
     <div className="w-full">
@@ -66,21 +66,13 @@ export function SortOptions({ sortBy, onChange }: SortOptionsProps) {
         className="w-full rounded-lg border border-white/30 bg-white/10 px-4 py-2.5 text-sm text-white focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur cursor-pointer"
       >
         {SORT_OPTIONS.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
-            className="bg-gray-900 text-white"
-          >
+          <option key={option.value} value={option.value} className="bg-gray-900 text-white">
             {option.label} – {option.description}
           </option>
         ))}
       </select>
 
-      {currentOption && (
-        <p className="mt-1.5 text-xs text-white/60">
-          {currentOption.description}
-        </p>
-      )}
+      {currentOption && <p className="mt-1.5 text-xs text-white/60">{currentOption.description}</p>}
     </div>
-  )
+  );
 }

@@ -1,25 +1,25 @@
-import { ArrowRight, MapPin, Star, Calendar, Heart } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { ArrowRight, MapPin, Star, Calendar, Heart } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma';
 
-import { Reveal } from './Reveal'
-import { SectionHeading } from './SectionHeading'
+import { Reveal } from './Reveal';
+import { SectionHeading } from './SectionHeading';
 
 type FeaturedTherapistCard = {
-  id: string
-  href: string
-  name: string
-  image: string
-  specialty: string
-  approach: string
-  location: string
-  rating: number
-  reviewCount: number
-  availability: string
-  acceptingClients: boolean
-}
+  id: string;
+  href: string;
+  name: string;
+  image: string;
+  specialty: string;
+  approach: string;
+  location: string;
+  rating: number;
+  reviewCount: number;
+  availability: string;
+  acceptingClients: boolean;
+};
 
 const searchFeatures = [
   {
@@ -42,7 +42,7 @@ const searchFeatures = [
     title: 'Verifiziert',
     description: 'Alle Profile sind von uns geprüft',
   },
-] as const
+] as const;
 
 const fallbackTherapists: FeaturedTherapistCard[] = [
   {
@@ -84,54 +84,54 @@ const fallbackTherapists: FeaturedTherapistCard[] = [
     availability: 'Sofort verfügbar',
     acceptingClients: true,
   },
-]
+];
 
 const fallbackImages = [
   '/images/therapists/therapy-1.jpg',
   '/images/therapists/therapy-2.jpg',
   '/images/therapists/therapy-3.jpg',
   '/images/therapists/therapy-4.jpg',
-]
+];
 
 function formatLocation(city?: string | null, country?: string | null, online?: boolean) {
-  const parts: string[] = []
+  const parts: string[] = [];
 
   if (city) {
-    parts.push(city)
+    parts.push(city);
   }
 
   if (online) {
-    parts.push('Online')
+    parts.push('Online');
   }
 
   if (parts.length === 0) {
     if (country) {
-      return country === 'AT' ? 'Österreichweit' : country
+      return country === 'AT' ? 'Österreichweit' : country;
     }
 
-    return 'Standort auf Anfrage'
+    return 'Standort auf Anfrage';
   }
 
-  return parts.join(' · ')
+  return parts.join(' · ');
 }
 
 function pickFallbackImage(index: number) {
-  return fallbackImages[index % fallbackImages.length]
+  return fallbackImages[index % fallbackImages.length];
 }
 
 export async function TherapistSearch() {
   let therapists: Array<{
-    id: string
-    displayName: string | null
-    profileImageUrl: string | null
-    specialties: string[]
-    approachSummary: string | null
-    city: string | null
-    country: string | null
-    online: boolean
-    availabilityNote: string | null
-    acceptingClients: boolean
-  }> = []
+    id: string;
+    displayName: string | null;
+    profileImageUrl: string | null;
+    specialties: string[];
+    approachSummary: string | null;
+    city: string | null;
+    country: string | null;
+    online: boolean;
+    availabilityNote: string | null;
+    acceptingClients: boolean;
+  }> = [];
 
   try {
     therapists = await prisma.therapistProfile.findMany({
@@ -151,15 +151,13 @@ export async function TherapistSearch() {
         availabilityNote: true,
         acceptingClients: true,
       },
-      orderBy: [
-        { updatedAt: 'desc' },
-      ],
+      orderBy: [{ updatedAt: 'desc' }],
       take: 3,
-    })
+    });
   } catch (error) {
-    console.error('[TherapistSearch] Failed to fetch therapists:', error)
+    console.error('[TherapistSearch] Failed to fetch therapists:', error);
     // Return empty array on DB error - component will show fallback state
-    therapists = []
+    therapists = [];
   }
 
   const featuredTherapists =
@@ -177,12 +175,15 @@ export async function TherapistSearch() {
             reviewCount: 0,
             availability: therapist.availabilityNote ?? 'Termine auf Anfrage',
             acceptingClients: Boolean(therapist.acceptingClients),
-          }
+          };
         })
-      : fallbackTherapists
+      : fallbackTherapists;
 
   return (
-    <section id="therapists" className="bg-gradient-to-b from-white to-surface-1 py-16 sm:py-20 lg:py-24">
+    <section
+      id="therapists"
+      className="bg-gradient-to-b from-white to-surface-1 py-16 sm:py-20 lg:py-24"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
@@ -284,10 +285,12 @@ export async function TherapistSearch() {
               Alle Therapeut:innen durchsuchen
               <ArrowRight className="h-5 w-5" aria-hidden />
             </Link>
-            <p className="mt-4 text-sm text-muted">Über 150 verifizierte Therapeut:innen in ganz Österreich</p>
+            <p className="mt-4 text-sm text-muted">
+              Über 150 verifizierte Therapeut:innen in ganz Österreich
+            </p>
           </div>
         </Reveal>
       </div>
     </section>
-  )
+  );
 }

@@ -19,4 +19,4 @@ module.exports = {
     entries: jest.fn(),
     forEach: jest.fn(),
   })),
-}
+};

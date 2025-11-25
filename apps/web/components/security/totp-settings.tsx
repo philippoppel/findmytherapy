@@ -104,16 +104,21 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
   };
 
   return (
-    <section className="bg-white rounded-lg shadow p-6 space-y-6" aria-label="Zwei-Faktor-Authentifizierung">
+    <section
+      className="bg-white rounded-lg shadow p-6 space-y-6"
+      aria-label="Zwei-Faktor-Authentifizierung"
+    >
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide">
           <Shield className="h-4 w-4" />
           Sicherheit
         </div>
-        <h2 className="text-xl font-semibold text-gray-900">Zwei-Faktor-Authentifizierung (TOTP)</h2>
+        <h2 className="text-xl font-semibold text-gray-900">
+          Zwei-Faktor-Authentifizierung (TOTP)
+        </h2>
         <p className="text-sm text-gray-600">
-          Schütze dein Konto mit einem zeitbasierten Einmalpasswort. Verwende z.&nbsp;B. Microsoft Authenticator, 1Password
-          oder Google Authenticator.
+          Schütze dein Konto mit einem zeitbasierten Einmalpasswort. Verwende z.&nbsp;B. Microsoft
+          Authenticator, 1Password oder Google Authenticator.
         </p>
         <p className="text-xs text-gray-500">Aktuelles Konto: {email}</p>
       </header>
@@ -135,7 +140,8 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
         <div>
           <p className="text-sm font-medium text-gray-900">Aktueller Status</p>
           <p className="text-sm text-gray-600">
-            {totpEnabled ? 'Aktiviert' : 'Nicht aktiviert'} – empfohlen für alle Therapeut:innen &amp; Admins
+            {totpEnabled ? 'Aktiviert' : 'Nicht aktiviert'} – empfohlen für alle Therapeut:innen
+            &amp; Admins
           </p>
         </div>
         {totpEnabled ? (
@@ -167,7 +173,8 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
           <div className="rounded-lg border border-dashed border-gray-300 p-4 space-y-3">
             <h3 className="text-sm font-semibold text-gray-900">Setup-Code</h3>
             <p className="text-sm text-gray-600">
-              Scanne den Code mit deiner Authenticator-App oder gib den geheimen Schlüssel manuell ein.
+              Scanne den Code mit deiner Authenticator-App oder gib den geheimen Schlüssel manuell
+              ein.
             </p>
             <code className="block rounded-md bg-gray-900 text-white text-sm tracking-widest px-4 py-3">
               {setupSecret}

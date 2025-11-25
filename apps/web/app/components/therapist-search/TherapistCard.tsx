@@ -1,45 +1,49 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { Star, MapPin, Calendar, Heart } from 'lucide-react'
-import { InteractiveCard } from '../InteractiveCard'
-import type { TherapistWithListing } from './types'
-import { PlaceholderImage } from './PlaceholderImage'
-import { AvailabilityBadge } from '../AvailabilityBadge'
+import Image from 'next/image';
+import Link from 'next/link';
+import { Star, MapPin, Calendar, Heart } from 'lucide-react';
+import { InteractiveCard } from '../InteractiveCard';
+import type { TherapistWithListing } from './types';
+import { PlaceholderImage } from './PlaceholderImage';
+import { AvailabilityBadge } from '../AvailabilityBadge';
 
 interface TherapistCardProps {
-  therapist: TherapistWithListing
+  therapist: TherapistWithListing;
 }
 
 function formatLocation(city?: string | null, online?: boolean) {
-  const parts: string[] = []
-  if (city) parts.push(city)
-  if (online) parts.push('Online')
-  if (parts.length === 0) return 'Standort auf Anfrage'
-  return parts.join(' & ')
+  const parts: string[] = [];
+  if (city) parts.push(city);
+  if (online) parts.push('Online');
+  if (parts.length === 0) return 'Standort auf Anfrage';
+  return parts.join(' & ');
 }
 
 function formatPrice(min?: number | null, max?: number | null) {
-  if (!min && !max) return 'Preis auf Anfrage'
-  if (min && max && min === max) return `€${(min / 100).toFixed(0)}`
-  if (min && max) return `€${(min / 100).toFixed(0)} - €${(max / 100).toFixed(0)}`
-  if (min) return `Ab €${(min / 100).toFixed(0)}`
-  if (max) return `Bis €${(max / 100).toFixed(0)}`
-  return 'Preis auf Anfrage'
+  if (!min && !max) return 'Preis auf Anfrage';
+  if (min && max && min === max) return `€${(min / 100).toFixed(0)}`;
+  if (min && max) return `€${(min / 100).toFixed(0)} - €${(max / 100).toFixed(0)}`;
+  if (min) return `Ab €${(min / 100).toFixed(0)}`;
+  if (max) return `Bis €${(max / 100).toFixed(0)}`;
+  return 'Preis auf Anfrage';
 }
 
 export function TherapistCard({ therapist }: TherapistCardProps) {
-  const name = therapist.displayName || 'Therapeut:in'
-  const specialty = therapist.specialties[0] || 'Psychotherapie'
-  const approach = therapist.approachSummary || therapist.modalities[0] || 'Individuelle Begleitung'
-  const location = formatLocation(therapist.city, therapist.online)
-  const rating = therapist.rating || 0
-  const reviewCount = therapist.reviewCount || 0
-  const priceRange = formatPrice(therapist.priceMin, therapist.priceMax)
+  const name = therapist.displayName || 'Therapeut:in';
+  const specialty = therapist.specialties[0] || 'Psychotherapie';
+  const approach =
+    therapist.approachSummary || therapist.modalities[0] || 'Individuelle Begleitung';
+  const location = formatLocation(therapist.city, therapist.online);
+  const rating = therapist.rating || 0;
+  const reviewCount = therapist.reviewCount || 0;
+  const priceRange = formatPrice(therapist.priceMin, therapist.priceMax);
 
   return (
-    <InteractiveCard className="h-full border border-neutral-200/60 bg-white/95" glowColor="rgba(13, 148, 136, 0.25)">
+    <InteractiveCard
+      className="h-full border border-neutral-200/60 bg-white/95"
+      glowColor="rgba(13, 148, 136, 0.25)"
+    >
       <Link
         href={`/therapists/${therapist.id}`}
         className="block h-full focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-200/70"
@@ -90,9 +94,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
               <h3 className="text-xl font-semibold text-neutral-900 line-clamp-1 tracking-tight">
                 {therapist.title} {name}
               </h3>
-              <p className="mt-1.5 text-sm font-medium text-teal-600 line-clamp-1">
-                {specialty}
-              </p>
+              <p className="mt-1.5 text-sm font-medium text-teal-600 line-clamp-1">{specialty}</p>
             </div>
 
             {/* Details */}
@@ -131,5 +133,5 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
         </article>
       </Link>
     </InteractiveCard>
-  )
+  );
 }

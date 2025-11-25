@@ -5,21 +5,25 @@ Ein regelbasierter, empathischer Chatbot für Erstgespräche in der Mental Healt
 ## Features
 
 ✅ **100% Datenschutz-konform**
+
 - Alle Daten bleiben im Browser (localStorage)
 - Keine externen API-Calls
 - Keine Übertragung sensibler Daten
 
 ✅ **Empathische Konversation**
+
 - Keyword-basierte Themenerkennung
 - Neutrale, validierte Antworten
 - Keine Diagnosen oder medizinische Ratschläge
 
 ✅ **Intelligente Weiterleitung**
+
 - Erkennt Krisen automatisch
 - Bietet standardisierte Tests an
 - Verweist auf professionelle Hilfe
 
 ✅ **Nahtlose Integration**
+
 - Integriert mit Triage-System (PHQ-9, GAD-7)
 - Direkte Links zu Krisenressourcen
 - Persistierte Chat-Historie
@@ -67,6 +71,7 @@ Alles bleibt deterministisch, es werden keine externen Modelle oder APIs aufgeru
 Der Chatbot erkennt folgende Kategorien (mit Prioritäten):
 
 ### Krise (Priorität: 100)
+
 - Suizidale Gedanken
 - Selbstverletzung
 - Akute Notfälle
@@ -74,6 +79,7 @@ Der Chatbot erkennt folgende Kategorien (mit Prioritäten):
 **Aktion:** Sofortige Weiterleitung zu Notfall-Ressourcen
 
 ### Mental Health (Priorität: 70-80)
+
 - Depression
 - Angst / Panik
 - Burnout
@@ -83,6 +89,7 @@ Der Chatbot erkennt folgende Kategorien (mit Prioritäten):
 **Aktion:** Empathische Response + Test-Angebot nach 2-3 Nachrichten
 
 ### Allgemeine Belastung (Priorität: 50-65)
+
 - Stress
 - Schlafprobleme
 - Beziehungsprobleme
@@ -91,6 +98,7 @@ Der Chatbot erkennt folgende Kategorien (mit Prioritäten):
 **Aktion:** Empathische Response + Test-Angebot
 
 ### Hilfe-Suche (Priorität: 60-65)
+
 - Therapie-Anfragen
 - Allgemeine Hilfe
 
@@ -104,7 +112,7 @@ Der Chatbot ist bereits im Marketing-Layout integriert:
 
 ```tsx
 // app/(marketing)/layout.tsx
-import { ChatWidget } from '@/components/support/ChatWidget'
+import { ChatWidget } from '@/components/support/ChatWidget';
 
 export default function Layout({ children }) {
   return (
@@ -112,28 +120,24 @@ export default function Layout({ children }) {
       {children}
       <ChatWidget />
     </>
-  )
+  );
 }
 ```
 
 ### Programmatische Verwendung
 
 ```tsx
-import {
-  createInitialState,
-  processUserMessage,
-  type ConversationState
-} from '@/lib/chatbot'
+import { createInitialState, processUserMessage, type ConversationState } from '@/lib/chatbot';
 
 // Neue Konversation starten
-const state = createInitialState()
+const state = createInitialState();
 
 // User-Input verarbeiten
-const newState = processUserMessage("Ich fühle mich sehr traurig", state)
+const newState = processUserMessage('Ich fühle mich sehr traurig', state);
 
 // Response abrufen
-const lastMessage = newState.messages[newState.messages.length - 1]
-console.log(lastMessage.content)
+const lastMessage = newState.messages[newState.messages.length - 1];
+console.log(lastMessage.content);
 ```
 
 ## Anpassung
@@ -150,7 +154,7 @@ export const KEYWORD_PATTERNS: KeywordPattern[] = [
     priority: 70,
   },
   // ... mehr Patterns
-]
+];
 ```
 
 ### Neue Response-Templates
@@ -168,7 +172,7 @@ export const RESPONSE_TEMPLATES: ResponseTemplate[] = [
     followUp: 'Einsamkeit kann zu Depression führen. Ein Test könnte helfen.',
     suggestedAction: 'take_assessment',
   },
-]
+];
 ```
 
 ### Begrüßung anpassen
@@ -182,7 +186,7 @@ export const GENERAL_RESPONSES = {
     'Willkommen. Erzähl mir, was dich bewegt.',
   ],
   // ...
-}
+};
 ```
 
 ## Datenschutz
@@ -203,6 +207,7 @@ Der Chatbot speichert folgende Daten im **Browser localStorage**:
 ### Daten löschen
 
 Nutzer können jederzeit:
+
 1. Den Chat zurücksetzen (Reset-Button)
 2. localStorage manuell leeren
 3. Browser-Daten löschen
@@ -273,13 +278,11 @@ Bot: "🚨 WICHTIG - Sofortige Hilfe
 Der Chatbot erkennt kritische Keywords und reagiert sofort:
 
 ```typescript
-const CRISIS_KEYWORDS = [
-  'suizid', 'selbstmord', 'umbringen',
-  'nicht mehr leben', 'beenden', 'tod'
-]
+const CRISIS_KEYWORDS = ['suizid', 'selbstmord', 'umbringen', 'nicht mehr leben', 'beenden', 'tod'];
 ```
 
 Bei Erkennung:
+
 1. Rote Hervorhebung der Message
 2. Anzeige von Notfall-Kontakten
 3. Direktlinks zu Telefonnummern
@@ -310,6 +313,7 @@ Falls später ein AI-Modell gewünscht ist, kann `engine.ts` um einen optionalen
 ## Support
 
 Bei Fragen oder Problemen:
+
 - **Issues:** GitHub Issues erstellen
 - **Dokumentation:** Dieses README
 - **Code-Beispiele:** `lib/chatbot/` durchsehen

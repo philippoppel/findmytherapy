@@ -38,5 +38,5 @@ export function TherapistCardSkeleton() {
         <div className="mt-2 h-12 animate-pulse rounded-xl bg-neutral-200" />
       </div>
     </div>
-  )
+  );
 }

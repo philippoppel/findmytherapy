@@ -1,13 +1,13 @@
 export type Coordinates = {
-  lat: number
-  lng: number
-}
+  lat: number;
+  lng: number;
+};
 
 export type LocationValidationResult =
   | { valid: true; coordinates: Coordinates; normalized: string }
-  | { valid: false; error: string; suggestions: string[] }
+  | { valid: false; error: string; suggestions: string[] };
 
-export const PLACEHOLDER_IMAGE_KEYWORDS = ['/images/therapists/therapy-']
+export const PLACEHOLDER_IMAGE_KEYWORDS = ['/images/therapists/therapy-'];
 
 const CITY_KEY_SYNONYMS: Record<string, string> = {
   // Wien variants
@@ -24,7 +24,7 @@ const CITY_KEY_SYNONYMS: Record<string, string> = {
   'st polten land': 'st polten',
   'st poelten': 'st polten',
   'sankt polten': 'st polten',
-  'stpolten': 'st polten',
+  stpolten: 'st polten',
 
   // Steyr variants
   'steyr land': 'steyr',
@@ -35,22 +35,22 @@ const CITY_KEY_SYNONYMS: Record<string, string> = {
   ibk: 'innsbruck',
 
   // Klosterneuburg variants
-  'klosterneuburg': 'klosterneuburg',
+  klosterneuburg: 'klosterneuburg',
   klosternbg: 'klosterneuburg',
 
   // Wiener Neustadt variants
   'wr neustadt': 'wiener neustadt',
   'wr. neustadt': 'wiener neustadt',
-  'wienerneustadt': 'wiener neustadt',
+  wienerneustadt: 'wiener neustadt',
 
   // Mödling variants
   moedling: 'modling',
   mödling: 'modling',
 
   // Bruck variants
-  'bruck': 'bruck an der mur',
+  bruck: 'bruck an der mur',
   'bruck/mur': 'bruck an der mur',
-}
+};
 
 const CITY_COORDINATES: Record<string, Coordinates> = {
   wien: { lat: 48.2082, lng: 16.3738 },
@@ -72,21 +72,21 @@ const CITY_COORDINATES: Record<string, Coordinates> = {
   steyr: { lat: 48.0427, lng: 14.4213 },
   'wiener neustadt': { lat: 47.8049, lng: 16.2362 },
   'steyr land': { lat: 48.0427, lng: 14.4213 },
-  'klosterneuburg': { lat: 48.3059, lng: 16.3253 },
+  klosterneuburg: { lat: 48.3059, lng: 16.3253 },
   'sankt poelten': { lat: 48.2085, lng: 15.6245 },
   'steyr-stadt': { lat: 48.0427, lng: 14.4213 },
   'steyr stadt': { lat: 48.0427, lng: 14.4213 },
   'steyr-stadt & bezirk': { lat: 48.0427, lng: 14.4213 },
-  'leoben': { lat: 47.3842, lng: 15.0913 },
+  leoben: { lat: 47.3842, lng: 15.0913 },
   'bruck an der mur': { lat: 47.4107, lng: 15.2671 },
   'feldkirchen in karnten': { lat: 46.7228, lng: 14.0956 },
-  'schwechat': { lat: 48.1366, lng: 16.474 },
-  'amstetten': { lat: 48.1221, lng: 14.8721 },
+  schwechat: { lat: 48.1366, lng: 16.474 },
+  amstetten: { lat: 48.1221, lng: 14.8721 },
   'st polten-land': { lat: 48.2085, lng: 15.6245 },
   'st pölten': { lat: 48.2085, lng: 15.6245 },
   'wien-umgebung': { lat: 48.2082, lng: 16.3738 },
-  'online': { lat: 0, lng: 0 },
-}
+  online: { lat: 0, lng: 0 },
+};
 
 const CITY_POSTAL_HINTS: Record<string, string[]> = {
   wien: [
@@ -114,7 +114,22 @@ const CITY_POSTAL_HINTS: Record<string, string[]> = {
     '1220',
     '1230',
   ],
-  graz: ['8010', '8020', '8036', '8042', '8045', '8046', '8051', '8053', '8054', '8055', '8061', '8071', '8074', '8075'],
+  graz: [
+    '8010',
+    '8020',
+    '8036',
+    '8042',
+    '8045',
+    '8046',
+    '8051',
+    '8053',
+    '8054',
+    '8055',
+    '8061',
+    '8071',
+    '8074',
+    '8075',
+  ],
   linz: ['4020', '4030', '4040', '4050'],
   salzburg: ['5020', '5026', '5023', '5081', '5082', '5083', '5084'],
   innsbruck: ['6020', '6026', '6030', '6060', '6071', '6080'],
@@ -131,14 +146,14 @@ const CITY_POSTAL_HINTS: Record<string, string[]> = {
   'wiener neustadt': ['2700', '2702', '2721'],
   'st polten': ['3100', '3107', '3124', '3130', '3140'],
   'bruck an der mur': ['8600', '8605', '8611'],
-  'leoben': ['8700', '8713'],
-  'schwechat': ['2320', '2325'],
+  leoben: ['8700', '8713'],
+  schwechat: ['2320', '2325'],
   amstetten: ['3300', '3321', '3361'],
-}
+};
 
 export function normalizeLocationValue(value?: string | null) {
   if (!value) {
-    return ''
+    return '';
   }
   return value
     .normalize('NFD')
@@ -146,104 +161,104 @@ export function normalizeLocationValue(value?: string | null) {
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, ' ')
     .replace(/\s+/g, ' ')
-    .trim()
+    .trim();
 }
 
 export function resolveCityKey(value?: string | null): string | null {
-  const normalized = normalizeLocationValue(value)
+  const normalized = normalizeLocationValue(value);
   if (!normalized) {
-    return null
+    return null;
   }
-  return CITY_KEY_SYNONYMS[normalized] ?? normalized
+  return CITY_KEY_SYNONYMS[normalized] ?? normalized;
 }
 
 export function getCityCoordinates(value?: string | null): Coordinates | null {
-  const key = resolveCityKey(value)
+  const key = resolveCityKey(value);
   if (!key) {
-    return null
+    return null;
   }
-  return CITY_COORDINATES[key] ?? null
+  return CITY_COORDINATES[key] ?? null;
 }
 
 export function getCoordinatesForPostalCode(value?: string | null): Coordinates | null {
   if (!value) {
-    return null
+    return null;
   }
-  const numeric = parseInt(value, 10)
+  const numeric = parseInt(value, 10);
   if (!Number.isFinite(numeric) || value.length < 4 || value.length > 5) {
-    return null
+    return null;
   }
   for (const [cityKey, codes] of Object.entries(CITY_POSTAL_HINTS)) {
     if (codes.includes(value)) {
-      return CITY_COORDINATES[cityKey] ?? null
+      return CITY_COORDINATES[cityKey] ?? null;
     }
   }
-  return null
+  return null;
 }
 
 export function resolveCoordinatesFromSearch(value?: string | null) {
   if (!value) {
-    return null
+    return null;
   }
-  return getCityCoordinates(value) ?? getCoordinatesForPostalCode(value)
+  return getCityCoordinates(value) ?? getCoordinatesForPostalCode(value);
 }
 
 export function buildLocationTokens(city?: string | null, locationLabel?: string | null) {
-  const tokens = new Set<string>()
-  const inputs = [city, locationLabel]
+  const tokens = new Set<string>();
+  const inputs = [city, locationLabel];
   inputs.forEach((input) => {
     if (!input) {
-      return
+      return;
     }
-    const normalized = normalizeLocationValue(input)
+    const normalized = normalizeLocationValue(input);
     if (normalized) {
-      tokens.add(normalized)
-      normalized.split(' ').forEach((part) => tokens.add(part))
+      tokens.add(normalized);
+      normalized.split(' ').forEach((part) => tokens.add(part));
     }
-  })
+  });
 
-  const cityKey = resolveCityKey(city)
+  const cityKey = resolveCityKey(city);
   if (cityKey) {
-    tokens.add(cityKey)
-    tokens.add(cityKey.replace(/\s+/g, ''))
-    const hints = CITY_POSTAL_HINTS[cityKey]
+    tokens.add(cityKey);
+    tokens.add(cityKey.replace(/\s+/g, ''));
+    const hints = CITY_POSTAL_HINTS[cityKey];
     if (hints) {
-      hints.forEach((hint) => tokens.add(hint))
+      hints.forEach((hint) => tokens.add(hint));
     }
   }
 
-  return Array.from(tokens).filter(Boolean)
+  return Array.from(tokens).filter(Boolean);
 }
 
 /**
  * Calculates Levenshtein distance for fuzzy matching
  */
 function levenshteinDistance(a: string, b: string): number {
-  const matrix: number[][] = []
+  const matrix: number[][] = [];
 
   for (let i = 0; i <= b.length; i++) {
-    matrix[i] = [i]
+    matrix[i] = [i];
   }
 
   for (let j = 0; j <= a.length; j++) {
-    matrix[0][j] = j
+    matrix[0][j] = j;
   }
 
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1]
+        matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
           matrix[i - 1][j - 1] + 1, // substitution
-          matrix[i][j - 1] + 1,     // insertion
-          matrix[i - 1][j] + 1,     // deletion
-        )
+          matrix[i][j - 1] + 1, // insertion
+          matrix[i - 1][j] + 1, // deletion
+        );
       }
     }
   }
 
-  return matrix[b.length][a.length]
+  return matrix[b.length][a.length];
 }
 
 /**
@@ -253,33 +268,33 @@ function levenshteinDistance(a: string, b: string): number {
  * @returns Array of similar city names
  */
 export function findSimilarCities(input: string, maxSuggestions: number = 3): string[] {
-  const normalized = normalizeLocationValue(input)
+  const normalized = normalizeLocationValue(input);
   if (!normalized || normalized.length < 2) {
-    return []
+    return [];
   }
 
   // Get all available city names
-  const allCities = Object.keys(CITY_COORDINATES).filter(city => city !== 'online')
+  const allCities = Object.keys(CITY_COORDINATES).filter((city) => city !== 'online');
 
   // Calculate distances and sort
-  const distances = allCities.map(city => ({
+  const distances = allCities.map((city) => ({
     city,
     distance: levenshteinDistance(normalized, city),
     startsWithSame: city.startsWith(normalized.charAt(0)),
-  }))
+  }));
 
   // Sort by: 1) distance, 2) same starting letter
   distances.sort((a, b) => {
-    if (a.distance !== b.distance) return a.distance - b.distance
-    if (a.startsWithSame !== b.startsWithSame) return a.startsWithSame ? -1 : 1
-    return 0
-  })
+    if (a.distance !== b.distance) return a.distance - b.distance;
+    if (a.startsWithSame !== b.startsWithSame) return a.startsWithSame ? -1 : 1;
+    return 0;
+  });
 
   // Return top suggestions with reasonable distance
   return distances
-    .filter(d => d.distance <= 3) // Max 3 character differences
+    .filter((d) => d.distance <= 3) // Max 3 character differences
     .slice(0, maxSuggestions)
-    .map(d => d.city)
+    .map((d) => d.city);
 }
 
 /**
@@ -293,26 +308,26 @@ export function validateLocationInput(input?: string | null): LocationValidation
       valid: false,
       error: 'Bitte gib eine Stadt oder Postleitzahl ein',
       suggestions: [],
-    }
+    };
   }
 
-  const normalized = normalizeLocationValue(input)
-  const coordinates = resolveCoordinatesFromSearch(input)
+  const normalized = normalizeLocationValue(input);
+  const coordinates = resolveCoordinatesFromSearch(input);
 
   if (coordinates) {
     return {
       valid: true,
       coordinates,
       normalized,
-    }
+    };
   }
 
   // Location not found - provide suggestions
-  const suggestions = findSimilarCities(input)
+  const suggestions = findSimilarCities(input);
 
   return {
     valid: false,
     error: 'Standort nicht erkannt',
     suggestions,
-  }
+  };
 }

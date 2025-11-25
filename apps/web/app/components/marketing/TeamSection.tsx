@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '@mental-health/ui'
-import type { teamContent } from '../../marketing-content'
-import { Reveal } from './Reveal'
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@mental-health/ui';
+import type { teamContent } from '../../marketing-content';
+import { Reveal } from './Reveal';
 
 interface TeamSectionProps {
-  content: typeof teamContent
+  content: typeof teamContent;
 }
 
 export function TeamSection({ content }: TeamSectionProps) {
@@ -39,11 +39,7 @@ export function TeamSection({ content }: TeamSectionProps) {
         {/* Team Grid - 3 columns on large screens */}
         <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:mb-16 lg:grid-cols-3 lg:gap-8">
           {content.members.map((member, index) => (
-            <Reveal
-              key={member.name}
-              delay={0.1 * index}
-              className="group relative"
-            >
+            <Reveal key={member.name} delay={0.1 * index} className="group relative">
               <div className="relative h-full overflow-hidden rounded-3xl border border-primary-200 bg-white shadow-soft-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-xl">
                 {/* Image */}
                 {member.image && (
@@ -71,9 +67,7 @@ export function TeamSection({ content }: TeamSectionProps) {
 
                 {/* Content */}
                 <div className="p-6">
-                  <p className="text-sm leading-relaxed text-muted sm:text-base">
-                    {member.focus}
-                  </p>
+                  <p className="text-sm leading-relaxed text-muted sm:text-base">{member.focus}</p>
                 </div>
               </div>
             </Reveal>
@@ -93,21 +87,24 @@ export function TeamSection({ content }: TeamSectionProps) {
               <div className="group relative overflow-hidden rounded-2xl border border-primary-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
                 <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary-600 to-primary-300 transition-all duration-300 group-hover:w-full" />
                 <p className="text-pretty text-sm leading-relaxed text-default sm:text-base">
-                  Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.
+                  Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen
+                  Kämmerchen.
                 </p>
               </div>
 
               <div className="group relative overflow-hidden rounded-2xl border border-primary-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
                 <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary-600 to-primary-300 transition-all duration-300 group-hover:w-full" />
                 <p className="text-pretty text-sm leading-relaxed text-neutral-900 sm:text-base">
-                  Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.
+                  Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis
+                  eures Feedbacks.
                 </p>
               </div>
 
               <div className="group relative overflow-hidden rounded-2xl border border-primary-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
                 <div className="absolute left-0 top-0 h-1 w-12 bg-gradient-to-r from-primary-600 to-primary-300 transition-all duration-300 group-hover:w-full" />
                 <p className="text-pretty text-sm leading-relaxed text-default sm:text-base">
-                  Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.
+                  Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur,
+                  unabhängige Audits und Hosting in der EU.
                 </p>
               </div>
             </div>
@@ -132,9 +129,7 @@ export function TeamSection({ content }: TeamSectionProps) {
                 <div className="flex flex-wrap justify-center gap-3 sm:flex-nowrap">
                   {content.ctas.map((cta) => (
                     <Button key={cta.href} asChild variant="outline" size="sm">
-                      <Link href={cta.href}>
-                        {cta.label}
-                      </Link>
+                      <Link href={cta.href}>{cta.label}</Link>
                     </Button>
                   ))}
                 </div>
@@ -144,5 +139,5 @@ export function TeamSection({ content }: TeamSectionProps) {
         </Reveal>
       </div>
     </section>
-  )
+  );
 }

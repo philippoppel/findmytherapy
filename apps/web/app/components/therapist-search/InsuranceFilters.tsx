@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { Shield } from 'lucide-react'
+import React from 'react';
+import { Shield } from 'lucide-react';
 
 export type InsuranceFiltersProps = {
-  availableInsuranceProviders: string[]
-  acceptsInsurance: boolean
-  onAcceptsInsuranceChange: (accepts: boolean) => void
-  insuranceProviders: Set<string>
-  onInsuranceProvidersChange: (providers: Set<string>) => void
-}
+  availableInsuranceProviders: string[];
+  acceptsInsurance: boolean;
+  onAcceptsInsuranceChange: (accepts: boolean) => void;
+  insuranceProviders: Set<string>;
+  onInsuranceProvidersChange: (providers: Set<string>) => void;
+};
 
 export function InsuranceFilters({
   availableInsuranceProviders,
@@ -19,14 +19,14 @@ export function InsuranceFilters({
   onInsuranceProvidersChange,
 }: InsuranceFiltersProps) {
   const handleToggleProvider = (provider: string) => {
-    const newProviders = new Set(insuranceProviders)
+    const newProviders = new Set(insuranceProviders);
     if (newProviders.has(provider)) {
-      newProviders.delete(provider)
+      newProviders.delete(provider);
     } else {
-      newProviders.add(provider)
+      newProviders.add(provider);
     }
-    onInsuranceProvidersChange(newProviders)
-  }
+    onInsuranceProvidersChange(newProviders);
+  };
 
   return (
     <div className="space-y-4">
@@ -49,17 +49,12 @@ export function InsuranceFilters({
       {/* Specific insurance providers */}
       {availableInsuranceProviders.length > 0 && (
         <div>
-          <p className="mb-3 text-sm font-medium text-white/90">
-            Spezifische Versicherungen
-          </p>
+          <p className="mb-3 text-sm font-medium text-white/90">Spezifische Versicherungen</p>
           <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
             {availableInsuranceProviders.map((provider) => {
-              const isSelected = insuranceProviders.has(provider)
+              const isSelected = insuranceProviders.has(provider);
               return (
-                <label
-                  key={provider}
-                  className="flex items-center gap-2 cursor-pointer group"
-                >
+                <label key={provider} className="flex items-center gap-2 cursor-pointer group">
                   <input
                     type="checkbox"
                     checked={isSelected}
@@ -70,11 +65,11 @@ export function InsuranceFilters({
                     {provider}
                   </span>
                 </label>
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

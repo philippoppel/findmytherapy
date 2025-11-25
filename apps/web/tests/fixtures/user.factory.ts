@@ -4,35 +4,37 @@
  * Factory functions for creating test users with realistic data
  */
 
-import { User, UserRole } from '@prisma/client'
-import { hash } from 'bcryptjs'
+import { User, UserRole } from '@prisma/client';
+import { hash } from 'bcryptjs';
 
 type CreateUserInput = {
-  email?: string
-  firstName?: string
-  lastName?: string
-  role?: UserRole
-  locale?: string
-  emailVerified?: Date | null
-  marketingOptIn?: boolean
-}
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
+  locale?: string;
+  emailVerified?: Date | null;
+  marketingOptIn?: boolean;
+};
 
-let emailCounter = 0
+let emailCounter = 0;
 
 /**
  * Generate a unique email with timestamp to avoid collisions across test files
  */
 function generateUniqueEmail(prefix: string): string {
-  emailCounter++
-  const timestamp = Date.now()
-  return `${prefix}-${timestamp}-${emailCounter}@example.com`
+  emailCounter++;
+  const timestamp = Date.now();
+  return `${prefix}-${timestamp}-${emailCounter}@example.com`;
 }
 
 /**
  * Create a test user with default values
  */
-export function createTestUser(overrides?: CreateUserInput): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
-  emailCounter++
+export function createTestUser(
+  overrides?: CreateUserInput,
+): Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
+  emailCounter++;
 
   return {
     email: overrides?.email || generateUniqueEmail('test-user'),
@@ -43,8 +45,8 @@ export function createTestUser(overrides?: CreateUserInput): Omit<User, 'id' | '
     marketingOptIn: overrides?.marketingOptIn ?? false,
     role: overrides?.role || 'CLIENT',
     twoFASecret: null,
-    locale: overrides?.locale || 'de-AT'
-  }
+    locale: overrides?.locale || 'de-AT',
+  };
 }
 
 /**
@@ -52,15 +54,15 @@ export function createTestUser(overrides?: CreateUserInput): Omit<User, 'id' | '
  */
 export async function createTestUserWithPassword(
   password: string = 'Test1234!',
-  overrides?: CreateUserInput
+  overrides?: CreateUserInput,
 ): Promise<Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>> {
-  const user = createTestUser(overrides)
-  const passwordHash = await hash(password, 10)
+  const user = createTestUser(overrides);
+  const passwordHash = await hash(password, 10);
 
   return {
     ...user,
-    passwordHash
-  }
+    passwordHash,
+  };
 }
 
 /**
@@ -72,8 +74,8 @@ export async function createTestTherapist(overrides?: CreateUserInput) {
     role: 'THERAPIST',
     firstName: overrides?.firstName || 'Dr.',
     lastName: overrides?.lastName || `Therapeut ${++emailCounter}`,
-    email: overrides?.email || generateUniqueEmail('therapist')
-  })
+    email: overrides?.email || generateUniqueEmail('therapist'),
+  });
 }
 
 /**
@@ -85,8 +87,8 @@ export async function createTestAdmin(overrides?: CreateUserInput) {
     role: 'ADMIN',
     firstName: overrides?.firstName || 'Admin',
     lastName: overrides?.lastName || `User ${++emailCounter}`,
-    email: overrides?.email || generateUniqueEmail('admin')
-  })
+    email: overrides?.email || generateUniqueEmail('admin'),
+  });
 }
 
 /**
@@ -98,13 +100,13 @@ export async function createTestClient(overrides?: CreateUserInput) {
     role: 'CLIENT',
     firstName: overrides?.firstName || 'Test',
     lastName: overrides?.lastName || `Client ${++emailCounter}`,
-    email: overrides?.email || generateUniqueEmail('client')
-  })
+    email: overrides?.email || generateUniqueEmail('client'),
+  });
 }
 
 /**
  * Reset the email counter (useful for test isolation)
  */
 export function resetEmailCounter() {
-  emailCounter = 0
+  emailCounter = 0;
 }

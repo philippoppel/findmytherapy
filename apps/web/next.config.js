@@ -15,7 +15,7 @@ const baseSecurityHeaders = [
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
-]
+];
 
 const nextConfig = {
   reactStrictMode: true,

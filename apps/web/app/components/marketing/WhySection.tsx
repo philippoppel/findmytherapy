@@ -1,25 +1,24 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { Button, cn } from '@mental-health/ui'
-import type { whyContent } from '../../marketing-content'
-import { Reveal } from './Reveal'
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button, cn } from '@mental-health/ui';
+import type { whyContent } from '../../marketing-content';
+import { Reveal } from './Reveal';
 
 interface WhySectionProps {
-  content: typeof whyContent
+  content: typeof whyContent;
 }
 
 export function WhySection({ content }: WhySectionProps) {
   return (
-    <section
-      id={content.id}
-      aria-labelledby="why-heading"
-      className="py-20"
-    >
+    <section id={content.id} aria-labelledby="why-heading" className="py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
-          <Reveal className="relative order-2 overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/90 via-secondary-800/90 to-primary-900/90 shadow-xl lg:order-1" variant="scale">
+          <Reveal
+            className="relative order-2 overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/90 via-secondary-800/90 to-primary-900/90 shadow-xl lg:order-1"
+            variant="scale"
+          >
             <div className="absolute inset-0">
               <Image
                 src={content.image.src}
@@ -35,7 +34,9 @@ export function WhySection({ content }: WhySectionProps) {
                 Entwickelt mit Expert:innen
               </div>
               <p className="text-lg leading-relaxed text-white/85">
-                FindMyTherapy verbindet klinische Erfahrung, Forschung und technologische Umsetzung. Gemeinsam mit österreichischen Praxen, Kliniken und Krisendiensten testen wir jede Ausbaustufe.
+                FindMyTherapy verbindet klinische Erfahrung, Forschung und technologische Umsetzung.
+                Gemeinsam mit österreichischen Praxen, Kliniken und Krisendiensten testen wir jede
+                Ausbaustufe.
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
@@ -58,9 +59,7 @@ export function WhySection({ content }: WhySectionProps) {
             >
               {content.title}
             </h2>
-            <p className="text-pretty text-lg leading-relaxed text-muted">
-              {content.description}
-            </p>
+            <p className="text-pretty text-lg leading-relaxed text-muted">{content.description}</p>
             <ul className="space-y-3 sm:space-y-4">
               {content.bullets.map((bullet) => (
                 <li
@@ -75,24 +74,23 @@ export function WhySection({ content }: WhySectionProps) {
               ))}
             </ul>
             <Button asChild size="lg" className="mt-4 w-fit">
-              <Link href={content.cta.href}>
-                {content.cta.label}
-              </Link>
+              <Link href={content.cta.href}>{content.cta.label}</Link>
             </Button>
           </Reveal>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function Avatar({ initials }: { initials: string }) {
   return (
-    <span className={cn(
-      'flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/15 text-sm font-semibold text-white/90 backdrop-blur',
-    )}
+    <span
+      className={cn(
+        'flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/15 text-sm font-semibold text-white/90 backdrop-blur',
+      )}
     >
       {initials}
     </span>
-  )
+  );
 }

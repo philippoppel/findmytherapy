@@ -46,7 +46,7 @@ export default function LoginPage() {
       }
 
       // Success! Wait a moment for cookie to be set, then redirect
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       window.location.href = '/dashboard';
     } catch (err) {
       console.error('Login error:', err);
@@ -75,7 +75,9 @@ export default function LoginPage() {
               Therapeuten-Login
             </div>
             <h2 className="text-3xl font-bold text-white">Anmelden</h2>
-            <p className="mt-2 text-sm text-white/70">Melde dich mit deinem Therapeuten-Account an</p>
+            <p className="mt-2 text-sm text-white/70">
+              Melde dich mit deinem Therapeuten-Account an
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
