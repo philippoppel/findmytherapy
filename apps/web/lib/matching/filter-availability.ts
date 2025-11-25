@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import type { InsuranceType, TherapyFormat } from '@prisma/client';
 import type { FilterOption, FilterOptionsResponse } from './types';
+import { PROBLEM_AREA_MAPPING } from './types';
 import { LANGUAGES, PROBLEM_AREAS } from '@/app/components/matching/types';
 import { getCached, setCached } from '@/lib/redis';
 
@@ -198,24 +199,39 @@ function calculateInsuranceOptions(
 
 /**
  * Berechnet verfügbare Problemfelder
+ * Verwendet das PROBLEM_AREA_MAPPING für konsistentes Matching mit dem Matching-Service
  */
 function calculateProblemAreaOptions(
   therapists: TherapistForFiltering[],
   _currentFilters: CurrentFilters,
 ): FilterOption[] {
-  // Zähle wie oft jede Spezialisierung vorkommt
-  const specialtyCounts = new Map<string, number>();
+  // Zähle wie oft jeder Problembereich vorkommt
+  const areaCounts = new Map<string, number>();
 
   for (const therapist of therapists) {
-    const specs = therapist.specialties || [];
-    for (const spec of specs) {
-      const normalized = spec.toLowerCase();
-      // Mapppe auf Problemfelder
-      for (const area of PROBLEM_AREAS) {
-        const areaLower = area.label.toLowerCase();
-        if (normalized.includes(areaLower) || areaLower.includes(normalized)) {
-          specialtyCounts.set(area.id, (specialtyCounts.get(area.id) || 0) + 1);
-        }
+    const specs = (therapist.specialties || []).map((s) => s.toLowerCase());
+    if (specs.length === 0) continue;
+
+    // Für jeden Problembereich prüfen
+    for (const area of PROBLEM_AREAS) {
+      const areaId = area.id.toLowerCase();
+
+      // 1. Direkte Übereinstimmung mit area.id
+      const hasDirectMatch = specs.some(
+        (spec) => spec.includes(areaId) || areaId.includes(spec),
+      );
+
+      // 2. Mapping-basierte Übereinstimmung (wie im Matching-Service)
+      const relatedSpecs = PROBLEM_AREA_MAPPING[areaId] || [];
+      const hasMappingMatch = relatedSpecs.some((related) => {
+        const relatedLower = related.toLowerCase();
+        return specs.some(
+          (spec) => spec.includes(relatedLower) || relatedLower.includes(spec),
+        );
+      });
+
+      if (hasDirectMatch || hasMappingMatch) {
+        areaCounts.set(area.id, (areaCounts.get(area.id) || 0) + 1);
       }
     }
   }
@@ -223,8 +239,8 @@ function calculateProblemAreaOptions(
   return PROBLEM_AREAS.map((area) => ({
     value: area.id,
     label: area.label,
-    count: specialtyCounts.get(area.id) || 0,
-    available: (specialtyCounts.get(area.id) || 0) > 0,
+    count: areaCounts.get(area.id) || 0,
+    available: (areaCounts.get(area.id) || 0) > 0,
   }));
 }
 
