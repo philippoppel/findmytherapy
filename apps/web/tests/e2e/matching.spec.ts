@@ -170,17 +170,18 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page, 10000)
 
     // Should show inline results (not navigate to separate page)
-    await page.waitForSelector('#matching-results', { state: 'visible', timeout: 15000 })
+    const matchingResults = page.locator('#matching-results')
+    await matchingResults.waitFor({ state: 'visible', timeout: 15000 })
 
-    // Should show matches
-    await expect(page.getByText(/Anna Weber/i)).toBeVisible({ timeout: 10000 })
+    // Should show matches (within matching results section)
+    await expect(matchingResults.getByText(/Anna Weber/i).first()).toBeVisible({ timeout: 10000 })
 
     // Should show match score/percentage
-    const scoreElement = page.locator('text=/\\d+%/').first()
+    const scoreElement = matchingResults.locator('text=/\\d+%/').first()
     await expect(scoreElement).toBeVisible()
 
     // Should show explanation why therapist matches
-    await expect(page.getByText(/Warum passt/i).first()).toBeVisible()
+    await expect(matchingResults.getByText(/Warum passt/i).first()).toBeVisible()
   })
 
   test('should show matches even when none are perfect', async ({ page }) => {
