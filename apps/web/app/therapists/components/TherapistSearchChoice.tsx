@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Search, Target, Grid3x3, Sparkles, Check, Compass } from 'lucide-react'
+import { Target, Grid3x3, Sparkles, Check, Compass } from 'lucide-react'
 import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion'
 import { MatchingLink } from '@/app/components/matching/MatchingLink'
 
