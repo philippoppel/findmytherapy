@@ -44,8 +44,8 @@ export function Header() {
   const desktopNavigation = isHome ? baseDesktopNavigation : navigation;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-primary-200/50 bg-white/95 text-neutral-900 shadow-sm backdrop-blur-xl">
-      <nav className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 px-3 sm:px-6 lg:px-10">
+      <nav className="mx-auto flex w-full max-w-6xl flex-col rounded-2xl border border-white/60 bg-white/80 px-3 py-2 text-neutral-900 shadow-[0_12px_45px_-25px_rgba(15,23,42,0.45)] backdrop-blur-2xl sm:px-5 lg:px-7">
         <div className="flex h-18 items-center justify-between gap-4">
           <Link
             href="/"
