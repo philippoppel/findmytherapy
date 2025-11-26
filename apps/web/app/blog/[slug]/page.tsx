@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { blogPosts, getBlogPostBySlug } from '../../../lib/blogData';
 import { getAuthorById } from '../../../lib/authors';
 
@@ -86,10 +86,26 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const publishedDate = new Date(post.publishedAt);
   const postUrl = `https://findmytherapy.net/blog/${post.slug}`;
 
-  // Get related posts
-  const relatedPosts = blogPosts
+  // Get related posts from same category
+  const sameCategoryPosts = blogPosts
     .filter(p => p.slug !== post.slug && p.category === post.category)
     .slice(0, 3);
+
+  // Get posts from other categories for variety
+  const otherCategoryPosts = blogPosts
+    .filter(p => p.slug !== post.slug && p.category !== post.category)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3);
+
+  // Combine: prefer same category, fill with others
+  const relatedPosts = sameCategoryPosts.length >= 3
+    ? sameCategoryPosts
+    : [...sameCategoryPosts, ...otherCategoryPosts].slice(0, 3);
+
+  // Get explicitly related posts if defined
+  const explicitRelated = post.relatedPosts
+    ? post.relatedPosts.map(slug => blogPosts.find(p => p.slug === slug)).filter(Boolean).slice(0, 2)
+    : [];
 
   // Article Schema
   const articleStructuredData = {
@@ -114,6 +130,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   };
+
+  // Determine where to insert mid-article CTA
+  const midPoint = Math.floor(post.sections.length / 2);
 
   return (
     <div className="min-h-screen bg-white">
@@ -191,48 +210,107 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           )}
 
-          {/* Content Sections */}
+          {/* Content Sections with inline CTAs */}
           <div className="prose prose-neutral prose-lg max-w-none">
-            {post.sections.map((section) => {
+            {post.sections.map((section, index) => {
               const sectionId = slugify(section.heading);
+              const showMidArticleCTA = index === midPoint && post.sections.length > 4;
+              const showInlineRelated = index === 2 && explicitRelated.length > 0;
+
               return (
-                <section key={section.heading} id={sectionId} className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold text-neutral-900 mb-4">
-                    {section.heading}
-                  </h2>
-                  {section.paragraphs.map((paragraph, idx) => (
-                    <p key={idx} className="text-neutral-700 leading-relaxed mb-4">
-                      {paragraph}
-                    </p>
-                  ))}
-                  {section.list && (
-                    <ul className="my-4 space-y-2">
-                      {section.list.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-neutral-700">
-                          <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-400" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {section.image && (
-                    <figure className="my-8">
-                      <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-100">
-                        <Image
-                          src={section.image.src}
-                          alt={section.image.alt}
-                          fill
-                          className="object-cover"
-                        />
+                <div key={section.heading}>
+                  <section id={sectionId} className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+                      {section.heading}
+                    </h2>
+                    {section.paragraphs.map((paragraph, idx) => (
+                      <p key={idx} className="text-neutral-700 leading-relaxed mb-4">
+                        {paragraph}
+                      </p>
+                    ))}
+                    {section.list && (
+                      <ul className="my-4 space-y-2">
+                        {section.list.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-3 text-neutral-700">
+                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-400" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {section.image && (
+                      <figure className="my-8">
+                        <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-100">
+                          <Image
+                            src={section.image.src}
+                            alt={section.image.alt}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        {section.image.caption && (
+                          <figcaption className="mt-3 text-center text-sm text-neutral-500">
+                            {section.image.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    )}
+                  </section>
+
+                  {/* Inline Related Articles after section 2 */}
+                  {showInlineRelated && (
+                    <div className="not-prose my-10 p-6 rounded-xl bg-neutral-50 border border-neutral-100">
+                      <p className="text-sm font-semibold uppercase tracking-wide text-neutral-500 mb-4">
+                        Passend zum Thema
+                      </p>
+                      <div className="space-y-4">
+                        {explicitRelated.map((related) => related && (
+                          <Link
+                            key={related.slug}
+                            href={`/blog/${related.slug}`}
+                            className="flex items-center gap-4 group"
+                          >
+                            <div className="relative w-20 h-14 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+                              {related.featuredImage?.src && (
+                                <Image
+                                  src={related.featuredImage.src}
+                                  alt={related.title}
+                                  fill
+                                  className="object-cover group-hover:scale-105 transition"
+                                />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-neutral-900 group-hover:text-neutral-600 transition line-clamp-2">
+                                {related.title}
+                              </p>
+                            </div>
+                            <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition" />
+                          </Link>
+                        ))}
                       </div>
-                      {section.image.caption && (
-                        <figcaption className="mt-3 text-center text-sm text-neutral-500">
-                          {section.image.caption}
-                        </figcaption>
-                      )}
-                    </figure>
+                    </div>
                   )}
-                </section>
+
+                  {/* Mid-article Quiz CTA */}
+                  {showMidArticleCTA && (
+                    <div className="not-prose my-10 p-6 rounded-xl border border-neutral-200 bg-gradient-to-br from-neutral-50 to-white">
+                      <p className="font-semibold text-neutral-900 mb-2">
+                        Noch unsicher, welche Unterstützung passt?
+                      </p>
+                      <p className="text-sm text-neutral-600 mb-4">
+                        Unser kurzes Quiz hilft dir, die richtige Richtung zu finden.
+                      </p>
+                      <Link
+                        href="/quiz"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition"
+                      >
+                        Quiz starten
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
@@ -255,26 +333,43 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           )}
 
-          {/* Therapist CTA - Minimal */}
-          <div className="mt-12 p-6 rounded-xl bg-neutral-900 text-white text-center">
-            <p className="text-lg font-semibold mb-2">Professionelle Unterstützung finden</p>
-            <p className="text-neutral-400 text-sm mb-4">
-              Finde Therapeut:innen, die auf deine Themen spezialisiert sind.
-            </p>
+          {/* Multiple CTAs */}
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
             <Link
               href="/therapists"
-              className="inline-flex px-5 py-2.5 rounded-lg bg-white text-neutral-900 text-sm font-medium hover:bg-neutral-100 transition"
+              className="p-6 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 transition"
             >
-              Therapeut:innen finden
+              <p className="font-semibold mb-1">Therapeut:in finden</p>
+              <p className="text-sm text-neutral-400">
+                Spezialist:innen für deine Themen
+              </p>
+            </Link>
+            <Link
+              href="/quiz"
+              className="p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 transition"
+            >
+              <p className="font-semibold text-neutral-900 mb-1">Schnell-Quiz</p>
+              <p className="text-sm text-neutral-500">
+                In 2 Min. zur Orientierung
+              </p>
             </Link>
           </div>
         </article>
 
-        {/* Related Articles */}
+        {/* Related Articles - More prominent */}
         {relatedPosts.length > 0 && (
           <section className="border-t border-neutral-100 py-16">
             <div className="mx-auto max-w-7xl">
-              <h2 className="text-2xl font-semibold text-neutral-900 mb-8">Weitere Artikel</h2>
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-semibold text-neutral-900">Weitere Artikel</h2>
+                <Link
+                  href="/blog"
+                  className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition flex items-center gap-1"
+                >
+                  Alle Artikel
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedPosts.map((relatedPost) => (
                   <article key={relatedPost.slug} className="group">
@@ -304,6 +399,32 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </section>
         )}
+
+        {/* Final CTA Banner */}
+        <section className="border-t border-neutral-100 py-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-semibold text-neutral-900 mb-4">
+              Bereit für den nächsten Schritt?
+            </h2>
+            <p className="text-neutral-600 mb-8">
+              Finde professionelle Unterstützung, die zu dir passt.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/therapists"
+                className="px-6 py-3 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition"
+              >
+                Therapeut:innen durchsuchen
+              </Link>
+              <Link
+                href="/triage"
+                className="px-6 py-3 rounded-lg border border-neutral-200 text-neutral-700 font-medium hover:bg-neutral-50 transition"
+              >
+                Ersteinschätzung starten
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Structured Data */}

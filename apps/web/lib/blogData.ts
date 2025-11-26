@@ -310,6 +310,11 @@ export const blogPosts: BlogPost[] = [
           'Wer Unterstützung für mentale Gesundheit sucht, steht häufig vor einem Berg an Fragen. Welche Therapieform passt? Reicht ein Kurs? Kann ich mit jemandem sprechen, bevor ich mich entscheide?',
           'FindMyTherapy setzt genau hier an: Ein validierter Fragebogen, der in wenigen Minuten ausgefüllt ist, liefert eine erste Orientierung und verschafft einen Überblick über geeignete Formate.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person füllt digitalen Fragebogen auf Tablet aus – digitale Ersteinschätzung',
+          caption: 'Digitale Fragebögen bieten eine schnelle erste Orientierung.',
+        },
       },
       {
         heading: 'Was FindMyTherapy aktuell zeigt',
@@ -499,6 +504,11 @@ export const blogPosts: BlogPost[] = [
           'In Österreich sind aktuell 23 psychotherapeutische Verfahren anerkannt. Diese lassen sich in vier Hauptrichtungen gliedern: tiefenpsychologisch-psychodynamisch, verhaltenstherapeutisch, humanistisch und systemisch. Jeder Ansatz basiert auf unterschiedlichen theoretischen Grundlagen und eignet sich für verschiedene Anliegen.',
           'Laut dem österreichischen Bundesverband für Psychotherapie (ÖBVP) ist die Wahl der Therapieform weniger entscheidend als die Qualität der therapeutischen Beziehung. Dennoch gibt es für bestimmte Störungsbilder wissenschaftlich besser untersuchte Verfahren.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Therapeutisches Gespräch zwischen Therapeutin und Klient in entspannter Atmosphäre',
+          caption: 'Die therapeutische Beziehung ist oft wichtiger als die gewählte Methode.',
+        },
       },
       {
         heading: 'Kognitive Verhaltenstherapie (KVT)',
@@ -558,6 +568,11 @@ export const blogPosts: BlogPost[] = [
           'Die Forschung zeigt: Bei vielen Störungsbildern sind unterschiedliche Verfahren wirksam. Entscheidend ist oft die Passung zwischen Therapeut:in und Klient:in sowie die Motivation zur Veränderung.',
           'Empfehlung: Nutzen Sie Erstgespräche, um verschiedene Ansätze kennenzulernen. Fragen Sie nach der Erfahrung der Therapeut:in mit Ihrem spezifischen Anliegen und nach dem geplanten Behandlungsablauf. Bei akuten Krisen (Suizidalität, schwere Depression) ist oft ein störungsspezifischer, evidenzbasierter Ansatz wie KVT zu bevorzugen.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Zwei Personen in vertrauensvollem Gespräch – symbolisiert die Passung zwischen Therapeut und Klient',
+          caption: 'Das Erstgespräch ist entscheidend, um die richtige Passung zu finden.',
+        },
       },
     ],
   },
@@ -750,6 +765,11 @@ export const blogPosts: BlogPost[] = [
           'Laut WHO sind psychische Erkrankungen weltweit eine der Hauptursachen für Arbeitsunfähigkeit. In Österreich erfüllt jede vierte Person im Laufe ihres Lebens die Kriterien einer psychischen Störung. Viele dieser Erkrankungen könnten durch präventive Maßnahmen abgemildert oder verzögert werden.',
           'Die gute Nachricht: Wissenschaftliche Studien zeigen, dass einfache Verhaltensänderungen messbare Effekte auf unser psychisches Wohlbefinden haben. Im Folgenden werden sieben evidenzbasierte Strategien vorgestellt.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person praktiziert Yoga bei Sonnenaufgang – symbolisiert mentale Prävention',
+          caption: 'Kleine tägliche Routinen können große Auswirkungen auf die psychische Gesundheit haben.',
+        },
       },
       {
         heading: '1. Regelmäßige körperliche Aktivität',
@@ -800,6 +820,11 @@ export const blogPosts: BlogPost[] = [
           'Apps und Programme: Headspace, Calm, 7Mind (deutsch) – Studien belegen Wirksamkeit',
           'Besonders wirksam: Bei Rückfallprophylaxe von Depressionen (MBCT reduziert Rückfallrisiko um 43%)',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person meditiert in ruhiger Umgebung – Achtsamkeit für psychische Gesundheit',
+          caption: 'Schon 10-15 Minuten Meditation täglich zeigen messbare Effekte.',
+        },
       },
       {
         heading: '5. Ernährung und Darm-Hirn-Achse',
@@ -897,6 +922,11 @@ export const blogPosts: BlogPost[] = [
           'Burnout wird von der WHO im ICD-11 als "Syndrom aufgrund von chronischem Stress am Arbeitsplatz, der nicht erfolgreich verarbeitet wurde" definiert. Es ist explizit kein eigenständiges Krankheitsbild, sondern ein berufskontext-spezifisches Phänomen.',
           'Nach dem Maslach Burnout Inventory (MBI), dem meistgenutzten Messinstrument, umfasst Burnout drei Dimensionen: Emotionale Erschöpfung, Depersonalisation (Zynismus) und reduzierte persönliche Leistungsfähigkeit.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Gestresste Person am Schreibtisch mit Laptop – symbolisiert Burnout am Arbeitsplatz',
+          caption: 'Chronischer Arbeitsstress ist die Hauptursache für Burnout.',
+        },
       },
       {
         heading: 'Verbreitung: Zahlen aus Österreich und Europa',
@@ -948,6 +978,11 @@ export const blogPosts: BlogPost[] = [
           'Erholungsstrategien: Regelmäßige Pausen, Urlaub (Studien zeigen: Erholung hält 2-4 Wochen an)',
           'Soziale Unterstützung: Kollegiale Intervision, Supervision, persönliche Netzwerke',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in der Natur entspannt – Work-Life-Balance und Erholung',
+          caption: 'Regelmäßige Erholung und klare Grenzen sind der beste Schutz vor Burnout.',
+        },
       },
       {
         heading: 'Organisationale Prävention: Was Unternehmen tun können',
@@ -1034,6 +1069,11 @@ export const blogPosts: BlogPost[] = [
           'Altersgruppen: Höchste Prävalenz bei 25-44-Jährigen (28%)',
           'Kinder und Jugendliche: 10-15% zeigen klinisch relevante psychische Auffälligkeiten (BMBWF-Studie 2022)',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Datenvisualisierung und Statistiken – Zahlen zur mentalen Gesundheit',
+          caption: 'Jede vierte Person in Österreich erfüllt jährlich die Kriterien einer psychischen Störung.',
+        },
       },
       {
         heading: 'Versorgungssituation: Zugang zu Psychotherapie',
@@ -1170,6 +1210,11 @@ export const blogPosts: BlogPost[] = [
           'Die Wirksamkeit von Psychotherapie ist eine der am besten erforschten Fragen der klinischen Psychologie. Seit den 1970er Jahren wurden tausende Studien durchgeführt, die die Effektivität verschiedener Therapieformen untersuchen.',
           'Die Antwort ist eindeutig: Ja, Psychotherapie wirkt. Meta-Analysen mit hunderttausenden Patient:innen belegen signifikante und klinisch relevante Verbesserungen über ein breites Spektrum psychischer Störungen hinweg.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Wissenschaftliche Forschung und Studien – Meta-Analysen zur Psychotherapie',
+          caption: 'Die Wirksamkeit von Psychotherapie ist durch tausende Studien belegt.',
+        },
       },
       {
         heading: 'Meta-Analysen: Was sagt die Gesamtschau der Forschung?',
@@ -1249,6 +1294,11 @@ export const blogPosts: BlogPost[] = [
           'Hoffnung und Erwartung (15%): Placebo-Effekte, Optimismus',
           'Spezifische Techniken (15%): Methoden-spezifische Interventionen (z.B. Exposition, kognitive Umstrukturierung)',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Therapeutisches Gespräch – die Beziehung ist der wichtigste Wirkfaktor',
+          caption: 'Die therapeutische Beziehung trägt 30-40% zum Therapieerfolg bei.',
+        },
       },
       {
         heading: 'Für wen wirkt Psychotherapie nicht?',
@@ -1355,6 +1405,11 @@ export const blogPosts: BlogPost[] = [
           'Wer Unterstützung bei psychischen Belastungen sucht, steht häufig vor der Frage: An wen soll ich mich wenden? Die Begriffe Psycholog:in, Psychotherapeut:in, Psychiater:in und Seelsorger:in werden oft verwechselt oder synonym verwendet – dabei handelt es sich um unterschiedliche Berufsgruppen mit verschiedenen Ausbildungen, Kompetenzen und Behandlungsansätzen.',
           'Dieser Artikel bietet einen evidenzbasierten Überblick über die wichtigsten Berufsgruppen im Bereich mentale Gesundheit, ihre gesetzlichen Grundlagen in Österreich und ihre jeweiligen Tätigkeitsfelder. Ein besonderer Fokus liegt auf Psychotherapeut:innen und ihrer besonderen Rolle im Gesundheitssystem.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Verschiedene Berufsgruppen im Bereich psychische Gesundheit bei der Arbeit',
+          caption: 'Psycholog:in, Psychotherapeut:in, Psychiater:in – unterschiedliche Berufe mit verschiedenen Schwerpunkten.',
+        },
       },
       {
         heading: 'Psycholog:in: Wissenschaft vom Erleben und Verhalten',
@@ -1548,6 +1603,11 @@ export const blogPosts: BlogPost[] = [
           'Depression und Angststörungen gehören zu den häufigsten psychischen Erkrankungen: In der Primärversorgung (Hausärzt:innen, Allgemeinmedizin) weisen 20-30% der Patient:innen psychische Beschwerden auf. Dennoch bleiben viele dieser Erkrankungen unerkannt, weil die Symptome nicht immer offensichtlich sind oder Patient:innen sie nicht ansprechen.',
           'Validierte Screening-Fragebögen können hier helfen: Sie ermöglichen eine schnelle, strukturierte Erfassung von Symptomen und liefern Hinweise darauf, ob eine genauere Diagnostik oder Behandlung notwendig ist. Die drei weltweit am häufigsten eingesetzten Instrumente sind der PHQ-9 für Depression, der GAD-7 für Angst und der WHO-5 für allgemeines Wohlbefinden.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Fragebögen und Screening-Formulare für psychische Gesundheit',
+          caption: 'Validierte Fragebögen helfen, psychische Belastungen frühzeitig zu erkennen.',
+        },
       },
       {
         heading: 'PHQ-9: Der Standard für Depression-Screening',
@@ -1676,6 +1736,11 @@ export const blogPosts: BlogPost[] = [
           'Eine Panikattacke ist eine plötzliche Episode intensiver Angst, die körperliche Symptome wie Herzrasen, Atemnot, Schwindel, Zittern und das Gefühl drohender Gefahr auslöst. Wichtig zu wissen: Panikattacken sind nicht gefährlich, auch wenn sie sich so anfühlen.',
           'Die Symptome entstehen durch eine Überaktivierung des Sympathikus (Kampf-oder-Flucht-Reaktion). Der Körper schüttet Stresshormone wie Adrenalin aus, obwohl keine reale Bedrohung vorliegt. Eine Panikattacke dauert typischerweise 5-20 Minuten und klingt von selbst ab.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person hält sich die Brust – körperliche Symptome einer Panikattacke',
+          caption: 'Panikattacken fühlen sich bedrohlich an, sind aber körperlich nicht gefährlich.',
+        },
       },
       {
         heading: '1. Die 4-7-8 Atemtechnik (Sofortige Beruhigung)',
@@ -1701,6 +1766,11 @@ export const blogPosts: BlogPost[] = [
           '2 Dinge RIECHEN: Nimm 2 Gerüche wahr (oder stelle dir 2 Lieblingsgerüche vor)',
           '1 Ding SCHMECKEN: Schmecke etwas (Kaugummi, Wasser) oder stelle es dir vor',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in ruhiger Umgebung praktiziert Achtsamkeit – Grounding-Technik',
+          caption: 'Die 5-4-3-2-1 Methode hilft, sich im Hier und Jetzt zu verankern.',
+        },
       },
       {
         heading: '3. Akzeptanz statt Kampf',
@@ -2010,6 +2080,11 @@ export const blogPosts: BlogPost[] = [
           'Spezifische Phobien: Intensive Angst vor bestimmten Objekten oder Situationen (z.B. Höhe, Tiere, Fliegen, Blut, enge Räume). Die Angst wird durch den spezifischen Auslöser hervorgerufen.',
           'Agoraphobie: Angst vor Situationen, aus denen eine Flucht schwierig wäre oder Hilfe nicht verfügbar ist (Menschenmengen, öffentliche Verkehrsmittel, weite Plätze).',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in nachdenklicher Haltung – verschiedene Formen von Angststörungen',
+          caption: 'Angststörungen können sich auf verschiedene Weisen äußern.',
+        },
       },
       {
         heading: 'Symptome und Diagnose',
@@ -2197,6 +2272,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Der wichtigste Erfolgsfaktor in der Psychotherapie ist nicht die angewandte Methode, sondern die Qualität der therapeutischen Beziehung. Studien zeigen, dass etwa 30% des Therapieerfolgs auf die Beziehung zwischen Therapeut und Klient zurückzuführen ist. Wenn Sie sich bei Ihrem Therapeuten nicht wohl, verstanden oder sicher fühlen, wird die Therapie weniger wirksam sein – unabhängig davon, wie qualifiziert die Person ist.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Vertrauensvolles Gespräch zwischen Therapeut und Klient',
+          caption: 'Die therapeutische Beziehung ist der wichtigste Erfolgsfaktor.',
+        },
       },
       {
         heading: '5 Schritte zum passenden Therapeuten',
@@ -2272,6 +2352,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Bei Angst atmen wir automatisch schneller und flacher (Hyperventilation), was Symptome wie Schwindel und Kribbeln verstärkt. Kontrollierte, langsame Atmung aktiviert den Parasympathikus (Ruhe-Nerv) und signalisiert dem Körper Sicherheit.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person praktiziert bewusste Atmung zur Entspannung',
+          caption: 'Kontrollierte Atmung aktiviert das parasympathische Nervensystem.',
+        },
       },
       {
         heading: '1. Die 4-7-8-Atmung',
@@ -2334,6 +2419,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'In Österreich gibt es drei Hauptberufsgruppen für psychische Gesundheit: Psychologen, Psychotherapeuten und Psychiater. Jede hat unterschiedliche Ausbildungswege und Befugnisse.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Gesundheitsberufe in der psychischen Versorgung',
+          caption: 'Psychologe, Psychotherapeut, Psychiater – drei verschiedene Berufe.',
+        },
       },
       {
         heading: 'Psychologe',
@@ -2472,6 +2562,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Online-Therapie (auch Videotherapie oder Teletherapie) ist Psychotherapie per Videoanruf. Studien zeigen: Bei Depressionen, Angststörungen und vielen anderen Erkrankungen ist sie genauso wirksam wie Präsenztherapie.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person nimmt an Online-Therapie-Sitzung am Laptop teil',
+          caption: 'Online-Therapie ist bei vielen Störungen genauso wirksam wie Präsenztherapie.',
+        },
       },
       {
         heading: 'Erkennungsmerkmale seriöser Anbieter',
