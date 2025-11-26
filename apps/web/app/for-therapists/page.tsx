@@ -1,379 +1,449 @@
-import type { Metadata } from 'next';
+'use client';
+
+import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import {
-  Users,
-  Calendar,
-  FileText,
-  Video,
-  Award,
-  Download,
+  Globe,
+  Search,
+  BookOpen,
+  ArrowRight,
   CheckCircle2,
   Sparkles,
-  ArrowRight,
-  Mail,
-  BarChart3,
+  TrendingUp,
+  Users,
   Shield,
 } from 'lucide-react';
+import { Reveal } from '../components/marketing/Reveal';
+import { teamContent } from '../marketing-content';
 
-export const metadata: Metadata = {
-  title: 'Für Therapeut:innen – FindMyTherapy',
-  description:
-    'Digitale Praxis-Tools, qualifizierte Klient:innen und administrative Entlastung. Starte kostenlos und erreiche Menschen, die aktiv nach Unterstützung suchen.',
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
 };
 
-const benefits = [
-  {
-    icon: Users,
-    title: 'Qualifizierte Klient:innen',
-    description:
-      'Erreiche Menschen mit validierter Ersteinschätzung (PHQ-9/GAD-7), die aktiv Hilfe suchen – regional und online.',
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
   },
-  {
-    icon: FileText,
-    title: 'Vorberichte fürs Erstgespräch',
-    description:
-      'Strukturierte Screening-Ergebnisse und Präferenzen helfen dir, direkt ins Thema zu kommen.',
-  },
-  {
-    icon: Calendar,
-    title: 'Administrative Entlastung',
-    description:
-      'Unser Care-Team unterstützt bei Erstkontakten, Terminvorbereitung und Matching-Empfehlungen.',
-  },
-  {
-    icon: Video,
-    title: 'Kostenlose Praxis-Webseite',
-    description:
-      'Professionelle Mikro-Webseite mit deinem Profil, Schwerpunkten und Verfügbarkeit – automatisch gepflegt.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Digitale Verlängerung',
-    description:
-      'Nutze Übungen, Fortschrittsverläufe und strukturierte Programme zur Sitzungsbegleitung.',
-  },
-  {
-    icon: Shield,
-    title: 'DSGVO-konform & sicher',
-    description:
-      'Alle Daten bleiben in der EU. Höchste Datenschutz-Standards für dich und deine Klient:innen.',
-  },
-];
-
-const features = [
-  {
-    title: 'Matching-Algorithmus',
-    description:
-      'Automatische Empfehlungen basierend auf Symptomen, Präferenzen und Verfügbarkeit.',
-  },
-  {
-    title: 'Praxis-Dashboard',
-    description: 'Übersicht über Anfragen, Termine und Klient:innen-Pipeline.',
-  },
-  {
-    title: 'Digitale Werkzeuge',
-    description: 'Übungsbibliothek, Fortschrittstracking und Ressourcen für Zwischen-Sitzungen.',
-  },
-  {
-    title: 'Flexible Integration',
-    description:
-      'Funktioniert neben deiner bestehenden Praxis-Software – kein Systemwechsel nötig.',
-  },
-];
-
-const pricingTiers = [
-  {
-    name: 'Free',
-    price: '0€',
-    period: 'dauerhaft',
-    features: [
-      'Profil-Eintrag im Verzeichnis',
-      'Kostenlose Mikro-Webseite',
-      'Basis-Matching',
-      'Anfragen-Verwaltung',
-      'Community-Support',
-    ],
-    cta: 'Kostenlos starten',
-    href: 'mailto:therapists@findmytherapy.net',
-    highlighted: false,
-  },
-  {
-    name: 'PRO',
-    price: '49€',
-    period: 'pro Monat',
-    features: [
-      'Alles aus Free',
-      'Top-Platzierung in Suchergebnissen',
-      'Video-Profil & erweiterte Galerie',
-      'Priority-Matching',
-      'Analytics & Insights',
-      'Premium-Support',
-    ],
-    cta: 'PRO-Plan wählen',
-    href: 'mailto:therapists@findmytherapy.net?subject=PRO%20Plan%20Interesse',
-    highlighted: true,
-  },
-];
-
-const stats = [
-  { value: '100%', label: 'DSGVO-konform' },
-  { value: 'PHQ-9/GAD-7', label: 'Validierte Tests' },
-  { value: '< 5 Min', label: 'Matching-Zeit' },
-  { value: 'EU-Server', label: 'Datenspeicherung' },
-];
+};
 
 export default function ForTherapistsPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950">
-      {/* Background decorations */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
-      </div>
-
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-6 flex justify-end">
-            <Link
-              href="/"
-              className="text-sm font-medium text-white/70 transition hover:text-white"
+      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+            {/* Text Content */}
+            <Reveal>
+              <div className="text-center lg:text-left">
+                <motion.div
+                  className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-800"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Für Therapeut:innen
+                </motion.div>
+
+                <h1 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+                  Ihre Praxis.{' '}
+                  <span className="text-primary-600">Modern präsentiert.</span>
+                </h1>
+
+                <p className="mb-8 text-lg text-muted sm:text-xl lg:max-w-xl">
+                  Professionelle Microsite. SEO-optimiert. Kostenlos.
+                </p>
+
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+                  <Link href="/register">
+                    <motion.span
+                      className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors hover:bg-primary-700"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Jetzt kostenlos starten
+                      <ArrowRight className="h-5 w-5" />
+                    </motion.span>
+                  </Link>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Hero Image */}
+            <Reveal delay={200}>
+              <motion.div
+                className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Image
+                  src="/images/for-therapists/hero.jpg"
+                  alt="Moderne Therapiepraxis"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              </motion.div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Science Callout */}
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <motion.div
+              className="rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-50 via-white to-primary-100/30 p-8 shadow-xl sm:p-12"
+              whileHover={{ scale: 1.01 }}
             >
-              Zur Startseite
-            </Link>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur sm:p-12">
-            <div className="mx-auto max-w-4xl space-y-8 text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white/80">
-                <Sparkles className="h-4 w-4" />
-                Für Therapeut:innen
-              </span>
-
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Deine Praxis. Digital verlängert.
-              </h1>
-
-              <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/85 sm:text-xl">
-                Erreiche qualifizierte Klient:innen mit validierter Ersteinschätzung, spare Zeit
-                durch administrative Entlastung und nutze digitale Tools für nachhaltige
-                Therapieerfolge.
-              </p>
-
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a
-                  href="mailto:therapists@findmytherapy.net?subject=Erstgespräch%20vereinbaren"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-                >
-                  <Mail className="h-5 w-5" />
-                  Erstgespräch vereinbaren
-                </a>
-                <a
-                  href="/downloads/findmytherapy-infopaket.pdf"
-                  download
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 bg-white/10 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:border-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-                >
-                  <Download className="h-5 w-5" />
-                  Infopaket herunterladen
-                </a>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-4 pt-8 sm:grid-cols-4">
-                {stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-2xl border border-white/10 bg-white/5 p-4"
+              <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-center">
+                {/* 75% Stat */}
+                <div className="text-center">
+                  <motion.div
+                    className="mb-4 text-6xl font-bold text-primary-600 sm:text-7xl"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                   >
-                    <div className="text-2xl font-bold text-primary-300">{stat.value}</div>
-                    <div className="mt-1 text-sm text-white/70">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">Warum FindMyTherapy?</h2>
-            <p className="mt-4 text-lg text-white/80">
-              Mehr Zeit für Therapie, weniger Zeit für Akquise und Administration.
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {benefits.map((benefit) => (
-              <div
-                key={benefit.title}
-                className="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 hover:shadow-xl"
-              >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary-500/20">
-                  <benefit.icon className="h-6 w-6 text-primary-300" />
-                </div>
-                <h3 className="text-xl font-semibold text-white">{benefit.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/70">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Infopaket Download - Prominent */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-3xl border-2 border-primary-400/50 bg-gradient-to-br from-primary-900/80 to-primary-950/80 p-8 shadow-2xl backdrop-blur sm:p-12">
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-400/20 ring-2 ring-primary-400/30">
-                <Download className="h-8 w-8 text-primary-300" />
-              </div>
-              <h2 className="text-3xl font-bold text-white sm:text-4xl">
-                Alles Wichtige auf einen Blick
-              </h2>
-              <p className="mt-4 max-w-2xl text-lg text-white/85">
-                Lade unser Infopaket herunter und erfahre im Detail, wie FindMyTherapy deine Praxis
-                unterstützt: Matching-Prozess, Pricing, Tools und rechtliche Rahmenbedingungen.
-              </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <a
-                  href="/downloads/findmytherapy-infopaket.pdf"
-                  download
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-primary-900 shadow-lg transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-                >
-                  <Download className="h-5 w-5" />
-                  PDF herunterladen (2.4 MB)
-                </a>
-                <a
-                  href="/downloads/findmytherapy-infopaket.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 bg-white/10 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:border-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
-                >
-                  <FileText className="h-5 w-5" />
-                  Online ansehen
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">Tools & Features</h2>
-            <p className="mt-4 text-lg text-white/80">
-              Digitale Werkzeuge, die deine Praxis nahtlos ergänzen.
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-500/20">
-                    <CheckCircle2 className="h-5 w-5 text-primary-300" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
-                    <p className="mt-2 text-sm text-white/70">{feature.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">Transparente Preise</h2>
-            <p className="mt-4 text-lg text-white/80">
-              Starte kostenlos und upgrade, wenn du mehr erreichen willst.
-            </p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-2">
-            {pricingTiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`rounded-3xl border p-8 shadow-2xl backdrop-blur ${
-                  tier.highlighted
-                    ? 'border-primary-400/50 bg-white/15 ring-2 ring-primary-400/20'
-                    : 'border-white/10 bg-white/10'
-                }`}
-              >
-                {tier.highlighted && (
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-300">
-                    <Award className="h-4 w-4" />
-                    Empfohlen
-                  </div>
-                )}
-                <h3 className="text-2xl font-bold text-white">{tier.name}</h3>
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-5xl font-bold text-white">{tier.price}</span>
-                  <span className="text-lg text-white/70">{tier.period}</span>
+                    75%
+                  </motion.div>
+                  <p className="text-lg font-medium text-neutral-800">
+                    beurteilen Glaubwürdigkeit nach Design
+                  </p>
+                  <a
+                    href="https://credibility.stanford.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block text-sm text-primary-600 hover:underline"
+                  >
+                    Stanford Web Credibility Study →
+                  </a>
                 </div>
 
-                <ul className="mt-8 space-y-4">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-primary-400" />
-                      <span className="text-sm text-white/85">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href={tier.href}
-                  className={`mt-8 flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-base font-semibold shadow-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 ${
-                    tier.highlighted
-                      ? 'bg-primary-600 text-white hover:bg-primary-500'
-                      : 'border-2 border-white/60 bg-white/10 text-white hover:border-white hover:bg-white/20'
-                  }`}
-                >
-                  {tier.cta}
-                  <ArrowRight className="h-5 w-5" />
-                </a>
+                {/* 50ms Stat */}
+                <div className="text-center">
+                  <motion.div
+                    className="mb-4 text-6xl font-bold text-primary-600 sm:text-7xl"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+                  >
+                    50ms
+                  </motion.div>
+                  <p className="text-lg font-medium text-neutral-800">
+                    für den ersten Eindruck
+                  </p>
+                  <span className="mt-2 inline-block text-sm text-muted">
+                    Lindgaard et al., 2006
+                  </span>
+                </div>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          </Reveal>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-8 text-center shadow-2xl backdrop-blur sm:p-12">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Bereit, deine Praxis zu erweitern?
+      {/* Benefits Grid */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-neutral-900 sm:text-4xl">
+              Warum FindMyTherapy?
             </h2>
-            <p className="mt-4 text-lg text-white/85">
-              Vereinbare ein unverbindliches 30-Minuten Gespräch. Wir zeigen dir, wie Matching
-              funktioniert und beantworten all deine Fragen.
+            <p className="mx-auto max-w-2xl text-lg text-muted">
+              Drei Gründe, warum Therapeut:innen uns vertrauen.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="mailto:therapists@findmytherapy.net?subject=Erstgespräch%20vereinbaren"
-                className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+          </Reveal>
+
+          <motion.div
+            className="grid gap-8 md:grid-cols-3"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Benefit 1: Microsite */}
+            <motion.div variants={fadeInUp}>
+              <div className="group h-full overflow-hidden rounded-3xl border border-neutral-200/60 bg-white/80 shadow-lg backdrop-blur-sm transition-all hover:shadow-xl">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src="/images/for-therapists/microsite.jpg"
+                    alt="Professionelle Website auf Laptop"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/90 shadow-lg">
+                      <Globe className="h-6 w-6 text-primary-600" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">Eigene Microsite</h3>
+                  <p className="text-muted">findmytherapy.net/t/[ihr-name]</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Benefit 2: SEO */}
+            <motion.div variants={fadeInUp}>
+              <div className="group h-full overflow-hidden rounded-3xl border border-neutral-200/60 bg-white/80 shadow-lg backdrop-blur-sm transition-all hover:shadow-xl">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src="/images/for-therapists/seo.jpg"
+                    alt="SEO und Sichtbarkeit"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/90 shadow-lg">
+                      <Search className="h-6 w-6 text-primary-600" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">SEO-optimiert</h3>
+                  <p className="text-muted">Gefunden werden auf Google</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Benefit 3: Knowledge Platform */}
+            <motion.div variants={fadeInUp}>
+              <div className="group h-full overflow-hidden rounded-3xl border border-neutral-200/60 bg-white/80 shadow-lg backdrop-blur-sm transition-all hover:shadow-xl">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src="/images/for-therapists/knowledge.jpg"
+                    alt="Wissensplattform"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/90 shadow-lg">
+                      <BookOpen className="h-6 w-6 text-primary-600" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">Wissensplattform</h3>
+                  <p className="text-muted">Klient:innen informiert</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Microsite Showcase */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+            {/* Mockup */}
+            <Reveal>
+              <motion.div
+                className="relative rounded-3xl border border-neutral-200/60 bg-white/80 p-4 shadow-2xl backdrop-blur-sm sm:p-6"
+                whileHover={{ scale: 1.02, rotate: -1 }}
               >
-                <Mail className="h-5 w-5" />
-                therapists@findmytherapy.net
-              </a>
-            </div>
-            <p className="mt-6 text-sm text-white/70">
-              Antwortzeit: 24-48 Stunden · Keine Verkaufsanrufe · DSGVO-konform
-            </p>
+                {/* Browser Chrome */}
+                <div className="mb-4 flex items-center gap-2">
+                  <div className="flex gap-1.5">
+                    <div className="h-3 w-3 rounded-full bg-red-400" />
+                    <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                    <div className="h-3 w-3 rounded-full bg-green-400" />
+                  </div>
+                  <div className="flex-1 rounded-lg bg-neutral-100 px-4 py-2 text-sm text-neutral-600">
+                    findmytherapy.net/t/<span className="text-primary-600">[ihr-name]</span>
+                  </div>
+                </div>
+                {/* Website Preview */}
+                <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-primary-50 to-secondary-50">
+                  <div className="h-full p-6">
+                    <div className="mb-4 h-16 w-16 rounded-full bg-primary-200" />
+                    <div className="mb-2 h-6 w-48 rounded bg-neutral-300" />
+                    <div className="mb-4 h-4 w-32 rounded bg-neutral-200" />
+                    <div className="space-y-2">
+                      <div className="h-3 w-full rounded bg-neutral-200" />
+                      <div className="h-3 w-3/4 rounded bg-neutral-200" />
+                      <div className="h-3 w-5/6 rounded bg-neutral-200" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </Reveal>
+
+            {/* Features */}
+            <Reveal delay={200}>
+              <div>
+                <h2 className="mb-6 text-3xl font-bold text-neutral-900 sm:text-4xl">
+                  Ihre persönliche Microsite
+                </h2>
+                <p className="mb-8 text-lg text-muted">
+                  Professionell präsentiert, automatisch optimiert für Suchmaschinen.
+                </p>
+
+                <motion.div
+                  className="space-y-4"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  {[
+                    { icon: TrendingUp, text: 'SEO-optimiert für maximale Sichtbarkeit' },
+                    { icon: Users, text: 'Professionelle Präsentation Ihrer Praxis' },
+                    { icon: Shield, text: 'DSGVO-konform & sicher' },
+                    { icon: Sparkles, text: 'Vollständig anpassbar' },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      variants={fadeInUp}
+                      className="flex items-center gap-4 rounded-xl bg-white/60 p-4 backdrop-blur-sm"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-100">
+                        <item.icon className="h-5 w-5 text-primary-600" />
+                      </div>
+                      <span className="font-medium text-neutral-800">{item.text}</span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-neutral-900 sm:text-4xl">
+              Von Therapeut:innen für Therapeut:innen
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-muted">
+              Unser Team vereint therapeutische Expertise mit moderner Technologie.
+            </p>
+          </Reveal>
+
+          <motion.div
+            className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {teamContent.members.map((member, index) => (
+              <motion.div
+                key={member.name}
+                variants={fadeInUp}
+                className="group text-center"
+              >
+                <motion.div
+                  className="relative mx-auto mb-4 h-32 w-32 overflow-hidden rounded-full border-4 border-white shadow-lg"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+                <h3 className="mb-1 font-semibold text-neutral-900">{member.name}</h3>
+                <p className="text-sm text-primary-600">{member.role}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Knowledge Platform Differentiator */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <motion.div
+              className="rounded-3xl border border-secondary-200/60 bg-gradient-to-br from-secondary-50 via-white to-secondary-100/30 p-8 shadow-xl sm:p-12"
+              whileHover={{ scale: 1.01 }}
+            >
+              <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-center">
+                <div>
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-100 px-4 py-2 text-sm font-medium text-secondary-800">
+                    <BookOpen className="h-4 w-4" />
+                    Mehr als ein Verzeichnis
+                  </div>
+                  <h2 className="mb-4 text-3xl font-bold text-neutral-900">
+                    Wissensplattform mit Peer-Review
+                  </h2>
+                  <p className="mb-6 text-muted">
+                    Ihre Klient:innen kommen informiert. Unsere Fachartikel werden von Expert:innen geprüft.
+                  </p>
+                  <ul className="space-y-3">
+                    {[
+                      'Peer-reviewed Inhalte',
+                      'Klient:innen besser vorbereitet',
+                      'Teilen Sie Ihr Fachwissen',
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-secondary-600" />
+                        <span className="text-neutral-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="relative aspect-square overflow-hidden rounded-2xl">
+                  <Image
+                    src="/images/for-therapists/knowledge.jpg"
+                    alt="Wissensplattform"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <motion.div
+              className="rounded-3xl border border-primary-200/60 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 p-8 text-center shadow-2xl sm:p-12"
+              whileHover={{ scale: 1.02 }}
+            >
+              <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
+                Starten Sie heute kostenlos
+              </h2>
+              <p className="mb-8 text-lg text-white/90">
+                Keine Kreditkarte erforderlich. Keine versteckten Kosten.
+              </p>
+              <Link href="/register">
+                <motion.span
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-primary-700 shadow-lg transition-colors hover:bg-primary-50"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Jetzt registrieren
+                  <ArrowRight className="h-5 w-5" />
+                </motion.span>
+              </Link>
+            </motion.div>
+          </Reveal>
         </div>
       </section>
     </div>

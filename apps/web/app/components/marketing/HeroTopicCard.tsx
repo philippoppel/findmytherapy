@@ -72,7 +72,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
       href={topic.targetSection}
       className={`
         group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl block
-        ${isMobile ? 'flex-shrink-0 w-32 h-40' : 'w-36 h-44 lg:w-40 lg:h-48 xl:w-44 xl:h-52'}
+        ${isMobile ? 'flex-shrink-0 w-32 h-40' : 'w-44 h-52 lg:w-52 lg:h-64 xl:w-60 xl:h-72'}
       `}
       style={{ transform: `rotate(${rotation})` }}
       variants={entranceVariants}

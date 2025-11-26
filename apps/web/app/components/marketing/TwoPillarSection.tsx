@@ -2,9 +2,10 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import Link from 'next/link';
+import { Sparkles, ArrowRight } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { KnowledgeHubSection } from './KnowledgeHubSection';
-import { TherapistSEOShowcase } from './TherapistSEOShowcase';
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
 
 export function TwoPillarSection() {
@@ -131,10 +132,10 @@ export function TwoPillarSection() {
             </motion.div>
           </Reveal>
 
-          {/* Right Pillar: Therapist SEO Showcase */}
+          {/* Right Pillar: Therapist CTA */}
           <Reveal className="flex min-w-0" delay={200}>
             <motion.div
-              className="group flex-1 min-w-0 rounded-3xl border border-primary-200/60 bg-gradient-to-br from-white via-primary-50/20 to-white p-6 shadow-xl shadow-primary-500/5 sm:p-8 lg:p-10"
+              className="group flex-1 min-w-0 flex flex-col items-center justify-center rounded-3xl border border-primary-200/60 bg-gradient-to-br from-white via-primary-50/30 to-primary-100/20 p-8 shadow-xl shadow-primary-500/5 sm:p-10 lg:p-12"
               whileHover={
                 !prefersReducedMotion
                   ? {
@@ -149,7 +150,57 @@ export function TwoPillarSection() {
               transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
               style={{ transformStyle: 'preserve-3d' }}
             >
-              <TherapistSEOShowcase />
+              {/* Icon */}
+              <motion.div
+                className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/30"
+                whileHover={!prefersReducedMotion ? { scale: 1.1, rotate: 5 } : {}}
+              >
+                <Sparkles className="h-10 w-10 text-white" />
+              </motion.div>
+
+              {/* Text */}
+              <h3 className="mb-3 text-center text-2xl font-bold text-neutral-900 sm:text-3xl">
+                Sind Sie Therapeut:in?
+              </h3>
+              <p className="mb-8 max-w-sm text-center text-base text-muted sm:text-lg">
+                Entdecken Sie, wie FindMyTherapy Ihre Praxis modern präsentiert und neue Klient:innen erreicht.
+              </p>
+
+              {/* CTA Button */}
+              <Link href="/for-therapists">
+                <motion.span
+                  className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors hover:bg-primary-700 sm:text-lg"
+                  whileHover={
+                    !prefersReducedMotion
+                      ? {
+                          scale: 1.05,
+                          y: -2,
+                          boxShadow: '0 20px 40px -12px rgba(59, 130, 246, 0.4)',
+                        }
+                      : {}
+                  }
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Mehr erfahren
+                  <ArrowRight className="h-5 w-5" />
+                </motion.span>
+              </Link>
+
+              {/* Decorative elements */}
+              {!prefersReducedMotion && (
+                <>
+                  <motion.div
+                    className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-primary-200/40 blur-2xl"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                  <motion.div
+                    className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-secondary-200/30 blur-2xl"
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.5, 0.3] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                  />
+                </>
+              )}
             </motion.div>
           </Reveal>
         </div>

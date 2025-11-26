@@ -18,7 +18,7 @@ interface HeroProps {
 export function MarketingHero({ content }: HeroProps) {
   return (
     <section
-      className="relative h-[90vh] min-h-[700px] max-h-[1000px] overflow-hidden"
+      className="relative min-h-[800px] pb-8"
       aria-labelledby="hero-heading"
     >
       {/* Ambient blur effects */}
@@ -88,9 +88,9 @@ export function MarketingHero({ content }: HeroProps) {
         </div>
 
         {/* Middle section: Video + Topic Cards - Asymmetric Layout */}
-        <div className="flex-1 min-h-0 mt-10 sm:mt-14 lg:mt-16 px-4 lg:px-6 xl:px-8">
+        <div className="flex-1 min-h-0 mt-10 sm:mt-14 lg:mt-16 px-2">
           {/* Desktop: Asymmetric staggered grid */}
-          <div className="hidden md:flex justify-center items-center gap-4 lg:gap-6 xl:gap-8 h-full max-w-6xl mx-auto">
+          <div className="hidden md:flex justify-center items-center gap-6 lg:gap-10 xl:gap-12 h-full max-w-[1600px] mx-auto">
             {/* Left side - 2x2 staggered grid */}
             <div className="grid grid-cols-2 gap-3 lg:gap-4">
               <div className="pt-8">
@@ -109,7 +109,7 @@ export function MarketingHero({ content }: HeroProps) {
 
             {/* Center - Video */}
             <div className="flex-shrink-0">
-              <div className="w-[240px] lg:w-[280px] xl:w-[320px]">
+              <div className="w-[300px] lg:w-[380px] xl:w-[440px]">
                 <HeroVideoPlayer posterSrc={content.image.src} />
               </div>
             </div>
