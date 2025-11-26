@@ -3,7 +3,6 @@ import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../mark
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { FaqAccordion } from '../components/marketing/FaqAccordion';
 import { ContactCta } from '../components/marketing/ContactCta';
-import { AboutSection } from '../components/marketing/AboutSection';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 
 // Force dynamic rendering to prevent database access during build
@@ -194,10 +193,6 @@ export default function HomePage() {
         <div className="px-3 pt-6 sm:px-4 sm:pt-10 lg:px-8">
           <MarketingHero content={heroContent} />
         </div>
-
-
-        {/* About Section - Who we are & Trust */}
-        <AboutSection />
 
         {/* On-page Therapist Directory */}
         <TherapistFinderSection />
