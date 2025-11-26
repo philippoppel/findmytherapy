@@ -1,61 +1,24 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Brain,
-  MapPin,
-  Ruler,
-  Globe,
-  Wallet,
-  Clock,
-  User,
-  MessageCircle,
-  Euro,
-  Lock,
-  Search,
-  Video,
-  Building,
-  RefreshCw,
-  Check,
-  Heart,
-  Briefcase,
-  CreditCard,
-  Zap,
-  Flower2,
-  X,
-} from 'lucide-react';
+import { MapPin, Globe, Wallet, Search, Lock, X, Check, Heart, Briefcase, CreditCard } from 'lucide-react';
 import {
   WizardFormData,
   defaultFormData,
   PROBLEM_AREAS,
-  THERAPY_METHODS,
+  FORMAT_OPTIONS,
   LANGUAGES,
-  WAIT_TIME_OPTIONS,
 } from './types';
 import { useMatchingWizard } from './MatchingWizardContext';
 
-// Wizard-Schritte
+// Vereinfachte 3 Schritte
 const STEPS = [
-  { id: 1, title: 'Anliegen', description: 'Was beschäftigt Sie?' },
-  { id: 2, title: 'Standort', description: 'Wo suchen Sie?' },
-  { id: 3, title: 'Präferenzen', description: 'Ihre Wünsche' },
-  { id: 4, title: 'Details', description: 'Optionale Angaben' },
+  { id: 1, title: 'Thema', description: 'Was beschäftigt dich?' },
+  { id: 2, title: 'Format', description: 'Wie möchtest du?' },
+  { id: 3, title: 'Details', description: 'Fast geschafft' },
 ];
-
-interface FilterOption {
-  value: string;
-  label: string;
-  count: number;
-  available: boolean;
-}
-
-interface FilterOptions {
-  languages: FilterOption[];
-  insuranceTypes: FilterOption[];
-  problemAreas: FilterOption[];
-  formats: FilterOption[];
-}
 
 export function MatchingWizard() {
   const {
@@ -70,110 +33,25 @@ export function MatchingWizard() {
   const [formData, setFormData] = useState<WizardFormData>(defaultFormData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
-  const [isLoadingFilters, setIsLoadingFilters] = useState(false);
 
-  // Form-Update-Handler
   const updateForm = (updates: Partial<WizardFormData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
 
-  // Toggle für Array-Felder
   const toggleArrayItem = (field: keyof WizardFormData, item: string) => {
     const current = formData[field] as string[];
     const updated = current.includes(item) ? current.filter((i) => i !== item) : [...current, item];
     updateForm({ [field]: updated });
   };
 
-  // Lade verfügbare Filter-Optionen
-  const fetchFilterOptions = useCallback(async () => {
-    setIsLoadingFilters(true);
-    try {
-      const params = new URLSearchParams();
-
-      // Füge aktuelle Filter hinzu
-      if (formData.languages.length > 0) {
-        formData.languages.forEach((lang) => params.append('languages', lang));
-      }
-      if (formData.insuranceType && formData.insuranceType !== 'ANY') {
-        params.set('insuranceType', formData.insuranceType);
-      }
-      if (formData.format) {
-        params.set('format', formData.format);
-      }
-      if (formData.problemAreas.length > 0) {
-        formData.problemAreas.forEach((area) => params.append('problemAreas', area));
-      }
-
-      const response = await fetch(`/api/match/filter-options?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch filter options');
-      }
-
-      const options: FilterOptions = await response.json();
-      setFilterOptions(options);
-    } catch (err) {
-      console.error('Error fetching filter options:', err);
-      // Fallback zu statischen Optionen wenn API fehlschlägt
-      setFilterOptions({
-        languages: LANGUAGES.map((l) => ({
-          value: l.id,
-          label: l.label,
-          count: 0,
-          available: true,
-        })),
-        insuranceTypes: [
-          { value: 'ANY', label: 'Egal', count: 0, available: true },
-          { value: 'PUBLIC', label: 'Krankenkasse', count: 0, available: true },
-          { value: 'PRIVATE', label: 'Privat', count: 0, available: true },
-          { value: 'SELF_PAY', label: 'Selbstzahler', count: 0, available: true },
-        ],
-        problemAreas: PROBLEM_AREAS.map((p) => ({
-          value: p.id,
-          label: p.label,
-          count: 0,
-          available: true,
-        })),
-        formats: [
-          { value: 'BOTH', label: 'Beides', count: 0, available: true },
-          { value: 'IN_PERSON', label: 'Präsenz', count: 0, available: true },
-          { value: 'ONLINE', label: 'Online', count: 0, available: true },
-        ],
-      });
-    } finally {
-      setIsLoadingFilters(false);
-    }
-  }, [formData]);
-
-  // Lade Filter-Optionen wenn sich relevante Form-Daten ändern
-  useEffect(() => {
-    if (isOpen && (currentStep === 2 || currentStep === 3)) {
-      fetchFilterOptions();
-    }
-  }, [isOpen, currentStep, formData.format, formData.insuranceType, fetchFilterOptions]);
-
-  // Initiales Laden wenn Wizard geöffnet wird
-  useEffect(() => {
-    if (isOpen) {
-      fetchFilterOptions();
-    }
-  }, [isOpen, fetchFilterOptions]);
-
-  // Weiter zum nächsten Schritt
   const nextStep = () => {
-    if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
-    }
+    if (currentStep < 3) setCurrentStep(currentStep + 1);
   };
 
-  // Zurück zum vorherigen Schritt
   const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  // Reset wizard
   const resetWizard = () => {
     setCurrentStep(1);
     setFormData(defaultFormData);
@@ -181,7 +59,6 @@ export function MatchingWizard() {
     setIsLoading(false);
   };
 
-  // Formular absenden
   const handleSubmit = async () => {
     setIsLoading(true);
     setError(null);
@@ -200,14 +77,6 @@ export function MatchingWizard() {
           longitude: formData.longitude,
           postalCode: formData.postalCode || undefined,
           city: formData.city || undefined,
-          maxWaitWeeks: formData.maxWaitWeeks,
-          preferredMethods:
-            formData.preferredMethods.length > 0 ? formData.preferredMethods : undefined,
-          therapistGender:
-            formData.therapistGender !== 'any' ? formData.therapistGender : undefined,
-          communicationStyle:
-            formData.communicationStyle !== 'ANY' ? formData.communicationStyle : undefined,
-          priceMax: formData.priceMax ? formData.priceMax * 100 : undefined, // Euro zu Cent
           limit: 10,
         }),
       });
@@ -218,18 +87,9 @@ export function MatchingWizard() {
       }
 
       const result = await response.json();
-
-      // Validierung der Ergebnisse
-      if (!result || typeof result !== 'object') {
-        throw new Error('Ungültige Antwort vom Server');
-      }
-
-      // Store results in context
       setResults(result);
       setContextFormData(formData);
       setShowResults(true);
-
-      // Reset wizard for next use
       resetWizard();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten';
@@ -239,7 +99,6 @@ export function MatchingWizard() {
     }
   };
 
-  // Validierung für "Weiter"-Button
   const canProceed = () => {
     switch (currentStep) {
       case 1:
@@ -252,20 +111,16 @@ export function MatchingWizard() {
         );
       case 3:
         return formData.languages.length > 0;
-      case 4:
-        return true;
       default:
         return false;
     }
   };
 
-  // Handle close
   const handleClose = () => {
     resetWizard();
     closeWizard();
   };
 
-  // Hide wizard when results are showing or when not open
   if (!isOpen || showResults) return null;
 
   return (
@@ -278,102 +133,47 @@ export function MatchingWizard() {
         className="w-full overflow-hidden"
         id="matching-wizard"
       >
-        <div className="bg-gradient-to-b from-amber-50/30 via-white to-stone-50/20 py-6 sm:py-10">
-          <div className="container mx-auto px-4 max-w-4xl">
-            {/* Header with Close Button */}
-            <div className="relative text-center mb-8 sm:mb-10">
+        <div className="py-8 sm:py-12">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            {/* Header */}
+            <div className="relative mb-8 text-center">
               <button
                 onClick={handleClose}
-                className="absolute right-0 top-0 p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
+                className="absolute right-0 top-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
                 aria-label="Schließen"
               >
-                <X className="w-6 h-6" />
+                <X className="h-6 w-6" />
               </button>
 
-              <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg mb-4 sm:mb-6">
-                <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 px-2">
-                Finden Sie Ihren Therapeuten
+              <h2 className="mb-2 text-2xl font-bold text-neutral-900 sm:text-3xl">
+                {STEPS[currentStep - 1].description}
               </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-                Beantworten Sie ein paar Fragen und wir finden die passenden Therapeut:innen für
-                Sie.
+              <p className="text-muted">
+                Schritt {currentStep} von {STEPS.length}
               </p>
             </div>
 
-            {/* Error Message */}
+            {/* Error */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-5 h-5 mt-0.5 text-red-600">
-                    <svg fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-red-800 mb-1">
-                      Fehler beim Matching
-                    </h3>
-                    <p className="text-sm text-red-700">{error}</p>
-                  </div>
-                  <button
-                    onClick={() => setError(null)}
-                    className="flex-shrink-0 text-red-400 hover:text-red-600 transition-colors"
-                    aria-label="Fehler schließen"
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
+              <div className="mb-6 rounded-xl border-2 border-red-200 bg-red-50 p-4">
+                <p className="text-sm text-red-700">{error}</p>
               </div>
             )}
 
-            {/* Progress Steps */}
-            <div className="relative mb-8 sm:mb-10">
-              <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200">
-                <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
-                  style={{ width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
+            {/* Progress */}
+            <div className="mb-8">
+              <div className="h-2 overflow-hidden rounded-full bg-neutral-200">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary-500 to-primary-600"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(currentStep / STEPS.length) * 100}%` }}
+                  transition={{ duration: 0.3 }}
                 />
-              </div>
-              <div className="flex justify-between relative">
-                {STEPS.map((step) => (
-                  <div key={step.id} className="flex flex-col items-center flex-1">
-                    <div
-                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-semibold shadow-md transition-all duration-300 ${
-                        step.id < currentStep
-                          ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white scale-100'
-                          : step.id === currentStep
-                            ? 'bg-white text-amber-600 ring-4 ring-amber-100 scale-110'
-                            : 'bg-gray-100 text-gray-400'
-                      }`}
-                    >
-                      {step.id < currentStep ? '✓' : step.id}
-                    </div>
-                    <div
-                      className={`mt-2 text-[10px] sm:text-xs font-medium text-center px-1 transition-colors ${
-                        step.id <= currentStep ? 'text-gray-900' : 'text-gray-400'
-                      }`}
-                    >
-                      {step.title}
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
 
             {/* Form Card */}
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 lg:p-10">
+            <div className="rounded-3xl border border-neutral-200/60 bg-white p-6 shadow-xl sm:p-8">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStep}
@@ -382,142 +182,145 @@ export function MatchingWizard() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* Schritt 1: Problemfelder */}
+                  {/* Schritt 1: Themen mit Bildern */}
                   {currentStep === 1 && (
                     <div>
-                      <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                          Was beschäftigt Sie?
-                        </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          Wählen Sie ein oder mehrere Bereiche aus, in denen Sie Unterstützung
-                          suchen.
-                        </p>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {PROBLEM_AREAS.map((area) => (
-                          <button
-                            key={area.id}
-                            onClick={() => toggleArrayItem('problemAreas', area.id)}
-                            className={`group relative p-4 rounded-xl border-2 text-left transition-all duration-200 ${
-                              formData.problemAreas.includes(area.id)
-                                ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md scale-[1.02]'
-                                : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm hover:scale-[1.01]'
-                            }`}
-                          >
-                            <div className="flex items-start gap-3">
+                      <p className="mb-6 text-center text-muted">
+                        Wähle alle Themen aus, die auf dich zutreffen
+                      </p>
+                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                        {PROBLEM_AREAS.map((area) => {
+                          const isSelected = formData.problemAreas.includes(area.id);
+                          return (
+                            <button
+                              key={area.id}
+                              onClick={() => toggleArrayItem('problemAreas', area.id)}
+                              className="group relative overflow-hidden rounded-2xl transition-all duration-200"
+                            >
                               <div
-                                className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
-                                  formData.problemAreas.includes(area.id)
-                                    ? 'bg-white shadow-sm'
-                                    : 'bg-gray-50 group-hover:bg-amber-50'
+                                className={`relative aspect-[4/3] overflow-hidden rounded-2xl border-2 transition-all ${
+                                  isSelected
+                                    ? 'border-primary-500 shadow-lg shadow-primary-500/20'
+                                    : 'border-transparent hover:border-primary-300'
                                 }`}
                               >
-                                <span className="text-2xl">{area.icon}</span>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <span className="text-sm font-semibold text-gray-900 block leading-tight">
-                                  {area.label}
-                                </span>
-                              </div>
-                              {formData.problemAreas.includes(area.id) && (
-                                <div className="absolute top-2 right-2 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs">✓</span>
+                                <Image
+                                  src={area.image}
+                                  alt={area.label}
+                                  fill
+                                  className={`object-cover transition-transform duration-300 ${
+                                    isSelected ? 'scale-110' : 'group-hover:scale-105'
+                                  }`}
+                                />
+                                {/* Overlay */}
+                                <div
+                                  className={`absolute inset-0 transition-all ${
+                                    isSelected
+                                      ? 'bg-primary-600/40'
+                                      : 'bg-gradient-to-t from-black/60 via-black/20 to-transparent'
+                                  }`}
+                                />
+                                {/* Label */}
+                                <div className="absolute inset-x-0 bottom-0 p-3">
+                                  <span className="text-sm font-semibold text-white drop-shadow-lg">
+                                    {area.label}
+                                  </span>
                                 </div>
-                              )}
-                            </div>
-                          </button>
-                        ))}
+                                {/* Checkmark */}
+                                {isSelected && (
+                                  <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-lg">
+                                    <Check className="h-4 w-4 text-primary-600" />
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
 
-                  {/* Schritt 2: Standort & Format */}
+                  {/* Schritt 2: Format mit Bildern */}
                   {currentStep === 2 && (
                     <div>
-                      <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                          Wo und wie möchten Sie therapiert werden?
-                        </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          Wählen Sie Ihr bevorzugtes Format und ggf. Ihren Standort.
-                        </p>
-                      </div>
+                      <p className="mb-6 text-center text-muted">
+                        Wie möchtest du deine Therapie machen?
+                      </p>
 
                       {/* Format-Auswahl */}
-                      <div className="mb-6">
-                        <div className="block text-sm font-semibold text-gray-900 mb-3">
-                          Therapieformat
-                        </div>
-                        <div className="grid grid-cols-3 gap-3">
-                          {[
-                            { id: 'BOTH', label: 'Beides', Icon: RefreshCw, desc: 'Flexibel' },
-                            { id: 'IN_PERSON', label: 'Präsenz', Icon: Building, desc: 'Vor Ort' },
-                            { id: 'ONLINE', label: 'Online', Icon: Video, desc: 'Digital' },
-                          ].map((format) => (
+                      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {FORMAT_OPTIONS.map((format) => {
+                          const isSelected = formData.format === format.id;
+                          return (
                             <button
                               key={format.id}
                               onClick={() =>
                                 updateForm({ format: format.id as WizardFormData['format'] })
                               }
-                              className={`group p-4 rounded-xl border-2 text-center transition-all duration-200 ${
-                                formData.format === format.id
-                                  ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
-                                  : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
-                              }`}
+                              className="group relative overflow-hidden rounded-2xl transition-all duration-200"
                             >
                               <div
-                                className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center transition-all ${
-                                  formData.format === format.id
-                                    ? 'bg-white shadow-sm'
-                                    : 'bg-gray-50 group-hover:bg-amber-50'
+                                className={`relative aspect-[4/3] overflow-hidden rounded-2xl border-2 transition-all ${
+                                  isSelected
+                                    ? 'border-primary-500 shadow-lg shadow-primary-500/20'
+                                    : 'border-transparent hover:border-primary-300'
                                 }`}
                               >
-                                <format.Icon
-                                  className={`w-6 h-6 ${formData.format === format.id ? 'text-amber-600' : 'text-gray-600'}`}
-                                  strokeWidth={2}
+                                <Image
+                                  src={format.image}
+                                  alt={format.label}
+                                  fill
+                                  className={`object-cover transition-transform duration-300 ${
+                                    isSelected ? 'scale-110' : 'group-hover:scale-105'
+                                  }`}
                                 />
+                                <div
+                                  className={`absolute inset-0 transition-all ${
+                                    isSelected
+                                      ? 'bg-primary-600/40'
+                                      : 'bg-gradient-to-t from-black/60 via-black/20 to-transparent'
+                                  }`}
+                                />
+                                <div className="absolute inset-x-0 bottom-0 p-4 text-left">
+                                  <span className="block text-lg font-bold text-white drop-shadow-lg">
+                                    {format.label}
+                                  </span>
+                                  <span className="text-sm text-white/80">{format.desc}</span>
+                                </div>
+                                {isSelected && (
+                                  <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-lg">
+                                    <Check className="h-5 w-5 text-primary-600" />
+                                  </div>
+                                )}
                               </div>
-                              <div className="text-sm font-semibold text-gray-900">
-                                {format.label}
-                              </div>
-                              <div className="text-xs text-gray-500 mt-0.5">{format.desc}</div>
                             </button>
-                          ))}
-                        </div>
+                          );
+                        })}
                       </div>
 
                       {/* Standort (nur wenn nicht rein Online) */}
                       {formData.format !== 'ONLINE' && (
-                        <>
-                          <div className="mb-6">
-                            <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                              <MapPin className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                              PLZ oder Stadt
-                            </div>
-                            <input
-                              type="text"
-                              value={formData.postalCode || formData.city}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (/^\d+$/.test(value)) {
-                                  updateForm({ postalCode: value, city: '' });
-                                } else {
-                                  updateForm({ city: value, postalCode: '' });
-                                }
-                              }}
-                              placeholder="z.B. 1010 oder Wien"
-                              className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all"
-                            />
-                          </div>
-
-                          {/* Umkreis */}
-                          <div className="bg-gray-50 rounded-xl p-4">
-                            <label className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                              <Ruler className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                              Maximale Entfernung:{' '}
-                              <span className="text-amber-600">{formData.maxDistanceKm} km</span>
-                            </label>
+                        <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
+                          <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                            <MapPin className="h-4 w-4 text-primary-600" />
+                            Wo suchst du?
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.postalCode || formData.city}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (/^\d+$/.test(value)) {
+                                updateForm({ postalCode: value, city: '' });
+                              } else {
+                                updateForm({ city: value, postalCode: '' });
+                              }
+                            }}
+                            placeholder="PLZ oder Stadt eingeben"
+                            className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3 text-base transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
+                          />
+                          <p className="mt-3 text-sm text-muted">
+                            Umkreis: <span className="font-medium">{formData.maxDistanceKm} km</span>
                             <input
                               type="range"
                               min="5"
@@ -527,327 +330,82 @@ export function MatchingWizard() {
                               onChange={(e) =>
                                 updateForm({ maxDistanceKm: parseInt(e.target.value) })
                               }
-                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                              className="ml-4 inline-block w-32 cursor-pointer accent-primary-500"
                             />
-                            <div className="flex justify-between text-xs text-gray-500 mt-2">
-                              <span>5 km</span>
-                              <span>50 km</span>
-                              <span>100 km</span>
-                            </div>
-                          </div>
-                        </>
+                          </p>
+                        </div>
                       )}
                     </div>
                   )}
 
-                  {/* Schritt 3: Präferenzen */}
+                  {/* Schritt 3: Details (vereinfacht) */}
                   {currentStep === 3 && (
-                    <div>
-                      <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                          Ihre Präferenzen
-                        </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          Helfen Sie uns, die passenden Therapeut:innen zu finden.
-                        </p>
-                      </div>
-
+                    <div className="space-y-8">
                       {/* Sprachen */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <Globe className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Sprache(n)
+                      <div>
+                        <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                          <Globe className="h-4 w-4 text-primary-600" />
+                          In welcher Sprache?
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {LANGUAGES.map((lang) => {
+                            const isSelected = formData.languages.includes(lang.id);
+                            return (
+                              <button
+                                key={lang.id}
+                                onClick={() => toggleArrayItem('languages', lang.id)}
+                                className={`rounded-full px-4 py-2.5 text-sm font-medium transition-all ${
+                                  isSelected
+                                    ? 'bg-primary-600 text-white shadow-md'
+                                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                                }`}
+                              >
+                                {lang.label}
+                              </button>
+                            );
+                          })}
                         </div>
-                        {isLoadingFilters ? (
-                          <div className="flex flex-wrap gap-2">
-                            {[1, 2, 3, 4, 5].map((i) => (
-                              <div
-                                key={i}
-                                className="h-10 w-24 bg-gray-200 rounded-xl animate-pulse"
-                              />
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="flex flex-wrap gap-2">
-                            {(
-                              filterOptions?.languages ||
-                              LANGUAGES.map((l) => ({
-                                value: l.id,
-                                label: l.label,
-                                count: 0,
-                                available: true,
-                              }))
-                            ).map((lang) => {
-                              const isSelected = formData.languages.includes(lang.value);
-                              const isDisabled = !lang.available && !isSelected;
-
-                              return (
-                                <button
-                                  key={lang.value}
-                                  onClick={() =>
-                                    !isDisabled && toggleArrayItem('languages', lang.value)
-                                  }
-                                  disabled={isDisabled}
-                                  className={`group relative px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                    isSelected
-                                      ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md scale-105'
-                                      : isDisabled
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-60'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                                  }`}
-                                  title={
-                                    isDisabled
-                                      ? 'Aktuell keine Therapeut:innen verfügbar'
-                                      : undefined
-                                  }
-                                >
-                                  <span className="flex items-center gap-2">
-                                    {lang.label}
-                                    {lang.count > 0 && (
-                                      <span
-                                        className={`text-xs ${isSelected ? 'text-white/80' : 'text-gray-500'}`}
-                                      >
-                                        ({lang.count})
-                                      </span>
-                                    )}
-                                  </span>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
                       </div>
 
                       {/* Versicherung */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <Wallet className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                      <div>
+                        <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                          <Wallet className="h-4 w-4 text-primary-600" />
                           Kostenübernahme
-                        </div>
-                        {isLoadingFilters ? (
-                          <div className="grid grid-cols-2 gap-3">
-                            {[1, 2, 3, 4].map((i) => (
-                              <div key={i} className="h-20 bg-gray-200 rounded-xl animate-pulse" />
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="grid grid-cols-2 gap-3">
-                            {[
-                              { id: 'ANY', label: 'Egal', Icon: Check },
-                              { id: 'PUBLIC', label: 'Krankenkasse', Icon: Heart },
-                              { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
-                              { id: 'SELF_PAY', label: 'Selbstzahler', Icon: CreditCard },
-                            ].map((ins) => {
-                              const option = filterOptions?.insuranceTypes.find(
-                                (o) => o.value === ins.id,
-                              );
-                              const isSelected = formData.insuranceType === ins.id;
-                              const isDisabled = option && !option.available && !isSelected;
-
-                              return (
-                                <button
-                                  key={ins.id}
-                                  onClick={() =>
-                                    !isDisabled &&
-                                    updateForm({
-                                      insuranceType: ins.id as WizardFormData['insuranceType'],
-                                    })
-                                  }
-                                  disabled={isDisabled}
-                                  className={`group p-3 rounded-xl border-2 text-center transition-all duration-200 ${
-                                    isSelected
-                                      ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
-                                      : isDisabled
-                                        ? 'border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed'
-                                        : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
-                                  }`}
-                                  title={
-                                    isDisabled
-                                      ? 'Aktuell keine Therapeut:innen verfügbar'
-                                      : undefined
-                                  }
-                                >
-                                  <div className="flex items-center justify-center h-8 mb-1">
-                                    <ins.Icon
-                                      className={`w-5 h-5 ${isSelected ? 'text-amber-600' : isDisabled ? 'text-gray-400' : 'text-gray-600'}`}
-                                      strokeWidth={2}
-                                    />
-                                  </div>
-                                  <div
-                                    className={`text-sm font-medium ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}
-                                  >
-                                    {ins.label}
-                                  </div>
-                                  {option && option.count > 0 && (
-                                    <div className="text-xs text-gray-500 mt-1">
-                                      {option.count} verfügbar
-                                    </div>
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Wartezeit */}
-                      <div>
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <Clock className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Maximale Wartezeit
-                        </div>
-                        <select
-                          value={formData.maxWaitWeeks ?? ''}
-                          onChange={(e) =>
-                            updateForm({
-                              maxWaitWeeks: e.target.value ? parseInt(e.target.value) : undefined,
-                            })
-                          }
-                          className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all bg-white"
-                        >
-                          {WAIT_TIME_OPTIONS.map((opt) => (
-                            <option key={opt.label} value={opt.value ?? ''}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Schritt 4: Optionale Details */}
-                  {currentStep === 4 && (
-                    <div>
-                      <div className="mb-6 sm:mb-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                          Optionale Details
-                        </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          Diese Angaben sind optional und helfen uns, noch bessere Matches zu
-                          finden.
-                        </p>
-                      </div>
-
-                      {/* Therapiemethoden */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <Brain className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Bevorzugte Therapiemethoden{' '}
-                          <span className="text-gray-400 font-normal">(optional)</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {THERAPY_METHODS.map((method) => (
-                            <button
-                              key={method.id}
-                              onClick={() => toggleArrayItem('preferredMethods', method.id)}
-                              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                formData.preferredMethods.includes(method.id)
-                                  ? 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md scale-105'
-                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                              }`}
-                            >
-                              {method.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Geschlecht */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <User className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Bevorzugtes Geschlecht{' '}
-                          <span className="text-gray-400 font-normal">(optional)</span>
-                        </div>
-                        <div className="grid grid-cols-3 gap-3">
-                          {[
-                            { id: 'any', label: 'Egal', Icon: Check },
-                            { id: 'female', label: 'Weiblich', Icon: User },
-                            { id: 'male', label: 'Männlich', Icon: User },
-                          ].map((gender) => (
-                            <button
-                              key={gender.id}
-                              onClick={() =>
-                                updateForm({
-                                  therapistGender: gender.id as WizardFormData['therapistGender'],
-                                })
-                              }
-                              className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
-                                formData.therapistGender === gender.id
-                                  ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
-                                  : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
-                              }`}
-                            >
-                              <div className="flex items-center justify-center h-8 mb-1">
-                                <gender.Icon
-                                  className={`w-5 h-5 ${formData.therapistGender === gender.id ? 'text-amber-600' : 'text-gray-600'}`}
-                                  strokeWidth={2}
-                                />
-                              </div>
-                              <div className="text-sm font-medium text-gray-900">
-                                {gender.label}
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Maximaler Preis */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <Euro className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Maximaler Preis pro Sitzung{' '}
-                          <span className="text-gray-400 font-normal">(optional)</span>
-                        </div>
-                        <input
-                          type="number"
-                          value={formData.priceMax || ''}
-                          onChange={(e) =>
-                            updateForm({
-                              priceMax: e.target.value ? parseInt(e.target.value) : undefined,
-                            })
-                          }
-                          placeholder="z.B. 120"
-                          className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-amber-100 focus:border-amber-500 transition-all"
-                        />
-                      </div>
-
-                      {/* Kommunikationsstil */}
-                      <div>
-                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3">
-                          <MessageCircle className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-                          Kommunikationsstil{' '}
-                          <span className="text-gray-400 font-normal">(optional)</span>
-                        </div>
-                        <div className="grid grid-cols-3 gap-3">
+                        </label>
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                           {[
                             { id: 'ANY', label: 'Egal', Icon: Check },
-                            { id: 'DIRECT', label: 'Direkt', Icon: Zap },
-                            { id: 'GENTLE', label: 'Sanft', Icon: Flower2 },
-                          ].map((style) => (
-                            <button
-                              key={style.id}
-                              onClick={() =>
-                                updateForm({
-                                  communicationStyle:
-                                    style.id as WizardFormData['communicationStyle'],
-                                })
-                              }
-                              className={`p-3 rounded-xl border-2 text-center transition-all duration-200 ${
-                                formData.communicationStyle === style.id
-                                  ? 'border-amber-500 bg-gradient-to-br from-amber-50 to-orange-50 shadow-md'
-                                  : 'border-gray-200 bg-white hover:border-amber-300 hover:shadow-sm'
-                              }`}
-                            >
-                              <div className="flex items-center justify-center h-8 mb-1">
-                                <style.Icon
-                                  className={`w-5 h-5 ${formData.communicationStyle === style.id ? 'text-amber-600' : 'text-gray-600'}`}
-                                  strokeWidth={2}
+                            { id: 'PUBLIC', label: 'Kasse', Icon: Heart },
+                            { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
+                            { id: 'SELF_PAY', label: 'Selbst', Icon: CreditCard },
+                          ].map((ins) => {
+                            const isSelected = formData.insuranceType === ins.id;
+                            return (
+                              <button
+                                key={ins.id}
+                                onClick={() =>
+                                  updateForm({
+                                    insuranceType: ins.id as WizardFormData['insuranceType'],
+                                  })
+                                }
+                                className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+                                  isSelected
+                                    ? 'border-primary-500 bg-primary-50 shadow-md'
+                                    : 'border-neutral-200 bg-white hover:border-primary-300'
+                                }`}
+                              >
+                                <ins.Icon
+                                  className={`h-5 w-5 ${isSelected ? 'text-primary-600' : 'text-neutral-500'}`}
                                 />
-                              </div>
-                              <div className="text-sm font-medium text-gray-900">{style.label}</div>
-                            </button>
-                          ))}
+                                <span
+                                  className={`text-sm font-medium ${isSelected ? 'text-primary-700' : 'text-neutral-700'}`}
+                                >
+                                  {ins.label}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
@@ -855,28 +413,28 @@ export function MatchingWizard() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Navigation Buttons */}
-              <div className="flex justify-between mt-8 pt-6 border-t border-gray-100 gap-3">
+              {/* Navigation */}
+              <div className="mt-8 flex justify-between gap-3 border-t border-neutral-100 pt-6">
                 <button
                   onClick={prevStep}
                   disabled={currentStep === 1}
-                  className={`px-6 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${
+                  className={`rounded-xl px-6 py-3 text-base font-semibold transition-all ${
                     currentStep === 1
-                      ? 'text-gray-300 cursor-not-allowed'
-                      : 'text-gray-700 hover:bg-gray-100 active:scale-95'
+                      ? 'cursor-not-allowed text-neutral-300'
+                      : 'text-neutral-700 hover:bg-neutral-100'
                   }`}
                 >
                   ← Zurück
                 </button>
 
-                {currentStep < 4 ? (
+                {currentStep < 3 ? (
                   <button
                     onClick={nextStep}
                     disabled={!canProceed()}
-                    className={`px-8 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${
+                    className={`rounded-xl px-8 py-3 text-base font-semibold transition-all ${
                       canProceed()
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-200 hover:shadow-xl hover:scale-[1.02] active:scale-95'
-                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/30 hover:bg-primary-700'
+                        : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
                     }`}
                   >
                     Weiter →
@@ -884,12 +442,12 @@ export function MatchingWizard() {
                 ) : (
                   <button
                     onClick={handleSubmit}
-                    disabled={isLoading}
-                    className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-base font-semibold shadow-lg shadow-amber-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                    disabled={isLoading || !canProceed()}
+                    className="flex items-center gap-2 rounded-xl bg-primary-600 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-primary-600/30 transition-all hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <>
+                        <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
                           <circle
                             className="opacity-25"
                             cx="12"
@@ -906,26 +464,22 @@ export function MatchingWizard() {
                           />
                         </svg>
                         Suche läuft...
-                      </span>
+                      </>
                     ) : (
-                      <span className="flex items-center gap-2">
-                        <Search className="w-5 h-5" strokeWidth={2.5} />
-                        Therapeuten finden
-                      </span>
+                      <>
+                        <Search className="h-5 w-5" />
+                        Ergebnisse anzeigen
+                      </>
                     )}
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Info Text */}
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-xl shadow-sm border border-gray-100">
-                <Lock className="w-4 h-4 text-green-600" strokeWidth={2.5} />
-                <p className="text-sm text-gray-600">
-                  Ihre Daten werden vertraulich behandelt und nach 30 Tagen gelöscht.
-                </p>
-              </div>
+            {/* Privacy note */}
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted">
+              <Lock className="h-4 w-4" />
+              Deine Daten werden vertraulich behandelt
             </div>
           </div>
         </div>

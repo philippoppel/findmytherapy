@@ -37,19 +37,26 @@ export const defaultFormData: WizardFormData = {
 
 // Problemfelder für die Auswahl
 export const PROBLEM_AREAS = [
-  { id: 'angst', label: 'Angst & Panik', icon: '😰' },
-  { id: 'depression', label: 'Depression & Niedergeschlagenheit', icon: '😔' },
-  { id: 'stress', label: 'Stress & Burnout', icon: '😓' },
-  { id: 'trauma', label: 'Trauma & PTBS', icon: '💔' },
-  { id: 'beziehung', label: 'Beziehungsprobleme', icon: '💑' },
-  { id: 'selbstwert', label: 'Selbstwert & Identität', icon: '🪞' },
-  { id: 'trauer', label: 'Trauer & Verlust', icon: '🕊️' },
-  { id: 'sucht', label: 'Sucht & Abhängigkeit', icon: '🚭' },
-  { id: 'essstoerung', label: 'Essstörungen', icon: '🍽️' },
-  { id: 'schlaf', label: 'Schlafstörungen', icon: '😴' },
-  { id: 'zwang', label: 'Zwangsstörungen', icon: '🔄' },
-  { id: 'adhs', label: 'ADHS & Konzentration', icon: '🎯' },
-  { id: 'arbeit', label: 'Berufliche Probleme', icon: '💼' },
+  { id: 'angst', label: 'Angst & Panik', image: '/images/topics/angst.jpg' },
+  { id: 'depression', label: 'Niedergeschlagenheit', image: '/images/topics/depression.jpg' },
+  { id: 'stress', label: 'Stress & Burnout', image: '/images/topics/stress.jpg' },
+  { id: 'trauma', label: 'Trauma & PTBS', image: '/images/topics/trauma.jpg' },
+  { id: 'beziehung', label: 'Beziehungen', image: '/images/topics/beziehung.jpg' },
+  { id: 'selbstwert', label: 'Selbstwert', image: '/images/topics/selbstwert.jpg' },
+  { id: 'trauer', label: 'Trauer & Verlust', image: '/images/topics/trauer.jpg' },
+  { id: 'sucht', label: 'Sucht', image: '/images/topics/sucht.jpg' },
+  { id: 'essstoerung', label: 'Essstörungen', image: '/images/topics/essstoerung.jpg' },
+  { id: 'schlaf', label: 'Schlafprobleme', image: '/images/topics/schlaf.jpg' },
+  { id: 'zwang', label: 'Zwänge', image: '/images/topics/zwang.jpg' },
+  { id: 'adhs', label: 'ADHS', image: '/images/topics/adhs.jpg' },
+  { id: 'arbeit', label: 'Arbeit & Karriere', image: '/images/topics/arbeit.jpg' },
+];
+
+// Format-Optionen mit Bildern
+export const FORMAT_OPTIONS = [
+  { id: 'ONLINE', label: 'Online', desc: 'Von überall aus', image: '/images/topics/online.jpg' },
+  { id: 'IN_PERSON', label: 'Vor Ort', desc: 'Persönlich treffen', image: '/images/topics/praxis.jpg' },
+  { id: 'BOTH', label: 'Flexibel', desc: 'Beides möglich', image: '/images/topics/flexibel.jpg' },
 ];
 
 // Therapiemethoden
