@@ -2586,7 +2586,7 @@ export const blogPosts: BlogPost[] = [
     authorId: 'gregor-studlar',
     tags: ['Wartezeit', 'Therapeutensuche', 'Wien', 'Österreich', 'Kassentherapeut'],
     featuredImage: {
-      src: 'https://images.unsplash.com/photo-1495954380655-c0b98c3e4b72?auto=format&fit=crop&w=1200&h=630&q=80',
+      src: 'https://images.unsplash.com/photo-1501139083538-0139583c060f?auto=format&fit=crop&w=1200&h=630&q=80',
       alt: 'Uhr symbolisiert Wartezeit auf Therapieplatz',
       width: 1200,
       height: 630,
