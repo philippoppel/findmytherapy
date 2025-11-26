@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { unstable_cache } from 'next/cache';
 import { getAvailabilityMeta } from './availability';
 import {
   buildLocationTokens,
@@ -22,64 +23,74 @@ export type GetTherapistCardsResult = {
   total: number;
 };
 
+// Cached version of the database query - revalidates every 60 seconds
+const getCachedTherapists = unstable_cache(
+  async (limit?: number, offset?: number) => {
+    const where = {
+      isPublic: true,
+      status: {
+        in: ['VERIFIED', 'PENDING'],
+      },
+    } as const;
+
+    const orderBy = [{ status: 'asc' }, { updatedAt: 'desc' }] as const;
+
+    const select = {
+      id: true,
+      displayName: true,
+      title: true,
+      specialties: true,
+      approachSummary: true,
+      city: true,
+      online: true,
+      latitude: true,
+      longitude: true,
+      availabilityNote: true,
+      availabilityStatus: true,
+      estimatedWaitWeeks: true,
+      acceptingClients: true,
+      languages: true,
+      rating: true,
+      reviewCount: true,
+      yearsExperience: true,
+      profileImageUrl: true,
+      status: true,
+      priceMin: true,
+      priceMax: true,
+      acceptedInsurance: true,
+      ageGroups: true,
+      modalities: true,
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    } as const;
+
+    const [total, profiles] = await Promise.all([
+      prisma.therapistProfile.count({ where }),
+      prisma.therapistProfile.findMany({
+        where,
+        orderBy,
+        select,
+        ...(limit !== undefined && { take: limit }),
+        ...(offset !== undefined && { skip: offset }),
+      }),
+    ]);
+
+    return { total, profiles };
+  },
+  ['therapist-cards'],
+  { revalidate: 60, tags: ['therapists'] } // Cache for 60 seconds
+);
+
 export async function getTherapistCards(
   options?: GetTherapistCardsOptions,
 ): Promise<GetTherapistCardsResult> {
   const { limit, offset } = options || {};
 
-  const where = {
-    isPublic: true,
-    status: {
-      in: ['VERIFIED', 'PENDING'],
-    },
-  } as const;
-
-  const orderBy = [{ status: 'asc' }, { updatedAt: 'desc' }] as const;
-
-  const select = {
-    id: true,
-    displayName: true,
-    title: true,
-    specialties: true,
-    approachSummary: true,
-    city: true,
-    online: true,
-    latitude: true,
-    longitude: true,
-    availabilityNote: true,
-    availabilityStatus: true,
-    estimatedWaitWeeks: true,
-    acceptingClients: true,
-    languages: true,
-    rating: true,
-    reviewCount: true,
-    yearsExperience: true,
-    profileImageUrl: true,
-    status: true,
-    priceMin: true,
-    priceMax: true,
-    acceptedInsurance: true,
-    ageGroups: true,
-    modalities: true,
-    user: {
-      select: {
-        firstName: true,
-        lastName: true,
-      },
-    },
-  } as const;
-
-  // Get total count and profiles in parallel
-  const [total, profiles] = await Promise.all([
-    prisma.therapistProfile.count({ where }),
-    prisma.therapistProfile.findMany({
-      where,
-      orderBy,
-      select,
-      ...(limit !== undefined && { take: limit }),
-      ...(offset !== undefined && { skip: offset }),
-    }),
-  ]);
+  const { total, profiles } = await getCachedTherapists(limit, offset);
 
   return {
     therapists: profiles.map(transformProfileToCard),
