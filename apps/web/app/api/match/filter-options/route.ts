@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAvailableFilterOptions } from '@/lib/matching/filter-availability';
 import type { InsuranceType, TherapyFormat } from '@prisma/client';
 
+// Force dynamic rendering since we use searchParams
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/match/filter-options
  *
