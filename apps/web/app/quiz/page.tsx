@@ -732,6 +732,27 @@ export default function QuizPage() {
                 Profil ansehen
                 <ChevronRight className="w-4 h-4" />
               </button>
+
+              {/* Blog Categories - shown during therapist browsing */}
+              {blogCategories.length > 0 && (
+                <div className="bg-slate-50 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <BookOpen className="w-4 h-4 text-primary-500" />
+                    <span className="text-sm font-medium text-slate-700">Passende Artikel zu deinen Themen</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {blogCategories.map((cat) => (
+                      <Link
+                        key={cat.slug}
+                        href={`/blog?category=${cat.slug}`}
+                        className="px-3 py-1.5 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 hover:border-primary-300 hover:text-primary-600 transition-colors"
+                      >
+                        {cat.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
 
