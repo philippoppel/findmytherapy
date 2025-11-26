@@ -2810,6 +2810,11 @@ export const blogPosts: BlogPost[] = [
           'Nutzer berichten, sie könnten dem KI-Bot persönliche Dinge anvertrauen, die sie sich einem Menschen gegenüber nicht auszusprechen trauen. Die Anonymität und fehlende Urteilsfreude der Maschine wirkt entlastend. Zudem bieten KI-Systeme theoretisch schnelle Ratschläge und Informationen. ChatGPT kann Wissen über psychische Störungen oder Therapietechniken verständlich vermitteln.',
           'Einige nutzen den Chatbot auch, um eigene Gedanken zu sortieren – etwa durch geführtes Tagebuchschreiben oder indem sie den Bot verschiedene Perspektiven auf ein Problem aufzeigen lassen. Nicht zuletzt experimentieren manche damit, ChatGPT direkt in eine Therapeutenrolle zu versetzen. Durch gezielte Eingaben versuchen sie, eine Art „simulierte Therapiesitzung" zu erzeugen.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person tippt nachts auf Smartphone – symbolisiert die Nutzung von KI-Chatbots für mentale Unterstützung',
+          caption: 'KI-Chatbots sind rund um die Uhr verfügbar und anonym nutzbar.',
+        },
       },
       {
         heading: 'Wobei KI-Tools wie ChatGPT tatsächlich helfen können',
@@ -2822,6 +2827,11 @@ export const blogPosts: BlogPost[] = [
           'Niedrigschwelliger Erstkontakt: Für Menschen, die bisher keine Psychotherapie-Erfahrung haben, bietet ChatGPT einen ersten Anlaufpunkt. Eine Nature-Studie von 2024 fand, dass ChatGPT ein „interessantes Add-on zur Psychotherapie" sein kann.',
           'Therapeuten-Unterstützung im Hintergrund: KI könnte administrative Aufgaben wie Dokumentation oder Terminorganisation erleichtern oder als „Standard-Patient" in der Ausbildung dienen.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person schreibt Tagebuch neben Laptop und Kaffee – symbolisiert digitale Unterstützung bei Selbstreflexion',
+          caption: 'KI-Tools können beim Journaling und der Reflexion zwischen Therapiesitzungen unterstützen.',
+        },
       },
       {
         heading: 'Risiken und Grenzen: Warum KI keine echte Therapie ersetzen kann',
@@ -2836,6 +2846,11 @@ export const blogPosts: BlogPost[] = [
           'Datenschutz und fehlende Vertraulichkeit: Gespräche mit ChatGPT unterliegen keiner Schweigepflicht. Daten werden auf Servern gespeichert und könnten theoretisch von Dritten eingesehen werden.',
           'Kurzfristige Hilfe statt langfristiger Fortschritt: KI bietet oft schnelle, oberflächliche Erleichterung. Sie konfrontiert nicht mit unangenehmen Wahrheiten und lotet keine tieferen Ursachen aus.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Therapeutin im Gespräch mit Klientin – echte menschliche Verbindung in der Therapie',
+          caption: 'Echte Empathie und menschliche Wärme kann keine KI ersetzen.',
+        },
       },
       {
         heading: 'Warum menschliche Psychotherapeut*innen unersetzbar bleiben',
@@ -2849,6 +2864,11 @@ export const blogPosts: BlogPost[] = [
           'Ethische Verantwortung und Fachkompetenz: Diplomierte Psychotherapeutinnen unterliegen strengen ethischen Richtlinien und einer langen Ausbildung. Sie müssen verantwortlich handeln und im Notfall geeignete Maßnahmen ergreifen.',
           'Die menschliche Beziehung als Heilelement: Psychische Leiden haben oft mit Beziehungserfahrungen zu tun. Die Therapie selbst ist eine neue Beziehungserfahrung, in der Heilung passieren kann.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Zwei Menschen im vertrauensvollen Gespräch – die therapeutische Beziehung als Heilelement',
+          caption: 'Die menschliche Beziehung bleibt der zentrale Wirkfaktor in der Psychotherapie.',
+        },
       },
       {
         heading: 'Fazit',
