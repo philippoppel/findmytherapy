@@ -139,7 +139,7 @@ test.describe('Matching System', () => {
 
     // Step 1: Select problem area (Depression)
     // Wait for Depression button to be available
-    const depressionButton = page.getByRole('button', { name: /Depression/i });
+    const depressionButton = page.getByRole('button', { name: /Niedergeschlagenheit/i });
     await depressionButton.waitFor({ state: 'visible', timeout: 10000 });
     await depressionButton.click();
 
@@ -150,7 +150,7 @@ test.describe('Matching System', () => {
 
     // Step 2: Location (Online therapy - skip location)
     // Wait for Online button to appear (button contains "Online" and "Digital")
-    const onlineButton = page.getByRole('button', { name: /Online.*Digital/i });
+    const onlineButton = page.getByRole('button', { name: /Online/i });
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 });
     await onlineButton.click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
@@ -169,7 +169,7 @@ test.describe('Matching System', () => {
 
     // Step 4: Optional details - skip and submit
     // Look for submit button "Therapeuten finden"
-    const submitButton = page.getByRole('button', { name: /Therapeuten finden/i });
+    const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen/i });
     await submitButton.waitFor({ state: 'visible', timeout: 10000 });
     await submitButton.click();
     await waitForNetworkIdle(page, 10000);
@@ -209,7 +209,7 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page);
 
     // Step 2: Online
-    const onlineButton = page.getByRole('button', { name: /Online.*Digital/i });
+    const onlineButton = page.getByRole('button', { name: /Online/i });
     await onlineButton.waitFor({ state: 'visible', timeout: 10000 });
     await onlineButton.click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
@@ -220,7 +220,7 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page);
 
     // Step 4: Submit
-    const submitButton = page.getByRole('button', { name: /Therapeuten finden/i });
+    const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen/i });
     await submitButton.waitFor({ state: 'visible', timeout: 10000 });
     await submitButton.click();
     await waitForNetworkIdle(page, 10000);
@@ -259,7 +259,7 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page);
 
     // Step 2: Location
-    await page.getByRole('button', { name: /Online.*Digital/i }).click();
+    await page.getByRole('button', { name: /Online/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
     await waitForNetworkIdle(page);
 
@@ -279,7 +279,7 @@ test.describe('Matching System', () => {
     await waitForNetworkIdle(page);
 
     // Step 4: Submit
-    await page.getByRole('button', { name: /Therapeuten finden/i }).click();
+    await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
     // Should show inline results
@@ -323,14 +323,14 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: 'Weiter →' }).click();
 
     // Step 2
-    await page.getByRole('button', { name: /Online.*Digital/i }).click();
+    await page.getByRole('button', { name: /Online/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
 
     // Step 3 (Deutsch is selected by default, just click Weiter)
     await page.getByRole('button', { name: 'Weiter →' }).click();
 
     // Step 4
-    await page.getByRole('button', { name: /Therapeuten finden/i }).click();
+    await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
     // Should show inline results
@@ -366,18 +366,18 @@ test.describe('Matching System', () => {
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Complete quick search
-    await page.getByRole('button', { name: /Depression/i }).click();
+    await page.getByRole('button', { name: /Niedergeschlagenheit/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
-    await page.getByRole('button', { name: /Online.*Digital/i }).click();
+    await page.getByRole('button', { name: /Online/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
     // Step 3: Deutsch is already selected by default
     await page.getByRole('button', { name: 'Weiter →' }).click();
-    await page.getByRole('button', { name: /Therapeuten finden/i }).click();
+    await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
     // Should show inline results
     await page.waitForSelector('#matching-results', { state: 'visible' });
-    await expect(page.getByRole('heading', { name: /persönlichen Empfehlungen/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Deine Reise beginnt hier/i })).toBeVisible();
 
     // Should have option to adjust search
     const adjustButton = page.getByRole('button', { name: /neue suche|suche anpassen/i }).first();
@@ -417,7 +417,7 @@ test.describe('Matching System', () => {
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Step 1: Select problem area
-    await page.getByRole('button', { name: /Depression/i }).click();
+    await page.getByRole('button', { name: /Niedergeschlagenheit/i }).click();
 
     // Try to proceed without completing required fields on next step
     await page.getByRole('button', { name: 'Weiter →' }).click();
@@ -427,11 +427,11 @@ test.describe('Matching System', () => {
     const nextButton = page.getByRole('button', { name: 'Weiter →' });
 
     // For online, button should be enabled; for location-based, it should require input
-    const isOnline = await page.getByRole('button', { name: /Online.*Digital/i }).isVisible();
+    const isOnline = await page.getByRole('button', { name: /Online/i }).isVisible();
 
     if (isOnline) {
       // If online option is visible, select it (otherwise validation might fail)
-      await page.getByRole('button', { name: /Online.*Digital/i }).click();
+      await page.getByRole('button', { name: /Online/i }).click();
       await nextButton.click();
       await waitForNetworkIdle(page);
 
