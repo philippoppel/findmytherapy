@@ -2605,7 +2605,7 @@ export const blogPosts: BlogPost[] = [
           'Österreich hat einen Versorgungsengpass in der Psychotherapie. Auf einen Kassentherapieplatz warten Betroffene durchschnittlich 3-12 Monate. Die Situation variiert stark nach Bundesland und Therapiemethode.',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1516156008796-094d86a9d9e4?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Österreich Landkarte symbolisiert regionale Unterschiede in der Versorgung',
           caption: 'Die Wartezeiten variieren stark je nach Bundesland.',
         },
@@ -2616,7 +2616,7 @@ export const blogPosts: BlogPost[] = [
           'Wien hat die höchste Therapeutendichte Österreichs (ca. 40% aller österreichischen Therapeuten). Trotzdem: Wartezeit 4-8 Monate für Kassenplätze. Grund: Hohe Nachfrage, viele Studierende und junge Erwachsene. Vorteil: Große Auswahl, viele Wahltherapeuten, kürzere Wartezeiten bei privater Finanzierung.',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1609856878074-cf31e21a3f7d?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Wien Stadtansicht – die Stadt mit der höchsten Therapeutendichte',
           caption: 'Wien bietet die meisten Therapeuten, aber auch die höchste Nachfrage.',
         },
