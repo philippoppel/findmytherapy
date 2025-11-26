@@ -71,44 +71,44 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Clean Header */}
+      {/* Clean Header - Mobile optimized */}
       <header className="border-b border-neutral-100">
-        <div className="mx-auto max-w-7xl px-6 py-6">
-          <div className="flex items-center justify-between gap-8">
-            <div className="flex items-center gap-8">
-              <Link href="/" className="text-neutral-400 hover:text-neutral-600 transition">
-                <ArrowRight className="h-5 w-5 rotate-180" />
-              </Link>
-              <h1 className="text-2xl font-semibold text-neutral-900">Blog</h1>
-            </div>
-
-            {/* Search */}
-            <div className="relative w-full max-w-sm">
-              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-              <input
-                type="search"
-                placeholder="Suchen..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg border border-neutral-200 bg-neutral-50 py-2.5 pl-11 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-100 transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
+          {/* Top row: Back + Title */}
+          <div className="flex items-center gap-4 sm:gap-8 mb-4 sm:mb-0 sm:float-left">
+            <Link href="/" className="text-neutral-400 hover:text-neutral-600 transition min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2">
+              <ArrowRight className="h-5 w-5 rotate-180" />
+            </Link>
+            <h1 className="text-xl sm:text-2xl font-semibold text-neutral-900">Blog</h1>
           </div>
+
+          {/* Search - Full width on mobile, inline on desktop */}
+          <div className="relative w-full sm:max-w-sm sm:float-right">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+            <input
+              type="search"
+              placeholder="Suchen..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-lg border border-neutral-200 bg-neutral-50 py-3 sm:py-2.5 pl-11 pr-10 text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-100 transition-all"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition min-h-[44px] min-w-[44px] flex items-center justify-center -mr-2"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <div className="clear-both" />
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-12">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8 sm:py-12">
         {/* Search Results Info */}
         {searchQuery && (
-          <div className="mb-8 flex items-center gap-3">
+          <div className="mb-6 sm:mb-8 flex flex-wrap items-center gap-2 sm:gap-3">
             <span className="text-sm text-neutral-500">{filteredPosts.length} Ergebnisse für</span>
             <span className="bg-neutral-100 text-neutral-700 px-3 py-1 rounded-md text-sm font-medium">
               &quot;{searchQuery}&quot;
@@ -118,24 +118,24 @@ export default function BlogPage() {
 
         {filteredPosts.length === 0 ? (
           /* No Results */
-          <div className="py-24 text-center">
-            <Search className="mx-auto mb-4 h-12 w-12 text-neutral-300" />
-            <h2 className="text-xl font-semibold text-neutral-900">Keine Artikel gefunden</h2>
-            <p className="mt-2 text-neutral-500">Versuche andere Suchbegriffe.</p>
+          <div className="py-16 sm:py-24 text-center">
+            <Search className="mx-auto mb-4 h-10 w-10 sm:h-12 sm:w-12 text-neutral-300" />
+            <h2 className="text-lg sm:text-xl font-semibold text-neutral-900">Keine Artikel gefunden</h2>
+            <p className="mt-2 text-sm sm:text-base text-neutral-500">Versuche andere Suchbegriffe.</p>
             <button
               onClick={() => setSearchQuery('')}
-              className="mt-6 rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-neutral-800 transition"
+              className="mt-6 rounded-lg bg-neutral-900 px-6 py-3 text-sm font-medium text-white hover:bg-neutral-800 transition min-h-[44px]"
             >
               Alle Artikel anzeigen
             </button>
           </div>
         ) : (
           <>
-            {/* Featured Article */}
+            {/* Featured Article - Taller on mobile */}
             {featuredPost && !searchQuery && (
-              <article className="group mb-16">
+              <article className="group mb-10 sm:mb-16 -mx-4 sm:mx-0">
                 <Link href={`/blog/${featuredPost.slug}`} className="block">
-                  <div className="relative aspect-[2.5/1] overflow-hidden rounded-2xl bg-neutral-100">
+                  <div className="relative aspect-[4/3] sm:aspect-[2.5/1] overflow-hidden sm:rounded-2xl bg-neutral-100">
                     {featuredPost.featuredImage?.src ? (
                       <Image
                         src={featuredPost.featuredImage.src}
@@ -147,16 +147,16 @@ export default function BlogPage() {
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-                    <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-12">
-                      <p className="text-sm text-white/70 mb-3">
+                    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-12">
+                      <p className="text-xs sm:text-sm text-white/70 mb-2 sm:mb-3">
                         {featuredPost.category} · {dateFormatter.format(new Date(featuredPost.publishedAt))}
                       </p>
-                      <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4 max-w-3xl">
+                      <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-2 sm:mb-4 max-w-3xl line-clamp-3 sm:line-clamp-none">
                         {featuredPost.title}
                       </h2>
-                      <p className="text-white/80 max-w-2xl text-base sm:text-lg hidden sm:block">
+                      <p className="text-white/80 max-w-2xl text-sm sm:text-base md:text-lg line-clamp-2 sm:line-clamp-none">
                         {featuredPost.excerpt}
                       </p>
                     </div>
@@ -166,12 +166,12 @@ export default function BlogPage() {
             )}
 
             {/* Articles Grid */}
-            <section className="mb-20">
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <section className="mb-12 sm:mb-20">
+              <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {(searchQuery ? filteredPosts : restPosts).slice(0, 9).map((post) => (
                   <article key={post.slug} className="group">
-                    <Link href={`/blog/${post.slug}`}>
-                      <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-neutral-100 mb-4">
+                    <Link href={`/blog/${post.slug}`} className="flex sm:block gap-4">
+                      <div className="relative aspect-square sm:aspect-[16/10] w-24 sm:w-full flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl bg-neutral-100 sm:mb-4">
                         {post.featuredImage?.src ? (
                           <Image
                             src={post.featuredImage.src}
@@ -183,23 +183,26 @@ export default function BlogPage() {
                           <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300" />
                         )}
                       </div>
-                      <p className="text-sm text-neutral-500 mb-2">
-                        {post.category} · {dateFormatter.format(new Date(post.publishedAt))}
-                      </p>
-                      <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm text-neutral-500 mb-1 sm:mb-2">
+                          {post.category} · {dateFormatter.format(new Date(post.publishedAt))}
+                        </p>
+                        <h3 className="text-base sm:text-lg font-semibold text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-2">
+                          {post.title}
+                        </h3>
+                      </div>
                     </Link>
                   </article>
                 ))}
               </div>
             </section>
 
-            {/* Category Hero Banners */}
+            {/* Category Hero Banners - Horizontal scroll on mobile */}
             {!searchQuery && (
-              <section className="mb-20">
-                <h2 className="text-2xl font-semibold text-neutral-900 mb-8">Nach Thema durchsuchen</h2>
-                <div className="grid gap-6 sm:grid-cols-2">
+              <section className="mb-12 sm:mb-20">
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">Nach Thema durchsuchen</h2>
+                {/* Horizontal scroll on mobile */}
+                <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible snap-x snap-mandatory">
                   {categories.slice(0, 6).map((category) => {
                     const count = blogPosts.filter((p) => p.category === category).length;
                     const imageUrl = CATEGORY_IMAGES[category] || 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=400&q=80';
@@ -208,7 +211,7 @@ export default function BlogPage() {
                       <Link
                         key={category}
                         href={`/blog/category/${categoryToSlug(category)}`}
-                        className="group relative block overflow-hidden rounded-2xl aspect-[2.5/1]"
+                        className="group relative block overflow-hidden rounded-xl sm:rounded-2xl aspect-[3/2] sm:aspect-[2.5/1] flex-shrink-0 w-[260px] sm:w-auto snap-start"
                       >
                         <Image
                           src={imageUrl}
@@ -217,9 +220,9 @@ export default function BlogPage() {
                           className="object-cover transition duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <h3 className="text-xl font-bold text-white">{category}</h3>
-                          <p className="text-white/70 text-sm mt-1">{count} Artikel</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                          <h3 className="text-lg sm:text-xl font-bold text-white">{category}</h3>
+                          <p className="text-white/70 text-xs sm:text-sm mt-1">{count} Artikel</p>
                         </div>
                       </Link>
                     );
@@ -228,14 +231,14 @@ export default function BlogPage() {
 
                 {/* Remaining categories as simple links */}
                 {categories.length > 6 && (
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                     {categories.slice(6).map((category) => {
                       const count = blogPosts.filter((p) => p.category === category).length;
                       return (
                         <Link
                           key={category}
                           href={`/blog/category/${categoryToSlug(category)}`}
-                          className="px-4 py-2 rounded-lg bg-neutral-100 text-neutral-700 text-sm font-medium hover:bg-neutral-200 transition"
+                          className="px-3 sm:px-4 py-2 rounded-lg bg-neutral-100 text-neutral-700 text-sm font-medium hover:bg-neutral-200 transition min-h-[44px] flex items-center"
                         >
                           {category} ({count})
                         </Link>
@@ -248,13 +251,13 @@ export default function BlogPage() {
 
             {/* More Articles */}
             {!searchQuery && restPosts.length > 9 && (
-              <section className="mb-20">
-                <h2 className="text-2xl font-semibold text-neutral-900 mb-8">Weitere Artikel</h2>
-                <div className="space-y-6">
+              <section className="mb-12 sm:mb-20">
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">Weitere Artikel</h2>
+                <div className="space-y-4 sm:space-y-6">
                   {restPosts.slice(9).map((post) => (
                     <article key={post.slug} className="group">
-                      <Link href={`/blog/${post.slug}`} className="flex items-start gap-6">
-                        <div className="relative w-32 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+                      <Link href={`/blog/${post.slug}`} className="flex items-start gap-4 sm:gap-6">
+                        <div className="relative w-20 h-20 sm:w-32 sm:h-20 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
                           {post.featuredImage?.src && (
                             <Image
                               src={post.featuredImage.src}
@@ -265,10 +268,10 @@ export default function BlogPage() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-neutral-500 mb-1">
+                          <p className="text-xs sm:text-sm text-neutral-500 mb-1">
                             {post.category} · {dateFormatter.format(new Date(post.publishedAt))}
                           </p>
-                          <h3 className="font-semibold text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-2">
+                          <h3 className="text-sm sm:text-base font-semibold text-neutral-900 group-hover:text-neutral-600 transition-colors line-clamp-2">
                             {post.title}
                           </h3>
                         </div>
@@ -281,19 +284,19 @@ export default function BlogPage() {
 
             {/* Minimal CTA */}
             {!searchQuery && mounted && (
-              <section className="py-12 border-t border-neutral-100">
+              <section className="py-8 sm:py-12 border-t border-neutral-100">
                 <div className="text-center">
-                  <p className="text-neutral-500 mb-4">Nicht sicher wo du anfangen sollst?</p>
-                  <div className="flex flex-wrap justify-center gap-4">
+                  <p className="text-sm sm:text-base text-neutral-500 mb-4">Nicht sicher wo du anfangen sollst?</p>
+                  <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                     <Link
                       href="/quiz"
-                      className="px-6 py-2.5 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition"
+                      className="px-6 py-3 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition min-h-[44px] flex items-center justify-center"
                     >
                       Quiz starten
                     </Link>
                     <Link
                       href="/therapists"
-                      className="px-6 py-2.5 rounded-lg border border-neutral-200 text-neutral-700 text-sm font-medium hover:bg-neutral-50 transition"
+                      className="px-6 py-3 rounded-lg border border-neutral-200 text-neutral-700 text-sm font-medium hover:bg-neutral-50 transition min-h-[44px] flex items-center justify-center"
                     >
                       Therapeut:innen finden
                     </Link>
