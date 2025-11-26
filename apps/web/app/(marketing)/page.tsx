@@ -3,7 +3,6 @@ import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../mark
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { FaqAccordion } from '../components/marketing/FaqAccordion';
 import { ContactCta } from '../components/marketing/ContactCta';
-import { TwoPillarSection } from '../components/marketing/TwoPillarSection';
 import { AboutSection } from '../components/marketing/AboutSection';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 
@@ -196,8 +195,6 @@ export default function HomePage() {
           <MarketingHero content={heroContent} />
         </div>
 
-        {/* Two Pillar Section - Knowledge Hub & Therapist SEO Showcase */}
-        <TwoPillarSection />
 
         {/* About Section - Who we are & Trust */}
         <AboutSection />
