@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@mental-health/ui';
 import type { heroContent } from '../../marketing-content';
@@ -57,32 +58,20 @@ export function MarketingHero({ content }: HeroProps) {
           </Reveal>
 
           <Reveal delay={260}>
-            <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative"
-              >
-                {/* Glow effect behind button */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary-400 to-secondary-400 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
-                <Button
-                  asChild
-                  size="lg"
-                  className="relative w-full sm:w-auto min-h-[56px] px-10 sm:px-12 justify-center text-lg sm:text-xl font-bold shadow-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white active:translate-y-0"
-                >
-                  <MatchingLink href={content.primaryCta.href}>{content.primaryCta.label}</MatchingLink>
-                </Button>
-              </motion.div>
-
-              <Link
-                href={content.secondaryCta.href}
-                className="inline-flex items-center gap-2 rounded-full border-2 border-primary-300 bg-white/80 px-6 py-2.5 text-sm font-semibold text-primary-800 shadow-sm backdrop-blur-sm transition-all hover:border-primary-400 hover:bg-primary-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-              >
-                {content.secondaryCta.label}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+            {/* ÖBVP Trust Badge - stays above video */}
+            <div className="mt-6 sm:mt-8 flex justify-center">
+              <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-primary-100 shadow-sm">
+                <Image
+                  src="/images/oebvp.png"
+                  alt="ÖBVP"
+                  width={80}
+                  height={40}
+                  className="h-8 w-auto object-contain"
+                />
+                <span className="text-xs sm:text-sm text-muted font-medium">
+                  Empfohlen vom ÖBVP
+                </span>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -107,10 +96,61 @@ export function MarketingHero({ content }: HeroProps) {
               </div>
             </div>
 
-            {/* Center - Video */}
-            <div className="flex-shrink-0">
-              <div className="w-[300px] lg:w-[380px] xl:w-[440px]">
+            {/* Center - Video with CTAs overlay */}
+            <div className="flex-shrink-0 relative">
+              <div className="w-[300px] lg:w-[380px] xl:w-[440px] opacity-80">
                 <HeroVideoPlayer posterSrc={content.image.src} />
+              </div>
+              {/* CTAs on video - PROMINENT */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 z-10">
+                {/* Primary CTA - Big and Bold with entrance animation */}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="relative"
+                  initial={{ scale: 0, opacity: 0, y: 50 }}
+                  animate={{
+                    scale: [0, 1.2, 0.95, 1.05, 1],
+                    opacity: 1,
+                    y: 0,
+                    boxShadow: [
+                      '0 0 20px rgba(139, 92, 246, 0.3)',
+                      '0 0 50px rgba(139, 92, 246, 0.6)',
+                      '0 0 20px rgba(139, 92, 246, 0.3)',
+                    ]
+                  }}
+                  transition={{
+                    scale: { duration: 0.8, delay: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                    opacity: { duration: 0.3, delay: 0.5 },
+                    y: { duration: 0.5, delay: 0.5 },
+                    boxShadow: { duration: 2, repeat: Infinity, delay: 1.3 }
+                  }}
+                >
+                  <div className="absolute -inset-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
+                  <Button
+                    asChild
+                    size="lg"
+                    className="relative min-h-[64px] lg:min-h-[72px] px-12 lg:px-16 justify-center text-xl lg:text-2xl font-extrabold shadow-2xl transition-all duration-200 hover:-translate-y-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600"
+                  >
+                    <MatchingLink href={content.primaryCta.href}>{content.primaryCta.label}</MatchingLink>
+                  </Button>
+                </motion.div>
+
+                {/* Secondary CTA - Also prominent */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Link
+                    href={content.secondaryCta.href}
+                    className="inline-flex items-center gap-3 rounded-full border-3 border-white bg-white px-8 py-4 text-base lg:text-lg font-bold text-primary-700 shadow-2xl backdrop-blur-sm transition-all hover:bg-primary-50 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)]"
+                  >
+                    {content.secondaryCta.label}
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </motion.div>
               </div>
             </div>
 
@@ -133,10 +173,63 @@ export function MarketingHero({ content }: HeroProps) {
 
           {/* Mobile: Horizontal scroll carousel */}
           <div className="md:hidden">
-            {/* Video first on mobile */}
+            {/* Video with CTAs overlay on mobile */}
             <div className="flex justify-center mb-4">
-              <div className="w-[240px] sm:w-[280px]">
-                <HeroVideoPlayer posterSrc={content.image.src} />
+              <div className="relative">
+                <div className="w-[260px] sm:w-[300px] opacity-80">
+                  <HeroVideoPlayer posterSrc={content.image.src} />
+                </div>
+                {/* CTAs on video - mobile - PROMINENT */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10">
+                  {/* Primary CTA with entrance animation */}
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="relative"
+                    initial={{ scale: 0, opacity: 0, y: 40 }}
+                    animate={{
+                      scale: [0, 1.2, 0.95, 1.05, 1],
+                      opacity: 1,
+                      y: 0,
+                      boxShadow: [
+                        '0 0 15px rgba(139, 92, 246, 0.3)',
+                        '0 0 40px rgba(139, 92, 246, 0.6)',
+                        '0 0 15px rgba(139, 92, 246, 0.3)',
+                      ]
+                    }}
+                    transition={{
+                      scale: { duration: 0.8, delay: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                      opacity: { duration: 0.3, delay: 0.5 },
+                      y: { duration: 0.5, delay: 0.5 },
+                      boxShadow: { duration: 2, repeat: Infinity, delay: 1.3 }
+                    }}
+                  >
+                    <div className="absolute -inset-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-2xl blur-xl opacity-60 animate-pulse" />
+                    <Button
+                      asChild
+                      size="lg"
+                      className="relative min-h-[56px] px-10 justify-center text-lg font-extrabold shadow-2xl bg-gradient-to-r from-primary-600 to-primary-700"
+                    >
+                      <MatchingLink href={content.primaryCta.href}>{content.primaryCta.label}</MatchingLink>
+                    </Button>
+                  </motion.div>
+
+                  {/* Secondary CTA */}
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Link
+                      href={content.secondaryCta.href}
+                      className="inline-flex items-center gap-2 rounded-full border-2 border-white bg-white px-6 py-3 text-sm font-bold text-primary-700 shadow-2xl"
+                    >
+                      {content.secondaryCta.label}
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
             </div>
 

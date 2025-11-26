@@ -43,7 +43,7 @@ export function HeroVideoPlayer({ posterSrc }: HeroVideoPlayerProps) {
           loop
           playsInline
           poster={posterSrc}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover brightness-95"
           title="Geführter Start: Sag uns, was los ist"
           aria-label="Kurzer Einblick in den geführten Einstieg zur Psychotherapie"
         >
@@ -51,12 +51,8 @@ export function HeroVideoPlayer({ posterSrc }: HeroVideoPlayerProps) {
           Dein Browser unterstützt keine Videos.
         </video>
 
-        {/* Bottom gradient overlay with text */}
-        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 lg:p-6">
-          <p className="text-white/90 text-sm lg:text-base font-medium">
-            30 Sekunden bis zur passenden Therapie
-          </p>
-        </div>
+        {/* Soft overlay for better button contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-white/20" />
       </div>
 
       {/* Decorative floating elements */}

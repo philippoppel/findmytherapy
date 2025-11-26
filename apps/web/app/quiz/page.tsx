@@ -21,6 +21,13 @@ import {
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
+import { blogPosts, type BlogPost } from '@/lib/blogData';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
+
+// Reduzierte Kernthemen (6 wichtigste)
+const CORE_TOPICS = PROBLEM_AREAS.filter(topic =>
+  ['angst', 'depression', 'stress', 'beziehung', 'selbstwert', 'trauma'].includes(topic.id)
+);
 
 // Einfühlsame Fragen zu jedem Thema
 const TOPIC_QUESTIONS: Record<string, string> = {
@@ -39,22 +46,70 @@ const TOPIC_QUESTIONS: Record<string, string> = {
   arbeit: 'Belastet dich etwas in deinem Beruf?',
 };
 
-// Blog-Kategorien passend zu Themen
-const TOPIC_BLOG_CATEGORIES: Record<string, { slug: string; label: string }[]> = {
-  angst: [{ slug: 'angst', label: 'Angst & Panik' }],
-  depression: [{ slug: 'depression', label: 'Depression' }, { slug: 'selbstfuersorge', label: 'Selbstfürsorge' }],
-  stress: [{ slug: 'stress', label: 'Stressbewältigung' }, { slug: 'burnout', label: 'Burnout' }],
-  trauma: [{ slug: 'trauma', label: 'Trauma' }],
-  beziehung: [{ slug: 'beziehungen', label: 'Beziehungen' }],
-  selbstwert: [{ slug: 'selbstwert', label: 'Selbstwert' }, { slug: 'selbstfuersorge', label: 'Selbstfürsorge' }],
-  trauer: [{ slug: 'trauer', label: 'Trauer & Verlust' }],
-  sucht: [{ slug: 'sucht', label: 'Sucht' }],
-  essstoerung: [{ slug: 'essstoerungen', label: 'Essstörungen' }],
-  schlaf: [{ slug: 'schlaf', label: 'Schlaf' }, { slug: 'entspannung', label: 'Entspannung' }],
-  zwang: [{ slug: 'zwang', label: 'Zwänge' }],
-  adhs: [{ slug: 'adhs', label: 'ADHS' }],
-  arbeit: [{ slug: 'arbeit', label: 'Arbeit & Karriere' }, { slug: 'burnout', label: 'Burnout' }],
+// Keywords für Blog-Suche passend zu Themen
+const TOPIC_BLOG_KEYWORDS: Record<string, string[]> = {
+  angst: ['Angst', 'Panik', 'Angststörung', 'Panikattacken', 'Phobien'],
+  depression: ['Depression', 'depressiv', 'Niedergeschlagenheit', 'Antriebslosigkeit'],
+  stress: ['Stress', 'Burnout', 'Erschöpfung', 'Überlastung', 'Work-Life'],
+  trauma: ['Trauma', 'PTBS', 'traumatisch', 'Belastung'],
+  beziehung: ['Beziehung', 'Partnerschaft', 'Paar', 'Kommunikation', 'Trennung'],
+  selbstwert: ['Selbstwert', 'Selbstbewusstsein', 'Selbstliebe', 'Selbstfürsorge'],
+  trauer: ['Trauer', 'Verlust', 'Tod', 'Abschied'],
+  sucht: ['Sucht', 'Abhängigkeit', 'Alkohol', 'Drogen'],
+  essstoerung: ['Essstörung', 'Anorexie', 'Bulimie', 'Essen'],
+  schlaf: ['Schlaf', 'Insomnie', 'Entspannung', 'Ruhe'],
+  zwang: ['Zwang', 'OCD', 'Zwangsgedanken', 'Rituale'],
+  adhs: ['ADHS', 'ADS', 'Aufmerksamkeit', 'Konzentration'],
+  arbeit: ['Arbeit', 'Beruf', 'Karriere', 'Burnout', 'Mobbing'],
 };
+
+// Helper: Get relevant blog posts based on topics (with randomization)
+function getRelevantBlogPosts(selectedTopics: string[], limit: number = 3, randomize: boolean = true): BlogPost[] {
+  if (selectedTopics.length === 0) return [];
+
+  // Collect all keywords for selected topics
+  const keywords = selectedTopics.flatMap(topic => TOPIC_BLOG_KEYWORDS[topic] || []);
+  if (keywords.length === 0) return [];
+
+  // Score each blog post by how many keywords match
+  const scoredPosts = blogPosts.map(post => {
+    let score = 0;
+    const searchText = `${post.title} ${post.excerpt} ${post.tags.join(' ')} ${post.keywords.join(' ')}`.toLowerCase();
+
+    keywords.forEach(keyword => {
+      if (searchText.includes(keyword.toLowerCase())) {
+        score += 1;
+      }
+    });
+
+    // Add random factor for variety
+    const randomFactor = randomize ? Math.random() * 0.5 : 0;
+    return { post, score: score + randomFactor };
+  });
+
+  // Return top posts sorted by score (with randomization built in)
+  return scoredPosts
+    .filter(item => item.score > 0.5) // Must have at least one real match
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.post);
+}
+
+// Helper: Get a single blog post for current topic
+function getBlogPostForTopic(topicId: string): BlogPost | null {
+  const keywords = TOPIC_BLOG_KEYWORDS[topicId] || [];
+  if (keywords.length === 0) return null;
+
+  const matchingPosts = blogPosts.filter(post => {
+    const searchText = `${post.title} ${post.excerpt} ${post.tags.join(' ')} ${post.keywords.join(' ')}`.toLowerCase();
+    return keywords.some(keyword => searchText.includes(keyword.toLowerCase()));
+  });
+
+  if (matchingPosts.length === 0) return null;
+
+  // Random selection for variety
+  return matchingPosts[Math.floor(Math.random() * matchingPosts.length)];
+}
 
 type Phase = 'intro' | 'topics' | 'location' | 'loading' | 'therapists' | 'summary';
 
@@ -93,28 +148,21 @@ function getInitials(name: string | null | undefined): string {
   return name.slice(0, 2).toUpperCase();
 }
 
-// Helper: Get relevant blog categories from selected topics
-function getRelevantBlogCategories(selectedTopics: string[]): { slug: string; label: string }[] {
-  const categories = new Map<string, string>();
-  selectedTopics.forEach(topic => {
-    const cats = TOPIC_BLOG_CATEGORIES[topic] || [];
-    cats.forEach(cat => categories.set(cat.slug, cat.label));
-  });
-  return Array.from(categories.entries()).slice(0, 3).map(([slug, label]) => ({ slug, label }));
-}
 
 export default function QuizPage() {
   const [state, setState] = useState<QuizState>(initialState);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const { saveQuizResults } = useUserPreferences();
 
-  const currentTopic = PROBLEM_AREAS[state.topicIndex];
+  const currentTopic = CORE_TOPICS[state.topicIndex];
   const currentTherapist = state.matches[state.therapistIndex];
   const hasSelections = state.selectedTopics.length > 0;
-  const isLastTopic = state.topicIndex >= PROBLEM_AREAS.length - 1;
+  const isLastTopic = state.topicIndex >= CORE_TOPICS.length - 1;
+  const currentTopicBlogPost = currentTopic ? getBlogPostForTopic(currentTopic.id) : null;
   const remainingTherapists = state.matches.length - state.therapistIndex;
-  const blogCategories = getRelevantBlogCategories(state.selectedTopics);
+  const relevantBlogPosts = getRelevantBlogPosts(state.selectedTopics, 3);
 
   // Start Quiz
   const handleStart = () => {
@@ -145,7 +193,7 @@ export default function QuizPage() {
     setState((prev) => ({ ...prev, phase: 'location' }));
   };
 
-  // Auto-detect location
+  // Auto-detect location and proceed directly
   const detectLocation = () => {
     if (!navigator.geolocation) {
       setLocationError('Standorterkennung wird von deinem Browser nicht unterstützt.');
@@ -158,6 +206,7 @@ export default function QuizPage() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
+        let locationName = 'Dein Standort';
 
         // Try to get city name from coordinates using reverse geocoding
         try {
@@ -166,25 +215,28 @@ export default function QuizPage() {
             { headers: { 'Accept-Language': 'de' } }
           );
           const data = await response.json();
-          const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Dein Standort';
-
-          setState((prev) => ({
-            ...prev,
-            latitude,
-            longitude,
-            locationName: city,
-          }));
+          locationName = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Dein Standort';
         } catch {
-          // Even if reverse geocoding fails, we have coordinates
-          setState((prev) => ({
-            ...prev,
-            latitude,
-            longitude,
-            locationName: 'Dein Standort',
-          }));
+          // Continue with default location name
         }
 
+        // Speichere Quiz-Ergebnisse in localStorage für personalisierte Empfehlungen
+        if (state.selectedTopics.length > 0) {
+          saveQuizResults(state.selectedTopics);
+        }
+
+        // Set location and immediately proceed to loading
+        setState((prev) => ({
+          ...prev,
+          latitude,
+          longitude,
+          locationName,
+          phase: 'loading',
+        }));
         setIsLoadingLocation(false);
+
+        // Load results directly with the detected coordinates
+        loadResultsWithLocation(latitude, longitude, state.selectedTopics);
       },
       (error) => {
         setIsLoadingLocation(false);
@@ -206,24 +258,26 @@ export default function QuizPage() {
     );
   };
 
-  // Load results
-  const loadResults = async () => {
+  // Load results with specific location (used by auto-detect)
+  const loadResultsWithLocation = async (lat?: number, lon?: number, topics?: string[]) => {
     setIsLoadingResults(true);
-    setState((prev) => ({ ...prev, phase: 'loading' }));
 
     try {
-      const topics = state.selectedTopics.length > 0 ? state.selectedTopics : ['stress'];
+      const problemAreas = (topics && topics.length > 0) ? topics : state.selectedTopics.length > 0 ? state.selectedTopics : ['stress'];
 
       const requestBody: Record<string, unknown> = {
-        problemAreas: topics,
+        problemAreas,
         format: 'BOTH',
         insuranceType: 'ANY',
         languages: ['Deutsch'],
         maxDistanceKm: 100,
       };
 
-      // Prefer coordinates over postal code
-      if (state.latitude && state.longitude) {
+      // Use provided coordinates or fall back to state
+      if (lat && lon) {
+        requestBody.latitude = lat;
+        requestBody.longitude = lon;
+      } else if (state.latitude && state.longitude) {
         requestBody.latitude = state.latitude;
         requestBody.longitude = state.longitude;
       } else if (state.postalCode) {
@@ -250,6 +304,16 @@ export default function QuizPage() {
     } finally {
       setIsLoadingResults(false);
     }
+  };
+
+  // Load results (wrapper for manual submission)
+  const loadResults = async () => {
+    // Speichere Quiz-Ergebnisse in localStorage für personalisierte Empfehlungen
+    if (state.selectedTopics.length > 0) {
+      saveQuizResults(state.selectedTopics);
+    }
+    setState((prev) => ({ ...prev, phase: 'loading' }));
+    await loadResultsWithLocation();
   };
 
   // Therapist actions
@@ -420,6 +484,31 @@ export default function QuizPage() {
                 </motion.button>
               </div>
 
+              {/* Blog Suggestion for current topic */}
+              {currentTopicBlogPost && (
+                <Link
+                  href={`/blog/${currentTopicBlogPost.slug}`}
+                  className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                    <Image
+                      src={currentTopicBlogPost.featuredImage.src}
+                      alt=""
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
+                      <BookOpen className="w-3 h-3" />
+                      Lesetipp
+                    </p>
+                    <p className="text-sm font-medium text-slate-700 line-clamp-2">{currentTopicBlogPost.title}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                </Link>
+              )}
+
               {/* Show Results Button */}
               {hasSelections && (
                 <motion.div
@@ -439,7 +528,7 @@ export default function QuizPage() {
 
               {/* Progress Dots */}
               <div className="flex justify-center gap-1 pt-2">
-                {PROBLEM_AREAS.map((_, i) => (
+                {CORE_TOPICS.map((_, i) => (
                   <div
                     key={i}
                     className={`h-1.5 rounded-full transition-all ${
@@ -733,21 +822,32 @@ export default function QuizPage() {
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              {/* Blog Categories - shown during therapist browsing */}
-              {blogCategories.length > 0 && (
-                <div className="bg-slate-50 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
+              {/* Blog Posts - shown during therapist browsing */}
+              {relevantBlogPosts.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-primary-500" />
-                    <span className="text-sm font-medium text-slate-700">Passende Artikel zu deinen Themen</span>
+                    <span className="text-sm font-medium text-slate-700">Passende Artikel für dich</span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {blogCategories.map((cat) => (
+                  <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory">
+                    {relevantBlogPosts.map((post) => (
                       <Link
-                        key={cat.slug}
-                        href={`/blog?category=${cat.slug}`}
-                        className="px-3 py-1.5 bg-white rounded-lg border border-slate-200 text-sm text-slate-600 hover:border-primary-300 hover:text-primary-600 transition-colors"
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow snap-start"
                       >
-                        {cat.label}
+                        <div className="relative h-32">
+                          <Image
+                            src={post.featuredImage.src}
+                            alt={post.featuredImage.alt}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <p className="font-medium text-slate-900 text-sm line-clamp-2">{post.title}</p>
+                          <p className="text-xs text-slate-500 mt-1">{post.readingTime}</p>
+                        </div>
                       </Link>
                     ))}
                   </div>
@@ -832,21 +932,32 @@ export default function QuizPage() {
                 </div>
               )}
 
-              {/* Blog Categories */}
-              {blogCategories.length > 0 && (
+              {/* Blog Posts */}
+              {relevantBlogPosts.length > 0 && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-slate-900 flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-primary-500" />
                     Passende Artikel für dich
                   </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {blogCategories.map((cat) => (
+                  <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory">
+                    {relevantBlogPosts.map((post) => (
                       <Link
-                        key={cat.slug}
-                        href={`/blog?category=${cat.slug}`}
-                        className="px-4 py-2 bg-white rounded-xl border border-slate-200 text-slate-700 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow snap-start"
                       >
-                        {cat.label}
+                        <div className="relative h-32">
+                          <Image
+                            src={post.featuredImage.src}
+                            alt={post.featuredImage.alt}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <p className="font-medium text-slate-900 text-sm line-clamp-2">{post.title}</p>
+                          <p className="text-xs text-slate-500 mt-1">{post.readingTime}</p>
+                        </div>
                       </Link>
                     ))}
                   </div>

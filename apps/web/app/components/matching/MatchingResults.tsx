@@ -1,42 +1,28 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Eye, Sparkles, Check, Star, ThumbsUp, Award, X, RotateCcw } from 'lucide-react';
+import { Eye, Star, X, RotateCcw, Heart, ArrowRight } from 'lucide-react';
 import type { MatchResult } from '@/lib/matching';
-import { EncouragementBanner } from './results-components/EncouragementBanner';
-import { NextStepsGuide } from './results-components/NextStepsGuide';
-import { MotivationalQuote } from './results-components/MotivationalQuote';
-import { ReassuranceBox } from './results-components/ReassuranceBox';
-import { AvailabilityBadge } from '@/app/components/AvailabilityBadge';
 import { useMatchingWizard } from './MatchingWizardContext';
 
-// Score zu Prozent und Farbe konvertieren
-function getScoreDisplay(score: number) {
-  const percent = Math.round(score * 100);
-  let color = 'text-gray-600';
-  let bgColor = 'bg-gray-100';
+// Warme Stockbilder von Unsplash (kostenlos & kommerziell nutzbar)
+const STORY_IMAGES = {
+  hero: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1200&q=80', // Person in Sonnenlicht
+  divider1: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80', // Zwei Menschen im Gespräch
+  divider2: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80', // Freundschaft, Zusammenhalt
+  footer: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80', // Weg/Pfad in Natur
+};
 
-  if (percent >= 80) {
-    color = 'text-green-700';
-    bgColor = 'bg-green-100';
-  } else if (percent >= 60) {
-    color = 'text-primary-700';
-    bgColor = 'bg-primary-100';
-  } else if (percent >= 40) {
-    color = 'text-yellow-700';
-    bgColor = 'bg-yellow-100';
-  }
-
-  return { percent, color, bgColor };
+// Score zu Prozent konvertieren
+function getScorePercent(score: number) {
+  return Math.round(score * 100);
 }
 
-// Einzelne Match-Card Komponente
-function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
-  const { percent, color, bgColor } = getScoreDisplay(match.score);
-  const [showDetails, setShowDetails] = useState(false);
+// Vereinfachte Match-Card - emotional & clean
+function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchResult; rank: number; isTopMatch?: boolean }) {
+  const percent = getScorePercent(match.score);
 
   // Initiale für Avatar
   const initials =
@@ -47,281 +33,101 @@ function MatchCard({ match, rank }: { match: MatchResult; rank: number }) {
       .toUpperCase()
       .slice(0, 2) || '?';
 
+  // Personalisierter Satz basierend auf Match-Gründen
+  const personalizedReason = match.explanation.primary[0] || 'Passt gut zu deinen Bedürfnissen';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: rank * 0.15, duration: 0.5 }}
+      className={`group bg-white rounded-3xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl ${
+        isTopMatch ? 'ring-2 ring-amber-300' : ''
+      }`}
+    >
+      <div className={`p-6 sm:p-8 ${isTopMatch ? 'bg-gradient-to-br from-amber-50/50 to-orange-50/30' : ''}`}>
+        {/* Therapeut Info */}
+        <div className="flex items-center gap-4 sm:gap-5 mb-5">
+          {/* Großes Foto */}
+          <div className="relative flex-shrink-0">
+            {match.therapist.profileImageUrl ? (
+              <div className={`${isTopMatch ? 'w-20 h-20 sm:w-24 sm:h-24' : 'w-16 h-16 sm:w-20 sm:h-20'} rounded-full overflow-hidden ring-4 ring-white shadow-lg`}>
+                <Image
+                  src={match.therapist.profileImageUrl}
+                  alt={match.therapist.displayName || 'Therapeut'}
+                  width={96}
+                  height={96}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            ) : (
+              <div className={`${isTopMatch ? 'w-20 h-20 sm:w-24 sm:h-24' : 'w-16 h-16 sm:w-20 sm:h-20'} rounded-full bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center text-white font-bold ${isTopMatch ? 'text-2xl' : 'text-xl'} ring-4 ring-white shadow-lg`}>
+                {initials}
+              </div>
+            )}
+          </div>
+
+          {/* Name & Score Badge */}
+          <div className="flex-1 min-w-0">
+            <h3 className={`font-bold text-gray-900 mb-1 ${isTopMatch ? 'text-xl sm:text-2xl' : 'text-lg sm:text-xl'}`}>
+              {match.therapist.displayName || 'Therapeut:in'}
+            </h3>
+            {match.therapist.title && (
+              <p className="text-sm text-gray-500 mb-2">
+                {match.therapist.title}
+              </p>
+            )}
+            {/* Match Score als schöner Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-md">
+              <Star className="w-4 h-4" fill="white" />
+              {percent}% Match
+            </div>
+          </div>
+        </div>
+
+        {/* Personalisierter Satz - nur 1-2 Zeilen */}
+        <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 line-clamp-2">
+          {personalizedReason}
+        </p>
+
+        {/* Ein Button */}
+        <Link
+          href={`/therapists/${match.therapist.id}`}
+          className={`w-full flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] active:scale-95 ${
+            isTopMatch
+              ? 'bg-gradient-to-r from-amber-500 to-orange-500 shadow-amber-200 text-base sm:text-lg'
+              : 'bg-gradient-to-r from-gray-800 to-gray-700 shadow-gray-200 text-sm sm:text-base'
+          }`}
+        >
+          <Eye className="w-5 h-5" />
+          Profil ansehen
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
+// Story Divider - Bild mit emotionalem Text
+function StoryDivider({ image, text, delay = 0 }: { image: string; text: string; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: rank * 0.1 }}
-      className="group bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden hover:shadow-xl hover:border-amber-200 transition-all duration-300"
+      transition={{ delay, duration: 0.6 }}
+      className="relative my-10 sm:my-16 rounded-3xl overflow-hidden"
     >
-      {/* Rang-Ribbon (nur Top 3) */}
-      {rank <= 3 && <div className="relative h-1 bg-gradient-to-r from-amber-500 to-orange-500" />}
-
-      <div className="p-5 sm:p-6">
-        {/* Prominenter Match-Score Banner am oberen Rand */}
-        <div
-          className={`mb-4 px-4 py-3 rounded-xl ${bgColor} border-2 ${percent >= 80 ? 'border-green-300' : percent >= 60 ? 'border-primary-300' : 'border-yellow-300'}`}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Award className={`w-5 h-5 sm:w-6 sm:h-6 ${color}`} strokeWidth={2.5} />
-              <div>
-                <div className={`text-xs font-medium ${color} opacity-80`}>Match-Score</div>
-                <div className={`text-2xl sm:text-3xl font-bold ${color}`}>{percent}%</div>
-              </div>
-            </div>
-            <div className="text-right">
-              {percent >= 80 ? (
-                <div className="flex items-center gap-1.5">
-                  <Star className={`w-4 h-4 ${color}`} fill="currentColor" />
-                  <span className={`text-sm font-bold ${color}`}>Hervorragend</span>
-                </div>
-              ) : percent >= 60 ? (
-                <div className="flex items-center gap-1.5">
-                  <ThumbsUp className={`w-4 h-4 ${color}`} />
-                  <span className={`text-sm font-bold ${color}`}>Sehr gut</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5">
-                  <Check className={`w-4 h-4 ${color}`} />
-                  <span className={`text-sm font-bold ${color}`}>Gut</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Header mit Rang */}
-        <div className="flex items-start justify-between mb-4 gap-3">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            {/* Avatar */}
-            <div className="relative flex-shrink-0">
-              {match.therapist.profileImageUrl ? (
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden ring-2 ring-gray-100 group-hover:ring-amber-200 transition-all">
-                  <Image
-                    src={match.therapist.profileImageUrl}
-                    alt={match.therapist.displayName || 'Therapeut'}
-                    width={64}
-                    height={64}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              ) : (
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-amber-700 font-bold text-lg ring-2 ring-gray-100">
-                  {initials}
-                </div>
-              )}
-              {/* Rang-Badge für Top 3 */}
-              {rank <= 3 && (
-                <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg ring-2 ring-white">
-                  #{rank}
-                </div>
-              )}
-            </div>
-
-            {/* Name & Titel */}
-            <div className="min-w-0 flex-1">
-              <h3 className="font-bold text-base sm:text-lg text-gray-900 break-words line-clamp-1 mb-0.5">
-                {match.therapist.displayName || 'Therapeut:in'}
-              </h3>
-              {match.therapist.title && (
-                <p className="text-xs sm:text-sm text-gray-600 break-words line-clamp-1">
-                  {match.therapist.title}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Verfügbarkeit Badge */}
-          <div className="flex-shrink-0">
-            <AvailabilityBadge
-              status={match.therapist.availabilityStatus}
-              estimatedWaitWeeks={match.therapist.estimatedWaitWeeks}
-              acceptingClients={match.therapist.acceptingClients}
-              variant="default"
-            />
-          </div>
-        </div>
-
-        {/* Headline */}
-        {match.therapist.headline && (
-          <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2 break-words">
-            {match.therapist.headline}
+      <div className="relative h-48 sm:h-64">
+        <Image
+          src={image}
+          alt=""
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 flex items-end justify-center pb-6 sm:pb-10 px-4">
+          <p className="text-white text-center text-lg sm:text-2xl font-medium max-w-xl leading-relaxed">
+            {text}
           </p>
-        )}
-
-        {/* Warum passt dieser Therapeut? */}
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
-            <h4 className="text-sm font-bold text-gray-900">
-              Warum passt {match.therapist.displayName?.split(' ')[0] || 'diese:r Therapeut:in'} zu
-              dir?
-            </h4>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {match.explanation.primary.map((reason, idx) => (
-              <span
-                key={idx}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 text-green-800 text-xs font-semibold shadow-sm"
-              >
-                <Check className="w-3 h-3 text-green-600" strokeWidth={2.5} />
-                {reason}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Zusätzliche Infos */}
-        <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
-          {/* Standort/Distanz */}
-          {match.distanceKm !== undefined && (
-            <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              {match.distanceKm} km
-            </span>
-          )}
-          {match.therapist.city && !match.distanceKm && (
-            <span className="flex items-center gap-1 break-words max-w-full">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-              </svg>
-              {match.therapist.city}
-            </span>
-          )}
-
-          {/* Online */}
-          {match.therapist.online && (
-            <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              Online
-            </span>
-          )}
-
-          {/* Bewertung */}
-          {match.therapist.rating && match.therapist.rating > 0 && (
-            <span className="flex items-center gap-1 whitespace-nowrap">
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 text-yellow-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              {match.therapist.rating.toFixed(1)}
-            </span>
-          )}
-        </div>
-
-        {/* Erweiterte Details (optional) */}
-        {showDetails && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100"
-          >
-            {/* Weitere Gründe */}
-            {match.explanation.secondary.length > 0 && (
-              <div className="mb-3">
-                <p className="text-xs font-medium text-gray-500 mb-2">Weitere Gründe:</p>
-                <ul className="text-xs sm:text-sm text-gray-600 space-y-1">
-                  {match.explanation.secondary.map((reason, idx) => (
-                    <li key={idx} className="flex items-start gap-2 break-words">
-                      <span className="text-gray-400 flex-shrink-0">•</span>
-                      <span>{reason}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Warnungen */}
-            {match.explanation.warnings && match.explanation.warnings.length > 0 && (
-              <div className="mb-3">
-                <p className="text-xs font-medium text-yellow-600 mb-2">Hinweise:</p>
-                <ul className="text-xs sm:text-sm text-yellow-700 space-y-1">
-                  {match.explanation.warnings.map((warning, idx) => (
-                    <li key={idx} className="flex items-start gap-2 break-words">
-                      <span className="flex-shrink-0">⚠️</span>
-                      <span>{warning}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Score-Breakdown */}
-            <div>
-              <p className="text-xs font-medium text-gray-500 mb-2">Score-Details:</p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {Object.entries(match.scoreBreakdown.components).map(([key, value]) => (
-                  <div key={key} className="flex justify-between gap-2">
-                    <span className="text-gray-500 capitalize break-words">{key}:</span>
-                    <span className="font-medium whitespace-nowrap">
-                      {Math.round(value.score * 100)}%
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="mt-5 flex gap-3">
-          <Link
-            href={`/therapists/${match.therapist.id}`}
-            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-amber-200 transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
-          >
-            <Eye className="w-5 h-5" strokeWidth={2.5} />
-            <span>Profil ansehen</span>
-          </Link>
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="px-4 py-3.5 text-gray-700 text-sm font-semibold border-2 border-gray-200 rounded-xl hover:border-amber-300 hover:bg-amber-50 transition-all"
-          >
-            {showDetails ? '▲' : '▼'}
-          </button>
         </div>
       </div>
     </motion.div>
@@ -339,125 +145,210 @@ export function MatchingResults() {
 
   const handleClose = () => {
     closeWizard();
-    // Smooth scroll to top of page
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Therapeuten in Gruppen aufteilen für Story-Flow
+  const topMatch = results.matches[0];
+  const secondaryMatches = results.matches.slice(1, 3);
+  const remainingMatches = results.matches.slice(3);
 
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: 'auto' }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className="w-full overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full"
         id="matching-results"
       >
-        <div className="bg-gradient-to-b from-amber-50/30 via-white to-stone-50/20 py-6 sm:py-10">
-          <div className="container mx-auto px-4 max-w-6xl">
-            {/* Header */}
-            <div className="mb-8 sm:mb-10 relative">
-              <button
-                onClick={handleClose}
-                className="absolute right-0 top-0 p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
-                aria-label="Schließen"
+        {/* Hero Section */}
+        <div className="relative">
+          <div className="relative h-[50vh] sm:h-[60vh] min-h-[400px]">
+            <Image
+              src={STORY_IMAGES.hero}
+              alt="Hoffnung und Neubeginn"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-white" />
+
+            {/* Close Button */}
+            <button
+              onClick={handleClose}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 bg-white/90 backdrop-blur-sm rounded-full text-gray-600 hover:text-gray-900 hover:bg-white transition-all shadow-lg"
+              aria-label="Schließen"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+
+            {/* Hero Text */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
               >
-                <X className="w-6 h-6" />
-              </button>
-
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-lg mb-4 sm:mb-6">
-                  <Target className="w-8 h-8 sm:w-10 sm:h-10 text-white" strokeWidth={2.5} />
-                </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 break-words">
-                  Deine persönlichen Empfehlungen
-                </h2>
-                <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto break-words">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-amber-600 font-medium text-sm sm:text-base mb-4 shadow-lg">
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" />
                   {results.total === 0
-                    ? 'Leider keine passenden Therapeut:innen gefunden.'
-                    : results.total === 1
-                      ? 'Wir haben die perfekte Therapeut:in für dich gefunden!'
-                      : `Wir haben ${results.total} Therapeut:innen gefunden, die gut zu dir passen!`}
+                    ? 'Wir suchen weiter für dich'
+                    : `${results.total} ${results.total === 1 ? 'Therapeut:in' : 'Therapeut:innen'} gefunden`}
+                </div>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                  {results.total === 0
+                    ? 'Lass uns gemeinsam suchen'
+                    : 'Deine Reise beginnt hier'}
+                </h1>
+                <p className="text-lg sm:text-xl text-white/90 max-w-lg mx-auto drop-shadow">
+                  {results.total === 0
+                    ? 'Wir helfen dir, die richtige Unterstützung zu finden'
+                    : 'Menschen, die dir helfen können'}
                 </p>
-              </div>
+              </motion.div>
             </div>
+          </div>
+        </div>
 
-            {/* Encouragement Banner */}
-            {results.matches.length > 0 && <EncouragementBanner />}
-
-            {/* Motivational Quote */}
-            {results.matches.length > 0 && <MotivationalQuote />}
+        {/* Content Area */}
+        <div className="bg-gradient-to-b from-white via-amber-50/20 to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
 
             {/* Keine Matches */}
             {results.matches.length === 0 && (
-              <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 text-center">
-                <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🔍</div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 break-words">
-                  Keine passenden Therapeut:innen gefunden
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 mb-5 sm:mb-6 break-words">
-                  Versuchen Sie, Ihre Suchkriterien anzupassen oder den Suchradius zu erweitern.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-                  <button
-                    onClick={handleNewSearch}
-                    className="px-5 sm:px-6 py-2 bg-primary-600 text-white text-sm sm:text-base rounded-lg hover:bg-primary-700 transition-colors"
-                  >
-                    Neue Suche
-                  </button>
-                  <Link
-                    href="/therapists"
-                    className="px-5 sm:px-6 py-2 border border-gray-300 text-gray-700 text-sm sm:text-base rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Alle Therapeuten
-                  </Link>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="py-16 text-center"
+              >
+                <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12">
+                  <p className="text-gray-600 text-lg mb-8">
+                    Aktuell haben wir keine exakten Treffer, aber das bedeutet nicht,
+                    dass es keine Hilfe gibt. Lass uns die Suche anpassen.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={handleNewSearch}
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                      Suche anpassen
+                    </button>
+                    <Link
+                      href="/therapists"
+                      className="flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-2xl hover:border-amber-300 hover:bg-amber-50 transition-all"
+                    >
+                      Alle Therapeuten ansehen
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
                 </div>
+              </motion.div>
+            )}
+
+            {/* Story Flow mit Matches */}
+            {results.matches.length > 0 && (
+              <div className="py-8 sm:py-12">
+
+                {/* Top Match - Groß und prominent */}
+                {topMatch && (
+                  <div className="mb-8 sm:mb-12">
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-center text-amber-600 font-medium text-sm sm:text-base mb-4"
+                    >
+                      Deine beste Übereinstimmung
+                    </motion.p>
+                    <EmotionalMatchCard match={topMatch} rank={0} isTopMatch={true} />
+                  </div>
+                )}
+
+                {/* Story Divider 1 */}
+                {secondaryMatches.length > 0 && (
+                  <StoryDivider
+                    image={STORY_IMAGES.divider1}
+                    text="Der erste Schritt ist oft der schwerste – du hast ihn gemacht"
+                    delay={0.5}
+                  />
+                )}
+
+                {/* Secondary Matches (2-3) */}
+                {secondaryMatches.length > 0 && (
+                  <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 mb-8 sm:mb-12">
+                    {secondaryMatches.map((match, index) => (
+                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 1} />
+                    ))}
+                  </div>
+                )}
+
+                {/* Story Divider 2 */}
+                {remainingMatches.length > 0 && (
+                  <StoryDivider
+                    image={STORY_IMAGES.divider2}
+                    text="Jeder dieser Menschen kann dir helfen, dein Leben zu verändern"
+                    delay={0.6}
+                  />
+                )}
+
+                {/* Remaining Matches */}
+                {remainingMatches.length > 0 && (
+                  <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
+                    {remainingMatches.map((match, index) => (
+                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 3} />
+                    ))}
+                  </div>
+                )}
+
+                {/* Footer Section */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="relative mt-12 sm:mt-20 rounded-3xl overflow-hidden"
+                >
+                  <div className="relative h-64 sm:h-80">
+                    <Image
+                      src={STORY_IMAGES.footer}
+                      alt="Dein Weg"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 sm:pb-12 px-4">
+                      <h2 className="text-white text-2xl sm:text-3xl font-bold mb-3 text-center">
+                        Bereit für den nächsten Schritt?
+                      </h2>
+                      <p className="text-white/80 text-center mb-6 max-w-md">
+                        Du musst das nicht alleine durchstehen
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <button
+                          onClick={handleNewSearch}
+                          className="flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm border border-white/40 text-white font-medium rounded-full hover:bg-white/30 transition-all"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          Suche anpassen
+                        </button>
+                        <Link
+                          href="/therapists"
+                          className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 font-medium rounded-full hover:bg-amber-50 transition-all"
+                        >
+                          Alle ansehen
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
               </div>
             )}
 
-            {/* Match-Liste */}
-            {results.matches.length > 0 && (
-              <>
-                <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-bold text-gray-900">
-                  Deine Top-Matches
-                </h3>
-                <div className="grid gap-3 sm:gap-4 mb-6 sm:mb-8 md:grid-cols-2">
-                  {results.matches.map((match, index) => (
-                    <MatchCard key={match.therapist.id} match={match} rank={index + 1} />
-                  ))}
-                </div>
-
-                {/* Next Steps Guide */}
-                <NextStepsGuide />
-
-                {/* Reassurance Box */}
-                <ReassuranceBox />
-              </>
-            )}
-
-            {/* Footer Actions */}
-            {results.matches.length > 0 && (
-              <div className="mt-6 sm:mt-8 text-center px-4">
-                <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
-                  Nicht das Richtige dabei?
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-                  <button
-                    onClick={handleNewSearch}
-                    className="flex items-center justify-center gap-2 px-5 sm:px-6 py-2 border border-gray-300 text-gray-700 text-sm sm:text-base rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    Suche anpassen
-                  </button>
-                  <Link
-                    href="/therapists"
-                    className="px-5 sm:px-6 py-2 text-primary-600 text-sm sm:text-base hover:text-primary-700 transition-colors"
-                  >
-                    Alle Therapeuten ansehen →
-                  </Link>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </motion.div>

@@ -52,17 +52,17 @@ const faqCategories = [
       {
         question: 'Was ist FindMyTherapy?',
         answer:
-          'FindMyTherapy ist eine Plattform, die Menschen in Österreich dabei hilft, passende Psychotherapeut:innen zu finden. Wir verwenden einen intelligenten Matching-Prozess, um Sie mit Therapeut:innen zu verbinden, die zu Ihren Bedürfnissen passen.',
+          'FindMyTherapy ist eine Plattform, die Menschen in Österreich passende Psychotherapeut:innen vermittelt. Wir nutzen ein kurzes Intake und Matching, um dir Therapeut:innen vorzuschlagen, die zu Anliegen, Verfügbarkeit und Budget passen.',
       },
       {
         question: 'Wie schnell bekomme ich einen Termin?',
         answer:
-          'In der Regel melden wir uns innerhalb von 24 Stunden bei dir. Akute Termine priorisieren wir und versuchen, noch am selben Tag einen Rückruf zu organisieren.',
+          'Wir melden uns in der Regel binnen 24 Stunden. Bei akuten Anfragen priorisieren wir dich und versuchen noch am selben Tag einen Rückruf zu organisieren.',
       },
       {
         question: 'Ist der Service kostenlos?',
         answer:
-          'Ja, die Nutzung von FindMyTherapy und die Vermittlung sind für Hilfesuchende komplett kostenlos. Es entstehen keine versteckten Kosten für den Matching-Service.',
+          'Ja. Die Nutzung von FindMyTherapy und die Vermittlung sind für dich kostenlos. Du zahlst nur die Sitzungen bei deiner:m Therapeut:in.',
       },
     ],
   },
@@ -73,22 +73,17 @@ const faqCategories = [
       {
         question: 'Welche Kosten entstehen für die Therapie?',
         answer:
-          'Das Erstgespräch ist kostenlos. Für laufende Sitzungen gelten die Honorare der Therapeut:innen (zwischen 80-150€ pro Sitzung). Viele Kassen erstatten einen Teilbetrag – wir helfen dir bei der Einreichung.',
+          'Das Erstgespräch ist kostenlos. Folgesitzungen liegen je nach Therapeut:in meist zwischen 80–150 € pro Einheit. Wir teilen dir die genauen Honorare beim Matching mit.',
       },
       {
         question: 'Übernimmt meine Krankenkasse die Kosten?',
         answer:
-          'Die österreichischen Krankenkassen erstatten einen Teilbetrag von ca. 33€ pro Sitzung bei Therapeut:innen mit Kassenvertrag. Bei Wahltherapeut:innen können Sie einen Antrag auf Kostenzuschuss stellen.',
-      },
-      {
-        question: 'Gibt es Kassenplätze?',
-        answer:
-          'Ja, einige unserer Therapeut:innen haben Kassenplätze. Diese sind jedoch begrenzt und haben oft Wartezeiten. Im Matching-Prozess können Sie Ihre Präferenz angeben.',
+          'Die meisten Kassen erstatten ca. 33 € pro Sitzung bei Wahltherapeut:innen. Kassenplätze sind begrenzt; wir prüfen im Matching, ob ein passender Platz frei ist.',
       },
       {
         question: 'Wie funktioniert die Kostenerstattung?',
         answer:
-          'Nach jeder Sitzung erhalten Sie eine Rechnung. Diese reichen Sie bei Ihrer Krankenkasse ein. Der Zuschuss wird üblicherweise innerhalb von 2-4 Wochen überwiesen.',
+          'Du erhältst nach jeder Sitzung eine Rechnung, reichst sie bei deiner Krankenkasse ein und bekommst den Zuschuss meist in 2–4 Wochen. Wir schicken dir die nötigen Formulare mit.',
       },
     ],
   },
@@ -99,17 +94,17 @@ const faqCategories = [
       {
         question: 'Wie läuft das Erstgespräch ab?',
         answer:
-          'Im Erstgespräch lernen Sie sich und Ihre:n Therapeut:in kennen. Sie besprechen Ihre Anliegen, Erwartungen und ob die Chemie stimmt. Es besteht keine Verpflichtung zur Fortsetzung.',
+          'Im Erstgespräch lernt ihr euch kennen, besprecht Anliegen und Erwartungen und schaut, ob die Chemie passt. Danach entscheidest du, ob du weitermachen möchtest.',
       },
       {
         question: 'Wie lange dauert eine Therapie?',
         answer:
-          'Die Dauer variiert je nach Anliegen und Therapieform. Kurzzeittherapien umfassen oft 12-25 Sitzungen, längere Therapien können ein Jahr oder mehr dauern. Ihr:e Therapeut:in bespricht dies mit Ihnen.',
+          'Kurzzeittherapien umfassen oft 12–25 Sitzungen, längere Prozesse können mehrere Monate oder ein Jahr dauern. Deine Therapeutin oder dein Therapeut bespricht den Rahmen mit dir.',
       },
       {
         question: 'Kann ich die/den Therapeut:in wechseln?',
         answer:
-          'Ja, das ist jederzeit möglich. Wenn Sie merken, dass die Zusammenarbeit nicht passt, helfen wir Ihnen gerne, eine:n neue:n Therapeut:in zu finden.',
+          'Ja. Wenn du merkst, dass es nicht passt, organisieren wir gerne ein neues Matching mit einer anderen Therapeutin oder einem anderen Therapeuten.',
       },
     ],
   },
@@ -120,17 +115,12 @@ const faqCategories = [
       {
         question: 'Kann ich die Therapie online machen?',
         answer:
-          'Ja. Viele unserer Therapeut:innen bieten sowohl Online- als auch Vor-Ort-Sitzungen an. Du kannst beim Matching deine Präferenz angeben.',
+          'Ja. Viele Therapeut:innen bieten Online-Sitzungen per Video an. Du kannst beim Matching angeben, ob du online, vor Ort oder hybrid möchtest.',
       },
       {
         question: 'Ist Online-Therapie genauso effektiv?',
         answer:
-          'Ja, zahlreiche Studien belegen die Wirksamkeit von Online-Psychotherapie. Sie ist besonders geeignet für Menschen mit eingeschränkter Mobilität oder in ländlichen Regionen.',
-      },
-      {
-        question: 'Welche technischen Voraussetzungen brauche ich?',
-        answer:
-          'Sie benötigen einen Computer, Tablet oder Smartphone mit Kamera und Mikrofon sowie eine stabile Internetverbindung. Die meisten Therapeut:innen nutzen sichere Videokonferenz-Tools.',
+          'Ja, Studien zeigen gute Wirksamkeit. Online-Therapie eignet sich besonders, wenn du wenig Zeit hast oder weiter weg wohnst.',
       },
     ],
   },
@@ -141,17 +131,12 @@ const faqCategories = [
       {
         question: 'Was passiert mit meinen Daten?',
         answer:
-          'Wir hosten in der EU, verschlüsseln alle Verbindungen und halten uns strikt an die DSGVO. Nur das Care-Team und deine Therapeut:innen haben Zugriff.',
+          'Wir hosten in der EU, verschlüsseln alle Verbindungen und halten uns an die DSGVO. Zugriff haben nur das Care-Team und deine Therapeut:innen.',
       },
       {
         question: 'Ist die Kommunikation vertraulich?',
         answer:
-          'Absolut. Psychotherapeut:innen unterliegen der Schweigepflicht. Alle Gespräche und Informationen sind streng vertraulich und werden nicht an Dritte weitergegeben.',
-      },
-      {
-        question: 'Werden meine Daten an meine Krankenkasse übermittelt?',
-        answer:
-          'Nein. Therapeut:innen übermitteln keine Diagnosen oder Inhalte an Krankenkassen. Nur bei Kassentherapie wird die Behandlung gemeldet, nicht jedoch die Inhalte.',
+          'Psychotherapeut:innen unterliegen der Schweigepflicht. Inhalte gehen nicht an Dritte oder Krankenkassen; bei Kassentherapie wird nur die Behandlung gemeldet, nicht die Details.',
       },
     ],
   },

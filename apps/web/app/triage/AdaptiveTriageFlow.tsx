@@ -12,6 +12,9 @@ import {
   AlertCircle,
   Info,
   Heart,
+  BookOpen,
+  ChevronRight,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { track } from '../../lib/analytics';
@@ -40,6 +43,114 @@ import { QuestionTooltip } from './QuestionTooltip';
 import { AmpelVisualization } from './AmpelVisualization';
 import { CrisisResources } from './CrisisResources';
 import { ProgressChart } from './ProgressChart';
+import { blogPosts, type BlogPost } from '../../lib/blogData';
+import { useUserPreferences } from '../../hooks/useUserPreferences';
+
+// Emotionale Stockbilder für verschiedene Phasen
+const PHASE_IMAGES = {
+  intro: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=800&q=80',
+  phq2: 'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?auto=format&fit=crop&w=1200&h=800&q=80',
+  phq9: 'https://images.unsplash.com/photo-1493836512294-502baa1986e2?auto=format&fit=crop&w=1200&h=800&q=80',
+  gad2: 'https://images.unsplash.com/photo-1474418397713-7ede21d49118?auto=format&fit=crop&w=1200&h=800&q=80',
+  gad7: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=800&q=80',
+  preferences: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1200&h=800&q=80',
+  transition: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&h=800&q=80',
+  summary: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=1200&h=800&q=80',
+};
+
+// Emotionale Texte für die Phasen
+const EMOTIONAL_PHASE_TEXT = {
+  phq2: {
+    title: 'Wie geht es dir wirklich?',
+    subtitle: 'Nimm dir einen Moment, um in dich hineinzuspüren',
+    encouragement: 'Es ist mutig, sich selbst ehrlich zu begegnen.',
+  },
+  phq9: {
+    title: 'Lass uns genauer hinschauen',
+    subtitle: 'Deine Antworten helfen uns, dich besser zu verstehen',
+    encouragement: 'Jeder Schritt zählt auf dem Weg zu mehr Wohlbefinden.',
+  },
+  gad2: {
+    title: 'Wie fühlst du dich innerlich?',
+    subtitle: 'Sorgen und Ängste gehören zum Leben – aber sie sollten es nicht bestimmen',
+    encouragement: 'Du bist nicht allein mit deinen Gefühlen.',
+  },
+  gad7: {
+    title: 'Gemeinsam verstehen wir mehr',
+    subtitle: 'Diese Fragen helfen uns, ein vollständigeres Bild zu bekommen',
+    encouragement: 'Ehrlichkeit mit dir selbst ist der erste Schritt zur Veränderung.',
+  },
+  preferences: {
+    title: 'Fast geschafft!',
+    subtitle: 'Erzähl uns, wie wir dich am besten unterstützen können',
+    encouragement: 'Du verdienst die Unterstützung, die zu dir passt.',
+  },
+};
+
+// Keywords für Blog-Suche passend zu Themen
+const TOPIC_BLOG_KEYWORDS: Record<string, string[]> = {
+  depression: ['Depression', 'depressiv', 'Niedergeschlagenheit', 'Antriebslosigkeit', 'Traurigkeit', 'Hoffnungslosigkeit'],
+  anxiety: ['Angst', 'Panik', 'Angststörung', 'Panikattacken', 'Sorgen', 'Unruhe', 'GAD'],
+  general: ['Selbstfürsorge', 'Wohlbefinden', 'mentale Gesundheit', 'Entspannung', 'Achtsamkeit'],
+};
+
+// Helper: Get relevant blog posts based on current phase
+function getRelevantBlogPosts(phase: string, limit: number = 2): BlogPost[] {
+  let keywords: string[] = [];
+
+  if (phase.includes('phq')) {
+    keywords = TOPIC_BLOG_KEYWORDS.depression;
+  } else if (phase.includes('gad')) {
+    keywords = TOPIC_BLOG_KEYWORDS.anxiety;
+  } else {
+    keywords = TOPIC_BLOG_KEYWORDS.general;
+  }
+
+  // Score each blog post by how many keywords match
+  const scoredPosts = blogPosts.map(post => {
+    let score = 0;
+    const searchText = `${post.title} ${post.excerpt} ${post.tags.join(' ')} ${post.keywords.join(' ')}`.toLowerCase();
+
+    keywords.forEach(keyword => {
+      if (searchText.includes(keyword.toLowerCase())) {
+        score += 1;
+      }
+    });
+
+    // Add random factor for variety (so not always same posts)
+    const randomFactor = Math.random() * 0.5;
+    return { post, score: score + randomFactor };
+  });
+
+  // Return top posts sorted by score
+  return scoredPosts
+    .filter(item => item.score > 0.5)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.post);
+}
+
+// Helper: Get a random encouraging message
+function getEncouragingMessage(phase: string): string {
+  const messages = {
+    phq: [
+      'Du machst das toll.',
+      'Jede Antwort bringt dich weiter.',
+      'Nimm dir die Zeit, die du brauchst.',
+      'Deine Gefühle sind wichtig.',
+    ],
+    gad: [
+      'Es ist okay, Ängste zu haben.',
+      'Du bist stärker, als du denkst.',
+      'Ein Schritt nach dem anderen.',
+      'Wir sind hier für dich.',
+    ],
+  };
+
+  const key = phase.includes('phq') ? 'phq' : 'gad';
+  const list = messages[key];
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 type Answers = {
   phq9: number[];
@@ -119,6 +230,7 @@ export function AdaptiveTriageFlow({
   }>({ therapists: [], courses: [] });
   const [hasPersisted, setHasPersisted] = useState(false);
   const [forceFullTest, setForceFullTest] = useState(false);
+  const { saveTriageResults } = useUserPreferences();
 
   // Get current questions based on phase
   const currentQuestions = useMemo(() => {
@@ -438,7 +550,20 @@ export function AdaptiveTriageFlow({
   useEffect(() => {
     if (!showSummary) return;
     void persistResults();
-  }, [showSummary, persistResults]);
+
+    // Speichere Triage-Ergebnisse in localStorage für personalisierte Blog-Empfehlungen
+    const topics: string[] = [];
+    if (phq9Score >= 5) topics.push('depression');
+    if (gad7Score >= 5) topics.push('angst');
+    if (phq9Score >= 10 || gad7Score >= 10) topics.push('stress');
+
+    saveTriageResults({
+      topics,
+      severity: phq9Severity as 'minimal' | 'mild' | 'moderate' | 'moderately_severe' | 'severe',
+      phq9Score,
+      gad7Score,
+    });
+  }, [showSummary, persistResults, phq9Score, gad7Score, phq9Severity, saveTriageResults]);
 
   // Save session state when showing summary
   useEffect(() => {
@@ -517,33 +642,82 @@ export function AdaptiveTriageFlow({
     return { title: '', description: '' };
   }, [currentPhase]);
 
+  // Get summary blog posts based on both PHQ and GAD results
+  const summaryBlogPosts = useMemo(() => {
+    const allKeywords = [...TOPIC_BLOG_KEYWORDS.depression, ...TOPIC_BLOG_KEYWORDS.anxiety, ...TOPIC_BLOG_KEYWORDS.general];
+
+    const scoredPosts = blogPosts.map(post => {
+      let score = 0;
+      const searchText = `${post.title} ${post.excerpt} ${post.tags.join(' ')} ${post.keywords.join(' ')}`.toLowerCase();
+
+      allKeywords.forEach(keyword => {
+        if (searchText.includes(keyword.toLowerCase())) {
+          score += 1;
+        }
+      });
+
+      const randomFactor = Math.random() * 0.5;
+      return { post, score: score + randomFactor };
+    });
+
+    return scoredPosts
+      .filter(item => item.score > 0.5)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4)
+      .map(item => item.post);
+  }, []);
+
   // Summary view
   if (showSummary) {
     // Full assessment summary
     return (
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
-          <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-5xl space-y-6 px-4">
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        {/* Hero Section with Image */}
+        <div className="relative h-64 sm:h-80 overflow-hidden">
+          <Image
+            src={PHASE_IMAGES.summary}
+            alt="Deine Ergebnisse"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-slate-50" />
+          <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
             <Button
               variant="ghost"
               onClick={() => resetFlow(false)}
-              className="inline-flex items-center justify-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
+              className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30"
             >
-              <RotateCcw className="h-4 w-4" />
-              <span className="hidden sm:inline">Ersteinschätzung wiederholen</span>
-              <span className="sm:hidden">Test wiederholen</span>
+              <RotateCcw className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Test wiederholen</span>
+              <span className="sm:hidden">Neu</span>
             </Button>
             <Link
               href="/"
-              className="text-center text-sm font-medium text-white/70 transition hover:text-white sm:text-left"
+              className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30 transition-colors"
             >
-              Zur Startseite
+              Startseite
             </Link>
           </div>
+          <div className="absolute bottom-8 left-0 right-0 text-center px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-2"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
+                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                <span className="text-sm font-semibold text-slate-700">Ersteinschätzung abgeschlossen</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg">
+                Deine persönlichen Ergebnisse
+              </h1>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="relative mx-auto max-w-4xl space-y-6 px-4 -mt-6 pb-12">
           {historicalData.length > 0 && (
             <ProgressChart
               data={[...historicalData, { date: new Date().toISOString(), phq9Score, gad7Score }]}
@@ -560,46 +734,46 @@ export function AdaptiveTriageFlow({
 
           {requiresEmergency && <CrisisResources />}
 
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur sm:p-8">
-            <header className="mb-6">
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
-                  <CheckCircle2 className="h-4 w-4" aria-hidden />
-                  Deine Ersteinschätzung
-                </div>
-                <h3 className="text-2xl font-bold text-white sm:text-3xl">
-                  Empfohlene nächste Schritte
-                </h3>
+          <div className="rounded-3xl bg-white shadow-xl border border-slate-100 p-6 sm:p-8">
+            <header className="mb-6 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 text-primary-700 text-sm font-medium mb-4">
+                <Sparkles className="w-4 h-4" />
+                Empfohlene nächste Schritte
               </div>
+              <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+                Was du jetzt tun kannst
+              </h3>
+              <p className="mt-2 text-slate-600 max-w-xl mx-auto">
+                Basierend auf deinen Antworten haben wir einige Empfehlungen für dich.
+              </p>
             </header>
 
             {/* Hinweis auf verkürzten Test */}
             {(answers.phq9.length === 2 || answers.gad7.length === 2) && (
-              <div className="mt-6 rounded-2xl border-2 border-amber-400/50 bg-gradient-to-br from-amber-500/15 to-orange-500/15 p-5 shadow-lg sm:p-6">
+              <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-6">
                 <div className="flex flex-col items-center text-center">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/25 ring-2 ring-amber-400/30">
-                    <Info className="h-6 w-6 text-amber-200" />
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
+                    <Info className="h-6 w-6 text-amber-600" />
                   </div>
-                  <h4 className="text-lg font-bold text-white sm:text-xl">
+                  <h4 className="text-lg font-bold text-slate-900 sm:text-xl">
                     Verkürzte Einschätzung durchgeführt
                   </h4>
-                  <p className="mt-2 max-w-xl text-sm text-white/85 sm:text-base">
+                  <p className="mt-2 max-w-xl text-sm text-slate-600 sm:text-base">
                     {answers.phq9.length === 2 && answers.gad7.length === 2 ? (
                       <>
                         Da deine ersten Antworten auf geringe Symptome hindeuten, wurde der Test
-                        verkürzt (PHQ-2 und GAD-2). Ein{' '}
-                        <strong>ausführlicher Test mit allen Fragen</strong> könnte jedoch
+                        verkürzt. Ein <strong>ausführlicher Test</strong> könnte jedoch
                         detailliertere Erkenntnisse liefern.
                       </>
                     ) : answers.phq9.length === 2 ? (
                       <>
-                        Der Depressions-Teil wurde verkürzt (PHQ-2 statt vollständigem PHQ-9). Ein{' '}
+                        Der Stimmungs-Teil wurde verkürzt. Ein{' '}
                         <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse
                         liefern.
                       </>
                     ) : (
                       <>
-                        Der Angst-Teil wurde verkürzt (GAD-2 statt vollständigem GAD-7). Ein{' '}
+                        Der Wohlbefinden-Teil wurde verkürzt. Ein{' '}
                         <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse
                         liefern.
                       </>
@@ -607,8 +781,8 @@ export function AdaptiveTriageFlow({
                   </p>
                   <Button
                     onClick={() => resetFlow(true)}
-                    size="default"
-                    className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600"
+                    size="md"
+                    className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600 shadow-md"
                   >
                     Ausführlichen Test durchführen
                   </Button>
@@ -617,20 +791,30 @@ export function AdaptiveTriageFlow({
             )}
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h4 className="text-lg font-semibold text-white">
-                  PHQ-9: {phq9SeverityLabels[phq9Severity]}
-                </h4>
-                <p className="mt-2 text-sm text-white/70">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-slate-900">
+                    Stimmung: {phq9SeverityLabels[phq9Severity]}
+                  </h4>
+                </div>
+                <p className="text-sm text-slate-600">
                   {phq9SeverityDescriptions[phq9Severity]}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h4 className="text-lg font-semibold text-white">
-                  GAD-7: {gad7SeverityLabels[gad7Severity]}
-                </h4>
-                <p className="mt-2 text-sm text-white/70">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-primary-600" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-slate-900">
+                    Wohlbefinden: {gad7SeverityLabels[gad7Severity]}
+                  </h4>
+                </div>
+                <p className="text-sm text-slate-600">
                   {gad7SeverityDescriptions[gad7Severity]}
                 </p>
               </div>
@@ -638,25 +822,26 @@ export function AdaptiveTriageFlow({
 
             {/* Konkrete Therapeuten-Empfehlungen */}
             {riskLevel !== 'LOW' && (
-              <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
-                  <div>
-                    <h4 className="text-lg font-bold text-white">
-                      Empfehlung: Professionelle Unterstützung
+              <div className="mt-8 rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 to-slate-50 p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+                    <AlertCircle className="h-6 w-6 text-primary-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-slate-900">
+                      Wir empfehlen: Professionelle Unterstützung
                     </h4>
-                    <p className="mt-2 text-sm text-white/70">
-                      Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer
-                      Therapeut:in zu sprechen. Wir können dich dabei unterstützen, schnell einen
-                      Termin zu finden.
+                    <p className="mt-2 text-slate-600">
+                      Basierend auf deiner Einschätzung könnte ein Gespräch mit einer Fachperson
+                      hilfreich sein. Wir unterstützen dich dabei, den richtigen Kontakt zu finden.
                     </p>
                     <div className="mt-4">
                       <Button
                         asChild
                         size="lg"
-                        className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                        className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-lg sm:w-auto"
                       >
-                        <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
+                        <Link href="/therapists">Therapeut:innen finden</Link>
                       </Button>
                     </div>
                   </div>
@@ -666,22 +851,24 @@ export function AdaptiveTriageFlow({
 
             {/* Präventive Unterstützung für LOW risk */}
             {riskLevel === 'LOW' && (
-              <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6">
-                <div className="flex items-start gap-3">
-                  <Heart className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
-                  <div>
-                    <h4 className="text-lg font-bold text-white">Präventive Unterstützung</h4>
-                    <p className="mt-2 text-sm text-white/70">
-                      Auch wenn aktuell keine Symptome vorliegen, kann präventive Begleitung helfen,
-                      dein Wohlbefinden zu stärken und Stress vorzubeugen.
+              <div className="mt-8 rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-slate-50 p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <Heart className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-slate-900">Das sieht gut aus!</h4>
+                    <p className="mt-2 text-slate-600">
+                      Deine Ergebnisse deuten auf ein stabiles Wohlbefinden hin. Präventive Begleitung
+                      kann dennoch helfen, diesen Zustand zu erhalten und Stress vorzubeugen.
                     </p>
                     <div className="mt-4">
                       <Button
                         asChild
                         size="lg"
-                        className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                        className="w-full bg-green-500 text-white hover:bg-green-600 shadow-lg sm:w-auto"
                       >
-                        <Link href="/therapists">Alle Therapeut:innen durchsuchen</Link>
+                        <Link href="/therapists">Therapeut:innen entdecken</Link>
                       </Button>
                     </div>
                   </div>
@@ -693,16 +880,16 @@ export function AdaptiveTriageFlow({
             <section className="mt-8">
               {recommendations.therapists.length > 0 ? (
                 <>
-                  <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">
+                  <h4 className="mb-4 text-lg font-bold text-slate-900 sm:text-xl">
                     {riskLevel === 'LOW'
                       ? 'Therapeut:innen für präventive Begleitung'
-                      : 'Passende Therapeut:innen'}
+                      : 'Passende Therapeut:innen für dich'}
                   </h4>
                   <div className="space-y-4">
                     {recommendations.therapists.map((therapist) => (
                       <article
                         key={therapist.id}
-                        className="rounded-2xl border border-white/10 bg-white/10 p-4 shadow-sm backdrop-blur transition hover:bg-white/15 sm:p-6"
+                        className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md sm:p-6"
                       >
                         <div className="flex flex-col gap-4">
                           <div className="flex flex-1 gap-3 sm:gap-4">
@@ -713,7 +900,7 @@ export function AdaptiveTriageFlow({
                                   alt={therapist.name}
                                   width={120}
                                   height={120}
-                                  className="h-16 w-16 rounded-lg object-cover object-center sm:h-24 sm:w-24 sm:rounded-xl"
+                                  className="h-16 w-16 rounded-xl object-cover object-center sm:h-24 sm:w-24 shadow-sm"
                                   sizes="(max-width: 640px) 64px, 96px"
                                   quality={90}
                                 />
@@ -721,61 +908,40 @@ export function AdaptiveTriageFlow({
                             )}
                             <div className="flex-1 space-y-2 sm:space-y-3">
                               <div>
-                                <h5 className="text-base font-bold text-white sm:text-lg">
+                                <h5 className="text-base font-bold text-slate-900 sm:text-lg">
                                   {therapist.name}
                                 </h5>
-                                <p className="text-xs text-white/70 sm:text-sm">
+                                <p className="text-xs text-slate-500 sm:text-sm">
                                   {therapist.title}
                                 </p>
                                 {therapist.headline ? (
-                                  <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                                    {therapist.headline}
+                                  <p className="mt-1 text-xs text-slate-600 sm:text-sm italic">
+                                    &ldquo;{therapist.headline}&rdquo;
                                   </p>
                                 ) : null}
                               </div>
-                              <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">
+                              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
                                 <span>{therapist.focus.slice(0, 3).join(' • ')}</span>
                                 <span aria-hidden>•</span>
                                 <span>{therapist.location}</span>
-                                {therapist.languages && therapist.languages.length > 0 ? (
-                                  <>
-                                    <span aria-hidden>•</span>
-                                    <span>{therapist.languages.slice(0, 2).join(', ')}</span>
-                                  </>
-                                ) : null}
                               </div>
                               {therapist.services && therapist.services.length > 0 ? (
                                 <div className="mt-1 flex flex-wrap gap-2">
                                   {therapist.services.slice(0, 3).map((service) => (
                                     <span
                                       key={service}
-                                      className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white"
+                                      className="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700"
                                     >
                                       {service}
                                     </span>
                                   ))}
                                 </div>
                               ) : null}
-                              <div className="flex flex-wrap items-center gap-3 text-xs text-white/65">
-                                <span className="font-medium text-white">
-                                  {therapist.availability}
-                                </span>
-                                {therapist.responseTime ? (
-                                  <>
-                                    <span aria-hidden>•</span>
-                                    <span>{therapist.responseTime}</span>
-                                  </>
-                                ) : null}
-                                <span aria-hidden>•</span>
-                                <span>
-                                  {therapist.rating.toFixed(1)} ({therapist.reviews} Bewertungen)
-                                </span>
-                              </div>
                               <div className="flex flex-wrap gap-2 text-xs">
                                 {therapist.formatTags.map((tag) => (
                                   <span
                                     key={tag}
-                                    className="rounded-full bg-white/15 px-3 py-1 font-medium text-white/75"
+                                    className="rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600"
                                   >
                                     {tag === 'online'
                                       ? 'Online'
@@ -790,14 +956,14 @@ export function AdaptiveTriageFlow({
                           <div className="flex flex-col gap-2 sm:items-end">
                             <Button
                               asChild
-                              className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                              className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-md sm:w-auto"
                             >
                               <Link href={`/therapists/${therapist.id}?from=triage`}>
                                 Profil ansehen
                               </Link>
                             </Button>
                             {therapist.acceptingClients === false ? (
-                              <span className="text-xs font-medium text-amber-200">
+                              <span className="text-xs font-medium text-amber-600">
                                 Aktuell Warteliste
                               </span>
                             ) : null}
@@ -808,28 +974,26 @@ export function AdaptiveTriageFlow({
                   </div>
                 </>
               ) : (
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <h4 className="text-lg font-bold text-white">Therapeut:innen verfügbar</h4>
-                  <p className="mt-2 text-sm text-white/70">
-                    Basierend auf deiner Einschätzung empfehlen wir dir, mit einem/einer
-                    Therapeut:in zu sprechen. Unser Netzwerk wird derzeit aufgebaut. Bitte schau auf
-                    unserer Therapeuten-Seite nach verfügbaren Fachpersonen oder kontaktiere unser
-                    Care-Team für eine persönliche Vermittlung.
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <h4 className="text-lg font-bold text-slate-900">Finde deine Unterstützung</h4>
+                  <p className="mt-2 text-sm text-slate-600">
+                    Entdecke Therapeut:innen, die zu dir passen. Unser Netzwerk wächst ständig –
+                    schau auf unserer Übersichtsseite vorbei oder kontaktiere unser Team.
                   </p>
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Button
                       asChild
                       size="lg"
-                      className="w-full bg-primary-600 text-white shadow-lg hover:bg-primary-500 sm:w-auto"
+                      className="w-full bg-primary-500 text-white shadow-lg hover:bg-primary-600 sm:w-auto"
                     >
-                      <Link href="/therapists">Zur Therapeuten-Übersicht</Link>
+                      <Link href="/therapists">Therapeut:innen entdecken</Link>
                     </Button>
                     <Button
                       variant="outline"
                       asChild
-                      className="w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto"
+                      className="w-full border-slate-300 text-slate-700 hover:bg-slate-100 sm:w-auto"
                     >
-                      <Link href="/contact">Care-Team kontaktieren</Link>
+                      <Link href="/contact">Uns kontaktieren</Link>
                     </Button>
                   </div>
                 </div>
@@ -838,20 +1002,20 @@ export function AdaptiveTriageFlow({
 
             {recommendations.courses.length > 0 && (
               <section className="mt-8">
-                <h4 className="mb-4 text-lg font-bold text-white sm:text-xl">
+                <h4 className="mb-4 text-lg font-bold text-slate-900 sm:text-xl">
                   Empfohlene Programme
                 </h4>
                 <div className="space-y-4">
                   {recommendations.courses.map((course) => (
                     <article
                       key={course.slug}
-                      className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur sm:p-6"
+                      className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6"
                     >
-                      <h5 className="text-base font-bold text-white sm:text-lg">{course.title}</h5>
-                      <p className="mt-1 text-xs text-white/70 sm:text-sm">
+                      <h5 className="text-base font-bold text-slate-900 sm:text-lg">{course.title}</h5>
+                      <p className="mt-1 text-xs text-slate-600 sm:text-sm">
                         {course.shortDescription}
                       </p>
-                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/65 sm:gap-3">
+                      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500 sm:gap-3">
                         <span>{course.duration}</span>
                         <span aria-hidden>•</span>
                         <span>{course.format}</span>
@@ -860,7 +1024,7 @@ export function AdaptiveTriageFlow({
                         {course.outcomes.map((item) => (
                           <span
                             key={item}
-                            className="rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-medium text-white sm:px-3 sm:text-[11px]"
+                            className="rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-medium text-primary-700 sm:px-3 sm:text-[11px]"
                           >
                             {item}
                           </span>
@@ -870,11 +1034,53 @@ export function AdaptiveTriageFlow({
                         variant="outline"
                         size="sm"
                         asChild
-                        className="mt-4 w-full border-white/60 bg-white/5 text-white shadow hover:border-white hover:bg-white/15 sm:w-auto"
+                        className="mt-4 w-full border-slate-300 text-slate-700 hover:bg-slate-100 sm:w-auto"
                       >
                         <Link href={`/courses/${course.slug}`}>Demo ansehen</Link>
                       </Button>
                     </article>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Blog Carousel - Passende Artikel */}
+            {summaryBlogPosts.length > 0 && (
+              <section className="mt-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-bold text-slate-900 sm:text-xl flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-primary-500" />
+                    Passende Artikel für dich
+                  </h4>
+                  <Link href="/blog" className="text-sm text-primary-600 font-medium hover:underline flex items-center gap-1">
+                    Alle Artikel
+                    <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+                <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory">
+                  {summaryBlogPosts.map((post) => (
+                    <Link
+                      key={post.slug}
+                      href={`/blog/${post.slug}`}
+                      className="flex-shrink-0 w-72 bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition-shadow snap-start"
+                    >
+                      <div className="relative h-40">
+                        <Image
+                          src={post.featuredImage.src}
+                          alt={post.featuredImage.alt}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded-full">
+                          {post.category}
+                        </span>
+                        <h5 className="font-bold text-slate-900 mt-2 line-clamp-2">{post.title}</h5>
+                        <p className="text-sm text-slate-500 mt-1 line-clamp-2">{post.excerpt}</p>
+                        <p className="text-xs text-slate-400 mt-2">{post.readingTime}</p>
+                      </div>
+                    </Link>
                   ))}
                 </div>
               </section>
@@ -890,28 +1096,75 @@ export function AdaptiveTriageFlow({
   const isPreferences = currentPhase === 'preferences';
   const isTransition = currentPhase === 'phq2-to-gad2' || currentPhase === 'gad2-to-preferences';
 
+  // Get current phase image
+  const getCurrentPhaseImage = () => {
+    if (currentPhase === 'phq2') return PHASE_IMAGES.phq2;
+    if (currentPhase === 'phq9-expanded') return PHASE_IMAGES.phq9;
+    if (currentPhase === 'gad2') return PHASE_IMAGES.gad2;
+    if (currentPhase === 'gad7-expanded') return PHASE_IMAGES.gad7;
+    if (currentPhase === 'preferences') return PHASE_IMAGES.preferences;
+    return PHASE_IMAGES.transition;
+  };
+
+  // Get emotional text for current phase
+  const getEmotionalText = () => {
+    if (currentPhase === 'phq2') return EMOTIONAL_PHASE_TEXT.phq2;
+    if (currentPhase === 'phq9-expanded') return EMOTIONAL_PHASE_TEXT.phq9;
+    if (currentPhase === 'gad2') return EMOTIONAL_PHASE_TEXT.gad2;
+    if (currentPhase === 'gad7-expanded') return EMOTIONAL_PHASE_TEXT.gad7;
+    if (currentPhase === 'preferences') return EMOTIONAL_PHASE_TEXT.preferences;
+    return EMOTIONAL_PHASE_TEXT.phq2;
+  };
+
+  // Get relevant blog posts for current phase
+  const currentBlogPosts = useMemo(() => getRelevantBlogPosts(currentPhase, 2), [currentPhase]);
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-primary-950 via-neutral-900 to-primary-950 py-16">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute left-1/2 top-0 h-[620px] w-[620px] -translate-x-1/2 rounded-full bg-primary-500/20 blur-3xl" />
-        <div className="absolute -bottom-32 right-4 h-80 w-80 rounded-full bg-primary-1000/25 blur-3xl" />
-      </div>
-      <div className="relative mx-auto max-w-3xl px-4">
-        <div className="mb-6 flex justify-end">
-          <Link href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
-            Zur Startseite
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Hero Image Section */}
+      <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden">
+        <Image
+          src={getCurrentPhaseImage()}
+          alt="Emotionales Stimmungsbild"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-slate-50" />
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+          <Link
+            href="/"
+            className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30 transition-colors"
+          >
+            ← Startseite
           </Link>
+          <div className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium">
+            {progress}% geschafft
+          </div>
         </div>
-        <div className="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur sm:p-8">
-          {/* Progress */}
-          <div className="mb-6">
-            <div className="mb-2 flex items-center justify-between text-xs text-white/70 sm:text-sm">
-              <span className="font-medium text-white">{phaseInfo.title}</span>
-              <span>{progress}%</span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
+        <div className="absolute bottom-6 left-0 right-0 text-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg"
+          >
+            <Sparkles className="w-4 h-4 text-primary-500" />
+            <span className="text-sm font-medium text-slate-700">
+              {getEmotionalText().encouragement}
+            </span>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="relative mx-auto max-w-2xl px-4 -mt-6">
+        {/* Main Card */}
+        <div className="rounded-3xl bg-white shadow-xl border border-slate-100 overflow-hidden">
+          {/* Progress Bar */}
+          <div className="px-6 pt-6">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
               <motion.div
-                className="h-full rounded-full bg-primary-400"
+                className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
@@ -919,103 +1172,169 @@ export function AdaptiveTriageFlow({
             </div>
           </div>
 
-          <AnimatePresence mode="wait">
-            {isTransition ? (
-              <motion.div
-                key="transition"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-                className="flex min-h-[300px] items-center justify-center py-12"
-              >
-                <div className="text-center">
-                  {currentPhase === 'phq2-to-gad2' ? (
-                    <>
-                      {!shouldExpandPHQ9(
-                        answers.phq9.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0),
-                      ) ? (
-                        <>
-                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-primary-400" />
-                          <h3 className="text-xl font-bold text-white sm:text-2xl">
-                            {adaptiveScreeningInfo.minimal.title}
-                          </h3>
-                          <p className="mt-2 text-sm text-white/70 sm:text-base">
-                            Deine Antworten deuten auf minimale Depressionssymptome hin.
-                          </p>
-                          <p className="mt-4 text-sm font-medium text-primary-400">
-                            Weiter zum Angst-Screening...
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-amber-400" />
-                          <h3 className="text-xl font-bold text-white sm:text-2xl">
-                            {adaptiveScreeningInfo.expanding.title}
-                          </h3>
-                          <p className="mt-2 text-sm text-white/70 sm:text-base">
-                            {adaptiveScreeningInfo.expanding.description}
-                          </p>
-                          <p className="mt-4 text-sm font-medium text-amber-400">
-                            Zusätzliche Fragen werden gestellt...
-                          </p>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {!shouldExpandGAD7(
-                        answers.gad7.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0),
-                      ) ? (
-                        <>
-                          <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-primary-400" />
-                          <h3 className="text-xl font-bold text-white sm:text-2xl">
-                            {adaptiveScreeningInfo.minimal.title}
-                          </h3>
-                          <p className="mt-2 text-sm text-white/70 sm:text-base">
-                            Deine Antworten deuten auf minimale Angstsymptome hin.
-                          </p>
-                          <p className="mt-4 text-sm font-medium text-primary-400">
-                            Fast geschafft!
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-amber-400" />
-                          <h3 className="text-xl font-bold text-white sm:text-2xl">
-                            {adaptiveScreeningInfo.expanding.title}
-                          </h3>
-                          <p className="mt-2 text-sm text-white/70 sm:text-base">
-                            {adaptiveScreeningInfo.expanding.description}
-                          </p>
-                          <p className="mt-4 text-sm font-medium text-amber-400">
-                            Zusätzliche Fragen werden gestellt...
-                          </p>
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key={`${currentPhase}-${questionIndex}`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {isPreferences ? (
-                  <div className="space-y-6">
-                    <header>
-                      <h3 className="text-xl font-bold text-white sm:text-2xl">Fast geschafft!</h3>
-                      <p className="mt-2 text-sm text-white/70 sm:text-base">
-                        {phaseInfo.description}
-                      </p>
-                    </header>
+          <div className="p-6 sm:p-8">
+            <AnimatePresence mode="wait">
+              {isTransition ? (
+                <motion.div
+                  key="transition"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="py-8"
+                >
+                  {/* Transition with Image and Blog Recommendation */}
+                  <div className="text-center space-y-6">
+                    <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden shadow-lg">
+                      <Image
+                        src={currentPhase === 'phq2-to-gad2' ? PHASE_IMAGES.gad2 : PHASE_IMAGES.preferences}
+                        alt=""
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+                    {currentPhase === 'phq2-to-gad2' ? (
+                      <>
+                        {!shouldExpandPHQ9(
+                          answers.phq9.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0),
+                        ) ? (
+                          <>
+                            <div>
+                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 mb-4">
+                                <CheckCircle2 className="w-5 h-5" />
+                                <span className="font-medium">Gut gemacht!</span>
+                              </div>
+                              <h3 className="text-2xl font-bold text-slate-900">
+                                Das sieht gut aus
+                              </h3>
+                              <p className="mt-2 text-slate-600 max-w-md mx-auto">
+                                Deine Antworten deuten auf ein stabiles Stimmungsbild hin.
+                                Lass uns jetzt noch schauen, wie es dir mit Sorgen und Ängsten geht.
+                              </p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div>
+                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 text-amber-700 mb-4">
+                                <Heart className="w-5 h-5" />
+                                <span className="font-medium">Wir hören dir zu</span>
+                              </div>
+                              <h3 className="text-2xl font-bold text-slate-900">
+                                Danke für deine Offenheit
+                              </h3>
+                              <p className="mt-2 text-slate-600 max-w-md mx-auto">
+                                Deine Antworten zeigen, dass du gerade einiges durchmachst.
+                                Ein paar weitere Fragen helfen uns, dich noch besser zu verstehen.
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {!shouldExpandGAD7(
+                          answers.gad7.slice(0, 2).reduce((sum, val) => sum + (val ?? 0), 0),
+                        ) ? (
+                          <>
+                            <div>
+                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 mb-4">
+                                <CheckCircle2 className="w-5 h-5" />
+                                <span className="font-medium">Fast geschafft!</span>
+                              </div>
+                              <h3 className="text-2xl font-bold text-slate-900">
+                                Nur noch ein kleiner Schritt
+                              </h3>
+                              <p className="mt-2 text-slate-600 max-w-md mx-auto">
+                                Super, du hast es fast geschafft! Zum Schluss noch ein paar
+                                Fragen zu deinen Wünschen und Präferenzen.
+                              </p>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div>
+                              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 text-amber-700 mb-4">
+                                <Heart className="w-5 h-5" />
+                                <span className="font-medium">Du bist nicht allein</span>
+                              </div>
+                              <h3 className="text-2xl font-bold text-slate-900">
+                                Wir verstehen dich
+                              </h3>
+                              <p className="mt-2 text-slate-600 max-w-md mx-auto">
+                                Ängste und Sorgen können belastend sein. Ein paar weitere Fragen
+                                helfen uns, die richtige Unterstützung für dich zu finden.
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    {/* Blog Recommendation during Transition */}
+                    {currentBlogPosts.length > 0 && (
+                      <div className="pt-4">
+                        <Link
+                          href={`/blog/${currentBlogPosts[0].slug}`}
+                          className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors text-left max-w-md mx-auto"
+                        >
+                          <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+                            <Image
+                              src={currentBlogPosts[0].featuredImage.src}
+                              alt=""
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              Lesetipp
+                            </p>
+                            <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[0].title}</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        </Link>
+                      </div>
+                    )}
+
+                    <div className="pt-2">
+                      <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
+                        <div className="w-2 h-2 rounded-full bg-primary-400 animate-pulse" />
+                        Weiter in einem Moment...
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={`${currentPhase}-${questionIndex}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {isPreferences ? (
+                    <div className="space-y-6">
+                      {/* Preferences Header with Image */}
+                      <header className="text-center">
+                        <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden shadow-md">
+                          <Image
+                            src={PHASE_IMAGES.preferences}
+                            alt=""
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <h3 className="text-2xl font-bold text-slate-900">{getEmotionalText().title}</h3>
+                        <p className="mt-2 text-slate-600">
+                          {getEmotionalText().subtitle}
+                        </p>
+                      </header>
 
                     <div>
-                      <p className="mb-3 text-sm font-semibold text-white">
+                      <p className="mb-3 text-sm font-semibold text-slate-700">
                         Welche Unterstützung wünschst du dir?
                       </p>
                       <div className="grid gap-3 sm:grid-cols-2">
@@ -1028,16 +1347,16 @@ export function AdaptiveTriageFlow({
                               onClick={() => toggleMultipleSelect(option.value, 'support')}
                               className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                                 selected
-                                  ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
-                                  : 'border-white/20 bg-white/5 hover:border-primary-400/40 hover:bg-white/10'
+                                  ? 'border-primary-500 bg-primary-50 shadow-md'
+                                  : 'border-slate-200 bg-white hover:border-primary-300 hover:bg-slate-50'
                               }`}
                             >
                               <p
-                                className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}
+                                className={`text-sm font-semibold sm:text-base ${selected ? 'text-primary-700' : 'text-slate-700'}`}
                               >
                                 {option.label}
                               </p>
-                              <p className="mt-1 text-xs text-white/70 sm:text-sm">
+                              <p className="mt-1 text-xs text-slate-500 sm:text-sm">
                                 {option.description}
                               </p>
                             </button>
@@ -1047,7 +1366,7 @@ export function AdaptiveTriageFlow({
                     </div>
 
                     <div>
-                      <p className="mb-3 text-sm font-semibold text-white">
+                      <p className="mb-3 text-sm font-semibold text-slate-700">
                         Wann passt es dir am besten?
                       </p>
                       <div className="grid gap-3 sm:grid-cols-2">
@@ -1060,16 +1379,16 @@ export function AdaptiveTriageFlow({
                               onClick={() => toggleMultipleSelect(option.value, 'availability')}
                               className={`rounded-xl border p-3 text-left transition sm:p-4 ${
                                 selected
-                                  ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
-                                  : 'border-white/20 bg-white/5 hover:border-primary-400/40 hover:bg-white/10'
+                                  ? 'border-primary-500 bg-primary-50 shadow-md'
+                                  : 'border-slate-200 bg-white hover:border-primary-300 hover:bg-slate-50'
                               }`}
                             >
                               <p
-                                className={`text-sm font-semibold sm:text-base ${selected ? 'text-white' : 'text-white/85'}`}
+                                className={`text-sm font-semibold sm:text-base ${selected ? 'text-primary-700' : 'text-slate-700'}`}
                               >
                                 {option.label}
                               </p>
-                              <p className="mt-1 text-xs text-white/70 sm:text-sm">
+                              <p className="mt-1 text-xs text-slate-500 sm:text-sm">
                                 {option.description}
                               </p>
                             </button>
@@ -1078,11 +1397,38 @@ export function AdaptiveTriageFlow({
                       </div>
                     </div>
 
+                    {/* Blog Tip for Preferences */}
+                    {currentBlogPosts.length > 0 && (
+                      <div className="pt-2">
+                        <Link
+                          href={`/blog/${currentBlogPosts[0].slug}`}
+                          className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                        >
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                            <Image
+                              src={currentBlogPosts[0].featuredImage.src}
+                              alt=""
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              Während du wartest
+                            </p>
+                            <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[0].title}</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        </Link>
+                      </div>
+                    )}
+
                     <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
                       <Button
                         variant="ghost"
                         onClick={goPrevious}
-                        className="w-full text-white hover:bg-white/10 sm:w-auto"
+                        className="w-full text-slate-600 hover:bg-slate-100 sm:w-auto"
                       >
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Zurück
@@ -1090,7 +1436,7 @@ export function AdaptiveTriageFlow({
                       <Button
                         onClick={goNext}
                         size="lg"
-                        className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
+                        className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-lg sm:w-auto"
                       >
                         Ergebnis anzeigen
                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -1099,14 +1445,19 @@ export function AdaptiveTriageFlow({
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <header>
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-lg font-bold text-white sm:text-2xl">
+                    {/* Emotional Question Header */}
+                    <header className="text-center">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-medium mb-4">
+                        <Heart className="w-4 h-4" />
+                        {getEmotionalText().title}
+                      </div>
+                      <div className="flex items-start justify-center gap-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
                             {currentQuestion?.text}
                           </h3>
-                          <p className="mt-2 text-xs text-white/70 sm:text-sm">
-                            {phaseInfo.description}
+                          <p className="mt-2 text-sm text-slate-500">
+                            {getEmotionalText().subtitle}
                           </p>
                         </div>
                         {currentQuestion && (
@@ -1130,25 +1481,25 @@ export function AdaptiveTriageFlow({
                             onClick={() => handleScaleAnswer(option.value)}
                             className={`flex w-full items-center justify-between gap-2 rounded-xl border p-3 transition sm:gap-3 sm:p-4 ${
                               isSelected
-                                ? 'border-primary-400/60 bg-primary-400/20 shadow-lg shadow-primary-500/20'
-                                : 'border-white/20 bg-white/5 hover:-translate-y-0.5 hover:border-primary-400/40 hover:bg-white/10'
+                                ? 'border-primary-500 bg-primary-50 shadow-md ring-2 ring-primary-200'
+                                : 'border-slate-200 bg-white hover:-translate-y-0.5 hover:border-primary-300 hover:bg-slate-50 hover:shadow-md'
                             }`}
                           >
                             <div className="text-left">
                               <p
-                                className={`text-sm font-semibold sm:text-base ${isSelected ? 'text-white' : 'text-white/85'}`}
+                                className={`text-sm font-semibold sm:text-base ${isSelected ? 'text-primary-700' : 'text-slate-700'}`}
                               >
                                 {option.label}
                               </p>
-                              <p className="text-xs text-white/70 sm:text-sm">
+                              <p className="text-xs text-slate-500 sm:text-sm">
                                 {option.description}
                               </p>
                             </div>
                             <div
                               className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border text-sm font-semibold sm:h-10 sm:w-10 ${
                                 isSelected
-                                  ? 'border-primary-700 bg-primary-700 text-white'
-                                  : 'border-white/30 bg-white/10 text-white'
+                                  ? 'border-primary-500 bg-primary-500 text-white'
+                                  : 'border-slate-300 bg-slate-50 text-slate-600'
                               }`}
                             >
                               {option.value}
@@ -1158,25 +1509,26 @@ export function AdaptiveTriageFlow({
                       })}
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 text-xs text-white/70 sm:text-sm">
+                    {/* Encouraging message + progress */}
+                    <div className="flex items-center justify-between pt-4 text-sm">
                       <button
                         type="button"
                         onClick={goPrevious}
                         disabled={currentPhase === 'phq2' && questionIndex === 0}
-                        className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/15 disabled:opacity-50 sm:px-6"
+                        className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 sm:px-6"
                       >
                         Zurück
                       </button>
-                      <span className="text-center">
+                      <span className="text-center text-slate-500">
                         {(currentPhase === 'phq2' || currentPhase === 'phq9-expanded') && (
                           <>
                             <span className="hidden sm:inline">
-                              Depression: Frage{' '}
+                              Stimmung: Frage{' '}
                               {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)} von{' '}
                               {currentPhase === 'phq9-expanded' ? 9 : 2}
                             </span>
                             <span className="sm:hidden">
-                              Depression:{' '}
+                              Stimmung:{' '}
                               {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)}/
                               {currentPhase === 'phq9-expanded' ? 9 : 2}
                             </span>
@@ -1185,12 +1537,12 @@ export function AdaptiveTriageFlow({
                         {(currentPhase === 'gad2' || currentPhase === 'gad7-expanded') && (
                           <>
                             <span className="hidden sm:inline">
-                              Angst: Frage{' '}
+                              Wohlbefinden: Frage{' '}
                               {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)} von{' '}
                               {currentPhase === 'gad7-expanded' ? 7 : 2}
                             </span>
                             <span className="sm:hidden">
-                              Angst:{' '}
+                              Wohlbefinden:{' '}
                               {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)}/
                               {currentPhase === 'gad7-expanded' ? 7 : 2}
                             </span>
@@ -1198,11 +1550,40 @@ export function AdaptiveTriageFlow({
                         )}
                       </span>
                     </div>
+
+                    {/* Blog Suggestion after first question */}
+                    {questionIndex === 0 && currentBlogPosts.length > 1 && (
+                      <div className="pt-4 border-t border-slate-100">
+                        <Link
+                          href={`/blog/${currentBlogPosts[1].slug}`}
+                          className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary-50 to-slate-50 rounded-xl hover:from-primary-100 hover:to-slate-100 transition-colors"
+                        >
+                          <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
+                            <Image
+                              src={currentBlogPosts[1].featuredImage.src}
+                              alt=""
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              Das könnte dich interessieren
+                            </p>
+                            <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[1].title}</p>
+                            <p className="text-xs text-slate-500 mt-0.5">{currentBlogPosts[1].readingTime}</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
         </div>
       </div>
     </div>

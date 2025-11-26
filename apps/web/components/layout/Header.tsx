@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Compass, Menu, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
+import { HeaderSearch } from './HeaderSearch';
 
 const navItems = [
   { label: 'Wissen', href: '/blog', type: 'link' as const },
@@ -19,13 +20,13 @@ export function Header() {
 
   return (
     <header className="fixed top-3 left-0 right-0 z-50">
-      <div className="relative mx-auto w-[calc(100%-1.5rem)] max-w-6xl rounded-2xl border border-white/30 bg-white/50 px-3 py-2 shadow-[0_15px_50px_-22px_rgba(15,23,42,0.6)] backdrop-blur-xl ring-1 ring-white/40 supports-[backdrop-filter]:bg-white/40 sm:w-[calc(100%-2rem)] sm:px-4 sm:py-3 lg:px-6">
+      <div className="relative mx-auto w-[calc(100%-1rem)] max-w-[1400px] rounded-2xl border border-white/30 bg-white/50 px-3 py-2 shadow-[0_15px_50px_-22px_rgba(15,23,42,0.6)] backdrop-blur-xl ring-1 ring-white/40 supports-[backdrop-filter]:bg-white/40 sm:w-[calc(100%-1.5rem)] sm:px-4 sm:py-3 lg:px-6">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 via-white/20 to-primary-50/30"
         />
         <div aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border border-white/60" />
-        <nav className="relative flex items-center justify-between gap-3">
+        <nav className="relative flex items-center justify-between gap-2 sm:gap-3">
         <Link
           href="/"
           className="group flex items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
@@ -64,18 +65,23 @@ export function Header() {
           )}
         </div>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex">
+          <HeaderSearch />
           <TherapistMenu />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-700 transition hover:bg-primary-50 hover:text-neutral-900 lg:hidden"
-          aria-label="Menü öffnen"
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile: Search icon + Menu */}
+        <div className="flex items-center gap-1 lg:hidden">
+          <HeaderSearch />
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-700 transition hover:bg-primary-50 hover:text-neutral-900"
+            aria-label="Menü öffnen"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
       {isMenuOpen && (
         <div className="mt-2 rounded-2xl border border-divider bg-white px-4 py-4 shadow-soft-lg sm:px-6 lg:hidden">

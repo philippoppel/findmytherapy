@@ -188,7 +188,7 @@ export default function HomePage() {
     <div className="marketing-theme text-default">
       <main className="flex flex-col">
         {/* Hero Section */}
-        <div className="px-3 pt-6 sm:px-4 sm:pt-10 lg:px-8">
+        <div className="px-2 pt-6 sm:px-3 sm:pt-10 lg:px-4">
           <MarketingHero content={heroContent} />
         </div>
 
@@ -196,7 +196,7 @@ export default function HomePage() {
         <TherapistFinderSection />
 
         {/* FAQ Section */}
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="px-2 sm:px-3 lg:px-4">
           <FaqAccordion items={faqItems} />
         </div>
 

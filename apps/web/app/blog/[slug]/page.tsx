@@ -22,6 +22,8 @@ import { SocialShare } from '@/app/components/blog/SocialShare';
 import { TableOfContents } from '@/app/components/blog/TableOfContents';
 import { MedicalDisclaimer } from '@/app/components/blog/MedicalDisclaimer';
 import { NewsletterForm } from '@/app/components/forms/NewsletterForm';
+import { TherapistRecommendationSidebar } from '@/app/components/blog/TherapistRecommendationInline';
+import { InlineToolCTA, InlineToolCTACompact } from '@/app/components/blog/InlineToolCTA';
 
 type BlogPostPageProps = {
   params: {
@@ -433,6 +435,14 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               </aside>
 
+              {/* Quiz CTA after Key Takeaways for relevant topics */}
+              {isHealthTopic && (
+                <InlineToolCTA
+                  variant="quiz"
+                  context={primaryHealthTopic}
+                />
+              )}
+
               {/* Quick recommendation after Key Takeaways */}
               <div className="rounded-2xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-4 sm:rounded-3xl sm:p-6">
                 <div className="flex items-center gap-2 text-sm font-medium text-primary-700">
@@ -512,6 +522,23 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                             ))}
                           </ul>
                         )}
+                        {section.image && (
+                          <figure className="mt-6 sm:mt-8">
+                            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-neutral-200 shadow-lg">
+                              <Image
+                                src={section.image.src}
+                                alt={section.image.alt}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                            {section.image.caption && (
+                              <figcaption className="mt-2 text-center text-sm text-muted italic">
+                                {section.image.caption}
+                              </figcaption>
+                            )}
+                          </figure>
+                        )}
                       </div>
                       {showInlineRecommendation && (
                         <div className="not-prose mb-8 sm:mb-12">
@@ -535,6 +562,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 </aside>
               )}
               {author && <AuthorBio author={author} />}
+
+              {/* Tool CTA before Related Articles */}
+              <InlineToolCTA
+                variant="triage"
+                context={primaryHealthTopic}
+              />
 
               {/* Related Articles Section at end of article */}
               <section className="mt-8 border-t border-neutral-200 pt-6 sm:mt-12 sm:pt-10">
@@ -573,6 +606,29 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             </article>
 
             <aside className="hidden space-y-6 lg:block" aria-label="Zusätzliche Informationen">
+              {/* Therapist Recommendations for Sidebar */}
+              {post.tags.length > 0 && (
+                <div className="rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-5 shadow-lg shadow-primary-900/5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700 mb-1">
+                    Passend zum Thema
+                  </p>
+                  <h3 className="text-lg font-semibold text-neutral-900 mb-4">Therapeut:innen</h3>
+                  <TherapistRecommendationSidebar tags={post.tags} limit={3} />
+                </div>
+              )}
+
+              {/* Quick Tool Links */}
+              <div className="rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-5 shadow-lg shadow-primary-900/5">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700 mb-3">
+                  Unterstützung finden
+                </p>
+                <div className="space-y-3">
+                  <InlineToolCTACompact variant="quiz" context={primaryHealthTopic} />
+                  <InlineToolCTACompact variant="search" />
+                  <InlineToolCTACompact variant="triage" />
+                </div>
+              </div>
+
               <div className="rounded-3xl border border-neutral-200 bg-white/90 p-6 shadow-lg shadow-primary-900/5">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary-700">
                   Weiterlesen

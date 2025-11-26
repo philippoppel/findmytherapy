@@ -48,17 +48,9 @@ const searchOptions = [
 export function TherapistSearchChoice() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const handleScrollToSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const element = document.getElementById('therapist-list');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <section className="py-12 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-2 sm:px-3 lg:px-4">
         {/* Header */}
         <motion.div
           className="mb-10 text-center sm:mb-14"
@@ -87,7 +79,6 @@ export function TherapistSearchChoice() {
               <SearchCard
                 option={option}
                 prefersReducedMotion={prefersReducedMotion}
-                onSearchClick={handleScrollToSearch}
               />
             </motion.div>
           ))}
@@ -110,11 +101,9 @@ export function TherapistSearchChoice() {
 function SearchCard({
   option,
   prefersReducedMotion,
-  onSearchClick,
 }: {
   option: (typeof searchOptions)[0];
   prefersReducedMotion: boolean;
-  onSearchClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
   const Icon = option.icon;
   const BadgeIcon = option.badgeIcon;
@@ -223,10 +212,10 @@ function SearchCard({
     );
   }
 
-  // Search - scroll to section
+  // Search - link to therapists page
   return (
-    <button onClick={onSearchClick} className="block h-full w-full text-left">
+    <Link href="/therapists" className="block h-full">
       {cardContent}
-    </button>
+    </Link>
   );
 }

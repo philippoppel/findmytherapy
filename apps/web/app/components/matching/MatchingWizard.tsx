@@ -134,7 +134,7 @@ export function MatchingWizard() {
         id="matching-wizard"
       >
         <div className="py-8 sm:py-12">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1200px] px-2 sm:px-3 lg:px-4">
             {/* Header */}
             <div className="relative mb-8 text-center">
               <button

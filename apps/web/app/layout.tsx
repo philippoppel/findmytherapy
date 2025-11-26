@@ -18,8 +18,16 @@ const analyticsConsoleLog =
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://findmytherapy.net'),
+  icons: {
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/icon-192.png',
+  },
   title: {
-    default: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe.',
+    default: 'FindMyTherapy – Die richtige Therapie für dich',
     template: '%s | FindMyTherapy',
   },
   description:
@@ -123,7 +131,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#ffffff" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
 
         {/* Preload critical resources */}
         <link rel="preload" href="/videos/hero-therapy.mp4" as="video" type="video/mp4" />

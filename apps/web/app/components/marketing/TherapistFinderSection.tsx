@@ -1,7 +1,6 @@
 import { getTherapistCards } from '../../therapists/getTherapistCards';
 import { TherapistSearchChoice } from '../../therapists/components/TherapistSearchChoice';
 import { MatchingSection } from '../matching/MatchingSection';
-import { CollapsibleBrowseSection } from './CollapsibleBrowseSection';
 
 // Commented out for now - can be used later for stats display
 /* import type { TherapistCard } from '../../therapists/types'
@@ -76,10 +75,10 @@ export async function TherapistFinderSection() {
       {/* Matching Wizard & Results - Inline Expansion */}
       <MatchingSection />
 
-      {/* Browse All Section - Collapsible */}
-      <CollapsibleBrowseSection
-        therapists={therapists}
-        structuredData={therapistListStructuredData}
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(therapistListStructuredData) }}
       />
     </div>
   );

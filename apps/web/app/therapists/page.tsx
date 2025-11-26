@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Compass, Sparkles } from 'lucide-react';
+import { Compass, Sparkles, Search } from 'lucide-react';
 
 import { TherapistDirectory } from './TherapistDirectorySimplified';
-import { TherapistSearchChoice } from './components/TherapistSearchChoice';
 import { FEATURES } from '@/lib/features';
 import { getTherapistCards } from './getTherapistCards';
 
@@ -48,17 +47,12 @@ export default async function TherapistsPage() {
 
   return (
     <div className="marketing-theme bg-surface text-default">
-      <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+      <section className="relative isolate overflow-hidden px-2 py-16 sm:px-3 lg:px-4">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute left-1/2 top-12 h-72 w-72 -translate-x-1/2 rounded-full bg-primary-100/40 blur-3xl" />
           <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-secondary-100/50 blur-3xl" />
         </div>
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10">
-          <div className="flex justify-end">
-            <Link href="/" className="text-sm font-medium text-link transition hover:underline">
-              Zur Startseite
-            </Link>
-          </div>
+        <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-10">
           <div className="relative overflow-hidden rounded-3xl border border-divider bg-surface-1/95 p-8 shadow-soft-xl sm:p-12">
             <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden>
               <div className="absolute -left-10 top-10 h-24 w-24 rounded-full bg-primary-200/60 blur-3xl" />
@@ -66,46 +60,43 @@ export default async function TherapistsPage() {
             </div>
             <div className="relative space-y-8 text-center md:text-left">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-800">
-                <Sparkles className="h-4 w-4" />
-                Kuratiertes Pilotnetzwerk
+                <Search className="h-4 w-4" />
+                Direkte Suche
               </span>
               <div className="space-y-4">
                 <h1 className="text-4xl font-semibold tracking-tight text-neutral-950 md:text-5xl">
-                  Finde die Therapeut:in, die zu deinem Bedarf passt
+                  Alle Therapeut:innen durchsuchen
                 </h1>
                 <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted md:mx-0">
-                  Unser Care-Team validiert Qualifikationen, Schwerpunktsetzung und Kapazitäten.
-                  Starte mit einer Ersteinschätzung und erhalte Vorschläge, die zu deinen Antworten
-                  passen.
+                  Filtere nach deinen Kriterien und finde passende Therapeut:innen in unserem
+                  kuratierten Netzwerk.
                 </p>
               </div>
               <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
+                <Link
+                  href="/"
+                  prefetch={false}
+                  className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                >
+                  ← Zurück zur Startseite
+                </Link>
                 {FEATURES.ASSESSMENT && (
                   <Link
                     href="/triage"
                     prefetch={false}
-                    className="inline-flex items-center rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-soft-lg transition hover:-translate-y-0.5 hover:bg-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                    className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
-                    <Compass className="mr-2 h-4 w-4" /> Ersteinschätzung starten
+                    <Compass className="mr-1 inline h-4 w-4" /> Lieber Ersteinschätzung starten
                   </Link>
                 )}
-                <Link
-                  href="/contact"
-                  prefetch={false}
-                  className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                >
-                  Persönliche Beratung anfordern
-                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <TherapistSearchChoice />
-
       <section id="therapist-list" className="relative pb-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="theme-dark relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-950 via-primary-950 to-neutral-900 p-8 shadow-soft-xl sm:p-10">
             <div className="pointer-events-none absolute inset-0" aria-hidden>
               <div className="absolute left-0 top-0 h-40 w-40 -translate-x-1/3 -translate-y-1/3 rounded-full bg-primary-400/40 blur-3xl" />

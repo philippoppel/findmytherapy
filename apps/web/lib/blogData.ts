@@ -1,7 +1,14 @@
+export type SectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
 export type BlogPostSection = {
   heading: string;
   paragraphs: string[];
   list?: string[];
+  image?: SectionImage; // Inline image displayed after the section content
 };
 
 export type FAQItem = {
@@ -73,7 +80,7 @@ export const blogPosts: BlogPost[] = [
       'Akuthilfe-Strategien: Kontrolliertes Atmen, körperliche Bewegung, laut sprechen und Grounding-Techniken',
       'Kognitive Verhaltenstherapie mit Konfrontation ist nachweislich wirksam zur Bewältigung von Panikattacken',
     ],
-    category: 'Ratgeber',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-15',
     updatedAt: '2025-01-15',
     readingTime: '15 Min.',
@@ -161,6 +168,11 @@ export const blogPosts: BlogPost[] = [
           'Panikattacken können in völlig entspannten Momenten auftauchen oder nach vorangegangenem Stress auftreten. Häufig kommen sie schlagartig, erreichen innerhalb von 5 bis 10 Minuten ihren Höhepunkt und klingen dann von selbst wieder ab – meist nach wenigen Minuten bis etwa einer halben Stunde. So eine Episode fühlt sich für Betroffene zwar endlos an, ist aber zeitlich begrenzt.',
           'Treten Panikattacken vor allem in bestimmten Situationen auf (etwa in Menschenmengen, Aufzügen oder beim Fliegen), können sie auch Teil anderer Angststörungen sein – zum Beispiel bei Agoraphobie (Platzangst) oder sozialen Phobien. Insgesamt sind Panikattacken keine Seltenheit: Schätzungen zufolge erleben etwa jeder zehnte Erwachsene pro Jahr zumindest einmal eine Panikattacke. Circa 3–5 % der Menschen entwickeln im Laufe des Lebens eine Panikstörung, Frauen etwas häufiger als Männer.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1493836512294-502baa1986e2?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person sitzt allein und nachdenklich – symbolisiert das Gefühl während einer Panikattacke',
+          caption: 'Panikattacken können sich anfühlen wie ein Kontrollverlust – doch sie sind behandelbar.',
+        },
       },
       {
         heading: 'Woran erkenne ich eine Panikattacke?',
@@ -217,6 +229,11 @@ export const blogPosts: BlogPost[] = [
           'Zusätzlich zur professionellen Therapie gibt es zahlreiche Selbsthilfeansätze, die Betroffenen von Panikattacken Erleichterung verschaffen. Ein zentraler Punkt ist die Psychoedukation, also sich selbst über die Natur der Panikstörung aufzuklären. Das Verständnis, dass die körperlichen Symptome letztlich „nur" Ausdruck übersteigerter Angstreaktionen sind – vergleichbar einem Fehlalarm – kann schon einen Teil des Schreckens nehmen.',
           'Ebenfalls hilfreich sind Lebensstil-Anpassungen zur Vorbeugung von Panikattacken. Ausreichender Schlaf und regelmäßige Bewegung verbessern die allgemeine Stressresistenz; insbesondere Ausdauersport (Joggen, Radfahren, Schwimmen) wirkt erwiesenermaßen angstlösend. Auf übermäßigen Konsum von Koffein und anderen anregenden Substanzen sollte verzichtet werden, da diese körperliche Unruhe fördern. Auch der Abbau von chronischem Stress – etwa durch bessere Zeitplanung, Entspannungspausen im Alltag oder gegebenenfalls eine psychologische Stressbewältigung – kann dazu beitragen, die Häufigkeit von Attacken zu reduzieren.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Therapeutisches Gespräch zwischen Therapeutin und Klient in entspannter Atmosphäre',
+          caption: 'Kognitive Verhaltenstherapie ist die wirksamste Behandlung bei Panikattacken.',
+        },
       },
       {
         heading: 'Häufige Fragen (FAQ) zu Panikattacken',
@@ -266,7 +283,7 @@ export const blogPosts: BlogPost[] = [
       'Empfehlungen umfassen passende Formate, digitale Ressourcen und konkrete nächste Schritte',
       'Das Therapeut:innen-Netzwerk befindet sich im Aufbau – alle Funktionen sind bereits sichtbar',
     ],
-    category: 'Produkt',
+    category: 'Über FindMyTherapy',
     publishedAt: '2025-04-10',
     updatedAt: '2025-04-10',
     readingTime: '6 Min.',
@@ -325,7 +342,7 @@ export const blogPosts: BlogPost[] = [
       'Beta-Phase startet mit anonymisierten Beispielprofilen zur Demonstration der Matching-Logik',
       'Unternehmen können sich bereits für Pilotprogramme mit Dashboard-Zugang eintragen',
     ],
-    category: 'Netzwerk',
+    category: 'Über FindMyTherapy',
     publishedAt: '2025-03-28',
     updatedAt: '2025-03-28',
     readingTime: '5 Min.',
@@ -384,7 +401,7 @@ export const blogPosts: BlogPost[] = [
       'Anonyme Aggregationen geben Entscheider:innen Einblick in Bedarfe ohne Personenbezug',
       'Pilotprogramm bietet Onboarding-Unterstützung und gemeinsame Impact-Evaluation',
     ],
-    category: 'Arbeitswelt',
+    category: 'Arbeit & Karriere',
     publishedAt: '2025-03-12',
     updatedAt: '2025-03-12',
     readingTime: '7 Min.',
@@ -446,7 +463,7 @@ export const blogPosts: BlogPost[] = [
       'Systemische Therapie: Betrachtet Probleme im Beziehungskontext, ideal für Familien- und Paarkonflikte',
       'Die therapeutische Beziehung ist oft wichtiger als die spezifische Methode – Erstgespräche nutzen!',
     ],
-    category: 'Wissen',
+    category: 'Therapie verstehen',
     publishedAt: '2025-05-15',
     updatedAt: '2025-05-15',
     readingTime: '8 Min.',
@@ -557,7 +574,7 @@ export const blogPosts: BlogPost[] = [
       'Hohe Wirksamkeit bei Angst (70-90%), Depression (d=0.75), PTBS (d=1.42) und Zwangsstörungen (d=1.16)',
       'Niedrigere Rückfallraten als bei Medikation allein – nachhaltige Wirkung durch Selbsthilfe-Prinzip',
     ],
-    category: 'Wissen',
+    category: 'Therapie verstehen',
     publishedAt: '2025-06-02',
     updatedAt: '2025-06-02',
     readingTime: '9 Min.',
@@ -609,6 +626,11 @@ export const blogPosts: BlogPost[] = [
           'Die kognitive Verhaltenstherapie (KVT, englisch: Cognitive Behavioral Therapy/CBT) geht davon aus, dass nicht Ereignisse selbst, sondern unsere Bewertungen dieser Ereignisse unser Befinden beeinflussen. Dysfunktionale Denkmuster und problematische Verhaltensweisen können erlernt – und wieder verlernt – werden.',
           'Das Verfahren wurde in den 1960er Jahren von Aaron T. Beck (für Depression) und Albert Ellis (Rational-Emotive Verhaltenstherapie) entwickelt. Heute ist KVT die am besten erforschte Psychotherapieform mit über 500 randomisierten kontrollierten Studien.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Strukturierte Therapiesitzung – Therapeutin erklärt Zusammenhänge zwischen Gedanken und Gefühlen',
+          caption: 'KVT ist die am besten erforschte Psychotherapieform.',
+        },
       },
       {
         heading: 'Wie läuft eine KVT-Therapie ab?',
@@ -693,7 +715,7 @@ export const blogPosts: BlogPost[] = [
       'Achtsamkeitsmeditation reduziert Rückfallrisiko bei Depression um 43%',
       'Kleine, nachhaltige Veränderungen sind effektiver als radikale Umstellungen',
     ],
-    category: 'Prävention',
+    category: 'Selbsthilfe & Alltag',
     publishedAt: '2025-06-18',
     updatedAt: '2025-06-18',
     readingTime: '10 Min.',
@@ -840,7 +862,7 @@ export const blogPosts: BlogPost[] = [
       'Organisationale Interventionen langfristig wirksamer (d=0.54) – Führungskultur entscheidend',
       'Unbehandeltes Burnout erhöht Risiko für manifeste Depression um das 3-4-fache',
     ],
-    category: 'Prävention',
+    category: 'Stress & Burnout',
     publishedAt: '2025-07-05',
     updatedAt: '2025-07-05',
     readingTime: '9 Min.',
@@ -971,7 +993,7 @@ export const blogPosts: BlogPost[] = [
       'Neue Initiative "Gesund aus der Krise": 12 Mio. Euro für kostenlose Therapie für unter 21-Jährige',
       'Psychische Erkrankungen verursachen jährlich 7 Mrd. Euro Kosten in Österreich',
     ],
-    category: 'Forschung',
+    category: 'Wissen & Fakten',
     publishedAt: '2025-07-22',
     updatedAt: '2025-07-22',
     readingTime: '8 Min.',
@@ -1113,7 +1135,7 @@ export const blogPosts: BlogPost[] = [
       'Therapeutische Beziehung trägt 30-40% zum Erfolg bei – wichtiger als spezifische Methode',
       'Non-Response: 20-40% profitieren nicht – bei fehlender Passung Therapeut:in wechseln',
     ],
-    category: 'Forschung',
+    category: 'Therapie verstehen',
     publishedAt: '2025-08-10',
     updatedAt: '2025-08-10',
     readingTime: '10 Min.',
@@ -1288,7 +1310,7 @@ export const blogPosts: BlogPost[] = [
       'Seelsorge und Berater:innen: Keine Gesundheitsberufe, nicht zur Behandlung psychischer Störungen berechtigt',
       'Alle Gesundheitsberufe müssen in offiziellen Listen eingetragen sein – vor Behandlung prüfen!',
     ],
-    category: 'Wissen',
+    category: 'Therapie verstehen',
     publishedAt: '2025-09-05',
     updatedAt: '2025-09-05',
     readingTime: '11 Min.',
@@ -1488,7 +1510,7 @@ export const blogPosts: BlogPost[] = [
       'Wichtig: Screening liefert nur Hinweise, keine Diagnosen – professionelle Abklärung notwendig',
       'Alternative wie BDI-II oder BAI kosten 190$ + 3-4$ pro Auswertung – PHQ-9/GAD-7 daher bevorzugt',
     ],
-    category: 'Forschung',
+    category: 'Wissen & Fakten',
     publishedAt: '2025-11-08',
     updatedAt: '2025-11-08',
     readingTime: '8 Min.',
@@ -1625,7 +1647,7 @@ export const blogPosts: BlogPost[] = [
       'Akzeptanz statt Kampf: Das Annehmen der Attacke verkürzt deren Dauer signifikant',
       'Bei häufigen Panikattacken ist professionelle Hilfe wichtig – KVT zeigt 80% Erfolgsrate',
     ],
-    category: 'Akuthilfe',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-15',
     updatedAt: '2025-01-15',
     readingTime: '7 Min.',
@@ -1766,7 +1788,7 @@ export const blogPosts: BlogPost[] = [
       'Behandlung: Psychotherapie (v.a. Verhaltenstherapie) und bei Bedarf Medikamente (Antidepressiva) sind nachweislich wirksam',
       'Selbsthilfe und soziale Unterstützung spielen eine wichtige Rolle im Genesungsprozess',
     ],
-    category: 'Ratgeber',
+    category: 'Depression & Stimmung',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '18 Min.',
@@ -1830,6 +1852,11 @@ export const blogPosts: BlogPost[] = [
           'Medizinisch gesprochen handelt es sich bei Depression um eine affektive Störung – also eine Erkrankung, die primär die Stimmung betrifft. Das Gehirn zeigt bei Depression nachweisbare Veränderungen in der Aktivität bestimmter Regionen und im Gleichgewicht von Botenstoffen (Neurotransmittern) wie Serotonin, Noradrenalin und Dopamin. Depression ist also keine Einbildung oder Willensschwäche, sondern eine biologisch fassbare Erkrankung.',
           'Die Weltgesundheitsorganisation (WHO) zählt Depression zu den häufigsten Ursachen für Krankheitslast weltweit. In Österreich erleben etwa 15-20% der Menschen mindestens einmal im Leben eine depressive Episode. Frauen sind etwa doppelt so häufig betroffen wie Männer, wobei hormonelle Faktoren und unterschiedliche Stressbelastungen eine Rolle spielen können.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person sitzt nachdenklich am Fenster mit Blick nach draußen – symbolisiert innere Kämpfe bei Depression',
+          caption: 'Depression betrifft das gesamte Erleben – doch Heilung ist möglich.',
+        },
       },
       {
         heading: 'Symptome: Wie erkennt man Depression?',
@@ -1882,6 +1909,11 @@ export const blogPosts: BlogPost[] = [
           'Achtsamkeit und Entspannung: Achtsamkeitsübungen, Meditation oder progressive Muskelentspannung können helfen, Grübeln zu unterbrechen und Anspannung zu reduzieren.',
           'Suizidgedanken ernst nehmen: Wenn Sie Gedanken haben, sich das Leben zu nehmen, suchen Sie sofort Hilfe (Telefonseelsorge 142, Rettung 144, psychiatrische Notaufnahme).',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person geht in der Natur spazieren – Bewegung als Selbsthilfe bei Depression',
+          caption: 'Regelmäßige Bewegung und Zeit in der Natur können die Genesung unterstützen.',
+        },
       },
       {
         heading: 'Unterstützung für Angehörige',
@@ -1904,7 +1936,7 @@ export const blogPosts: BlogPost[] = [
       'Kognitive Verhaltenstherapie mit Expositionsübungen ist die wirksamste Behandlung',
       'Medikamentöse Unterstützung durch SSRIs kann bei mittelschweren bis schweren Fällen sinnvoll sein',
     ],
-    category: 'Ratgeber',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '17 Min.',
@@ -1960,6 +1992,11 @@ export const blogPosts: BlogPost[] = [
           'Angststörungen sind psychische Erkrankungen, bei denen Angst das zentrale Symptom ist – allerdings nicht als hilfreiche Warnreaktion, sondern als übermäßige, lang anhaltende oder unangemessene Angst, die das Leben einschränkt. Angststörungen gehören zu den häufigsten psychischen Erkrankungen weltweit.',
           'Anders als bei normaler Angst, die vor realen Gefahren schützt, tritt bei Angststörungen die Angst ohne tatsächliche Bedrohung oder in einem unverhältnismäßigen Ausmaß auf. Betroffene wissen oft selbst, dass ihre Angst übertrieben ist, können sie aber nicht kontrollieren. Das führt häufig zu Vermeidungsverhalten, wodurch sich die Angst langfristig verstärkt.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in nachdenklicher Haltung – symbolisiert die Last von Angststörungen',
+          caption: 'Angststörungen beeinträchtigen den Alltag – doch sie sind gut behandelbar.',
+        },
       },
       {
         heading: 'Formen von Angststörungen',
@@ -2006,7 +2043,7 @@ export const blogPosts: BlogPost[] = [
       'Prävention umfasst Stressmanagement, gesunde Grenzen, soziale Unterstützung und Selbstfürsorge',
       'Behandlung erfolgt durch Psychotherapie, Stressreduktion und ggf. medizinische Rehabilitation',
     ],
-    category: 'Ratgeber',
+    category: 'Stress & Burnout',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '14 Min.',
@@ -2060,6 +2097,11 @@ export const blogPosts: BlogPost[] = [
           'Burnout beschreibt einen Zustand totaler Erschöpfung – emotional, körperlich und mental – als Folge von chronischem Stress, der nicht bewältigt wurde. Der Begriff stammt aus den 1970er-Jahren und beschrieb ursprünglich die Erschöpfung von Pflegekräften und Sozialarbeitern. Heute ist Burnout ein weit verbreitetes Phänomen in vielen Berufsfeldern.',
           'Burnout entwickelt sich schleichend über Monate oder Jahre. Anfangs versuchen Betroffene, durch noch mehr Einsatz gegenzusteuern, was die Erschöpfung weiter verstärkt. Die drei Kerndimensionen nach dem Maslach Burnout Inventory sind: 1) Emotionale Erschöpfung, 2) Depersonalisation/Zynismus (Distanzierung von der Arbeit), 3) Reduzierte persönliche Leistungsfähigkeit.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Überforderte Person am Arbeitsplatz mit vielen Aufgaben – symbolisiert Burnout-Risiko',
+          caption: 'Chronische Überlastung ist der Hauptauslöser für Burnout.',
+        },
       },
       {
         heading: 'Die 12 Phasen des Burnout',
@@ -2094,6 +2136,11 @@ export const blogPosts: BlogPost[] = [
           'Soziale Unterstützung: Probleme ansprechen, Hilfe suchen, Netzwerk pflegen',
           'Selbstfürsorge: Ausreichend Schlaf, gesunde Ernährung, regelmäßige Bewegung',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person praktiziert Yoga in der Natur – symbolisiert Work-Life-Balance und Stressprävention',
+          caption: 'Regelmäßige Entspannung und Selbstfürsorge sind der beste Schutz vor Burnout.',
+        },
       },
     ],
   },
@@ -2109,7 +2156,7 @@ export const blogPosts: BlogPost[] = [
       'Erstgespräche dienen dem gegenseitigen Kennenlernen - nutzen Sie diese, um die Passung zu prüfen',
       'Online-Therapie ist eine valide Alternative, besonders in ländlichen Regionen oder bei Mobilitätseinschränkungen',
     ],
-    category: 'Therapeutensuche',
+    category: 'Therapeut:in finden',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '12 Min.',
@@ -2170,7 +2217,7 @@ export const blogPosts: BlogPost[] = [
       'Regelmäßiges Üben (5-10 Min täglich) verstärkt die Wirkung in Angstsituationen',
       'Atemtechniken können Herzrate und Blutdruck senken sowie Stresshormone reduzieren',
     ],
-    category: 'Selbsthilfe',
+    category: 'Selbsthilfe & Alltag',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '6 Min.',
@@ -2257,7 +2304,7 @@ export const blogPosts: BlogPost[] = [
       'Psychiater sind Ärzte mit Zusatzausbildung, können Medikamente verschreiben',
       'Für ausführliche Infos siehe unseren umfassenden Artikel zu allen Berufsgruppen',
     ],
-    category: 'Wissen',
+    category: 'Therapie verstehen',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '7 Min.',
@@ -2320,7 +2367,7 @@ export const blogPosts: BlogPost[] = [
       'Kassentherapeuten: Kostenlos, aber Wartezeit 3-12 Monate',
       'Zusatzversicherungen können weitere Kosten übernehmen',
     ],
-    category: 'Finanzierung',
+    category: 'Kosten & Finanzierung',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '8 Min.',
@@ -2363,6 +2410,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Dokumente und Formulare für Krankenkassenanträge',
+          caption: 'Die Entscheidung zwischen Kasse und Wahltherapeut hängt von Ihrer Situation ab.',
+        },
       },
       {
         heading: 'Höhe des Kassenzuschusses',
@@ -2375,6 +2427,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           '1. Therapeut aus Liste wählen (muss eingetragen sein). 2. Nach jeder Sitzung Honorarnote vom Therapeut holen. 3. Honorarnote bei Krankenkasse einreichen (online oder per Post). 4. Zuschuss wird überwiesen (meist 2-4 Wochen).',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person füllt Online-Formular am Laptop aus',
+          caption: 'Der Antrag kann bequem online bei der Krankenkasse eingereicht werden.',
+        },
       },
     ],
   },
@@ -2389,7 +2446,7 @@ export const blogPosts: BlogPost[] = [
       'Warnsignale: Keine Zulassung erkennbar, unrealistische Heilversprechen, Vorauszahlung ohne Probesitzung',
       'Videotelefonie ist der Goldstandard, Chattherapie nur als Ergänzung',
     ],
-    category: 'Digitale Gesundheit',
+    category: 'Therapie verstehen',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '6 Min.',
@@ -2441,7 +2498,7 @@ export const blogPosts: BlogPost[] = [
       'Regelmäßigkeit ist wichtiger als Länge – täglich 3 Minuten sind besser als einmal wöchentlich 30 Minuten',
       'Häufige Anfängerfehler: Erwartung der Gedankenleere, Perfektionismus, zu lange Sitzungen',
     ],
-    category: 'Selbsthilfe',
+    category: 'Selbsthilfe & Alltag',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '5 Min.',
@@ -2490,6 +2547,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Meditation ist keine Esoterik, sondern wissenschaftlich gut erforscht. Studien zeigen: Regelmäßige Meditation verändert die Gehirnstruktur, reduziert Stresshormone, verbessert Aufmerksamkeit und emotionale Regulation. Bereits 10 Minuten täglich zeigen nach 8 Wochen messbare Effekte.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person meditiert in friedlicher Umgebung bei Sonnenaufgang',
+          caption: 'Schon 3 Minuten tägliche Meditation können einen Unterschied machen.',
+        },
       },
       {
         heading: 'Die 3-Minuten-Atemmeditation: Schritt für Schritt',
@@ -2516,7 +2578,7 @@ export const blogPosts: BlogPost[] = [
       'Ländliche Regionen: Weniger Therapeuten, längere Anfahrtswege, oft noch längere Wartezeiten',
       'Schneller zum Platz: Wahltherapeut, Privatambulanz, Online-Therapie, mehrere Anfragen parallel',
     ],
-    category: 'Therapeutensuche',
+    category: 'Therapeut:in finden',
     publishedAt: '2025-01-17',
     updatedAt: '2025-01-17',
     readingTime: '7 Min.',
@@ -2542,12 +2604,22 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Österreich hat einen Versorgungsengpass in der Psychotherapie. Auf einen Kassentherapieplatz warten Betroffene durchschnittlich 3-12 Monate. Die Situation variiert stark nach Bundesland und Therapiemethode.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1516156008796-094d86a9d9e4?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Österreich Landkarte symbolisiert regionale Unterschiede in der Versorgung',
+          caption: 'Die Wartezeiten variieren stark je nach Bundesland.',
+        },
       },
       {
         heading: 'Wien: Viele Therapeuten, hohe Nachfrage',
         paragraphs: [
           'Wien hat die höchste Therapeutendichte Österreichs (ca. 40% aller österreichischen Therapeuten). Trotzdem: Wartezeit 4-8 Monate für Kassenplätze. Grund: Hohe Nachfrage, viele Studierende und junge Erwachsene. Vorteil: Große Auswahl, viele Wahltherapeuten, kürzere Wartezeiten bei privater Finanzierung.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1609856878074-cf31e21a3f7d?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Wien Stadtansicht – die Stadt mit der höchsten Therapeutendichte',
+          caption: 'Wien bietet die meisten Therapeuten, aber auch die höchste Nachfrage.',
+        },
       },
       {
         heading: 'Andere Bundesländer',
@@ -2560,6 +2632,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           '1. Mehrere Anfragen parallel stellen. 2. Wahltherapeut nutzen (Zuschuss beantragen). 3. Online-Therapie in Erwägung ziehen. 4. Privatambulanz oder Ausbildungsinstitute (günstigere Honorare). 5. Krisenintervention bei akuter Gefahr (keine Wartezeit).',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person nutzt Online-Therapie am Laptop – eine schnelle Alternative',
+          caption: 'Online-Therapie kann die Wartezeit verkürzen.',
+        },
       },
     ],
   },
@@ -2575,7 +2652,7 @@ export const blogPosts: BlogPost[] = [
       'Gefahren durch falsche Antworten: KI-Bots erkannten in Studien Suizidabsichten nur in unter 60% der Fälle korrekt (Mensch: 93%)',
       'Menschliche Therapeut*innen bleiben unersetzlich: Echte Therapie beruht auf Vertrauen, Empathie und echter zwischenmenschlicher Beziehung',
     ],
-    category: 'Wissen',
+    category: 'Wissen & Fakten',
     publishedAt: '2025-11-18',
     updatedAt: '2025-11-18',
     readingTime: '12 Min.',
@@ -2715,7 +2792,7 @@ export const blogPosts: BlogPost[] = [
       'Entstehen kann Angst durch ein Zusammenspiel aus Biologie (Gehirn & Stresshormone), Lernen (Erfahrungen, Vorbilder) und Denken (Katastrophenfilme im Kopf).',
       'Sie fühlt sich so real an, weil dein Gehirn und Körper auf Vorstellungen fast genauso reagieren wie auf echte Bedrohungen – der Körperalarm ist real, auch wenn der Auslöser nur im Kopf läuft.',
     ],
-    category: 'Ratgeber',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-25',
     updatedAt: '2025-01-25',
     readingTime: '8 Min.',
@@ -2928,7 +3005,7 @@ export const blogPosts: BlogPost[] = [
       'Angst vor der Angst und Vermeidungsverhalten halten den Kreislauf am Leben.',
       'Mit Wissen, Akzeptanz und Tools wie der 5-4-3-2-1-Methode lässt sich die Spirale stoppen.',
     ],
-    category: 'Ratgeber',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-25',
     updatedAt: '2025-01-25',
     readingTime: '10 Min.',
@@ -3150,7 +3227,7 @@ export const blogPosts: BlogPost[] = [
       'Panikattacken beginnen plötzlich und klingen meist nach 10 bis 30 Minuten ab, während ein Herzinfarkt länger anhält.',
       'Im Zweifel sollte man immer ärztliche Hilfe rufen. Wenn das Herz gesund ist, hilft Psychotherapie, den Teufelskreis zu durchbrechen.',
     ],
-    category: 'Ratgeber',
+    category: 'Angst & Panik',
     publishedAt: '2025-01-25',
     updatedAt: '2025-01-25',
     readingTime: '8 Min.',

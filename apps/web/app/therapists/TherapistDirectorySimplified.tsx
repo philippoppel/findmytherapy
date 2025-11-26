@@ -1,12 +1,73 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Sparkles, MapPin, LocateFixed } from 'lucide-react';
+import { ShieldCheck, Sparkles, MapPin, LocateFixed, BookOpen, ChevronRight } from 'lucide-react';
 import type { TherapistCard } from './types';
 import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch';
 import { MatchingLink } from '../components/matching/MatchingLink';
+import { blogPosts, type BlogPost } from '@/lib/blogData';
+
+// Keywords für Blog-Suche passend zu Therapeut:innen-Fokus
+const FOCUS_BLOG_KEYWORDS: Record<string, string[]> = {
+  angst: ['Angst', 'Panik', 'Angststörung', 'Panikattacken', 'Phobien', 'Furcht'],
+  depression: ['Depression', 'depressiv', 'Niedergeschlagenheit', 'Antriebslosigkeit', 'Traurigkeit'],
+  stress: ['Stress', 'Burnout', 'Erschöpfung', 'Überlastung', 'Work-Life'],
+  trauma: ['Trauma', 'PTBS', 'traumatisch', 'Belastung', 'PTSD'],
+  beziehung: ['Beziehung', 'Partnerschaft', 'Paar', 'Kommunikation', 'Trennung', 'Liebe'],
+  selbstwert: ['Selbstwert', 'Selbstbewusstsein', 'Selbstliebe', 'Selbstfürsorge'],
+  trauer: ['Trauer', 'Verlust', 'Tod', 'Abschied'],
+  sucht: ['Sucht', 'Abhängigkeit', 'Alkohol', 'Drogen'],
+  essstoerung: ['Essstörung', 'Anorexie', 'Bulimie', 'Essen', 'Magersucht'],
+  schlaf: ['Schlaf', 'Insomnie', 'Entspannung', 'Ruhe', 'Schlafstörung'],
+  zwang: ['Zwang', 'OCD', 'Zwangsgedanken', 'Rituale', 'Zwangsstörung'],
+  adhs: ['ADHS', 'ADS', 'Aufmerksamkeit', 'Konzentration', 'Hyperaktivität'],
+  arbeit: ['Arbeit', 'Beruf', 'Karriere', 'Mobbing', 'Arbeitsplatz'],
+  achtsamkeit: ['Achtsamkeit', 'Meditation', 'Mindfulness', 'Entspannung'],
+  panik: ['Panik', 'Panikattacken', 'Angst'],
+  psychosomatik: ['Psychosomatik', 'psychosomatisch', 'Körper', 'Schmerzen'],
+};
+
+// Helper: Get blog posts based on therapist focus areas
+function getBlogPostsForFocusAreas(focusAreas: string[], limit: number = 3): BlogPost[] {
+  if (focusAreas.length === 0) return [];
+
+  // Collect keywords from focus areas
+  const allKeywords: string[] = [];
+  focusAreas.forEach(focus => {
+    const normalizedFocus = focus.toLowerCase();
+    Object.entries(FOCUS_BLOG_KEYWORDS).forEach(([key, keywords]) => {
+      if (normalizedFocus.includes(key) || keywords.some(kw => normalizedFocus.includes(kw.toLowerCase()))) {
+        allKeywords.push(...keywords);
+      }
+    });
+  });
+
+  if (allKeywords.length === 0) return [];
+
+  // Score blog posts
+  const scoredPosts = blogPosts.map(post => {
+    let score = 0;
+    const searchText = `${post.title} ${post.excerpt} ${post.tags.join(' ')} ${post.keywords.join(' ')}`.toLowerCase();
+
+    allKeywords.forEach(keyword => {
+      if (searchText.includes(keyword.toLowerCase())) {
+        score += 1;
+      }
+    });
+
+    // Add random factor for variety
+    const randomFactor = Math.random() * 0.5;
+    return { post, score: score + randomFactor };
+  });
+
+  return scoredPosts
+    .filter(item => item.score > 0.5)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.post);
+}
 
 // Utility function to merge classNames
 function cn(...classes: (string | undefined | null | false)[]): string {
@@ -55,6 +116,12 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
   const visibleTherapists = filteredTherapists.slice(0, visibleCount);
   const hasMore = visibleCount < filteredTherapists.length;
 
+  // Get relevant blog posts based on filtered therapists' focus areas
+  const relevantBlogPosts = useMemo(() => {
+    const allFocusAreas = filteredTherapists.flatMap(t => t.focus);
+    return getBlogPostsForFocusAreas(allFocusAreas, 4);
+  }, [filteredTherapists]);
+
   return (
     <div className="w-full">
       {/* Unified Search & Filters */}
@@ -96,6 +163,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
           <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3 2xl:grid-cols-4">
             {visibleTherapists.map((therapist, index) => {
               const showBanner = index === 5 && visibleTherapists.length > 6;
+              const showBlogPosts = index === 9 && visibleTherapists.length > 10 && relevantBlogPosts.length > 0;
 
               return (
                 <React.Fragment key={therapist.id}>
@@ -103,40 +171,118 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
                   {/* Contextual CTA Banner after 6 therapists */}
                   {showBanner && (
-                    <div className="col-span-full my-4">
-                      <div className="relative overflow-hidden rounded-2xl border border-primary-400/30 bg-gradient-to-br from-primary-500/10 via-primary-600/5 to-secondary-500/10 p-6 backdrop-blur sm:p-8">
-                        {/* Background decoration */}
-                        <div className="pointer-events-none absolute inset-0 opacity-30">
-                          <div className="absolute -right-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-primary-400/40 blur-3xl" />
-                          <div className="absolute -left-10 top-1/2 h-32 w-32 -translate-y-1/2 rounded-full bg-secondary-400/40 blur-3xl" />
+                    <div className="col-span-full my-6">
+                      <div className="relative overflow-hidden rounded-3xl border border-primary-400/20 bg-gradient-to-br from-primary-600/20 via-primary-500/10 to-secondary-500/15 shadow-2xl">
+                        <div className="flex flex-col lg:flex-row">
+                          {/* Image Section */}
+                          <div className="relative h-48 w-full lg:h-auto lg:w-1/3">
+                            <Image
+                              src="/images/therapists/therapy-1.jpg"
+                              alt="Therapiegespräch"
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-primary-950/90 lg:bg-gradient-to-r" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-transparent to-transparent lg:hidden" />
+                          </div>
+
+                          {/* Content Section */}
+                          <div className="relative flex flex-1 flex-col justify-center p-6 sm:p-8 lg:p-10">
+                            {/* Background decoration */}
+                            <div className="pointer-events-none absolute inset-0 opacity-40">
+                              <div className="absolute -right-20 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-primary-400/30 blur-3xl" />
+                              <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-secondary-400/30 blur-3xl" />
+                            </div>
+
+                            <div className="relative space-y-4">
+                              {/* Badge */}
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-primary-200 backdrop-blur-sm">
+                                <Sparkles className="h-3.5 w-3.5" />
+                                Personalisiert für dich
+                              </span>
+
+                              {/* Title & Description */}
+                              <div className="space-y-2">
+                                <h3 className="text-2xl font-bold text-white sm:text-3xl">
+                                  Zu viele Optionen?
+                                </h3>
+                                <p className="max-w-lg text-base text-white/80 sm:text-lg">
+                                  Beantworte ein paar Fragen und erhalte personalisierte Empfehlungen
+                                  mit Passungs-Scores – abgestimmt auf deine Bedürfnisse.
+                                </p>
+                              </div>
+
+                              {/* Features */}
+                              <div className="flex flex-wrap gap-3 pt-2">
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                  2 Minuten
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                  Wissenschaftlich fundiert
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                  100% kostenlos
+                                </span>
+                              </div>
+
+                              {/* CTA Button */}
+                              <div className="pt-4">
+                                <MatchingLink
+                                  href="/match"
+                                  className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-primary-500/30 transition-all hover:from-primary-400 hover:to-primary-500 hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-0.5"
+                                >
+                                  <Sparkles className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                                  Jetzt Matching starten
+                                  <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                                </MatchingLink>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+                    </div>
+                  )}
 
-                        <div className="relative flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
-                          {/* Icon */}
-                          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg">
-                            <Sparkles className="h-7 w-7 text-white" />
+                  {/* Blog Posts Section after 10 therapists */}
+                  {showBlogPosts && (
+                    <div className="col-span-full my-4">
+                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                            <BookOpen className="h-5 w-5 text-white" />
                           </div>
-
-                          {/* Content */}
-                          <div className="flex-1">
-                            <h3 className="mb-2 text-lg font-bold text-white sm:text-xl">
-                              Zu viele Optionen? Lass uns helfen!
-                            </h3>
-                            <p className="text-sm text-white/80 sm:text-base">
-                              Beantworte ein paar Fragen und erhalte personalisierte
-                              Therapeut:innen-Empfehlungen mit Passungs-Scores – passend zu deinen
-                              Bedürfnissen.
-                            </p>
+                          <div>
+                            <h3 className="text-lg font-bold text-white">Passende Artikel für dich</h3>
+                            <p className="text-sm text-white/60">Mehr zum Thema erfahren</p>
                           </div>
-
-                          {/* CTA */}
-                          <MatchingLink
-                            href="/match"
-                            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-700 shadow-lg transition-all hover:bg-white/90 hover:shadow-xl"
-                          >
-                            <Sparkles className="h-4 w-4" />
-                            Matching starten
-                          </MatchingLink>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                          {relevantBlogPosts.map((post) => (
+                            <Link
+                              key={post.slug}
+                              href={`/blog/${post.slug}`}
+                              className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:border-white/20 hover:bg-white/10"
+                            >
+                              <div className="relative aspect-[16/9] overflow-hidden">
+                                <Image
+                                  src={post.featuredImage.src}
+                                  alt={post.featuredImage.alt}
+                                  fill
+                                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                              </div>
+                              <div className="flex flex-1 flex-col p-4">
+                                <p className="line-clamp-2 text-sm font-medium text-white">{post.title}</p>
+                                <div className="mt-auto flex items-center gap-1 pt-2 text-xs text-white/50">
+                                  <span>{post.readingTime}</span>
+                                  <ChevronRight className="h-3 w-3" />
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
                     </div>

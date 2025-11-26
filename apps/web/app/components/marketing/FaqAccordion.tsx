@@ -16,7 +16,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
 
   return (
     <section id="faq" className="py-24" aria-labelledby="faq-heading">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] px-2 sm:px-3 lg:px-4">
         <Reveal className="mb-8 text-center sm:mb-10">
           <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
             FAQ

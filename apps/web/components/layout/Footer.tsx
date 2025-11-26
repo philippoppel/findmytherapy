@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Compass, Mail, ShieldCheck, Lock, Award, Users } from 'lucide-react';
+import Image from 'next/image';
+import { Compass, Mail, ShieldCheck, Lock, Award, Users, Linkedin, Instagram } from 'lucide-react';
 import { FEATURES } from '@/lib/features';
 
 export function Footer() {
@@ -9,6 +10,7 @@ export function Footer() {
       links: [
         ...(FEATURES.ASSESSMENT ? [{ name: 'Ersteinschätzung', href: '/triage' }] : []),
         { name: 'Therapeut:innen', href: '/therapists' },
+        { name: 'Das Team', href: '/about' },
         { name: 'Für Therapeut:innen', href: '/for-therapists' },
         { name: 'FAQ', href: '/help' },
         { name: 'Kontakt', href: '/contact' },
@@ -35,7 +37,7 @@ export function Footer() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-200/80 to-transparent"
       />
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-3 py-12 sm:px-4 lg:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand Section */}
           <div className="col-span-1" itemScope itemType="https://schema.org/Organization">
@@ -62,6 +64,27 @@ export function Footer() {
                 </a>
               </div>
             </address>
+            {/* Social Media */}
+            <div className="mt-4 flex items-center gap-2">
+              <a
+                href="https://www.linkedin.com/company/findmytherapy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary-600 transition hover:bg-primary-100"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/findmytherapy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary-600 transition hover:bg-primary-100"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
+            </div>
           </div>
 
           {/* Links Sections */}
@@ -89,9 +112,24 @@ export function Footer() {
           ))}
         </div>
 
+        {/* ÖBVP Partner Section */}
+        <section className="mt-12 flex flex-col items-center justify-center gap-4 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-6 text-center sm:flex-row sm:gap-6">
+          <Image
+            src="/images/oebvp.png"
+            alt="Österreichischer Bundesverband für Psychotherapie"
+            width={140}
+            height={70}
+            className="h-auto w-28 object-contain sm:w-36"
+          />
+          <div className="text-sm sm:text-left">
+            <p className="font-semibold text-primary-800">Empfohlen vom ÖBVP</p>
+            <p className="text-muted">Österreichischer Bundesverband für Psychotherapie</p>
+          </div>
+        </section>
+
         {/* Trust Badges Section */}
         <section
-          className="mt-12 rounded-3xl border border-divider bg-surface-1/70 p-6 shadow-soft"
+          className="mt-8 rounded-3xl border border-divider bg-surface-1/70 p-6 shadow-soft"
           aria-label="Vertrauensindikatoren"
         >
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">

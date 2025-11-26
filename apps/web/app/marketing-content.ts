@@ -417,54 +417,29 @@ export const partnerLogos = [
 
 export const faqItems = [
   {
-    question: 'Kostet die Nutzung von FindMyTherapy für Patient:innen etwas?',
+    question: 'Ist FindMyTherapy kostenlos?',
     answer:
-      'Nein, die Nutzung von FindMyTherapy ist für Patient:innen komplett kostenlos. Du zahlst nichts für die Suche, das Matching, die Ersteinschätzung oder den Zugang zu unseren Ratgebern. Kosten entstehen nur direkt bei der Therapeut:in für die Therapiesitzungen selbst – diese Honorare werden transparent im Profil angezeigt und direkt mit der Therapeut:in abgerechnet. Unser Ziel ist es, dir zu helfen, die richtige Therapie zu finden, nicht dich zur Kasse zu bitten.',
+      'Ja, für dich als Patient:in ist alles kostenlos: Ersteinschätzung, Therapeut:innen-Suche, Ratgeber und Kurs-Schnuppermodule. Kosten entstehen nur direkt bei der Therapeut:in für die Therapiesitzungen – diese Honorare siehst du transparent im jeweiligen Profil.',
   },
   {
-    question: 'Wie funktioniert das Therapeut:innen-Matching bei FindMyTherapy?',
+    question: 'Wie funktioniert die Ersteinschätzung?',
     answer:
-      'Unser Matching basiert auf einem intelligenten Scoring-System, nicht auf einfachen Filtern. Du gibst deine Präferenzen an – von Muss-Kriterien (z.B. Fachrichtung, online oder vor Ort) bis zu Kann-Kriterien mit individueller Gewichtung (z.B. Sprache, Geschlecht, Spezialisierung, Erfahrung). Unser System berechnet dann für jede Therapeut:in einen Match-Score (z.B. "passt zu 87%") und sortiert die Ergebnisse nach Relevanz. So findest du nicht irgendeine Therapeut:in, sondern die passende für deine individuellen Bedürfnisse.',
+      'Du beantwortest in etwa 5 Minuten wissenschaftlich validierte Fragen. Danach erhältst du sofort dein Ampel-Ergebnis: Grün (Selbsthilfe-Tipps), Gelb (Therapieempfehlung) oder Rot (Krisenhinweis mit Soforthilfe). Du kannst dein Ergebnis speichern oder mit einer Therapeut:in teilen.',
   },
   {
-    question: 'Was unterscheidet FindMyTherapy von anderen Therapeuten-Verzeichnissen?',
+    question: 'Wie finde ich die passende Therapeut:in?',
     answer:
-      'Der entscheidende Unterschied: Wir finden nicht irgendeine Therapie – wir finden die passende. Während traditionelle Verzeichnisse nur einfache Listen bieten, nutzen wir intelligentes Matching mit Scoring-System, zeigen nur verifizierte Therapeut:innen mit echten Kapazitäten, bieten eine moderne, benutzerfreundliche Suche, und stellen validierte Ersteinschätzungen (PHQ-9/GAD-7) bereit. Außerdem erhältst du vor dem ersten Termin bereits strukturierte Informationen über deine Situation, die du mit deiner Therapeut:in teilen kannst – für einen besseren Start in die Therapie.',
+      'Wir zeigen dir nur verifizierte Therapeut:innen mit echten freien Kapazitäten. Du filterst nach Thema, Standort, Format (online/vor Ort) und Verfügbarkeit. Unser intelligentes Matching hilft dir, nicht irgendeine, sondern die passende Therapeut:in zu finden.',
   },
   {
-    question: 'Warum ist die richtige Therapie wichtiger als irgendeine Therapeut:in?',
+    question: 'Sind meine Daten sicher?',
     answer:
-      'Die Passung zwischen Patient:in und Therapeut:in ist einer der wichtigsten Faktoren für den Therapieerfolg. Eine Therapeut:in, die fachlich exzellent ist, aber nicht zu deinen Bedürfnissen, Werten oder deiner Lebenssituation passt, wird dir weniger helfen können. Unser Matching-System berücksichtigt daher nicht nur fachliche Qualifikationen, sondern auch persönliche Präferenzen, Spezialisierungen und Erfahrungen. So erhöhen wir die Wahrscheinlichkeit, dass du nicht nach wenigen Sitzungen abbrichst, sondern eine Therapeut:in findest, mit der du langfristig arbeiten kannst.',
+      'Ja. Alle Daten werden verschlüsselt und DSGVO-konform auf EU-Servern gespeichert. Du entscheidest, ob und mit wem du deine Ergebnisse teilst – ohne deine Freigabe sieht niemand deine Ersteinschätzung.',
   },
   {
-    question: 'Was kostet FindMyTherapy?',
+    question: 'Ich brauche sofort Hilfe – was tun?',
     answer:
-      'Die Ersteinschätzung, unser Blog und Kurs-Schnuppermodule sind kostenlos. Kosten entstehen nur, wenn du eine Therapie buchst oder einen Kurs kaufst – die Honorare werden transparent pro Therapeut:in bzw. Kurs angezeigt und direkt mit ihnen abgerechnet. Therapeut:innen sprechen ihr Abo nach der Verifizierung mit uns ab und zahlen erst, wenn ihre Microsite live ist.',
-  },
-  {
-    question: 'Wie läuft die Ersteinschätzung ab und was bekomme ich danach?',
-    answer:
-      'Du beantwortest validierte PHQ-9/GAD-7-Fragen plus kurze Kontextabfragen. Daraus ergibt sich dein Ampel-Ergebnis: Grün (Selbsthilfe-Tipps & Kurse), Gelb (Therapieempfehlung) oder Rot (Krisenhinweis mit Soforthilfe). Du erhältst sofort konkrete Handlungsempfehlungen und kannst dein Ergebnis als PDF speichern oder mit einer Therapeut:in teilen.',
-  },
-  {
-    question: 'Wie schnell komme ich zu einer passenden Therapeut:in?',
-    answer:
-      'Unsere Profile zeigen nur verifizierte Therapeut:innen mit echten Kapazitäten. Du filterst nach Thema, Standort, Versicherungsstatus, Format (online/vor Ort) und buchst direkt oder sendest eine Anfrage. Viele Termine sind innerhalb weniger Tage verfügbar – unser Support hilft dir bei Fragen zur Suche.',
-  },
-  {
-    question: 'Sind meine Angaben sicher und wer sieht sie?',
-    answer:
-      'Ja. Alle Daten werden verschlüsselt und DSGVO-konform auf Servern in der EU gespeichert. Du entscheidest, ob und mit wem du deine Ergebnisse teilst. Therapeut:innen sehen deine Ersteinschätzung nur, wenn du sie freigibst; ansonsten bleibt alles privat.',
-  },
-  {
-    question: 'Ich brauche sofort Hilfe – kann FindMyTherapy unterstützen?',
-    answer:
-      'Bei akuter Krise ersetze dich FindMyTherapy nicht den Notruf. In der Rot-Stufe der Ersteinschätzung zeigen wir dir sofort österreichische Krisen-Hotlines und medizinische Sofortkontakte. Parallel kannst du passende Therapeut:innen oder Online-Kurse auswählen, sobald es dir möglich ist.',
-  },
-  {
-    question: 'Welche Vorteile habe ich als Therapeut:in?',
-    answer:
-      'Du startest mit validierten Vorberichten (PHQ-9/GAD-7) ins Erstgespräch, bekommst eine SEO-optimierte Microsite unter findmytherapy.com/t/[dein-name], verwaltest Leads im Dashboard und kannst eigene Kurse erstellen und monetarisieren. Nach Verifizierung steuerst du Verfügbarkeiten, Honorare und Kursangebote selbstständig.',
+      'Bei akuter Krise zeigen wir dir sofort österreichische Krisen-Hotlines (z.B. Telefonseelsorge 142) und medizinische Sofortkontakte. FindMyTherapy ersetzt bei Notfällen nicht den Notruf 144.',
   },
 ] as const;
 
