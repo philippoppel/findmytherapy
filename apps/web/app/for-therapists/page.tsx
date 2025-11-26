@@ -442,6 +442,14 @@ export default function ForTherapistsPage() {
                   <ArrowRight className="h-5 w-5" />
                 </motion.span>
               </Link>
+              <div className="mt-6">
+                <Link
+                  href="/"
+                  className="text-white/80 transition-colors hover:text-white hover:underline"
+                >
+                  ← Zurück zur Startseite
+                </Link>
+              </div>
             </motion.div>
           </Reveal>
         </div>

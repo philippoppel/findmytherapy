@@ -163,7 +163,7 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
             </div>
           ) : (
             <div className="space-y-1">
-              <MenuItem href="/for-therapists" label="Mehr erfahren" onClick={() => setOpen(false)} />
+              <MenuItem href="/for-therapists" label="Warum bei uns?" onClick={() => setOpen(false)} />
               <MenuItem href="/login" label="Anmelden" onClick={() => setOpen(false)} />
               <MenuItem href="/register" label="Registrieren" onClick={() => setOpen(false)} />
             </div>
