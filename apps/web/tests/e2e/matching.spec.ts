@@ -156,19 +156,11 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: 'Weiter →' }).click();
     await waitForNetworkIdle(page);
 
-    // Step 3: Preferences (Language is required, other fields optional)
-    // NOTE: Deutsch is selected by default in the wizard, so Weiter should already be enabled
+    // Step 3: Details (Languages/Insurance - defaults are selected)
     // Wait for step to load
     await page.waitForTimeout(500);
 
-    // Weiter button should be enabled because Deutsch is selected by default
-    const weiterButton = page.getByRole('button', { name: 'Weiter →' });
-    await expect(weiterButton).toBeEnabled({ timeout: 5000 });
-    await weiterButton.click();
-    await waitForNetworkIdle(page);
-
-    // Step 4: Optional details - skip and submit
-    // Look for submit button "Therapeuten finden"
+    // Submit button should be visible on step 3
     const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen/i });
     await submitButton.waitFor({ state: 'visible', timeout: 10000 });
     await submitButton.click();
@@ -215,11 +207,7 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: 'Weiter →' }).click();
     await waitForNetworkIdle(page);
 
-    // Step 3: Language (Deutsch is selected by default, just click Weiter)
-    await page.getByRole('button', { name: 'Weiter →' }).click();
-    await waitForNetworkIdle(page);
-
-    // Step 4: Submit
+    // Step 3: Details (defaults are selected, submit directly)
     const submitButton = page.getByRole('button', { name: /Ergebnisse anzeigen/i });
     await submitButton.waitFor({ state: 'visible', timeout: 10000 });
     await submitButton.click();
@@ -263,7 +251,7 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: 'Weiter →' }).click();
     await waitForNetworkIdle(page);
 
-    // Step 3: Language - try to select uncommon language
+    // Step 3: Details - try to select uncommon language
     // If there's a rare language option, select it (unselecting Deutsch first)
     const turkishButton = page.getByRole('button', { name: /Türkisch/i });
     const turkishExists = await turkishButton.isVisible().catch(() => false);
@@ -275,10 +263,7 @@ test.describe('Matching System', () => {
     }
     // If Turkish doesn't exist, Deutsch is already selected by default
 
-    await page.getByRole('button', { name: 'Weiter →' }).click();
-    await waitForNetworkIdle(page);
-
-    // Step 4: Submit
+    // Submit (step 3 is the last step)
     await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
@@ -326,10 +311,7 @@ test.describe('Matching System', () => {
     await page.getByRole('button', { name: /Online/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
 
-    // Step 3 (Deutsch is selected by default, just click Weiter)
-    await page.getByRole('button', { name: 'Weiter →' }).click();
-
-    // Step 4
+    // Step 3: Submit (defaults are selected)
     await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
@@ -365,13 +347,12 @@ test.describe('Matching System', () => {
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
-    // Complete quick search
+    // Complete quick search (3-step wizard)
     await page.getByRole('button', { name: /Niedergeschlagenheit/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
     await page.getByRole('button', { name: /Online/i }).click();
     await page.getByRole('button', { name: 'Weiter →' }).click();
-    // Step 3: Deutsch is already selected by default
-    await page.getByRole('button', { name: 'Weiter →' }).click();
+    // Step 3: Submit (Deutsch is already selected by default)
     await page.getByRole('button', { name: /Ergebnisse anzeigen/i }).click();
     await waitForNetworkIdle(page, 10000);
 
@@ -435,8 +416,8 @@ test.describe('Matching System', () => {
       await nextButton.click();
       await waitForNetworkIdle(page);
 
-      // Should proceed to step 3
-      await expect(page.getByText(/Ihre Wünsche|Präferenzen/i)).toBeVisible();
+      // Should proceed to step 3 (Details)
+      await expect(page.getByRole('heading', { name: /Fast geschafft/i })).toBeVisible();
     }
   });
 });
