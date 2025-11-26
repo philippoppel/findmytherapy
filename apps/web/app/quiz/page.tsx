@@ -128,7 +128,7 @@ interface QuizState {
 }
 
 const initialState: QuizState = {
-  phase: 'intro',
+  phase: 'topics',
   topicIndex: 0,
   therapistIndex: 0,
   selectedTopics: [],

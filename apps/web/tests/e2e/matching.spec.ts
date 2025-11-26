@@ -125,16 +125,16 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Page should load
     await expect(
-      page.getByRole('heading', { name: /Finden Sie Ihren Therapeuten/i }),
+      page.getByRole('heading', { name: /Was beschäftigt dich/i }),
     ).toBeVisible();
 
     // Step 1: Select problem area (Depression)
@@ -194,9 +194,9 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
@@ -245,9 +245,9 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
@@ -310,9 +310,9 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
@@ -358,9 +358,9 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
@@ -392,7 +392,7 @@ test.describe('Matching System', () => {
       // Should show wizard again and hide results
       await page.waitForSelector('#matching-wizard', { state: 'visible' });
       await expect(
-        page.getByRole('heading', { name: /Finden Sie Ihren Therapeuten/i }),
+        page.getByRole('heading', { name: /Was beschäftigt dich/i }),
       ).toBeVisible();
 
       // Results should be hidden
@@ -409,9 +409,9 @@ test.describe('Matching System', () => {
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Matching starten" button to open wizard
+    // Click "Los geht's" button to open wizard
     await page
-      .getByRole('button', { name: /matching starten/i })
+      .getByRole('button', { name: /los geht/i })
       .first()
       .click();
     await page.waitForSelector('#matching-wizard', { state: 'visible' });

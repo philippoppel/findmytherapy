@@ -91,7 +91,7 @@ test.describe('Therapeut:innen Suche & Filter', () => {
     await expect(page).toHaveTitle(/Therapeut.*innen.*finden/i);
 
     // Should show heading
-    await expect(page.getByRole('heading', { name: /Finde die Therapeut.*in/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Alle Therapeut.*innen durchsuchen/i })).toBeVisible();
 
     // Should display therapist cards
     await expect(page.getByText(/Anna Müller/i)).toBeVisible();

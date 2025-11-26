@@ -363,7 +363,7 @@ test.describe('UI Issues - Automated Visual Validation', () => {
 
     // Primary CTA should be visible
     const cta = await page
-      .getByRole('button', { name: /matching starten|therapeuten finden|jetzt starten/i })
+      .getByRole('button', { name: /los geht|matching starten|therapeuten finden|jetzt starten/i })
       .first()
       .boundingBox()
       .catch(() => null);
