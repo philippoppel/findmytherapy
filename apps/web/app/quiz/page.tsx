@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft,
   Heart,
   MapPin,
   Star,
@@ -17,6 +16,8 @@ import {
   BookOpen,
   ClipboardCheck,
   Home,
+  Crosshair,
+  Check,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
@@ -63,6 +64,9 @@ interface QuizState {
   therapistIndex: number;
   selectedTopics: string[];
   postalCode: string;
+  latitude?: number;
+  longitude?: number;
+  locationName?: string;
   matches: MatchResult[];
   favorites: string[];
   skipped: string[];
@@ -102,6 +106,8 @@ function getRelevantBlogCategories(selectedTopics: string[]): { slug: string; la
 export default function QuizPage() {
   const [state, setState] = useState<QuizState>(initialState);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   const currentTopic = PROBLEM_AREAS[state.topicIndex];
   const currentTherapist = state.matches[state.therapistIndex];
@@ -139,6 +145,67 @@ export default function QuizPage() {
     setState((prev) => ({ ...prev, phase: 'location' }));
   };
 
+  // Auto-detect location
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError('Standorterkennung wird von deinem Browser nicht unterstützt.');
+      return;
+    }
+
+    setIsLoadingLocation(true);
+    setLocationError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Try to get city name from coordinates using reverse geocoding
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+            { headers: { 'Accept-Language': 'de' } }
+          );
+          const data = await response.json();
+          const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Dein Standort';
+
+          setState((prev) => ({
+            ...prev,
+            latitude,
+            longitude,
+            locationName: city,
+          }));
+        } catch {
+          // Even if reverse geocoding fails, we have coordinates
+          setState((prev) => ({
+            ...prev,
+            latitude,
+            longitude,
+            locationName: 'Dein Standort',
+          }));
+        }
+
+        setIsLoadingLocation(false);
+      },
+      (error) => {
+        setIsLoadingLocation(false);
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            setLocationError('Standortzugriff wurde verweigert. Bitte gib manuell einen Ort ein.');
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setLocationError('Standort konnte nicht ermittelt werden.');
+            break;
+          case error.TIMEOUT:
+            setLocationError('Zeitüberschreitung bei der Standortermittlung.');
+            break;
+          default:
+            setLocationError('Ein Fehler ist aufgetreten.');
+        }
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+    );
+  };
+
   // Load results
   const loadResults = async () => {
     setIsLoadingResults(true);
@@ -147,17 +214,26 @@ export default function QuizPage() {
     try {
       const topics = state.selectedTopics.length > 0 ? state.selectedTopics : ['stress'];
 
+      const requestBody: Record<string, unknown> = {
+        problemAreas: topics,
+        format: 'BOTH',
+        insuranceType: 'ANY',
+        languages: ['Deutsch'],
+        maxDistanceKm: 100,
+      };
+
+      // Prefer coordinates over postal code
+      if (state.latitude && state.longitude) {
+        requestBody.latitude = state.latitude;
+        requestBody.longitude = state.longitude;
+      } else if (state.postalCode) {
+        requestBody.postalCode = state.postalCode;
+      }
+
       const response = await fetch('/api/match', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          problemAreas: topics,
-          format: 'BOTH',
-          insuranceType: 'ANY',
-          languages: ['Deutsch'],
-          maxDistanceKm: 100,
-          postalCode: state.postalCode || undefined,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data: MatchingResponse = await response.json();
@@ -399,13 +475,61 @@ export default function QuizPage() {
               </div>
 
               <div className="max-w-sm mx-auto space-y-4">
+                {/* Auto-detect location button */}
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                  onClick={detectLocation}
+                  disabled={isLoadingLocation}
+                  className={`w-full py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-3 ${
+                    state.locationName
+                      ? 'bg-green-50 border-2 border-green-500 text-green-700'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  {isLoadingLocation ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                      Ermittle Standort...
+                    </>
+                  ) : state.locationName ? (
+                    <>
+                      <Check className="w-5 h-5" />
+                      {state.locationName}
+                    </>
+                  ) : (
+                    <>
+                      <Crosshair className="w-5 h-5" />
+                      Standort automatisch ermitteln
+                    </>
+                  )}
+                </motion.button>
+
+                {locationError && (
+                  <p className="text-sm text-red-500 text-center">{locationError}</p>
+                )}
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-200" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-3 bg-gradient-to-b from-primary-50/50 to-white text-slate-500">oder</span>
+                  </div>
+                </div>
+
                 <input
                   type="text"
                   value={state.postalCode}
-                  onChange={(e) => setState((prev) => ({ ...prev, postalCode: e.target.value }))}
-                  placeholder="Postleitzahl oder Stadt"
+                  onChange={(e) => setState((prev) => ({
+                    ...prev,
+                    postalCode: e.target.value,
+                    // Clear auto-detected location when typing
+                    latitude: undefined,
+                    longitude: undefined,
+                    locationName: undefined,
+                  }))}
+                  placeholder="Postleitzahl oder Stadt eingeben"
                   className="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all text-lg text-center"
-                  autoFocus
                 />
 
                 <motion.button
@@ -419,7 +543,13 @@ export default function QuizPage() {
 
                 <button
                   onClick={() => {
-                    setState((prev) => ({ ...prev, postalCode: '' }));
+                    setState((prev) => ({
+                      ...prev,
+                      postalCode: '',
+                      latitude: undefined,
+                      longitude: undefined,
+                      locationName: undefined,
+                    }));
                     loadResults();
                   }}
                   className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors"
