@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import { getHeroContent, getFAQItems, getContactCta, teamContent } from '../marketing-content';
+import { getHeroContent, getFAQItems, teamContent } from '../marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { FaqAccordion } from '../components/marketing/FaqAccordion';
-import { ContactCta } from '../components/marketing/ContactCta';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 
 // Force dynamic rendering to prevent database access during build
@@ -58,7 +57,6 @@ export default function HomePage() {
   // Get content for simplified homepage
   const heroContent = getHeroContent();
   const faqItems = getFAQItems();
-  const contactCta = getContactCta();
 
   // Structured Data for SEO
   const faqStructuredData = {
@@ -202,10 +200,6 @@ export default function HomePage() {
           <FaqAccordion items={faqItems} />
         </div>
 
-        {/* Contact CTA */}
-        <div className="px-4 sm:px-6 lg:px-8">
-          <ContactCta content={contactCta} />
-        </div>
       </main>
 
       {/* Structured Data for SEO */}
