@@ -2465,8 +2465,8 @@ export const blogPosts: BlogPost[] = [
     authorId: 'gregor-studlar',
     tags: ['Kassenzuschuss', 'Psychotherapie Kosten', 'Österreich', 'ÖGK', 'Krankenkasse'],
     featuredImage: {
-      src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=630&q=80',
-      alt: 'Krankenkassenkarte und Dokumente symbolisieren Gesundheitsfinanzierung',
+      src: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&h=630&q=80',
+      alt: 'Dokumente und Formulare für Kassenzuschuss Psychotherapie',
       width: 1200,
       height: 630,
     },
@@ -2501,7 +2501,7 @@ export const blogPosts: BlogPost[] = [
           'In Österreich haben Sie zwei Optionen: 1) Kassentherapeut (kostenlos, lange Wartezeit), 2) Wahltherapeut (Sie zahlen, bekommen Teilzuschuss zurück).',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1554224311-92f6b847e9fb?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Dokumente und Formulare für Krankenkassenanträge',
           caption: 'Die Entscheidung zwischen Kasse und Wahltherapeut hängt von Ihrer Situation ab.',
         },
