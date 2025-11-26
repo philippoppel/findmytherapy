@@ -356,7 +356,7 @@ export default function ForTherapistsPage() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {teamContent.members.map((member, index) => (
+            {teamContent.members.map((member) => (
               <motion.div
                 key={member.name}
                 variants={fadeInUp}

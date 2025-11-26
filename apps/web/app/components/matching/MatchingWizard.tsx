@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Globe, Wallet, Search, Lock, X, Check, Heart, Briefcase, CreditCard } from 'lucide-react';
@@ -301,11 +301,12 @@ export function MatchingWizard() {
                       {/* Standort (nur wenn nicht rein Online) */}
                       {formData.format !== 'ONLINE' && (
                         <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
-                          <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                          <label htmlFor="location-input" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                             <MapPin className="h-4 w-4 text-primary-600" />
                             Wo suchst du?
                           </label>
                           <input
+                            id="location-input"
                             type="text"
                             value={formData.postalCode || formData.city}
                             onChange={(e) => {
@@ -342,11 +343,11 @@ export function MatchingWizard() {
                   {currentStep === 3 && (
                     <div className="space-y-8">
                       {/* Sprachen */}
-                      <div>
-                        <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                      <div role="group" aria-labelledby="language-label">
+                        <div id="language-label" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                           <Globe className="h-4 w-4 text-primary-600" />
                           In welcher Sprache?
-                        </label>
+                        </div>
                         <div className="flex flex-wrap gap-2">
                           {LANGUAGES.map((lang) => {
                             const isSelected = formData.languages.includes(lang.id);
@@ -368,11 +369,11 @@ export function MatchingWizard() {
                       </div>
 
                       {/* Versicherung */}
-                      <div>
-                        <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+                      <div role="group" aria-labelledby="insurance-label">
+                        <div id="insurance-label" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                           <Wallet className="h-4 w-4 text-primary-600" />
                           Kostenübernahme
-                        </label>
+                        </div>
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                           {[
                             { id: 'ANY', label: 'Egal', Icon: Check },

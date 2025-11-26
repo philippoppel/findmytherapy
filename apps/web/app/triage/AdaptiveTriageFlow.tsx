@@ -130,8 +130,9 @@ function getRelevantBlogPosts(phase: string, limit: number = 2): BlogPost[] {
     .map(item => item.post);
 }
 
-// Helper: Get a random encouraging message
-function getEncouragingMessage(phase: string): string {
+// Helper: Get a random encouraging message (kept for potential future use)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function _getEncouragingMessage(phase: string): string {
   const messages = {
     phq: [
       'Du machst das toll.',
@@ -607,6 +608,7 @@ export function AdaptiveTriageFlow({
   }, []);
 
   // Get phase info (must be before early return for React Hooks rules)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const phaseInfo = useMemo(() => {
     if (currentPhase === 'phq2') {
       return {
@@ -666,6 +668,9 @@ export function AdaptiveTriageFlow({
       .slice(0, 4)
       .map(item => item.post);
   }, []);
+
+  // Get relevant blog posts for current phase (must be before early return for React Hooks rules)
+  const currentBlogPosts = useMemo(() => getRelevantBlogPosts(currentPhase, 2), [currentPhase]);
 
   // Summary view
   if (showSummary) {
@@ -1115,9 +1120,6 @@ export function AdaptiveTriageFlow({
     if (currentPhase === 'preferences') return EMOTIONAL_PHASE_TEXT.preferences;
     return EMOTIONAL_PHASE_TEXT.phq2;
   };
-
-  // Get relevant blog posts for current phase
-  const currentBlogPosts = useMemo(() => getRelevantBlogPosts(currentPhase, 2), [currentPhase]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">

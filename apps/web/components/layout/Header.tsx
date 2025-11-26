@@ -121,7 +121,7 @@ export function Header() {
 }
 
 function TherapistMenu({ dense = false }: { dense?: boolean }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
