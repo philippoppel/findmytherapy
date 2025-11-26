@@ -36,8 +36,18 @@ const staggerContainer = {
 export default function ForTherapistsPage() {
   return (
     <div className="min-h-screen">
+      {/* Back Link */}
+      <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-neutral-900"
+        >
+          ← Zurück zur Startseite
+        </Link>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="relative overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
             {/* Text Content */}
