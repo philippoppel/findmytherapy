@@ -23,6 +23,7 @@ import {
   AlertCircle,
   Euro,
   Clock,
+  Search,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
@@ -695,7 +696,7 @@ export default function QuizPage() {
             <div className="flex items-center justify-center gap-2 sm:gap-3">
               <Link
                 href="/therapists?matching=true"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
               >
                 <Sparkles className="w-4 h-4" />
                 <span className="hidden sm:inline">Geführte Suche</span>
@@ -703,9 +704,9 @@ export default function QuizPage() {
               </Link>
               <Link
                 href="/therapists"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
               >
-                <MapPin className="w-4 h-4" />
+                <Search className="w-4 h-4" />
                 <span className="hidden sm:inline">Selber filtern</span>
                 <span className="sm:hidden">Filter</span>
               </Link>

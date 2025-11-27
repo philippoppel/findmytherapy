@@ -21,7 +21,7 @@ function NavigationPills({ active }: { active: 'guided' | 'filter' | 'quiz' }) {
         className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
           active === 'guided'
             ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
         }`}
       >
         <Sparkles className="w-4 h-4" />
@@ -33,7 +33,7 @@ function NavigationPills({ active }: { active: 'guided' | 'filter' | 'quiz' }) {
         className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
           active === 'filter'
             ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
         }`}
       >
         <Search className="w-4 h-4" />
@@ -45,7 +45,7 @@ function NavigationPills({ active }: { active: 'guided' | 'filter' | 'quiz' }) {
         className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
           active === 'quiz'
             ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
         }`}
       >
         <BookOpen className="w-4 h-4" />
