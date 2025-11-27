@@ -147,6 +147,54 @@ export default async function TherapistsPage() {
           </div>
         </div>
       </footer>
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Psychotherapeut:innen in Österreich',
+            description: 'Verifizierte Psychotherapeut:innen mit verfügbaren Terminen in Österreich',
+            numberOfItems: therapists.length,
+            itemListElement: therapists.slice(0, 10).map((t, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              item: {
+                '@type': 'Person',
+                name: t.name,
+                jobTitle: 'Psychotherapeut:in',
+                url: `https://findmytherapy.net/therapists/${t.id}`,
+              },
+            })),
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'Therapeut:innen finden in Österreich',
+            description: 'Finde zertifizierte Psychotherapeut:innen in Österreich',
+            url: 'https://findmytherapy.net/therapists',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'FindMyTherapy',
+              url: 'https://findmytherapy.net',
+            },
+            breadcrumb: {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://findmytherapy.net' },
+                { '@type': 'ListItem', position: 2, name: 'Therapeut:innen', item: 'https://findmytherapy.net/therapists' },
+              ],
+            },
+          }),
+        }}
+      />
     </div>
   );
 }

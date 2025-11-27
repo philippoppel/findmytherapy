@@ -35,6 +35,52 @@ export const metadata: Metadata = {
   },
 };
 
+// MedicalWebPage structured data for SEO
+const triageStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Kostenlose Ersteinschätzung für mentale Gesundheit',
+  description:
+    'Validierte Fragebögen (PHQ-9, GAD-7, WHO-5) zur Selbsteinschätzung in unter 5 Minuten.',
+  url: 'https://findmytherapy.net/triage',
+  inLanguage: 'de-AT',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'FindMyTherapy',
+    url: 'https://findmytherapy.net',
+  },
+  about: [
+    { '@type': 'MedicalCondition', name: 'Depression' },
+    { '@type': 'MedicalCondition', name: 'Anxiety Disorder' },
+  ],
+  audience: {
+    '@type': 'PeopleAudience',
+    geographicArea: { '@type': 'Country', name: 'Österreich' },
+  },
+  specialty: 'Psychiatry',
+  lastReviewed: '2024-01-01',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://findmytherapy.net' },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Ersteinschätzung',
+        item: 'https://findmytherapy.net/triage',
+      },
+    ],
+  },
+};
+
 export default function TriageLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(triageStructuredData) }}
+      />
+    </>
+  );
 }
