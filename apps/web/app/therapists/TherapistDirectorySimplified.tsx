@@ -171,7 +171,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                   {/* Contextual CTA Banner after 6 therapists */}
                   {showBanner && (
                     <div className="col-span-full my-6">
-                      <div className="relative overflow-hidden rounded-3xl border border-primary-400/20 bg-gradient-to-br from-primary-600/20 via-primary-500/10 to-secondary-500/15 shadow-2xl">
+                      <div className="relative overflow-hidden rounded-3xl border border-primary-200 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 shadow-2xl">
                         <div className="flex flex-col lg:flex-row">
                           {/* Image Section */}
                           <div className="relative h-48 w-full lg:h-auto lg:w-1/3">
@@ -181,21 +181,21 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                               fill
                               className="object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-primary-950/90 lg:bg-gradient-to-r" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-transparent to-transparent lg:hidden" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-primary-900 lg:bg-gradient-to-r" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary-900 via-transparent to-transparent lg:hidden" />
                           </div>
 
                           {/* Content Section */}
                           <div className="relative flex flex-1 flex-col justify-center p-6 sm:p-8 lg:p-10">
                             {/* Background decoration */}
-                            <div className="pointer-events-none absolute inset-0 opacity-40">
-                              <div className="absolute -right-20 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-primary-400/30 blur-3xl" />
-                              <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-secondary-400/30 blur-3xl" />
+                            <div className="pointer-events-none absolute inset-0 opacity-30">
+                              <div className="absolute -right-20 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-primary-400 blur-3xl" />
+                              <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-secondary-400 blur-3xl" />
                             </div>
 
                             <div className="relative space-y-4">
                               {/* Badge */}
-                              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-primary-200 backdrop-blur-sm">
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
                                 <Sparkles className="h-3.5 w-3.5" />
                                 Personalisiert für dich
                               </span>
@@ -205,7 +205,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                                 <h3 className="text-2xl font-bold text-white sm:text-3xl">
                                   Zu viele Optionen?
                                 </h3>
-                                <p className="max-w-lg text-base text-white/80 sm:text-lg">
+                                <p className="max-w-lg text-base text-white/90 sm:text-lg">
                                   Beantworte ein paar Fragen und erhalte personalisierte Empfehlungen
                                   mit Passungs-Scores – abgestimmt auf deine Bedürfnisse.
                                 </p>
@@ -213,16 +213,16 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
                               {/* Features */}
                               <div className="flex flex-wrap gap-3 pt-2">
-                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
-                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/80">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
                                   2 Minuten
                                 </span>
-                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
-                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/80">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
                                   Wissenschaftlich fundiert
                                 </span>
-                                <span className="inline-flex items-center gap-1.5 text-sm text-white/70">
-                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
+                                <span className="inline-flex items-center gap-1.5 text-sm text-white/80">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
                                   100% kostenlos
                                 </span>
                               </div>
@@ -231,9 +231,9 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                               <div className="pt-4">
                                 <Link
                                   href="/quiz"
-                                  className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-primary-500/30 transition-all hover:from-primary-400 hover:to-primary-500 hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-0.5"
+                                  className="group inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-base font-bold text-primary-700 shadow-xl transition-all hover:bg-primary-50 hover:shadow-2xl hover:-translate-y-0.5"
                                 >
-                                  <Sparkles className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                                  <Sparkles className="h-5 w-5 text-primary-500 transition-transform group-hover:rotate-12" />
                                   Quiz starten
                                   <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                                 </Link>
