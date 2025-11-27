@@ -9,6 +9,12 @@ export const metadata: Metadata = {
     description:
       'Professionelle Microsite für Ihre Praxis. SEO-optimiert für maximale Sichtbarkeit.',
     type: 'website',
+    url: 'https://findmytherapy.net/for-therapists',
+    locale: 'de_AT',
+    siteName: 'FindMyTherapy',
+  },
+  alternates: {
+    canonical: 'https://findmytherapy.net/for-therapists',
   },
 };
 

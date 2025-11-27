@@ -119,7 +119,7 @@ function StoryDivider({ image, text, delay = 0 }: { image: string; text: string;
       <div className="relative h-48 sm:h-64">
         <Image
           src={image}
-          alt=""
+          alt={text}
           fill
           className="object-cover"
         />

@@ -43,7 +43,7 @@ export function TherapistsLayoutClient({ children }: Props) {
           <div className="absolute inset-0 h-[400px] sm:h-[450px]">
             <Image
               src="/images/search/matching-hero.jpg"
-              alt=""
+              alt="Therapeuten-Matching – finde die passende Unterstützung"
               fill
               className="object-cover"
               priority

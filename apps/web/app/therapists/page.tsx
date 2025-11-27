@@ -54,7 +54,7 @@ export default async function TherapistsPage() {
         <div className="absolute inset-0 h-[380px] sm:h-[420px]">
           <Image
             src="/images/search/suche-hero.jpg"
-            alt=""
+            alt="Therapeutensuche – professionelle Beratung finden"
             fill
             className="object-cover"
             priority

@@ -11,6 +11,12 @@ export const metadata: Metadata = {
     description:
       'Lerne das Team hinter FindMyTherapy kennen. Wir verbinden Menschen mit passender Unterstützung für mentale Gesundheit.',
     type: 'website',
+    url: 'https://findmytherapy.net/about',
+    locale: 'de_AT',
+    siteName: 'FindMyTherapy',
+  },
+  alternates: {
+    canonical: 'https://findmytherapy.net/about',
   },
 };
 

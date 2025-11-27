@@ -192,7 +192,7 @@ export function HeaderSearch() {
                     {therapist.image ? (
                       <Image
                         src={therapist.image}
-                        alt=""
+                        alt={`Profilbild von ${therapist.name}`}
                         width={40}
                         height={40}
                         className="h-10 w-10 rounded-full object-cover"
@@ -332,7 +332,7 @@ export function HeaderSearch() {
                       {therapist.image ? (
                         <Image
                           src={therapist.image}
-                          alt=""
+                          alt={`Profilbild von ${therapist.name}`}
                           width={48}
                           height={48}
                           className="h-12 w-12 rounded-full object-cover"

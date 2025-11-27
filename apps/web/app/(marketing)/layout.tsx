@@ -13,7 +13,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         <div className="fixed inset-0 -z-10">
           <Image
             src="/images/hero-bg.jpg"
-            alt=""
+            alt="Hintergrundbild – ruhige Naturszene"
             fill
             priority
             className="object-cover"

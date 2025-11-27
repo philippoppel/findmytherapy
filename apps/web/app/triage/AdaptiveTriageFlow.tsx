@@ -1190,7 +1190,7 @@ export function AdaptiveTriageFlow({
                     <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden shadow-lg">
                       <Image
                         src={currentPhase === 'phq2-to-gad2' ? PHASE_IMAGES.gad2 : PHASE_IMAGES.preferences}
-                        alt=""
+                        alt="Fortschritt in der Ersteinschätzung"
                         fill
                         className="object-cover"
                       />
@@ -1284,7 +1284,7 @@ export function AdaptiveTriageFlow({
                           <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
                             <Image
                               src={currentBlogPosts[0].featuredImage.src}
-                              alt=""
+                              alt={currentBlogPosts[0].featuredImage.alt || currentBlogPosts[0].title}
                               fill
                               className="object-cover"
                             />
@@ -1324,12 +1324,12 @@ export function AdaptiveTriageFlow({
                         <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden shadow-md">
                           <Image
                             src={PHASE_IMAGES.preferences}
-                            alt=""
+                            alt="Präferenzen auswählen"
                             fill
                             className="object-cover"
                           />
                         </div>
-                        <h3 className="text-2xl font-bold text-slate-900">{getEmotionalText().title}</h3>
+                        <h1 className="text-2xl font-bold text-slate-900">{getEmotionalText().title}</h1>
                         <p className="mt-2 text-slate-600">
                           {getEmotionalText().subtitle}
                         </p>
@@ -1409,7 +1409,7 @@ export function AdaptiveTriageFlow({
                           <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                             <Image
                               src={currentBlogPosts[0].featuredImage.src}
-                              alt=""
+                              alt={currentBlogPosts[0].featuredImage.alt || currentBlogPosts[0].title}
                               fill
                               className="object-cover"
                             />
@@ -1455,9 +1455,9 @@ export function AdaptiveTriageFlow({
                       </div>
                       <div className="flex items-start justify-center gap-4">
                         <div className="flex-1">
-                          <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
+                          <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">
                             {currentQuestion?.text}
-                          </h3>
+                          </h1>
                           <p className="mt-2 text-sm text-slate-500">
                             {getEmotionalText().subtitle}
                           </p>
@@ -1563,7 +1563,7 @@ export function AdaptiveTriageFlow({
                           <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
                             <Image
                               src={currentBlogPosts[1].featuredImage.src}
-                              alt=""
+                              alt={currentBlogPosts[1].featuredImage.alt || currentBlogPosts[1].title}
                               fill
                               className="object-cover"
                             />
