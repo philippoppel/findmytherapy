@@ -29,7 +29,7 @@ export function LanguageFilters({
 
   return (
     <div>
-      <p className="mb-3 text-sm font-medium text-white/90">Sprachen</p>
+      <p className="mb-3 text-sm font-medium text-slate-700">Sprachen</p>
       {/* Horizontal scrollable container - swipeable on mobile */}
       <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 pb-2">
         <div className="flex gap-2" style={{ width: 'max-content' }}>
@@ -42,8 +42,8 @@ export function LanguageFilters({
                 onClick={() => handleToggle(language)}
                 className={`rounded-lg border px-3 py-2 text-sm font-medium transition-all whitespace-nowrap ${
                   isSelected
-                    ? 'border-primary-400 bg-primary-500/30 text-white'
-                    : 'border-white/30 bg-white/10 text-white/80 hover:bg-white/15'
+                    ? 'border-primary-500 bg-primary-50 text-primary-700'
+                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                 }`}
                 aria-pressed={isSelected}
               >

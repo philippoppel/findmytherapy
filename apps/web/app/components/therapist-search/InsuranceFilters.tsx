@@ -37,10 +37,10 @@ export function InsuranceFilters({
             type="checkbox"
             checked={acceptsInsurance}
             onChange={(e) => onAcceptsInsuranceChange(e.target.checked)}
-            className="h-5 w-5 rounded border-white/30 bg-white/10 text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-0"
+            className="h-5 w-5 rounded border-slate-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-0"
           />
-          <span className="flex items-center gap-2 text-sm font-medium text-white/90">
-            <Shield className="h-4 w-4 text-primary-400" />
+          <span className="flex items-center gap-2 text-sm font-medium text-slate-700">
+            <Shield className="h-4 w-4 text-primary-500" />
             Akzeptiert Versicherung
           </span>
         </label>
@@ -49,7 +49,7 @@ export function InsuranceFilters({
       {/* Specific insurance providers */}
       {availableInsuranceProviders.length > 0 && (
         <div>
-          <p className="mb-3 text-sm font-medium text-white/90">Spezifische Versicherungen</p>
+          <p className="mb-3 text-sm font-medium text-slate-700">Spezifische Versicherungen</p>
           <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
             {availableInsuranceProviders.map((provider) => {
               const isSelected = insuranceProviders.has(provider);
@@ -59,9 +59,9 @@ export function InsuranceFilters({
                     type="checkbox"
                     checked={isSelected}
                     onChange={() => handleToggleProvider(provider)}
-                    className="h-4 w-4 rounded border-white/30 bg-white/10 text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-0"
+                    className="h-4 w-4 rounded border-slate-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-0"
                   />
-                  <span className="text-sm text-white/80 group-hover:text-white transition-colors">
+                  <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
                     {provider}
                   </span>
                 </label>

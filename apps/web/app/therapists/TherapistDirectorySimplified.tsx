@@ -132,10 +132,10 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Results */}
       {filteredTherapists.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-10 text-center">
           <div className="mx-auto max-w-md space-y-4">
-            <p className="text-base text-white/90 font-medium">Keine passenden Profile gefunden</p>
-            <p className="text-sm text-white/70">
+            <p className="text-base text-slate-900 font-medium">Keine passenden Profile gefunden</p>
+            <p className="text-sm text-slate-600">
               Passe die Filter an oder beantworte ein paar kurze Fragen, um
               personalisierte Empfehlungen zu erhalten.
             </p>
@@ -149,7 +149,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               </Link>
               <button
                 onClick={() => setFilteredTherapists(therapists)}
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/15"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50"
               >
                 Filter zurücksetzen
               </button>

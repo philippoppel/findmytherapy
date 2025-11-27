@@ -68,18 +68,18 @@ export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: Pric
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm font-medium text-white/90">Preisbereich</p>
+        <p className="text-sm font-medium text-slate-700">Preisbereich</p>
         <button
           type="button"
           onClick={handleToggle}
           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-            enabled ? 'bg-primary-500' : 'bg-white/20'
+            enabled ? 'bg-primary-500' : 'bg-slate-300'
           }`}
           aria-pressed={enabled}
           aria-label="Preisfilter aktivieren/deaktivieren"
         >
           <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
               enabled ? 'translate-x-6' : 'translate-x-1'
             }`}
           />
@@ -90,11 +90,11 @@ export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: Pric
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label htmlFor="price-min" className="mb-1 block text-xs text-white/70">
+              <label htmlFor="price-min" className="mb-1 block text-xs text-slate-500">
                 Min. €
               </label>
               <div className="relative">
-                <Euro className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
+                <Euro className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   id="price-min"
                   type="number"
@@ -102,18 +102,18 @@ export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: Pric
                   onChange={(e) => handleMinChange(e.target.value)}
                   min={priceRangeStats.min}
                   max={priceRangeStats.max}
-                  className="w-full rounded-lg border border-white/30 bg-white/10 py-2 pl-9 pr-3 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50"
+                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50"
                   placeholder={priceRangeStats.min.toString()}
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="price-max" className="mb-1 block text-xs text-white/70">
+              <label htmlFor="price-max" className="mb-1 block text-xs text-slate-500">
                 Max. €
               </label>
               <div className="relative">
-                <Euro className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
+                <Euro className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   id="price-max"
                   type="number"
@@ -121,14 +121,14 @@ export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: Pric
                   onChange={(e) => handleMaxChange(e.target.value)}
                   min={priceRangeStats.min}
                   max={priceRangeStats.max}
-                  className="w-full rounded-lg border border-white/30 bg-white/10 py-2 pl-9 pr-3 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50"
+                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50"
                   placeholder={priceRangeStats.max.toString()}
                 />
               </div>
             </div>
           </div>
 
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-slate-500">
             Verfügbar: {priceRangeStats.min}€ - {priceRangeStats.max}€ pro Sitzung
           </p>
         </div>

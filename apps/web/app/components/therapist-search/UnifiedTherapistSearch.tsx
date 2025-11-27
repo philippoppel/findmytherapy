@@ -124,7 +124,7 @@ export function UnifiedTherapistSearch({
       {/* Search Input */}
       <div className="relative mb-4">
         <Search
-          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60"
+          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
           aria-hidden
         />
         <input
@@ -132,14 +132,14 @@ export function UnifiedTherapistSearch({
           value={filters.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Suche nach Name oder Spezialisierung..."
-          className="w-full min-h-[48px] rounded-xl border border-white/30 bg-white/10 py-3 pl-10 pr-4 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur transition-colors"
+          className="w-full min-h-[48px] rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 transition-colors"
           aria-label="Therapeuten suchen"
         />
       </div>
 
       {/* Format Quick Filters */}
       <div className="mb-4">
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-white/70">Format</p>
+        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">Format</p>
         <div className="grid grid-cols-3 gap-2">
           {(Object.keys(FORMAT_LABELS) as FormatFilter[]).map((format) => {
             const isSelected = filters.formats.has(format);
@@ -150,8 +150,8 @@ export function UnifiedTherapistSearch({
                 onClick={() => handleFormatToggle(format)}
                 className={`rounded-lg border px-3 py-2.5 text-sm font-medium transition-all min-h-[44px] ${
                   isSelected
-                    ? 'border-primary-400 bg-primary-500/30 text-white'
-                    : 'border-white/30 bg-white/10 text-white/80 hover:bg-white/15'
+                    ? 'border-primary-500 bg-primary-50 text-primary-700'
+                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
                 }`}
                 aria-pressed={isSelected}
               >
@@ -172,13 +172,13 @@ export function UnifiedTherapistSearch({
         <button
           type="button"
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-          className="flex w-full items-center justify-between rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-white/15 min-h-[44px]"
+          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 min-h-[44px]"
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
             Erweiterte Filter
             {activeFilterCount() > 0 && (
-              <span className="rounded-full bg-primary-500 px-2 py-0.5 text-xs font-bold">
+              <span className="rounded-full bg-primary-500 text-white px-2 py-0.5 text-xs font-bold">
                 {activeFilterCount()}
               </span>
             )}
@@ -191,7 +191,7 @@ export function UnifiedTherapistSearch({
         </button>
 
         {showAdvancedFilters && (
-          <div className="mt-4 rounded-xl border border-white/20 bg-white/5 p-4 backdrop-blur">
+          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
             <AdvancedFiltersContent {...advancedFiltersProps} />
           </div>
         )}
@@ -202,13 +202,13 @@ export function UnifiedTherapistSearch({
         <button
           type="button"
           onClick={() => setIsFilterModalOpen(true)}
-          className="flex w-full items-center justify-between rounded-xl border border-white/30 bg-white/10 px-4 py-3 text-sm font-medium text-white transition-all hover:bg-white/15 min-h-[44px]"
+          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 min-h-[44px]"
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
             Erweiterte Filter
             {activeFilterCount() > 0 && (
-              <span className="rounded-full bg-primary-500 px-2 py-0.5 text-xs font-bold">
+              <span className="rounded-full bg-primary-500 text-white px-2 py-0.5 text-xs font-bold">
                 {activeFilterCount()}
               </span>
             )}
@@ -392,7 +392,7 @@ function AdvancedFiltersContent({
         onChange={onSpecializationsChange}
       />
 
-      <div className="border-t border-white/10 pt-6">
+      <div className="border-t border-slate-200 pt-6">
         <LanguageFilters
           availableLanguages={availableLanguages}
           selectedLanguages={filters.languages}
@@ -400,7 +400,7 @@ function AdvancedFiltersContent({
         />
       </div>
 
-      <div className="border-t border-white/10 pt-6">
+      <div className="border-t border-slate-200 pt-6">
         <PriceRangeFilter
           priceRange={filters.priceRange}
           onChange={onPriceRangeChange}
@@ -408,7 +408,7 @@ function AdvancedFiltersContent({
         />
       </div>
 
-      <div className="border-t border-white/10 pt-6">
+      <div className="border-t border-slate-200 pt-6">
         <InsuranceFilters
           availableInsuranceProviders={availableInsuranceProviders}
           acceptsInsurance={filters.acceptsInsurance}

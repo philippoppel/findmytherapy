@@ -31,7 +31,7 @@ export function SpecializationFilters({
 
   return (
     <div className={className}>
-      <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/70">
+      <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
         Spezialisierung
       </p>
       {/* Horizontal scrollable container - swipeable on mobile */}
@@ -46,8 +46,8 @@ export function SpecializationFilters({
                 onClick={() => handleToggle(specialization)}
                 className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all min-h-[36px] whitespace-nowrap ${
                   isSelected
-                    ? 'border-primary-400 bg-primary-500/30 text-white'
-                    : 'border-white/30 bg-white/10 text-white/80 hover:bg-white/15'
+                    ? 'border-primary-500 bg-primary-50 text-primary-700'
+                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                 }`}
                 aria-pressed={isSelected}
               >

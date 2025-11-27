@@ -121,7 +121,7 @@ export function LocationInput({
       <div className="relative">
         <div className="relative">
           <MapPin
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60"
+            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
             aria-hidden
           />
           <input
@@ -129,7 +129,7 @@ export function LocationInput({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Wien, 1010, Graz..."
-            className="w-full min-h-[44px] rounded-xl border border-white/30 bg-white/10 py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/40 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 backdrop-blur transition-colors"
+            className="w-full min-h-[44px] rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 transition-colors"
             aria-label="Standort eingeben"
             aria-describedby={locationError ? 'location-error' : undefined}
           />
@@ -140,7 +140,7 @@ export function LocationInput({
           type="button"
           onClick={handleGeolocation}
           disabled={geoStatus === 'loading'}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-white/15 active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
           aria-label="Meinen Standort verwenden"
         >
           {geoStatus === 'loading' ? (
@@ -159,20 +159,20 @@ export function LocationInput({
 
       {/* Location Error + Suggestions */}
       {locationError && value.trim() && (
-        <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
-          <p className="text-xs text-amber-200" id="location-error">
+        <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3">
+          <p className="text-xs text-amber-800" id="location-error">
             <span className="font-semibold">⚠️ {locationError}</span>
           </p>
           {suggestions.length > 0 && (
             <div className="mt-2">
-              <p className="mb-1.5 text-xs text-amber-200/80">Meintest du:</p>
+              <p className="mb-1.5 text-xs text-amber-700">Meintest du:</p>
               <div className="flex flex-wrap gap-1.5">
                 {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
                     type="button"
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-white hover:bg-white/20 transition-colors"
+                    className="rounded-lg bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800 hover:bg-amber-200 transition-colors"
                   >
                     {suggestion}
                   </button>
@@ -181,7 +181,7 @@ export function LocationInput({
             </div>
           )}
           {!nearbyOnly && (
-            <p className="mt-2 text-xs text-amber-200/70">
+            <p className="mt-2 text-xs text-amber-700">
               💡 Aktiviere &ldquo;Nur in meiner Nähe&rdquo; um nach Standort zu filtern
             </p>
           )}
@@ -190,8 +190,8 @@ export function LocationInput({
 
       {/* Geolocation Error */}
       {geoError && (
-        <div className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
-          <p className="text-xs text-amber-200">⚠️ {geoError}</p>
+        <div className="mt-3 rounded-lg border border-amber-300 bg-amber-50 p-3">
+          <p className="text-xs text-amber-800">⚠️ {geoError}</p>
         </div>
       )}
 
@@ -203,8 +203,8 @@ export function LocationInput({
           onClick={() => onNearbyOnlyChange(!nearbyOnly)}
           className={`flex w-full items-center justify-between rounded-xl border px-4 py-2.5 text-sm font-medium transition-all min-h-[44px] ${
             nearbyOnly
-              ? 'border-primary-400 bg-primary-500/20 text-white'
-              : 'border-white/30 bg-white/10 text-white/80 hover:bg-white/15'
+              ? 'border-primary-500 bg-primary-50 text-primary-700'
+              : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
           }`}
           aria-pressed={nearbyOnly}
           aria-label="Nur Therapeuten in meiner Nähe anzeigen"
@@ -212,7 +212,7 @@ export function LocationInput({
           <span>Nur in meiner Nähe</span>
           <div
             className={`h-5 w-9 rounded-full transition-colors ${
-              nearbyOnly ? 'bg-primary-500' : 'bg-white/30'
+              nearbyOnly ? 'bg-primary-500' : 'bg-slate-300'
             }`}
           >
             <div
@@ -226,7 +226,7 @@ export function LocationInput({
         {/* Radius Picker (only when nearby is active) */}
         {nearbyOnly && (
           <div>
-            <p className="mb-2 text-xs font-medium text-white/70">Umkreis:</p>
+            <p className="mb-2 text-xs font-medium text-slate-500">Umkreis:</p>
             <div className="grid grid-cols-4 gap-2">
               {RADIUS_OPTIONS.map((r) => (
                 <button
@@ -235,8 +235,8 @@ export function LocationInput({
                   onClick={() => onRadiusChange(r)}
                   className={`rounded-lg border px-3 py-2 text-xs font-semibold transition-all min-h-[40px] ${
                     radius === r
-                      ? 'border-primary-400 bg-primary-500/30 text-white'
-                      : 'border-white/30 bg-white/10 text-white/80 hover:bg-white/15'
+                      ? 'border-primary-500 bg-primary-50 text-primary-700'
+                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
                   }`}
                   aria-pressed={radius === r}
                   aria-label={`${r} Kilometer Umkreis`}
