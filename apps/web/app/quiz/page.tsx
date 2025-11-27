@@ -212,6 +212,22 @@ function getInitials(name: string | null | undefined): string {
 
 const QUIZ_STORAGE_KEY = 'fmt-quiz-state';
 
+// Zentrale Swipe-Konfiguration für bessere Mobile UX
+const SWIPE_CONFIG = {
+  mobile: {
+    threshold: 50,        // ~13% der Bildschirmbreite (statt 37%)
+    velocity: 200,        // Niedriger für leichteres Swipen
+    hardThreshold: 100,   // Sehr bewusster Swipe funktioniert immer
+    minHorizontalRatio: 2, // Muss 2x so horizontal wie vertikal sein
+  },
+  desktop: {
+    threshold: 80,
+    velocity: 300,
+    hardThreshold: 120,
+    minHorizontalRatio: 1.5,
+  },
+};
+
 export default function QuizPage() {
   const [state, setState] = useState<QuizState>(initialState);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
@@ -277,36 +293,36 @@ export default function QuizPage() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Swipe gesture state for therapists
+  // Swipe gesture state for therapists (angepasst an neue Schwellenwerte)
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 0, 200], [-8, 0, 8]); // Reduced rotation
-  const likeOpacity = useTransform(x, [0, 120], [0, 1]); // Higher threshold for indicator
-  const skipOpacity = useTransform(x, [-120, 0], [1, 0]);
+  const rotate = useTransform(x, [-150, 0, 150], [-10, 0, 10]);
+  const likeOpacity = useTransform(x, [0, 50], [0, 1]); // Zeigt früher Feedback
+  const skipOpacity = useTransform(x, [-50, 0], [1, 0]);
 
   // Swipe gesture state for topics
   const topicX = useMotionValue(0);
-  const topicRotate = useTransform(topicX, [-200, 0, 200], [-8, 0, 8]); // Reduced rotation
-  const topicYesOpacity = useTransform(topicX, [0, 120], [0, 1]);
-  const topicNoOpacity = useTransform(topicX, [-120, 0], [1, 0]);
+  const topicRotate = useTransform(topicX, [-150, 0, 150], [-10, 0, 10]);
+  const topicYesOpacity = useTransform(topicX, [0, 50], [0, 1]);
+  const topicNoOpacity = useTransform(topicX, [-50, 0], [1, 0]);
 
-  // Swipe handler with velocity check to prevent accidental swipes
-  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    // Mobile needs higher thresholds to prevent accidental swipes while scrolling
-    const threshold = isMobile ? 140 : 100;
-    const velocityThreshold = isMobile ? 600 : 400;
-    const hardThreshold = isMobile ? 200 : 150; // Very deliberate swipe always works
+  // Zentrale Swipe-Handler mit Horizontal-Ratio-Check
+  const createSwipeHandler = (onRight: () => void, onLeft: () => void) => {
+    return (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      const config = isMobile ? SWIPE_CONFIG.mobile : SWIPE_CONFIG.desktop;
 
-    const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
-    const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
+      // Ignoriere überwiegend vertikale Gesten (Scroll-Bewegungen)
+      const horizontalRatio = Math.abs(info.offset.x) / (Math.abs(info.offset.y) + 1);
+      if (horizontalRatio < config.minHorizontalRatio) return;
 
-    // Trigger if: (offset + velocity) OR very deliberate swipe
-    if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > hardThreshold) {
-      if (info.offset.x > 0) {
-        handleLike();
-      } else {
-        handleSkip();
+      const hasEnoughVelocity = Math.abs(info.velocity.x) > config.velocity;
+      const hasEnoughOffset = Math.abs(info.offset.x) > config.threshold;
+      const isHardSwipe = Math.abs(info.offset.x) > config.hardThreshold;
+
+      // Trigger wenn: (offset + velocity) ODER sehr bewusster Swipe
+      if ((hasEnoughOffset && hasEnoughVelocity) || isHardSwipe) {
+        info.offset.x > 0 ? onRight() : onLeft();
       }
-    }
+    };
   };
 
   // Reset swipe position when therapist changes
@@ -569,6 +585,9 @@ export default function QuizPage() {
     }));
   };
 
+  // Therapist swipe handler (muss nach handleLike/handleSkip definiert werden)
+  const handleTherapistDragEnd = createSwipeHandler(handleLike, handleSkip);
+
   const handleViewProfile = () => {
     if (!currentTherapist) return;
     window.open(`/therapists/${currentTherapist.therapist.id}`, '_blank');
@@ -696,32 +715,19 @@ export default function QuizPage() {
                 </span>
               </div>
 
-              {/* Topic Card - Swipeable with higher thresholds on mobile */}
+              {/* Topic Card - Swipeable mit optimierter Mobile UX */}
               <motion.div
                 drag={!showTip ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={isMobile ? 0.2 : 0.3}
+                dragElastic={0.3}
                 dragDirectionLock
-                onDragEnd={(e, info: PanInfo) => {
-                  // Higher thresholds on mobile to prevent accidental swipes
-                  const threshold = isMobile ? 140 : 100;
-                  const velocityThreshold = isMobile ? 600 : 400;
-                  const hardThreshold = isMobile ? 200 : 150;
-
-                  const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
-                  const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
-
-                  if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > hardThreshold) {
-                    if (info.offset.x > 0) {
-                      handleTopicAnswer('yes');
-                    } else {
-                      handleTopicAnswer('no');
-                    }
-                  }
-                }}
-                whileDrag={{ scale: 1.01 }}
+                onDragEnd={createSwipeHandler(
+                  () => handleTopicAnswer('yes'),
+                  () => handleTopicAnswer('no')
+                )}
+                whileDrag={{ scale: 0.98, opacity: 0.95 }}
                 style={{ x: topicX, rotate: topicRotate }}
-                className="bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden relative select-none">
+                className="bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden relative select-none touch-pan-y">
 
                 {/* Swipe Indicators */}
                 <motion.div
@@ -1174,15 +1180,16 @@ export default function QuizPage() {
               transition={{ duration: 0.3 }}
               className="space-y-4"
             >
-              {/* Swipeable Therapist Card - Higher thresholds on mobile */}
+              {/* Swipeable Therapist Card - optimierte Mobile UX */}
               <motion.div
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={isMobile ? 0.2 : 0.3}
+                dragElastic={0.3}
                 dragDirectionLock
-                onDragEnd={handleDragEnd}
+                onDragEnd={handleTherapistDragEnd}
+                whileDrag={{ scale: 0.98, opacity: 0.95 }}
                 style={{ x, rotate }}
-                className="relative cursor-grab active:cursor-grabbing"
+                className="relative cursor-grab active:cursor-grabbing touch-pan-y"
               >
                 {/* Swipe Indicators */}
                 <motion.div
@@ -1374,21 +1381,48 @@ export default function QuizPage() {
                 <ChevronRight className="w-4 h-4" />
               </button>
 
-              {/* Blog Posts - shown during therapist browsing */}
+              {/* Blog Posts - vertikal auf Mobile, horizontal auf Desktop */}
               {relevantBlogPosts.length > 0 && (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-primary-500" />
                     <span className="text-sm font-medium text-slate-700">Passende Artikel für dich</span>
                   </div>
-                  <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory">
+                  {/* Mobile: Einfache vertikale Liste (kein Scroll-Konflikt) */}
+                  <div className="space-y-2 sm:hidden">
+                    {relevantBlogPosts.slice(0, 2).map((post) => (
+                      <Link
+                        key={post.slug}
+                        href={`/blog/${post.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
+                      >
+                        <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+                          <Image
+                            src={post.featuredImage.src}
+                            alt=""
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-slate-900 text-sm line-clamp-2">{post.title}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{post.readingTime}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      </Link>
+                    ))}
+                  </div>
+                  {/* Desktop: Horizontaler Scroll */}
+                  <div className="hidden sm:flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
                     {relevantBlogPosts.map((post) => (
                       <Link
                         key={post.slug}
                         href={`/blog/${post.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow snap-start"
+                        className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow"
                       >
                         <div className="relative h-32">
                           <Image
