@@ -3,6 +3,7 @@ import { getHeroContent, getFAQItems, teamContent } from '../marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { FaqAccordion } from '../components/marketing/FaqAccordion';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
+import { TestimonialsSection } from '../components/marketing/TestimonialsSection';
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic';
@@ -194,6 +195,9 @@ export default function HomePage() {
 
         {/* On-page Therapist Directory */}
         <TherapistFinderSection />
+
+        {/* Testimonials Section */}
+        <TestimonialsSection />
 
         {/* FAQ Section */}
         <div className="px-2 sm:px-3 lg:px-4">
