@@ -29,9 +29,21 @@ import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 
+// Fallback Problem Areas für den Fall dass der Import fehlschlägt
+const FALLBACK_TOPICS = [
+  { id: 'angst', label: 'Angst & Panik', image: '/images/topics/angst.jpg' },
+  { id: 'depression', label: 'Niedergeschlagenheit', image: '/images/topics/depression.jpg' },
+  { id: 'stress', label: 'Stress & Burnout', image: '/images/topics/stress.jpg' },
+  { id: 'trauma', label: 'Trauma & PTBS', image: '/images/topics/trauma.jpg' },
+  { id: 'beziehung', label: 'Beziehungen', image: '/images/topics/beziehung.jpg' },
+  { id: 'selbstwert', label: 'Selbstwert', image: '/images/topics/selbstwert.jpg' },
+];
+
 // Reduzierte Kernthemen (6 wichtigste)
-const CORE_TOPICS = PROBLEM_AREAS.filter(topic =>
-  ['angst', 'depression', 'stress', 'beziehung', 'selbstwert', 'trauma'].includes(topic.id)
+const CORE_TOPIC_IDS = ['angst', 'depression', 'stress', 'beziehung', 'selbstwert', 'trauma'];
+const CORE_TOPICS = (PROBLEM_AREAS?.length > 0
+  ? PROBLEM_AREAS.filter(topic => CORE_TOPIC_IDS.includes(topic.id))
+  : FALLBACK_TOPICS
 );
 
 // Einfühlsame Fragen zu jedem Thema
