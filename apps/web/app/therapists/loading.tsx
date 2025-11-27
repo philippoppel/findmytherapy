@@ -1,87 +1,115 @@
-import { Search } from 'lucide-react';
-
-// Skeleton für Therapeuten-Karten
-function TherapistCardSkeleton() {
-  return (
-    <div className="animate-pulse rounded-2xl border border-white/10 bg-white/5 p-4">
-      <div className="flex gap-4">
-        {/* Avatar Skeleton */}
-        <div className="h-16 w-16 flex-shrink-0 rounded-xl bg-white/10" />
-        <div className="flex-1 space-y-2">
-          {/* Name */}
-          <div className="h-5 w-32 rounded bg-white/10" />
-          {/* Title */}
-          <div className="h-4 w-48 rounded bg-white/10" />
-          {/* Tags */}
-          <div className="flex gap-2">
-            <div className="h-6 w-20 rounded-full bg-white/10" />
-            <div className="h-6 w-16 rounded-full bg-white/10" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { Home, Search, Sparkles, BookOpen, ClipboardCheck } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TherapistsLoading() {
   return (
-    <div className="marketing-theme bg-surface text-default">
-      {/* Header - same as real page */}
-      <section className="relative isolate overflow-hidden px-2 py-16 sm:px-3 lg:px-4">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute left-1/2 top-12 h-72 w-72 -translate-x-1/2 rounded-full bg-primary-100/40 blur-3xl" />
-          <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-secondary-100/50 blur-3xl" />
-        </div>
-        <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-10">
-          <div className="relative overflow-hidden rounded-3xl border border-divider bg-surface-1/95 p-8 shadow-soft-xl sm:p-12">
-            <div className="relative space-y-8 text-center md:text-left">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-800">
-                <Search className="h-4 w-4" />
-                Direkte Suche
-              </span>
-              <div className="space-y-4">
-                <h1 className="text-4xl font-semibold tracking-tight text-neutral-950 md:text-5xl">
-                  Alle Therapeut:innen durchsuchen
-                </h1>
-                <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted md:mx-0">
-                  Filtere nach deinen Kriterien und finde passende Therapeut:innen in unserem
-                  kuratierten Netzwerk.
-                </p>
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero Section with Background - Static */}
+      <div className="relative">
+        <div className="absolute inset-0 h-[380px] sm:h-[420px] bg-gradient-to-b from-primary-900 via-primary-800 to-slate-50" />
+
+        <div className="relative z-10">
+          {/* Top Navigation */}
+          <nav className="flex items-center justify-between px-4 sm:px-6 pt-6">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+            >
+              <Home className="w-5 h-5" />
+              <span className="font-medium">Startseite</span>
+            </Link>
+            <Link
+              href="/triage"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
+            >
+              <ClipboardCheck className="w-4 h-4" />
+              <span className="hidden sm:inline">Wissenschaftlicher Test</span>
+            </Link>
+          </nav>
+
+          {/* Hero Content */}
+          <div className="text-center px-4 pt-8 pb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-6">
+              <Search className="w-4 h-4" />
+              Direkte Suche
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Alle Therapeut:innen
+              <br className="hidden sm:block" />
+              <span className="text-primary-200"> durchsuchen</span>
+            </h1>
+            <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10">
+              Filtere nach deinen Kriterien und finde passende
+              Therapeut:innen in unserem kuratierten Netzwerk.
+            </p>
+
+            {/* Navigation Pills - Static */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-3">
+              <div className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium bg-black/40 text-white backdrop-blur-md border border-white/20">
+                <Sparkles className="w-4 h-4" />
+                <span className="hidden sm:inline">Geführte Suche</span>
+                <span className="sm:hidden">Geführt</span>
+              </div>
+              <div className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium bg-white text-primary-700 shadow-lg">
+                <Search className="w-4 h-4" />
+                <span className="hidden sm:inline">Selber filtern</span>
+                <span className="sm:hidden">Filter</span>
+              </div>
+              <div className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium bg-black/40 text-white backdrop-blur-md border border-white/20">
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Schnell-Quiz</span>
+                <span className="sm:hidden">Quiz</span>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Skeleton Grid */}
-      <section className="relative pb-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-950 via-primary-950 to-neutral-900 p-8 shadow-soft-xl sm:p-10">
+      {/* Main Content - Skeleton */}
+      <main className="relative z-10 -mt-8 px-4 pb-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
             {/* Header Skeleton */}
-            <div className="relative flex flex-wrap items-center justify-between gap-6 pb-8">
-              <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl font-semibold text-white">
-                  Ausgewählte Pilot-Therapeut:innen
-                </h2>
-                <p className="text-base text-white/80">
-                  Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails
-                </p>
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100 mb-6">
+              <div className="space-y-2">
+                <div className="h-6 w-48 bg-slate-200 rounded animate-pulse" />
+                <div className="h-4 w-64 bg-slate-100 rounded animate-pulse" />
               </div>
-              <div className="flex items-center gap-2 text-white/60">
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
-                <span className="text-sm">Lade Therapeut:innen...</span>
-              </div>
+              <div className="h-8 w-24 bg-primary-100 rounded-full animate-pulse" />
             </div>
 
-            {/* Cards Grid Skeleton */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <TherapistCardSkeleton key={i} />
-              ))}
+            {/* Grid Skeleton */}
+            <div className="grid lg:grid-cols-[320px_1fr] gap-6 lg:gap-8">
+              {/* Sidebar Skeleton */}
+              <div className="space-y-4">
+                <div className="h-12 bg-slate-100 rounded-xl animate-pulse" />
+                <div className="h-24 bg-slate-100 rounded-xl animate-pulse" />
+                <div className="h-12 bg-slate-100 rounded-xl animate-pulse" />
+                <div className="h-32 bg-slate-100 rounded-xl animate-pulse" />
+              </div>
+
+              {/* Cards Skeleton */}
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-slate-50 rounded-2xl p-4 animate-pulse">
+                    <div className="flex gap-4 mb-3">
+                      <div className="w-16 h-16 bg-slate-200 rounded-xl" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-5 bg-slate-200 rounded w-3/4" />
+                        <div className="h-4 bg-slate-100 rounded w-1/2" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-3 bg-slate-100 rounded" />
+                      <div className="h-3 bg-slate-100 rounded w-5/6" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      </main>
     </div>
   );
 }

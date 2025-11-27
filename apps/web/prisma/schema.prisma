@@ -227,6 +227,7 @@ model TherapistProfile {
   ageGroups        String[]        @default([])
   acceptedInsurance String[]       @default([])
   privatePractice  Boolean         @default(false)
+  gender           String?         // "male", "female", "diverse"
 
   // Rating & Reviews
   rating           Float?          @default(0)

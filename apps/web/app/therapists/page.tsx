@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Home, Sparkles, Search, BookOpen, ClipboardCheck } from 'lucide-react';
+import { Home, Sparkles, ClipboardCheck, Search } from 'lucide-react';
 
 import { TherapistDirectory } from './TherapistDirectorySimplified';
 import { getTherapistCards } from './getTherapistCards';
+import { NavigationPills } from './SearchModeSelector';
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic';
@@ -98,32 +99,7 @@ export default async function TherapistsPage() {
             </p>
 
             {/* Navigation Pills */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3">
-              <Link
-                href="/therapists?matching=true"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden sm:inline">Geführte Suche</span>
-                <span className="sm:hidden">Geführt</span>
-              </Link>
-              <Link
-                href="/therapists"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-white text-primary-700 shadow-lg"
-              >
-                <Search className="w-4 h-4" />
-                <span className="hidden sm:inline">Selber filtern</span>
-                <span className="sm:hidden">Filter</span>
-              </Link>
-              <Link
-                href="/quiz"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span className="hidden sm:inline">Schnell-Quiz</span>
-                <span className="sm:hidden">Quiz</span>
-              </Link>
-            </div>
+            <NavigationPills active="filter" />
           </div>
         </div>
       </div>

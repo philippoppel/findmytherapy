@@ -60,6 +60,7 @@ const getCachedTherapists = unstable_cache(
       acceptedInsurance: true,
       ageGroups: true,
       modalities: true,
+      gender: true,
       user: {
         select: {
           firstName: true,
@@ -82,7 +83,7 @@ const getCachedTherapists = unstable_cache(
     return { total, profiles };
   },
   ['therapist-cards'],
-  { revalidate: 60, tags: ['therapists'] } // Cache for 60 seconds
+  { revalidate: 300, tags: ['therapists'] } // Cache for 5 minutes
 );
 
 export async function getTherapistCards(
@@ -139,6 +140,7 @@ function transformProfileToCard(profile: TherapistProfileWithUser): TherapistCar
     acceptedInsurance: profile.acceptedInsurance ?? [],
     ageGroups: profile.ageGroups ?? [],
     modalities: profile.modalities ?? [],
+    gender: normalizeGender(profile.gender),
   };
 }
 
@@ -200,4 +202,15 @@ function buildLocationLabel(city: string | null, online: boolean) {
     return `${city} · Online`;
   }
   return city;
+}
+
+function normalizeGender(
+  value: string | null | undefined,
+): TherapistCard['gender'] {
+  if (!value) return null;
+  const lower = value.toLowerCase();
+  if (lower === 'male' || lower === 'männlich') return 'male';
+  if (lower === 'female' || lower === 'weiblich') return 'female';
+  if (lower === 'diverse' || lower === 'divers') return 'diverse';
+  return null;
 }

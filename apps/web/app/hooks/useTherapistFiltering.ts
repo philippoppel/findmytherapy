@@ -14,6 +14,8 @@ export type SortOption =
   | 'rating'
   | 'availability';
 
+export type GenderFilter = 'male' | 'female' | 'any';
+
 export type TherapistFilters = {
   searchQuery: string;
   location: string;
@@ -27,6 +29,7 @@ export type TherapistFilters = {
   acceptsInsurance: boolean;
   insuranceProviders: Set<string>;
   sortBy: SortOption;
+  gender: GenderFilter;
 };
 
 export type UseTherapistFilteringOptions = {
@@ -49,6 +52,7 @@ export type UseTherapistFilteringReturn = {
   setAcceptsInsurance: (accepts: boolean) => void;
   setInsuranceProviders: (providers: Set<string>) => void;
   setSortBy: (sortBy: SortOption) => void;
+  setGender: (gender: GenderFilter) => void;
   resetFilters: () => void;
 
   // Results
@@ -119,6 +123,7 @@ export function useTherapistFiltering({
     initialFilters?.insuranceProviders ?? new Set(),
   );
   const [sortBy, setSortBy] = useState<SortOption>(initialFilters?.sortBy ?? 'relevance');
+  const [gender, setGender] = useState<GenderFilter>(initialFilters?.gender ?? 'any');
 
   // Debounce expensive inputs
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 300);
@@ -241,6 +246,13 @@ export function useTherapistFiltering({
         }
       }
 
+      // 9. Gender filter
+      if (gender !== 'any') {
+        if (therapist.gender !== gender) {
+          return false;
+        }
+      }
+
       return true;
     });
   }, [
@@ -255,6 +267,7 @@ export function useTherapistFiltering({
     priceRange,
     acceptsInsurance,
     insuranceProviders,
+    gender,
   ]);
 
   // Sort therapists
@@ -383,7 +396,8 @@ export function useTherapistFiltering({
       languages.size > 0 ||
       priceRange !== null ||
       acceptsInsurance ||
-      insuranceProviders.size > 0
+      insuranceProviders.size > 0 ||
+      gender !== 'any'
     );
   }, [
     debouncedSearchQuery,
@@ -394,6 +408,7 @@ export function useTherapistFiltering({
     priceRange,
     acceptsInsurance,
     insuranceProviders,
+    gender,
   ]);
 
   // Reset all filters
@@ -410,6 +425,7 @@ export function useTherapistFiltering({
     setAcceptsInsurance(false);
     setInsuranceProviders(new Set());
     setSortBy('relevance');
+    setGender('any');
   };
 
   return {
@@ -426,6 +442,7 @@ export function useTherapistFiltering({
       acceptsInsurance,
       insuranceProviders,
       sortBy,
+      gender,
     },
     setSearchQuery,
     setLocation,
@@ -439,6 +456,7 @@ export function useTherapistFiltering({
     setAcceptsInsurance,
     setInsuranceProviders,
     setSortBy,
+    setGender,
     resetFilters,
     filteredTherapists: sortedTherapists,
     totalCount: therapists.length,

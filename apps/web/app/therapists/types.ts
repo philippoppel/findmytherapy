@@ -30,4 +30,5 @@ export type TherapistCard = {
   acceptedInsurance: string[];
   ageGroups: string[];
   modalities: string[];
+  gender?: 'male' | 'female' | 'diverse' | null;
 };

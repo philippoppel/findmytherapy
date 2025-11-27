@@ -1,75 +1,37 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { useEffect, ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Home, Sparkles, Search, BookOpen, ClipboardCheck } from 'lucide-react';
+import { Home, Sparkles, ClipboardCheck } from 'lucide-react';
 import { useMatchingWizard } from '../components/matching/MatchingWizardContext';
 import { MatchingWizard } from '../components/matching/MatchingWizard';
 import { MatchingResults } from '../components/matching/MatchingResults';
+import { NavigationPills } from './SearchModeSelector';
 
 interface Props {
   children: ReactNode;
 }
 
-// Navigation Pills Component
-function NavigationPills({ active }: { active: 'guided' | 'filter' | 'quiz' }) {
-  return (
-    <div className="flex items-center justify-center gap-2 sm:gap-3">
-      <Link
-        href="/therapists?matching=true"
-        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-          active === 'guided'
-            ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
-        }`}
-      >
-        <Sparkles className="w-4 h-4" />
-        <span className="hidden sm:inline">Geführte Suche</span>
-        <span className="sm:hidden">Geführt</span>
-      </Link>
-      <Link
-        href="/therapists"
-        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-          active === 'filter'
-            ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
-        }`}
-      >
-        <Search className="w-4 h-4" />
-        <span className="hidden sm:inline">Selber filtern</span>
-        <span className="sm:hidden">Filter</span>
-      </Link>
-      <Link
-        href="/quiz"
-        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-          active === 'quiz'
-            ? 'bg-white text-primary-700 shadow-lg'
-            : 'bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20'
-        }`}
-      >
-        <BookOpen className="w-4 h-4" />
-        <span className="hidden sm:inline">Schnell-Quiz</span>
-        <span className="sm:hidden">Quiz</span>
-      </Link>
-    </div>
-  );
-}
-
 export function TherapistsLayoutClient({ children }: Props) {
-  const [isMatchingMode, setIsMatchingMode] = useState(false);
-  const { openWizard, isOpen, showResults } = useMatchingWizard();
+  const searchParams = useSearchParams();
+  const isMatchingMode = searchParams.get('matching') === 'true';
+  const { openWizard, closeWizard, isOpen, showResults } = useMatchingWizard();
 
-  // Check URL for ?matching=true
+  // Open wizard when in matching mode, close when leaving
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('matching') === 'true') {
-      setIsMatchingMode(true);
+    if (isMatchingMode) {
       if (!isOpen && !showResults) {
         openWizard();
       }
+    } else {
+      // Reset wizard state when leaving matching mode
+      if (isOpen || showResults) {
+        closeWizard();
+      }
     }
-  }, [openWizard, isOpen, showResults]);
+  }, [isMatchingMode, openWizard, closeWizard, isOpen, showResults]);
 
   // If matching mode, show dedicated matching UI
   if (isMatchingMode) {
@@ -132,7 +94,7 @@ export function TherapistsLayoutClient({ children }: Props) {
         </div>
 
         {/* Main Content - Wizard */}
-        <main className="relative z-10 -mt-16 px-4 pb-12">
+        <main className="relative z-10 -mt-4 px-4 pb-12">
           <div className="max-w-4xl mx-auto">
             {/* Glassmorphism Container */}
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8">
@@ -143,7 +105,7 @@ export function TherapistsLayoutClient({ children }: Props) {
                     <Sparkles className="w-10 h-10 text-primary-500" />
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">
-                    Bereit? Los geht's!
+                    Bereit? Los geht&apos;s!
                   </h2>
                   <p className="text-slate-600 max-w-md mx-auto">
                     In wenigen Schritten findest du Therapeut:innen,
@@ -192,11 +154,5 @@ export function TherapistsLayoutClient({ children }: Props) {
   }
 
   // Normal mode: just show children (the therapists page handles its own layout)
-  return (
-    <>
-      <MatchingWizard />
-      <MatchingResults />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

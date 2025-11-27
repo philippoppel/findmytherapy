@@ -7,6 +7,7 @@ import {
   useTherapistFiltering,
   type FormatFilter,
   type TherapistFilters,
+  type GenderFilter as GenderFilterType,
 } from '../../hooks/useTherapistFiltering';
 import type { Coordinates } from '../../therapists/location-data';
 import { LocationInput } from './LocationInput';
@@ -15,6 +16,7 @@ import { LanguageFilters } from './LanguageFilters';
 import { PriceRangeFilter } from './PriceRangeFilter';
 import { InsuranceFilters } from './InsuranceFilters';
 import { SortOptions } from './SortOptions';
+import { GenderFilter } from './GenderFilter';
 
 export type UnifiedTherapistSearchProps = {
   therapists: TherapistCard[];
@@ -70,6 +72,7 @@ export function UnifiedTherapistSearch({
     setAcceptsInsurance,
     setInsuranceProviders,
     setSortBy,
+    setGender,
     resetFilters,
     filteredTherapists,
     totalCount,
@@ -118,6 +121,7 @@ export function UnifiedTherapistSearch({
     onPriceRangeChange: setPriceRange,
     onAcceptsInsuranceChange: setAcceptsInsurance,
     onInsuranceProvidersChange: setInsuranceProviders,
+    onGenderChange: setGender,
   };
 
   return (
@@ -357,6 +361,7 @@ type AdvancedFiltersContentProps = {
   onPriceRangeChange: (range: { min: number; max: number } | null) => void;
   onAcceptsInsuranceChange: (accepts: boolean) => void;
   onInsuranceProvidersChange: (providers: Set<string>) => void;
+  onGenderChange: (gender: GenderFilterType) => void;
 };
 
 function AdvancedFiltersContent({
@@ -374,6 +379,7 @@ function AdvancedFiltersContent({
   onPriceRangeChange,
   onAcceptsInsuranceChange,
   onInsuranceProvidersChange,
+  onGenderChange,
 }: AdvancedFiltersContentProps) {
   return (
     <div className="space-y-6">
@@ -386,6 +392,10 @@ function AdvancedFiltersContent({
         radius={filters.radius}
         onRadiusChange={onRadiusChange}
       />
+
+      <div className="border-t border-slate-200 pt-6">
+        <GenderFilter gender={filters.gender} onChange={onGenderChange} />
+      </div>
 
       <SpecializationFilters
         availableSpecializations={availableSpecializations}

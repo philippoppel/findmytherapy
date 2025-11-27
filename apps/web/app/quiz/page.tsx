@@ -23,8 +23,8 @@ import {
   AlertCircle,
   Euro,
   Clock,
-  Search,
 } from 'lucide-react';
+import { NavigationPills } from '@/app/therapists/SearchModeSelector';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
@@ -693,29 +693,7 @@ export default function QuizPage() {
             </p>
 
             {/* Navigation Pills */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3">
-              <Link
-                href="/therapists?matching=true"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden sm:inline">Geführte Suche</span>
-                <span className="sm:hidden">Geführt</span>
-              </Link>
-              <Link
-                href="/therapists"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-black/40 text-white hover:bg-black/50 backdrop-blur-md border border-white/20"
-              >
-                <Search className="w-4 h-4" />
-                <span className="hidden sm:inline">Selber filtern</span>
-                <span className="sm:hidden">Filter</span>
-              </Link>
-              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-white text-primary-700 shadow-lg">
-                <BookOpen className="w-4 h-4" />
-                <span className="hidden sm:inline">Schnell-Quiz</span>
-                <span className="sm:hidden">Quiz</span>
-              </div>
-            </div>
+            <NavigationPills active="quiz" />
           </div>
         </div>
       </div>
