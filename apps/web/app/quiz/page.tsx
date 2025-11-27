@@ -289,17 +289,18 @@ export default function QuizPage() {
   const topicYesOpacity = useTransform(topicX, [0, 120], [0, 1]);
   const topicNoOpacity = useTransform(topicX, [-120, 0], [1, 0]);
 
-  // Swipe handler with velocity check to prevent accidental swipes (desktop only)
+  // Swipe handler with velocity check to prevent accidental swipes
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isMobile) return; // No swipe on mobile
+    // Mobile needs higher thresholds to prevent accidental swipes while scrolling
+    const threshold = isMobile ? 140 : 100;
+    const velocityThreshold = isMobile ? 600 : 400;
+    const hardThreshold = isMobile ? 200 : 150; // Very deliberate swipe always works
 
-    const threshold = 120; // Higher threshold
-    const velocityThreshold = 500; // Require some speed
     const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
     const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
 
-    // Only trigger if both offset AND velocity are sufficient, OR offset is very large
-    if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > 180) {
+    // Trigger if: (offset + velocity) OR very deliberate swipe
+    if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > hardThreshold) {
       if (info.offset.x > 0) {
         handleLike();
       } else {
@@ -682,71 +683,67 @@ export default function QuizPage() {
               transition={{ duration: 0 }}
               className="space-y-6"
             >
-              {/* Swipe Hint - Only on desktop */}
-              {!isMobile && (
-                <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3">
-                  <span className="flex items-center gap-1">
-                    <X className="w-4 h-4 text-slate-400" />
-                    ← Nein
-                  </span>
-                  <span className="text-slate-300">|</span>
-                  <span className="flex items-center gap-1">
-                    Ja →
-                    <Heart className="w-4 h-4 text-primary-400" />
-                  </span>
-                </div>
-              )}
+              {/* Swipe Hint */}
+              <div className="flex items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-400 mb-2 sm:mb-3">
+                <span className="flex items-center gap-1">
+                  <X className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400" />
+                  ← Nein
+                </span>
+                <span className="text-slate-300">|</span>
+                <span className="flex items-center gap-1">
+                  Ja →
+                  <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-primary-400" />
+                </span>
+              </div>
 
-              {/* Topic Card - Swipeable only on desktop */}
+              {/* Topic Card - Swipeable with higher thresholds on mobile */}
               <motion.div
-                drag={!showTip && !isMobile ? "x" : false}
+                drag={!showTip ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.3}
+                dragElastic={isMobile ? 0.2 : 0.3}
                 dragDirectionLock
                 onDragEnd={(e, info: PanInfo) => {
-                  if (isMobile) return; // No swipe on mobile
-                  const threshold = 100;
-                  const velocityThreshold = 400;
+                  // Higher thresholds on mobile to prevent accidental swipes
+                  const threshold = isMobile ? 140 : 100;
+                  const velocityThreshold = isMobile ? 600 : 400;
+                  const hardThreshold = isMobile ? 200 : 150;
+
                   const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
                   const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
 
-                  if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > 150) {
-                    if (info.offset.x > threshold) {
+                  if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > hardThreshold) {
+                    if (info.offset.x > 0) {
                       handleTopicAnswer('yes');
-                    } else if (info.offset.x < -threshold) {
+                    } else {
                       handleTopicAnswer('no');
                     }
                   }
                 }}
                 whileDrag={{ scale: 1.01 }}
-                style={{ x: isMobile ? 0 : topicX, rotate: isMobile ? 0 : topicRotate }}
+                style={{ x: topicX, rotate: topicRotate }}
                 className="bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden relative select-none">
 
-                {/* Swipe Indicators - Desktop only */}
-                {!isMobile && (
-                  <>
-                    <motion.div
-                      style={{ opacity: topicYesOpacity }}
-                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                    >
-                      <div className="bg-primary-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-primary-400 shadow-xl">
-                        <span className="text-2xl font-bold flex items-center gap-2">
-                          <Heart className="w-7 h-7 fill-current" /> Ja
-                        </span>
-                      </div>
-                    </motion.div>
-                    <motion.div
-                      style={{ opacity: topicNoOpacity }}
-                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                    >
-                      <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
-                        <span className="text-2xl font-bold flex items-center gap-2">
-                          <X className="w-7 h-7" /> Nein
-                        </span>
-                      </div>
-                    </motion.div>
-                  </>
-                )}
+                {/* Swipe Indicators */}
+                <motion.div
+                  style={{ opacity: topicYesOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-primary-500/90 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl rotate-[-15deg] border-3 sm:border-4 border-primary-400 shadow-xl">
+                    <span className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                      <Heart className="w-5 h-5 sm:w-7 sm:h-7 fill-current" /> Ja
+                    </span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  style={{ opacity: topicNoOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-slate-500/90 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl rotate-[15deg] border-3 sm:border-4 border-slate-400 shadow-xl">
+                    <span className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                      <X className="w-5 h-5 sm:w-7 sm:h-7" /> Nein
+                    </span>
+                  </div>
+                </motion.div>
                 <div className="relative aspect-[3/2] sm:aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
@@ -1177,41 +1174,37 @@ export default function QuizPage() {
               transition={{ duration: 0.3 }}
               className="space-y-4"
             >
-              {/* Swipeable Therapist Card - Swipe only on desktop */}
+              {/* Swipeable Therapist Card - Higher thresholds on mobile */}
               <motion.div
-                drag={!isMobile ? "x" : false}
+                drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.3}
+                dragElastic={isMobile ? 0.2 : 0.3}
                 dragDirectionLock
                 onDragEnd={handleDragEnd}
-                style={{ x: isMobile ? 0 : x, rotate: isMobile ? 0 : rotate }}
-                className={`relative ${!isMobile ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                style={{ x, rotate }}
+                className="relative cursor-grab active:cursor-grabbing"
               >
-                {/* Swipe Indicators - Desktop only */}
-                {!isMobile && (
-                  <>
-                    <motion.div
-                      style={{ opacity: likeOpacity }}
-                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                    >
-                      <div className="bg-green-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-green-400 shadow-xl">
-                        <span className="text-2xl font-bold flex items-center gap-2">
-                          <Heart className="w-7 h-7 fill-current" /> Interessiert
-                        </span>
-                      </div>
-                    </motion.div>
-                    <motion.div
-                      style={{ opacity: skipOpacity }}
-                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                    >
-                      <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
-                        <span className="text-2xl font-bold flex items-center gap-2">
-                          <X className="w-7 h-7" /> Weiter
-                        </span>
-                      </div>
-                    </motion.div>
-                  </>
-                )}
+                {/* Swipe Indicators */}
+                <motion.div
+                  style={{ opacity: likeOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-green-500/90 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl rotate-[-15deg] border-3 sm:border-4 border-green-400 shadow-xl">
+                    <span className="text-lg sm:text-2xl font-bold flex items-center gap-2">
+                      <Heart className="w-5 h-5 sm:w-7 sm:h-7 fill-current" /> <span className="hidden sm:inline">Interessiert</span><span className="sm:hidden">Ja</span>
+                    </span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  style={{ opacity: skipOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-slate-500/90 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl rotate-[15deg] border-3 sm:border-4 border-slate-400 shadow-xl">
+                    <span className="text-lg sm:text-2xl font-bold flex items-center gap-2">
+                      <X className="w-5 h-5 sm:w-7 sm:h-7" /> <span className="hidden sm:inline">Weiter</span><span className="sm:hidden">Nein</span>
+                    </span>
+                  </div>
+                </motion.div>
 
                 <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden">
                   {/* Profile Image - Mobile-optimized aspect ratio (shorter on mobile) */}
@@ -1347,12 +1340,10 @@ export default function QuizPage() {
                 </div>
               </motion.div>
 
-              {/* Swipe Hint - Desktop only */}
-              {!isMobile && (
-                <p className="text-center text-sm text-slate-400 hidden sm:block">
-                  ← Wische zum Überspringen oder Merken →
-                </p>
-              )}
+              {/* Swipe Hint */}
+              <p className="text-center text-xs sm:text-sm text-slate-400">
+                ← Wische zum Überspringen oder Merken →
+              </p>
 
               {/* Action Buttons */}
               <div className="flex gap-2 sm:gap-3">
