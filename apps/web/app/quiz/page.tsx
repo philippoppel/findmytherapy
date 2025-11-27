@@ -256,11 +256,17 @@ export default function QuizPage() {
     localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(toSave));
   }, [state, isHydrated]);
 
-  // Swipe gesture state
+  // Swipe gesture state for therapists
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15]);
   const likeOpacity = useTransform(x, [0, 100], [0, 1]);
   const skipOpacity = useTransform(x, [-100, 0], [1, 0]);
+
+  // Swipe gesture state for topics
+  const topicX = useMotionValue(0);
+  const topicRotate = useTransform(topicX, [-200, 0, 200], [-15, 0, 15]);
+  const topicYesOpacity = useTransform(topicX, [0, 100], [0, 1]);
+  const topicNoOpacity = useTransform(topicX, [-100, 0], [1, 0]);
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 100;
@@ -275,6 +281,11 @@ export default function QuizPage() {
   useEffect(() => {
     x.set(0);
   }, [state.therapistIndex, x]);
+
+  // Reset swipe position when topic changes
+  useEffect(() => {
+    topicX.set(0);
+  }, [state.topicIndex, topicX]);
 
   const currentTopic = CORE_TOPICS[state.topicIndex];
   const currentTherapist = state.matches[state.therapistIndex];
@@ -640,8 +651,8 @@ export default function QuizPage() {
               transition={{ duration: 0 }}
               className="space-y-6"
             >
-              {/* Mobile Swipe Hint */}
-              <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3 sm:hidden">
+              {/* Swipe Hint */}
+              <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3">
                 <span className="flex items-center gap-1">
                   <X className="w-4 h-4 text-slate-400" />
                   ← Nein
@@ -657,7 +668,7 @@ export default function QuizPage() {
               <motion.div
                 drag={!showTip ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.5}
+                dragElastic={0.7}
                 onDragEnd={(e, info: PanInfo) => {
                   // Lower threshold for mobile (50px), higher for desktop (80px)
                   const threshold = window.innerWidth < 640 ? 50 : 80;
@@ -670,8 +681,30 @@ export default function QuizPage() {
                   }
                 }}
                 whileDrag={{ scale: 1.02 }}
-                style={{ touchAction: 'pan-y' }}
+                style={{ x: topicX, rotate: topicRotate, touchAction: 'pan-y' }}
                 className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-grab active:cursor-grabbing select-none">
+
+                {/* Swipe Indicators */}
+                <motion.div
+                  style={{ opacity: topicYesOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-primary-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-primary-400 shadow-xl">
+                    <span className="text-2xl font-bold flex items-center gap-2">
+                      <Heart className="w-7 h-7 fill-current" /> Ja
+                    </span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  style={{ opacity: topicNoOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
+                    <span className="text-2xl font-bold flex items-center gap-2">
+                      <X className="w-7 h-7" /> Nein
+                    </span>
+                  </div>
+                </motion.div>
                 <div className="relative aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
