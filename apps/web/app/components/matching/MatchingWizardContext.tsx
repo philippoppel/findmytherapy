@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { MatchingResponse } from '@/lib/matching';
 import type { WizardFormData } from '@/app/match/components/types';
 
@@ -23,6 +24,16 @@ export function MatchingWizardProvider({ children }: { children: ReactNode }) {
   const [results, setResults] = useState<MatchingResponse | null>(null);
   const [formData, setFormData] = useState<WizardFormData | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Auto-open wizard if URL has ?matching=true
+  useEffect(() => {
+    if (searchParams.get('matching') === 'true') {
+      setIsOpen(true);
+      setShowResults(false);
+      setResults(null);
+    }
+  }, [searchParams]);
 
   const openWizard = () => {
     setIsOpen(true);

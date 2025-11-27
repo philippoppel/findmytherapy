@@ -638,9 +638,9 @@ export default function QuizPage() {
 
           {/* Actions - always visible */}
           <div className="flex items-center gap-1">
-            {/* Classic Matching - links to therapists page where wizard is available */}
+            {/* Classic Matching - opens wizard on therapists page */}
             <Link
-              href="/therapists"
+              href="/therapists?matching=true"
               className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
               title="Klassisches Matching"
             >
@@ -1684,7 +1684,7 @@ export default function QuizPage() {
                     Lieber Schritt für Schritt?
                   </p>
                   <Link
-                    href="/therapists"
+                    href="/therapists?matching=true"
                     className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
                   >
                     Klassisches Matching
