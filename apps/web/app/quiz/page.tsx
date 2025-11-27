@@ -606,87 +606,124 @@ export default function QuizPage() {
   // Show loading state until hydrated
   if (!isHydrated) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-white">
-      {/* Header */}
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b border-slate-100">
-        <div className="max-w-2xl lg:max-w-4xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
-          {/* Top row: Home + Progress + Exit */}
-          <div className="flex items-center justify-between">
-            <Link href="/" className="p-1.5 -ml-1 text-slate-500 hover:text-slate-700 transition-colors" title="Startseite">
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero Section with Background Image */}
+      <div className="relative">
+        {/* Background Image */}
+        <div className="absolute inset-0 h-[340px] sm:h-[380px]">
+          <Image
+            src="/images/topics/selbstwert.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-50" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10">
+          {/* Top Navigation */}
+          <nav className="flex items-center justify-between px-4 sm:px-6 pt-6">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+            >
               <Home className="w-5 h-5" />
+              <span className="font-medium">Startseite</span>
             </Link>
 
             {/* Progress indicator */}
-            {state.phase === 'topics' && (
-              <span className="text-sm text-slate-400">
-                {state.topicIndex + 1} / {CORE_TOPICS.length}
-              </span>
-            )}
-            {state.phase === 'therapists' && (
-              <span className="text-sm text-slate-400">
-                {state.therapistIndex + 1} / {state.matches.length}
-              </span>
-            )}
-            {state.phase === 'location-preferences' && (
-              <span className="text-sm text-slate-400">Fast fertig</span>
-            )}
+            <div className="flex items-center gap-3">
+              {state.phase === 'topics' && (
+                <span className="text-sm text-white/70">
+                  {state.topicIndex + 1} / {CORE_TOPICS.length}
+                </span>
+              )}
+              {state.phase === 'therapists' && (
+                <span className="text-sm text-white/70">
+                  {state.therapistIndex + 1} / {state.matches.length}
+                </span>
+              )}
+              {state.phase === 'location-preferences' && (
+                <span className="text-sm text-white/70">Fast fertig</span>
+              )}
 
-            {/* Exit */}
-            {state.phase !== 'summary' ? (
-              <button
-                onClick={goToSummary}
-                className="p-1.5 -mr-1 text-slate-500 hover:text-slate-700 text-sm transition-colors"
+              {/* Exit/Restart */}
+              {state.phase !== 'summary' ? (
+                <button
+                  onClick={goToSummary}
+                  className="px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
+                >
+                  {state.phase === 'therapists' ? 'Fertig' : 'Beenden'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleRestart}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span className="hidden sm:inline">Neu starten</span>
+                </button>
+              )}
+            </div>
+          </nav>
+
+          {/* Hero Content */}
+          <div className="text-center px-4 pt-6 pb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-4">
+              <BookOpen className="w-4 h-4" />
+              Schnell-Quiz
+            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+              Finde heraus, was
+              <br className="hidden sm:block" />
+              <span className="text-primary-200"> zu dir passt</span>
+            </h1>
+            <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mb-6">
+              6 kurze Fragen – in 2 Minuten zu persönlichen Empfehlungen
+            </p>
+
+            {/* Navigation Pills */}
+            <div className="flex items-center justify-center gap-2 sm:gap-3">
+              <Link
+                href="/therapists?matching=true"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
               >
-                {state.phase === 'therapists' ? 'Fertig' : 'Beenden'}
-              </button>
-            ) : (
-              <div className="w-8" />
-            )}
-          </div>
-
-          {/* Bottom row: Alternative options */}
-          <div className="flex items-center justify-center gap-1 mt-2 pt-2 border-t border-slate-100">
-            <span className="text-xs text-slate-400 mr-1">Oder:</span>
-
-            {/* Guided Matching */}
-            <Link
-              href="/match"
-              className="px-2.5 py-1 text-xs text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
-            >
-              Geführte Suche
-            </Link>
-
-            <span className="text-slate-300">|</span>
-
-            {/* Direct Search */}
-            <Link
-              href="/therapists"
-              className="px-2.5 py-1 text-xs text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
-            >
-              Selber filtern
-            </Link>
-
-            <span className="text-slate-300">|</span>
-
-            {/* Restart Quiz */}
-            <button
-              onClick={handleRestart}
-              className="px-2.5 py-1 text-xs text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
-            >
-              Quiz neu
-            </button>
+                <Sparkles className="w-4 h-4" />
+                <span className="hidden sm:inline">Geführte Suche</span>
+                <span className="sm:hidden">Geführt</span>
+              </Link>
+              <Link
+                href="/therapists"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+              >
+                <MapPin className="w-4 h-4" />
+                <span className="hidden sm:inline">Selber filtern</span>
+                <span className="sm:hidden">Filter</span>
+              </Link>
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-white text-primary-700 shadow-lg">
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Schnell-Quiz</span>
+                <span className="sm:hidden">Quiz</span>
+              </div>
+            </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-2xl lg:max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      {/* Main Content */}
+      <main className="relative z-10 -mt-6 px-4 pb-12">
+        <div className="max-w-2xl lg:max-w-4xl mx-auto">
+          {/* Content Container */}
+          <div className="bg-white rounded-3xl shadow-xl p-4 sm:p-6 md:p-8">
         <AnimatePresence mode="wait">
 
           {/* INTRO */}
@@ -1701,7 +1738,7 @@ export default function QuizPage() {
                     Lieber Schritt für Schritt?
                   </p>
                   <Link
-                    href="/match"
+                    href="/therapists?matching=true"
                     className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
                   >
                     Geführte Suche
@@ -1733,7 +1770,29 @@ export default function QuizPage() {
           )}
 
         </AnimatePresence>
+          </div>
+        </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200 bg-white py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
+            <Link href="/" className="hover:text-slate-700 transition-colors">
+              Startseite
+            </Link>
+            <Link href="/therapists?matching=true" className="hover:text-slate-700 transition-colors">
+              Geführte Suche
+            </Link>
+            <Link href="/therapists" className="hover:text-slate-700 transition-colors">
+              Alle Therapeut:innen
+            </Link>
+            <Link href="/triage" className="hover:text-slate-700 transition-colors">
+              Wissenschaftlicher Test
+            </Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
