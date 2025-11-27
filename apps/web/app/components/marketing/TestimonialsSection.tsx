@@ -241,10 +241,10 @@ export function TestimonialsSection() {
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeCategory}-${currentIndex}`}
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
             >
               {visibleTestimonials.map((testimonial, index) => {
@@ -336,24 +336,28 @@ export function TestimonialsSection() {
                 <button
                   key={i}
                   onClick={() => { setCurrentIndex(i); setIsAutoPlaying(false); }}
-                  className="group relative"
+                  className="group relative h-2 overflow-hidden rounded-full"
                   aria-label={`Slide ${i + 1}`}
                 >
                   <div
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-full rounded-full transition-all duration-300 ${
                       i === currentIndex
-                        ? 'w-8 bg-primary-500'
+                        ? 'w-10 bg-gray-200'
                         : 'w-2 bg-gray-300 hover:bg-gray-400'
                     }`}
                   />
-                  {/* Auto-play progress indicator */}
-                  {i === currentIndex && isAutoPlaying && !isPaused && (
+                  {/* Auto-play progress indicator - fills the dot */}
+                  {i === currentIndex && isAutoPlaying && (
                     <motion.div
-                      className="absolute inset-0 h-2 rounded-full bg-primary-300 origin-left"
+                      className="absolute top-0 left-0 h-full w-10 rounded-full bg-primary-500"
                       initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: 'linear' }}
-                      key={`progress-${currentIndex}`}
+                      animate={{ scaleX: isPaused ? undefined : 1 }}
+                      transition={{
+                        duration: isPaused ? 0 : AUTO_PLAY_INTERVAL / 1000,
+                        ease: 'linear'
+                      }}
+                      style={{ originX: 0 }}
+                      key={`progress-${currentIndex}-${isPaused}`}
                     />
                   )}
                 </button>
