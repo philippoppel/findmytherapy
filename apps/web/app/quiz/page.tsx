@@ -640,8 +640,24 @@ export default function QuizPage() {
               transition={{ duration: 0 }}
               className="space-y-6"
             >
-              {/* Topic Card */}
-              <div className="bg-white rounded-3xl shadow-lg overflow-hidden relative">
+              {/* Topic Card - Swipeable */}
+              <motion.div
+                drag={!showTip ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.7}
+                onDragEnd={(e, info: PanInfo) => {
+                  const threshold = 100;
+                  if (info.offset.x > threshold) {
+                    // Swiped right = "Ja"
+                    handleTopicAnswer('yes');
+                  } else if (info.offset.x < -threshold) {
+                    // Swiped left = "Nein"
+                    handleTopicAnswer('no');
+                  }
+                }}
+                whileDrag={{ scale: 1.02, rotate: 0 }}
+                style={{ touchAction: 'pan-y' }}
+                className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-grab active:cursor-grabbing">
                 <div className="relative aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
@@ -701,25 +717,27 @@ export default function QuizPage() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
-              {/* Answer Buttons */}
+              {/* Answer Buttons with swipe hints */}
               <div className="flex gap-4">
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('no')}
                   disabled={!!showTip}
-                  className="flex-1 py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex flex-col items-center gap-1"
                 >
-                  Nein
+                  <span>Nein</span>
+                  <span className="text-xs text-slate-400 font-normal hidden sm:block">← Swipe links</span>
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('yes')}
                   disabled={!!showTip}
-                  className="flex-1 py-5 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-5 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex flex-col items-center gap-1"
                 >
-                  Ja, das kenne ich
+                  <span>Ja, das kenne ich</span>
+                  <span className="text-xs text-white/70 font-normal hidden sm:block">Swipe rechts →</span>
                 </motion.button>
               </div>
 
