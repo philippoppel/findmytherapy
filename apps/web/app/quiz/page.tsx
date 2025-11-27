@@ -638,13 +638,13 @@ export default function QuizPage() {
 
           {/* Actions - always visible */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Classic Matching - opens wizard on therapists page */}
+            {/* Guided Matching - opens wizard on therapists page */}
             <Link
               href="/therapists?matching=true"
               className="flex items-center gap-1 px-2 py-1.5 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
             >
               <Settings2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Matching</span>
+              <span className="hidden sm:inline">Geführt</span>
             </Link>
 
             {/* Restart */}

@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useSearchParams } from 'next/navigation';
 import type { MatchingResponse } from '@/lib/matching';
 import type { WizardFormData } from '@/app/match/components/types';
 
@@ -24,16 +23,23 @@ export function MatchingWizardProvider({ children }: { children: ReactNode }) {
   const [results, setResults] = useState<MatchingResponse | null>(null);
   const [formData, setFormData] = useState<WizardFormData | null>(null);
   const [showResults, setShowResults] = useState(false);
-  const searchParams = useSearchParams();
 
-  // Auto-open wizard if URL has ?matching=true
+  // Auto-open wizard if URL has ?matching=true (without useSearchParams to avoid Suspense)
   useEffect(() => {
-    if (searchParams.get('matching') === 'true') {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('matching') === 'true') {
       setIsOpen(true);
       setShowResults(false);
       setResults(null);
+      // Scroll to wizard after brief delay
+      setTimeout(() => {
+        const wizardElement = document.getElementById('matching-wizard');
+        if (wizardElement) {
+          wizardElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }
-  }, [searchParams]);
+  }, []);
 
   const openWizard = () => {
     setIsOpen(true);
