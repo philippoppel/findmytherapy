@@ -637,30 +637,30 @@ export default function QuizPage() {
           )}
 
           {/* Actions - always visible */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Classic Matching - opens wizard on therapists page */}
             <Link
               href="/therapists?matching=true"
-              className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-              title="Klassisches Matching"
+              className="flex items-center gap-1 px-2 py-1.5 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
             >
-              <Settings2 className="w-4 h-4" />
+              <Settings2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Matching</span>
             </Link>
 
             {/* Restart */}
             <button
               onClick={handleRestart}
-              className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-              title="Von vorne beginnen"
+              className="flex items-center gap-1 px-2 py-1.5 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Neu</span>
             </button>
 
             {/* End/Summary */}
             {state.phase !== 'summary' && (
               <button
                 onClick={goToSummary}
-                className="p-2 text-slate-600 hover:text-slate-900 text-sm"
+                className="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
               >
                 {state.phase === 'therapists' ? 'Fertig' : 'Beenden'}
               </button>
