@@ -268,24 +268,43 @@ export default function QuizPage() {
     localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(toSave));
   }, [state, isHydrated]);
 
+  // Check if mobile (disable swipe on small screens to prevent accidental triggers)
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Swipe gesture state for therapists
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15]);
-  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
-  const skipOpacity = useTransform(x, [-100, 0], [1, 0]);
+  const rotate = useTransform(x, [-200, 0, 200], [-8, 0, 8]); // Reduced rotation
+  const likeOpacity = useTransform(x, [0, 120], [0, 1]); // Higher threshold for indicator
+  const skipOpacity = useTransform(x, [-120, 0], [1, 0]);
 
   // Swipe gesture state for topics
   const topicX = useMotionValue(0);
-  const topicRotate = useTransform(topicX, [-200, 0, 200], [-15, 0, 15]);
-  const topicYesOpacity = useTransform(topicX, [0, 100], [0, 1]);
-  const topicNoOpacity = useTransform(topicX, [-100, 0], [1, 0]);
+  const topicRotate = useTransform(topicX, [-200, 0, 200], [-8, 0, 8]); // Reduced rotation
+  const topicYesOpacity = useTransform(topicX, [0, 120], [0, 1]);
+  const topicNoOpacity = useTransform(topicX, [-120, 0], [1, 0]);
 
+  // Swipe handler with velocity check to prevent accidental swipes (desktop only)
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 100;
-    if (info.offset.x > threshold) {
-      handleLike();
-    } else if (info.offset.x < -threshold) {
-      handleSkip();
+    if (isMobile) return; // No swipe on mobile
+
+    const threshold = 120; // Higher threshold
+    const velocityThreshold = 500; // Require some speed
+    const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
+    const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
+
+    // Only trigger if both offset AND velocity are sufficient, OR offset is very large
+    if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > 180) {
+      if (info.offset.x > 0) {
+        handleLike();
+      } else {
+        handleSkip();
+      }
     }
   };
 
@@ -604,7 +623,7 @@ export default function QuizPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl lg:max-w-4xl mx-auto px-4 py-6">
+      <main className="max-w-2xl lg:max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <AnimatePresence mode="wait">
 
           {/* INTRO */}
@@ -663,61 +682,72 @@ export default function QuizPage() {
               transition={{ duration: 0 }}
               className="space-y-6"
             >
-              {/* Swipe Hint */}
-              <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3">
-                <span className="flex items-center gap-1">
-                  <X className="w-4 h-4 text-slate-400" />
-                  ← Nein
-                </span>
-                <span className="text-slate-300">|</span>
-                <span className="flex items-center gap-1">
-                  Ja →
-                  <Heart className="w-4 h-4 text-primary-400" />
-                </span>
-              </div>
+              {/* Swipe Hint - Only on desktop */}
+              {!isMobile && (
+                <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3">
+                  <span className="flex items-center gap-1">
+                    <X className="w-4 h-4 text-slate-400" />
+                    ← Nein
+                  </span>
+                  <span className="text-slate-300">|</span>
+                  <span className="flex items-center gap-1">
+                    Ja →
+                    <Heart className="w-4 h-4 text-primary-400" />
+                  </span>
+                </div>
+              )}
 
-              {/* Topic Card - Swipeable */}
+              {/* Topic Card - Swipeable only on desktop */}
               <motion.div
-                drag={!showTip ? "x" : false}
+                drag={!showTip && !isMobile ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7}
+                dragElastic={0.3}
+                dragDirectionLock
                 onDragEnd={(e, info: PanInfo) => {
-                  // Lower threshold for mobile (50px), higher for desktop (80px)
-                  const threshold = window.innerWidth < 640 ? 50 : 80;
-                  if (info.offset.x > threshold) {
-                    // Swiped right = "Ja"
-                    handleTopicAnswer('yes');
-                  } else if (info.offset.x < -threshold) {
-                    // Swiped left = "Nein"
-                    handleTopicAnswer('no');
+                  if (isMobile) return; // No swipe on mobile
+                  const threshold = 100;
+                  const velocityThreshold = 400;
+                  const hasEnoughVelocity = Math.abs(info.velocity.x) > velocityThreshold;
+                  const hasEnoughOffset = Math.abs(info.offset.x) > threshold;
+
+                  if ((hasEnoughOffset && hasEnoughVelocity) || Math.abs(info.offset.x) > 150) {
+                    if (info.offset.x > threshold) {
+                      handleTopicAnswer('yes');
+                    } else if (info.offset.x < -threshold) {
+                      handleTopicAnswer('no');
+                    }
                   }
                 }}
-                whileDrag={{ scale: 1.02 }}
-                style={{ x: topicX, rotate: topicRotate, touchAction: 'pan-y' }}
-                className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-grab active:cursor-grabbing select-none">
+                whileDrag={{ scale: 1.01 }}
+                style={{ x: isMobile ? 0 : topicX, rotate: isMobile ? 0 : topicRotate }}
+                className="bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden relative select-none">
 
-                {/* Swipe Indicators */}
-                <motion.div
-                  style={{ opacity: topicYesOpacity }}
-                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                >
-                  <div className="bg-primary-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-primary-400 shadow-xl">
-                    <span className="text-2xl font-bold flex items-center gap-2">
-                      <Heart className="w-7 h-7 fill-current" /> Ja
-                    </span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  style={{ opacity: topicNoOpacity }}
-                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                >
-                  <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
-                    <span className="text-2xl font-bold flex items-center gap-2">
-                      <X className="w-7 h-7" /> Nein
-                    </span>
-                  </div>
-                </motion.div>
-                <div className="relative aspect-[4/3] md:aspect-[16/9]">
+                {/* Swipe Indicators - Desktop only */}
+                {!isMobile && (
+                  <>
+                    <motion.div
+                      style={{ opacity: topicYesOpacity }}
+                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                    >
+                      <div className="bg-primary-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-primary-400 shadow-xl">
+                        <span className="text-2xl font-bold flex items-center gap-2">
+                          <Heart className="w-7 h-7 fill-current" /> Ja
+                        </span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      style={{ opacity: topicNoOpacity }}
+                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                    >
+                      <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
+                        <span className="text-2xl font-bold flex items-center gap-2">
+                          <X className="w-7 h-7" /> Nein
+                        </span>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+                <div className="relative aspect-[3/2] sm:aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
                     alt={currentTopic.label}
@@ -727,14 +757,14 @@ export default function QuizPage() {
                     sizes="(max-width: 768px) 100vw, 672px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="text-white/80 text-sm mb-1">Thema</p>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white">{currentTopic.label}</h2>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                    <p className="text-white/80 text-xs sm:text-sm mb-1">Thema</p>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{currentTopic.label}</h2>
                   </div>
                 </div>
 
-                <div className="p-6 md:p-8">
-                  <p className="text-xl md:text-2xl text-slate-700 text-center leading-relaxed">
+                <div className="p-4 sm:p-6 md:p-8">
+                  <p className="text-lg sm:text-xl md:text-2xl text-slate-700 text-center leading-relaxed">
                     {TOPIC_QUESTIONS[currentTopic.id]}
                   </p>
                 </div>
@@ -1147,40 +1177,45 @@ export default function QuizPage() {
               transition={{ duration: 0.3 }}
               className="space-y-4"
             >
-              {/* Swipeable Therapist Card */}
+              {/* Swipeable Therapist Card - Swipe only on desktop */}
               <motion.div
-                drag="x"
+                drag={!isMobile ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7}
+                dragElastic={0.3}
+                dragDirectionLock
                 onDragEnd={handleDragEnd}
-                style={{ x, rotate }}
-                className="relative cursor-grab active:cursor-grabbing touch-pan-y"
+                style={{ x: isMobile ? 0 : x, rotate: isMobile ? 0 : rotate }}
+                className={`relative ${!isMobile ? 'cursor-grab active:cursor-grabbing' : ''}`}
               >
-                {/* Swipe Indicators */}
-                <motion.div
-                  style={{ opacity: likeOpacity }}
-                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                >
-                  <div className="bg-green-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-green-400 shadow-xl">
-                    <span className="text-2xl font-bold flex items-center gap-2">
-                      <Heart className="w-7 h-7 fill-current" /> Interessiert
-                    </span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  style={{ opacity: skipOpacity }}
-                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-                >
-                  <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
-                    <span className="text-2xl font-bold flex items-center gap-2">
-                      <X className="w-7 h-7" /> Weiter
-                    </span>
-                  </div>
-                </motion.div>
+                {/* Swipe Indicators - Desktop only */}
+                {!isMobile && (
+                  <>
+                    <motion.div
+                      style={{ opacity: likeOpacity }}
+                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                    >
+                      <div className="bg-green-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-green-400 shadow-xl">
+                        <span className="text-2xl font-bold flex items-center gap-2">
+                          <Heart className="w-7 h-7 fill-current" /> Interessiert
+                        </span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      style={{ opacity: skipOpacity }}
+                      className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                    >
+                      <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
+                        <span className="text-2xl font-bold flex items-center gap-2">
+                          <X className="w-7 h-7" /> Weiter
+                        </span>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
 
-                <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                  {/* Profile Image - Responsive aspect ratio */}
-                  <div className="relative aspect-[4/5] lg:aspect-[16/10]">
+                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden">
+                  {/* Profile Image - Mobile-optimized aspect ratio (shorter on mobile) */}
+                  <div className="relative aspect-[3/4] sm:aspect-[4/5] lg:aspect-[16/10]">
                   {currentTherapist.therapist.profileImageUrl ? (
                     <Image
                       src={currentTherapist.therapist.profileImageUrl}
@@ -1233,7 +1268,7 @@ export default function QuizPage() {
                   </div>
 
                   {/* Info Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
                     <h2 className="text-2xl md:text-3xl font-bold mb-1">
                       {currentTherapist.therapist.displayName}
                     </h2>
@@ -1242,23 +1277,23 @@ export default function QuizPage() {
                     )}
 
                     {/* Quick Info */}
-                    <div className="flex flex-wrap gap-3 mt-3 text-sm">
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mt-2 sm:mt-3 text-xs sm:text-sm">
                       {currentTherapist.therapist.city && (
-                        <span className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                          <MapPin className="w-4 h-4" />
+                        <span className="flex items-center gap-1 sm:gap-1.5 bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
+                          <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
                           {currentTherapist.therapist.city}
                           {currentTherapist.distanceKm && ` (${Math.round(currentTherapist.distanceKm)} km)`}
                         </span>
                       )}
                       {currentTherapist.therapist.online && (
-                        <span className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                          <Globe className="w-4 h-4" />
-                          Online verfügbar
+                        <span className="flex items-center gap-1 sm:gap-1.5 bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
+                          <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
+                          Online
                         </span>
                       )}
                       {currentTherapist.therapist.rating && currentTherapist.therapist.rating > 0 && (
-                        <span className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <span className="flex items-center gap-1 sm:gap-1.5 bg-white/20 backdrop-blur-sm px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
+                          <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
                           {currentTherapist.therapist.rating.toFixed(1)}
                         </span>
                       )}
@@ -1267,7 +1302,7 @@ export default function QuizPage() {
                 </div>
 
                 {/* Match Explanation */}
-                <div className="p-6 md:p-8 space-y-4">
+                <div className="p-4 sm:p-6 md:p-8 space-y-3 sm:space-y-4">
                   {/* Why this match */}
                   {currentTherapist.explanation?.primary && currentTherapist.explanation.primary.length > 0 && (
                     <div>
@@ -1312,27 +1347,29 @@ export default function QuizPage() {
                 </div>
               </motion.div>
 
-              {/* Swipe Hint - Mobile only */}
-              <p className="text-center text-sm text-slate-400 lg:hidden">
-                ← Wische zum Überspringen oder Merken →
-              </p>
+              {/* Swipe Hint - Desktop only */}
+              {!isMobile && (
+                <p className="text-center text-sm text-slate-400 hidden sm:block">
+                  ← Wische zum Überspringen oder Merken →
+                </p>
+              )}
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={handleSkip}
-                  className="flex-1 py-4 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-base sm:text-lg hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
                   Weiter
                 </motion.button>
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={handleLike}
-                  className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold text-lg hover:from-rose-600 hover:to-pink-600 transition-all shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2"
+                  className="flex-1 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold text-base sm:text-lg hover:from-rose-600 hover:to-pink-600 transition-all shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2"
                 >
-                  <Heart className="w-5 h-5" />
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
                   Interessiert
                 </motion.button>
               </div>
