@@ -110,7 +110,7 @@ export const metadata: Metadata = {
         url: 'https://findmytherapy.net/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'FindMyTherapy - Therapeut:innen finden in Österreich',
+        alt: 'Therapeut:innen finden in Österreich',
       },
     ],
   },

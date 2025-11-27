@@ -43,7 +43,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const author = getAuthorById(post.authorId);
 
   return {
-    title: `${post.title} | FindMyTherapy Blog`,
+    title: `${post.title} | Blog`,
     description: post.excerpt,
     keywords: post.keywords,
     alternates: { canonical: canonicalUrl },

@@ -9,7 +9,7 @@ import { TestimonialsSection } from '../components/marketing/TestimonialsSection
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'FindMyTherapy – Therapie für dich',
+  title: 'Therapie für dich',
   description:
     'Entdecke gratis Wissen von anerkannten Psychotherapeut:innen für Soforthilfe. Finde verifizierte Therapeut:innen mit SEO-optimierten Profilen. Zwei Wege zu mentaler Gesundheit.',
   keywords: [

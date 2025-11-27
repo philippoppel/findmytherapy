@@ -230,7 +230,7 @@ export const blogPosts: BlogPost[] = [
           'Ebenfalls hilfreich sind Lebensstil-Anpassungen zur Vorbeugung von Panikattacken. Ausreichender Schlaf und regelmäßige Bewegung verbessern die allgemeine Stressresistenz; insbesondere Ausdauersport (Joggen, Radfahren, Schwimmen) wirkt erwiesenermaßen angstlösend. Auf übermäßigen Konsum von Koffein und anderen anregenden Substanzen sollte verzichtet werden, da diese körperliche Unruhe fördern. Auch der Abbau von chronischem Stress – etwa durch bessere Zeitplanung, Entspannungspausen im Alltag oder gegebenenfalls eine psychologische Stressbewältigung – kann dazu beitragen, die Häufigkeit von Attacken zu reduzieren.',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Therapeutisches Gespräch zwischen Therapeutin und Klient in entspannter Atmosphäre',
           caption: 'Kognitive Verhaltenstherapie ist die wirksamste Behandlung bei Panikattacken.',
         },
@@ -379,6 +379,11 @@ export const blogPosts: BlogPost[] = [
           'Verbindliche Antwortzeiten und Kapazitätsangaben',
           'Transparente Honorar- und Abrechnungsmodelle',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Dokumente und Zertifikate werden geprüft – Qualitätssicherung im Therapeutennetzwerk',
+          caption: 'Jede Qualifikation wird sorgfältig geprüft, bevor ein Profil freigeschaltet wird.',
+        },
       },
       {
         heading: 'Warum wir mit einer Warteliste starten',
@@ -436,6 +441,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Mentale Gesundheit wird zur Chefsache. Führungskräfte suchen Programme, die schnellen Zugang bieten und gleichzeitig datenschutzkonform bleiben. FindMyTherapy deckt beide Anforderungen ab.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Team in modernem Büro bespricht Mental Health Strategien',
+          caption: 'Mentale Gesundheit wird zunehmend zur Priorität in Unternehmen.',
+        },
       },
       {
         heading: 'Warum FindMyTherapy gut in bestehende Benefits passt',
@@ -821,7 +831,7 @@ export const blogPosts: BlogPost[] = [
           'Besonders wirksam: Bei Rückfallprophylaxe von Depressionen (MBCT reduziert Rückfallrisiko um 43%)',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Person meditiert in ruhiger Umgebung – Achtsamkeit für psychische Gesundheit',
           caption: 'Schon 10-15 Minuten Meditation täglich zeigen messbare Effekte.',
         },
@@ -979,7 +989,7 @@ export const blogPosts: BlogPost[] = [
           'Soziale Unterstützung: Kollegiale Intervision, Supervision, persönliche Netzwerke',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Person in der Natur entspannt – Work-Life-Balance und Erholung',
           caption: 'Regelmäßige Erholung und klare Grenzen sind der beste Schutz vor Burnout.',
         },
@@ -1295,7 +1305,7 @@ export const blogPosts: BlogPost[] = [
           'Spezifische Techniken (15%): Methoden-spezifische Interventionen (z.B. Exposition, kognitive Umstrukturierung)',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1590650153855-d9e808231d41?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Therapeutisches Gespräch – die Beziehung ist der wichtigste Wirkfaktor',
           caption: 'Die therapeutische Beziehung trägt 30-40% zum Therapieerfolg bei.',
         },
@@ -2081,7 +2091,7 @@ export const blogPosts: BlogPost[] = [
           'Agoraphobie: Angst vor Situationen, aus denen eine Flucht schwierig wäre oder Hilfe nicht verfügbar ist (Menschenmengen, öffentliche Verkehrsmittel, weite Plätze).',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1517960413843-0aee8e2b3285?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Person in nachdenklicher Haltung – verschiedene Formen von Angststörungen',
           caption: 'Angststörungen können sich auf verschiedene Weisen äußern.',
         },
@@ -2173,7 +2183,7 @@ export const blogPosts: BlogPost[] = [
           'Burnout entwickelt sich schleichend über Monate oder Jahre. Anfangs versuchen Betroffene, durch noch mehr Einsatz gegenzusteuern, was die Erschöpfung weiter verstärkt. Die drei Kerndimensionen nach dem Maslach Burnout Inventory sind: 1) Emotionale Erschöpfung, 2) Depersonalisation/Zynismus (Distanzierung von der Arbeit), 3) Reduzierte persönliche Leistungsfähigkeit.',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Überforderte Person am Arbeitsplatz mit vielen Aufgaben – symbolisiert Burnout-Risiko',
           caption: 'Chronische Überlastung ist der Hauptauslöser für Burnout.',
         },
@@ -2212,7 +2222,7 @@ export const blogPosts: BlogPost[] = [
           'Selbstfürsorge: Ausreichend Schlaf, gesunde Ernährung, regelmäßige Bewegung',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Person praktiziert Yoga in der Natur – symbolisiert Work-Life-Balance und Stressprävention',
           caption: 'Regelmäßige Entspannung und Selbstfürsorge sind der beste Schutz vor Burnout.',
         },
@@ -2728,8 +2738,8 @@ export const blogPosts: BlogPost[] = [
           '1. Mehrere Anfragen parallel stellen. 2. Wahltherapeut nutzen (Zuschuss beantragen). 3. Online-Therapie in Erwägung ziehen. 4. Privatambulanz oder Ausbildungsinstitute (günstigere Honorare). 5. Krisenintervention bei akuter Gefahr (keine Wartezeit).',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1200&h=675&q=80',
-          alt: 'Person nutzt Online-Therapie am Laptop – eine schnelle Alternative',
+          src: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person nutzt Laptop für Online-Therapie – eine schnelle Alternative',
           caption: 'Online-Therapie kann die Wartezeit verkürzen.',
         },
       },
@@ -2847,7 +2857,7 @@ export const blogPosts: BlogPost[] = [
           'Kurzfristige Hilfe statt langfristiger Fortschritt: KI bietet oft schnelle, oberflächliche Erleichterung. Sie konfrontiert nicht mit unangenehmen Wahrheiten und lotet keine tieferen Ursachen aus.',
         ],
         image: {
-          src: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&h=675&q=80',
+          src: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=1200&h=675&q=80',
           alt: 'Therapeutin im Gespräch mit Klientin – echte menschliche Verbindung in der Therapie',
           caption: 'Echte Empathie und menschliche Wärme kann keine KI ersetzen.',
         },
@@ -2987,6 +2997,11 @@ export const blogPosts: BlogPost[] = [
           'Evolutionär betrachtet ist das genial: Du bemerkst eine Gefahr, dein Körper schaltet in den Alarmmodus, und du kannst kämpfen, flüchten oder dich ducken – alles in Sekundenbruchteilen. Ohne diese Alarmfunktion hätten unsere Vorfahren viele Situationen schlicht nicht überlebt. Völlige Angstfreiheit wäre also nicht „ideal", sondern lebensgefährlich.',
           'Problematisch wird Angst erst, wenn sie viel zu oft, viel zu stark oder völlig unpassend (als Fehlalarm) anspringt und dein Leben einschränkt. Dann sprechen Fachleute von einer Angststörung. Doch auch dann gilt: Die Angst selbst ist nicht der Feind – sie ist ein System, das zu empfindlich eingestellt ist und neu kalibriert werden kann.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1508963493744-76fce69379c0?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in nachdenklicher Haltung – symbolisiert das innere Erleben von Angst',
+          caption: 'Angst ist ein natürlicher Schutzmechanismus, der manchmal überreagiert.',
+        },
       },
       {
         heading: 'Wie Angst entsteht: Biologie, Lernen, Denken',
@@ -3047,6 +3062,11 @@ export const blogPosts: BlogPost[] = [
           'Gerade die Bewertung entscheidet, ob aus einem Körpersignal – Herzklopfen, Schwindel, Schwitzen – ein kurzer Moment der Aufregung oder eine ausgewachsene Panikattacke wird. Menschen mit Angststörungen überschätzen dabei meist die Gefahr („Das ist sicher lebensbedrohlich") und unterschätzen gleichzeitig die eigene Bewältigungskraft („Ich halte das nicht aus").',
           'Diese verzerrte Bewertung lässt sich in der Therapie gezielt bearbeiten – ein wichtiger Hebel, um den Teufelskreis der Angst zu durchbrechen.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Gehirn-Illustration – wie Bewertungen Angst verstärken können',
+          caption: 'Unsere Bewertung von Körpersignalen entscheidet, ob Angst eskaliert.',
+        },
       },
       {
         heading: 'Warum sich Angst so real anfühlt',
@@ -3219,6 +3239,11 @@ export const blogPosts: BlogPost[] = [
           'Das Problem: Das Angstsystem reagiert überempfindlich. Die Amygdala, unser „Alarmzentrum" im Gehirn, interpretiert harmlose Reize – etwa eine kleine Herzrhythmusänderung – als Bedrohung. Der Körper schaltet auf Kampf oder Flucht: Herz pumpt, Atmung beschleunigt sich, Muskeln spannen sich an.',
           'An sich wäre das hilfreich, etwa bei einem echten Angriff. Doch bei Panikattacken gibt es keinen Feind. Nur das eigene Körpergefühl wird als gefährlich gedeutet – und genau hier beginnt der Teufelskreis.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person in Anspannung – körperliche Symptome einer Panikattacke',
+          caption: 'Panikattacken fühlen sich bedrohlich an, sind aber körperlich harmlos.',
+        },
       },
       {
         heading: 'Der klassische Teufelskreis der Panik',
@@ -3262,6 +3287,11 @@ export const blogPosts: BlogPost[] = [
         paragraphs: [
           'Die gute Nachricht: Panikattacken lassen sich sehr erfolgreich behandeln. Die kognitive Verhaltenstherapie zeigt bei Panikstörungen Erfolgsraten von über 80 Prozent. Hier sind die wichtigsten Strategien:',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person praktiziert Entspannungsübungen zur Beruhigung',
+          caption: 'Mit den richtigen Techniken lässt sich der Teufelskreis durchbrechen.',
+        },
       },
       {
         heading: '1. Wissen als Gegenmittel',
@@ -3441,6 +3471,11 @@ export const blogPosts: BlogPost[] = [
           'Bei einer Panikattacke reagiert das Gehirn auf eine vermeintliche Bedrohung. Die Amygdala schüttet Adrenalin aus, das Herz rast, der Blutdruck steigt, Muskeln spannen sich an. Der Körper glaubt, er müsse fliehen oder kämpfen, obwohl keine Gefahr besteht.',
           'Der Herzinfarkt hingegen entsteht durch eine Durchblutungsstörung des Herzmuskels. Das Herz wird nicht mehr ausreichend mit Sauerstoff versorgt, was lebensgefährlich ist.',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Person hält sich die Brust – Symptome können Panik oder Herzprobleme anzeigen',
+          caption: 'Die Symptome fühlen sich ähnlich an, haben aber unterschiedliche Ursachen.',
+        },
       },
       {
         heading: 'Die wichtigsten Unterschiede',
@@ -3506,6 +3541,11 @@ export const blogPosts: BlogPost[] = [
           'Kalter Schweiß und Blässe',
           'Ausgeprägte Schwäche oder Übelkeit',
         ],
+        image: {
+          src: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&h=675&q=80',
+          alt: 'Medizinische Untersuchung – EKG und Bluttest bringen Klarheit',
+          caption: 'Im Zweifel: Eine ärztliche Abklärung schafft Sicherheit.',
+        },
       },
       {
         heading: 'Warnzeichen ernst nehmen',
