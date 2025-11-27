@@ -23,8 +23,10 @@ import {
   AlertCircle,
   Euro,
   Clock,
+  Settings2,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
+import { MatchingLink } from '@/app/components/matching/MatchingLink';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
@@ -634,12 +636,23 @@ export default function QuizPage() {
             </span>
           )}
 
-          <button
-            onClick={goToSummary}
-            className="p-2 -mr-2 text-slate-600 hover:text-slate-900 text-sm"
-          >
-            {state.phase === 'therapists' || state.phase === 'summary' ? 'Übersicht' : 'Beenden'}
-          </button>
+          <div className="flex items-center gap-2">
+            {state.phase !== 'intro' && state.phase !== 'summary' && (
+              <button
+                onClick={handleRestart}
+                className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                title="Von vorne beginnen"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            )}
+            <button
+              onClick={goToSummary}
+              className="p-2 -mr-2 text-slate-600 hover:text-slate-900 text-sm"
+            >
+              {state.phase === 'therapists' || state.phase === 'summary' ? 'Übersicht' : 'Beenden'}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -1581,19 +1594,37 @@ export default function QuizPage() {
                 </div>
               )}
 
-              {/* Intensive Test Link */}
-              <div className="bg-slate-50 rounded-2xl p-6 text-center space-y-3">
-                <ClipboardCheck className="w-8 h-8 text-slate-400 mx-auto" />
-                <p className="text-slate-600">
-                  Möchtest du eine ausführlichere Einschätzung?
-                </p>
-                <Link
-                  href="/triage"
-                  className="inline-flex items-center gap-2 text-primary-600 font-medium hover:underline"
-                >
-                  Zum wissenschaftlichen Test
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
+              {/* Alternative Tools */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Intensive Test Link */}
+                <div className="bg-slate-50 rounded-2xl p-5 text-center space-y-2">
+                  <ClipboardCheck className="w-7 h-7 text-slate-400 mx-auto" />
+                  <p className="text-slate-600 text-sm">
+                    Ausführlichere Einschätzung?
+                  </p>
+                  <Link
+                    href="/triage"
+                    className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
+                  >
+                    Zum wissenschaftlichen Test
+                    <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+
+                {/* Classic Matching Link */}
+                <div className="bg-slate-50 rounded-2xl p-5 text-center space-y-2">
+                  <Settings2 className="w-7 h-7 text-slate-400 mx-auto" />
+                  <p className="text-slate-600 text-sm">
+                    Lieber Schritt für Schritt?
+                  </p>
+                  <MatchingLink
+                    href="/match"
+                    className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
+                  >
+                    Klassisches Matching
+                    <ChevronRight className="w-4 h-4" />
+                  </MatchingLink>
+                </div>
               </div>
 
               {/* Actions */}

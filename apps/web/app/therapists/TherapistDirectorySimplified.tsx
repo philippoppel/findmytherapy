@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { ShieldCheck, Sparkles, MapPin, LocateFixed, BookOpen, ChevronRight } from 'lucide-react';
 import type { TherapistCard } from './types';
 import { UnifiedTherapistSearch } from '../components/therapist-search/UnifiedTherapistSearch';
-import { MatchingLink } from '../components/matching/MatchingLink';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
 
 // Keywords für Blog-Suche passend zu Therapeut:innen-Fokus
@@ -137,17 +136,17 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
           <div className="mx-auto max-w-md space-y-4">
             <p className="text-base text-white/90 font-medium">Keine passenden Profile gefunden</p>
             <p className="text-sm text-white/70">
-              Passe die Filter an oder probiere unseren intelligenten Matching-Wizard aus, um
+              Passe die Filter an oder beantworte ein paar kurze Fragen, um
               personalisierte Empfehlungen zu erhalten.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-              <MatchingLink
-                href="/match"
+              <Link
+                href="/quiz"
                 className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:bg-primary-700 hover:shadow-xl"
               >
                 <Sparkles className="h-4 w-4" />
-                Matching-Wizard starten
-              </MatchingLink>
+                Quiz starten
+              </Link>
               <button
                 onClick={() => setFilteredTherapists(therapists)}
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/15"
@@ -230,14 +229,14 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
                               {/* CTA Button */}
                               <div className="pt-4">
-                                <MatchingLink
-                                  href="/match"
+                                <Link
+                                  href="/quiz"
                                   className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-primary-500/30 transition-all hover:from-primary-400 hover:to-primary-500 hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-0.5"
                                 >
                                   <Sparkles className="h-5 w-5 transition-transform group-hover:rotate-12" />
-                                  Jetzt Matching starten
+                                  Quiz starten
                                   <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                                </MatchingLink>
+                                </Link>
                               </div>
                             </div>
                           </div>

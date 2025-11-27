@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { Button } from '@mental-health/ui';
 import type { heroContent } from '../../marketing-content';
 import { Reveal } from './Reveal';
-import { MatchingLink } from '../matching/MatchingLink';
 import { HeroTopicCard } from './HeroTopicCard';
 import { HeroVideoPlayer } from './HeroVideoPlayer';
 import { HeroScrollIndicator } from './HeroScrollIndicator';
@@ -80,7 +79,7 @@ export function MarketingHero({ content }: HeroProps) {
                   size="lg"
                   className="relative min-h-[56px] lg:min-h-[64px] px-10 lg:px-14 justify-center text-lg lg:text-xl font-extrabold shadow-2xl transition-all duration-200 hover:-translate-y-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600"
                 >
-                  <MatchingLink href={content.primaryCta.href}>{content.primaryCta.label}</MatchingLink>
+                  <Link href="/quiz">{content.primaryCta.label}</Link>
                 </Button>
               </motion.div>
 

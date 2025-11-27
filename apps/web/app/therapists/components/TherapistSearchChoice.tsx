@@ -5,21 +5,20 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Compass, ClipboardCheck, Search, Sparkles, ArrowRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion';
-import { MatchingLink } from '@/app/components/matching/MatchingLink';
 
 const searchOptions = [
   {
     id: 'matching',
     title: 'Sag uns, was los ist',
-    subtitle: 'Geführte Suche',
-    description: 'Wir helfen dir herauszufinden, welche Therapie zu dir passt',
+    subtitle: 'Schnell-Quiz',
+    description: '6 kurze Fragen – in 2 Minuten zu personalisierten Empfehlungen',
     badge: 'Empfohlen',
     badgeIcon: Sparkles,
     icon: Compass,
     image: '/images/search/matching-hero.jpg',
-    cta: 'Los geht\'s',
+    cta: 'Quiz starten',
     color: 'primary',
-    features: ['Bildbasierte Auswahl', 'Personalisierte Empfehlungen', 'Match-Prozente'],
+    features: ['6 Fragen', 'Tinder-Style Swiping', 'Sofort Ergebnisse'],
   },
   {
     id: 'triage',
@@ -201,7 +200,12 @@ function SearchCard({
 
   // Different wrappers based on action type
   if (option.id === 'matching') {
-    return <MatchingLink className="block h-full">{cardContent}</MatchingLink>;
+    // Quiz statt Matching-Wizard
+    return (
+      <Link href="/quiz" className="block h-full">
+        {cardContent}
+      </Link>
+    );
   }
 
   if (option.id === 'triage') {
