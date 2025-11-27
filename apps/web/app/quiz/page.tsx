@@ -624,6 +624,7 @@ export default function QuizPage() {
             <span className="hidden sm:inline text-sm">Startseite</span>
           </Link>
 
+          {/* Progress indicator */}
           {state.phase === 'topics' && (
             <span className="text-sm text-slate-500">
               {state.topicIndex + 1} / {CORE_TOPICS.length}
@@ -636,22 +637,35 @@ export default function QuizPage() {
             </span>
           )}
 
-          <div className="flex items-center gap-2">
-            {state.phase !== 'intro' && state.phase !== 'summary' && (
+          {/* Actions - always visible */}
+          <div className="flex items-center gap-1">
+            {/* Classic Matching */}
+            <MatchingLink
+              href="/match"
+              className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+              title="Klassisches Matching"
+            >
+              <Settings2 className="w-4 h-4" />
+            </MatchingLink>
+
+            {/* Restart */}
+            <button
+              onClick={handleRestart}
+              className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+              title="Von vorne beginnen"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+
+            {/* End/Summary */}
+            {state.phase !== 'summary' && (
               <button
-                onClick={handleRestart}
-                className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-                title="Von vorne beginnen"
+                onClick={goToSummary}
+                className="p-2 text-slate-600 hover:text-slate-900 text-sm"
               >
-                <RotateCcw className="w-4 h-4" />
+                {state.phase === 'therapists' ? 'Fertig' : 'Beenden'}
               </button>
             )}
-            <button
-              onClick={goToSummary}
-              className="p-2 -mr-2 text-slate-600 hover:text-slate-900 text-sm"
-            >
-              {state.phase === 'therapists' || state.phase === 'summary' ? 'Übersicht' : 'Beenden'}
-            </button>
           </div>
         </div>
       </header>
@@ -1183,6 +1197,50 @@ export default function QuizPage() {
             </motion.div>
           )}
 
+          {/* THERAPISTS - No matches fallback */}
+          {state.phase === 'therapists' && !currentTherapist && (
+            <motion.div
+              key="no-therapists"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-12 space-y-6"
+            >
+              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
+                <AlertCircle className="w-8 h-8 text-slate-400" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Keine passenden Therapeut:innen gefunden
+                </h2>
+                <p className="text-slate-600 max-w-md mx-auto">
+                  Leider konnten wir mit deinen Kriterien keine Matches finden.
+                  Versuche es mit anderen Präferenzen oder schau dir alle Therapeut:innen an.
+                </p>
+              </div>
+              <div className="space-y-3 max-w-sm mx-auto">
+                <button
+                  onClick={() => setState((prev) => ({ ...prev, phase: 'location-preferences' }))}
+                  className="w-full py-3 rounded-xl bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-colors"
+                >
+                  Präferenzen anpassen
+                </button>
+                <Link
+                  href="/therapists"
+                  className="block w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors"
+                >
+                  Alle Therapeut:innen ansehen
+                </Link>
+                <button
+                  onClick={handleRestart}
+                  className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors text-sm flex items-center justify-center gap-2"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Quiz neu starten
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           {/* THERAPISTS - Swipeable Cards */}
           {state.phase === 'therapists' && currentTherapist && (
             <motion.div
@@ -1392,6 +1450,15 @@ export default function QuizPage() {
               >
                 Profil ansehen
                 <ChevronRight className="w-4 h-4" />
+              </button>
+
+              {/* Skip to Summary - prominent on mobile */}
+              <button
+                onClick={goToSummary}
+                className="w-full py-3 text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors text-sm flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                Direkt zur Übersicht ({state.favorites.length} gemerkt)
               </button>
 
               {/* Blog Posts - vertikal auf Mobile, horizontal auf Desktop */}
