@@ -112,18 +112,56 @@ export function Footer() {
           ))}
         </div>
 
-        {/* ÖBVP Partner Section */}
-        <section className="mt-12 flex flex-col items-center justify-center gap-4 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-6 text-center sm:flex-row sm:gap-6">
-          <Image
-            src="/images/oebvp.png"
-            alt="Österreichischer Bundesverband für Psychotherapie"
-            width={140}
-            height={70}
-            className="h-auto w-28 object-contain sm:w-36"
-          />
-          <div className="text-sm sm:text-left">
-            <p className="font-semibold text-primary-800">Empfohlen vom ÖBVP</p>
-            <p className="text-muted">Österreichischer Bundesverband für Psychotherapie</p>
+        {/* Partner & Empfehlungen Section */}
+        <section className="mt-12 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-6 sm:p-8">
+          <p className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-primary-700">
+            Empfohlen & unterstützt von
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-12">
+            {/* ÖBVP */}
+            <div className="flex flex-col items-center gap-2">
+              <Image
+                src="/images/oebvp.png"
+                alt="Österreichischer Bundesverband für Psychotherapie"
+                width={120}
+                height={60}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 sm:h-14"
+              />
+              <span className="text-[10px] text-muted text-center max-w-[100px]">ÖBVP</span>
+            </div>
+            {/* VÖPP */}
+            <div className="flex flex-col items-center gap-2">
+              <Image
+                src="/images/voepp.png"
+                alt="Vereinigung Österreichischer Psychotherapeutinnen und Psychotherapeuten"
+                width={120}
+                height={60}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 sm:h-14"
+              />
+              <span className="text-[10px] text-muted text-center max-w-[100px]">VÖPP</span>
+            </div>
+            {/* SFU */}
+            <div className="flex flex-col items-center gap-2">
+              <Image
+                src="/images/sfu.svg"
+                alt="Sigmund Freud Universität"
+                width={120}
+                height={60}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 sm:h-14"
+              />
+              <span className="text-[10px] text-muted text-center max-w-[100px]">SFU Wien</span>
+            </div>
+            {/* 2 Minuten 2 Millionen */}
+            <div className="flex flex-col items-center gap-2">
+              <Image
+                src="/images/2min2mil.png"
+                alt="2 Minuten 2 Millionen"
+                width={120}
+                height={60}
+                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 sm:h-14"
+              />
+              <span className="text-[10px] text-muted text-center max-w-[100px]">Bekannt aus TV</span>
+            </div>
           </div>
         </section>
 
