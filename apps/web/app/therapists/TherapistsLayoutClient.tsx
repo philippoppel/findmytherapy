@@ -110,7 +110,7 @@ export function TherapistsLayoutClient({ children }: Props) {
             </nav>
 
             {/* Hero Content */}
-            <div className="text-center px-4 pt-8 pb-6">
+            <div className="text-center px-4 pt-8 pb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" />
                 Geführte Suche
@@ -120,7 +120,7 @@ export function TherapistsLayoutClient({ children }: Props) {
                 <br className="hidden sm:block" />
                 <span className="text-primary-200"> passenden Therapie</span>
               </h1>
-              <p className="text-white/80 text-lg max-w-2xl mx-auto mb-8">
+              <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10">
                 Wir helfen dir, die richtigen Fragen zu stellen und finden
                 Therapeut:innen, die zu deinen Bedürfnissen passen.
               </p>

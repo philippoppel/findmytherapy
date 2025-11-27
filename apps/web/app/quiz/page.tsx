@@ -678,7 +678,7 @@ export default function QuizPage() {
           </nav>
 
           {/* Hero Content */}
-          <div className="text-center px-4 pt-6 pb-4">
+          <div className="text-center px-4 pt-6 pb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-4">
               <BookOpen className="w-4 h-4" />
               Schnell-Quiz
@@ -688,7 +688,7 @@ export default function QuizPage() {
               <br className="hidden sm:block" />
               <span className="text-primary-200"> zu dir passt</span>
             </h1>
-            <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mb-6">
+            <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mb-8">
               6 kurze Fragen – in 2 Minuten zu persönlichen Empfehlungen
             </p>
 

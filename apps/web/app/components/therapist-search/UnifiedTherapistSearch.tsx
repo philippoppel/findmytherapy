@@ -33,7 +33,8 @@ export function UnifiedTherapistSearch({
   onFilteredResults,
   className = '',
 }: UnifiedTherapistSearchProps) {
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  // Show advanced filters by default on desktop
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(true);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   // Use ref to keep callback stable across renders

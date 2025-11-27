@@ -248,14 +248,14 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                   {/* Blog Posts Section after 10 therapists */}
                   {showBlogPosts && (
                     <div className="col-span-full my-4">
-                      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+                      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
                         <div className="mb-5 flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                            <BookOpen className="h-5 w-5 text-white" />
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-100">
+                            <BookOpen className="h-5 w-5 text-primary-600" />
                           </div>
                           <div>
-                            <h3 className="text-lg font-bold text-white">Passende Artikel für dich</h3>
-                            <p className="text-sm text-white/60">Mehr zum Thema erfahren</p>
+                            <h3 className="text-lg font-bold text-slate-900">Passende Artikel für dich</h3>
+                            <p className="text-sm text-slate-500">Mehr zum Thema erfahren</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -263,7 +263,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                             <Link
                               key={post.slug}
                               href={`/blog/${post.slug}`}
-                              className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all hover:border-white/20 hover:bg-white/10"
+                              className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:border-slate-300 hover:shadow-md"
                             >
                               <div className="relative aspect-[16/9] overflow-hidden">
                                 <Image
@@ -274,8 +274,8 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                                 />
                               </div>
                               <div className="flex flex-1 flex-col p-4">
-                                <p className="line-clamp-2 text-sm font-medium text-white">{post.title}</p>
-                                <div className="mt-auto flex items-center gap-1 pt-2 text-xs text-white/50">
+                                <p className="line-clamp-2 text-sm font-medium text-slate-900">{post.title}</p>
+                                <div className="mt-auto flex items-center gap-1 pt-2 text-xs text-slate-500">
                                   <span>{post.readingTime}</span>
                                   <ChevronRight className="h-3 w-3" />
                                 </div>
@@ -296,7 +296,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             <div className="mt-8 flex justify-center">
               <button
                 onClick={() => setVisibleCount((prev) => prev + LOAD_MORE_COUNT)}
-                className="rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/15 active:scale-98"
+                className="rounded-xl border border-slate-200 bg-slate-50 px-6 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 active:scale-98"
               >
                 Mehr laden ({filteredTherapists.length - visibleCount} weitere)
               </button>
@@ -318,9 +318,9 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
 
   return (
     <Link href={`/therapists/${therapist.id}`} prefetch={false} className="group">
-      <article className="relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 sm:min-h-[450px] sm:rounded-3xl">
+      <article className="relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-lg hover:-translate-y-1 sm:min-h-[450px] sm:rounded-3xl">
         {/* Image Section */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-neutral-900 to-black">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
           {therapist.image ? (
             <Image
               src={therapist.image}
@@ -362,10 +362,10 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
               className={cn(
                 'inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide shadow-lg backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs',
                 therapist.status === 'VERIFIED'
-                  ? 'border-emerald-400/60 bg-emerald-500/30 text-emerald-100'
+                  ? 'border-emerald-400/60 bg-emerald-500/90 text-white'
                   : therapist.status === 'PENDING'
-                    ? 'border-amber-400/60 bg-amber-500/30 text-amber-100'
-                    : 'border-red-400/60 bg-red-500/30 text-red-100',
+                    ? 'border-amber-400/60 bg-amber-500/90 text-white'
+                    : 'border-red-400/60 bg-red-500/90 text-white',
               )}
             >
               <ShieldCheck className="h-3 w-3 flex-shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden />
@@ -376,7 +376,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           {/* Distance Badge - Top Right */}
           {distance && (
             <div className="absolute right-2 top-2 sm:right-3 sm:top-3">
-              <span className="inline-flex items-center gap-1 rounded-lg border border-primary-400/60 bg-primary-500/30 px-2 py-1 text-[10px] font-semibold text-primary-100 shadow-lg backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs">
+              <span className="inline-flex items-center gap-1 rounded-lg border border-primary-400/60 bg-primary-500/90 px-2 py-1 text-[10px] font-semibold text-white shadow-lg backdrop-blur-sm sm:gap-1.5 sm:px-2.5 sm:py-1.5 sm:text-xs">
                 <LocateFixed className="h-3 w-3 flex-shrink-0 sm:h-3.5 sm:w-3.5" aria-hidden />
                 <span className="whitespace-nowrap">{distance}</span>
               </span>
@@ -388,16 +388,16 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
         <div className="flex flex-1 flex-col gap-3 p-4 sm:gap-4 sm:p-5 lg:p-6">
           {/* Header */}
           <div className="space-y-1.5">
-            <h3 className="line-clamp-2 text-base font-bold leading-tight text-white sm:text-lg lg:text-xl">
+            <h3 className="line-clamp-2 text-base font-bold leading-tight text-slate-900 sm:text-lg lg:text-xl">
               {therapist.name}
             </h3>
-            <p className="line-clamp-2 text-xs text-white/70 sm:text-sm">{therapist.title}</p>
+            <p className="line-clamp-2 text-xs text-slate-500 sm:text-sm">{therapist.title}</p>
           </div>
 
           {/* Experience Badge */}
-          <div className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-white/90 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm">
+          <div className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-700 sm:gap-2 sm:px-3 sm:py-2 sm:text-sm">
             <Sparkles
-              className="h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4"
+              className="h-3.5 w-3.5 flex-shrink-0 text-primary-500 sm:h-4 sm:w-4"
               aria-hidden
             />
             <span className="line-clamp-1">{therapist.experience}</span>
@@ -406,24 +406,24 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           {/* Quick Info */}
           <div className="flex items-start gap-2">
             <MapPin
-              className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-400 sm:h-4 sm:w-4"
+              className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-500 sm:h-4 sm:w-4"
               aria-hidden
             />
-            <span className="line-clamp-2 text-xs text-white/80 sm:text-sm">
+            <span className="line-clamp-2 text-xs text-slate-600 sm:text-sm">
               {therapist.location}
             </span>
           </div>
 
           {/* Focus Areas */}
           <div className="flex flex-1 flex-col gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/50">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               Schwerpunkte
             </p>
             <div className="flex flex-wrap gap-1.5">
               {primaryFocus.map((focus, index) => (
                 <span
                   key={index}
-                  className="inline-block max-w-full truncate rounded-lg border border-primary-400/30 bg-primary-500/10 px-2 py-1 text-xs font-medium leading-tight text-primary-200"
+                  className="inline-block max-w-full truncate rounded-lg border border-primary-200 bg-primary-50 px-2 py-1 text-xs font-medium leading-tight text-primary-700"
                   title={focus}
                 >
                   {focus}
@@ -433,17 +433,17 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
           </div>
 
           {/* Availability */}
-          <div className="mt-auto border-t border-white/10 pt-3">
+          <div className="mt-auto border-t border-slate-100 pt-3">
             <div className="flex items-center justify-between gap-2 text-xs">
-              <span className="text-white/60">Verfügbarkeit</span>
+              <span className="text-slate-500">Verfügbarkeit</span>
               <span
                 className={cn(
                   'truncate text-right font-semibold',
                   therapist.availabilityRank <= 2
-                    ? 'text-emerald-400'
+                    ? 'text-emerald-600'
                     : therapist.availabilityRank <= 4
-                      ? 'text-amber-400'
-                      : 'text-red-400',
+                      ? 'text-amber-600'
+                      : 'text-red-600',
                 )}
               >
                 {therapist.availability}
