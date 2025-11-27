@@ -1,6 +1,3 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import { Quote, Heart, Star, Sparkles } from 'lucide-react';
 
 // Testimonials data - mehr für den Eindruck vieler Reviews
@@ -121,6 +118,24 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
 export function TestimonialsSection() {
   return (
     <section className="relative py-16 sm:py-24 overflow-hidden">
+      {/* CSS for marquee animation */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes marquee-left {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+          from { transform: translateX(-50%); }
+          to { transform: translateX(0); }
+        }
+        .animate-marquee-left {
+          animation: marquee-left 60s linear infinite;
+        }
+        .animate-marquee-right {
+          animation: marquee-right 70s linear infinite;
+        }
+      `}} />
+
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-primary-50/30 to-white" />
 
@@ -131,12 +146,7 @@ export function TestimonialsSection() {
       <div className="relative">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-14 px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-700 mb-4">
               <Heart className="w-4 h-4 fill-primary-500 text-primary-500" />
               Über 500+ zufriedene Nutzer:innen
@@ -147,7 +157,7 @@ export function TestimonialsSection() {
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Patient:innen und Therapeut:innen teilen ihre Erfahrungen
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Infinite Scroll Marquee - Row 1 (left to right) */}
@@ -156,27 +166,14 @@ export function TestimonialsSection() {
           <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-          <motion.div
-            className="flex gap-5 sm:gap-6"
-            animate={{
-              x: [0, -50 * testimonials.length * 8],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: 'loop',
-                duration: 120,
-                ease: 'linear',
-              },
-            }}
-          >
+          <div className="flex gap-5 sm:gap-6 animate-marquee-left" style={{ width: 'max-content' }}>
             {allTestimonials.map((testimonial, index) => (
               <TestimonialCard key={`row1-${testimonial.id}-${index}`} testimonial={testimonial} />
             ))}
             {allTestimonials.map((testimonial, index) => (
               <TestimonialCard key={`row1-dup-${testimonial.id}-${index}`} testimonial={testimonial} />
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* Infinite Scroll Marquee - Row 2 (right to left, offset) */}
@@ -185,37 +182,18 @@ export function TestimonialsSection() {
           <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
 
-          <motion.div
-            className="flex gap-5 sm:gap-6"
-            animate={{
-              x: [-50 * testimonials.length * 8, 0],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: 'loop',
-                duration: 140,
-                ease: 'linear',
-              },
-            }}
-          >
+          <div className="flex gap-5 sm:gap-6 animate-marquee-right" style={{ width: 'max-content' }}>
             {[...allTestimonials].reverse().map((testimonial, index) => (
               <TestimonialCard key={`row2-${testimonial.id}-${index}`} testimonial={testimonial} />
             ))}
             {[...allTestimonials].reverse().map((testimonial, index) => (
               <TestimonialCard key={`row2-dup-${testimonial.id}-${index}`} testimonial={testimonial} />
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* Trust Indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12 sm:mt-16 text-center px-4"
-        >
+        <div className="mt-12 sm:mt-16 text-center px-4">
           <div className="inline-flex flex-wrap items-center justify-center gap-6 sm:gap-10 px-6 sm:px-8 py-4 sm:py-5 bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
@@ -242,7 +220,7 @@ export function TestimonialsSection() {
               <span className="text-sm text-gray-600 font-medium">Verifizierte Bewertungen</span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

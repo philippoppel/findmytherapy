@@ -1,12 +1,18 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { getHeroContent, getFAQItems, teamContent } from '../marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
-import { FaqAccordion } from '../components/marketing/FaqAccordion';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 import { TestimonialsSection } from '../components/marketing/TestimonialsSection';
 
-// Force dynamic rendering to prevent database access during build
-export const dynamic = 'force-dynamic';
+// Lazy load below-the-fold components
+const FaqAccordion = dynamic(
+  () => import('../components/marketing/FaqAccordion').then((mod) => mod.FaqAccordion),
+  { ssr: true }
+);
+
+// Revalidate every 5 minutes for fresh therapist data
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Therapie für dich',

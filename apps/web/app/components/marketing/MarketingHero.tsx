@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { Button } from '@mental-health/ui';
 import type { heroContent } from '../../marketing-content';
 import { Reveal } from './Reveal';
@@ -68,26 +67,19 @@ export function MarketingHero({ content }: HeroProps) {
           <Reveal delay={260}>
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
               {/* Primary CTA - Los geht's */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className="relative"
-              >
+              <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-2xl blur-xl opacity-50 animate-pulse" />
                 <Button
                   asChild
                   size="lg"
-                  className="relative min-h-[56px] lg:min-h-[64px] px-10 lg:px-14 justify-center text-lg lg:text-xl font-extrabold shadow-2xl transition-all duration-200 hover:-translate-y-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600"
+                  className="relative min-h-[56px] lg:min-h-[64px] px-10 lg:px-14 justify-center text-lg lg:text-xl font-extrabold shadow-2xl transition-all duration-200 hover:-translate-y-1 hover:scale-105 active:scale-[0.97] bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600"
                 >
                   <Link href="/quiz">{content.primaryCta.label}</Link>
                 </Button>
-              </motion.div>
+              </div>
 
               {/* Secondary CTA - Ich weiß schon was ich suche */}
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <div className="transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]">
                 <Link
                   href={content.secondaryCta.href}
                   className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-white px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-700 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
@@ -97,7 +89,7 @@ export function MarketingHero({ content }: HeroProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -156,23 +148,28 @@ export function MarketingHero({ content }: HeroProps) {
             </div>
 
             {/* Scrollable cards */}
-            <motion.div
-              className="overflow-x-auto scrollbar-hide -mx-4 px-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
+            <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
               <div className="flex gap-3 pb-4" style={{ width: 'max-content' }}>
                 {heroTopics.map((topic, index) => (
                   <HeroTopicCard key={topic.id} topic={topic} index={index} isMobile />
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Partner/Unterstützer Slider - UNTER den Bildern */}
         <div className="mt-10 sm:mt-14 px-4">
+          {/* CSS for partner logo marquee */}
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes partner-scroll {
+              from { transform: translateX(0); }
+              to { transform: translateX(-50%); }
+            }
+            .animate-partner-scroll {
+              animation: partner-scroll 20s linear infinite;
+            }
+          `}} />
           <Reveal delay={400}>
             <div className="max-w-6xl mx-auto">
               <p className="text-center text-base sm:text-lg text-muted font-medium mb-8">
@@ -180,20 +177,7 @@ export function MarketingHero({ content }: HeroProps) {
               </p>
               {/* Logo Slider */}
               <div className="relative overflow-hidden py-2">
-                <motion.div
-                  className="flex items-center gap-10 sm:gap-16"
-                  animate={{
-                    x: ['0%', '-50%'],
-                  }}
-                  transition={{
-                    x: {
-                      repeat: Infinity,
-                      repeatType: 'loop',
-                      duration: 20,
-                      ease: 'linear',
-                    },
-                  }}
-                >
+                <div className="flex items-center gap-10 sm:gap-16 animate-partner-scroll" style={{ width: 'max-content' }}>
                   {/* Duplicate logos for seamless loop */}
                   {[...partnerLogos, ...partnerLogos].map((logo, index) => (
                     <div
@@ -209,7 +193,7 @@ export function MarketingHero({ content }: HeroProps) {
                       />
                     </div>
                   ))}
-                </motion.div>
+                </div>
                 {/* Fade edges */}
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent" />
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent" />

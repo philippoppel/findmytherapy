@@ -1,6 +1,5 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { HeroTopic } from './heroTopicsConfig';
@@ -12,82 +11,43 @@ interface HeroTopicCardProps {
 }
 
 export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardProps) {
-  const prefersReducedMotion = useReducedMotion();
-
-  // Floating animation configuration - elegant, gentle movement
-  const floatingAnimation = prefersReducedMotion
-    ? {}
-    : {
-        y: [0, -topic.animation.yOffset * 1.2, 0, topic.animation.yOffset * 0.8, 0],
-        x: [0, topic.animation.xOffset * 0.5, 0, -topic.animation.xOffset * 0.3, 0],
-        rotate: [0, topic.animation.rotateRange * 1.2, 0, -topic.animation.rotateRange, 0],
-        scale: [1, 1.02, 1, 0.99, 1],
-      };
-
-  const floatingTransition = {
-    duration: topic.animation.duration,
-    repeat: Infinity,
-    ease: 'easeInOut' as const,
-    delay: topic.animation.delay,
-    times: [0, 0.25, 0.5, 0.75, 1],
-  };
-
-  // Hover animation - interactive and engaging
-  const hoverAnimation = prefersReducedMotion
-    ? { opacity: 0.95 }
-    : {
-        scale: 1.08,
-        y: -8,
-        rotate: 0,
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.2)',
-      };
-
-  // Entrance animation variants
-  const entranceVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 200,
-        damping: 25,
-        delay: index * 0.08,
-      },
-    },
-  };
-
-  const MotionLink = motion.create(Link);
-
   // Different rotation for visual interest
   const rotation = index % 2 === 0 ? '-2deg' : '2deg';
 
+  // CSS animation delay based on index
+  const animationDelay = `${topic.animation.delay}s`;
+
   return (
-    <MotionLink
-      href={topic.targetSection}
-      className={`
-        group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl block
-        ${isMobile ? 'flex-shrink-0 w-32 h-40' : 'w-44 h-52 lg:w-52 lg:h-64 xl:w-60 xl:h-72'}
-      `}
-      style={{ transform: `rotate(${rotation})` }}
-      variants={entranceVariants}
-      initial="hidden"
-      animate="visible"
-      whileHover={hoverAnimation}
-      whileFocus={hoverAnimation}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      aria-label={`Mehr erfahren: ${topic.label}`}
-    >
-      {/* Floating wrapper */}
-      <motion.div
-        className="relative h-full w-full"
-        animate={floatingAnimation}
-        transition={floatingTransition}
+    <>
+      {/* CSS for floating animation */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes float-${index} {
+          0%, 100% { transform: rotate(${rotation}) translateY(0) translateX(0); }
+          25% { transform: rotate(${rotation}) translateY(-${topic.animation.yOffset * 1.2}px) translateX(${topic.animation.xOffset * 0.5}px); }
+          50% { transform: rotate(${rotation}) translateY(0) translateX(0); }
+          75% { transform: rotate(${rotation}) translateY(${topic.animation.yOffset * 0.8}px) translateX(-${topic.animation.xOffset * 0.3}px); }
+        }
+        .float-card-${index} {
+          animation: float-${index} ${topic.animation.duration}s ease-in-out infinite;
+          animation-delay: ${animationDelay};
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .float-card-${index} {
+            animation: none;
+            transform: rotate(${rotation});
+          }
+        }
+      `}} />
+      <Link
+        href={topic.targetSection}
+        className={`
+          group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl block
+          float-card-${index}
+          transition-all duration-300 ease-out
+          hover:scale-[1.08] hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.2)]
+          ${isMobile ? 'flex-shrink-0 w-32 h-40' : 'w-44 h-52 lg:w-52 lg:h-64 xl:w-60 xl:h-72'}
+        `}
+        aria-label={`Mehr erfahren: ${topic.label}`}
       >
         {/* Glass card container */}
         <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-lg backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-xl">
@@ -115,7 +75,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
           {/* Hover glow effect */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-primary-200/30 via-transparent to-secondary-200/20 pointer-events-none" />
         </div>
-      </motion.div>
-    </MotionLink>
+      </Link>
+    </>
   );
 }

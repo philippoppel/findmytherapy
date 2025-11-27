@@ -1,11 +1,8 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 export function HeroScrollIndicator() {
-  const prefersReducedMotion = useReducedMotion();
-
   const handleClick = () => {
     const nextSection = document.querySelector('[data-section-after-hero]');
     if (nextSection) {
@@ -20,31 +17,31 @@ export function HeroScrollIndicator() {
   };
 
   return (
-    <motion.button
-      onClick={handleClick}
-      className="flex flex-col items-center gap-1.5 text-neutral-500 hover:text-primary-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg px-4 py-2"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.5, duration: 0.5 }}
-      aria-label="Nach unten scrollen"
-    >
-      <span className="text-sm font-medium">Mehr entdecken</span>
-      <motion.div
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-                y: [0, 6, 0],
-              }
+    <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes bounce-down {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(6px); }
         }
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        .animate-bounce-down {
+          animation: bounce-down 1.5s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-bounce-down {
+            animation: none;
+          }
+        }
+      `}} />
+      <button
+        onClick={handleClick}
+        className="flex flex-col items-center gap-1.5 text-neutral-500 hover:text-primary-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg px-4 py-2"
+        aria-label="Nach unten scrollen"
       >
-        <ChevronDown className="h-5 w-5" />
-      </motion.div>
-    </motion.button>
+        <span className="text-sm font-medium">Mehr entdecken</span>
+        <div className="animate-bounce-down">
+          <ChevronDown className="h-5 w-5" />
+        </div>
+      </button>
+    </>
   );
 }
