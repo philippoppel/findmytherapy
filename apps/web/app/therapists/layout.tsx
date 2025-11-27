@@ -1,12 +1,12 @@
 import { MatchingWizardProvider } from '../components/matching/MatchingWizardContext';
-import { MatchingSection } from '../components/matching/MatchingSection';
+import { TherapistsLayoutClient } from './TherapistsLayoutClient';
 
 export default function TherapistsLayout({ children }: { children: React.ReactNode }) {
   return (
     <MatchingWizardProvider>
-      {/* Matching Wizard & Results - Inline Expansion (hidden by default) */}
-      <MatchingSection />
-      {children}
+      <TherapistsLayoutClient>
+        {children}
+      </TherapistsLayoutClient>
     </MatchingWizardProvider>
   );
 }
