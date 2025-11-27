@@ -9,7 +9,7 @@ import { TestimonialsSection } from '../components/marketing/TestimonialsSection
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'FindMyTherapy – SEO-optimierte Therapeuten-Profile & Expert:innen-Wissen',
+  title: 'FindMyTherapy – Therapie für dich',
   description:
     'Entdecke gratis Wissen von anerkannten Psychotherapeut:innen für Soforthilfe. Finde verifizierte Therapeut:innen mit SEO-optimierten Profilen. Zwei Wege zu mentaler Gesundheit.',
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     'Psychologie Ratgeber',
   ],
   openGraph: {
-    title: 'FindMyTherapy – Expert:innen-Wissen & SEO-optimierte Therapeuten-Profile',
+    title: 'FindMyTherapy – Expert:innen-Wissen',
     description:
       'Gratis Wissen von Psychotherapeut:innen für Soforthilfe. Verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites.',
     type: 'website',

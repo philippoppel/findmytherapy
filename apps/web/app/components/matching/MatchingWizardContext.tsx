@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { MatchingResponse } from '@/lib/matching';
-import type { WizardFormData } from '@/app/match/components/types';
+import type { WizardFormData } from './types';
 
 interface MatchingWizardContextType {
   isOpen: boolean;

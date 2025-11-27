@@ -23,7 +23,6 @@ import {
   AlertCircle,
   Euro,
   Clock,
-  Settings2,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
@@ -658,7 +657,7 @@ export default function QuizPage() {
 
             {/* Guided Matching */}
             <Link
-              href="/therapists?matching=true"
+              href="/match"
               className="px-2.5 py-1 text-xs text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
             >
               Geführte Suche
@@ -1695,17 +1694,17 @@ export default function QuizPage() {
                   </Link>
                 </div>
 
-                {/* Classic Matching Link */}
+                {/* Guided Matching Link */}
                 <div className="bg-slate-50 rounded-2xl p-5 text-center space-y-2">
-                  <Settings2 className="w-7 h-7 text-slate-400 mx-auto" />
+                  <Sparkles className="w-7 h-7 text-slate-400 mx-auto" />
                   <p className="text-slate-600 text-sm">
                     Lieber Schritt für Schritt?
                   </p>
                   <Link
-                    href="/therapists?matching=true"
+                    href="/match"
                     className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
                   >
-                    Klassisches Matching
+                    Geführte Suche
                     <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
