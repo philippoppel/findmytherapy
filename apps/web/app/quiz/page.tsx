@@ -640,13 +640,27 @@ export default function QuizPage() {
               transition={{ duration: 0 }}
               className="space-y-6"
             >
+              {/* Mobile Swipe Hint */}
+              <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-3 sm:hidden">
+                <span className="flex items-center gap-1">
+                  <X className="w-4 h-4 text-slate-400" />
+                  ← Nein
+                </span>
+                <span className="text-slate-300">|</span>
+                <span className="flex items-center gap-1">
+                  Ja →
+                  <Heart className="w-4 h-4 text-primary-400" />
+                </span>
+              </div>
+
               {/* Topic Card - Swipeable */}
               <motion.div
                 drag={!showTip ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.7}
+                dragElastic={0.5}
                 onDragEnd={(e, info: PanInfo) => {
-                  const threshold = 100;
+                  // Lower threshold for mobile (50px), higher for desktop (80px)
+                  const threshold = window.innerWidth < 640 ? 50 : 80;
                   if (info.offset.x > threshold) {
                     // Swiped right = "Ja"
                     handleTopicAnswer('yes');
@@ -655,9 +669,9 @@ export default function QuizPage() {
                     handleTopicAnswer('no');
                   }
                 }}
-                whileDrag={{ scale: 1.02, rotate: 0 }}
+                whileDrag={{ scale: 1.02 }}
                 style={{ touchAction: 'pan-y' }}
-                className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-grab active:cursor-grabbing">
+                className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-grab active:cursor-grabbing select-none">
                 <div className="relative aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
@@ -712,32 +726,30 @@ export default function QuizPage() {
                         {TOPIC_TIPS[showTip].tip}
                       </p>
                       <p className="text-white/50 text-sm mt-6">
-                        Tippen zum Weiter
+                        Schnell Weiter
                       </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.div>
 
-              {/* Answer Buttons with swipe hints */}
-              <div className="flex gap-4">
+              {/* Answer Buttons */}
+              <div className="flex gap-3 sm:gap-4">
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('no')}
                   disabled={!!showTip}
-                  className="flex-1 py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex flex-col items-center gap-1"
+                  className="flex-1 py-4 sm:py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-base sm:text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Nein</span>
-                  <span className="text-xs text-slate-400 font-normal hidden sm:block">← Swipe links</span>
+                  Nein
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('yes')}
                   disabled={!!showTip}
-                  className="flex-1 py-5 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex flex-col items-center gap-1"
+                  className="flex-1 py-4 sm:py-5 rounded-2xl bg-primary-500 text-white font-semibold text-base sm:text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Ja, das kenne ich</span>
-                  <span className="text-xs text-white/70 font-normal hidden sm:block">Swipe rechts →</span>
+                  Ja, das kenne ich
                 </motion.button>
               </div>
 
