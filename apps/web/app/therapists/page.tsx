@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Compass, Sparkles, Search } from 'lucide-react';
+import { Home, Sparkles, Search, BookOpen, ClipboardCheck } from 'lucide-react';
 
 import { TherapistDirectory } from './TherapistDirectorySimplified';
-import { FEATURES } from '@/lib/features';
 import { getTherapistCards } from './getTherapistCards';
 
 // Force dynamic rendering to prevent database access during build
@@ -46,83 +45,103 @@ export default async function TherapistsPage() {
   const { therapists } = await getTherapistCards();
 
   return (
-    <div className="marketing-theme bg-surface text-default">
-      <section className="relative isolate overflow-hidden px-2 py-16 sm:px-3 lg:px-4">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute left-1/2 top-12 h-72 w-72 -translate-x-1/2 rounded-full bg-primary-100/40 blur-3xl" />
-          <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-secondary-100/50 blur-3xl" />
-        </div>
-        <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-10">
-          <div className="relative overflow-hidden rounded-3xl border border-divider bg-surface-1/95 p-8 shadow-soft-xl sm:p-12">
-            <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden>
-              <div className="absolute -left-10 top-10 h-24 w-24 rounded-full bg-primary-200/60 blur-3xl" />
-              <div className="absolute bottom-10 right-10 h-32 w-32 rounded-full bg-secondary-200/60 blur-3xl" />
-            </div>
-            <div className="relative space-y-8 text-center md:text-left">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-primary-800">
-                <Search className="h-4 w-4" />
-                Direkte Suche
-              </span>
-              <div className="space-y-4">
-                <h1 className="text-4xl font-semibold tracking-tight text-neutral-950 md:text-5xl">
-                  Alle Therapeut:innen durchsuchen
-                </h1>
-                <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted md:mx-0">
-                  Filtere nach deinen Kriterien und finde passende Therapeut:innen in unserem
-                  kuratierten Netzwerk.
-                </p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:justify-start">
-                <Link
-                  href="/"
-                  prefetch={false}
-                  className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                >
-                  ← Zurück zur Startseite
-                </Link>
-                {FEATURES.ASSESSMENT && (
-                  <Link
-                    href="/triage"
-                    prefetch={false}
-                    className="text-sm font-semibold text-link transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                  >
-                    <Compass className="mr-1 inline h-4 w-4" /> Lieber Ersteinschätzung starten
-                  </Link>
-                )}
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Header */}
+      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          {/* Top: Back to home */}
+          <div className="flex items-center justify-between mb-3">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              <Home className="w-5 h-5" />
+              <span className="font-medium">Zurück zur Startseite</span>
+            </Link>
           </div>
-        </div>
-      </section>
 
-      <section id="therapist-list" className="relative pb-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="theme-dark relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-neutral-950 via-primary-950 to-neutral-900 p-8 shadow-soft-xl sm:p-10">
-            <div className="pointer-events-none absolute inset-0" aria-hidden>
-              <div className="absolute left-0 top-0 h-40 w-40 -translate-x-1/3 -translate-y-1/3 rounded-full bg-primary-400/40 blur-3xl" />
-              <div className="absolute bottom-0 right-0 h-48 w-48 translate-x-1/3 translate-y-1/3 rounded-full bg-secondary-400/40 blur-3xl" />
-            </div>
-            <div className="relative flex flex-wrap items-center justify-between gap-6 pb-8">
-              <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl font-semibold text-white">
-                  Ausgewählte Pilot-Therapeut:innen
-                </h2>
-                <p className="text-base text-white/80">
-                  Transparente Profile mit Fokus, Verfügbarkeit und Praxisdetails – abgestimmt auf
-                  unsere Ersteinschätzung.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white/80">
-                <Sparkles className="h-4 w-4 text-primary-200" />
-                Kuratiertes Netzwerk
-              </div>
-            </div>
-            <div className="relative">
-              <TherapistDirectory therapists={therapists} />
-            </div>
+          {/* Title */}
+          <div className="flex items-center justify-center gap-2">
+            <Search className="w-6 h-6 text-primary-500" />
+            <h1 className="text-xl font-bold text-slate-900">Selber filtern</h1>
+          </div>
+
+          {/* Alternative options */}
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mt-3 pt-3 border-t border-slate-100">
+            <Link
+              href="/therapists?matching=true"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span className="hidden sm:inline">Geführte Suche</span>
+              <span className="sm:hidden">Geführt</span>
+            </Link>
+            <Link
+              href="/quiz"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Schnell-Quiz</span>
+              <span className="sm:hidden">Quiz</span>
+            </Link>
+            <Link
+              href="/triage"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-colors"
+            >
+              <ClipboardCheck className="w-4 h-4" />
+              <span className="hidden sm:inline">Wissenschaftlicher Test</span>
+              <span className="sm:hidden">Test</span>
+            </Link>
           </div>
         </div>
-      </section>
+      </header>
+
+      {/* Main Content */}
+      <main className="py-8">
+        <section id="therapist-list" className="relative">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8">
+              <div className="relative flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-slate-100">
+                <div className="max-w-2xl space-y-2">
+                  <h2 className="text-2xl font-semibold text-slate-900">
+                    Alle Therapeut:innen
+                  </h2>
+                  <p className="text-base text-slate-600">
+                    Nutze die Filter um passende Therapeut:innen zu finden.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-primary-700">
+                  <Sparkles className="h-4 w-4" />
+                  {therapists.length} Profile
+                </div>
+              </div>
+              <div className="relative pt-6">
+                <TherapistDirectory therapists={therapists} />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-100 py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
+            <Link href="/" className="hover:text-slate-700 transition-colors">
+              Startseite
+            </Link>
+            <Link href="/quiz" className="hover:text-slate-700 transition-colors">
+              Schnell-Quiz
+            </Link>
+            <Link href="/therapists?matching=true" className="hover:text-slate-700 transition-colors">
+              Geführte Suche
+            </Link>
+            <Link href="/triage" className="hover:text-slate-700 transition-colors">
+              Wissenschaftlicher Test
+            </Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
