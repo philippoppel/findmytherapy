@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
+import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { MicrositeHero } from './components/MicrositeHero';
 import { MicrositeAbout } from './components/MicrositeAbout';
@@ -14,6 +15,75 @@ import { MicrositeAnalytics } from './components/MicrositeAnalytics';
 
 // ISR: Revalidate every 5 minutes (clears cache on new deployment)
 export const revalidate = 300;
+
+// Gecachte Profile-Abfrage - wird zwischen generateMetadata und Page geteilt
+// React cache() dedupliziert innerhalb desselben Request-Zyklus
+const getProfile = cache(async (slug: string) => {
+  return prisma.therapistProfile.findFirst({
+    where: {
+      micrositeSlug: slug,
+      micrositeStatus: 'PUBLISHED',
+      status: 'VERIFIED',
+      deletedAt: null,
+    },
+    select: {
+      id: true,
+      displayName: true,
+      title: true,
+      headline: true,
+      profileImageUrl: true,
+      approachSummary: true,
+      experienceSummary: true,
+      about: true,
+      services: true,
+      modalities: true,
+      specialties: true,
+      languages: true,
+      priceMin: true,
+      priceMax: true,
+      pricingNote: true,
+      city: true,
+      country: true,
+      online: true,
+      videoUrl: true,
+      acceptingClients: true,
+      yearsExperience: true,
+      responseTime: true,
+      availabilityNote: true,
+      galleryImages: true,
+      socialLinkedin: true,
+      socialInstagram: true,
+      socialFacebook: true,
+      websiteUrl: true,
+      qualifications: true,
+      ageGroups: true,
+      acceptedInsurance: true,
+      privatePractice: true,
+      micrositeSlug: true,
+      micrositeBlocks: true,
+      rating: true,
+      reviewCount: true,
+      courses: {
+        where: {
+          status: 'PUBLISHED',
+          deletedAt: null,
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          description: true,
+          price: true,
+          currency: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 5,
+      },
+    },
+  });
+});
 
 // Generate static params for published microsites
 export async function generateStaticParams() {
@@ -44,31 +114,15 @@ export async function generateStaticParams() {
   }
 }
 
-// Generate metadata for SEO
+// Generate metadata for SEO - nutzt gecachte getProfile()
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   try {
-    const profile = await prisma.therapistProfile.findFirst({
-      where: {
-        micrositeSlug: params.slug,
-        micrositeStatus: 'PUBLISHED',
-        status: 'VERIFIED',
-        deletedAt: null,
-      },
-      select: {
-        displayName: true,
-        title: true,
-        headline: true,
-        profileImageUrl: true,
-        city: true,
-        country: true,
-        specialties: true,
-        about: true,
-      },
-    });
+    // Nutzt gecachte Funktion - gleicher Request wie Page = keine doppelte DB-Query
+    const profile = await getProfile(params.slug);
 
     if (!profile) {
       return {
@@ -140,72 +194,8 @@ export default async function TherapistMicrositePage({ params }: { params: { slu
     redirect(`/t/${redirectRecord.toSlug}`);
   }
 
-  // Fetch therapist profile
-  const profile = await prisma.therapistProfile.findFirst({
-    where: {
-      micrositeSlug: params.slug,
-      micrositeStatus: 'PUBLISHED',
-      status: 'VERIFIED',
-      deletedAt: null,
-    },
-    select: {
-      id: true,
-      displayName: true,
-      title: true,
-      headline: true,
-      profileImageUrl: true,
-      approachSummary: true,
-      experienceSummary: true,
-      about: true,
-      services: true,
-      modalities: true,
-      specialties: true,
-      languages: true,
-      priceMin: true,
-      priceMax: true,
-      pricingNote: true,
-      city: true,
-      country: true,
-      online: true,
-      videoUrl: true,
-      acceptingClients: true,
-      yearsExperience: true,
-      responseTime: true,
-      availabilityNote: true,
-      // Gallery & Media
-      galleryImages: true,
-      // Social Media
-      socialLinkedin: true,
-      socialInstagram: true,
-      socialFacebook: true,
-      websiteUrl: true,
-      // Additional Info
-      qualifications: true,
-      ageGroups: true,
-      acceptedInsurance: true,
-      privatePractice: true,
-      micrositeSlug: true,
-      micrositeBlocks: true,
-      courses: {
-        where: {
-          status: 'PUBLISHED',
-          deletedAt: null,
-        },
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          description: true,
-          price: true,
-          currency: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-        take: 5,
-      },
-    },
-  });
+  // Nutzt gecachte Funktion - gleicher Request wie generateMetadata = nur 1 DB-Query
+  const profile = await getProfile(params.slug);
 
   if (!profile) {
     notFound();
@@ -241,7 +231,7 @@ export default async function TherapistMicrositePage({ params }: { params: { slu
       <MicrositeAnalytics profileId={profile.id} slug={params.slug} />
 
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-        <MicrositeHero profile={profile} />
+        <MicrositeHero profile={{ ...profile, micrositeSlug: params.slug }} />
 
         <main className="container mx-auto px-4 py-12 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

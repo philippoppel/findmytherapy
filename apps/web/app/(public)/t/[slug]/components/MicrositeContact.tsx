@@ -103,7 +103,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
 
   if (submitStatus === 'success') {
     return (
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div id="kontakt" className="bg-white rounded-lg shadow-sm p-6 scroll-mt-8">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
             <svg
@@ -136,7 +136,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div id="kontakt" className="bg-white rounded-lg shadow-sm p-6 scroll-mt-8">
       <h3 className="text-xl font-semibold mb-4 text-gray-900">Kontaktanfrage</h3>
 
       {!acceptingClients && (

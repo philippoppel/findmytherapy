@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import {
   Heart,
   MapPin,
@@ -18,6 +18,12 @@ import {
   Home,
   Crosshair,
   Check,
+  User,
+  Video,
+  Building,
+  AlertCircle,
+  Euro,
+  Clock,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
@@ -46,6 +52,34 @@ const TOPIC_QUESTIONS: Record<string, string> = {
   arbeit: 'Belastet dich etwas in deinem Beruf?',
 };
 
+// Kurze Tipps die nach "Ja" angezeigt werden (nur für die 6 CORE_TOPICS)
+const TOPIC_TIPS: Record<string, { tip: string; emoji: string }> = {
+  angst: {
+    tip: 'Tiefes Atmen aktiviert deinen Parasympathikus und kann akute Angst lindern.',
+    emoji: '🌬️',
+  },
+  depression: {
+    tip: 'Schon 10 Minuten Bewegung am Tag können die Stimmung messbar verbessern.',
+    emoji: '🚶',
+  },
+  stress: {
+    tip: 'Regelmäßige Pausen sind kein Luxus – sie steigern nachweislich die Produktivität.',
+    emoji: '☕',
+  },
+  trauma: {
+    tip: 'Heilung braucht Zeit. Sei geduldig mit dir – du machst das gut.',
+    emoji: '💚',
+  },
+  beziehung: {
+    tip: 'Gute Kommunikation beginnt mit aktivem Zuhören – ohne sofort zu antworten.',
+    emoji: '💬',
+  },
+  selbstwert: {
+    tip: 'Sprich mit dir selbst wie mit einem guten Freund – mit Verständnis statt Kritik.',
+    emoji: '🪞',
+  },
+};
+
 // Keywords für Blog-Suche passend zu Themen
 const TOPIC_BLOG_KEYWORDS: Record<string, string[]> = {
   angst: ['Angst', 'Panik', 'Angststörung', 'Panikattacken', 'Phobien'],
@@ -63,8 +97,8 @@ const TOPIC_BLOG_KEYWORDS: Record<string, string[]> = {
   arbeit: ['Arbeit', 'Beruf', 'Karriere', 'Burnout', 'Mobbing'],
 };
 
-// Helper: Get relevant blog posts based on topics (with randomization)
-function getRelevantBlogPosts(selectedTopics: string[], limit: number = 3, randomize: boolean = true): BlogPost[] {
+// Helper: Get relevant blog posts based on topics (deterministic for SSR)
+function getRelevantBlogPosts(selectedTopics: string[], limit: number = 3): BlogPost[] {
   if (selectedTopics.length === 0) return [];
 
   // Collect all keywords for selected topics
@@ -82,20 +116,18 @@ function getRelevantBlogPosts(selectedTopics: string[], limit: number = 3, rando
       }
     });
 
-    // Add random factor for variety
-    const randomFactor = randomize ? Math.random() * 0.5 : 0;
-    return { post, score: score + randomFactor };
+    return { post, score };
   });
 
-  // Return top posts sorted by score (with randomization built in)
+  // Return top posts sorted by score (deterministic)
   return scoredPosts
-    .filter(item => item.score > 0.5) // Must have at least one real match
+    .filter(item => item.score > 0) // Must have at least one match
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map(item => item.post);
 }
 
-// Helper: Get a single blog post for current topic
+// Helper: Get a single blog post for current topic (deterministic for SSR)
 function getBlogPostForTopic(topicId: string): BlogPost | null {
   const keywords = TOPIC_BLOG_KEYWORDS[topicId] || [];
   if (keywords.length === 0) return null;
@@ -107,11 +139,16 @@ function getBlogPostForTopic(topicId: string): BlogPost | null {
 
   if (matchingPosts.length === 0) return null;
 
-  // Random selection for variety
-  return matchingPosts[Math.floor(Math.random() * matchingPosts.length)];
+  // Return first matching post (deterministic)
+  return matchingPosts[0];
 }
 
-type Phase = 'intro' | 'topics' | 'location' | 'loading' | 'therapists' | 'summary';
+type Phase = 'intro' | 'topics' | 'location-preferences' | 'loading' | 'therapists' | 'summary';
+
+// Preference Options
+type GenderPreference = 'female' | 'male' | 'any';
+type FormatPreference = 'ONLINE' | 'IN_PERSON' | 'BOTH';
+type InsurancePreference = 'PUBLIC' | 'PRIVATE' | 'SELF_PAY' | 'ANY';
 
 interface QuizState {
   phase: Phase;
@@ -122,9 +159,18 @@ interface QuizState {
   latitude?: number;
   longitude?: number;
   locationName?: string;
+  // Neue Präferenzen
+  genderPreference: GenderPreference;
+  formatPreference: FormatPreference;
+  insurancePreference: InsurancePreference;
+  maxPrice?: number; // in Euro
+  maxWaitWeeks?: number;
+  // Ergebnisse
   matches: MatchResult[];
   favorites: string[];
   skipped: string[];
+  // Was nicht berücksichtigt werden konnte
+  unmetPreferences: string[];
 }
 
 const initialState: QuizState = {
@@ -133,9 +179,13 @@ const initialState: QuizState = {
   therapistIndex: 0,
   selectedTopics: [],
   postalCode: '',
+  genderPreference: 'any',
+  formatPreference: 'BOTH',
+  insurancePreference: 'ANY',
   matches: [],
   favorites: [],
   skipped: [],
+  unmetPreferences: [],
 };
 
 // Helper: Get initials (2 letters)
@@ -149,12 +199,83 @@ function getInitials(name: string | null | undefined): string {
 }
 
 
+const QUIZ_STORAGE_KEY = 'fmt-quiz-state';
+
 export default function QuizPage() {
   const [state, setState] = useState<QuizState>(initialState);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [showTip, setShowTip] = useState<string | null>(null); // Topic ID for which to show tip
+  const [tipTimeoutId, setTipTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
   const { saveQuizResults } = useUserPreferences();
+
+  // Load state from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as Partial<QuizState>;
+        // Only restore if quiz was in progress (not completed)
+        if (parsed.phase && parsed.phase !== 'summary') {
+          setState((prev) => ({
+            ...prev,
+            ...parsed,
+            // Don't restore matches - they need to be fetched fresh
+            matches: [],
+          }));
+        }
+      }
+    } catch {
+      // Ignore parse errors
+    }
+    setIsHydrated(true);
+  }, []);
+
+  // Save state to localStorage on change
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    // Save relevant state (exclude matches to keep storage small)
+    const toSave: Partial<QuizState> = {
+      phase: state.phase,
+      topicIndex: state.topicIndex,
+      selectedTopics: state.selectedTopics,
+      postalCode: state.postalCode,
+      latitude: state.latitude,
+      longitude: state.longitude,
+      locationName: state.locationName,
+      genderPreference: state.genderPreference,
+      formatPreference: state.formatPreference,
+      insurancePreference: state.insurancePreference,
+      maxPrice: state.maxPrice,
+      maxWaitWeeks: state.maxWaitWeeks,
+      favorites: state.favorites,
+    };
+
+    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(toSave));
+  }, [state, isHydrated]);
+
+  // Swipe gesture state
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15]);
+  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
+  const skipOpacity = useTransform(x, [-100, 0], [1, 0]);
+
+  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 100;
+    if (info.offset.x > threshold) {
+      handleLike();
+    } else if (info.offset.x < -threshold) {
+      handleSkip();
+    }
+  };
+
+  // Reset swipe position when therapist changes
+  useEffect(() => {
+    x.set(0);
+  }, [state.therapistIndex, x]);
 
   const currentTopic = CORE_TOPICS[state.topicIndex];
   const currentTherapist = state.matches[state.therapistIndex];
@@ -171,29 +292,48 @@ export default function QuizPage() {
 
   // Topic answer
   const handleTopicAnswer = (answer: 'yes' | 'no') => {
-    setState((prev) => {
-      const newTopics = answer === 'yes' && currentTopic
-        ? [...prev.selectedTopics, currentTopic.id]
-        : prev.selectedTopics;
-
-      if (isLastTopic) {
-        return { ...prev, selectedTopics: newTopics, phase: 'location' };
-      }
-
-      return {
+    if (answer === 'yes' && currentTopic) {
+      // Add topic to selected topics immediately
+      setState((prev) => ({
         ...prev,
-        selectedTopics: newTopics,
-        topicIndex: prev.topicIndex + 1
-      };
-    });
+        selectedTopics: [...prev.selectedTopics, currentTopic.id]
+      }));
+
+      // Show tip briefly before moving to next question
+      setShowTip(currentTopic.id);
+
+      const timeoutId = setTimeout(() => {
+        setShowTip(null);
+        setTipTimeoutId(null);
+        setState((prev) => {
+          if (isLastTopic) {
+            return { ...prev, phase: 'location-preferences' };
+          }
+          return { ...prev, topicIndex: prev.topicIndex + 1 };
+        });
+      }, 1800); // Show tip for 1.8 seconds
+
+      setTipTimeoutId(timeoutId);
+    } else {
+      // No tip for "no" answers, move immediately
+      setState((prev) => {
+        if (isLastTopic) {
+          return { ...prev, phase: 'location-preferences' };
+        }
+        return {
+          ...prev,
+          topicIndex: prev.topicIndex + 1
+        };
+      });
+    }
   };
 
-  // Go to location step (can be called anytime after first selection)
-  const goToLocation = () => {
-    setState((prev) => ({ ...prev, phase: 'location' }));
+  // Go to location-preferences step (can be called anytime after first selection)
+  const goToLocationPreferences = () => {
+    setState((prev) => ({ ...prev, phase: 'location-preferences' }));
   };
 
-  // Auto-detect location and proceed directly
+  // Auto-detect location (stays on same phase)
   const detectLocation = () => {
     if (!navigator.geolocation) {
       setLocationError('Standorterkennung wird von deinem Browser nicht unterstützt.');
@@ -220,23 +360,14 @@ export default function QuizPage() {
           // Continue with default location name
         }
 
-        // Speichere Quiz-Ergebnisse in localStorage für personalisierte Empfehlungen
-        if (state.selectedTopics.length > 0) {
-          saveQuizResults(state.selectedTopics);
-        }
-
-        // Set location and immediately proceed to loading
+        // Set location (stay on same phase)
         setState((prev) => ({
           ...prev,
           latitude,
           longitude,
           locationName,
-          phase: 'loading',
         }));
         setIsLoadingLocation(false);
-
-        // Load results directly with the detected coordinates
-        loadResultsWithLocation(latitude, longitude, state.selectedTopics);
       },
       (error) => {
         setIsLoadingLocation(false);
@@ -258,7 +389,7 @@ export default function QuizPage() {
     );
   };
 
-  // Load results with specific location (used by auto-detect)
+  // Load results with all preferences
   const loadResultsWithLocation = async (lat?: number, lon?: number, topics?: string[]) => {
     setIsLoadingResults(true);
 
@@ -267,11 +398,21 @@ export default function QuizPage() {
 
       const requestBody: Record<string, unknown> = {
         problemAreas,
-        format: 'BOTH',
-        insuranceType: 'ANY',
+        format: state.formatPreference,
+        insuranceType: state.insurancePreference,
         languages: ['Deutsch'],
         maxDistanceKm: 100,
+        // Neue Präferenzen
+        therapistGender: state.genderPreference,
       };
+
+      // Preis und Wartezeit wenn gesetzt
+      if (state.maxPrice) {
+        requestBody.priceMax = state.maxPrice * 100; // Euro zu Cent
+      }
+      if (state.maxWaitWeeks) {
+        requestBody.maxWaitWeeks = state.maxWaitWeeks;
+      }
 
       // Use provided coordinates or fall back to state
       if (lat && lon) {
@@ -292,21 +433,70 @@ export default function QuizPage() {
 
       const data: MatchingResponse = await response.json();
 
+      // Berechne was nicht berücksichtigt werden konnte
+      const unmetPreferences: string[] = [];
+
+      // Analysiere die Matches auf unerfüllte Kriterien
+      if (data.matches && data.matches.length > 0) {
+        const firstMatch = data.matches[0];
+        const breakdown = firstMatch.scoreBreakdown?.components;
+
+        // Geschlecht-Präferenz prüfen
+        if (state.genderPreference !== 'any' && breakdown?.gender?.score < 1) {
+          unmetPreferences.push(
+            state.genderPreference === 'female'
+              ? 'Bevorzugt: Therapeutin'
+              : 'Bevorzugt: Therapeut'
+          );
+        }
+
+        // Format-Präferenz prüfen
+        if (state.formatPreference === 'ONLINE' && !firstMatch.therapist.online) {
+          unmetPreferences.push('Bevorzugt: Online-Therapie');
+        }
+        if (state.formatPreference === 'IN_PERSON' && firstMatch.therapist.online && !firstMatch.therapist.city) {
+          unmetPreferences.push('Bevorzugt: Vor-Ort-Therapie');
+        }
+
+        // Preis prüfen
+        if (state.maxPrice && firstMatch.therapist.priceMin && firstMatch.therapist.priceMin > state.maxPrice * 100) {
+          unmetPreferences.push(`Budget: max. ${state.maxPrice}€`);
+        }
+
+        // Wartezeit prüfen
+        if (state.maxWaitWeeks && breakdown?.availability?.waitWeeks && breakdown.availability.waitWeeks > state.maxWaitWeeks) {
+          unmetPreferences.push(`Wartezeit: max. ${state.maxWaitWeeks} Wochen`);
+        }
+      }
+
+      // ZeroResultsAnalysis nutzen wenn vorhanden
+      if (data.zeroResultsAnalysis && data.zeroResultsAnalysis.failedFilter !== 'none') {
+        const analysis = data.zeroResultsAnalysis;
+        if (analysis.failedFilter === 'language') {
+          unmetPreferences.push('Sprache nicht verfügbar');
+        } else if (analysis.failedFilter === 'format') {
+          unmetPreferences.push('Format nicht verfügbar');
+        } else if (analysis.failedFilter === 'insurance') {
+          unmetPreferences.push('Versicherungsart nicht akzeptiert');
+        }
+      }
+
       setState((prev) => ({
         ...prev,
         matches: data.matches || [],
+        unmetPreferences,
         phase: data.matches?.length > 0 ? 'therapists' : 'summary',
         therapistIndex: 0,
       }));
     } catch (error) {
       console.error('Matching error:', error);
-      setState((prev) => ({ ...prev, phase: 'summary', matches: [] }));
+      setState((prev) => ({ ...prev, phase: 'summary', matches: [], unmetPreferences: [] }));
     } finally {
       setIsLoadingResults(false);
     }
   };
 
-  // Load results (wrapper for manual submission)
+  // Load results (wrapper for manual submission from preferences)
   const loadResults = async () => {
     // Speichere Quiz-Ergebnisse in localStorage für personalisierte Empfehlungen
     if (state.selectedTopics.length > 0) {
@@ -348,14 +538,24 @@ export default function QuizPage() {
 
   // Restart
   const handleRestart = () => {
+    localStorage.removeItem(QUIZ_STORAGE_KEY);
     setState(initialState);
   };
+
+  // Show loading state until hydrated
+  if (!isHydrated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-white flex items-center justify-center">
+        <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-white">
       {/* Header */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b border-slate-100">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-2xl lg:max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="p-2 -ml-2 text-slate-600 hover:text-slate-900 flex items-center gap-2">
             <Home className="w-5 h-5" />
             <span className="hidden sm:inline text-sm">Startseite</span>
@@ -363,7 +563,7 @@ export default function QuizPage() {
 
           {state.phase === 'topics' && (
             <span className="text-sm text-slate-500">
-              {state.topicIndex + 1} / {PROBLEM_AREAS.length}
+              {state.topicIndex + 1} / {CORE_TOPICS.length}
             </span>
           )}
 
@@ -382,7 +582,7 @@ export default function QuizPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-2xl lg:max-w-4xl mx-auto px-4 py-6">
         <AnimatePresence mode="wait">
 
           {/* INTRO */}
@@ -435,14 +635,14 @@ export default function QuizPage() {
           {state.phase === 'topics' && currentTopic && (
             <motion.div
               key={`topic-${state.topicIndex}`}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.25 }}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 1 }}
+              transition={{ duration: 0 }}
               className="space-y-6"
             >
               {/* Topic Card */}
-              <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+              <div className="bg-white rounded-3xl shadow-lg overflow-hidden relative">
                 <div className="relative aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
@@ -464,6 +664,44 @@ export default function QuizPage() {
                     {TOPIC_QUESTIONS[currentTopic.id]}
                   </p>
                 </div>
+
+                {/* Tip Overlay */}
+                <AnimatePresence mode="wait">
+                  {showTip && TOPIC_TIPS[showTip] && (
+                    <motion.div
+                      initial={{ opacity: 1 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      onClick={() => {
+                        // Clear the auto-advance timeout
+                        if (tipTimeoutId) {
+                          clearTimeout(tipTimeoutId);
+                          setTipTimeoutId(null);
+                        }
+                        // Skip tip and go to next question immediately
+                        setShowTip(null);
+                        setState((prev) => {
+                          if (isLastTopic) {
+                            return { ...prev, phase: 'location-preferences' };
+                          }
+                          return { ...prev, topicIndex: prev.topicIndex + 1 };
+                        });
+                      }}
+                      className="absolute inset-0 bg-gradient-to-br from-primary-500 to-primary-600 flex flex-col items-center justify-center p-6 md:p-8 text-center cursor-pointer"
+                    >
+                      <span className="text-5xl md:text-6xl mb-4">
+                        {TOPIC_TIPS[showTip].emoji}
+                      </span>
+                      <p className="text-white text-lg md:text-xl font-medium leading-relaxed max-w-md">
+                        {TOPIC_TIPS[showTip].tip}
+                      </p>
+                      <p className="text-white/50 text-sm mt-6">
+                        Tippen zum Weiter
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Answer Buttons */}
@@ -471,14 +709,16 @@ export default function QuizPage() {
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('no')}
-                  className="flex-1 py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all"
+                  disabled={!!showTip}
+                  className="flex-1 py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Nein
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTopicAnswer('yes')}
-                  className="flex-1 py-5 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25"
+                  disabled={!!showTip}
+                  className="flex-1 py-5 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Ja, das kenne ich
                 </motion.button>
@@ -488,6 +728,8 @@ export default function QuizPage() {
               {currentTopicBlogPost && (
                 <Link
                   href={`/blog/${currentTopicBlogPost.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors"
                 >
                   <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
@@ -517,7 +759,7 @@ export default function QuizPage() {
                   className="pt-2"
                 >
                   <button
-                    onClick={goToLocation}
+                    onClick={goToLocationPreferences}
                     className="w-full py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
@@ -544,108 +786,263 @@ export default function QuizPage() {
             </motion.div>
           )}
 
-          {/* LOCATION */}
-          {state.phase === 'location' && (
+          {/* LOCATION + PREFERENCES COMBINED */}
+          {state.phase === 'location-preferences' && (
             <motion.div
-              key="location"
+              key="location-preferences"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-8 py-4"
+              className="space-y-6 py-4"
             >
+              {/* Header */}
               <div className="text-center space-y-2">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MapPin className="w-8 h-8 text-primary-500" />
+                  <Sparkles className="w-8 h-8 text-primary-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">Wo bist du?</h2>
+                <h2 className="text-2xl font-bold text-slate-900">Fast geschafft!</h2>
                 <p className="text-slate-600">
-                  So können wir dir Therapeut:innen in deiner Nähe zeigen.
+                  Wo suchst du und was ist dir wichtig?
                 </p>
               </div>
 
-              <div className="max-w-sm mx-auto space-y-4">
-                {/* Auto-detect location button */}
-                <motion.button
-                  whileTap={{ scale: 0.98 }}
-                  onClick={detectLocation}
-                  disabled={isLoadingLocation}
-                  className={`w-full py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-3 ${
-                    state.locationName
-                      ? 'bg-green-50 border-2 border-green-500 text-green-700'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
-                >
-                  {isLoadingLocation ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                      Ermittle Standort...
-                    </>
-                  ) : state.locationName ? (
-                    <>
-                      <Check className="w-5 h-5" />
-                      {state.locationName}
-                    </>
-                  ) : (
-                    <>
-                      <Crosshair className="w-5 h-5" />
-                      Standort automatisch ermitteln
-                    </>
+              {/* Desktop: 2-column layout, Mobile: single column */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                {/* Left Column: Location */}
+                <div className="space-y-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-primary-500" />
+                    Dein Standort
+                  </h3>
+
+                  {/* Auto-detect location button */}
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    onClick={detectLocation}
+                    disabled={isLoadingLocation}
+                    className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+                      state.locationName
+                        ? 'bg-green-50 border-2 border-green-500 text-green-700'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    }`}
+                  >
+                    {isLoadingLocation ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                        Ermittle...
+                      </>
+                    ) : state.locationName ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        {state.locationName}
+                      </>
+                    ) : (
+                      <>
+                        <Crosshair className="w-4 h-4" />
+                        Automatisch ermitteln
+                      </>
+                    )}
+                  </motion.button>
+
+                  {locationError && (
+                    <p className="text-sm text-red-500">{locationError}</p>
                   )}
-                </motion.button>
 
-                {locationError && (
-                  <p className="text-sm text-red-500 text-center">{locationError}</p>
-                )}
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-200" />
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-slate-200" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-3 bg-white text-slate-500">oder</span>
+                    </div>
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-3 bg-gradient-to-b from-primary-50/50 to-white text-slate-500">oder</span>
-                  </div>
-                </div>
 
-                <input
-                  type="text"
-                  value={state.postalCode}
-                  onChange={(e) => setState((prev) => ({
-                    ...prev,
-                    postalCode: e.target.value,
-                    // Clear auto-detected location when typing
-                    latitude: undefined,
-                    longitude: undefined,
-                    locationName: undefined,
-                  }))}
-                  placeholder="Postleitzahl oder Stadt eingeben"
-                  className="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all text-lg text-center"
-                />
-
-                <motion.button
-                  whileTap={{ scale: 0.98 }}
-                  onClick={loadResults}
-                  disabled={isLoadingResults}
-                  className="w-full py-4 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 disabled:opacity-50 transition-colors"
-                >
-                  {isLoadingResults ? 'Suche läuft...' : 'Therapeut:innen finden'}
-                </motion.button>
-
-                <button
-                  onClick={() => {
-                    setState((prev) => ({
+                  <input
+                    type="text"
+                    value={state.postalCode}
+                    onChange={(e) => setState((prev) => ({
                       ...prev,
-                      postalCode: '',
+                      postalCode: e.target.value,
                       latitude: undefined,
                       longitude: undefined,
                       locationName: undefined,
-                    }));
-                    loadResults();
-                  }}
-                  className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors"
-                >
-                  Überspringen (bundesweit suchen)
-                </button>
+                    }))}
+                    placeholder="PLZ oder Stadt"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all text-center"
+                  />
+
+                  <p className="text-xs text-slate-400 text-center">
+                    Leer lassen für bundesweite Suche
+                  </p>
+                </div>
+
+                {/* Right Column: Preferences */}
+                <div className="space-y-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-primary-500" />
+                    Deine Präferenzen
+                  </h3>
+
+                  {/* Geschlecht */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                      <User className="w-4 h-4" />
+                      Therapeut:in
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { value: 'any', label: 'Egal' },
+                        { value: 'female', label: 'Weiblich' },
+                        { value: 'male', label: 'Männlich' },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => setState((prev) => ({ ...prev, genderPreference: option.value as GenderPreference }))}
+                          className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                            state.genderPreference === option.value
+                              ? 'bg-primary-500 text-white shadow-md'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Format */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                      <Video className="w-4 h-4" />
+                      Format
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { value: 'BOTH', label: 'Beides' },
+                        { value: 'ONLINE', label: 'Online' },
+                        { value: 'IN_PERSON', label: 'Vor Ort' },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => setState((prev) => ({ ...prev, formatPreference: option.value as FormatPreference }))}
+                          className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                            state.formatPreference === option.value
+                              ? 'bg-primary-500 text-white shadow-md'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Versicherung */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                      <Euro className="w-4 h-4" />
+                      Kostenübernahme
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { value: 'ANY', label: 'Egal' },
+                        { value: 'PUBLIC', label: 'Kasse' },
+                        { value: 'PRIVATE', label: 'Privat' },
+                        { value: 'SELF_PAY', label: 'Selbstzahler' },
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => setState((prev) => ({ ...prev, insurancePreference: option.value as InsurancePreference }))}
+                          className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
+                            state.insurancePreference === option.value
+                              ? 'bg-primary-500 text-white shadow-md'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              {/* Additional Options - Full Width */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                {/* Max Preis */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-sm text-slate-600">
+                    <Euro className="w-4 h-4" />
+                    Max. Preis/Sitzung
+                  </label>
+                  <div className="flex gap-2">
+                    {[null, 100, 150, 200].map((price) => (
+                      <button
+                        key={price ?? 'any'}
+                        onClick={() => setState((prev) => ({ ...prev, maxPrice: price ?? undefined }))}
+                        className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                          state.maxPrice === price || (price === null && !state.maxPrice)
+                            ? 'bg-primary-500 text-white shadow-md'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        {price ? `${price}€` : 'Egal'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Max Wartezeit */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-sm text-slate-600">
+                    <Clock className="w-4 h-4" />
+                    Max. Wartezeit
+                  </label>
+                  <div className="flex gap-2">
+                    {[null, 2, 4, 8].map((weeks) => (
+                      <button
+                        key={weeks ?? 'any'}
+                        onClick={() => setState((prev) => ({ ...prev, maxWaitWeeks: weeks ?? undefined }))}
+                        className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                          state.maxWaitWeeks === weeks || (weeks === null && !state.maxWaitWeeks)
+                            ? 'bg-primary-500 text-white shadow-md'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        }`}
+                      >
+                        {weeks ? `${weeks} Wo.` : 'Egal'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <motion.button
+                whileTap={{ scale: 0.98 }}
+                onClick={loadResults}
+                disabled={isLoadingResults}
+                className="w-full py-4 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary-500/25"
+              >
+                {isLoadingResults ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Suche läuft...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    Therapeut:innen finden
+                  </>
+                )}
+              </motion.button>
+
+              {/* Back link */}
+              <button
+                onClick={() => setState((prev) => ({ ...prev, phase: 'topics', topicIndex: 0 }))}
+                className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors text-sm"
+              >
+                ← Zurück zu den Themen
+              </button>
             </motion.div>
           )}
 
@@ -666,7 +1063,7 @@ export default function QuizPage() {
             </motion.div>
           )}
 
-          {/* THERAPISTS - Tinder Style */}
+          {/* THERAPISTS - Swipeable Cards */}
           {state.phase === 'therapists' && currentTherapist && (
             <motion.div
               key={`therapist-${state.therapistIndex}`}
@@ -676,18 +1073,49 @@ export default function QuizPage() {
               transition={{ duration: 0.3 }}
               className="space-y-4"
             >
-              {/* Therapist Card */}
-              <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                {/* Profile Image - Large */}
-                <div className="relative aspect-[4/5] md:aspect-[3/2]">
+              {/* Swipeable Therapist Card */}
+              <motion.div
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.7}
+                onDragEnd={handleDragEnd}
+                style={{ x, rotate }}
+                className="relative cursor-grab active:cursor-grabbing touch-pan-y"
+              >
+                {/* Swipe Indicators */}
+                <motion.div
+                  style={{ opacity: likeOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-green-500/90 text-white px-6 py-3 rounded-2xl rotate-[-15deg] border-4 border-green-400 shadow-xl">
+                    <span className="text-2xl font-bold flex items-center gap-2">
+                      <Heart className="w-7 h-7 fill-current" /> Interessiert
+                    </span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  style={{ opacity: skipOpacity }}
+                  className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+                >
+                  <div className="bg-slate-500/90 text-white px-6 py-3 rounded-2xl rotate-[15deg] border-4 border-slate-400 shadow-xl">
+                    <span className="text-2xl font-bold flex items-center gap-2">
+                      <X className="w-7 h-7" /> Weiter
+                    </span>
+                  </div>
+                </motion.div>
+
+                <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+                  {/* Profile Image - Responsive aspect ratio */}
+                  <div className="relative aspect-[4/5] lg:aspect-[16/10]">
                   {currentTherapist.therapist.profileImageUrl ? (
                     <Image
                       src={currentTherapist.therapist.profileImageUrl}
                       alt={currentTherapist.therapist.displayName || ''}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="object-cover object-top"
+                      sizes="(max-width: 1024px) 100vw, 896px"
                       priority
+                      quality={85}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary-200 to-primary-400 flex items-center justify-center">
@@ -700,11 +1128,27 @@ export default function QuizPage() {
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Match Score Badge */}
-                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                    <span className="text-primary-600 font-bold text-lg">
-                      {Math.round(currentTherapist.score * 100)}% Match
-                    </span>
+                  {/* Match Score Badge - Prominent */}
+                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden">
+                    <div className="px-4 py-2 text-center">
+                      <div className="text-3xl font-bold text-primary-600">
+                        {Math.round(currentTherapist.score * 100)}%
+                      </div>
+                      <div className="text-xs text-slate-500 font-medium">Match</div>
+                    </div>
+                    {/* Unmet Preferences */}
+                    {state.unmetPreferences.length > 0 && (
+                      <div className="px-3 py-2 bg-amber-50 border-t border-amber-100">
+                        <div className="flex items-start gap-1.5">
+                          <AlertCircle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
+                          <div className="text-xs text-amber-700">
+                            {state.unmetPreferences.slice(0, 2).map((pref, i) => (
+                              <div key={i}>{pref}</div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Remaining Count */}
@@ -791,7 +1235,13 @@ export default function QuizPage() {
                     </p>
                   )}
                 </div>
-              </div>
+                </div>
+              </motion.div>
+
+              {/* Swipe Hint - Mobile only */}
+              <p className="text-center text-sm text-slate-400 lg:hidden">
+                ← Wische zum Überspringen oder Merken →
+              </p>
 
               {/* Action Buttons */}
               <div className="flex gap-3">
@@ -834,6 +1284,8 @@ export default function QuizPage() {
                       <Link
                         key={post.slug}
                         href={`/blog/${post.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow snap-start"
                       >
                         <div className="relative h-32">
@@ -883,6 +1335,31 @@ export default function QuizPage() {
                 )}
               </div>
 
+              {/* Unmet Preferences Info */}
+              {state.unmetPreferences.length > 0 && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-amber-800">
+                        Folgende Präferenzen konnten nicht vollständig berücksichtigt werden:
+                      </p>
+                      <ul className="mt-2 text-sm text-amber-700 space-y-1">
+                        {state.unmetPreferences.map((pref, i) => (
+                          <li key={i} className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
+                            {pref}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="mt-2 text-xs text-amber-600">
+                        Wir haben dir die besten verfügbaren Matches gezeigt.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Favorites List */}
               {state.favorites.length > 0 && (
                 <div className="space-y-3">
@@ -894,6 +1371,8 @@ export default function QuizPage() {
                       <Link
                         key={id}
                         href={`/therapists/${id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
                       >
                         <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden flex-shrink-0">
@@ -944,6 +1423,8 @@ export default function QuizPage() {
                       <Link
                         key={post.slug}
                         href={`/blog/${post.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="flex-shrink-0 w-64 bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow snap-start"
                       >
                         <div className="relative h-32">
@@ -983,6 +1464,8 @@ export default function QuizPage() {
               <div className="space-y-3">
                 <Link
                   href="/therapists"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block w-full py-4 rounded-2xl bg-primary-500 text-white font-semibold text-lg text-center hover:bg-primary-600 transition-colors"
                 >
                   Alle Therapeut:innen ansehen
