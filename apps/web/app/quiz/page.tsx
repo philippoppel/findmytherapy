@@ -26,7 +26,6 @@ import {
   Settings2,
 } from 'lucide-react';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
-import { MatchingLink } from '@/app/components/matching/MatchingLink';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
@@ -639,14 +638,14 @@ export default function QuizPage() {
 
           {/* Actions - always visible */}
           <div className="flex items-center gap-1">
-            {/* Classic Matching */}
-            <MatchingLink
-              href="/match"
+            {/* Classic Matching - links to therapists page where wizard is available */}
+            <Link
+              href="/therapists"
               className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
               title="Klassisches Matching"
             >
               <Settings2 className="w-4 h-4" />
-            </MatchingLink>
+            </Link>
 
             {/* Restart */}
             <button
@@ -1684,13 +1683,13 @@ export default function QuizPage() {
                   <p className="text-slate-600 text-sm">
                     Lieber Schritt für Schritt?
                   </p>
-                  <MatchingLink
-                    href="/match"
+                  <Link
+                    href="/therapists"
                     className="inline-flex items-center gap-1 text-primary-600 font-medium hover:underline text-sm"
                   >
                     Klassisches Matching
                     <ChevronRight className="w-4 h-4" />
-                  </MatchingLink>
+                  </Link>
                 </div>
               </div>
 
