@@ -121,15 +121,18 @@ test.describe('Matching System', () => {
   });
 
   test('should complete wizard and find perfect matches', async ({ page }) => {
-    await page.goto('/');
+    // Navigate directly to the matching wizard page
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Page should load
@@ -183,15 +186,17 @@ test.describe('Matching System', () => {
   });
 
   test('should show matches even when none are perfect', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Step 1: Select specific problem area
@@ -230,15 +235,17 @@ test.describe('Matching System', () => {
   });
 
   test('should handle no matches gracefully with alternatives', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Search for something very specific that won't match
@@ -292,15 +299,17 @@ test.describe('Matching System', () => {
   });
 
   test('should show waitlist therapists with clear communication', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Search for Anxiety (Sarah Berger is on waitlist but has this specialty)
@@ -337,15 +346,17 @@ test.describe('Matching System', () => {
   });
 
   test('should allow adjusting search/going back to wizard', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Complete quick search (3-step wizard)
@@ -387,15 +398,17 @@ test.describe('Matching System', () => {
   });
 
   test('should persist and validate wizard form data', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/therapists?matching=true');
     await dismissCookieBanner(page);
     await waitForNetworkIdle(page);
 
-    // Click "Los geht's" button to open wizard
-    await page
-      .getByRole('button', { name: /los geht/i })
-      .first()
-      .click();
+    // Click "Jetzt starten" button to open wizard (or it may auto-open)
+    const startButton = page.getByRole('button', { name: /jetzt starten|los geht/i });
+    const wizardVisible = await page.locator('#matching-wizard').isVisible().catch(() => false);
+
+    if (!wizardVisible && await startButton.isVisible().catch(() => false)) {
+      await startButton.click();
+    }
     await page.waitForSelector('#matching-wizard', { state: 'visible' });
 
     // Step 1: Select problem area
