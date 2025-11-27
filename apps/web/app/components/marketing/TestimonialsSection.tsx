@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, Heart, Star, Sparkles, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Quote, Heart, Star, Sparkles, BookOpen, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 
 // Authentic testimonials data
 const testimonials = [
@@ -97,31 +97,56 @@ const featureIcons = {
   courses: BookOpen,
 };
 
+const AUTO_PLAY_INTERVAL = 5000; // 5 seconds per slide
+
 export function TestimonialsSection() {
   const [activeCategory, setActiveCategory] = useState<'all' | 'patient' | 'therapist'>('all');
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   const filteredTestimonials = activeCategory === 'all'
     ? testimonials
     : testimonials.filter(t => t.category === activeCategory);
 
   const visibleTestimonials = filteredTestimonials.slice(currentIndex, currentIndex + 3);
+  const totalSlides = Math.max(1, filteredTestimonials.length - 2); // Number of possible positions
 
-  const canGoNext = currentIndex + 3 < filteredTestimonials.length;
   const canGoPrev = currentIndex > 0;
 
-  const goNext = () => {
-    if (canGoNext) setCurrentIndex(prev => prev + 1);
-  };
+  const goNext = useCallback(() => {
+    setCurrentIndex(prev => {
+      if (prev + 3 < filteredTestimonials.length) {
+        return prev + 1;
+      }
+      // Loop back to start
+      return 0;
+    });
+  }, [filteredTestimonials.length]);
 
   const goPrev = () => {
     if (canGoPrev) setCurrentIndex(prev => prev - 1);
   };
 
+  // Auto-play effect
+  useEffect(() => {
+    if (!isAutoPlaying || isPaused) return;
+
+    const interval = setInterval(() => {
+      goNext();
+    }, AUTO_PLAY_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, isPaused, goNext]);
+
   // Reset index when category changes
   const handleCategoryChange = (category: 'all' | 'patient' | 'therapist') => {
     setActiveCategory(category);
     setCurrentIndex(0);
+  };
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(prev => !prev);
   };
 
   return (
@@ -183,11 +208,15 @@ export function TestimonialsSection() {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="relative">
+        <div
+          className="relative"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           {/* Navigation Arrows */}
           <div className="hidden lg:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10">
             <button
-              onClick={goPrev}
+              onClick={() => { goPrev(); setIsAutoPlaying(false); }}
               disabled={!canGoPrev}
               className={`p-3 rounded-full bg-white shadow-lg border border-gray-100 transition-all ${
                 canGoPrev
@@ -201,13 +230,8 @@ export function TestimonialsSection() {
           </div>
           <div className="hidden lg:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10">
             <button
-              onClick={goNext}
-              disabled={!canGoNext}
-              className={`p-3 rounded-full bg-white shadow-lg border border-gray-100 transition-all ${
-                canGoNext
-                  ? 'hover:shadow-xl hover:scale-110 text-gray-700'
-                  : 'opacity-40 cursor-not-allowed text-gray-400'
-              }`}
+              onClick={() => { goNext(); setIsAutoPlaying(false); }}
+              className="p-3 rounded-full bg-white shadow-lg border border-gray-100 transition-all hover:shadow-xl hover:scale-110 text-gray-700"
               aria-label="Nächste Erfahrungsberichte"
             >
               <ChevronRight className="w-5 h-5" />
@@ -292,24 +316,67 @@ export function TestimonialsSection() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Mobile Navigation */}
-          <div className="flex lg:hidden justify-center gap-3 mt-8">
+          {/* Progress Dots & Controls */}
+          <div className="flex items-center justify-center gap-4 mt-8">
+            {/* Mobile Prev Button */}
             <button
-              onClick={goPrev}
+              onClick={() => { goPrev(); setIsAutoPlaying(false); }}
               disabled={!canGoPrev}
-              className={`p-3 rounded-full bg-white shadow-md border border-gray-100 ${
+              className={`lg:hidden p-2.5 rounded-full bg-white shadow-md border border-gray-100 ${
                 canGoPrev ? 'text-gray-700' : 'opacity-40 text-gray-400'
               }`}
               aria-label="Vorherige"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
+
+            {/* Progress Dots */}
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalSlides }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setCurrentIndex(i); setIsAutoPlaying(false); }}
+                  className="group relative"
+                  aria-label={`Slide ${i + 1}`}
+                >
+                  <div
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === currentIndex
+                        ? 'w-8 bg-primary-500'
+                        : 'w-2 bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                  {/* Auto-play progress indicator */}
+                  {i === currentIndex && isAutoPlaying && !isPaused && (
+                    <motion.div
+                      className="absolute inset-0 h-2 rounded-full bg-primary-300 origin-left"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: 'linear' }}
+                      key={`progress-${currentIndex}`}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Play/Pause Button */}
             <button
-              onClick={goNext}
-              disabled={!canGoNext}
-              className={`p-3 rounded-full bg-white shadow-md border border-gray-100 ${
-                canGoNext ? 'text-gray-700' : 'opacity-40 text-gray-400'
-              }`}
+              onClick={toggleAutoPlay}
+              className="p-2.5 rounded-full bg-white shadow-md border border-gray-100 text-gray-600 hover:text-primary-600 hover:border-primary-200 transition-all"
+              aria-label={isAutoPlaying ? 'Pause' : 'Play'}
+            >
+              {isAutoPlaying ? (
+                <Pause className="w-4 h-4" />
+              ) : (
+                <Play className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* Mobile Next Button */}
+            <button
+              onClick={() => { goNext(); setIsAutoPlaying(false); }}
+              className="lg:hidden p-2.5 rounded-full bg-white shadow-md border border-gray-100 text-gray-700"
               aria-label="Nächste"
             >
               <ChevronRight className="w-5 h-5" />
