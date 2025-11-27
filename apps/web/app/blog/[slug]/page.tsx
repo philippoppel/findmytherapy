@@ -102,10 +102,11 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     ? sameCategoryPosts
     : [...sameCategoryPosts, ...otherCategoryPosts].slice(0, 3);
 
-  // Get explicitly related posts if defined
-  const explicitRelated = post.relatedPosts
+  // Get explicitly related posts if defined (reserved for future use)
+  const _explicitRelated = post.relatedPosts
     ? post.relatedPosts.map(slug => blogPosts.find(p => p.slug === slug)).filter(Boolean).slice(0, 2)
     : [];
+  void _explicitRelated;
 
   // Article Schema
   const articleStructuredData = {
@@ -131,8 +132,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   };
 
-  // Determine where to insert mid-article CTA
-  const midPoint = Math.floor(post.sections.length / 2);
+  // Determine where to insert mid-article CTA (reserved for future use)
+  const _midPoint = Math.floor(post.sections.length / 2);
+  void _midPoint;
 
   return (
     <div className="min-h-screen bg-white">
