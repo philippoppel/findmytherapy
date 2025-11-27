@@ -165,7 +165,7 @@ export function TestimonialsSection() {
               x: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                duration: 60,
+                duration: 120,
                 ease: 'linear',
               },
             }}
@@ -194,7 +194,7 @@ export function TestimonialsSection() {
               x: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                duration: 70,
+                duration: 140,
                 ease: 'linear',
               },
             }}
