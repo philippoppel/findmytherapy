@@ -20,7 +20,6 @@ import {
   Check,
   User,
   Video,
-  Building,
   AlertCircle,
   Euro,
   Clock,
@@ -885,10 +884,10 @@ export default function QuizPage() {
 
                   {/* Geschlecht */}
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                    <p className="flex items-center gap-2 text-sm text-slate-600">
                       <User className="w-4 h-4" />
                       Therapeut:in
-                    </label>
+                    </p>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { value: 'any', label: 'Egal' },
@@ -912,10 +911,10 @@ export default function QuizPage() {
 
                   {/* Format */}
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                    <p className="flex items-center gap-2 text-sm text-slate-600">
                       <Video className="w-4 h-4" />
                       Format
-                    </label>
+                    </p>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { value: 'BOTH', label: 'Beides' },
@@ -939,10 +938,10 @@ export default function QuizPage() {
 
                   {/* Versicherung */}
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm text-slate-600">
+                    <p className="flex items-center gap-2 text-sm text-slate-600">
                       <Euro className="w-4 h-4" />
                       Kostenübernahme
-                    </label>
+                    </p>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         { value: 'ANY', label: 'Egal' },
@@ -971,10 +970,10 @@ export default function QuizPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
                 {/* Max Preis */}
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm text-slate-600">
+                  <p className="flex items-center gap-2 text-sm text-slate-600">
                     <Euro className="w-4 h-4" />
                     Max. Preis/Sitzung
-                  </label>
+                  </p>
                   <div className="flex gap-2">
                     {[null, 100, 150, 200].map((price) => (
                       <button
@@ -994,10 +993,10 @@ export default function QuizPage() {
 
                 {/* Max Wartezeit */}
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm text-slate-600">
+                  <p className="flex items-center gap-2 text-sm text-slate-600">
                     <Clock className="w-4 h-4" />
                     Max. Wartezeit
-                  </label>
+                  </p>
                   <div className="flex gap-2">
                     {[null, 2, 4, 8].map((weeks) => (
                       <button

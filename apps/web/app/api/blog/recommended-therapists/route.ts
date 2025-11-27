@@ -84,12 +84,11 @@ export async function GET(request: NextRequest) {
     const keywords = getSearchKeywords(tags);
 
     // Suche Therapeuten mit passenden Specialties
+    // Optimiert: Nur limit + Puffer statt limit * 3
     const therapists = await prisma.therapistProfile.findMany({
       where: {
         isPublic: true,
-        status: {
-          in: ['VERIFIED', 'PENDING'],
-        },
+        status: 'VERIFIED',
         // Mindestens eine Specialty muss matchen
         OR: keywords.map(keyword => ({
           specialties: {
@@ -117,22 +116,18 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-      take: limit * 3, // Mehr holen für Randomisierung
+      take: limit + 3, // Nur kleiner Puffer für Randomisierung
     });
 
-    // Falls nicht genug passende gefunden, allgemeine Therapeuten holen
+    // Fallback: Wenn nicht genug, hole allgemeine Therapeuten in EINER Query
     let result = therapists;
 
     if (therapists.length < limit) {
-      const additionalTherapists = await prisma.therapistProfile.findMany({
+      // Eine einzige kombinierte Query statt zwei separate
+      result = await prisma.therapistProfile.findMany({
         where: {
           isPublic: true,
-          status: {
-            in: ['VERIFIED', 'PENDING'],
-          },
-          id: {
-            notIn: therapists.map(t => t.id),
-          },
+          status: 'VERIFIED',
         },
         select: {
           id: true,
@@ -154,13 +149,11 @@ export async function GET(request: NextRequest) {
             },
           },
         },
-        take: limit - therapists.length,
+        take: limit + 3,
         orderBy: {
           rating: 'desc',
         },
       });
-
-      result = [...therapists, ...additionalTherapists];
     }
 
     // Randomisieren und limitieren
@@ -183,10 +176,18 @@ export async function GET(request: NextRequest) {
       reviewCount: t.reviewCount || 0,
     }));
 
-    return NextResponse.json({
-      therapists: transformedTherapists,
-      matchedTags: tags,
-    });
+    // Cache für 5 Minuten - reduziert DB-Last bei häufigen Blog-Aufrufen
+    return NextResponse.json(
+      {
+        therapists: transformedTherapists,
+        matchedTags: tags,
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error fetching recommended therapists:', error);
     return NextResponse.json({ error: 'Failed to fetch therapists', therapists: [] }, { status: 500 });

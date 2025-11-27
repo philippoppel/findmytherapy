@@ -1,4 +1,4 @@
-import { Heart, Sparkles, Briefcase, Quote } from 'lucide-react';
+import { Heart, Briefcase, Quote } from 'lucide-react';
 
 interface MicrositeAboutProps {
   about?: string | null;

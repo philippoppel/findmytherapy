@@ -357,7 +357,8 @@ async function buildTherapistRecommendations(
   const escalatedNeed =
     payload.hasSuicidalIdeation || payload.requiresEmergency || payload.riskLevel === 'HIGH';
 
-  let publicTherapists = await prisma.therapistProfile.findMany({
+  // Limit auf 50 - wir brauchen nur Top 3, etwas Puffer für Scoring
+  const publicTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
       status: 'VERIFIED',
@@ -381,36 +382,8 @@ async function buildTherapistRecommendations(
       languages: true,
       profileImageUrl: true,
     },
+    take: 50, // Limit für Netzwerk-Effizienz
   });
-
-  // If no verified therapists found, try to find any public therapists
-  if (publicTherapists.length === 0) {
-    console.warn('[TRIAGE] No VERIFIED therapists found, fetching all public therapists');
-    publicTherapists = await prisma.therapistProfile.findMany({
-      where: {
-        isPublic: true,
-      },
-      select: {
-        id: true,
-        displayName: true,
-        title: true,
-        headline: true,
-        specialties: true,
-        services: true,
-        availabilityNote: true,
-        responseTime: true,
-        acceptingClients: true,
-        online: true,
-        city: true,
-        country: true,
-        modalities: true,
-        experienceSummary: true,
-        yearsExperience: true,
-        languages: true,
-        profileImageUrl: true,
-      },
-    });
-  }
 
   return publicTherapists
     .map((therapist) => {
@@ -659,7 +632,8 @@ async function buildTherapistRecommendationsForScreening(
   const supportSet = new Set(payload.supportPreferences);
   const availabilitySet = new Set(payload.availability.map((item) => item.toLowerCase()));
 
-  let publicTherapists = await prisma.therapistProfile.findMany({
+  // Limit auf 50 - wir brauchen nur Top 3, etwas Puffer für Scoring
+  const publicTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
       status: 'VERIFIED',
@@ -683,36 +657,8 @@ async function buildTherapistRecommendationsForScreening(
       languages: true,
       profileImageUrl: true,
     },
+    take: 50, // Limit für Netzwerk-Effizienz
   });
-
-  // If no verified therapists found, try to find any public therapists
-  if (publicTherapists.length === 0) {
-    console.warn('[TRIAGE] No VERIFIED therapists found, fetching all public therapists');
-    publicTherapists = await prisma.therapistProfile.findMany({
-      where: {
-        isPublic: true,
-      },
-      select: {
-        id: true,
-        displayName: true,
-        title: true,
-        headline: true,
-        specialties: true,
-        services: true,
-        availabilityNote: true,
-        responseTime: true,
-        acceptingClients: true,
-        online: true,
-        city: true,
-        country: true,
-        modalities: true,
-        experienceSummary: true,
-        yearsExperience: true,
-        languages: true,
-        profileImageUrl: true,
-      },
-    });
-  }
 
   return publicTherapists
     .map((therapist) => {

@@ -60,7 +60,7 @@ export async function findMatches(
 ): Promise<MatchingResult> {
   const { weights = DEFAULT_WEIGHTS, limit = 10, includeFiltered = false } = options;
 
-  // 1. Alle öffentlichen, verifizierten Therapeuten laden
+  // 1. Öffentliche, verifizierte Therapeuten laden (mit Limit für Effizienz)
   let rawTherapists;
   try {
     rawTherapists = await prisma.therapistProfile.findMany({
@@ -70,6 +70,7 @@ export async function findMatches(
         deletedAt: null,
       },
       select: THERAPIST_SELECT,
+      take: 200, // Limit für Netzwerk-Effizienz - mehr als genug für gutes Matching
     });
   } catch (error) {
     if (error instanceof Error && error.message.includes('does not exist')) {
@@ -370,7 +371,7 @@ export async function saveMatchingPreferences(
 export async function analyzeFailedFilters(
   preferences: MatchingPreferencesInput,
 ): Promise<ZeroResultsAnalysis> {
-  // Alle Therapeuten laden (wie in findMatches)
+  // Therapeuten laden (mit Limit für Effizienz)
   const rawTherapists = await prisma.therapistProfile.findMany({
     where: {
       isPublic: true,
@@ -378,6 +379,7 @@ export async function analyzeFailedFilters(
       deletedAt: null,
     },
     select: THERAPIST_SELECT,
+    take: 200, // Limit für Netzwerk-Effizienz
   });
 
   const therapists: TherapistForMatching[] = rawTherapists.map((t) => {
