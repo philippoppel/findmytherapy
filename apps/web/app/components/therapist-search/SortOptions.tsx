@@ -7,6 +7,7 @@ import type { SortOption } from '../../hooks/useTherapistFiltering';
 export type SortOptionsProps = {
   sortBy: SortOption;
   onChange: (sortBy: SortOption) => void;
+  compact?: boolean;
 };
 
 const SORT_OPTIONS: { value: SortOption; label: string; description: string }[] = [
@@ -47,8 +48,28 @@ const SORT_OPTIONS: { value: SortOption; label: string; description: string }[] 
   },
 ];
 
-export function SortOptions({ sortBy, onChange }: SortOptionsProps) {
+export function SortOptions({ sortBy, onChange, compact = false }: SortOptionsProps) {
   const currentOption = SORT_OPTIONS.find((opt) => opt.value === sortBy);
+
+  if (compact) {
+    return (
+      <div className="flex items-center gap-2">
+        <ArrowUpDown className="h-4 w-4 text-slate-400" />
+        <select
+          id="sort-select-compact"
+          value={sortBy}
+          onChange={(e) => onChange(e.target.value as SortOption)}
+          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100 cursor-pointer"
+        >
+          {SORT_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value} className="bg-white text-slate-900">
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

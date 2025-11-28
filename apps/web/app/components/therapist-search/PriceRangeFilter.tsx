@@ -7,9 +7,10 @@ export type PriceRangeFilterProps = {
   priceRange: { min: number; max: number } | null;
   onChange: (range: { min: number; max: number } | null) => void;
   priceRangeStats: { min: number; max: number } | null;
+  compact?: boolean;
 };
 
-export function PriceRangeFilter({ priceRange, onChange, priceRangeStats }: PriceRangeFilterProps) {
+export function PriceRangeFilter({ priceRange, onChange, priceRangeStats, compact = false }: PriceRangeFilterProps) {
   const [enabled, setEnabled] = useState(priceRange !== null);
   const [minValue, setMinValue] = useState<string>(
     priceRange?.min.toString() ?? priceRangeStats?.min.toString() ?? '50',
