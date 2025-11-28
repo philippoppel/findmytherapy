@@ -19,7 +19,6 @@ const baseSecurityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  serverComponentsExternalPackages: ['@prisma/client', '@prisma/engines'],
   // Removed 'standalone' output - not needed for Vercel, causes Prisma issues
   // outputFileTracingRoot: path.join(__dirname, '../../'),
   poweredByHeader: false,
@@ -46,6 +45,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-tabs', 'date-fns'],
+    serverComponentsExternalPackages: ['@prisma/client', '@prisma/engines'],
   },
   async headers() {
     return [

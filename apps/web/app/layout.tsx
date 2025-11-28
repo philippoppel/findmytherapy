@@ -132,9 +132,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#ffffff" />
 
-        {/* Preload critical resources */}
-        <link rel="preload" href="/videos/hero-therapy.mp4" as="video" type="video/mp4" />
-        <link rel="preload" href="/images/therapists/therapy-1.jpg" as="image" type="image/jpeg" />
+        {/* Preload LCP image (video poster) with high priority */}
+        <link
+          rel="preload"
+          href="/images/therapists/therapy-2.jpg"
+          as="image"
+          type="image/jpeg"
+          fetchPriority="high"
+        />
 
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />

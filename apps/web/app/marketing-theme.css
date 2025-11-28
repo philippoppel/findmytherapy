@@ -131,3 +131,42 @@
   /* Shadow: Warm Brown with Low Opacity */
   --shadow-color: 74 63 46 / 0.08;
 }
+
+/* Hero floating animations */
+@keyframes float-up {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.1); }
+}
+
+@keyframes float-down {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(6px) scale(0.9); }
+}
+
+.animate-float-up {
+  animation: float-up 4s ease-in-out infinite;
+}
+
+.animate-float-down {
+  animation: float-down 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* Partner logo marquee animation */
+@keyframes partner-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-partner-scroll {
+  animation: partner-scroll 20s linear infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-up,
+  .animate-float-down,
+  .animate-partner-scroll {
+    animation: none;
+  }
+}

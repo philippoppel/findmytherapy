@@ -160,16 +160,6 @@ export function MarketingHero({ content }: HeroProps) {
 
         {/* Partner/Unterstützer Slider - UNTER den Bildern */}
         <div className="mt-10 sm:mt-14 px-4">
-          {/* CSS for partner logo marquee */}
-          <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes partner-scroll {
-              from { transform: translateX(0); }
-              to { transform: translateX(-50%); }
-            }
-            .animate-partner-scroll {
-              animation: partner-scroll 20s linear infinite;
-            }
-          `}} />
           <Reveal delay={400}>
             <div className="max-w-6xl mx-auto">
               <p className="text-center text-base sm:text-lg text-muted font-medium mb-8">
