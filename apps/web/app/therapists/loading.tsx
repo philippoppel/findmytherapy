@@ -21,9 +21,10 @@ export default function TherapistsLoading() {
             <Link
               href="/triage"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
+              aria-label="Wissenschaftlicher Test"
             >
-              <ClipboardCheck className="w-4 h-4" />
-              <span className="hidden sm:inline">Wissenschaftlicher Test</span>
+              <ClipboardCheck className="w-4 h-4" aria-hidden />
+              <span className="hidden sm:inline" aria-hidden>Wissenschaftlicher Test</span>
             </Link>
           </nav>
 

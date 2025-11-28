@@ -416,6 +416,7 @@ async function main() {
         availabilityStatus: availability.status,
         estimatedWaitWeeks: availability.waitWeeks,
         yearsExperience,
+        gender: isFemale ? 'female' : 'male',
         isPublic: true,
         micrositeSlug: slug,
         micrositeStatus: 'PUBLISHED',

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, User, Shield } from 'lucide-react';
 import type { TherapistCard } from '../../therapists/types';
 import {
   useTherapistFiltering,
@@ -103,6 +103,10 @@ export function UnifiedTherapistSearch({
     if (filters.formats.size > 0) count += filters.formats.size;
     if (filters.specializations.size > 0) count += filters.specializations.size;
     if (filters.nearbyOnly) count += 1;
+    if (filters.gender !== 'any') count += 1;
+    if (filters.acceptsInsurance) count += 1;
+    if (filters.languages.size > 0) count += filters.languages.size;
+    if (filters.priceRange) count += 1;
     return count;
   };
 
@@ -165,6 +169,54 @@ export function UnifiedTherapistSearch({
             );
           })}
         </div>
+      </div>
+
+      {/* Gender Quick Filter */}
+      <div className="mb-4">
+        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center gap-1">
+          <User className="h-3 w-3" aria-hidden />
+          Therapeut:in
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          {([
+            { value: 'any' as const, label: 'Egal' },
+            { value: 'female' as const, label: 'Weiblich' },
+            { value: 'male' as const, label: 'Männlich' },
+          ]).map((option) => {
+            const isSelected = filters.gender === option.value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setGender(option.value)}
+                className={`rounded-lg border px-3 py-2.5 text-sm font-medium transition-all min-h-[44px] ${
+                  isSelected
+                    ? 'border-primary-500 bg-primary-50 text-primary-700'
+                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
+                }`}
+                aria-pressed={isSelected}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Insurance Quick Filter */}
+      <div className="mb-4">
+        <label className="flex items-center gap-3 cursor-pointer rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 hover:bg-slate-100 transition-colors">
+          <input
+            type="checkbox"
+            checked={filters.acceptsInsurance}
+            onChange={(e) => setAcceptsInsurance(e.target.checked)}
+            className="h-5 w-5 rounded border-slate-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-0"
+          />
+          <span className="flex items-center gap-2 text-sm font-medium text-slate-700">
+            <Shield className="h-4 w-4 text-primary-500" aria-hidden />
+            Akzeptiert Krankenkasse
+          </span>
+        </label>
       </div>
 
       {/* Sort Options */}
@@ -323,6 +375,35 @@ export function UnifiedTherapistSearch({
           {filters.nearbyOnly && (
             <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
               📍 {filters.radius}km Umkreis
+            </span>
+          )}
+
+          {filters.gender !== 'any' && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+              <User className="h-3 w-3" aria-hidden />
+              {filters.gender === 'female' ? 'Weiblich' : 'Männlich'}
+            </span>
+          )}
+
+          {filters.acceptsInsurance && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+              <Shield className="h-3 w-3" aria-hidden />
+              Krankenkasse
+            </span>
+          )}
+
+          {Array.from(filters.languages).map((lang) => (
+            <span
+              key={lang}
+              className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white"
+            >
+              🌐 {lang}
+            </span>
+          ))}
+
+          {filters.priceRange && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+              💶 {filters.priceRange.min}–{filters.priceRange.max}€
             </span>
           )}
 
