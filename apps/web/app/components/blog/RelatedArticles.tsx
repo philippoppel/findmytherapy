@@ -131,6 +131,7 @@ export function RelatedArticles({
                     src={post.featuredImage.src}
                     alt={post.featuredImage.alt}
                     fill
+                    sizes="64px"
                     className="object-cover"
                   />
                 </div>
@@ -166,6 +167,7 @@ export function RelatedArticles({
                     src={post.featuredImage.src}
                     alt={post.featuredImage.alt}
                     fill
+                    sizes="120px"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   {/* Reading time overlay like YouTube duration */}
@@ -262,6 +264,7 @@ export function RelatedArticles({
                   src={nextArticle.featuredImage.src}
                   alt={nextArticle.featuredImage.alt}
                   fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary-50/90 md:block hidden" />
@@ -314,6 +317,7 @@ export function RelatedArticles({
                   src={post.featuredImage.src}
                   alt={post.featuredImage.alt}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Reading time badge */}

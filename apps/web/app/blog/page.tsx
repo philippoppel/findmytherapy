@@ -141,6 +141,7 @@ export default function BlogPage() {
                         src={featuredPost.featuredImage.src}
                         alt={featuredPost.featuredImage.alt || featuredPost.title}
                         fill
+                        sizes="100vw"
                         className="object-cover transition duration-500 group-hover:scale-[1.02]"
                         priority
                       />
@@ -177,6 +178,7 @@ export default function BlogPage() {
                             src={post.featuredImage.src}
                             alt={post.featuredImage.alt || post.title}
                             fill
+                            sizes="(max-width: 640px) 96px, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover transition duration-500 group-hover:scale-105"
                           />
                         ) : (
@@ -217,6 +219,7 @@ export default function BlogPage() {
                           src={imageUrl}
                           alt={category}
                           fill
+                          sizes="(max-width: 640px) 260px, 50vw"
                           className="object-cover transition duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -263,6 +266,7 @@ export default function BlogPage() {
                               src={post.featuredImage.src}
                               alt={post.featuredImage.alt || post.title}
                               fill
+                              sizes="128px"
                               className="object-cover group-hover:scale-105 transition duration-300"
                             />
                           )}

@@ -175,7 +175,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <address className="mt-6 sm:mt-8 flex items-center justify-center gap-3 not-italic">
                 {author.avatar && (
                   <div className="relative h-10 w-10 overflow-hidden rounded-full bg-neutral-100">
-                    <Image src={author.avatar} alt={author.name} fill className="object-cover" />
+                    <Image src={author.avatar} alt={author.name} fill sizes="40px" className="object-cover" />
                   </div>
                 )}
                 <div className="text-left">
@@ -194,6 +194,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   src={post.featuredImage.src}
                   alt={post.featuredImage.alt || post.title}
                   fill
+                  sizes="100vw"
                   className="object-cover"
                   priority
                 />
@@ -256,6 +257,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                           src={section.image.src}
                           alt={section.image.alt}
                           fill
+                          sizes="(max-width: 768px) 100vw, 768px"
                           className="object-cover"
                         />
                       </div>
@@ -277,7 +279,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <div className="flex items-start gap-3 sm:gap-4">
                 {author.avatar && (
                   <div className="relative h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 overflow-hidden rounded-full bg-neutral-100">
-                    <Image src={author.avatar} alt={author.name} fill className="object-cover" />
+                    <Image src={author.avatar} alt={author.name} fill sizes="40px" className="object-cover" />
                   </div>
                 )}
                 <div className="min-w-0">
@@ -340,6 +342,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                             src={relatedPost.featuredImage.src}
                             alt={relatedPost.featuredImage.alt || relatedPost.title}
                             fill
+                            sizes="(max-width: 640px) 280px, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover transition duration-500 group-hover:scale-105"
                           />
                         ) : (

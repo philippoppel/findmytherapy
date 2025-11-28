@@ -202,7 +202,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Avatar */}
             <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-primary-500/20 flex-shrink-0">
-              <Image src={author.avatar} alt={author.name} fill className="object-cover" />
+              <Image src={author.avatar} alt={author.name} fill sizes="128px" className="object-cover" />
             </div>
 
             {/* Bio */}
@@ -309,6 +309,7 @@ export default function AuthorPage({ params }: AuthorPageProps) {
                         src={post.featuredImage.src}
                         alt={post.featuredImage.alt}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>

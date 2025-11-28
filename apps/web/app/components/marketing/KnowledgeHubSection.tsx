@@ -85,6 +85,7 @@ export function KnowledgeHubSection() {
                         src={post.featuredImage.src}
                         alt={post.featuredImage.alt}
                         fill
+                        sizes="(max-width: 640px) 100vw, 320px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       {!prefersReducedMotion && (
