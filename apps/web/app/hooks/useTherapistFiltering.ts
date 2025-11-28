@@ -190,6 +190,13 @@ export function useTherapistFiltering({
           return false;
         }
 
+        // Online therapists are always "nearby" - they can serve anyone
+        const isOnlineOnly =
+          therapist.formatTags.includes('online') && !therapist.formatTags.includes('praesenz');
+        if (isOnlineOnly) {
+          return true; // Skip distance check for online-only therapists
+        }
+
         // If therapist has no coordinates, filter out
         if (typeof therapist.distanceInKm !== 'number') {
           return false;

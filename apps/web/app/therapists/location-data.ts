@@ -23,7 +23,6 @@ const CITY_KEY_SYNONYMS: Record<string, string> = {
   'st polten': 'st polten',
   'st polten land': 'st polten',
   'st poelten': 'st polten',
-  'sankt polten': 'st polten',
   stpolten: 'st polten',
 
   // Steyr variants
@@ -85,7 +84,7 @@ const CITY_COORDINATES: Record<string, Coordinates> = {
   'st polten-land': { lat: 48.2085, lng: 15.6245 },
   'st pölten': { lat: 48.2085, lng: 15.6245 },
   'wien-umgebung': { lat: 48.2082, lng: 16.3738 },
-  online: { lat: 0, lng: 0 },
+  // Note: 'online' intentionally has no coordinates - online therapists serve everyone
 };
 
 const CITY_POSTAL_HINTS: Record<string, string[]> = {
