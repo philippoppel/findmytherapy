@@ -65,7 +65,7 @@ export default function QuizLoading() {
             {/* Card Skeleton */}
             <div className="space-y-6">
               {/* Swipe Hint */}
-              <div className="flex items-center justify-center gap-4 text-sm text-slate-300">
+              <div className="flex items-center justify-center gap-4 text-sm text-slate-400">
                 <span>← Nein</span>
                 <span>|</span>
                 <span>Ja →</span>

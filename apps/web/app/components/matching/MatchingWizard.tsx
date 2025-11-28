@@ -423,7 +423,7 @@ export function MatchingWizard() {
                   disabled={currentStep === 1}
                   className={`rounded-xl px-6 py-3 text-base font-semibold transition-all ${
                     currentStep === 1
-                      ? 'cursor-not-allowed text-neutral-300'
+                      ? 'cursor-not-allowed text-neutral-400'
                       : 'text-neutral-700 hover:bg-neutral-100'
                   }`}
                 >
