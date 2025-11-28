@@ -723,13 +723,74 @@
     background-color: rgb(var(--primary) / 0.18);
   }
 
+  .theme-dark .bg-primary-100 {
+    background-color: rgb(var(--primary) / 0.22);
+  }
+
+  .theme-dark .bg-primary-200 {
+    background-color: rgb(var(--primary) / 0.28);
+  }
+
   .theme-dark .border-primary\/20,
   .theme-dark .border-primary\/30 {
     border-color: rgb(var(--primary) / 0.45);
   }
 
+  .theme-dark .border-primary-100 {
+    border-color: rgb(var(--primary) / 0.3);
+  }
+
+  .theme-dark .border-primary-200 {
+    border-color: rgb(var(--primary) / 0.4);
+  }
+
+  .theme-dark .border-primary-300 {
+    border-color: rgb(var(--primary) / 0.5);
+  }
+
   .theme-dark .bg-primary-500\/40 {
     background-color: rgb(var(--primary) / 0.35);
+  }
+
+  /* Primary text colors - invert for dark mode */
+  .theme-dark .text-primary-600,
+  .theme-dark .text-primary-700,
+  .theme-dark .text-primary-800,
+  .theme-dark .text-primary-900 {
+    color: rgb(var(--primary-300));
+  }
+
+  .theme-dark .text-primary-500 {
+    color: rgb(var(--primary-400));
+  }
+
+  /* Secondary color dark mode overrides (coral/orange) */
+  .theme-dark .bg-secondary-50 {
+    background-color: rgb(var(--secondary) / 0.15);
+  }
+
+  .theme-dark .bg-secondary-100 {
+    background-color: rgb(var(--secondary) / 0.2);
+  }
+
+  .theme-dark .bg-secondary-200 {
+    background-color: rgb(var(--secondary) / 0.28);
+  }
+
+  .theme-dark .border-secondary-100 {
+    border-color: rgb(var(--secondary) / 0.3);
+  }
+
+  .theme-dark .border-secondary-200 {
+    border-color: rgb(var(--secondary) / 0.4);
+  }
+
+  .theme-dark .text-secondary-500,
+  .theme-dark .text-secondary-600,
+  .theme-dark .text-secondary-700,
+  .theme-dark .text-secondary-800,
+  .theme-dark .text-secondary-900 {
+    color: rgb(var(--secondary-300));
   }
 
   .theme-light .bg-white {
