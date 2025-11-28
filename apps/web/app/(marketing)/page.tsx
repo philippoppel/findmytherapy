@@ -11,8 +11,8 @@ const FaqAccordion = dynamic(
   { ssr: true }
 );
 
-// Revalidate every 5 minutes for fresh therapist data
-export const revalidate = 300;
+// Force dynamic rendering - homepage needs DB access for therapist data
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Therapie für dich',
