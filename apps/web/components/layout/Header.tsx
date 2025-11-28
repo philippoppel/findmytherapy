@@ -7,7 +7,6 @@ import { ChevronDown, Compass, Menu, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
 import { HeaderSearch } from './HeaderSearch';
-import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navItems = [
   { label: 'Wissen', href: '/blog', type: 'link' as const },
@@ -66,14 +65,12 @@ export function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <HeaderSearch />
-          <ThemeToggle />
           <TherapistMenu />
         </div>
 
-        {/* Mobile: Search icon + Theme + Menu */}
+        {/* Mobile: Search icon + Menu */}
         <div className="flex items-center gap-1 lg:hidden">
           <HeaderSearch />
-          <ThemeToggle />
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}

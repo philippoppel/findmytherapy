@@ -4,7 +4,6 @@ import './marketing-theme.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { SessionProvider } from '../components/providers/SessionProvider';
-import { ThemeProvider } from '../components/providers/ThemeProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 
@@ -148,9 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${plusJakartaSans.className} theme-light`} suppressHydrationWarning>
         <ErrorBoundary>
-          <ThemeProvider>
-            <SessionProvider>{children}</SessionProvider>
-          </ThemeProvider>
+          <SessionProvider>{children}</SessionProvider>
         </ErrorBoundary>
         <CookieConsentBanner />
         <Script id="analytics-placeholder" strategy="lazyOnload">

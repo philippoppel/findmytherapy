@@ -79,15 +79,6 @@
     );
   }
 
-  .theme-dark .image-overlay {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.5) 50%,
-      transparent 100%
-    );
-  }
-
   /* Image overlay that fades to background color */
   .image-overlay-to-bg {
     background: linear-gradient(
@@ -104,15 +95,6 @@
       to right,
       rgba(0, 0, 0, 0.7) 0%,
       rgba(0, 0, 0, 0.3) 50%,
-      transparent 100%
-    );
-  }
-
-  .theme-dark .image-overlay-horizontal {
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.5) 50%,
       transparent 100%
     );
   }
@@ -321,22 +303,6 @@
     );
   }
 
-  .theme-dark .header-glass {
-    background-color: rgb(var(--surface-1) / 0.92);
-    border-color: rgb(var(--border) / 0.6);
-    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgb(var(--surface-2) / 0.2) inset;
-  }
-
-  .theme-dark .header-gradient {
-    background: linear-gradient(
-      to bottom right,
-      rgb(var(--surface-2) / 0.2),
-      transparent,
-      rgb(var(--primary) / 0.08)
-    );
-  }
-
   /* ================================================
      Micro-Interactions
      Subtle animations for improved UX
@@ -351,10 +317,6 @@
     transform: translateY(-4px);
     box-shadow: 0 12px 40px -12px rgb(var(--shadow-color) / 0.2),
                 0 4px 12px -4px rgb(var(--shadow-color) / 0.1);
-  }
-  .theme-dark .card-hover:hover {
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5),
-                0 4px 12px -4px rgba(0, 0, 0, 0.3);
   }
 
   /* Card Hover Subtle - Less pronounced lift */
@@ -458,152 +420,26 @@
   }
 
   /* Dark Mode Text Overrides */
-  .theme-dark .text-neutral-950,
-  .theme-dark .text-neutral-900,
-  .theme-dark .text-neutral-800,
-  .theme-dark .text-gray-950,
-  .theme-dark .text-gray-900,
-  .theme-dark .text-gray-800,
-  .theme-dark .text-slate-950,
-  .theme-dark .text-slate-900,
-  .theme-dark .text-slate-800 {
-    color: rgb(var(--text));
-  }
-
-  .theme-dark .text-neutral-700,
-  .theme-dark .text-neutral-600,
-  .theme-dark .text-neutral-500,
-  .theme-dark .text-gray-700,
-  .theme-dark .text-gray-600,
-  .theme-dark .text-gray-500,
-  .theme-dark .text-slate-700,
-  .theme-dark .text-slate-600,
-  .theme-dark .text-slate-500 {
-    color: rgb(var(--text-muted));
-  }
-
-  .theme-dark .text-neutral-400,
-  .theme-dark .text-neutral-300,
-  .theme-dark .text-neutral-200,
-  .theme-dark .text-gray-400,
-  .theme-dark .text-gray-300,
-  .theme-dark .text-slate-400,
-  .theme-dark .text-slate-300,
-  .theme-dark .text-slate-200 {
-    color: rgb(var(--text-subtle));
-  }
 
   /* Dark Mode Background Overrides */
-  .theme-dark .bg-slate-50,
-  .theme-dark .bg-gray-50,
-  .theme-dark .bg-neutral-50 {
-    background-color: rgb(var(--bg));
-  }
-  .theme-dark .bg-slate-100,
-  .theme-dark .bg-gray-100,
-  .theme-dark .bg-neutral-100 {
-    background-color: rgb(var(--surface-2));
-  }
-  .theme-dark .bg-slate-200,
-  .theme-dark .bg-gray-200,
-  .theme-dark .bg-neutral-200 {
-    background-color: rgb(var(--surface-3));
-  }
 
   /* Dark Mode Border Overrides */
-  .theme-dark .border-slate-100,
-  .theme-dark .border-gray-100,
-  .theme-dark .border-neutral-100 {
-    border-color: rgb(var(--border));
-  }
-  .theme-dark .border-slate-200,
-  .theme-dark .border-gray-200,
-  .theme-dark .border-neutral-200 {
-    border-color: rgb(var(--border));
-  }
-  .theme-dark .border-slate-300,
-  .theme-dark .border-gray-300,
-  .theme-dark .border-neutral-300 {
-    border-color: rgb(var(--border-strong));
-  }
 
   /* Dark Mode Divide Overrides */
-  .theme-dark .divide-slate-100 > * + *,
-  .theme-dark .divide-gray-100 > * + *,
-  .theme-dark .divide-neutral-100 > * + *,
-  .theme-dark .divide-slate-200 > * + *,
-  .theme-dark .divide-gray-200 > * + *,
-  .theme-dark .divide-neutral-200 > * + * {
-    border-color: rgb(var(--divider));
-  }
 
   /* Dark Mode Hover Background Overrides */
-  .theme-dark .hover\:bg-slate-50:hover,
-  .theme-dark .hover\:bg-gray-50:hover,
-  .theme-dark .hover\:bg-neutral-50:hover {
-    background-color: rgb(var(--surface-2));
-  }
-  .theme-dark .hover\:bg-slate-100:hover,
-  .theme-dark .hover\:bg-gray-100:hover,
-  .theme-dark .hover\:bg-neutral-100:hover {
-    background-color: rgb(var(--surface-3));
-  }
-  .theme-dark .hover\:bg-slate-200:hover,
-  .theme-dark .hover\:bg-gray-200:hover,
-  .theme-dark .hover\:bg-neutral-200:hover {
-    background-color: rgb(var(--surface-3));
-  }
 
   /* Dark Mode Hover Text Overrides */
-  .theme-dark .hover\:text-slate-700:hover,
-  .theme-dark .hover\:text-gray-700:hover,
-  .theme-dark .hover\:text-neutral-700:hover,
-  .theme-dark .hover\:text-slate-900:hover,
-  .theme-dark .hover\:text-gray-900:hover,
-  .theme-dark .hover\:text-neutral-900:hover {
-    color: rgb(var(--text));
-  }
 
   /* Dark Mode Hover Border Overrides */
-  .theme-dark .hover\:border-slate-300:hover,
-  .theme-dark .hover\:border-gray-300:hover,
-  .theme-dark .hover\:border-neutral-300:hover {
-    border-color: rgb(var(--border-strong));
-  }
 
   /* Dark Mode Ring Overrides */
-  .theme-dark .ring-slate-100,
-  .theme-dark .ring-gray-100,
-  .theme-dark .ring-neutral-100,
-  .theme-dark .ring-slate-200,
-  .theme-dark .ring-gray-200,
-  .theme-dark .ring-neutral-200 {
-    --tw-ring-color: rgb(var(--border));
-  }
 
   /* Dark Mode Focus Ring Overrides */
-  .theme-dark .focus\:ring-slate-100:focus,
-  .theme-dark .focus\:ring-gray-100:focus,
-  .theme-dark .focus\:ring-neutral-100:focus {
-    --tw-ring-color: rgb(var(--border));
-  }
 
   /* Dark Mode Shadow Adjustments */
-  .theme-dark .shadow-sm,
-  .theme-dark .shadow,
-  .theme-dark .shadow-md,
-  .theme-dark .shadow-lg,
-  .theme-dark .shadow-xl,
-  .theme-dark .shadow-2xl {
-    --tw-shadow-color: rgba(0, 0, 0, 0.5);
-  }
 
   /* Dark Mode Placeholder Overrides */
-  .theme-dark .placeholder\:text-slate-400::placeholder,
-  .theme-dark .placeholder\:text-gray-400::placeholder,
-  .theme-dark .placeholder\:text-neutral-400::placeholder {
-    color: rgb(var(--text-subtle));
-  }
 
   /* ================================================
      Dark Mode Status Color Overrides
@@ -611,187 +447,18 @@
      ================================================ */
 
   /* Success/Green Colors */
-  .theme-dark .bg-green-50 {
-    background-color: rgba(34, 197, 94, 0.15);
-  }
-  .theme-dark .bg-green-100 {
-    background-color: rgba(34, 197, 94, 0.2);
-  }
-  .theme-dark .border-green-200,
-  .theme-dark .border-green-300 {
-    border-color: rgba(34, 197, 94, 0.4);
-  }
-  .theme-dark .text-green-600,
-  .theme-dark .text-green-700 {
-    color: rgb(74, 222, 128);
-  }
-  .theme-dark .text-green-800,
-  .theme-dark .text-green-900 {
-    color: rgb(134, 239, 172);
-  }
 
   /* Warning/Amber Colors */
-  .theme-dark .bg-amber-50 {
-    background-color: rgba(245, 158, 11, 0.15);
-  }
-  .theme-dark .bg-amber-100 {
-    background-color: rgba(245, 158, 11, 0.2);
-  }
-  .theme-dark .bg-yellow-50 {
-    background-color: rgba(234, 179, 8, 0.15);
-  }
-  .theme-dark .bg-yellow-100 {
-    background-color: rgba(234, 179, 8, 0.2);
-  }
-  .theme-dark .border-amber-200,
-  .theme-dark .border-amber-300,
-  .theme-dark .border-yellow-200,
-  .theme-dark .border-yellow-300 {
-    border-color: rgba(245, 158, 11, 0.4);
-  }
-  .theme-dark .text-amber-600,
-  .theme-dark .text-amber-700,
-  .theme-dark .text-yellow-600,
-  .theme-dark .text-yellow-700 {
-    color: rgb(251, 191, 36);
-  }
-  .theme-dark .text-amber-800,
-  .theme-dark .text-amber-900,
-  .theme-dark .text-yellow-800,
-  .theme-dark .text-yellow-900 {
-    color: rgb(252, 211, 77);
-  }
 
   /* Error/Red Colors */
-  .theme-dark .bg-red-50 {
-    background-color: rgba(239, 68, 68, 0.15);
-  }
-  .theme-dark .bg-red-100 {
-    background-color: rgba(239, 68, 68, 0.2);
-  }
-  .theme-dark .border-red-200,
-  .theme-dark .border-red-300 {
-    border-color: rgba(239, 68, 68, 0.4);
-  }
-  .theme-dark .text-red-600,
-  .theme-dark .text-red-700 {
-    color: rgb(248, 113, 113);
-  }
-  .theme-dark .text-red-800,
-  .theme-dark .text-red-900 {
-    color: rgb(254, 202, 202);
-  }
 
   /* Info/Blue Colors */
-  .theme-dark .bg-blue-50 {
-    background-color: rgba(59, 130, 246, 0.15);
-  }
-  .theme-dark .bg-blue-100 {
-    background-color: rgba(59, 130, 246, 0.2);
-  }
-  .theme-dark .border-blue-200,
-  .theme-dark .border-blue-300 {
-    border-color: rgba(59, 130, 246, 0.4);
-  }
-  .theme-dark .text-blue-600,
-  .theme-dark .text-blue-700 {
-    color: rgb(96, 165, 250);
-  }
-  .theme-dark .text-blue-800,
-  .theme-dark .text-blue-900 {
-    color: rgb(147, 197, 253);
-  }
 
   /* Teal Colors (used in CTAs) */
-  .theme-dark .bg-teal-50 {
-    background-color: rgba(20, 184, 166, 0.15);
-  }
-  .theme-dark .bg-teal-100 {
-    background-color: rgba(20, 184, 166, 0.2);
-  }
-  .theme-dark .border-teal-200,
-  .theme-dark .border-teal-300 {
-    border-color: rgba(20, 184, 166, 0.4);
-  }
-  .theme-dark .text-teal-600,
-  .theme-dark .text-teal-700 {
-    color: rgb(45, 212, 191);
-  }
-
-  .theme-dark .bg-primary-50,
-  .theme-dark .bg-primary\/10 {
-    background-color: rgb(var(--primary) / 0.18);
-  }
-
-  .theme-dark .bg-primary-100 {
-    background-color: rgb(var(--primary) / 0.22);
-  }
-
-  .theme-dark .bg-primary-200 {
-    background-color: rgb(var(--primary) / 0.28);
-  }
-
-  .theme-dark .border-primary\/20,
-  .theme-dark .border-primary\/30 {
-    border-color: rgb(var(--primary) / 0.45);
-  }
-
-  .theme-dark .border-primary-100 {
-    border-color: rgb(var(--primary) / 0.3);
-  }
-
-  .theme-dark .border-primary-200 {
-    border-color: rgb(var(--primary) / 0.4);
-  }
-
-  .theme-dark .border-primary-300 {
-    border-color: rgb(var(--primary) / 0.5);
-  }
-
-  .theme-dark .bg-primary-500\/40 {
-    background-color: rgb(var(--primary) / 0.35);
-  }
 
   /* Primary text colors - invert for dark mode */
-  .theme-dark .text-primary-600,
-  .theme-dark .text-primary-700,
-  .theme-dark .text-primary-800,
-  .theme-dark .text-primary-900 {
-    color: rgb(var(--primary-300));
-  }
-
-  .theme-dark .text-primary-500 {
-    color: rgb(var(--primary-400));
-  }
 
   /* Secondary color dark mode overrides (coral/orange) */
-  .theme-dark .bg-secondary-50 {
-    background-color: rgb(var(--secondary) / 0.15);
-  }
-
-  .theme-dark .bg-secondary-100 {
-    background-color: rgb(var(--secondary) / 0.2);
-  }
-
-  .theme-dark .bg-secondary-200 {
-    background-color: rgb(var(--secondary) / 0.28);
-  }
-
-  .theme-dark .border-secondary-100 {
-    border-color: rgb(var(--secondary) / 0.3);
-  }
-
-  .theme-dark .border-secondary-200 {
-    border-color: rgb(var(--secondary) / 0.4);
-  }
-
-  .theme-dark .text-secondary-500,
-  .theme-dark .text-secondary-600,
-  .theme-dark .text-secondary-700,
-  .theme-dark .text-secondary-800,
-  .theme-dark .text-secondary-900 {
-    color: rgb(var(--secondary-300));
-  }
 
   .theme-light .bg-white {
     background-color: rgb(var(--surface-surface1));
@@ -831,47 +498,6 @@
 
   .theme-light .bg-white\/60 {
     background-color: rgb(var(--surface-surface1) / 0.6);
-  }
-
-  .theme-dark .bg-white {
-    /* Bring legacy white surfaces in line with dark tokens */
-    background-color: rgb(var(--surface-1));
-  }
-
-  .theme-dark .bg-white\/95 {
-    background-color: rgb(var(--surface-1) / 0.95);
-  }
-
-  .theme-dark .bg-white\/92 {
-    background-color: rgb(var(--surface-1) / 0.92);
-  }
-
-  .theme-dark .bg-white\/90 {
-    background-color: rgb(var(--surface-1) / 0.9);
-  }
-
-  .theme-dark .bg-white\/88 {
-    background-color: rgb(var(--surface-1) / 0.88);
-  }
-
-  .theme-dark .bg-white\/85 {
-    background-color: rgb(var(--surface-1) / 0.85);
-  }
-
-  .theme-dark .bg-white\/80 {
-    background-color: rgb(var(--surface-1) / 0.8);
-  }
-
-  .theme-dark .bg-white\/75 {
-    background-color: rgb(var(--surface-1) / 0.75);
-  }
-
-  .theme-dark .bg-white\/70 {
-    background-color: rgb(var(--surface-1) / 0.7);
-  }
-
-  .theme-dark .bg-white\/60 {
-    background-color: rgb(var(--surface-1) / 0.6);
   }
 
   /* Micro-interactions for enhanced UX */

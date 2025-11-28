@@ -82,7 +82,6 @@ const config: Config = {
     './i18n/**/*.{js,ts,jsx,tsx,mdx}',
     '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: ['class', '.theme-dark'],
   theme: {
     extend: {
       colors: colorConfig,
