@@ -179,6 +179,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                               src="/images/therapists/therapy-1.jpg"
                               alt="Therapiegespräch"
                               fill
+                              sizes="(min-width: 1024px) 33vw, 100vw"
                               className="object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-primary-900 lg:bg-gradient-to-r" />
