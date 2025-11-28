@@ -41,7 +41,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
 
   return (
     <InteractiveCard
-      className="h-full border border-neutral-200/60 bg-white/95"
+      className="h-full border border-primary-100/60 bg-surface-1/95"
       glowColor="rgba(13, 148, 136, 0.25)"
     >
       <Link
@@ -50,7 +50,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
       >
         <article className="flex h-full flex-col overflow-hidden rounded-[26px]">
           {/* Image Section */}
-          <div className="relative h-48 w-full overflow-hidden bg-neutral-50">
+          <div className="relative h-48 w-full overflow-hidden bg-surface-2">
             {therapist.profileImageUrl ? (
               <Image
                 src={therapist.profileImageUrl}
@@ -67,11 +67,11 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
 
             {/* Rating Badge */}
             {rating > 0 && (
-              <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1.5 text-sm font-medium text-neutral-900 shadow-sm backdrop-blur-sm">
+              <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-surface-1/95 px-2.5 py-1.5 text-sm font-medium text-default shadow-sm backdrop-blur-sm">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" aria-hidden />
                 <span className="font-semibold">{rating.toFixed(1)}</span>
                 {reviewCount > 0 && (
-                  <span className="text-xs text-neutral-500">({reviewCount})</span>
+                  <span className="text-xs text-muted">({reviewCount})</span>
                 )}
               </div>
             )}
@@ -91,7 +91,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
           <div className="flex flex-1 flex-col gap-4 p-6">
             {/* Name and Specialty */}
             <div>
-              <h3 className="text-xl font-semibold text-neutral-900 line-clamp-1 tracking-tight">
+              <h3 className="text-xl font-semibold text-default line-clamp-1 tracking-tight">
                 {therapist.title} {name}
               </h3>
               <p className="mt-1.5 text-sm font-medium text-teal-600 line-clamp-1">{specialty}</p>
@@ -116,10 +116,10 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
             </div>
 
             {/* Price and Languages */}
-            <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-4 text-sm">
-              <span className="font-semibold text-neutral-900">{priceRange}</span>
+            <div className="mt-auto flex items-center justify-between border-t border-divider pt-4 text-sm">
+              <span className="font-semibold text-default">{priceRange}</span>
               {therapist.languages.length > 0 && (
-                <span className="text-xs text-neutral-500 line-clamp-1">
+                <span className="text-xs text-muted line-clamp-1">
                   {therapist.languages.slice(0, 2).join(', ')}
                 </span>
               )}

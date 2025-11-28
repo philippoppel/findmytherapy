@@ -40,7 +40,7 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
 
   return (
     <InteractiveCard
-      className="h-full border-2 border-amber-200/80 bg-white/95"
+      className="h-full border-2 border-amber-200/80 bg-surface-1/95"
       glowColor="rgba(251, 191, 36, 0.28)"
     >
       <Link
@@ -55,7 +55,7 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
           </div>
 
           {/* Image Section */}
-          <div className="relative h-48 w-full overflow-hidden bg-neutral-50">
+          <div className="relative h-48 w-full overflow-hidden bg-surface-2">
             {therapist.profileImageUrl ? (
               <Image
                 src={therapist.profileImageUrl}
@@ -73,11 +73,11 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
 
             {/* Rating Badge */}
             {rating > 0 && (
-              <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1.5 text-sm font-medium text-neutral-900 shadow-sm backdrop-blur-sm">
+              <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-surface-1/95 px-2.5 py-1.5 text-sm font-medium text-default shadow-sm backdrop-blur-sm">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" aria-hidden />
                 <span className="font-semibold">{rating.toFixed(1)}</span>
                 {reviewCount > 0 && (
-                  <span className="text-xs text-neutral-500">({reviewCount})</span>
+                  <span className="text-xs text-muted">({reviewCount})</span>
                 )}
               </div>
             )}
@@ -92,9 +92,9 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
           </div>
 
           {/* Content Section */}
-          <div className="flex flex-1 flex-col gap-4 p-6 bg-gradient-to-b from-amber-50/30 to-white">
+          <div className="flex flex-1 flex-col gap-4 p-6 bg-gradient-to-b from-amber-50/30 to-surface-1">
             <div>
-              <h3 className="text-xl font-semibold text-neutral-900 line-clamp-1 tracking-tight">
+              <h3 className="text-xl font-semibold text-default line-clamp-1 tracking-tight">
                 {therapist.title} {name}
               </h3>
               <p className="mt-1.5 text-sm font-medium text-amber-600 line-clamp-1">{specialty}</p>
@@ -118,9 +118,9 @@ export function TherapistCardPremium({ therapist }: TherapistCardPremiumProps) {
             </div>
 
             <div className="mt-auto flex items-center justify-between border-t border-amber-100 pt-4 text-sm">
-              <span className="font-semibold text-neutral-900">{priceRange}</span>
+              <span className="font-semibold text-default">{priceRange}</span>
               {therapist.languages.length > 0 && (
-                <span className="text-xs text-neutral-500 line-clamp-1">
+                <span className="text-xs text-muted line-clamp-1">
                   {therapist.languages.slice(0, 2).join(', ')}
                 </span>
               )}

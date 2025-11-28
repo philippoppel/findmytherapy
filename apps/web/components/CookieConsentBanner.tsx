@@ -71,11 +71,11 @@ export function CookieConsentBanner() {
         className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-5xl p-4 sm:p-6"
         data-testid="cookie-consent-banner"
       >
-        <div className="relative rounded-2xl border border-gray-200 bg-white shadow-2xl">
+        <div className="relative rounded-2xl border border-divider bg-surface-1 shadow-2xl">
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute right-4 top-4 rounded-lg p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+            className="absolute right-4 top-4 rounded-lg p-1 text-muted transition hover:bg-surface-2 hover:text-default"
             aria-label="Cookie-Banner schließen (nur essenziell)"
             data-testid="cookie-banner-close"
           >
@@ -89,8 +89,8 @@ export function CookieConsentBanner() {
                 <Cookie className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <h2 className="mb-2 text-xl font-semibold text-gray-900">Cookies & Datenschutz</h2>
-                <p className="text-sm leading-relaxed text-gray-600">
+                <h2 className="mb-2 text-xl font-semibold text-default">Cookies & Datenschutz</h2>
+                <p className="text-sm leading-relaxed text-muted">
                   Wir nutzen Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Essenziell
                   notwendige Cookies sind für die Grundfunktionen erforderlich. Mit Ihrer Zustimmung
                   können wir zusätzlich Analytics und Fehlererfassung aktivieren, um unseren Service
@@ -133,12 +133,12 @@ export function CookieConsentBanner() {
 
             {/* Detailed settings */}
             {showDetails && (
-              <div className="mb-6 space-y-4 rounded-xl border border-gray-200 bg-gray-50 p-6">
+              <div className="mb-6 space-y-4 rounded-xl border border-divider bg-surface-2 p-6">
                 {/* Essential - always enabled */}
-                <div className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="rounded-lg border border-divider bg-surface-1 p-4">
                   <div className="mb-2 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-default">
                         {cookieCategoryInfo.essential.title}
                       </h3>
                       <span className="rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">
@@ -146,12 +146,12 @@ export function CookieConsentBanner() {
                       </span>
                     </div>
                   </div>
-                  <p className="mb-3 text-sm text-gray-600">
+                  <p className="mb-3 text-sm text-muted">
                     {cookieCategoryInfo.essential.description}
                   </p>
                   <div className="space-y-2">
                     {cookieCategoryInfo.essential.cookies.map((cookie) => (
-                      <div key={cookie.name} className="text-xs text-gray-500">
+                      <div key={cookie.name} className="text-xs text-subtle">
                         <span className="font-mono font-medium">{cookie.name}</span> -{' '}
                         {cookie.purpose} ({cookie.duration})
                       </div>
@@ -160,9 +160,9 @@ export function CookieConsentBanner() {
                 </div>
 
                 {/* Analytics */}
-                <div className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="rounded-lg border border-divider bg-surface-1 p-4">
                   <div className="mb-2 flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-default">
                       {cookieCategoryInfo.analytics.title}
                     </h3>
                     <label
@@ -178,15 +178,15 @@ export function CookieConsentBanner() {
                         className="peer sr-only"
                         aria-label="Analytics aktivieren/deaktivieren"
                       />
-                      <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
+                      <div className="peer h-6 w-11 rounded-full bg-surface-3 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-divider after:bg-surface-1 after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
                   </div>
-                  <p className="mb-3 text-sm text-gray-600">
+                  <p className="mb-3 text-sm text-muted">
                     {cookieCategoryInfo.analytics.description}
                   </p>
                   <div className="space-y-2">
                     {cookieCategoryInfo.analytics.cookies.map((cookie) => (
-                      <div key={cookie.name} className="text-xs text-gray-500">
+                      <div key={cookie.name} className="text-xs text-subtle">
                         <span className="font-mono font-medium">{cookie.name}</span> -{' '}
                         {cookie.purpose} ({cookie.duration})
                       </div>
@@ -195,9 +195,9 @@ export function CookieConsentBanner() {
                 </div>
 
                 {/* Error Tracking */}
-                <div className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="rounded-lg border border-divider bg-surface-1 p-4">
                   <div className="mb-2 flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-default">
                       {cookieCategoryInfo.errorTracking.title}
                     </h3>
                     <label
@@ -213,15 +213,15 @@ export function CookieConsentBanner() {
                         className="peer sr-only"
                         aria-label="Fehlererfassung aktivieren/deaktivieren"
                       />
-                      <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
+                      <div className="peer h-6 w-11 rounded-full bg-surface-3 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-divider after:bg-surface-1 after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
                   </div>
-                  <p className="mb-3 text-sm text-gray-600">
+                  <p className="mb-3 text-sm text-muted">
                     {cookieCategoryInfo.errorTracking.description}
                   </p>
                   <div className="space-y-2">
                     {cookieCategoryInfo.errorTracking.cookies.map((cookie) => (
-                      <div key={cookie.name} className="text-xs text-gray-500">
+                      <div key={cookie.name} className="text-xs text-subtle">
                         <span className="font-mono font-medium">{cookie.name}</span> -{' '}
                         {cookie.purpose} ({cookie.duration})
                       </div>
@@ -257,7 +257,7 @@ export function CookieConsentBanner() {
             )}
 
             {/* Legal links */}
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-gray-200 pt-4 text-xs text-gray-500">
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-divider pt-4 text-xs text-subtle">
               <Link href="/privacy" className="hover:text-teal-600 hover:underline">
                 Datenschutzerklärung
               </Link>

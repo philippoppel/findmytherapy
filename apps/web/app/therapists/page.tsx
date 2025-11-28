@@ -48,7 +48,7 @@ export default async function TherapistsPage() {
   const { therapists } = await getTherapistCards();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-surface">
       {/* Hero Section with Background Image */}
       <div className="relative">
         {/* Background Image */}
@@ -60,7 +60,7 @@ export default async function TherapistsPage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-[rgb(var(--bg))]" />
         </div>
 
         {/* Content */}
@@ -104,13 +104,13 @@ export default async function TherapistsPage() {
       <main className="relative z-10 -mt-8 px-4 pb-12">
         <div className="max-w-7xl mx-auto">
           {/* Directory Container */}
-          <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100 mb-6">
+          <div className="bg-surface-1 rounded-3xl shadow-xl p-6 sm:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-divider mb-6">
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-default">
                   Verifizierte Therapeut:innen
                 </h2>
-                <p className="text-slate-600 text-sm">
+                <p className="text-muted text-sm">
                   Nutze die Filter um passende Therapeut:innen zu finden.
                 </p>
               </div>
@@ -125,19 +125,19 @@ export default async function TherapistsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-8">
+      <footer className="border-t border-divider bg-surface-1 py-8">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
-            <Link href="/" className="hover:text-slate-700 transition-colors">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted">
+            <Link href="/" className="hover:text-default transition-colors">
               Startseite
             </Link>
-            <Link href="/quiz" className="hover:text-slate-700 transition-colors">
+            <Link href="/quiz" className="hover:text-default transition-colors">
               Schnell-Quiz
             </Link>
-            <Link href="/therapists?matching=true" className="hover:text-slate-700 transition-colors">
+            <Link href="/therapists?matching=true" className="hover:text-default transition-colors">
               Geführte Suche
             </Link>
-            <Link href="/triage" className="hover:text-slate-700 transition-colors">
+            <Link href="/triage" className="hover:text-default transition-colors">
               Wissenschaftlicher Test
             </Link>
           </div>
