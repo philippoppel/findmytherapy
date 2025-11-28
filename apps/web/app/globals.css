@@ -68,6 +68,41 @@
   }
 }
 
+@layer components {
+  /* Header Glass Effect - Theme Aware */
+  .header-glass {
+    background-color: rgb(var(--surface-1) / 0.88);
+    border: 1px solid rgb(var(--border) / 0.5);
+    box-shadow: 0 8px 32px -8px rgb(var(--shadow-color) / 0.15),
+                0 0 0 1px rgb(var(--surface-1) / 0.1) inset;
+  }
+
+  .header-gradient {
+    background: linear-gradient(
+      to bottom right,
+      rgb(var(--surface-1) / 0.4),
+      transparent,
+      rgb(var(--primary) / 0.05)
+    );
+  }
+
+  .theme-dark .header-glass {
+    background-color: rgb(var(--surface-1) / 0.92);
+    border-color: rgb(var(--border) / 0.6);
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgb(var(--surface-2) / 0.2) inset;
+  }
+
+  .theme-dark .header-gradient {
+    background: linear-gradient(
+      to bottom right,
+      rgb(var(--surface-2) / 0.2),
+      transparent,
+      rgb(var(--primary) / 0.08)
+    );
+  }
+}
+
 @layer utilities {
   * {
     scrollbar-width: thin;

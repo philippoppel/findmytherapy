@@ -29,7 +29,7 @@ export function Footer() {
 
   return (
     <footer
-      className="relative mt-auto border-t border-divider bg-white/70 backdrop-blur-sm text-default"
+      className="relative mt-auto border-t border-divider bg-surface-1/70 backdrop-blur-sm text-default"
       itemScope
       itemType="https://schema.org/WPFooter"
     >
@@ -113,7 +113,7 @@ export function Footer() {
         </div>
 
         {/* Partner & Empfehlungen Section */}
-        <section className="mt-12 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-white p-6 sm:p-8">
+        <section className="mt-12 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-surface-1 p-6 sm:p-8">
           <p className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-primary-700">
             Empfohlen & unterstützt von
           </p>

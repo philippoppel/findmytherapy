@@ -21,12 +21,11 @@ export function Header() {
 
   return (
     <header className="fixed top-3 left-0 right-0 z-50">
-      <div className="relative mx-auto w-[calc(100%-1rem)] max-w-[1400px] rounded-2xl border border-white/30 bg-surface-1/50 px-3 py-2 shadow-[0_15px_50px_-22px_rgba(15,23,42,0.6)] backdrop-blur-xl ring-1 ring-white/40 supports-[backdrop-filter]:bg-surface-1/40 sm:w-[calc(100%-1.5rem)] sm:px-4 sm:py-3 lg:px-6">
+      <div className="header-glass relative mx-auto w-[calc(100%-1rem)] max-w-[1400px] rounded-2xl px-3 py-2 backdrop-blur-xl sm:w-[calc(100%-1.5rem)] sm:px-4 sm:py-3 lg:px-6">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 via-white/20 to-primary-50/30"
+          className="header-gradient pointer-events-none absolute inset-0 rounded-2xl"
         />
-        <div aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border border-white/60" />
         <nav className="relative flex items-center justify-between gap-2 sm:gap-3">
         <Link
           href="/"

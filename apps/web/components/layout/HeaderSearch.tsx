@@ -148,7 +148,7 @@ export function HeaderSearch() {
                 }}
             onKeyDown={handleKeyDown}
             placeholder="Therapeut:in suchen..."
-            className="h-10 w-64 rounded-full border border-neutral-200 bg-white/80 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-muted transition focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+            className="h-10 w-64 rounded-full border border-divider bg-surface-1/80 pl-10 pr-4 text-sm text-default placeholder:text-muted transition focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
             aria-label="Therapeut:innen suchen"
             aria-expanded={isOpen}
             aria-controls="search-results"
@@ -163,7 +163,7 @@ export function HeaderSearch() {
           <div
             id="search-results"
             role="listbox"
-            className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-neutral-200 bg-white p-2 shadow-lg"
+            className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-divider bg-surface-1 p-2 shadow-lg"
           >
             {query.trim().length < 2 ? (
               <div className="px-3 py-4 text-center text-sm text-muted">
@@ -203,7 +203,7 @@ export function HeaderSearch() {
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium text-neutral-900">
+                      <div className="truncate text-sm font-medium text-default">
                         {therapist.name}
                       </div>
                       <div className="truncate text-xs text-muted">
@@ -217,7 +217,7 @@ export function HeaderSearch() {
             )}
 
             {/* CTAs */}
-            <div className="mt-2 border-t border-neutral-100 pt-2">
+            <div className="mt-2 border-t border-divider pt-2">
               <Link
                 id={`search-item-${results.length}`}
                 href="/quiz"
@@ -234,7 +234,7 @@ export function HeaderSearch() {
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-neutral-900">Matching starten</div>
+                  <div className="text-sm font-medium text-default">Matching starten</div>
                   <div className="text-xs text-muted">Finde passende Empfehlungen</div>
                 </div>
               </Link>
@@ -251,11 +251,11 @@ export function HeaderSearch() {
                     : 'hover:bg-neutral-50'
                 }`}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-neutral-600">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-2 text-muted">
                   <SlidersHorizontal className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-neutral-900">Erweiterte Filter</div>
+                  <div className="text-sm font-medium text-default">Erweiterte Filter</div>
                   <div className="text-xs text-muted">Alle Suchoptionen nutzen</div>
                 </div>
               </Link>
@@ -271,7 +271,7 @@ export function HeaderSearch() {
           setIsMobileOpen(true);
           loadTherapists();
         }}
-        className="flex h-10 w-10 items-center justify-center rounded-xl text-neutral-600 transition hover:bg-primary-50 hover:text-primary-700 lg:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:bg-primary-50 hover:text-primary-700 lg:hidden"
         aria-label="Suche öffnen"
       >
         <Search className="h-5 w-5" />
@@ -279,10 +279,10 @@ export function HeaderSearch() {
 
       {/* Mobile Fullscreen Overlay */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-white lg:hidden">
+        <div className="fixed inset-0 z-[60] bg-[rgb(var(--bg))] lg:hidden">
           <div className="flex h-full flex-col">
             {/* Mobile Header */}
-            <div className="flex items-center gap-3 border-b border-neutral-200 px-4 py-3">
+            <div className="flex items-center gap-3 border-b border-divider px-4 py-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
                 <input
@@ -292,14 +292,14 @@ export function HeaderSearch() {
                   onChange={(e) => handleInputChange(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Therapeut:in suchen..."
-                  className="h-11 w-full rounded-xl border border-neutral-200 bg-neutral-50 pl-10 pr-4 text-base text-neutral-900 placeholder:text-muted focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                  className="h-11 w-full rounded-xl border border-divider bg-surface-2 pl-10 pr-4 text-base text-default placeholder:text-muted focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
                   autoComplete="off"
                 />
               </div>
               <button
                 type="button"
                 onClick={closeSearch}
-                className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-600 transition hover:bg-neutral-100"
+                className="flex h-11 w-11 items-center justify-center rounded-xl text-muted transition hover:bg-surface-2"
                 aria-label="Suche schließen"
               >
                 <X className="h-5 w-5" />
@@ -343,7 +343,7 @@ export function HeaderSearch() {
                         </div>
                       )}
                       <div className="min-w-0 flex-1">
-                        <div className="truncate font-medium text-neutral-900">
+                        <div className="truncate font-medium text-default">
                           {therapist.name}
                         </div>
                         <div className="truncate text-sm text-muted">
@@ -375,13 +375,13 @@ export function HeaderSearch() {
                 <Link
                   href="/therapists"
                   onClick={closeSearch}
-                  className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 transition active:bg-neutral-100"
+                  className="flex items-center gap-4 rounded-2xl border border-divider bg-surface-2 p-4 transition active:bg-surface-3"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-200 text-neutral-600">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-3 text-muted">
                     <SlidersHorizontal className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-neutral-900">Erweiterte Filter</div>
+                    <div className="font-semibold text-default">Erweiterte Filter</div>
                     <div className="text-sm text-muted">Alle Suchoptionen nutzen</div>
                   </div>
                 </Link>
