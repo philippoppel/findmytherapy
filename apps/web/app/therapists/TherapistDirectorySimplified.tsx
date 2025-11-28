@@ -371,72 +371,115 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
   );
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6" ref={resultsRef}>
-      {/* Desktop Sidebar */}
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8" ref={resultsRef}>
+      {/* Desktop Sidebar - Sticky like willhaben */}
       <aside className="hidden lg:block w-72 xl:w-80 flex-shrink-0">
-        <div className="sticky top-24 rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden">
-          <div className="bg-white border-b border-slate-200 px-4 py-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Filter</h2>
-              {activeFilterCount > 0 && (
-                <span className="inline-flex items-center justify-center h-5 min-w-[20px] rounded-full bg-primary-500 px-1.5 text-[10px] font-bold text-white">
-                  {activeFilterCount}
-                </span>
-              )}
+        <div className="sticky top-24">
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-4 py-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wide flex items-center gap-2">
+                  <SlidersHorizontal className="h-4 w-4 text-primary-500" />
+                  Filter
+                </h2>
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={resetFilters}
+                    className="flex items-center gap-1.5 text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                  >
+                    <RotateCcw className="h-3 w-3" />
+                    Zurücksetzen
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="max-h-[calc(100vh-180px)] overflow-y-auto">
-            <FilterContent />
+            {/* Filter Content */}
+            <div className="max-h-[calc(100vh-200px)] overflow-y-auto overscroll-contain">
+              <FilterContent />
+            </div>
+            {/* Footer with count */}
+            <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
+              <p className="text-xs text-slate-500 text-center">
+                <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> Therapeut:innen gefunden
+              </p>
+            </div>
           </div>
         </div>
       </aside>
 
-      {/* Mobile Filter Button */}
-      <div className="lg:hidden sticky top-20 z-30 -mx-4 sm:-mx-8 px-4 sm:px-8 py-3 bg-surface-1/95 backdrop-blur-sm border-b border-slate-200">
-        <button
-          onClick={() => setIsMobileFilterOpen(true)}
-          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm"
-        >
-          <span className="flex items-center gap-2">
+      {/* Mobile Filter Button - Floating style */}
+      <div className="lg:hidden sticky top-20 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsMobileFilterOpen(true)}
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-slate-100 hover:bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors"
+          >
             <SlidersHorizontal className="h-4 w-4" />
-            Filter & Sortierung
+            Filter
             {activeFilterCount > 0 && (
               <span className="inline-flex items-center justify-center h-5 min-w-[20px] rounded-full bg-primary-500 px-1.5 text-[10px] font-bold text-white">
                 {activeFilterCount}
               </span>
             )}
-          </span>
-          <ChevronRight className="h-4 w-4 text-slate-400" />
-        </button>
+          </button>
+          <div className="flex-1">
+            <SortOptions sortBy={filters.sortBy} onChange={setSortBy} compact />
+          </div>
+        </div>
+        <p className="text-xs text-slate-500 text-center mt-2">
+          <span className="font-medium text-slate-700">{filteredTherapists.length}</span> Ergebnisse
+        </p>
       </div>
 
-      {/* Mobile Filter Drawer */}
+      {/* Mobile Filter Drawer - Modern slide-in */}
       {isMobileFilterOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
           <button
             type="button"
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-default animate-in fade-in duration-200"
             onClick={() => setIsMobileFilterOpen(false)}
             aria-label="Filter schließen"
           />
-          <div className="absolute inset-y-0 left-0 w-full max-w-sm bg-white shadow-2xl">
+          {/* Drawer */}
+          <div className="absolute inset-y-0 left-0 w-full max-w-[340px] bg-white shadow-2xl animate-in slide-in-from-left duration-300">
             <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
-                <h2 className="text-lg font-bold text-slate-900">Filter</h2>
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 bg-white">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Filter</h2>
+                  {activeFilterCount > 0 && (
+                    <p className="text-xs text-slate-500 mt-0.5">{activeFilterCount} aktiv</p>
+                  )}
+                </div>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto bg-slate-50">
+
+              {/* Filter Content */}
+              <div className="flex-1 overflow-y-auto overscroll-contain bg-slate-50">
                 <FilterContent />
               </div>
-              <div className="border-t border-slate-200 bg-white p-4">
+
+              {/* Footer Actions */}
+              <div className="border-t border-slate-200 bg-white p-4 space-y-3 safe-area-bottom">
+                {hasActiveFilters && (
+                  <button
+                    onClick={resetFilters}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    Alle Filter zurücksetzen
+                  </button>
+                )}
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-full rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-primary-700"
+                  className="w-full rounded-xl bg-primary-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-primary-700 transition-colors"
                 >
                   {filteredTherapists.length} Ergebnisse anzeigen
                 </button>
@@ -448,21 +491,12 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Results */}
       <div className="flex-1 min-w-0">
-        {/* Results Header */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        {/* Results Header - Desktop only (mobile has it in filter bar) */}
+        <div className="hidden lg:flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
             <span className="text-sm text-slate-600">
               <span className="font-semibold text-slate-900">{filteredTherapists.length}</span> Therapeut:innen
             </span>
-            {hasActiveFilters && (
-              <button
-                onClick={resetFilters}
-                className="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:text-primary-700"
-              >
-                <X className="h-3 w-3" />
-                Filter zurücksetzen
-              </button>
-            )}
           </div>
           <div className="flex items-center gap-3">
             <SortOptions sortBy={filters.sortBy} onChange={setSortBy} compact />
