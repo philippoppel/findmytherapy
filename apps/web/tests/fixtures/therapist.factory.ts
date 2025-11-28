@@ -23,6 +23,12 @@ type CreateTherapistProfileInput = {
   modalities?: string[];
   languages?: string[];
   isPublic?: boolean;
+  // New filter fields
+  gender?: 'male' | 'female' | 'diverse' | null;
+  acceptedInsurance?: string[];
+  ageGroups?: string[];
+  availabilityStatus?: 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE';
+  estimatedWaitWeeks?: number | null;
 };
 
 let profileCounter = 0;
@@ -67,6 +73,14 @@ export function createTestTherapistProfile(
     availabilityNote: 'Termine von Mo-Fr 9:00-18:00 Uhr verfügbar',
     pricingNote: 'Kassenplätze nach Verfügbarkeit',
     isPublic: input.isPublic ?? true,
+    // New filter fields
+    gender: input.gender ?? (profileCounter % 3 === 0 ? 'male' : 'female'),
+    acceptedInsurance: input.acceptedInsurance ?? ['ÖGK', 'SVS'],
+    ageGroups: input.ageGroups ?? ['Erwachsene'],
+    availabilityStatus: input.availabilityStatus ?? 'AVAILABLE',
+    estimatedWaitWeeks: input.estimatedWaitWeeks ?? 1,
+    latitude: 48.2082,
+    longitude: 16.3738,
   };
 }
 
