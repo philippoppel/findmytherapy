@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, LocateFixed, Loader2 } from 'lucide-react';
 import type { Coordinates } from '../../therapists/location-data';
 import { validateLocationInput } from '../../therapists/location-data';
@@ -41,12 +41,23 @@ export function LocationInput({
   // Debounce location input to prevent validation on every keystroke
   const debouncedValue = useDebouncedValue(value, 500);
 
+  // Use refs to keep callbacks stable and avoid re-running useEffect
+  const onCoordinatesChangeRef = useRef(onCoordinatesChange);
+  const onNearbyOnlyChangeRef = useRef(onNearbyOnlyChange);
+  const nearbyOnlyRef = useRef(nearbyOnly);
+
+  useEffect(() => {
+    onCoordinatesChangeRef.current = onCoordinatesChange;
+    onNearbyOnlyChangeRef.current = onNearbyOnlyChange;
+    nearbyOnlyRef.current = nearbyOnly;
+  });
+
   // Validate location input when debounced value changes
   useEffect(() => {
     if (!debouncedValue.trim()) {
       setLocationError('');
       setSuggestions([]);
-      onCoordinatesChange(null);
+      onCoordinatesChangeRef.current(null);
       return;
     }
 
@@ -55,17 +66,17 @@ export function LocationInput({
     if (result.valid) {
       setLocationError('');
       setSuggestions([]);
-      onCoordinatesChange(result.coordinates);
+      onCoordinatesChangeRef.current(result.coordinates);
       // Auto-enable nearby filter when valid location is entered
-      if (!nearbyOnly) {
-        onNearbyOnlyChange(true);
+      if (!nearbyOnlyRef.current) {
+        onNearbyOnlyChangeRef.current(true);
       }
     } else {
       setLocationError(result.error);
       setSuggestions(result.suggestions);
-      onCoordinatesChange(null);
+      onCoordinatesChangeRef.current(null);
     }
-  }, [debouncedValue, onCoordinatesChange, nearbyOnly, onNearbyOnlyChange]);
+  }, [debouncedValue]);
 
   const handleGeolocation = async () => {
     if (!navigator.geolocation) {

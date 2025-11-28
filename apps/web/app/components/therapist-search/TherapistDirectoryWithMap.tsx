@@ -11,7 +11,7 @@
  * - Filter sync between views
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Map, List, MapPin } from 'lucide-react';
 import type { TherapistCard } from '../../therapists/types';
 import { UnifiedTherapistSearch } from './UnifiedTherapistSearch';
@@ -36,6 +36,11 @@ export function TherapistDirectoryWithMap({
   const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(allTherapists.length < totalCount);
+
+  // Stable callback to prevent re-renders when typing in filters
+  const handleFilteredResults = useCallback((filtered: TherapistCard[]) => {
+    setFilteredTherapists(filtered);
+  }, []);
 
   // Convert therapist cards to map markers
   const mapMarkers: TherapistMapMarker[] = useMemo(() => {
@@ -111,7 +116,7 @@ export function TherapistDirectoryWithMap({
       {/* Unified Search & Filters */}
       <UnifiedTherapistSearch
         therapists={allTherapists}
-        onFilteredResults={(filtered) => setFilteredTherapists(filtered)}
+        onFilteredResults={handleFilteredResults}
         className="mb-6"
       />
 
