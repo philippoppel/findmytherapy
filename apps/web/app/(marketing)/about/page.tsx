@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { TeamSection } from '@/app/components/marketing/TeamSection';
 import { teamContent } from '@/app/marketing-content';
+import { BackLink } from '@/app/components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Über uns – Team | FindMyTherapy',
@@ -25,6 +26,11 @@ export default function AboutPage() {
     <div className="marketing-theme bg-surface text-default">
       <main className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Link */}
+          <div className="mb-8">
+            <BackLink />
+          </div>
+
           {/* Page Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">

@@ -5,6 +5,7 @@ import { Sparkles, Target } from 'lucide-react';
 import { seedCourses } from '@/lib/seed-data';
 import { CourseCatalog, type CourseCard } from './CourseCatalog';
 import { FEATURES } from '@/lib/features';
+import { BackLink } from '../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Programme & Kurse – FindMyTherapy',
@@ -39,6 +40,10 @@ export default function CoursesPage() {
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <BackLink />
+          </div>
+
           <div className="space-y-6 text-center">
             <span className="inline-flex items-center rounded-full bg-secondary-100 px-4 py-1 text-sm font-semibold text-secondary-700 shadow-sm">
               FindMyTherapy Programme – Einblicke

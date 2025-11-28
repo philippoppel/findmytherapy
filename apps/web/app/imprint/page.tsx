@@ -1,7 +1,11 @@
+import { BackLink } from '../components/BackLink';
+
 export default function ImprintPage() {
   return (
     <div className="marketing-theme bg-surface text-default">
       <main className="mx-auto max-w-3xl space-y-8 px-4 py-16 sm:px-6 lg:px-8">
+        <BackLink />
+
         <header className="space-y-3">
           <h1 className="text-3xl font-bold text-neutral-950 sm:text-4xl">Impressum</h1>
           <p className="text-sm text-neutral-700">

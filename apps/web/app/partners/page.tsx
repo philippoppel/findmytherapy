@@ -1,3 +1,5 @@
+import { BackLink } from '../components/BackLink';
+
 const partnerTypes = [
   {
     title: 'Unternehmen & HR-Teams',
@@ -19,6 +21,8 @@ const partnerTypes = [
 export default function PartnersPage() {
   return (
     <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 space-y-12">
+      <BackLink />
+
       <header className="space-y-3 text-center">
         <span className="inline-flex items-center justify-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
           Partner werden

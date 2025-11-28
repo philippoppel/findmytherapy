@@ -700,9 +700,10 @@ export function AdaptiveTriageFlow({
             </Button>
             <Link
               href="/"
-              className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30 transition-colors"
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
             >
-              Startseite
+              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+              <span>Zurück zur Startseite</span>
             </Link>
           </div>
           <div className="absolute bottom-8 left-0 right-0 text-center px-4">
@@ -1137,9 +1138,10 @@ export function AdaptiveTriageFlow({
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
           <Link
             href="/"
-            className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30 transition-colors"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
           >
-            ← Startseite
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+            <span>Zurück zur Startseite</span>
           </Link>
           <div className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium">
             {progress}% geschafft

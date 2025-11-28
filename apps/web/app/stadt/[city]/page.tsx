@@ -6,6 +6,7 @@ import { MapPin, Users, Phone, ArrowRight, CheckCircle2, Shield, Clock } from 'l
 import { austrianCities, getCityBySlug, getAllCitySlugs } from '@/lib/seo/cities';
 import { prisma } from '@/lib/prisma';
 import { Button } from '@mental-health/ui';
+import { BackLink } from '@/app/components/BackLink';
 
 type CityPageProps = {
   params: {
@@ -243,6 +244,11 @@ export default async function CityPage({ params }: CityPageProps) {
         <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            {/* Back Link */}
+            <div className="mb-6">
+              <BackLink variant="dark" />
+            </div>
+
             {/* Breadcrumb */}
             <nav className="mb-8 text-sm text-primary-200">
               <ol className="flex items-center gap-2">

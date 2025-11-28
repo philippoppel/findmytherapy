@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Cookie, RefreshCw, Settings } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { getCookieConsent, saveCookieConsent, cookieCategoryInfo } from '../../lib/cookies';
+import { BackLink } from '../components/BackLink';
 
 export default function CookiePolicyPage() {
   const [currentConsent, setCurrentConsent] = useState<{
@@ -48,6 +49,9 @@ export default function CookiePolicyPage() {
     <div className="marketing-theme bg-surface text-default">
       <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="space-y-10">
+          {/* Back Link */}
+          <BackLink />
+
           {/* Header */}
           <header className="space-y-4">
             <div className="flex items-center gap-3">

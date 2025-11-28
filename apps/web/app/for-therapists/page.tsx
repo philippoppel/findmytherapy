@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Reveal } from '../components/marketing/Reveal';
 import { teamContent } from '../marketing-content';
+import { BackLink } from '../components/BackLink';
 
 // Animation variants
 const fadeInUp = {
@@ -38,12 +39,7 @@ export default function ForTherapistsPage() {
     <div className="min-h-screen">
       {/* Back Link */}
       <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-neutral-900"
-        >
-          ← Zurück zur Startseite
-        </Link>
+        <BackLink />
       </div>
 
       {/* Hero Section */}

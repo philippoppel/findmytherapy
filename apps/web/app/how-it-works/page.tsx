@@ -1,3 +1,5 @@
+import { BackLink } from '../components/BackLink';
+
 export default function HowItWorksPage() {
   const steps = [
     {
@@ -19,6 +21,8 @@ export default function HowItWorksPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 space-y-12">
+      <BackLink />
+
       <section className="space-y-6 text-center">
         <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary-700">
           So funktioniert&apos;s

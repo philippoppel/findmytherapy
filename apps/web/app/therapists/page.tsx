@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Home, Sparkles, ClipboardCheck, Search } from 'lucide-react';
+import { Sparkles, ClipboardCheck, Search } from 'lucide-react';
 
 import { TherapistDirectory } from './TherapistDirectorySimplified';
 import { getTherapistCards } from './getTherapistCards';
 import { NavigationPills } from './SearchModeSelector';
+import { BackLink } from '../components/BackLink';
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic';
@@ -66,13 +67,7 @@ export default async function TherapistsPage() {
         <div className="relative z-10">
           {/* Top Navigation */}
           <nav className="flex items-center justify-between px-4 sm:px-6 pt-6">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
-            >
-              <Home className="w-5 h-5" />
-              <span className="font-medium">Startseite</span>
-            </Link>
+            <BackLink variant="dark" />
             <Link
               href="/triage"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"

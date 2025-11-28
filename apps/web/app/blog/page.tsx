@@ -3,8 +3,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, X, ArrowRight } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { blogPosts } from '../../lib/blogData';
+import { BackLink } from '../components/BackLink';
 
 // Sort blog posts by date (newest first)
 const sortedBlogPosts = [...blogPosts].sort((a, b) => {
@@ -76,9 +77,7 @@ export default function BlogPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6">
           {/* Top row: Back + Title */}
           <div className="flex items-center gap-4 sm:gap-8 mb-4 sm:mb-0 sm:float-left">
-            <Link href="/" className="text-neutral-400 hover:text-neutral-600 transition min-h-[44px] min-w-[44px] flex items-center justify-center -ml-2">
-              <ArrowRight className="h-5 w-5 rotate-180" />
-            </Link>
+            <BackLink />
             <h1 className="text-xl sm:text-2xl font-semibold text-neutral-900">Blog</h1>
           </div>
 

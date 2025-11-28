@@ -9,6 +9,7 @@ import {
   getConditionBySlug,
 } from '@/lib/seo/conditions';
 import { austrianCities } from '@/lib/seo/cities';
+import { BackLink } from '@/app/components/BackLink';
 
 type ConditionPageProps = {
   params: {
@@ -194,6 +195,11 @@ export default async function ConditionPage({ params }: ConditionPageProps) {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Link */}
+          <div className="mb-6">
+            <BackLink variant="dark" />
+          </div>
+
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm font-medium text-primary-100 mb-8">
             <Link href="/" className="hover:text-white transition-colors">

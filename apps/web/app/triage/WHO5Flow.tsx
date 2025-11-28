@@ -99,9 +99,10 @@ export function WHO5Flow() {
             </Button>
             <Link
               href="/"
-              className="text-center text-sm font-medium text-white/70 transition hover:text-white sm:text-left"
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
             >
-              Zur Startseite
+              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+              Zurück zur Startseite
             </Link>
           </div>
 
@@ -267,9 +268,13 @@ export function WHO5Flow() {
       </div>
 
       <div className="relative mx-auto max-w-3xl px-4">
-        <div className="mb-6 flex justify-end">
-          <Link href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
-            Zur Startseite
+        <div className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+            Zurück zur Startseite
           </Link>
         </div>
 

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 import { ForgotPasswordForm } from './ForgotPasswordForm';
+import { BackLink } from '../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Passwort zurücksetzen – FindMyTherapy',
@@ -19,13 +18,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="relative mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/login"
-            className="group inline-flex items-center gap-2 rounded-full border border-divider bg-white/70 px-4 py-2 text-sm font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-          >
-            <ArrowLeft className="h-4 w-4 transition group-hover:-translate-x-0.5" aria-hidden />
-            Zurück zur Anmeldung
-          </Link>
+          <BackLink href="/login" label="Zurück zur Anmeldung" />
 
           <ForgotPasswordForm />
 

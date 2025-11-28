@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Mail, ArrowLeft } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { CrisisResources } from '../triage/CrisisResources';
 import { ChatWidget } from '../../components/support/ChatWidget';
 import { FeatureGate } from '@/components/FeatureGate';
+import { BackLink } from '../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Kontakt – FindMyTherapy',
@@ -17,13 +17,9 @@ export default function ContactPage() {
       <div className="min-h-screen bg-surface py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           {/* Back Navigation */}
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-primary-700 transition hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Zurück zur Startseite
-          </Link>
+          <div className="mb-8">
+            <BackLink />
+          </div>
 
           {/* Header */}
           <div className="mb-12 text-center">

@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import { BackLink } from '../components/BackLink';
 
 export default function SettingsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 space-y-8">
+      <BackLink />
+
       <header className="space-y-2">
         <h1 className="text-3xl font-bold text-neutral-950">Profil &amp; Einstellungen</h1>
         <p className="text-sm text-neutral-700">

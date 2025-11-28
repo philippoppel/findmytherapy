@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { blogPosts, getBlogPostBySlug } from '../../../lib/blogData';
 import { getAuthorById } from '../../../lib/authors';
+import { BackLink } from '../../components/BackLink';
 
 type BlogPostPageProps = {
   params: {
@@ -141,13 +142,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Clean Header */}
       <header className="border-b border-neutral-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition min-h-[44px]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Zurück zum Blog
-          </Link>
+          <BackLink href="/blog" label="Zurück zum Blog" />
         </div>
       </header>
 

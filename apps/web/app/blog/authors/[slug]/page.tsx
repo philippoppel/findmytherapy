@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { getAllAuthors } from '@/lib/authors';
 import { blogPosts } from '@/lib/blogData';
 import { Badge } from '@mental-health/ui';
+import { BackLink } from '@/app/components/BackLink';
 
 type AuthorPageProps = {
   params: {
@@ -176,6 +177,11 @@ export default function AuthorPage({ params }: AuthorPageProps) {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back Link */}
+        <div className="mb-6">
+          <BackLink href="/blog" label="Zurück zum Blog" />
+        </div>
+
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 mb-8">
           <Link

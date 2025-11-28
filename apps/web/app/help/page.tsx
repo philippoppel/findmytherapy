@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BackLink } from '../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Hilfe & FAQ – Häufige Fragen | FindMyTherapy',
@@ -183,14 +184,8 @@ export default function HelpPage() {
   return (
     <div className="marketing-theme bg-surface text-default">
       <main className="mx-auto max-w-4xl space-y-12 px-4 py-16 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm font-medium text-neutral-600">
-          <Link href="/" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-neutral-950">Hilfe & FAQ</span>
-        </nav>
+        {/* Back Link */}
+        <BackLink />
 
         <header className="space-y-4 text-center">
           <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">

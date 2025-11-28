@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Calendar, Clock, ArrowRight, Sparkles, ShieldCheck, Tag } from 'lucide-react';
 import { blogPosts } from '@/lib/blogData';
 import { NewsletterForm } from '@/app/components/forms/NewsletterForm';
+import { BackLink } from '@/app/components/BackLink';
 
 type CategoryPageProps = {
   params: {
@@ -171,6 +172,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       <div className="marketing-theme bg-surface text-default">
         <main className="min-h-screen bg-surface pb-16 pt-10 sm:pb-24 sm:pt-16">
           <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 sm:px-6 lg:px-8">
+            <BackLink href="/blog" label="Zurück zum Blog" />
             <nav className="text-sm text-neutral-500">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>

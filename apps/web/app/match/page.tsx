@@ -2,10 +2,11 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { Home, Sparkles, Search } from 'lucide-react';
+import { Sparkles, Search } from 'lucide-react';
 import { useMatchingWizard } from '../components/matching/MatchingWizardContext';
 import { MatchingWizard } from '../components/matching/MatchingWizard';
 import { MatchingResults } from '../components/matching/MatchingResults';
+import { BackLink } from '../components/BackLink';
 
 export default function MatchPage() {
   const { openWizard, isOpen, showResults } = useMatchingWizard();
@@ -22,13 +23,7 @@ export default function MatchPage() {
       {/* Header */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-colors"
-          >
-            <Home className="w-5 h-5" />
-            <span className="text-sm">Startseite</span>
-          </Link>
+          <BackLink />
 
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary-500" />

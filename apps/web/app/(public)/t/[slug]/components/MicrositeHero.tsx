@@ -1,6 +1,6 @@
 import Image from 'next/image';
+import { MessageCircle, Calendar, MapPin, Award, Globe, Star, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { MessageCircle, Calendar, MapPin, Award, Globe, Star } from 'lucide-react';
 
 interface MicrositeHeroProps {
   profile: {
@@ -33,6 +33,15 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
       </div>
 
       <div className="relative container mx-auto px-4 py-12 md:py-16 max-w-6xl">
+        {/* Back Link */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-6 group"
+        >
+          <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+          <span>Zurück zur Startseite</span>
+        </Link>
+
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Profile Image */}
           <div className="flex-shrink-0">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
 
 import { ClientRegistrationForm } from './ClientRegistrationForm';
+import { BackLink } from '../../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Konto erstellen – FindMyTherapy',
@@ -13,6 +14,11 @@ export default function ClientSignupPage() {
   return (
     <section className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-neutral-50 py-8 sm:py-12">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Back Link */}
+        <div className="mb-6">
+          <BackLink />
+        </div>
+
         {/* Header */}
         <div className="mb-8 text-center lg:mb-12">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-800 shadow-sm">

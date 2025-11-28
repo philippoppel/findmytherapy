@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { BackLink } from '../../components/BackLink';
 
 const ERROR_MESSAGES: Record<string, string> = {
   INVALID_CREDENTIALS: 'Ungültige E-Mail oder Passwort',
@@ -63,10 +64,8 @@ export default function LoginPage() {
       </div>
 
       <div className="relative max-w-md w-full">
-        <div className="mb-6 flex justify-end">
-          <a href="/" className="text-sm font-medium text-white/70 transition hover:text-white">
-            Zur Startseite
-          </a>
+        <div className="mb-6">
+          <BackLink variant="dark" />
         </div>
 
         <div className="space-y-8 p-8 bg-white/10 rounded-3xl border border-white/10 shadow-2xl backdrop-blur">

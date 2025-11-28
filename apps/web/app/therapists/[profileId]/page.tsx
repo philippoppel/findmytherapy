@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import {
+  ArrowLeft,
   Award,
   BadgeCheck,
   BookOpen,
@@ -225,25 +226,20 @@ export default async function TherapistProfilePage({
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {fromTriage ? (
-                <BackButton className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors">
-                  ← Zurück zu deinen Empfehlungen
+                <BackButton className="inline-flex items-center gap-2 text-slate-600 hover:text-primary-600 transition-colors group">
+                  <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+                  <span>Zurück zu deinen Empfehlungen</span>
                 </BackButton>
               ) : (
                 <Link
                   href="/therapists"
                   prefetch={false}
-                  className="inline-flex items-center text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
+                  className="inline-flex items-center gap-2 text-slate-600 hover:text-primary-600 transition-colors group"
                 >
-                  ← Zurück zur Übersicht
+                  <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" aria-hidden />
+                  <span>Zurück zur Übersicht</span>
                 </Link>
               )}
-              <Link
-                href="/"
-                prefetch={false}
-                className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
-              >
-                Zur Startseite
-              </Link>
             </div>
           </div>
         </nav>

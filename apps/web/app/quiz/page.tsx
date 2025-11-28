@@ -15,7 +15,6 @@ import {
   X,
   BookOpen,
   ClipboardCheck,
-  Home,
   Crosshair,
   Check,
   User,
@@ -24,6 +23,7 @@ import {
   Euro,
   Clock,
 } from 'lucide-react';
+import { BackLink } from '../components/BackLink';
 import { NavigationPills } from '@/app/therapists/SearchModeSelector';
 import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
@@ -648,13 +648,7 @@ export default function QuizPage() {
         <div className="relative z-10">
           {/* Top Navigation */}
           <nav className="flex items-center justify-between px-4 sm:px-6 pt-6">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
-            >
-              <Home className="w-5 h-5" />
-              <span className="font-medium">Startseite</span>
-            </Link>
+            <BackLink variant="dark" />
 
             {/* Progress indicator */}
             <div className="flex items-center gap-3">
