@@ -111,6 +111,7 @@ export function LocationInput({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        console.log('[Geolocation Debug] Got coordinates:', coords);
         onCoordinatesChange(coords);
         setGeoStatus('idle');
         onNearbyOnlyChange(true);

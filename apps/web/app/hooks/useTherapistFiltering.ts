@@ -134,24 +134,36 @@ export function useTherapistFiltering({
       return therapists;
     }
 
+    console.log('[Filter Debug] User location:', userLocation);
+
     const withoutCoords = therapists.filter((t) => !t.coordinates);
-    if (withoutCoords.length > 0 && process.env.NODE_ENV === 'development') {
-      console.warn(
-        `⚠️ ${withoutCoords.length} therapist(s) missing coordinates:`,
+    if (withoutCoords.length > 0) {
+      console.log(
+        `[Filter Debug] ${withoutCoords.length} therapist(s) missing coordinates:`,
         withoutCoords.map((t) => ({ id: t.id, name: t.name, city: t.city })),
       );
     }
 
-    return therapists.map((therapist) => {
+    const withDistances = therapists.map((therapist) => {
       if (!therapist.coordinates) {
         return { ...therapist, distanceInKm: undefined };
       }
 
+      const distance = calculateDistanceKm(userLocation, therapist.coordinates);
       return {
         ...therapist,
-        distanceInKm: calculateDistanceKm(userLocation, therapist.coordinates),
+        distanceInKm: distance,
       };
     });
+
+    console.log(
+      '[Filter Debug] Distances calculated:',
+      withDistances
+        .filter((t) => t.distanceInKm !== undefined)
+        .map((t) => ({ name: t.name, distance: t.distanceInKm, coords: t.coordinates })),
+    );
+
+    return withDistances;
   }, [userLocation, therapists]);
 
   // Filter therapists
@@ -187,6 +199,7 @@ export function useTherapistFiltering({
       if (nearbyOnly) {
         // If nearby mode is active but no location, filter out ALL
         if (!userLocation) {
+          console.log('[Filter Debug] nearbyOnly active but no userLocation - filtering out all');
           return false;
         }
 
@@ -194,18 +207,27 @@ export function useTherapistFiltering({
         const isOnlineOnly =
           therapist.formatTags.includes('online') && !therapist.formatTags.includes('praesenz');
         if (isOnlineOnly) {
+          console.log(`[Filter Debug] ${therapist.name} is online-only - keeping`);
           return true; // Skip distance check for online-only therapists
         }
 
         // If therapist has no coordinates, filter out
         if (typeof therapist.distanceInKm !== 'number') {
+          console.log(`[Filter Debug] ${therapist.name} has no coordinates - filtering out`);
           return false;
         }
 
         // Check if within radius
         if (therapist.distanceInKm > radius) {
+          console.log(
+            `[Filter Debug] ${therapist.name} is ${therapist.distanceInKm}km away (radius: ${radius}km) - filtering out`,
+          );
           return false;
         }
+
+        console.log(
+          `[Filter Debug] ${therapist.name} is ${therapist.distanceInKm}km away (radius: ${radius}km) - keeping`,
+        );
       }
 
       // 5. Language filter
