@@ -65,9 +65,26 @@ export function LocationInput({
     }
   }, [debouncedValue, onCoordinatesChange, nearbyOnly, onNearbyOnlyChange]);
 
-  const handleGeolocation = () => {
+  const handleGeolocation = async () => {
     if (!navigator.geolocation) {
       setGeoError('Geolocation wird von deinem Browser nicht unterstützt.');
+      setGeoStatus('error');
+      return;
+    }
+
+    // Check if geolocation is allowed by permissions policy
+    try {
+      if (navigator.permissions) {
+        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        if (permission.state === 'denied') {
+          setGeoError('Standort-Berechtigung verweigert. Gib manuell eine Stadt ein.');
+          setGeoStatus('error');
+          return;
+        }
+      }
+    } catch {
+      // Permissions API not supported or geolocation blocked by policy
+      setGeoError('Standorterkennung ist auf dieser Seite nicht verfügbar. Gib manuell eine Stadt ein.');
       setGeoStatus('error');
       return;
     }

@@ -393,9 +393,24 @@ export default function QuizPage() {
   };
 
   // Auto-detect location (stays on same phase)
-  const detectLocation = () => {
+  const detectLocation = async () => {
     if (!navigator.geolocation) {
       setLocationError('Standorterkennung wird von deinem Browser nicht unterstützt.');
+      return;
+    }
+
+    // Check if geolocation is allowed by permissions policy
+    try {
+      if (navigator.permissions) {
+        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        if (permission.state === 'denied') {
+          setLocationError('Standortzugriff wurde verweigert. Bitte gib manuell einen Ort ein.');
+          return;
+        }
+      }
+    } catch {
+      // Permissions API not supported or geolocation blocked by policy
+      setLocationError('Standorterkennung ist nicht verfügbar. Bitte gib manuell einen Ort ein.');
       return;
     }
 
