@@ -416,7 +416,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
 
           {/* Focus Areas */}
           <div className="flex flex-1 flex-col gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Schwerpunkte
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -440,7 +440,7 @@ function DirectoryCard({ therapist }: { therapist: TherapistCard }) {
                 className={cn(
                   'truncate text-right font-semibold',
                   therapist.availabilityRank <= 2
-                    ? 'text-emerald-600'
+                    ? 'text-emerald-700'
                     : therapist.availabilityRank <= 4
                       ? 'text-amber-600'
                       : 'text-red-600',

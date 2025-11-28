@@ -158,7 +158,7 @@ export function LocationInput({
           onClick={handleGeolocation}
           disabled={geoStatus === 'loading'}
           className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100 active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
-          aria-label="Meinen Standort verwenden"
+          aria-label="Mein Standort"
         >
           {geoStatus === 'loading' ? (
             <>
@@ -224,7 +224,7 @@ export function LocationInput({
               : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
           }`}
           aria-pressed={nearbyOnly}
-          aria-label="Nur Therapeuten in meiner Nähe anzeigen"
+          aria-label="Nur in meiner Nähe"
         >
           <span>Nur in meiner Nähe</span>
           <div
