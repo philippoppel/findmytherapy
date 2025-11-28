@@ -148,7 +148,7 @@ export function MatchingWizard() {
               <h2 className="mb-2 text-2xl font-bold text-neutral-900 sm:text-3xl">
                 {STEPS[currentStep - 1].description}
               </h2>
-              <p className="text-muted">
+              <p className="text-muted" role="status" aria-live="polite" aria-atomic="true">
                 Schritt {currentStep} von {STEPS.length}
               </p>
             </div>
@@ -161,7 +161,7 @@ export function MatchingWizard() {
             )}
 
             {/* Progress */}
-            <div className="mb-8">
+            <div className="mb-8" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={STEPS.length} aria-label={`Fortschritt: Schritt ${currentStep} von ${STEPS.length}`}>
               <div className="h-2 overflow-hidden rounded-full bg-neutral-200">
                 <motion.div
                   className="h-full bg-gradient-to-r from-primary-500 to-primary-600"

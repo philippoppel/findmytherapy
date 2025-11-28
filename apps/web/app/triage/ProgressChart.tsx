@@ -55,10 +55,10 @@ export function ProgressChart({ data, className = '' }: ProgressChartProps) {
   const maxGAD7 = Math.max(...data.map((d) => d.gad7Score), 21);
 
   return (
-    <div className={`rounded-2xl border border-divider bg-white p-6 ${className}`}>
+    <div className={`rounded-2xl border border-divider bg-white p-6 ${className}`} aria-label="Fortschrittsdiagramm">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-default">Dein Verlauf</h3>
-        <p className="text-sm text-muted">{data.length} Messungen</p>
+        <p className="text-sm text-muted" aria-live="polite">{data.length} Messungen</p>
       </div>
 
       {/* PHQ-9 Chart */}
@@ -202,7 +202,7 @@ export function ProgressChart({ data, className = '' }: ProgressChartProps) {
       </div>
 
       {/* Trend summary */}
-      <div className="mt-4 rounded-lg bg-surface-1 p-3 text-sm">
+      <div className="mt-4 rounded-lg bg-surface-1 p-3 text-sm" role="status" aria-live="polite">
         <p className="font-semibold text-default">Zusammenfassung</p>
         <p className="mt-1 text-muted">
           {phq9Trend === 'down' &&

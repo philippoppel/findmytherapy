@@ -653,17 +653,17 @@ export default function QuizPage() {
             {/* Progress indicator */}
             <div className="flex items-center gap-3">
               {state.phase === 'topics' && (
-                <span className="text-sm text-white/70">
-                  {state.topicIndex + 1} / {CORE_TOPICS.length}
+                <span className="text-sm text-white/70" role="status" aria-live="polite" aria-atomic="true">
+                  <span className="sr-only">Frage </span>{state.topicIndex + 1} / {CORE_TOPICS.length}
                 </span>
               )}
               {state.phase === 'therapists' && (
-                <span className="text-sm text-white/70">
-                  {state.therapistIndex + 1} / {state.matches.length}
+                <span className="text-sm text-white/70" role="status" aria-live="polite" aria-atomic="true">
+                  <span className="sr-only">Vorschlag </span>{state.therapistIndex + 1} / {state.matches.length}
                 </span>
               )}
               {state.phase === 'location-preferences' && (
-                <span className="text-sm text-white/70">Fast fertig</span>
+                <span className="text-sm text-white/70" role="status" aria-live="polite">Fast fertig</span>
               )}
 
               {/* Exit/Restart */}
@@ -944,7 +944,7 @@ export default function QuizPage() {
               )}
 
               {/* Progress Dots */}
-              <div className="flex justify-center gap-1 pt-2">
+              <div className="flex justify-center gap-1 pt-2" role="progressbar" aria-valuenow={state.topicIndex + 1} aria-valuemin={1} aria-valuemax={CORE_TOPICS.length} aria-label={`Fortschritt: Frage ${state.topicIndex + 1} von ${CORE_TOPICS.length}`}>
                 {CORE_TOPICS.map((_, i) => (
                   <div
                     key={i}
@@ -955,6 +955,7 @@ export default function QuizPage() {
                         ? 'w-4 bg-primary-300'
                         : 'w-1.5 bg-slate-200'
                     }`}
+                    aria-hidden="true"
                   />
                 ))}
               </div>
