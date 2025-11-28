@@ -126,7 +126,7 @@ function SearchCard({
 
         {/* Badge (only for matching) */}
         {option.badge && BadgeIcon && (
-          <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-primary-700 shadow-lg backdrop-blur-sm">
+          <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-primary-900 shadow-lg backdrop-blur-sm">
             <BadgeIcon className="h-3.5 w-3.5" />
             {option.badge}
           </div>
@@ -154,10 +154,10 @@ function SearchCard({
         <p
           className={`mb-1 text-sm font-medium ${
             option.color === 'primary'
-              ? 'text-primary-600'
+              ? 'text-primary-900'
               : option.color === 'secondary'
-                ? 'text-secondary-600'
-                : 'text-neutral-500'
+                ? 'text-secondary-800'
+                : 'text-neutral-600'
           }`}
         >
           {option.subtitle}
@@ -185,9 +185,9 @@ function SearchCard({
         <div
           className={`flex items-center gap-2 font-semibold transition-all group-hover:gap-3 ${
             option.color === 'primary'
-              ? 'text-primary-600'
+              ? 'text-primary-900'
               : option.color === 'secondary'
-                ? 'text-secondary-600'
+                ? 'text-secondary-800'
                 : 'text-neutral-700'
           }`}
         >

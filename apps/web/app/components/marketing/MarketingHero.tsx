@@ -82,7 +82,7 @@ export function MarketingHero({ content }: HeroProps) {
               <div className="transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]">
                 <Link
                   href={content.secondaryCta.href}
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-white px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-700 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-white px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-900 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
                 >
                   {content.secondaryCta.label}
                   <svg className="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

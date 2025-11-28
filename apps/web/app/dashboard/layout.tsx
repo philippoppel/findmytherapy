@@ -74,7 +74,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link
               href="/"
               className="flex items-center gap-2.5 transition-transform hover:scale-105"
-              aria-label="FindMyTherapy Startseite"
+              aria-label="FindMyTherapy Dashboard – zur Startseite"
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000 shadow-lg shadow-primary-500/30">
                 <Compass className="h-5 w-5 text-white" />
@@ -83,14 +83,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <span className="text-sm font-semibold leading-tight text-neutral-900">
                   FindMyTherapy
                 </span>
-                <span className="text-[10px] font-medium text-primary-600">Dashboard</span>
+                <span className="text-[10px] font-medium text-primary-900">Dashboard</span>
               </div>
             </Link>
           </div>
 
           <Link
             href="/"
-            className="flex items-center gap-2 rounded-full border border-primary-200 bg-white px-4 py-2 text-sm font-medium text-primary-700 transition hover:bg-primary-50"
+            className="flex items-center gap-2 rounded-full border border-primary-200 bg-white px-4 py-2 text-sm font-medium text-primary-900 transition hover:bg-primary-50"
           >
             <Home className="h-4 w-4" />
             <span className="hidden sm:inline">Zur Homepage</span>

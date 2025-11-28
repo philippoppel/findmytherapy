@@ -47,7 +47,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
           hover:scale-[1.08] hover:-translate-y-2 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.2)]
           ${isMobile ? 'flex-shrink-0 w-32 h-40' : 'w-44 h-52 lg:w-52 lg:h-64 xl:w-60 xl:h-72'}
         `}
-        aria-label={`Mehr erfahren: ${topic.label}`}
+        aria-label={`${topic.label} – Mehr erfahren`}
       >
         {/* Glass card container */}
         <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-lg backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-xl">

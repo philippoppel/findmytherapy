@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <Link
             href="/"
             className="group flex items-center gap-2.5 transition-transform hover:scale-105"
-            aria-label="FindMyTherapy Startseite"
+            aria-label="FindMyTherapy – Mentale Orientierung, zur Startseite"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-1000 shadow-lg shadow-primary-500/40">
               <Compass className="h-5 w-5 text-white" aria-hidden />

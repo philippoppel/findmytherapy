@@ -30,7 +30,7 @@ export function Header() {
         <Link
           href="/"
           className="group flex items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
-          aria-label="FindMyTherapy Startseite"
+          aria-label="FindMyTherapy – Mentale Orientierung, zur Startseite"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 shadow-soft">
             <Compass className="h-5 w-5 text-white" aria-hidden />
