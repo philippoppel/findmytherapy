@@ -345,10 +345,10 @@ export function UnifiedTherapistSearch({
       {/* Active Filters Display */}
       {hasActiveFilters && (
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-white/70">Aktive Filter:</span>
+          <span className="text-xs font-medium text-slate-500">Aktive Filter:</span>
 
           {filters.searchQuery && (
-            <span className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 border border-slate-200">
               <Search className="h-3 w-3" aria-hidden />
               {filters.searchQuery}
             </span>
@@ -357,7 +357,7 @@ export function UnifiedTherapistSearch({
           {Array.from(filters.formats).map((format) => (
             <span
               key={format}
-              className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white"
+              className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200"
             >
               {FORMAT_LABELS[format]}
             </span>
@@ -366,27 +366,27 @@ export function UnifiedTherapistSearch({
           {Array.from(filters.specializations).map((spec) => (
             <span
               key={spec}
-              className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white"
+              className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200"
             >
               {spec}
             </span>
           ))}
 
           {filters.nearbyOnly && (
-            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               📍 {filters.radius}km Umkreis
             </span>
           )}
 
           {filters.gender !== 'any' && (
-            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               <User className="h-3 w-3" aria-hidden />
               {filters.gender === 'female' ? 'Weiblich' : 'Männlich'}
             </span>
           )}
 
           {filters.acceptsInsurance && (
-            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               <Shield className="h-3 w-3" aria-hidden />
               Krankenkasse
             </span>
@@ -395,14 +395,14 @@ export function UnifiedTherapistSearch({
           {Array.from(filters.languages).map((lang) => (
             <span
               key={lang}
-              className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white"
+              className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200"
             >
               🌐 {lang}
             </span>
           ))}
 
           {filters.priceRange && (
-            <span className="inline-flex items-center gap-1 rounded-lg bg-primary-500/20 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               💶 {filters.priceRange.min}–{filters.priceRange.max}€
             </span>
           )}
@@ -410,7 +410,7 @@ export function UnifiedTherapistSearch({
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex items-center gap-1 rounded-lg bg-red-500/20 px-2.5 py-1 text-xs font-medium text-red-200 hover:bg-red-500/30 transition-colors"
+            className="inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 border border-red-200 hover:bg-red-200 transition-colors"
           >
             <X className="h-3 w-3" aria-hidden />
             Alle zurücksetzen
@@ -419,8 +419,8 @@ export function UnifiedTherapistSearch({
       )}
 
       {/* Results Count */}
-      <div className="mt-4 text-sm text-white/70">
-        <span className="font-semibold text-white">{filteredTherapists.length}</span> von{' '}
+      <div className="mt-4 text-sm text-slate-500">
+        <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> von{' '}
         {totalCount} {totalCount === 1 ? 'Profil' : 'Profile'}
       </div>
     </div>
