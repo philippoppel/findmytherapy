@@ -1,4 +1,4 @@
-import type { CourseStatus, ListingPlan, ListingStatus, TherapistStatus } from '@prisma/client';
+import type { AvailabilityStatus, CourseStatus, ListingPlan, ListingStatus, TherapistStatus } from '@prisma/client';
 
 export type SeedAccount = {
   email: string;
@@ -68,6 +68,13 @@ export type SeedTherapist = {
     availabilityNote: string;
     pricingNote: string;
     isPublic: boolean;
+    // New fields for comprehensive filter tests
+    gender: 'female' | 'male' | 'diverse' | null;
+    acceptedInsurance: string[];
+    ageGroups: string[];
+    availabilityStatus: AvailabilityStatus;
+    estimatedWaitWeeks: number | null;
+    profileImageUrl: string | null;
   };
   listing?: {
     plan: ListingPlan;
@@ -118,6 +125,12 @@ export const seedTherapists: SeedTherapist[] = [
         'Erstgespräche Montag & Mittwoch Nachmittag; bei Akutfällen Slots innerhalb von 5 Werktagen möglich.',
       pricingNote: 'Honorar €80–120 je 50 Minuten; Sozialtarife für Studierende auf Anfrage.',
       isPublic: true,
+      gender: 'female',
+      acceptedInsurance: ['ÖGK', 'SVS', 'BVAEB'],
+      ageGroups: ['Erwachsene', 'Senioren'],
+      availabilityStatus: 'AVAILABLE',
+      estimatedWaitWeeks: 1,
+      profileImageUrl: '/images/therapists/therapy-1.jpg',
     },
     listing: {
       plan: 'PRO',
@@ -167,6 +180,12 @@ export const seedTherapists: SeedTherapist[] = [
       pricingNote:
         '€90–150 je Einheit, Firmenabrechnung via FindMyTherapy möglich. Paketpreise für ADHS-Coaching.',
       isPublic: true,
+      gender: 'male',
+      acceptedInsurance: ['ÖGK', 'Privat'],
+      ageGroups: ['Erwachsene'],
+      availabilityStatus: 'LIMITED',
+      estimatedWaitWeeks: 2,
+      profileImageUrl: '/images/therapists/therapy-2.jpg',
     },
     listing: {
       plan: 'PRO_PLUS',
@@ -215,6 +234,12 @@ export const seedTherapists: SeedTherapist[] = [
         'Erstgespräche für Jugendliche ab 20. Mai, Elterntermine Freitag Vormittag.',
       pricingNote: '€100–160 je Einheit; Kassenrückerstattung bei Diagnose nach Antrag möglich.',
       isPublic: false,
+      gender: 'female',
+      acceptedInsurance: ['ÖGK', 'SVS'],
+      ageGroups: ['Kinder', 'Jugendliche'],
+      availabilityStatus: 'WAITLIST',
+      estimatedWaitWeeks: 4,
+      profileImageUrl: '/images/therapists/therapy-3.jpg',
     },
   },
   {
@@ -260,6 +285,12 @@ export const seedTherapists: SeedTherapist[] = [
       pricingNote:
         '€75–110 je Einheit, Paarsettings €140. Reduzierte Kontingente für Community-Projekte.',
       isPublic: true,
+      gender: 'female',
+      acceptedInsurance: ['Privat'],
+      ageGroups: ['Erwachsene', 'Paare'],
+      availabilityStatus: 'AVAILABLE',
+      estimatedWaitWeeks: 0,
+      profileImageUrl: '/images/therapists/therapy-4.jpg',
     },
     listing: {
       plan: 'FREE',

@@ -115,6 +115,12 @@ async function main() {
             availabilityNote: therapist.profile.availabilityNote,
             pricingNote: therapist.profile.pricingNote,
             isPublic: therapist.profile.isPublic,
+            // Filter-relevant fields
+            gender: therapist.profile.gender,
+            acceptedInsurance: therapist.profile.acceptedInsurance,
+            ageGroups: therapist.profile.ageGroups,
+            availabilityStatus: therapist.profile.availabilityStatus,
+            estimatedWaitWeeks: therapist.profile.estimatedWaitWeeks,
           },
         },
       },
