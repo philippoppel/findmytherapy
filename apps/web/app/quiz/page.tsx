@@ -827,7 +827,7 @@ export default function QuizPage() {
                 <div className="relative aspect-[3/2] sm:aspect-[4/3] md:aspect-[16/9]">
                   <Image
                     src={currentTopic.image}
-                    alt={currentTopic.label}
+                    alt=""
                     fill
                     className="object-cover"
                     priority
