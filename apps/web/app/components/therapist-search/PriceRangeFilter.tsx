@@ -10,7 +10,7 @@ export type PriceRangeFilterProps = {
   compact?: boolean;
 };
 
-export function PriceRangeFilter({ priceRange, onChange, priceRangeStats, compact = false }: PriceRangeFilterProps) {
+export function PriceRangeFilter({ priceRange, onChange, priceRangeStats, compact: _compact = false }: PriceRangeFilterProps) {
   const [enabled, setEnabled] = useState(priceRange !== null);
   const [minValue, setMinValue] = useState<string>(
     priceRange?.min.toString() ?? priceRangeStats?.min.toString() ?? '50',

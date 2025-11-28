@@ -23,12 +23,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import type { TherapistCard } from './types';
-import {
-  useTherapistFiltering,
-  type FormatFilter,
-  type GenderFilter as GenderFilterType,
-} from '../hooks/useTherapistFiltering';
-import type { Coordinates } from './location-data';
+import { useTherapistFiltering, type FormatFilter } from '../hooks/useTherapistFiltering';
 import { LocationInput } from '../components/therapist-search/LocationInput';
 import { SpecializationFilters } from '../components/therapist-search/SpecializationFilters';
 import { LanguageFilters } from '../components/therapist-search/LanguageFilters';
@@ -107,7 +102,6 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
     setGender,
     resetFilters,
     filteredTherapists,
-    totalCount,
     hasActiveFilters,
     availableSpecializations,
     availableLanguages,
@@ -175,11 +169,12 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
     <div className="space-y-1">
       {/* Search */}
       <div className="p-4 border-b border-slate-200">
-        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+        <label htmlFor="filter-search" className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
           Suchbegriff
         </label>
         <div className="relative">
           <input
+            id="filter-search"
             type="text"
             value={filters.searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -418,9 +413,11 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
       {/* Mobile Filter Drawer */}
       {isMobileFilterOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-default"
             onClick={() => setIsMobileFilterOpen(false)}
+            aria-label="Filter schließen"
           />
           <div className="absolute inset-y-0 left-0 w-full max-w-sm bg-white shadow-2xl">
             <div className="flex h-full flex-col">
