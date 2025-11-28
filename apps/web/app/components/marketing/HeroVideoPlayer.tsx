@@ -24,6 +24,13 @@ export function HeroVideoPlayer({ posterSrc }: HeroVideoPlayerProps) {
           aria-label="Kurzer Einblick in den geführten Einstieg zur Psychotherapie"
         >
           <source src="/videos/hero-therapy.mp4" type="video/mp4" />
+          <track
+            kind="captions"
+            srcLang="de"
+            label="Deutsch"
+            src="/videos/hero-therapy-captions.vtt"
+            default
+          />
           Dein Browser unterstützt keine Videos.
         </video>
 
