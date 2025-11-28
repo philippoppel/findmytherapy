@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { getHeroContent, getFAQItems, teamContent } from '../marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 import { TestimonialsSection } from '../components/marketing/TestimonialsSection';
 
 // Lazy load below-the-fold components
-const FaqAccordion = dynamic(
+const FaqAccordion = nextDynamic(
   () => import('../components/marketing/FaqAccordion').then((mod) => mod.FaqAccordion),
   { ssr: true }
 );
