@@ -7,6 +7,7 @@ import { ChevronDown, Compass, Menu, X } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
 import { HeaderSearch } from './HeaderSearch';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 const navItems = [
   { label: 'Wissen', href: '/blog', type: 'link' as const },
@@ -20,7 +21,7 @@ export function Header() {
 
   return (
     <header className="fixed top-3 left-0 right-0 z-50">
-      <div className="relative mx-auto w-[calc(100%-1rem)] max-w-[1400px] rounded-2xl border border-white/30 bg-white/50 px-3 py-2 shadow-[0_15px_50px_-22px_rgba(15,23,42,0.6)] backdrop-blur-xl ring-1 ring-white/40 supports-[backdrop-filter]:bg-white/40 sm:w-[calc(100%-1.5rem)] sm:px-4 sm:py-3 lg:px-6">
+      <div className="relative mx-auto w-[calc(100%-1rem)] max-w-[1400px] rounded-2xl border border-white/30 bg-surface-1/50 px-3 py-2 shadow-[0_15px_50px_-22px_rgba(15,23,42,0.6)] backdrop-blur-xl ring-1 ring-white/40 supports-[backdrop-filter]:bg-surface-1/40 sm:w-[calc(100%-1.5rem)] sm:px-4 sm:py-3 lg:px-6">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 via-white/20 to-primary-50/30"
@@ -35,7 +36,7 @@ export function Header() {
             <Compass className="h-5 w-5 text-white" aria-hidden />
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-semibold leading-tight text-neutral-900">
+            <span className="text-base font-semibold leading-tight text-default">
               FindMyTherapy
             </span>
             <span className="hidden text-xs font-medium text-muted sm:block">Mentale Orientierung</span>
@@ -48,7 +49,7 @@ export function Header() {
               <button
                 key={item.href}
                 onClick={(event) => handleAnchorNavigation(event, item.href)}
-                className="rounded-full px-4 py-2.5 text-sm font-medium text-neutral-800 transition hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+                className="rounded-full px-4 py-2.5 text-sm font-medium text-default transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
               >
                 {item.label}
               </button>
@@ -56,7 +57,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2.5 text-sm font-medium text-neutral-800 transition hover:bg-primary-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+                className="rounded-full px-4 py-2.5 text-sm font-medium text-default transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
               >
                 {item.label}
               </Link>
@@ -66,16 +67,18 @@ export function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <HeaderSearch />
+          <ThemeToggle />
           <TherapistMenu />
         </div>
 
-        {/* Mobile: Search icon + Menu */}
+        {/* Mobile: Search icon + Theme + Menu */}
         <div className="flex items-center gap-1 lg:hidden">
           <HeaderSearch />
+          <ThemeToggle />
           <button
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-700 transition hover:bg-primary-50 hover:text-neutral-900"
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-muted transition hover:bg-primary-50 hover:text-default"
             aria-label="Menü öffnen"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -83,7 +86,7 @@ export function Header() {
         </div>
       </nav>
       {isMenuOpen && (
-        <div className="mt-2 rounded-2xl border border-divider bg-white px-4 py-4 shadow-soft-lg sm:px-6 lg:hidden">
+        <div className="mt-2 rounded-2xl border border-divider bg-surface-1 px-4 py-4 shadow-soft-lg sm:px-6 lg:hidden">
           <div className="space-y-1.5">
             {navItems.map((item) =>
               item.type === 'anchor' ? (
@@ -93,7 +96,7 @@ export function Header() {
                     handleAnchorNavigation(event, item.href);
                     setIsMenuOpen(false);
                   }}
-                  className="block w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-neutral-800 transition hover:bg-primary-50"
+                  className="block w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-default transition hover:bg-primary-50"
                 >
                   {item.label}
                 </button>
@@ -102,7 +105,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-800 transition hover:bg-primary-50"
+                  className="block rounded-xl px-4 py-3 text-sm font-semibold text-default transition hover:bg-primary-50"
                 >
                   {item.label}
                 </Link>
@@ -140,8 +143,8 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
   }, []);
 
   const buttonClasses = dense
-    ? 'w-full justify-between rounded-xl border border-divider px-4 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2'
-    : 'inline-flex items-center gap-2 rounded-full border border-divider bg-white px-4 py-2.5 text-sm font-semibold text-neutral-900 shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2';
+    ? 'w-full justify-between rounded-xl border border-divider px-4 py-3 text-sm font-semibold text-default transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2'
+    : 'inline-flex items-center gap-2 rounded-full border border-divider bg-surface-1 px-4 py-2.5 text-sm font-semibold text-default shadow-soft transition hover:-translate-y-0.5 hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2';
 
   return (
     <div className="relative" ref={menuRef}>
@@ -151,7 +154,7 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-3 w-64 rounded-2xl border border-divider bg-white p-2 shadow-soft-xl">
+        <div className="absolute right-0 z-50 mt-3 w-64 rounded-2xl border border-divider bg-surface-1 p-2 shadow-soft-xl">
           {status === 'authenticated' ? (
             <div className="space-y-1">
               <MenuItem href="/dashboard" label="Zum Dashboard" onClick={() => setOpen(false)} />
@@ -192,7 +195,7 @@ function MenuItem({
     <Link
       href={href}
       onClick={onClick}
-      className="block rounded-xl px-3 py-2 text-sm font-semibold text-neutral-900 transition hover:bg-primary-50"
+      className="block rounded-xl px-3 py-2 text-sm font-semibold text-default transition hover:bg-primary-50"
     >
       {label}
     </Link>

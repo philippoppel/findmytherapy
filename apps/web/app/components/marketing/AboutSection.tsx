@@ -91,12 +91,12 @@ export function AboutSection() {
         {/* Header */}
         <Reveal className="mb-16 text-center">
           <div className="mb-5 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 px-5 py-2.5 text-sm font-medium text-neutral-800 shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 px-5 py-2.5 text-sm font-medium text-default shadow-sm">
               <UsersIcon className="h-4 w-4 text-primary-600" />
               <span>Über uns</span>
             </div>
           </div>
-          <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl">
+          <h2 className="mb-6 text-4xl font-bold tracking-tight text-default sm:text-5xl">
             {teamContent.heading}
           </h2>
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
@@ -111,7 +111,7 @@ export function AboutSection() {
               {teamContent.members.map((member, index) => (
                 <motion.article
                   key={member.name}
-                  className="group overflow-hidden rounded-[32px] border border-white/40 bg-white shadow-2xl shadow-primary-700/5"
+                  className="group overflow-hidden rounded-[32px] border border-white/40 bg-surface-1 shadow-2xl shadow-primary-700/5"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -135,11 +135,11 @@ export function AboutSection() {
                       priority={index === 0}
                     />
                   </div>
-                  <div className="border-t border-neutral-200 bg-white p-6">
+                  <div className="border-t border-divider bg-surface-1 p-6">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-primary-600">
                       Founder Team
                     </p>
-                    <p className="mt-2 text-xl font-semibold text-neutral-900">{member.name}</p>
+                    <p className="mt-2 text-xl font-semibold text-default">{member.name}</p>
                     <p className="text-sm font-medium text-muted">{member.role}</p>
                     <p
                       className="mt-2 text-sm leading-relaxed text-muted"
@@ -160,11 +160,11 @@ export function AboutSection() {
 
           <div className="grid gap-6 lg:grid-cols-3">
             <Reveal delay={150}>
-              <div className="h-full rounded-3xl border border-neutral-200/70 bg-white/95 p-8 shadow-xl">
+              <div className="h-full rounded-3xl border border-primary-100/70 bg-surface-1/95 p-8 shadow-xl">
                 <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-sm font-medium text-primary-700">
                   <SparklesIcon className="h-4 w-4 text-primary-500" /> Unsere Mission
                 </p>
-                <h3 className="mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
+                <h3 className="mb-4 text-2xl font-bold text-default sm:text-3xl">
                   Jede:r soll Zugang zu qualifizierter Unterstützung bekommen.
                 </h3>
                 <p className="mb-6 text-base leading-relaxed text-muted sm:text-lg">
@@ -185,7 +185,7 @@ export function AboutSection() {
             </Reveal>
 
             <Reveal delay={200}>
-              <div className="h-full rounded-3xl border border-neutral-200/70 bg-gradient-to-br from-secondary-50 via-white to-primary-50 p-8 shadow-xl shadow-secondary-200/40">
+              <div className="h-full rounded-3xl border border-primary-100/70 bg-gradient-to-br from-secondary-50 via-surface-1 to-primary-50 p-8 shadow-xl shadow-secondary-200/40">
                 <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-secondary-600">
                   Vertrauen
                 </p>
@@ -193,13 +193,13 @@ export function AboutSection() {
                   {trustBadges.map((badge, index) => (
                     <motion.div
                       key={badge.label}
-                      className="rounded-2xl border border-white/70 bg-white/70 p-4"
+                      className="rounded-2xl border border-white/70 bg-surface-1/70 p-4"
                       initial={{ opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: 0.1 * index }}
                     >
-                      <p className="text-base font-semibold text-neutral-900">{badge.label}</p>
+                      <p className="text-base font-semibold text-default">{badge.label}</p>
                       <p className="text-sm text-muted">{badge.description}</p>
                     </motion.div>
                   ))}
@@ -238,14 +238,14 @@ export function AboutSection() {
 
         {/* Values Grid */}
         <Reveal delay={300}>
-          <h3 className="mb-12 text-center text-3xl font-bold text-neutral-900">Unsere Werte</h3>
+          <h3 className="mb-12 text-center text-3xl font-bold text-default">Unsere Werte</h3>
         </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value, index) => (
             <motion.div
               key={value.title}
-              className="group rounded-2xl border border-neutral-200/60 bg-white/80 p-6 backdrop-blur-sm transition-all hover:border-primary-200 hover:shadow-xl hover:shadow-primary-100/50"
+              className="group rounded-2xl border border-primary-100/60 bg-surface-1/80 p-6 backdrop-blur-sm transition-all hover:border-primary-200 hover:shadow-xl hover:shadow-primary-100/50"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -265,7 +265,7 @@ export function AboutSection() {
                   }`}
                 />
               </motion.div>
-              <h4 className="mb-2 text-lg font-semibold text-neutral-900">{value.title}</h4>
+              <h4 className="mb-2 text-lg font-semibold text-default">{value.title}</h4>
               <p className="text-sm leading-relaxed text-muted">{value.description}</p>
             </motion.div>
           ))}

@@ -82,7 +82,7 @@ const allTestimonials = [...testimonials, ...testimonials];
 function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
   return (
     <div className="flex-shrink-0 w-[320px] sm:w-[380px]">
-      <div className="relative h-full bg-white rounded-2xl p-5 sm:p-6 shadow-lg shadow-gray-200/50 border border-gray-100 hover:shadow-xl hover:border-primary-100 transition-all duration-300">
+      <div className="relative h-full bg-surface-1 rounded-2xl p-5 sm:p-6 shadow-lg shadow-primary-200/30 border border-primary-100/50 hover:shadow-xl hover:border-primary-200 transition-all duration-300">
         {/* Quote Icon */}
         <div className="absolute -top-2.5 -left-2.5 w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
           <Quote className="w-4 h-4 text-white" />
@@ -96,18 +96,18 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
         </div>
 
         {/* Quote */}
-        <blockquote className="text-gray-700 text-sm sm:text-base leading-relaxed mb-4 line-clamp-3">
+        <blockquote className="text-muted text-sm sm:text-base leading-relaxed mb-4 line-clamp-3">
           &ldquo;{testimonial.quote}&rdquo;
         </blockquote>
 
         {/* Author */}
-        <footer className="flex items-center gap-3 pt-3 border-t border-gray-100">
+        <footer className="flex items-center gap-3 pt-3 border-t border-divider">
           <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${testimonial.avatarBg} flex items-center justify-center text-white font-bold text-sm shadow-md`}>
             {testimonial.avatar}
           </div>
           <div>
-            <p className="font-semibold text-gray-900 text-sm">{testimonial.name}</p>
-            <p className="text-xs text-gray-500">{testimonial.location}</p>
+            <p className="font-semibold text-default text-sm">{testimonial.name}</p>
+            <p className="text-xs text-muted">{testimonial.location}</p>
           </div>
         </footer>
       </div>
@@ -137,7 +137,7 @@ export function TestimonialsSection() {
       `}} />
 
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-primary-50/30 to-white" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[rgb(var(--bg))] via-primary-50/30 to-[rgb(var(--bg))]" />
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200/20 rounded-full blur-3xl" />
@@ -151,10 +151,10 @@ export function TestimonialsSection() {
               <Heart className="w-4 h-4 fill-primary-500 text-primary-500" />
               Über 500+ zufriedene Nutzer:innen
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-default mb-4">
               Was unsere Community sagt
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-muted max-w-2xl mx-auto">
               Patient:innen und Therapeut:innen teilen ihre Erfahrungen
             </p>
           </div>
@@ -163,8 +163,8 @@ export function TestimonialsSection() {
         {/* Infinite Scroll Marquee - Row 1 (left to right) */}
         <div className="relative mb-6">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-[rgb(var(--bg))] via-[rgb(var(--bg)/0.8)] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-[rgb(var(--bg))] via-[rgb(var(--bg)/0.8)] to-transparent z-10 pointer-events-none" />
 
           <div className="flex gap-5 sm:gap-6 animate-marquee-left" style={{ width: 'max-content' }}>
             {allTestimonials.map((testimonial, index) => (
@@ -179,8 +179,8 @@ export function TestimonialsSection() {
         {/* Infinite Scroll Marquee - Row 2 (right to left, offset) */}
         <div className="relative">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-[rgb(var(--bg))] via-[rgb(var(--bg)/0.8)] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-[rgb(var(--bg))] via-[rgb(var(--bg)/0.8)] to-transparent z-10 pointer-events-none" />
 
           <div className="flex gap-5 sm:gap-6 animate-marquee-right" style={{ width: 'max-content' }}>
             {[...allTestimonials].reverse().map((testimonial, index) => (
@@ -194,30 +194,30 @@ export function TestimonialsSection() {
 
         {/* Trust Indicators */}
         <div className="mt-12 sm:mt-16 text-center px-4">
-          <div className="inline-flex flex-wrap items-center justify-center gap-6 sm:gap-10 px-6 sm:px-8 py-4 sm:py-5 bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100">
+          <div className="inline-flex flex-wrap items-center justify-center gap-6 sm:gap-10 px-6 sm:px-8 py-4 sm:py-5 bg-surface-1/80 backdrop-blur rounded-2xl shadow-sm border border-primary-100/50">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 {['from-rose-400 to-pink-500', 'from-blue-400 to-indigo-500', 'from-emerald-400 to-teal-500', 'from-amber-400 to-orange-500'].map((bg, i) => (
-                  <div key={i} className={`w-8 h-8 rounded-full bg-gradient-to-br ${bg} border-2 border-white flex items-center justify-center text-white text-xs font-bold`}>
+                  <div key={i} className={`w-8 h-8 rounded-full bg-gradient-to-br ${bg} border-2 border-surface-1 flex items-center justify-center text-white text-xs font-bold`}>
                     {['L', 'M', 'A', 'T'][i]}
                   </div>
                 ))}
               </div>
-              <span className="text-sm text-gray-600 font-medium">+500 Nutzer:innen</span>
+              <span className="text-sm text-muted font-medium">+500 Nutzer:innen</span>
             </div>
-            <div className="h-8 w-px bg-gray-200 hidden sm:block" />
+            <div className="h-8 w-px bg-divider hidden sm:block" />
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 {[1,2,3,4,5].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <span className="text-sm text-gray-600 font-medium">4.9 / 5 Sterne</span>
+              <span className="text-sm text-muted font-medium">4.9 / 5 Sterne</span>
             </div>
-            <div className="h-8 w-px bg-gray-200 hidden sm:block" />
+            <div className="h-8 w-px bg-divider hidden sm:block" />
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary-500" />
-              <span className="text-sm text-gray-600 font-medium">Verifizierte Bewertungen</span>
+              <span className="text-sm text-muted font-medium">Verifizierte Bewertungen</span>
             </div>
           </div>
         </div>

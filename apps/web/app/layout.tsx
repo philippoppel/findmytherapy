@@ -4,6 +4,7 @@ import './marketing-theme.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { SessionProvider } from '../components/providers/SessionProvider';
+import { ThemeProvider } from '../components/providers/ThemeProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
 
@@ -145,9 +146,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${plusJakartaSans.className} bg-white`} suppressHydrationWarning>
+      <body className={`${plusJakartaSans.className} theme-light`} suppressHydrationWarning>
         <ErrorBoundary>
-          <SessionProvider>{children}</SessionProvider>
+          <ThemeProvider>
+            <SessionProvider>{children}</SessionProvider>
+          </ThemeProvider>
         </ErrorBoundary>
         <CookieConsentBanner />
         <Script id="analytics-placeholder" strategy="lazyOnload">

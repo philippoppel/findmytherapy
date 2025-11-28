@@ -28,19 +28,13 @@ export function MarketingHero({ content }: HeroProps) {
       className="relative min-h-[800px] pb-8"
       aria-labelledby="hero-heading"
     >
-      {/* Ambient blur effects */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Ambient blur effects - optimized for performance */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div
-          aria-hidden
-          className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-primary-200/40 blur-3xl"
+          className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-primary-200/30 blur-3xl will-change-transform"
         />
         <div
-          aria-hidden
-          className="absolute -right-24 top-1/3 h-80 w-80 rounded-full bg-secondary-200/30 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute left-1/4 bottom-20 h-64 w-64 rounded-full bg-primary-100/50 blur-3xl"
+          className="absolute -right-24 top-1/3 h-80 w-80 rounded-full bg-secondary-200/25 blur-3xl will-change-transform"
         />
       </div>
 
@@ -82,7 +76,7 @@ export function MarketingHero({ content }: HeroProps) {
               <div className="transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]">
                 <Link
                   href={content.secondaryCta.href}
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-white px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-900 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-surface-1 px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-900 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
                 >
                   {content.secondaryCta.label}
                   <svg className="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,7 +166,7 @@ export function MarketingHero({ content }: HeroProps) {
                   {[...partnerLogos, ...partnerLogos].map((logo, index) => (
                     <div
                       key={`${logo.name}-${index}`}
-                      className="flex-shrink-0 flex items-center justify-center px-6 py-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-primary-100/50 shadow-sm hover:shadow-md transition-shadow"
+                      className="flex-shrink-0 flex items-center justify-center px-6 py-4 rounded-2xl bg-surface-1/60 backdrop-blur-sm border border-primary-100/50 shadow-sm hover:shadow-md transition-shadow"
                     >
                       <Image
                         src={logo.src}
@@ -185,8 +179,8 @@ export function MarketingHero({ content }: HeroProps) {
                   ))}
                 </div>
                 {/* Fade edges */}
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent" />
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[rgb(var(--bg))] to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[rgb(var(--bg))] to-transparent" />
               </div>
             </div>
           </Reveal>

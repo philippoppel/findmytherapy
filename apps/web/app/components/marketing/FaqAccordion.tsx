@@ -47,14 +47,14 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
 
             return (
               <Reveal key={item.question} delay={index * 120}>
-                <div className="overflow-hidden rounded-2xl border border-divider bg-white shadow-lg shadow-secondary/10 sm:rounded-3xl">
+                <div className="overflow-hidden rounded-2xl border border-divider bg-surface-1 shadow-lg shadow-secondary/10 sm:rounded-3xl">
                   <button
                     id={triggerId}
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={contentId}
                     onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left sm:gap-6 sm:px-6 sm:py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left sm:gap-6 sm:px-6 sm:py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--surface-1))]"
                   >
                     <span className="text-sm font-semibold text-default sm:text-base">
                       {item.question}

@@ -49,7 +49,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
         `}
       >
         {/* Glass card container */}
-        <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/70 bg-white/80 shadow-lg backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-xl">
+        <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/70 bg-surface-1/80 shadow-lg backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-xl">
           {/* Image section */}
           <div className="relative h-3/4 overflow-hidden">
             <Image
@@ -66,7 +66,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
 
           {/* Label section */}
           <div className="absolute bottom-0 inset-x-0 p-2 lg:p-3">
-            <span className="inline-flex items-center justify-center w-full rounded-full bg-white/95 px-3 py-1.5 text-xs lg:text-sm font-semibold text-neutral-800 shadow-sm transition-colors duration-200 group-hover:bg-primary-50 group-hover:text-primary-900">
+            <span className="inline-flex items-center justify-center w-full rounded-full bg-surface-1/95 px-3 py-1.5 text-xs lg:text-sm font-semibold text-default shadow-sm transition-colors duration-200 group-hover:bg-primary-50 group-hover:text-primary-900">
               {topic.label}
             </span>
           </div>
