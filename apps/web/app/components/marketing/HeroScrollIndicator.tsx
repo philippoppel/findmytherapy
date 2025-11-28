@@ -35,7 +35,7 @@ export function HeroScrollIndicator() {
       <button
         onClick={handleClick}
         className="flex flex-col items-center gap-1.5 text-neutral-500 hover:text-primary-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg px-4 py-2"
-        aria-label="Nach unten scrollen"
+        aria-label="Mehr entdecken – nach unten scrollen"
       >
         <span className="text-sm font-medium">Mehr entdecken</span>
         <div className="animate-bounce-down">

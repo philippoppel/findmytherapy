@@ -157,7 +157,7 @@ function SearchCard({
               ? 'text-primary-900'
               : option.color === 'secondary'
                 ? 'text-secondary-800'
-                : 'text-neutral-600'
+                : 'text-neutral-700'
           }`}
         >
           {option.subtitle}

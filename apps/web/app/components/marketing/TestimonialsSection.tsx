@@ -147,7 +147,7 @@ export function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-10 sm:mb-14 px-4">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-700 mb-4">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-900 mb-4">
               <Heart className="w-4 h-4 fill-primary-500 text-primary-500" />
               Über 500+ zufriedene Nutzer:innen
             </span>
