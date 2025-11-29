@@ -129,10 +129,10 @@ export function TestimonialsSection() {
           to { transform: translateX(0); }
         }
         .animate-marquee-left {
-          animation: marquee-left 60s linear infinite;
+          animation: marquee-left 120s linear infinite;
         }
         .animate-marquee-right {
-          animation: marquee-right 70s linear infinite;
+          animation: marquee-right 140s linear infinite;
         }
       `}} />
 
