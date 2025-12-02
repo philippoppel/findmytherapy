@@ -60,7 +60,7 @@ export default function BlogDashboardPage() {
   const [filterStatus, setFilterStatus] = useState<BlogPostStatus | ''>('');
   const [filterCategory, setFilterCategory] = useState('');
   const [showAllPosts, setShowAllPosts] = useState(true); // Default: show all posts
-  const [includeStatic, setIncludeStatic] = useState(true); // Default: include static posts
+  const [includeStatic, setIncludeStatic] = useState(false); // Default: don't include static (they're now in DB)
   const [categories, setCategories] = useState<string[]>([]);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
