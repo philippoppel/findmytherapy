@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllBlogPosts, getBlogPostsByCategory, getBlogPostsByTag } from '@/lib/blogService';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // GET - Get all published blog posts (public)
 export async function GET(request: NextRequest) {
   try {
