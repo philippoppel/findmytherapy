@@ -20,6 +20,8 @@ import {
   ChevronUp,
   AlertCircle,
   Loader2,
+  Check,
+  Copy,
 } from 'lucide-react';
 import BlogPreview from './BlogPreview';
 import { DEEP_RESEARCH_PROMPT, parseBlogImport, ParsedBlogData } from '@/lib/blogImportTemplate';
@@ -146,6 +148,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
   const [fullImportText, setFullImportText] = useState('');
   const [fullImportPreview, setFullImportPreview] = useState<ParsedBlogData | null>(null);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [templateCopied, setTemplateCopied] = useState(false);
 
   // Parse imported text into sections
   const parseTextToSections = (text: string): Section[] => {
@@ -1690,7 +1693,10 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                 </p>
               </div>
               <button
-                onClick={() => setShowTemplateModal(false)}
+                onClick={() => {
+                  setShowTemplateModal(false);
+                  setTemplateCopied(false);
+                }}
                 className="p-2 hover:bg-neutral-100 rounded-lg transition"
               >
                 <X className="w-5 h-5 text-neutral-500" />
@@ -1715,7 +1721,10 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
               </p>
               <div className="flex gap-3">
                 <button
-                  onClick={() => setShowTemplateModal(false)}
+                  onClick={() => {
+                    setShowTemplateModal(false);
+                    setTemplateCopied(false);
+                  }}
                   className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                 >
                   Schließen
@@ -1723,11 +1732,26 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(DEEP_RESEARCH_PROMPT);
-                    // Could add a toast notification here
+                    setTemplateCopied(true);
+                    setTimeout(() => setTemplateCopied(false), 2000);
                   }}
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                  className={`px-4 py-2 rounded-lg transition inline-flex items-center gap-2 min-w-[120px] justify-center ${
+                    templateCopied
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                  }`}
                 >
-                  Kopieren
+                  {templateCopied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Kopiert!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      Kopieren
+                    </>
+                  )}
                 </button>
               </div>
             </div>
