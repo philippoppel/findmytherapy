@@ -834,6 +834,9 @@ model BlogPost {
   // Reading
   readingTimeMinutes Int?
 
+  // Analytics
+  viewCount         Int            @default(0)
+
   // Summary points (shown as "Auf einen Blick")
   summaryPoints     String[]       @default([])
 

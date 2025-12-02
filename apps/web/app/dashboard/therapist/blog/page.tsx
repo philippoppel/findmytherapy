@@ -30,6 +30,12 @@ type BlogPost = {
   publishedAt: string | null;
   updatedAt: string;
   readingTimeMinutes: number | null;
+  viewCount: number;
+  author: {
+    id: string;
+    displayName: string | null;
+    profileImageUrl: string | null;
+  } | null;
   _count: {
     relatedFrom: number;
   };
@@ -48,25 +54,33 @@ export default function BlogDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<BlogPostStatus | ''>('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [showAllPosts, setShowAllPosts] = useState(true); // Default: show all posts
+  const [categories, setCategories] = useState<string[]>([]);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const fetchPosts = useCallback(async () => {
     try {
       const params = new URLSearchParams();
       if (filterStatus) params.set('status', filterStatus);
+      if (filterCategory) params.set('category', filterCategory);
+      if (showAllPosts) params.set('showAll', 'true');
 
       const res = await fetch(`/api/therapist/blog?${params}`);
       const data = await res.json();
 
       if (data.success) {
         setPosts(data.posts);
+        if (data.categories) {
+          setCategories(data.categories);
+        }
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
       setLoading(false);
     }
-  }, [filterStatus]);
+  }, [filterStatus, filterCategory, showAllPosts]);
 
   useEffect(() => {
     fetchPosts();
@@ -141,29 +155,56 @@ export default function BlogDashboardPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
-          <input
-            type="text"
-            placeholder="Beiträge durchsuchen..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
-          />
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
+            <input
+              type="text"
+              placeholder="Beiträge durchsuchen..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
+            />
+          </div>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as BlogPostStatus | '')}
+            className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
+          >
+            <option value="">Alle Status</option>
+            {Object.entries(statusConfig).map(([key, { label }]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
+          {categories.length > 0 && (
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
+            >
+              <option value="">Alle Kategorien</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value as BlogPostStatus | '')}
-          className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
-        >
-          <option value="">Alle Status</option>
-          {Object.entries(statusConfig).map(([key, { label }]) => (
-            <option key={key} value={key}>
-              {label}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showAllPosts}
+              onChange={(e) => setShowAllPosts(e.target.checked)}
+              className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
+            />
+            <span className="text-sm text-neutral-700">Alle Beiträge anzeigen (auch von anderen Autoren)</span>
+          </label>
+        </div>
       </div>
 
       {/* Posts List */}
@@ -321,7 +362,16 @@ export default function BlogDashboardPage() {
                     </div>
 
                     {/* Meta */}
-                    <div className="flex items-center gap-4 mt-3 text-xs text-neutral-500">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-neutral-500">
+                      {post.author?.displayName && (
+                        <span className="font-medium text-neutral-700">
+                          Von: {post.author.displayName}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-3 h-3" />
+                        {post.viewCount || 0} Aufrufe
+                      </span>
                       <span>Aktualisiert: {formatDate(post.updatedAt)}</span>
                       {post.publishedAt && (
                         <span>Veröffentlicht: {formatDate(post.publishedAt)}</span>

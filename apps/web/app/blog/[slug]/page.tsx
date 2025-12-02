@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import { getBlogPostBySlug, getAllBlogPosts, getRelatedPosts } from '@/lib/blogService';
 import { getAuthorById } from '@/lib/authors';
 import { BackLink } from '../../components/BackLink';
+import ViewTracker from './ViewTracker';
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -133,6 +134,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Track page view */}
+      <ViewTracker slug={slug} />
+
       {/* Clean Header */}
       <header className="border-b border-neutral-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4">

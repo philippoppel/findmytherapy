@@ -42,7 +42,7 @@ function calculateReadingTime(content: unknown): number {
   return Math.max(1, Math.ceil(wordCount / 200));
 }
 
-// GET - List all blog posts for the current therapist
+// GET - List all blog posts for the current therapist (or all posts if showAll=true)
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
@@ -61,16 +61,20 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status') as BlogPostStatus | null;
+    const category = searchParams.get('category');
+    const showAll = searchParams.get('showAll') === 'true';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
     const where = {
-      authorId: therapist.id,
+      // Only filter by author if showAll is false
+      ...(showAll ? {} : { authorId: therapist.id }),
       deletedAt: null,
       ...(status && { status }),
+      ...(category && { category }),
     };
 
-    const [posts, total] = await Promise.all([
+    const [posts, total, categories] = await Promise.all([
       prisma.blogPost.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
@@ -79,6 +83,13 @@ export async function GET(request: NextRequest) {
         include: {
           sources: { orderBy: { order: 'asc' } },
           images: { orderBy: { order: 'asc' } },
+          author: {
+            select: {
+              id: true,
+              displayName: true,
+              profileImageUrl: true,
+            },
+          },
           _count: {
             select: {
               relatedFrom: true,
@@ -87,11 +98,23 @@ export async function GET(request: NextRequest) {
         },
       }),
       prisma.blogPost.count({ where }),
+      // Get all unique categories for filter dropdown
+      prisma.blogPost.findMany({
+        where: { deletedAt: null },
+        select: { category: true },
+        distinct: ['category'],
+      }),
     ]);
+
+    // Extract unique category names
+    const uniqueCategories = categories
+      .map((c) => c.category)
+      .filter((c): c is string => c !== null);
 
     return NextResponse.json({
       success: true,
       posts,
+      categories: uniqueCategories,
       pagination: {
         page,
         limit,
