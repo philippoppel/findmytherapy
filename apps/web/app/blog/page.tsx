@@ -3,16 +3,24 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, X } from 'lucide-react';
-import { blogPosts } from '../../lib/blogData';
+import { Search, X, Loader2 } from 'lucide-react';
 import { BackLink } from '../components/BackLink';
 
-// Sort blog posts by date (newest first)
-const sortedBlogPosts = [...blogPosts].sort((a, b) => {
-  return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-});
+type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  publishedAt: string;
+  readingTime: string;
+  tags: string[];
+  featuredImage?: {
+    src: string;
+    alt: string;
+  };
+};
 
-const categories = Array.from(new Set(blogPosts.map((post) => post.category)));
 const categoryToSlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' });
 
@@ -47,18 +55,46 @@ const blogStructuredData = {
 
 export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [mounted, setMounted] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch posts from API (combines static + database posts)
   useEffect(() => {
-    setMounted(true);
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('/api/blog/posts');
+        const data = await res.json();
+        if (data.success) {
+          setPosts(data.posts);
+        }
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
   }, []);
+
+  // Sort posts by date (newest first)
+  const sortedPosts = useMemo(() => {
+    return [...posts].sort((a, b) => {
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+    });
+  }, [posts]);
+
+  // Get unique categories
+  const categories = useMemo(() => {
+    return Array.from(new Set(posts.map((post) => post.category)));
+  }, [posts]);
 
   // Filter posts (only for search)
   const filteredPosts = useMemo(() => {
-    if (!searchQuery) return sortedBlogPosts;
+    if (!searchQuery) return sortedPosts;
 
     const query = searchQuery.toLowerCase();
-    return sortedBlogPosts.filter((post) => {
+    return sortedPosts.filter((post) => {
       return (
         post.title.toLowerCase().includes(query) ||
         post.excerpt.toLowerCase().includes(query) ||
@@ -66,9 +102,17 @@ export default function BlogPage() {
         post.category.toLowerCase().includes(query)
       );
     });
-  }, [searchQuery]);
+  }, [searchQuery, sortedPosts]);
 
   const [featuredPost, ...restPosts] = filteredPosts;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -199,13 +243,13 @@ export default function BlogPage() {
             </section>
 
             {/* Category Hero Banners - Horizontal scroll on mobile */}
-            {!searchQuery && (
+            {!searchQuery && categories.length > 0 && (
               <section className="mb-12 sm:mb-20">
                 <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">Nach Thema durchsuchen</h2>
                 {/* Horizontal scroll on mobile */}
                 <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible snap-x snap-mandatory">
                   {categories.slice(0, 6).map((category) => {
-                    const count = blogPosts.filter((p) => p.category === category).length;
+                    const count = posts.filter((p) => p.category === category).length;
                     const imageUrl = CATEGORY_IMAGES[category] || 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&h=400&q=80';
 
                     return (
@@ -235,7 +279,7 @@ export default function BlogPage() {
                 {categories.length > 6 && (
                   <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                     {categories.slice(6).map((category) => {
-                      const count = blogPosts.filter((p) => p.category === category).length;
+                      const count = posts.filter((p) => p.category === category).length;
                       return (
                         <Link
                           key={category}
@@ -286,7 +330,7 @@ export default function BlogPage() {
             )}
 
             {/* Minimal CTA */}
-            {!searchQuery && mounted && (
+            {!searchQuery && (
               <section className="py-8 sm:py-12 border-t border-neutral-100">
                 <div className="text-center">
                   <p className="text-sm sm:text-base text-neutral-500 mb-4">Nicht sicher wo du anfangen sollst?</p>
