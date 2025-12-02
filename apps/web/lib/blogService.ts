@@ -101,70 +101,82 @@ function dbToUnified(post: Awaited<ReturnType<typeof getDbBlogPosts>>[0]): Unifi
 
 // Get published blog posts from database
 async function getDbBlogPosts() {
-  return prisma.blogPost.findMany({
-    where: {
-      status: BlogPostStatus.PUBLISHED,
-      deletedAt: null,
-    },
-    include: {
-      author: {
-        select: {
-          id: true,
-          displayName: true,
-          profileImageUrl: true,
-          title: true,
-        },
+  try {
+    return await prisma.blogPost.findMany({
+      where: {
+        status: BlogPostStatus.PUBLISHED,
+        deletedAt: null,
       },
-      relatedFrom: {
-        include: {
-          relatedPost: {
-            select: {
-              slug: true,
+      include: {
+        author: {
+          select: {
+            id: true,
+            displayName: true,
+            profileImageUrl: true,
+            title: true,
+          },
+        },
+        relatedFrom: {
+          include: {
+            relatedPost: {
+              select: {
+                slug: true,
+              },
             },
           },
         },
       },
-    },
-    orderBy: { publishedAt: 'desc' },
-  });
+      orderBy: { publishedAt: 'desc' },
+    });
+  } catch (error) {
+    // Database not available (e.g., during CI build)
+    console.warn('[BlogService] Database not available, returning empty array:', error);
+    return [];
+  }
 }
 
 // Get a single blog post from database by slug
 async function getDbBlogPostBySlug(slug: string) {
-  return prisma.blogPost.findFirst({
-    where: {
-      slug,
-      status: BlogPostStatus.PUBLISHED,
-      deletedAt: null,
-    },
-    include: {
-      author: {
-        select: {
-          id: true,
-          displayName: true,
-          profileImageUrl: true,
-          title: true,
+  try {
+    return await prisma.blogPost.findFirst({
+      where: {
+        slug,
+        status: BlogPostStatus.PUBLISHED,
+        deletedAt: null,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            displayName: true,
+            profileImageUrl: true,
+            title: true,
+          },
         },
-      },
-      sources: {
-        orderBy: { order: 'asc' },
-      },
-      relatedFrom: {
-        include: {
-          relatedPost: {
-            select: {
-              slug: true,
-              title: true,
-              excerpt: true,
-              featuredImageUrl: true,
-              category: true,
-              publishedAt: true,
+        sources: {
+          orderBy: { order: 'asc' },
+        },
+        relatedFrom: {
+          include: {
+            relatedPost: {
+              select: {
+                slug: true,
+                title: true,
+                excerpt: true,
+                featuredImageUrl: true,
+                category: true,
+                publishedAt: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    // Database not available (e.g., during CI build)
+    console.warn('[BlogService] Database not available for slug lookup:', slug, error);
+    return null;
+  }
 }
 
 // Get all published blog posts (static + database)
