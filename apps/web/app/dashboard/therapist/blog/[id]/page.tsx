@@ -1,16 +1,13 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import BlogEditor from '../components/BlogEditor';
 
-type PageProps = {
-  params: Promise<{ id: string }>;
-};
-
-export default function EditBlogPostPage({ params }: PageProps) {
-  const { id } = use(params);
+export default function EditBlogPostPage() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<Parameters<typeof BlogEditor>[0]['initialData'] | null>(null);
