@@ -31,6 +31,7 @@ export type UnifiedBlogPost = {
   summary: string[];
   relatedPosts?: string[];
   faq?: Array<{ question: string; answer: string }>;
+  sources?: Array<{ title: string; url?: string | null; description?: string | null }>;
   isFromDatabase: boolean;
 };
 
@@ -95,6 +96,11 @@ function dbToUnified(post: Awaited<ReturnType<typeof getDbBlogPosts>>[0]): Unifi
     summary: post.summaryPoints,
     relatedPosts: post.relatedFrom?.map(r => r.relatedPost.slug) || [],
     faq: post.faq as Array<{ question: string; answer: string }> | undefined,
+    sources: 'sources' in post && post.sources ? post.sources.map(s => ({
+      title: s.title,
+      url: s.url,
+      description: s.description,
+    })) : undefined,
     isFromDatabase: true,
   };
 }

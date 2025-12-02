@@ -283,6 +283,38 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </section>
           )}
 
+          {/* Sources Section */}
+          {post.sources && post.sources.length > 0 && (
+            <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-6">
+                Quellen & Literatur
+              </h2>
+              <ol className="space-y-3 list-decimal list-inside">
+                {post.sources.map((source, idx) => (
+                  <li key={idx} className="text-sm text-neutral-600">
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary-600 hover:underline"
+                      >
+                        {source.title}
+                      </a>
+                    ) : (
+                      <span className="text-neutral-800">{source.title}</span>
+                    )}
+                    {source.description && (
+                      <span className="text-neutral-500 block ml-5 mt-1">
+                        {source.description}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
           {/* Author Bio - Footer of article */}
           {author && (
             <footer className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
