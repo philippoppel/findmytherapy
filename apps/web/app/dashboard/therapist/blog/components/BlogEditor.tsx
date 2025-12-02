@@ -137,6 +137,10 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
   const [tagInput, setTagInput] = useState('');
   const [showImportModal, setShowImportModal] = useState(false);
   const [importText, setImportText] = useState('');
+  const [showSummaryImportModal, setShowSummaryImportModal] = useState(false);
+  const [summaryImportText, setSummaryImportText] = useState('');
+  const [showSourcesImportModal, setShowSourcesImportModal] = useState(false);
+  const [sourcesImportText, setSourcesImportText] = useState('');
 
   // Parse imported text into sections
   const parseTextToSections = (text: string): Section[] => {
@@ -232,6 +236,62 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
     setImportText('');
     setShowImportModal(false);
+  };
+
+  // Parse summary points (one per line, dash or bullet prefix optional)
+  const parseSummaryPoints = (text: string): string[] => {
+    return text
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => line.replace(/^[-•*]\s*/, '')); // Remove leading dashes/bullets
+  };
+
+  const handleImportSummary = () => {
+    if (!summaryImportText.trim()) return;
+    const newPoints = parseSummaryPoints(summaryImportText);
+    updateFormData({
+      summaryPoints: [...formData.summaryPoints, ...newPoints]
+    });
+    setSummaryImportText('');
+    setShowSummaryImportModal(false);
+  };
+
+  // Parse sources (one per line, format: "Title | URL | Description" or just "Title")
+  const parseSources = (text: string): Source[] => {
+    return text
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => {
+        // Try to detect URL in the line
+        const urlMatch = line.match(/(https?:\/\/[^\s]+)/);
+        const url = urlMatch ? urlMatch[1] : '';
+
+        // If line contains pipe separators
+        if (line.includes('|')) {
+          const parts = line.split('|').map(p => p.trim());
+          return {
+            title: parts[0] || '',
+            url: parts[1] || url,
+            description: parts[2] || ''
+          };
+        }
+
+        // Otherwise, use the whole line as title (minus URL if found)
+        const title = url ? line.replace(url, '').trim() : line;
+        return { title, url, description: '' };
+      });
+  };
+
+  const handleImportSources = () => {
+    if (!sourcesImportText.trim()) return;
+    const newSources = parseSources(sourcesImportText);
+    updateFormData({
+      sources: [...formData.sources, ...newSources]
+    });
+    setSourcesImportText('');
+    setShowSourcesImportModal(false);
   };
 
   const updateFormData = (updates: Partial<BlogPostData>) => {
@@ -644,12 +704,20 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
               <span className="block text-sm font-medium text-neutral-700">
                 Auf einen Blick (Zusammenfassung)
               </span>
-              <button
-                onClick={addSummaryPoint}
-                className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
-              >
-                <Plus className="w-4 h-4" /> Punkt hinzufügen
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowSummaryImportModal(true)}
+                  className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
+                >
+                  <Upload className="w-4 h-4" /> Importieren
+                </button>
+                <button
+                  onClick={addSummaryPoint}
+                  className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                >
+                  <Plus className="w-4 h-4" /> Punkt hinzufügen
+                </button>
+              </div>
             </div>
             <div className="space-y-2">
               {formData.summaryPoints.map((point, index) => (
@@ -1007,12 +1075,20 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="block text-sm font-medium text-neutral-700">Quellen</span>
-              <button
-                onClick={addSource}
-                className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
-              >
-                <Plus className="w-4 h-4" /> Quelle hinzufügen
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowSourcesImportModal(true)}
+                  className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
+                >
+                  <Upload className="w-4 h-4" /> Importieren
+                </button>
+                <button
+                  onClick={addSource}
+                  className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                >
+                  <Plus className="w-4 h-4" /> Quelle hinzufügen
+                </button>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -1156,6 +1232,133 @@ Und hier geht es weiter mit neuem Inhalt..."
                 <button
                   onClick={handleImportText}
                   disabled={!importText.trim()}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Importieren
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Summary Points Modal */}
+      {showSummaryImportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h3 className="text-lg font-semibold text-neutral-900">Zusammenfassung importieren</h3>
+              <button
+                onClick={() => {
+                  setShowSummaryImportModal(false);
+                  setSummaryImportText('');
+                }}
+                className="p-2 hover:bg-neutral-100 rounded-lg transition"
+              >
+                <X className="w-5 h-5 text-neutral-500" />
+              </button>
+            </div>
+
+            <div className="p-6 flex-1 overflow-auto">
+              <p className="text-sm text-neutral-600 mb-4">
+                Füge deine Zusammenfassungspunkte ein (ein Punkt pro Zeile).
+              </p>
+              <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
+                <li>Ein Punkt pro Zeile</li>
+                <li>Bindestriche (-) oder Aufzählungszeichen (•) werden automatisch entfernt</li>
+              </ul>
+              <textarea
+                value={summaryImportText}
+                onChange={(e) => setSummaryImportText(e.target.value)}
+                placeholder="- Erster wichtiger Punkt
+- Zweiter Punkt zur Zusammenfassung
+- Dritter Kernaspekt des Artikels"
+                rows={10}
+                className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
+              <p className="text-sm text-neutral-500">
+                {summaryImportText.trim() ? `${parseSummaryPoints(summaryImportText).length} Punkt(e) erkannt` : 'Noch kein Text eingefügt'}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowSummaryImportModal(false);
+                    setSummaryImportText('');
+                  }}
+                  className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  onClick={handleImportSummary}
+                  disabled={!summaryImportText.trim()}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Importieren
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Sources Modal */}
+      {showSourcesImportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h3 className="text-lg font-semibold text-neutral-900">Quellen importieren</h3>
+              <button
+                onClick={() => {
+                  setShowSourcesImportModal(false);
+                  setSourcesImportText('');
+                }}
+                className="p-2 hover:bg-neutral-100 rounded-lg transition"
+              >
+                <X className="w-5 h-5 text-neutral-500" />
+              </button>
+            </div>
+
+            <div className="p-6 flex-1 overflow-auto">
+              <p className="text-sm text-neutral-600 mb-4">
+                Füge deine Quellen ein (eine pro Zeile).
+              </p>
+              <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
+                <li>Eine Quelle pro Zeile</li>
+                <li>Optional: Titel | URL | Beschreibung</li>
+                <li>URLs werden automatisch erkannt</li>
+              </ul>
+              <textarea
+                value={sourcesImportText}
+                onChange={(e) => setSourcesImportText(e.target.value)}
+                placeholder="Beck, A.T. (2021): Cognitive Therapy https://example.com/article
+WHO Guideline zur Depression | https://who.int/depression | Internationale Leitlinie
+Studie zur Wirksamkeit von Psychotherapie"
+                rows={10}
+                className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
+              <p className="text-sm text-neutral-500">
+                {sourcesImportText.trim() ? `${parseSources(sourcesImportText).length} Quelle(n) erkannt` : 'Noch kein Text eingefügt'}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowSourcesImportModal(false);
+                    setSourcesImportText('');
+                  }}
+                  className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  onClick={handleImportSources}
+                  disabled={!sourcesImportText.trim()}
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Importieren
