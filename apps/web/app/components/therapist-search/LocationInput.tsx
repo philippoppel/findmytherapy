@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, LocateFixed, Loader2 } from 'lucide-react';
 import type { Coordinates } from '../../therapists/location-data';
 import { validateLocationInput } from '../../therapists/location-data';
