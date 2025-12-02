@@ -135,6 +135,104 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0]));
   const [keywordInput, setKeywordInput] = useState('');
   const [tagInput, setTagInput] = useState('');
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importText, setImportText] = useState('');
+
+  // Parse imported text into sections
+  const parseTextToSections = (text: string): Section[] => {
+    const sections: Section[] = [];
+    const lines = text.split('\n');
+
+    let currentSection: Section | null = null;
+    let currentParagraph = '';
+
+    const isHeading = (line: string): boolean => {
+      // Markdown headings (## Heading)
+      if (/^#{1,3}\s+.+/.test(line)) return true;
+      // Lines ending with : that are short (likely headings)
+      if (line.endsWith(':') && line.length < 80) return true;
+      // Short lines (< 60 chars) followed by longer content - detected by context
+      return false;
+    };
+
+    const cleanHeading = (line: string): string => {
+      return line.replace(/^#{1,3}\s+/, '').replace(/:$/, '').trim();
+    };
+
+    const finishParagraph = () => {
+      if (currentParagraph.trim() && currentSection) {
+        currentSection.paragraphs.push(currentParagraph.trim());
+        currentParagraph = '';
+      }
+    };
+
+    const finishSection = () => {
+      finishParagraph();
+      if (currentSection && (currentSection.heading || currentSection.paragraphs.length > 0)) {
+        sections.push(currentSection);
+      }
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      const nextLine = lines[i + 1]?.trim() || '';
+
+      // Skip empty lines - they separate paragraphs
+      if (!line) {
+        finishParagraph();
+        continue;
+      }
+
+      // Check if this line is a heading
+      const looksLikeHeading = isHeading(line) ||
+        (line.length < 60 && !line.endsWith('.') && nextLine.length > line.length * 1.5);
+
+      if (looksLikeHeading && (line.startsWith('#') || line.endsWith(':') || (!currentSection && line.length < 60))) {
+        finishSection();
+        currentSection = {
+          heading: cleanHeading(line),
+          paragraphs: []
+        };
+      } else {
+        // Regular text - add to current paragraph
+        if (!currentSection) {
+          currentSection = { heading: '', paragraphs: [] };
+        }
+        currentParagraph += (currentParagraph ? ' ' : '') + line;
+      }
+    }
+
+    finishSection();
+
+    // If no sections were detected, create one with all text
+    if (sections.length === 0 && text.trim()) {
+      const paragraphs = text.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean);
+      sections.push({ heading: '', paragraphs });
+    }
+
+    return sections;
+  };
+
+  const handleImportText = () => {
+    if (!importText.trim()) return;
+
+    const newSections = parseTextToSections(importText);
+    const existingSections = formData.content.sections;
+
+    updateFormData({
+      content: { sections: [...existingSections, ...newSections] }
+    });
+
+    // Expand newly added sections
+    const newIndices = new Set(expandedSections);
+    for (let i = existingSections.length; i < existingSections.length + newSections.length; i++) {
+      newIndices.add(i);
+    }
+    setExpandedSections(newIndices);
+
+    setImportText('');
+    setShowImportModal(false);
+  };
 
   const updateFormData = (updates: Partial<BlogPostData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -383,7 +481,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
         {[
           { id: 'content', label: 'Inhalt' },
           { id: 'seo', label: 'SEO & Meta' },
-          { id: 'sources', label: 'Quellen & Bilder' },
+          { id: 'sources', label: 'Quellen' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -583,12 +681,20 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="block text-sm font-medium text-neutral-700">Inhaltssektionen</span>
-              <button
-                onClick={addSection}
-                className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
-              >
-                <Plus className="w-4 h-4" /> Sektion hinzufügen
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setShowImportModal(true)}
+                  className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
+                >
+                  <Upload className="w-4 h-4" /> Text importieren
+                </button>
+                <button
+                  onClick={addSection}
+                  className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                >
+                  <Plus className="w-4 h-4" /> Sektion hinzufügen
+                </button>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -985,6 +1091,76 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           faq={formData.faq}
           onClose={() => setShowPreview(false)}
         />
+      )}
+
+      {/* Import Text Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <h3 className="text-lg font-semibold text-neutral-900">Text importieren</h3>
+              <button
+                onClick={() => {
+                  setShowImportModal(false);
+                  setImportText('');
+                }}
+                className="p-2 hover:bg-neutral-100 rounded-lg transition"
+              >
+                <X className="w-5 h-5 text-neutral-500" />
+              </button>
+            </div>
+
+            <div className="p-6 flex-1 overflow-auto">
+              <p className="text-sm text-neutral-600 mb-4">
+                Füge deinen Text ein. Überschriften werden automatisch erkannt wenn sie:
+              </p>
+              <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
+                <li>Mit ## beginnen (Markdown)</li>
+                <li>Mit einem Doppelpunkt enden</li>
+                <li>Kurze Zeilen gefolgt von längerem Text sind</li>
+              </ul>
+              <textarea
+                value={importText}
+                onChange={(e) => setImportText(e.target.value)}
+                placeholder="## Erste Überschrift
+
+Hier kommt der erste Absatz. Er kann mehrere Sätze enthalten.
+
+Hier ist ein weiterer Absatz unter der gleichen Überschrift.
+
+## Zweite Überschrift
+
+Und hier geht es weiter mit neuem Inhalt..."
+                rows={15}
+                className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-mono text-sm"
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
+              <p className="text-sm text-neutral-500">
+                {importText.trim() ? `${parseTextToSections(importText).length} Sektion(en) erkannt` : 'Noch kein Text eingefügt'}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowImportModal(false);
+                    setImportText('');
+                  }}
+                  className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  onClick={handleImportText}
+                  disabled={!importText.trim()}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Importieren
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
