@@ -6,7 +6,6 @@ import Image from 'next/image';
 import {
   Plus,
   Search,
-  MoreVertical,
   Edit,
   Trash2,
   Eye,
@@ -72,7 +71,6 @@ export default function BlogDashboardPage() {
   const [showAllPosts, setShowAllPosts] = useState(true); // Default: show all posts
   const [includeStatic, setIncludeStatic] = useState(false); // Default: don't include static (they're now in DB)
   const [categories, setCategories] = useState<string[]>([]);
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -137,7 +135,6 @@ export default function BlogDashboardPage() {
     } catch (error) {
       console.error('Error deleting post:', error);
     }
-    setActiveMenu(null);
   };
 
   const handlePublish = async (id: string) => {
@@ -149,7 +146,6 @@ export default function BlogDashboardPage() {
     } catch (error) {
       console.error('Error publishing post:', error);
     }
-    setActiveMenu(null);
   };
 
   const handleUnpublish = async (id: string) => {
@@ -161,7 +157,6 @@ export default function BlogDashboardPage() {
     } catch (error) {
       console.error('Error unpublishing post:', error);
     }
-    setActiveMenu(null);
   };
 
   const formatDate = (dateStr: string) => {
@@ -351,92 +346,70 @@ export default function BlogDashboardPage() {
                         <p className="text-sm text-neutral-600 line-clamp-2 mt-1">{post.excerpt}</p>
                       </div>
 
-                      {/* Actions Menu */}
-                      <div className="relative">
-                        <button
-                          onClick={() => setActiveMenu(activeMenu === post.id ? null : post.id)}
-                          className="p-2 hover:bg-neutral-100 rounded-lg transition"
-                        >
-                          <MoreVertical className="w-5 h-5 text-neutral-500" />
-                        </button>
-
-                        {activeMenu === post.id && (
+                      {/* Quick Actions */}
+                      <div className="flex items-center gap-1">
+                        {post.isStatic ? (
+                          /* Static posts: only view */
+                          <a
+                            href={`/blog/${post.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
+                            title="Ansehen"
+                          >
+                            <Eye className="w-5 h-5" />
+                          </a>
+                        ) : (
                           <>
+                            {/* Edit */}
+                            <Link
+                              href={`/dashboard/therapist/blog/${post.id}`}
+                              className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
+                              title="Bearbeiten"
+                            >
+                              <Edit className="w-5 h-5" />
+                            </Link>
+
+                            {/* View (only if published) */}
+                            {post.status === 'PUBLISHED' && (
+                              <a
+                                href={`/blog/${post.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
+                                title="Ansehen"
+                              >
+                                <Eye className="w-5 h-5" />
+                              </a>
+                            )}
+
+                            {/* Publish / Unpublish */}
+                            {post.status !== 'PUBLISHED' ? (
+                              <button
+                                onClick={() => handlePublish(post.id)}
+                                className="p-2 hover:bg-green-50 rounded-lg transition text-green-600 hover:text-green-700"
+                                title="Veröffentlichen"
+                              >
+                                <Send className="w-5 h-5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleUnpublish(post.id)}
+                                className="p-2 hover:bg-yellow-50 rounded-lg transition text-yellow-600 hover:text-yellow-700"
+                                title="Zurückziehen"
+                              >
+                                <AlertCircle className="w-5 h-5" />
+                              </button>
+                            )}
+
+                            {/* Delete */}
                             <button
-                              type="button"
-                              className="fixed inset-0 z-10 cursor-default"
-                              onClick={() => setActiveMenu(null)}
-                              aria-label="Menü schließen"
-                            />
-                            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-neutral-200 py-1 z-20">
-                              {/* Static posts: only view option */}
-                              {post.isStatic ? (
-                                <>
-                                  <a
-                                    href={`/blog/${post.slug}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                                    onClick={() => setActiveMenu(null)}
-                                  >
-                                    <Eye className="w-4 h-4" />
-                                    Ansehen
-                                  </a>
-                                  <div className="px-4 py-2 text-xs text-neutral-400">
-                                    Statische Beiträge können nicht bearbeitet werden
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <Link
-                                    href={`/dashboard/therapist/blog/${post.id}`}
-                                    className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                                    onClick={() => setActiveMenu(null)}
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                    Bearbeiten
-                                  </Link>
-                                  {post.status === 'PUBLISHED' && (
-                                    <a
-                                      href={`/blog/${post.slug}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                                      onClick={() => setActiveMenu(null)}
-                                    >
-                                      <Eye className="w-4 h-4" />
-                                      Ansehen
-                                    </a>
-                                  )}
-                                  {post.status !== 'PUBLISHED' && (
-                                    <button
-                                      onClick={() => handlePublish(post.id)}
-                                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-green-700 hover:bg-green-50"
-                                    >
-                                      <Send className="w-4 h-4" />
-                                      Veröffentlichen
-                                    </button>
-                                  )}
-                                  {post.status === 'PUBLISHED' && (
-                                    <button
-                                      onClick={() => handleUnpublish(post.id)}
-                                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-yellow-700 hover:bg-yellow-50"
-                                    >
-                                      <AlertCircle className="w-4 h-4" />
-                                      Zurückziehen
-                                    </button>
-                                  )}
-                                  <hr className="my-1" />
-                                  <button
-                                    onClick={() => handleDelete(post.id)}
-                                    className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                    Löschen
-                                  </button>
-                                </>
-                              )}
-                            </div>
+                              onClick={() => handleDelete(post.id)}
+                              className="p-2 hover:bg-red-50 rounded-lg transition text-neutral-400 hover:text-red-600"
+                              title="Löschen"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
                           </>
                         )}
                       </div>
