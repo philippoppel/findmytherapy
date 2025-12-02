@@ -87,7 +87,6 @@ const authConfig: NextAuthConfig = {
   },
   pages: {
     signIn: '/login',
-    signOut: '/logout',
     error: '/login',
   },
   // adapter: PrismaAdapter(prisma), // Removed: incompatible with Credentials + JWT in NextAuth v5 Beta

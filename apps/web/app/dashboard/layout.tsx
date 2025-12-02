@@ -128,7 +128,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })}
 
             <button
-              onClick={() => signOut({ callbackUrl: '/' })}
+              onClick={async () => {
+                await signOut({ redirect: false });
+                window.location.href = '/';
+              }}
               className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100"
             >
               <LogOut className="h-5 w-5" />
@@ -179,7 +182,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 })}
 
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
+                  onClick={async () => {
+                    await signOut({ redirect: false });
+                    window.location.href = '/';
+                  }}
                   className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100"
                 >
                   <LogOut className="h-5 w-5" />

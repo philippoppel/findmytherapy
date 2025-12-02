@@ -156,9 +156,10 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
               <MenuItem href="/dashboard" label="Zum Dashboard" onClick={() => setOpen(false)} />
               <MenuItem href="/dashboard/profile" label="Profil & Praxis" onClick={() => setOpen(false)} />
               <button
-                onClick={() => {
+                onClick={async () => {
                   setOpen(false);
-                  signOut({ callbackUrl: '/' });
+                  await signOut({ redirect: false });
+                  window.location.href = '/';
                 }}
                 className="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-danger-700 transition hover:bg-danger-50"
               >

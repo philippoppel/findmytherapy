@@ -112,9 +112,10 @@ export function AuthHeader() {
           />
 
           <button
-            onClick={() => {
+            onClick={async () => {
               setIsMenuOpen(false);
-              signOut({ callbackUrl: '/' });
+              await signOut({ redirect: false });
+              window.location.href = '/';
             }}
             className="mt-2 flex w-full items-center justify-start gap-2 border-t border-neutral-200 px-5 pt-3 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900"
           >
