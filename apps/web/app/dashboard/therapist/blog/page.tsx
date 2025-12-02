@@ -53,12 +53,22 @@ const statusConfig: Record<BlogPostStatus, { label: string; icon: typeof FileTex
 // Only show these statuses in the filter dropdown (the ones that can actually be set)
 const filterableStatuses: BlogPostStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
+// Sort options
+type SortOption = 'updatedAt' | 'publishedAt' | 'viewCount' | 'title';
+const sortOptions: { value: SortOption; label: string }[] = [
+  { value: 'updatedAt', label: 'Zuletzt geändert' },
+  { value: 'publishedAt', label: 'Veröffentlichungsdatum' },
+  { value: 'viewCount', label: 'Meiste Aufrufe' },
+  { value: 'title', label: 'Titel (A-Z)' },
+];
+
 export default function BlogDashboardPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<BlogPostStatus | ''>('');
   const [filterCategory, setFilterCategory] = useState('');
+  const [sortBy, setSortBy] = useState<SortOption>('updatedAt');
   const [showAllPosts, setShowAllPosts] = useState(true); // Default: show all posts
   const [includeStatic, setIncludeStatic] = useState(false); // Default: don't include static (they're now in DB)
   const [categories, setCategories] = useState<string[]>([]);
@@ -92,10 +102,29 @@ export default function BlogDashboardPage() {
     fetchPosts();
   }, [fetchPosts]);
 
-  const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredPosts = posts
+    .filter((post) =>
+      post.title.toLowerCase().includes(search.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'updatedAt':
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+        case 'publishedAt':
+          // Put unpublished posts at the end
+          if (!a.publishedAt && !b.publishedAt) return 0;
+          if (!a.publishedAt) return 1;
+          if (!b.publishedAt) return -1;
+          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        case 'viewCount':
+          return b.viewCount - a.viewCount;
+        case 'title':
+          return a.title.localeCompare(b.title, 'de');
+        default:
+          return 0;
+      }
+    });
 
   const handleDelete = async (id: string) => {
     if (!confirm('Möchten Sie diesen Beitrag wirklich löschen?')) return;
@@ -199,6 +228,17 @@ export default function BlogDashboardPage() {
               ))}
             </select>
           )}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortOption)}
+            className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
+          >
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-wrap items-center gap-4">
           <label className="flex items-center gap-2 cursor-pointer">
