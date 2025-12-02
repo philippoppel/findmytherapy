@@ -815,8 +815,9 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                           {section.image && (
                             <div className="space-y-3 p-3 bg-neutral-50 rounded-lg">
                               <div>
-                                <label className="block text-xs text-neutral-500 mb-1">Bild-URL</label>
+                                <label htmlFor={`section-image-src-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Bild-URL</label>
                                 <input
+                                  id={`section-image-src-${sectionIndex}`}
                                   type="text"
                                   value={section.image.src}
                                   onChange={(e) => updateSection(sectionIndex, {
@@ -827,8 +828,9 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-neutral-500 mb-1">Alt-Text</label>
+                                <label htmlFor={`section-image-alt-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Alt-Text</label>
                                 <input
+                                  id={`section-image-alt-${sectionIndex}`}
                                   type="text"
                                   value={section.image.alt}
                                   onChange={(e) => updateSection(sectionIndex, {
@@ -839,8 +841,9 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-neutral-500 mb-1">Bildunterschrift (optional)</label>
+                                <label htmlFor={`section-image-caption-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Bildunterschrift (optional)</label>
                                 <input
+                                  id={`section-image-caption-${sectionIndex}`}
                                   type="text"
                                   value={section.image.caption || ''}
                                   onChange={(e) => updateSection(sectionIndex, {
