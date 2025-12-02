@@ -185,14 +185,19 @@ async function getDbBlogPostBySlug(slug: string) {
   }
 }
 
-// Get all published blog posts (static + database)
+// Get all published blog posts (database only, static as fallback for slugs not in DB)
 export async function getAllBlogPosts(): Promise<UnifiedBlogPost[]> {
   // Get DB posts
   const dbPosts = await getDbBlogPosts();
   const unifiedDbPosts = dbPosts.map(dbToUnified);
 
-  // Get static posts
-  const unifiedStaticPosts = staticBlogPosts.map(staticToUnified);
+  // Create a set of DB slugs for deduplication
+  const dbSlugs = new Set(unifiedDbPosts.map(p => p.slug));
+
+  // Only include static posts that don't exist in DB (fallback for non-migrated posts)
+  const unifiedStaticPosts = staticBlogPosts
+    .filter(p => !dbSlugs.has(p.slug))
+    .map(staticToUnified);
 
   // Combine and sort by publishedAt
   const allPosts = [...unifiedDbPosts, ...unifiedStaticPosts];
