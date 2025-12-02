@@ -23,10 +23,17 @@ import {
 } from 'lucide-react';
 import BlogPreview from './BlogPreview';
 
+type SectionImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
 type Section = {
   heading: string;
   paragraphs: string[];
   list?: string[];
+  image?: SectionImage;
 };
 
 type Source = {
@@ -681,6 +688,81 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                               </div>
                             ))}
                           </div>
+                        </div>
+
+                        {/* Section Image */}
+                        <div className="border-t border-neutral-100 pt-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="block text-xs text-neutral-500">Bild (optional)</span>
+                            {!section.image && (
+                              <button
+                                onClick={() => updateSection(sectionIndex, {
+                                  image: { src: '', alt: '', caption: '' }
+                                })}
+                                className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                              >
+                                <ImageIcon className="w-3 h-3" /> Bild hinzufügen
+                              </button>
+                            )}
+                          </div>
+
+                          {section.image && (
+                            <div className="space-y-3 p-3 bg-neutral-50 rounded-lg">
+                              <div>
+                                <label className="block text-xs text-neutral-500 mb-1">Bild-URL</label>
+                                <input
+                                  type="text"
+                                  value={section.image.src}
+                                  onChange={(e) => updateSection(sectionIndex, {
+                                    image: { ...section.image!, src: e.target.value }
+                                  })}
+                                  placeholder="https://images.unsplash.com/..."
+                                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-neutral-500 mb-1">Alt-Text</label>
+                                <input
+                                  type="text"
+                                  value={section.image.alt}
+                                  onChange={(e) => updateSection(sectionIndex, {
+                                    image: { ...section.image!, alt: e.target.value }
+                                  })}
+                                  placeholder="Beschreibung des Bildes..."
+                                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-neutral-500 mb-1">Bildunterschrift (optional)</label>
+                                <input
+                                  type="text"
+                                  value={section.image.caption || ''}
+                                  onChange={(e) => updateSection(sectionIndex, {
+                                    image: { ...section.image!, caption: e.target.value }
+                                  })}
+                                  placeholder="Bildunterschrift..."
+                                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
+                                />
+                              </div>
+                              {section.image.src && (
+                                <div className="relative aspect-video rounded-lg overflow-hidden bg-neutral-100">
+                                  <Image
+                                    src={section.image.src}
+                                    alt={section.image.alt || 'Vorschau'}
+                                    fill
+                                    className="object-cover"
+                                    unoptimized
+                                  />
+                                </div>
+                              )}
+                              <button
+                                onClick={() => updateSection(sectionIndex, { image: undefined })}
+                                className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
+                              >
+                                <Trash2 className="w-3 h-3" /> Bild entfernen
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
