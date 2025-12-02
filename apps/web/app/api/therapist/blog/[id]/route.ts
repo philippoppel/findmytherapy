@@ -154,6 +154,7 @@ export async function PUT(request: NextRequest, context: RouteParams) {
       images,
       relatedPostIds,
       status: requestedStatus,
+      authorId: requestedAuthorId,
     } = body;
 
     // Calculate reading time
@@ -165,6 +166,17 @@ export async function PUT(request: NextRequest, context: RouteParams) {
       status = BlogPostStatus.PENDING_REVIEW;
     } else if (requestedStatus === 'DRAFT') {
       status = BlogPostStatus.DRAFT;
+    }
+
+    // Validate author if provided
+    let authorId: string | undefined;
+    if (requestedAuthorId) {
+      const requestedAuthor = await prisma.therapistProfile.findUnique({
+        where: { id: requestedAuthorId },
+      });
+      if (requestedAuthor) {
+        authorId = requestedAuthorId;
+      }
     }
 
     // Update the blog post
@@ -185,6 +197,7 @@ export async function PUT(request: NextRequest, context: RouteParams) {
         ...(readingTimeMinutes && { readingTimeMinutes }),
         ...(summaryPoints && { summaryPoints }),
         ...(faq !== undefined && { faq }),
+        ...(authorId && { authorId }),
         status,
       },
       include: {

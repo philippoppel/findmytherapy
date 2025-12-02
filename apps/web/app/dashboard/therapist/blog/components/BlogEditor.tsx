@@ -69,7 +69,14 @@ type BlogPostData = {
   images: BlogImage[];
   relatedPostIds?: string[];
   status?: string;
+  authorId?: string;
 };
+
+// Available blog authors
+const BLOG_AUTHORS = [
+  { id: 'cmioi9m9z0001jebh7q1lgeic', name: 'Thomas Kaufmann BA pth.', title: 'Psychotherapeut' },
+  { id: 'cmioi9mg50004jebhox1rq688', name: 'MMag. Dr. Gregor Studlar BA', title: 'Klinischer Psychologe & Psychotherapeut' },
+];
 
 const CATEGORIES = [
   'Angst & Panik',
@@ -115,6 +122,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
     images: initialData?.images || [],
     relatedPostIds: initialData?.relatedPostIds || [],
     status: initialData?.status || 'DRAFT',
+    authorId: initialData?.authorId || BLOG_AUTHORS[0].id,
   });
 
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0]));
@@ -387,6 +395,23 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
       {/* Content Tab */}
       {activeTab === 'content' && (
         <div className="space-y-6">
+          {/* Author Selection */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm">
+            <label htmlFor="blog-author" className="block text-sm font-medium text-neutral-700 mb-2">Autor:in *</label>
+            <select
+              id="blog-author"
+              value={formData.authorId}
+              onChange={(e) => updateFormData({ authorId: e.target.value })}
+              className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              {BLOG_AUTHORS.map((author) => (
+                <option key={author.id} value={author.id}>
+                  {author.name} – {author.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Title */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <label htmlFor="blog-title" className="block text-sm font-medium text-neutral-700 mb-2">Titel *</label>

@@ -144,6 +144,7 @@ export async function POST(request: NextRequest) {
       images,
       relatedPostIds,
       status: requestedStatus,
+      authorId: requestedAuthorId,
     } = body;
 
     // Validate required fields
@@ -173,6 +174,17 @@ export async function POST(request: NextRequest) {
       status = BlogPostStatus.PENDING_REVIEW;
     }
 
+    // Use requested author if provided (and valid), otherwise use logged-in therapist
+    let authorId = therapist.id;
+    if (requestedAuthorId) {
+      const requestedAuthor = await prisma.therapistProfile.findUnique({
+        where: { id: requestedAuthorId },
+      });
+      if (requestedAuthor) {
+        authorId = requestedAuthorId;
+      }
+    }
+
     // Create the blog post
     const post = await prisma.blogPost.create({
       data: {
@@ -180,7 +192,7 @@ export async function POST(request: NextRequest) {
         title,
         excerpt,
         content: content || { sections: [] },
-        authorId: therapist.id,
+        authorId,
         status,
         featuredImageUrl,
         featuredImageAlt,
