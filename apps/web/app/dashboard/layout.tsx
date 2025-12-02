@@ -14,6 +14,7 @@ import {
   Globe,
   Mail,
   BarChart3,
+  FileText,
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
@@ -25,6 +26,7 @@ const baseNavigation = [
   ...(FEATURES.MICROSITE
     ? [{ name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe }]
     : []),
+  { name: 'Blog-Beiträge', href: '/dashboard/therapist/blog', icon: FileText },
   { name: 'Analytics', href: '/dashboard/therapist/analytics', icon: BarChart3 },
   { name: 'Kontaktanfragen', href: '/dashboard/therapist/leads', icon: Mail },
   { name: 'Sicherheit', href: '/dashboard/security', icon: Shield },

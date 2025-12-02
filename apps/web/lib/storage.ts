@@ -1,16 +1,18 @@
 /**
- * Storage abstraction for dossier files
+ * Storage abstraction for files (dossiers, blog images, etc.)
  *
- * Provides a unified interface for storing and retrieving dossier PDFs
+ * Provides a unified interface for storing and retrieving files
  * Supports local filesystem (dev) and S3/cloud storage (production)
  */
 
 import { SignJWT, jwtVerify } from 'jose';
 import fs from 'fs/promises';
 import path from 'path';
+import crypto from 'crypto';
 
 const STORAGE_TYPE = process.env.STORAGE_TYPE || 'local'; // 'local' | 's3'
 const LOCAL_STORAGE_PATH = process.env.LOCAL_STORAGE_PATH || '/tmp/dossiers';
+const BLOG_IMAGES_PATH = process.env.BLOG_IMAGES_PATH || '/tmp/blog-images';
 
 /**
  * Initialize storage (create directories if needed)
@@ -177,4 +179,156 @@ export async function getStorageStats(): Promise<{
   }
 
   return { type: STORAGE_TYPE };
+}
+
+// ==================== BLOG IMAGE STORAGE ====================
+
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+export interface BlogImageUploadResult {
+  url: string;
+  filename: string;
+  size: number;
+  mimeType: string;
+}
+
+/**
+ * Initialize blog images storage
+ */
+export async function initializeBlogImagesStorage(): Promise<void> {
+  if (STORAGE_TYPE === 'local') {
+    try {
+      await fs.mkdir(BLOG_IMAGES_PATH, { recursive: true });
+    } catch (error) {
+      console.error('[STORAGE] Failed to initialize blog images storage:', error);
+      throw error;
+    }
+  }
+}
+
+/**
+ * Validate image file
+ */
+export function validateImageFile(
+  buffer: Buffer,
+  mimeType: string,
+): { valid: boolean; error?: string } {
+  if (!ALLOWED_IMAGE_TYPES.includes(mimeType)) {
+    return {
+      valid: false,
+      error: `Ungültiger Bildtyp. Erlaubt: ${ALLOWED_IMAGE_TYPES.join(', ')}`,
+    };
+  }
+
+  if (buffer.length > MAX_IMAGE_SIZE) {
+    return {
+      valid: false,
+      error: `Bild zu groß. Maximum: ${MAX_IMAGE_SIZE / 1024 / 1024}MB`,
+    };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Generate a unique filename for the image
+ */
+function generateImageFilename(originalName: string, mimeType: string): string {
+  const ext = mimeType.split('/')[1] || 'jpg';
+  const timestamp = Date.now();
+  const randomPart = crypto.randomBytes(8).toString('hex');
+  const sanitizedName = originalName
+    .replace(/\.[^/.]+$/, '') // Remove extension
+    .replace(/[^a-zA-Z0-9-_]/g, '-') // Replace special chars
+    .substring(0, 50); // Limit length
+
+  return `${timestamp}-${sanitizedName}-${randomPart}.${ext}`;
+}
+
+/**
+ * Store a blog image
+ */
+export async function storeBlogImage(
+  buffer: Buffer,
+  originalName: string,
+  mimeType: string,
+  therapistId: string,
+): Promise<BlogImageUploadResult> {
+  // Validate
+  const validation = validateImageFile(buffer, mimeType);
+  if (!validation.valid) {
+    throw new Error(validation.error);
+  }
+
+  const filename = generateImageFilename(originalName, mimeType);
+
+  if (STORAGE_TYPE === 'local') {
+    // Create therapist-specific folder
+    const therapistFolder = path.join(BLOG_IMAGES_PATH, therapistId);
+    await fs.mkdir(therapistFolder, { recursive: true });
+
+    const filepath = path.join(therapistFolder, filename);
+    await fs.writeFile(filepath, buffer);
+
+    return {
+      url: `/api/blog/images/${therapistId}/${filename}`,
+      filename,
+      size: buffer.length,
+      mimeType,
+    };
+  }
+
+  // For S3/cloud storage in production
+  throw new Error('Cloud storage not yet implemented');
+}
+
+/**
+ * Retrieve a blog image
+ */
+export async function retrieveBlogImage(
+  therapistId: string,
+  filename: string,
+): Promise<{ buffer: Buffer; mimeType: string } | null> {
+  if (STORAGE_TYPE === 'local') {
+    const filepath = path.join(BLOG_IMAGES_PATH, therapistId, filename);
+
+    try {
+      const buffer = await fs.readFile(filepath);
+      const ext = path.extname(filename).toLowerCase().slice(1);
+      const mimeType = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+
+      return { buffer, mimeType };
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  throw new Error('Cloud storage not yet implemented');
+}
+
+/**
+ * Delete a blog image
+ */
+export async function deleteBlogImage(
+  therapistId: string,
+  filename: string,
+): Promise<void> {
+  if (STORAGE_TYPE === 'local') {
+    const filepath = path.join(BLOG_IMAGES_PATH, therapistId, filename);
+
+    try {
+      await fs.unlink(filepath);
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code !== 'ENOENT') {
+        throw error;
+      }
+    }
+    return;
+  }
+
+  throw new Error('Cloud storage not yet implemented');
 }

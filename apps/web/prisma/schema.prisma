@@ -123,6 +123,7 @@ model User {
   dossierAccesses     DossierAccessLog[]
   consents            ClientConsent[]
   matchingPreferences MatchingPreferences[]
+  reviewedBlogPosts   BlogPost[] @relation("BlogReviewer")
 
   @@index([email])
   @@index([role])
@@ -252,6 +253,7 @@ model TherapistProfile {
   versions         TherapistProfileVersion[]
   micrositeVisits  TherapistMicrositeVisit[]
   micrositeLeads   TherapistMicrositeLead[]
+  blogPosts        BlogPost[]
 
   @@index([status, isPublic])
   @@index([city])
@@ -783,4 +785,130 @@ model ClientConsent {
   @@index([scope])
   @@index([status])
   @@index([grantedAt])
+}
+
+// ==================== BLOG SYSTEM ====================
+
+enum BlogPostStatus {
+  DRAFT
+  PENDING_REVIEW
+  REVIEWED
+  PUBLISHED
+  ARCHIVED
+}
+
+model BlogPost {
+  id                String         @id @default(cuid())
+  slug              String         @unique
+  title             String
+  excerpt           String         @db.Text
+  content           Json           // Rich-text content as JSON (sections, paragraphs, lists)
+
+  // Author (Therapist)
+  authorId          String
+  author            TherapistProfile @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Status & Review
+  status            BlogPostStatus @default(DRAFT)
+  reviewedById      String?
+  reviewedBy        User?          @relation("BlogReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt        DateTime?
+  reviewNotes       String?        @db.Text
+
+  // Publishing
+  publishedAt       DateTime?
+  scheduledFor      DateTime?      // Optional scheduled publishing
+
+  // Featured Image
+  featuredImageUrl  String?
+  featuredImageAlt  String?
+  featuredImageCaption String?
+
+  // SEO
+  metaTitle         String?        // Custom SEO title (defaults to title)
+  metaDescription   String?        @db.Text
+  keywords          String[]       @default([])
+  tags              String[]       @default([])
+  category          String?
+
+  // Reading
+  readingTimeMinutes Int?
+
+  // Summary points (shown as "Auf einen Blick")
+  summaryPoints     String[]       @default([])
+
+  // FAQ for FAQ Schema
+  faq               Json?          // Array of {question, answer}
+
+  // Timestamps
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  deletedAt         DateTime?
+
+  // Relations
+  sources           BlogSource[]
+  images            BlogImage[]
+  relatedFrom       BlogPostRelation[] @relation("SourcePost")
+  relatedTo         BlogPostRelation[] @relation("RelatedPost")
+
+  @@index([authorId])
+  @@index([status])
+  @@index([category])
+  @@index([publishedAt])
+  @@index([deletedAt])
+  @@index([slug])
+}
+
+model BlogSource {
+  id          String   @id @default(cuid())
+  postId      String
+  post        BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  title       String
+  url         String?
+  description String?  @db.Text
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+
+  @@index([postId])
+  @@index([order])
+}
+
+model BlogImage {
+  id          String   @id @default(cuid())
+  postId      String
+  post        BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  url         String   // Can be external URL or uploaded path
+  isUploaded  Boolean  @default(false)
+  alt         String?
+  caption     String?
+  order       Int      @default(0)
+
+  // Image dimensions for layout
+  width       Int?
+  height      Int?
+
+  createdAt   DateTime @default(now())
+
+  @@index([postId])
+  @@index([order])
+}
+
+model BlogPostRelation {
+  id            String   @id @default(cuid())
+  sourcePostId  String
+  sourcePost    BlogPost @relation("SourcePost", fields: [sourcePostId], references: [id], onDelete: Cascade)
+  relatedPostId String
+  relatedPost   BlogPost @relation("RelatedPost", fields: [relatedPostId], references: [id], onDelete: Cascade)
+
+  isManual      Boolean  @default(false) // true = manually selected, false = auto-suggested
+  order         Int      @default(0)
+
+  createdAt     DateTime @default(now())
+
+  @@unique([sourcePostId, relatedPostId])
+  @@index([sourcePostId])
+  @@index([relatedPostId])
 }
