@@ -50,6 +50,9 @@ const statusConfig: Record<BlogPostStatus, { label: string; icon: typeof FileTex
   ARCHIVED: { label: 'Archiviert', icon: Archive, color: 'bg-gray-100 text-gray-500' },
 };
 
+// Only show these statuses in the filter dropdown (the ones that can actually be set)
+const filterableStatuses: BlogPostStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
+
 export default function BlogDashboardPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -176,9 +179,9 @@ export default function BlogDashboardPage() {
             className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
           >
             <option value="">Alle Status</option>
-            {Object.entries(statusConfig).map(([key, { label }]) => (
-              <option key={key} value={key}>
-                {label}
+            {filterableStatuses.map((status) => (
+              <option key={status} value={status}>
+                {statusConfig[status].label}
               </option>
             ))}
           </select>
