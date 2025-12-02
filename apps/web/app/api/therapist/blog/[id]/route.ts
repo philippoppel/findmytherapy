@@ -50,7 +50,6 @@ export async function GET(request: NextRequest, context: RouteParams) {
     const post = await prisma.blogPost.findFirst({
       where: {
         id,
-        authorId: therapist.id,
         deletedAt: null,
       },
       include: {
@@ -122,11 +121,10 @@ export async function PUT(request: NextRequest, context: RouteParams) {
       return NextResponse.json({ error: 'Therapeutenprofil nicht gefunden' }, { status: 404 });
     }
 
-    // Check if post exists and belongs to therapist
+    // Check if post exists
     const existingPost = await prisma.blogPost.findFirst({
       where: {
         id,
-        authorId: therapist.id,
         deletedAt: null,
       },
     });
@@ -331,11 +329,10 @@ export async function DELETE(request: NextRequest, context: RouteParams) {
       return NextResponse.json({ error: 'Therapeutenprofil nicht gefunden' }, { status: 404 });
     }
 
-    // Check if post exists and belongs to therapist
+    // Check if post exists
     const existingPost = await prisma.blogPost.findFirst({
       where: {
         id,
-        authorId: therapist.id,
         deletedAt: null,
       },
     });
