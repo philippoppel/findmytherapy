@@ -152,6 +152,7 @@ export interface ParsedBlogData {
 // Helper function to clean and normalize text
 function cleanText(text: string): string {
   return text
+    .replace(/￼/g, '') // Remove Unicode object replacement chars (reference markers)
     .replace(/\[|\]/g, '') // Remove brackets
     .replace(/^\s+|\s+$/g, '') // Trim
     .replace(/\s+/g, ' '); // Normalize whitespace
@@ -447,11 +448,12 @@ export function parseBlogImport(rawText: string): ParsedBlogData {
     const paragraphText = afterHeading
       .replace(/LISTE:[\s\S]*?(?=\n\n|$)/gi, '')
       .replace(/BILD:.*$/gim, '')
-      .replace(/(?:[-*•]\s+[^\n]+\n?)+/g, '');
+      .replace(/(?:[-*•]\s+[^\n]+\n?)+/g, '')
+      .replace(/￼/g, ''); // Remove Unicode object replacement chars
 
     const paragraphs = paragraphText
       .split(/\n\n+/)
-      .map(p => p.trim().replace(/\n/g, ' '))
+      .map(p => p.trim().replace(/\n/g, ' ').replace(/￼/g, ''))
       .filter(p => p && p.length > 20 && !p.startsWith('[') && !p.startsWith('#'));
 
     section.paragraphs = paragraphs;
