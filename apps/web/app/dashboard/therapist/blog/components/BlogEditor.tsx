@@ -22,6 +22,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import BlogPreview from './BlogPreview';
+import { DEEP_RESEARCH_PROMPT, parseBlogImport, ParsedBlogData } from '@/lib/blogImportTemplate';
 
 type SectionImage = {
   src: string;
@@ -141,6 +142,10 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
   const [summaryImportText, setSummaryImportText] = useState('');
   const [showSourcesImportModal, setShowSourcesImportModal] = useState(false);
   const [sourcesImportText, setSourcesImportText] = useState('');
+  const [showFullImportModal, setShowFullImportModal] = useState(false);
+  const [fullImportText, setFullImportText] = useState('');
+  const [fullImportPreview, setFullImportPreview] = useState<ParsedBlogData | null>(null);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
 
   // Parse imported text into sections
   const parseTextToSections = (text: string): Section[] => {
@@ -292,6 +297,47 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
     });
     setSourcesImportText('');
     setShowSourcesImportModal(false);
+  };
+
+  // Full article import - parses entire blog post from template
+  const handleFullImportPreview = () => {
+    if (!fullImportText.trim()) return;
+    const parsed = parseBlogImport(fullImportText);
+    setFullImportPreview(parsed);
+  };
+
+  const handleFullImport = () => {
+    if (!fullImportPreview) return;
+
+    // Map parsed data to form data
+    updateFormData({
+      title: fullImportPreview.title || formData.title,
+      slug: fullImportPreview.slug || formData.slug,
+      excerpt: fullImportPreview.excerpt || formData.excerpt,
+      category: fullImportPreview.category || formData.category,
+      metaTitle: fullImportPreview.metaTitle || formData.metaTitle,
+      metaDescription: fullImportPreview.metaDescription || formData.metaDescription,
+      keywords: fullImportPreview.keywords.length > 0 ? fullImportPreview.keywords : formData.keywords,
+      tags: fullImportPreview.tags.length > 0 ? fullImportPreview.tags : formData.tags,
+      featuredImageUrl: fullImportPreview.featuredImageUrl || formData.featuredImageUrl,
+      featuredImageAlt: fullImportPreview.featuredImageAlt || formData.featuredImageAlt,
+      featuredImageCaption: fullImportPreview.featuredImageCaption || formData.featuredImageCaption,
+      summaryPoints: fullImportPreview.summaryPoints.length > 0 ? fullImportPreview.summaryPoints : formData.summaryPoints,
+      content: fullImportPreview.content.sections.length > 0 ? fullImportPreview.content : formData.content,
+      faq: fullImportPreview.faq.length > 0 ? fullImportPreview.faq : formData.faq,
+      sources: fullImportPreview.sources.length > 0 ? fullImportPreview.sources : formData.sources,
+    });
+
+    // Expand all sections
+    const newExpanded = new Set<number>();
+    for (let i = 0; i < fullImportPreview.content.sections.length; i++) {
+      newExpanded.add(i);
+    }
+    setExpandedSections(newExpanded);
+
+    setFullImportText('');
+    setFullImportPreview(null);
+    setShowFullImportModal(false);
   };
 
   const updateFormData = (updates: Partial<BlogPostData>) => {
@@ -502,6 +548,15 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
         </div>
 
         <div className="flex items-center gap-2">
+          {!isEditing && (
+            <button
+              onClick={() => setShowFullImportModal(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
+            >
+              <Upload className="w-4 h-4" />
+              <span className="hidden sm:inline">Artikel importieren</span>
+            </button>
+          )}
           <button
             onClick={() => setShowPreview(true)}
             className="inline-flex items-center gap-2 px-4 py-2 border border-neutral-200 rounded-lg text-neutral-700 hover:bg-neutral-50 transition"
@@ -1362,6 +1417,317 @@ Studie zur Wirksamkeit von Psychotherapie"
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Importieren
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Full Article Import Modal */}
+      {showFullImportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[95vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <div>
+                <h3 className="text-lg font-semibold text-neutral-900">Vollständigen Artikel importieren</h3>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Füge einen mit Deep Research generierten Artikel im Template-Format ein
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowTemplateModal(true)}
+                  className="px-3 py-1.5 text-sm bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition"
+                >
+                  Template anzeigen
+                </button>
+                <button
+                  onClick={() => {
+                    setShowFullImportModal(false);
+                    setFullImportText('');
+                    setFullImportPreview(null);
+                  }}
+                  className="p-2 hover:bg-neutral-100 rounded-lg transition"
+                >
+                  <X className="w-5 h-5 text-neutral-500" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-auto p-6">
+              {!fullImportPreview ? (
+                <>
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
+                    <h4 className="font-medium text-emerald-800 mb-2">So funktioniert es:</h4>
+                    <ol className="text-sm text-emerald-700 space-y-1 list-decimal list-inside">
+                      <li>Kopiere das Template (Button oben) in ChatGPT/Claude</li>
+                      <li>Ersetze [THEMA] mit deinem gewünschten Thema</li>
+                      <li>Lass Deep Research den Artikel generieren</li>
+                      <li>Kopiere das Ergebnis hier hinein</li>
+                      <li>Prüfe die Vorschau und importiere</li>
+                    </ol>
+                  </div>
+                  <textarea
+                    value={fullImportText}
+                    onChange={(e) => setFullImportText(e.target.value)}
+                    placeholder="Füge hier den generierten Artikel im Template-Format ein...
+
+---META---
+Titel: Dein Artikel-Titel
+Slug: dein-artikel-slug
+Kategorie: Angststörungen
+...
+
+Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehler."
+                    rows={18}
+                    className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-mono text-sm"
+                  />
+                </>
+              ) : (
+                <div className="space-y-4">
+                  {/* Warnings */}
+                  {fullImportPreview.parseWarnings.length > 0 && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                      <h4 className="font-medium text-amber-800 mb-2 flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4" />
+                        Hinweise ({fullImportPreview.parseWarnings.length})
+                      </h4>
+                      <ul className="text-sm text-amber-700 space-y-1">
+                        {fullImportPreview.parseWarnings.map((w, i) => (
+                          <li key={i}>• {w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Preview Grid */}
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Meta */}
+                    <div className="bg-neutral-50 rounded-xl p-4">
+                      <h4 className="font-medium text-neutral-700 mb-3">Meta-Daten</h4>
+                      <dl className="space-y-2 text-sm">
+                        <div>
+                          <dt className="text-neutral-500">Titel</dt>
+                          <dd className="font-medium">{fullImportPreview.title || '—'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Slug</dt>
+                          <dd className="font-mono text-xs">{fullImportPreview.slug || '—'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Kategorie</dt>
+                          <dd>{fullImportPreview.category}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Lesezeit</dt>
+                          <dd>{fullImportPreview.readingTime}</dd>
+                        </div>
+                      </dl>
+                    </div>
+
+                    {/* Content Overview */}
+                    <div className="bg-neutral-50 rounded-xl p-4">
+                      <h4 className="font-medium text-neutral-700 mb-3">Inhalt</h4>
+                      <dl className="space-y-2 text-sm">
+                        <div>
+                          <dt className="text-neutral-500">Kurzbeschreibung</dt>
+                          <dd className="line-clamp-2">{fullImportPreview.excerpt || '—'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Zusammenfassung</dt>
+                          <dd>{fullImportPreview.summaryPoints.length} Punkte</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Inhaltssektionen</dt>
+                          <dd>{fullImportPreview.content.sections.length} Sektionen</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">FAQ</dt>
+                          <dd>{fullImportPreview.faq.length} Fragen</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Quellen</dt>
+                          <dd>{fullImportPreview.sources.length} Quellen</dd>
+                        </div>
+                      </dl>
+                    </div>
+
+                    {/* SEO */}
+                    <div className="bg-neutral-50 rounded-xl p-4">
+                      <h4 className="font-medium text-neutral-700 mb-3">SEO</h4>
+                      <dl className="space-y-2 text-sm">
+                        <div>
+                          <dt className="text-neutral-500">Meta-Titel</dt>
+                          <dd className="line-clamp-1">{fullImportPreview.metaTitle || '—'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Keywords</dt>
+                          <dd className="flex flex-wrap gap-1 mt-1">
+                            {fullImportPreview.keywords.slice(0, 5).map((k, i) => (
+                              <span key={i} className="px-2 py-0.5 bg-neutral-200 rounded text-xs">{k}</span>
+                            ))}
+                            {fullImportPreview.keywords.length === 0 && '—'}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-neutral-500">Tags</dt>
+                          <dd className="flex flex-wrap gap-1 mt-1">
+                            {fullImportPreview.tags.slice(0, 5).map((t, i) => (
+                              <span key={i} className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs">{t}</span>
+                            ))}
+                            {fullImportPreview.tags.length === 0 && '—'}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+
+                    {/* Bild */}
+                    <div className="bg-neutral-50 rounded-xl p-4">
+                      <h4 className="font-medium text-neutral-700 mb-3">Titelbild</h4>
+                      {fullImportPreview.featuredImageUrl ? (
+                        <div className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden">
+                          <Image
+                            src={fullImportPreview.featuredImageUrl}
+                            alt={fullImportPreview.featuredImageAlt}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <p className="text-sm text-neutral-500">Kein Bild gefunden</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Sections Preview */}
+                  {fullImportPreview.content.sections.length > 0 && (
+                    <div className="bg-neutral-50 rounded-xl p-4">
+                      <h4 className="font-medium text-neutral-700 mb-3">Inhaltssektionen</h4>
+                      <div className="space-y-2">
+                        {fullImportPreview.content.sections.map((section, i) => (
+                          <div key={i} className="flex items-start gap-3 text-sm">
+                            <span className="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-medium flex-shrink-0">
+                              {i + 1}
+                            </span>
+                            <div>
+                              <p className="font-medium">{section.heading}</p>
+                              <p className="text-neutral-500 text-xs">
+                                {section.paragraphs.length} Absätze
+                                {section.list ? `, ${section.list.length} Listenpunkte` : ''}
+                                {section.image ? ', 1 Bild' : ''}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
+              <p className="text-sm text-neutral-500">
+                {fullImportPreview
+                  ? `Bereit zum Import mit ${fullImportPreview.content.sections.length} Sektionen`
+                  : fullImportText.trim()
+                    ? 'Klicke auf "Vorschau" um die erkannten Daten zu prüfen'
+                    : 'Füge den generierten Artikel ein'}
+              </p>
+              <div className="flex gap-3">
+                {fullImportPreview ? (
+                  <>
+                    <button
+                      onClick={() => setFullImportPreview(null)}
+                      className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                    >
+                      Zurück
+                    </button>
+                    <button
+                      onClick={handleFullImport}
+                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                    >
+                      Importieren
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setShowFullImportModal(false);
+                        setFullImportText('');
+                      }}
+                      className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                    >
+                      Abbrechen
+                    </button>
+                    <button
+                      onClick={handleFullImportPreview}
+                      disabled={!fullImportText.trim()}
+                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Vorschau
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Template Modal */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
+          <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b">
+              <div>
+                <h3 className="text-lg font-semibold text-neutral-900">Deep Research Template</h3>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Kopiere dieses Template für ChatGPT/Claude Deep Research
+                </p>
+              </div>
+              <button
+                onClick={() => setShowTemplateModal(false)}
+                className="p-2 hover:bg-neutral-100 rounded-lg transition"
+              >
+                <X className="w-5 h-5 text-neutral-500" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-auto p-6">
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
+                <p className="text-sm text-emerald-700">
+                  <strong>Tipp:</strong> Kopiere den gesamten Text unten und ersetze [THEMA HIER EINFÜGEN] mit deinem gewünschten Thema.
+                  Die AI generiert dann einen vollständigen wissenschaftlichen Artikel im korrekten Format.
+                </p>
+              </div>
+              <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-xl text-xs font-mono whitespace-pre-wrap overflow-auto max-h-[50vh]">
+                {DEEP_RESEARCH_PROMPT}
+              </pre>
+            </div>
+
+            <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
+              <p className="text-sm text-neutral-500">
+                Das Template enthält alle erforderlichen Abschnitte
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowTemplateModal(false)}
+                  className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
+                >
+                  Schließen
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(DEEP_RESEARCH_PROMPT);
+                    // Could add a toast notification here
+                  }}
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
+                >
+                  Kopieren
                 </button>
               </div>
             </div>
