@@ -3,14 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
-import { blogPosts, getBlogPostBySlug } from '../../../lib/blogData';
-import { getAuthorById } from '../../../lib/authors';
+import { getBlogPostBySlug, getAllBlogPosts, getRelatedPosts } from '@/lib/blogService';
+import { getAuthorById } from '@/lib/authors';
 import { BackLink } from '../../components/BackLink';
 
 type BlogPostPageProps = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'long' });
@@ -27,12 +25,17 @@ const buildImageUrl = (src?: string) => {
   return src.startsWith('http') ? src : `https://findmytherapy.net${src}`;
 };
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+// Revalidate every 60 seconds for ISR
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: BlogPostPageProps): Metadata {
-  const post = getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     return { title: 'FindMyTherapy Blog' };
@@ -41,7 +44,9 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   const canonicalUrl = `https://findmytherapy.net/blog/${post.slug}`;
   const imageUrl =
     buildImageUrl(post.featuredImage?.src) ?? 'https://findmytherapy.net/og-image.jpg';
-  const author = getAuthorById(post.authorId);
+
+  // Use authorProfile from database or fall back to static author
+  const authorName = post.authorProfile?.displayName || post.author;
 
   return {
     title: `${post.title} | Blog`,
@@ -54,9 +59,9 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       type: 'article',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
-      authors: author ? [`https://findmytherapy.net/blog/authors/${author.slug}`] : undefined,
+      authors: authorName ? [`https://findmytherapy.net/blog/authors/${slugify(authorName)}`] : undefined,
       section: post.category,
-      tags: [...post.keywords, ...(post.tags || [])],
+      tags: [...post.keywords, ...post.tags],
       images: [
         {
           url: imageUrl,
@@ -77,37 +82,30 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
   };
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
+
   if (!post) {
     notFound();
   }
 
-  const author = getAuthorById(post.authorId);
+  // Use authorProfile from database or fall back to static author lookup
+  const author = post.authorProfile
+    ? {
+        name: post.authorProfile.displayName || post.author,
+        title: post.authorProfile.title || 'Therapeut:in',
+        avatar: post.authorProfile.profileImageUrl || undefined,
+        bio: '', // DB posts don't have bio in this context
+        slug: slugify(post.authorProfile.displayName || post.author),
+      }
+    : getAuthorById(post.authorId);
+
   const publishedDate = new Date(post.publishedAt);
   const postUrl = `https://findmytherapy.net/blog/${post.slug}`;
 
-  // Get related posts from same category
-  const sameCategoryPosts = blogPosts
-    .filter(p => p.slug !== post.slug && p.category === post.category)
-    .slice(0, 3);
-
-  // Get posts from other categories for variety
-  const otherCategoryPosts = blogPosts
-    .filter(p => p.slug !== post.slug && p.category !== post.category)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 3);
-
-  // Combine: prefer same category, fill with others
-  const relatedPosts = sameCategoryPosts.length >= 3
-    ? sameCategoryPosts
-    : [...sameCategoryPosts, ...otherCategoryPosts].slice(0, 3);
-
-  // Get explicitly related posts if defined (reserved for future use)
-  const _explicitRelated = post.relatedPosts
-    ? post.relatedPosts.map(slug => blogPosts.find(p => p.slug === slug)).filter(Boolean).slice(0, 2)
-    : [];
-  void _explicitRelated;
+  // Get related posts using blogService
+  const relatedPosts = await getRelatedPosts(post, 3);
 
   // Article Schema
   const articleStructuredData = {
@@ -132,10 +130,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   };
-
-  // Determine where to insert mid-article CTA (reserved for future use)
-  const _midPoint = Math.floor(post.sections.length / 2);
-  void _midPoint;
 
   return (
     <div className="min-h-screen bg-white">
@@ -174,7 +168,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                   </div>
                 )}
                 <div className="text-left">
-                  <p className="text-sm font-medium text-neutral-900" rel="author">{author.name}</p>
+                  <p className="text-sm font-medium text-neutral-900">{author.name}</p>
                   <p className="text-sm text-neutral-500">{author.title}</p>
                 </div>
               </address>
@@ -222,7 +216,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                           prose-p:text-neutral-700
                           prose-li:text-neutral-700
                           prose-img:rounded-xl">
-            {post.sections.map((section) => {
+            {post.content.sections.map((section) => {
               const sectionId = slugify(section.heading);
 
               return (
@@ -268,6 +262,27 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             })}
           </div>
 
+          {/* FAQ Section */}
+          {post.faq && post.faq.length > 0 && (
+            <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
+              <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-6">
+                Häufige Fragen
+              </h2>
+              <dl className="space-y-4">
+                {post.faq.map((item, idx) => (
+                  <div key={idx} className="p-4 rounded-lg bg-neutral-50">
+                    <dt className="font-semibold text-neutral-900 mb-2">
+                      {item.question}
+                    </dt>
+                    <dd className="text-neutral-600 leading-relaxed">
+                      {item.answer}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+
           {/* Author Bio - Footer of article */}
           {author && (
             <footer className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
@@ -280,7 +295,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="min-w-0">
                   <p className="font-semibold text-neutral-900">{author.name}</p>
                   <p className="text-sm text-neutral-500 mb-2">{author.title}</p>
-                  <p className="text-sm text-neutral-600 leading-relaxed">{author.bio}</p>
+                  {author.bio && (
+                    <p className="text-sm text-neutral-600 leading-relaxed">{author.bio}</p>
+                  )}
                 </div>
               </div>
             </footer>
