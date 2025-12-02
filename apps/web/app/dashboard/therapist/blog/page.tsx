@@ -39,6 +39,7 @@ type BlogPost = {
   _count: {
     relatedFrom: number;
   };
+  isStatic?: boolean;
 };
 
 const statusConfig: Record<BlogPostStatus, { label: string; icon: typeof FileText; color: string }> = {
@@ -56,6 +57,7 @@ export default function BlogDashboardPage() {
   const [filterStatus, setFilterStatus] = useState<BlogPostStatus | ''>('');
   const [filterCategory, setFilterCategory] = useState('');
   const [showAllPosts, setShowAllPosts] = useState(true); // Default: show all posts
+  const [includeStatic, setIncludeStatic] = useState(true); // Default: include static posts
   const [categories, setCategories] = useState<string[]>([]);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
@@ -65,6 +67,7 @@ export default function BlogDashboardPage() {
       if (filterStatus) params.set('status', filterStatus);
       if (filterCategory) params.set('category', filterCategory);
       if (showAllPosts) params.set('showAll', 'true');
+      if (includeStatic) params.set('includeStatic', 'true');
 
       const res = await fetch(`/api/therapist/blog?${params}`);
       const data = await res.json();
@@ -80,7 +83,7 @@ export default function BlogDashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, [filterStatus, filterCategory, showAllPosts]);
+  }, [filterStatus, filterCategory, showAllPosts, includeStatic]);
 
   useEffect(() => {
     fetchPosts();
@@ -194,7 +197,7 @@ export default function BlogDashboardPage() {
             </select>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-4">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
@@ -202,7 +205,16 @@ export default function BlogDashboardPage() {
               onChange={(e) => setShowAllPosts(e.target.checked)}
               className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
             />
-            <span className="text-sm text-neutral-700">Alle Beiträge anzeigen (auch von anderen Autoren)</span>
+            <span className="text-sm text-neutral-700">Alle Beiträge anzeigen</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeStatic}
+              onChange={(e) => setIncludeStatic(e.target.checked)}
+              className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
+            />
+            <span className="text-sm text-neutral-700">Statische Beiträge einbeziehen</span>
           </label>
         </div>
       </div>
@@ -278,11 +290,16 @@ export default function BlogDashboardPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
                             <StatusIcon className="w-3 h-3" />
                             {status.label}
                           </span>
+                          {post.isStatic && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                              Statisch
+                            </span>
+                          )}
                           {post.category && (
                             <span className="text-xs text-neutral-500">{post.category}</span>
                           )}
@@ -309,52 +326,73 @@ export default function BlogDashboardPage() {
                               aria-label="Menü schließen"
                             />
                             <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-neutral-200 py-1 z-20">
-                              <Link
-                                href={`/dashboard/therapist/blog/${post.id}`}
-                                className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                                onClick={() => setActiveMenu(null)}
-                              >
-                                <Edit className="w-4 h-4" />
-                                Bearbeiten
-                              </Link>
-                              {post.status === 'PUBLISHED' && (
-                                <a
-                                  href={`/blog/${post.slug}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
-                                  onClick={() => setActiveMenu(null)}
-                                >
-                                  <Eye className="w-4 h-4" />
-                                  Ansehen
-                                </a>
+                              {/* Static posts: only view option */}
+                              {post.isStatic ? (
+                                <>
+                                  <a
+                                    href={`/blog/${post.slug}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                                    onClick={() => setActiveMenu(null)}
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                    Ansehen
+                                  </a>
+                                  <div className="px-4 py-2 text-xs text-neutral-400">
+                                    Statische Beiträge können nicht bearbeitet werden
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <Link
+                                    href={`/dashboard/therapist/blog/${post.id}`}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                                    onClick={() => setActiveMenu(null)}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                    Bearbeiten
+                                  </Link>
+                                  {post.status === 'PUBLISHED' && (
+                                    <a
+                                      href={`/blog/${post.slug}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex items-center gap-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                                      onClick={() => setActiveMenu(null)}
+                                    >
+                                      <Eye className="w-4 h-4" />
+                                      Ansehen
+                                    </a>
+                                  )}
+                                  {post.status !== 'PUBLISHED' && (
+                                    <button
+                                      onClick={() => handlePublish(post.id)}
+                                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-green-700 hover:bg-green-50"
+                                    >
+                                      <Send className="w-4 h-4" />
+                                      Veröffentlichen
+                                    </button>
+                                  )}
+                                  {post.status === 'PUBLISHED' && (
+                                    <button
+                                      onClick={() => handleUnpublish(post.id)}
+                                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-yellow-700 hover:bg-yellow-50"
+                                    >
+                                      <AlertCircle className="w-4 h-4" />
+                                      Zurückziehen
+                                    </button>
+                                  )}
+                                  <hr className="my-1" />
+                                  <button
+                                    onClick={() => handleDelete(post.id)}
+                                    className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                    Löschen
+                                  </button>
+                                </>
                               )}
-                              {post.status !== 'PUBLISHED' && (
-                                <button
-                                  onClick={() => handlePublish(post.id)}
-                                  className="flex w-full items-center gap-2 px-4 py-2 text-sm text-green-700 hover:bg-green-50"
-                                >
-                                  <Send className="w-4 h-4" />
-                                  Veröffentlichen
-                                </button>
-                              )}
-                              {post.status === 'PUBLISHED' && (
-                                <button
-                                  onClick={() => handleUnpublish(post.id)}
-                                  className="flex w-full items-center gap-2 px-4 py-2 text-sm text-yellow-700 hover:bg-yellow-50"
-                                >
-                                  <AlertCircle className="w-4 h-4" />
-                                  Zurückziehen
-                                </button>
-                              )}
-                              <hr className="my-1" />
-                              <button
-                                onClick={() => handleDelete(post.id)}
-                                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                                Löschen
-                              </button>
                             </div>
                           </>
                         )}

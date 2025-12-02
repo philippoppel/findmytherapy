@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { BlogPostStatus } from '@prisma/client';
+import { blogPosts as staticBlogPosts } from '@/lib/blogData';
 
 // Helper to generate slug from title
 function generateSlug(title: string): string {
@@ -63,8 +64,9 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') as BlogPostStatus | null;
     const category = searchParams.get('category');
     const showAll = searchParams.get('showAll') === 'true';
+    const includeStatic = searchParams.get('includeStatic') === 'true';
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const limit = parseInt(searchParams.get('limit') || '50');
 
     const where = {
       // Only filter by author if showAll is false
@@ -74,7 +76,7 @@ export async function GET(request: NextRequest) {
       ...(category && { category }),
     };
 
-    const [posts, total, categories] = await Promise.all([
+    const [dbPosts, total, dbCategories] = await Promise.all([
       prisma.blogPost.findMany({
         where,
         orderBy: { updatedAt: 'desc' },
@@ -106,10 +108,62 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    // Extract unique category names
-    const uniqueCategories = categories
-      .map((c) => c.category)
-      .filter((c): c is string => c !== null);
+    // Convert DB posts to response format with isStatic flag
+    const posts = dbPosts.map((post) => ({
+      ...post,
+      isStatic: false,
+    }));
+
+    // Include static posts if requested
+    if (includeStatic && showAll) {
+      // Convert static posts to match DB post format
+      const staticPostsFormatted = staticBlogPosts
+        .filter((sp) => {
+          // Apply status filter (static posts are always "published")
+          if (status && status !== 'PUBLISHED') return false;
+          // Apply category filter
+          if (category && sp.category !== category) return false;
+          return true;
+        })
+        .map((sp) => ({
+          id: `static-${sp.slug}`,
+          slug: sp.slug,
+          title: sp.title,
+          excerpt: sp.excerpt,
+          status: 'PUBLISHED' as BlogPostStatus,
+          featuredImageUrl: sp.featuredImage?.src || null,
+          category: sp.category,
+          publishedAt: sp.publishedAt,
+          updatedAt: sp.updatedAt || sp.publishedAt,
+          readingTimeMinutes: parseInt(sp.readingTime) || 5,
+          viewCount: 0,
+          author: {
+            id: sp.authorId,
+            displayName: sp.author,
+            profileImageUrl: null,
+          },
+          _count: { relatedFrom: 0 },
+          isStatic: true,
+        }));
+
+      // Combine and sort by date
+      posts.push(...staticPostsFormatted);
+      posts.sort((a, b) => {
+        const dateA = new Date(a.updatedAt).getTime();
+        const dateB = new Date(b.updatedAt).getTime();
+        return dateB - dateA;
+      });
+    }
+
+    // Extract unique category names (from DB + static)
+    const allCategories = new Set<string>();
+    dbCategories.forEach((c) => {
+      if (c.category) allCategories.add(c.category);
+    });
+    if (includeStatic) {
+      staticBlogPosts.forEach((sp) => allCategories.add(sp.category));
+    }
+    const uniqueCategories = Array.from(allCategories).sort();
 
     return NextResponse.json({
       success: true,
@@ -118,8 +172,8 @@ export async function GET(request: NextRequest) {
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+        total: includeStatic && showAll ? total + staticBlogPosts.length : total,
+        totalPages: Math.ceil((includeStatic && showAll ? total + staticBlogPosts.length : total) / limit),
       },
     });
   } catch (error) {
