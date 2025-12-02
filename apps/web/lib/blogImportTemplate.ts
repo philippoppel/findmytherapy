@@ -180,12 +180,20 @@ function extractValue(text: string, labels: string[]): string | null {
 // Helper to find section by various markers
 function findSection(text: string, markers: string[]): string {
   for (const marker of markers) {
-    // Try with dashes, equals, or just the text
+    // Try with dashes, equals, em-dashes, or just the text
     const patterns = [
+      // Standard triple dash: ---META---
       new RegExp(`---\\s*${marker}\\s*---([\\s\\S]*?)(?=---[A-Z]|$)`, 'i'),
+      // Em-dash format: —META— (single em-dash on each side)
+      new RegExp(`—\\s*${marker}\\s*—([\\s\\S]*?)(?=—[A-Z]|$)`, 'i'),
+      // Double em-dash format: ——META——
+      new RegExp(`——\\s*${marker}\\s*——([\\s\\S]*?)(?=——[A-Z]|$)`, 'i'),
+      // Equals format: ===META===
       new RegExp(`===\\s*${marker}\\s*===([\\s\\S]*?)(?====[A-Z]|$)`, 'i'),
+      // Bracket format: [META]
       new RegExp(`\\[${marker}\\]([\\s\\S]*?)(?=\\[[A-Z]|$)`, 'i'),
-      new RegExp(`#\\s*${marker}([\\s\\S]*?)(?=#\\s*[A-Z]|---[A-Z]|$)`, 'i'),
+      // Hash format: # META
+      new RegExp(`#\\s*${marker}([\\s\\S]*?)(?=#\\s*[A-Z]|---[A-Z]|—[A-Z]|$)`, 'i'),
     ];
 
     for (const pattern of patterns) {
@@ -294,7 +302,11 @@ export function parseBlogImport(rawText: string): ParsedBlogData {
   if (summarySection) {
     const lines = summarySection.split('\n');
     for (const line of lines) {
-      const cleaned = line.replace(/^[-*•]\s*/, '').trim();
+      // Handle various bullet formats including tab-indented ones
+      const cleaned = line
+        .replace(/^\s*[-*•]\s*/, '') // Remove leading whitespace + bullet
+        .replace(/￼/g, '') // Remove Unicode object replacement chars (reference markers)
+        .trim();
       if (cleaned && cleaned.length > 5 && !cleaned.startsWith('[')) {
         result.summaryPoints.push(cleaned);
       }
@@ -338,8 +350,59 @@ export function parseBlogImport(rawText: string): ParsedBlogData {
   const contentSection = findSection(text, ['INHALT', 'CONTENT', 'ARTIKEL', 'TEXT']);
   const contentText = contentSection || text;
 
-  // Split by ## headings
-  const sectionMatches = contentText.split(/(?=^##\s+[^\n]+)/m);
+  // Helper to check if a line looks like a heading (without ## prefix)
+  const looksLikeHeading = (line: string): boolean => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.length < 3 || trimmed.length > 100) return false;
+    // Skip list items, metadata, FAQ markers
+    if (/^[-*•]\s/.test(trimmed)) return false;
+    if (/^(LISTE|BILD|F|A|URL|Alt|Bildunterschrift):/i.test(trimmed)) return false;
+    if (/^\d+\.\s/.test(trimmed)) return false; // Numbered list
+    // Skip lines ending with typical sentence punctuation followed by more content indicators
+    if (/[.!]$/.test(trimmed) && trimmed.length > 60) return false;
+    // Skip lines that look like regular paragraphs (contain multiple sentences)
+    if ((trimmed.match(/[.!?]/g) || []).length > 1) return false;
+    // Skip bracket placeholders
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) return false;
+    return true;
+  };
+
+  // First try: Split by ## headings (Markdown style)
+  let sectionMatches = contentText.split(/(?=^##\s+[^\n]+)/m);
+  let useMarkdownHeadings = sectionMatches.some(s => /^##\s+/.test(s.trim()));
+
+  // Second try: If no ## headings found, try to detect standalone heading lines
+  if (!useMarkdownHeadings) {
+    // Split by lines that look like headings (short line followed by blank line and content)
+    const lines = contentText.split('\n');
+    const sections: string[] = [];
+    let currentSection = '';
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const nextLine = lines[i + 1] || '';
+      const prevLine = lines[i - 1] || '';
+
+      // Detect heading: short line, previous line empty or start, followed by empty line or content
+      const isHeading = looksLikeHeading(line) &&
+        (prevLine.trim() === '' || i === 0 || /^—|^---/.test(prevLine)) &&
+        (nextLine.trim() === '' || (nextLine.trim().length > line.trim().length));
+
+      if (isHeading && currentSection.trim()) {
+        sections.push(currentSection);
+        currentSection = '## ' + line.trim() + '\n'; // Normalize to ## format
+      } else if (isHeading && !currentSection.trim()) {
+        currentSection = '## ' + line.trim() + '\n';
+      } else {
+        currentSection += line + '\n';
+      }
+    }
+    if (currentSection.trim()) {
+      sections.push(currentSection);
+    }
+
+    sectionMatches = sections.length > 1 ? sections : sectionMatches;
+  }
 
   for (const sectionText of sectionMatches) {
     if (!sectionText.trim()) continue;
@@ -358,12 +421,12 @@ export function parseBlogImport(rawText: string): ParsedBlogData {
     // Get content after heading
     const afterHeading = sectionText.slice(headingMatch[0].length);
 
-    // Look for lists
-    const listMatch = afterHeading.match(/(?:LISTE:|Liste:)?\s*((?:[-*•]\s+[^\n]+\n?)+)/i);
+    // Look for lists (including tab-indented bullets)
+    const listMatch = afterHeading.match(/(?:LISTE:|Liste:)?\s*((?:\s*[-*•]\s+[^\n]+\n?)+)/i);
     if (listMatch) {
       section.list = listMatch[1]
         .split('\n')
-        .map(l => l.replace(/^[-*•]\s*/, '').trim())
+        .map(l => l.replace(/^\s*[-*•]\s*/, '').replace(/￼/g, '').trim())
         .filter(l => l && l.length > 2 && !l.startsWith('['));
     }
 
@@ -437,8 +500,11 @@ export function parseBlogImport(rawText: string): ParsedBlogData {
       // Skip empty or template lines
       if (!line.trim() || line.includes('[Autor') || line.startsWith('---')) continue;
 
-      // Remove leading numbers
-      const cleanedLine = line.replace(/^\d+[.)]\s*/, '').trim();
+      // Remove leading numbers, tabs, and Unicode reference markers
+      const cleanedLine = line
+        .replace(/^\s*\d+[.)]\s*/, '') // Leading numbers with . or )
+        .replace(/￼/g, '') // Unicode object replacement chars
+        .trim();
       if (!cleanedLine || cleanedLine.length < 10) continue;
 
       // Try to extract URL
