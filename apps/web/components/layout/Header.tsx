@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Compass, Menu, X } from 'lucide-react';
-import { useSession, signOut } from 'next-auth/react';
+import { ChevronDown, Compass, Menu, X, Loader2 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
 import { HeaderSearch } from './HeaderSearch';
+import { useLogout } from '@/hooks/useLogout';
 
 const navItems = [
   { label: 'Wissen', href: '/blog', type: 'link' as const },
@@ -123,6 +124,7 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { logout, isLoggingOut } = useLogout();
 
   useEffect(() => {
     setOpen(false);
@@ -156,14 +158,21 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
               <MenuItem href="/dashboard" label="Zum Dashboard" onClick={() => setOpen(false)} />
               <MenuItem href="/dashboard/profile" label="Profil & Praxis" onClick={() => setOpen(false)} />
               <button
-                onClick={async () => {
+                onClick={() => {
                   setOpen(false);
-                  await signOut({ redirect: false });
-                  window.location.href = '/';
+                  logout();
                 }}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-danger-700 transition hover:bg-danger-50"
+                disabled={isLoggingOut}
+                className="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-danger-700 transition hover:bg-danger-50 disabled:opacity-50 flex items-center gap-2"
               >
-                Abmelden
+                {isLoggingOut ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Abmelden...
+                  </>
+                ) : (
+                  'Abmelden'
+                )}
               </button>
             </div>
           ) : (

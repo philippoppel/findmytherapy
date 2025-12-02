@@ -15,10 +15,11 @@ import {
   Mail,
   BarChart3,
   FileText,
+  Loader2,
 } from 'lucide-react';
-import { signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { FEATURES } from '@/lib/features';
+import { useLogout } from '@/hooks/useLogout';
 
 const baseNavigation = [
   { name: 'Dashboard', href: '/dashboard/therapist', icon: LayoutDashboard },
@@ -38,6 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [unreadLeadsCount, setUnreadLeadsCount] = useState(0);
+  const { logout, isLoggingOut } = useLogout();
 
   useEffect(() => {
     // Fetch unread leads count
@@ -128,14 +130,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })}
 
             <button
-              onClick={async () => {
-                await signOut({ redirect: false });
-                window.location.href = '/';
-              }}
-              className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100"
+              onClick={logout}
+              disabled={isLoggingOut}
+              className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100 disabled:opacity-50"
             >
-              <LogOut className="h-5 w-5" />
-              Abmelden
+              {isLoggingOut ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <LogOut className="h-5 w-5" />
+              )}
+              {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
             </button>
           </nav>
         </aside>
@@ -182,14 +186,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 })}
 
                 <button
-                  onClick={async () => {
-                    await signOut({ redirect: false });
-                    window.location.href = '/';
-                  }}
-                  className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100"
+                  onClick={logout}
+                  disabled={isLoggingOut}
+                  className="mt-4 flex w-full items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 transition hover:bg-red-100 disabled:opacity-50"
                 >
-                  <LogOut className="h-5 w-5" />
-                  Abmelden
+                  {isLoggingOut ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <LogOut className="h-5 w-5" />
+                  )}
+                  {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
                 </button>
               </nav>
             </div>

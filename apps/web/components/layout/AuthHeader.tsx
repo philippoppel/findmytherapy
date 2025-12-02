@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { LayoutDashboard, LogOut, Shield, User } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { LayoutDashboard, LogOut, Shield, User, Loader2 } from 'lucide-react';
+import { useLogout } from '@/hooks/useLogout';
 
 export function AuthHeader() {
   const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { logout, isLoggingOut } = useLogout();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,15 +114,19 @@ export function AuthHeader() {
           />
 
           <button
-            onClick={async () => {
+            onClick={() => {
               setIsMenuOpen(false);
-              await signOut({ redirect: false });
-              window.location.href = '/';
+              logout();
             }}
-            className="mt-2 flex w-full items-center justify-start gap-2 border-t border-neutral-200 px-5 pt-3 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900"
+            disabled={isLoggingOut}
+            className="mt-2 flex w-full items-center justify-start gap-2 border-t border-neutral-200 px-5 pt-3 text-sm text-neutral-700 transition hover:bg-neutral-50 hover:text-neutral-900 disabled:opacity-50"
           >
-            <LogOut className="h-4 w-4" />
-            Abmelden
+            {isLoggingOut ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <LogOut className="h-4 w-4" />
+            )}
+            {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
           </button>
         </div>
       )}

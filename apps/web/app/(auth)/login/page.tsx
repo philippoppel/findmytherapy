@@ -11,9 +11,10 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('dr.mueller@example.com');
-  const [password, setPassword] = useState('Therapist123!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,6 +23,7 @@ export default function LoginPage() {
     if (isLoading) return;
 
     setError('');
+    setSuccess('');
     setIsLoading(true);
 
     try {
@@ -46,8 +48,9 @@ export default function LoginPage() {
         return;
       }
 
-      // Success! Wait a moment for cookie to be set, then redirect
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Success! Show feedback and redirect
+      setSuccess('Erfolgreich angemeldet! Du wirst weitergeleitet...');
+      await new Promise((resolve) => setTimeout(resolve, 500));
       window.location.href = '/dashboard';
     } catch (err) {
       console.error('Login error:', err);
@@ -120,19 +123,19 @@ export default function LoginPage() {
               </div>
             )}
 
+            {success && (
+              <div className="p-3 bg-green-400/20 border border-green-400/30 rounded-xl text-green-200 text-sm backdrop-blur">
+                {success}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={isLoading}
               className="w-full bg-primary-700 text-white py-3 px-4 rounded-xl hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold shadow-lg"
             >
-              {isLoading ? 'Lädt...' : 'Anmelden'}
+              {isLoading ? 'Anmelden...' : 'Anmelden'}
             </button>
-
-            <div className="text-sm text-white/60 p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur">
-              <strong className="text-white/80">Test-Zugangsdaten:</strong>
-              <br />
-              <span className="text-white/70">dr.mueller@example.com / Therapist123!</span>
-            </div>
           </form>
         </div>
       </div>

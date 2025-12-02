@@ -22,7 +22,7 @@ export default function BlogLoading() {
         <div className="mb-10 sm:mb-16 -mx-4 sm:mx-0">
           <div className="relative aspect-[4/3] sm:aspect-[2.5/1] overflow-hidden sm:rounded-2xl bg-neutral-100 animate-pulse">
             {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skeleton-shimmer" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
             <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-12">
               <div className="h-4 w-32 bg-neutral-200/50 rounded mb-3 animate-pulse" />
               <div className="h-8 sm:h-10 w-3/4 bg-neutral-200/50 rounded mb-3 animate-pulse" />
@@ -37,9 +37,7 @@ export default function BlogLoading() {
             {[...Array(6)].map((_, i) => (
               <div key={i} className="group">
                 <div className="flex sm:block gap-4">
-                  <div className="relative aspect-square sm:aspect-[16/10] w-24 sm:w-full flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl bg-neutral-100 sm:mb-4 animate-pulse">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skeleton-shimmer" />
-                  </div>
+                  <div className="relative aspect-square sm:aspect-[16/10] w-24 sm:w-full flex-shrink-0 overflow-hidden rounded-lg sm:rounded-xl bg-neutral-100 sm:mb-4 animate-pulse" />
                   <div className="flex-1 min-w-0 space-y-2">
                     <div className="h-3 w-24 bg-neutral-100 rounded animate-pulse" />
                     <div className="h-5 w-full bg-neutral-100 rounded animate-pulse" />
@@ -60,7 +58,6 @@ export default function BlogLoading() {
                 key={i}
                 className="relative overflow-hidden rounded-xl sm:rounded-2xl aspect-[3/2] sm:aspect-[2.5/1] flex-shrink-0 w-[260px] sm:w-auto bg-neutral-100 animate-pulse"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skeleton-shimmer" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
                   <div className="h-6 w-32 bg-neutral-200/50 rounded mb-2 animate-pulse" />
                   <div className="h-4 w-20 bg-neutral-200/50 rounded animate-pulse" />
@@ -80,20 +77,6 @@ export default function BlogLoading() {
         </div>
       </main>
 
-      {/* Shimmer animation styles */}
-      <style jsx>{`
-        .skeleton-shimmer {
-          animation: shimmer 1.5s infinite;
-        }
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
     </div>
   );
 }
