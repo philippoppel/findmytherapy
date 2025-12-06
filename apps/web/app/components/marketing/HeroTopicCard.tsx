@@ -3,6 +3,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { HeroTopic } from './heroTopicsConfig';
+import { useTranslation } from '@/lib/i18n';
+
+// Map topic IDs to translation keys
+const topicTranslationKeys: Record<string, { label: string; alt: string }> = {
+  'depression': { label: 'topicDepression', alt: 'topicDepressionAlt' },
+  'work-stress': { label: 'topicWork', alt: 'topicWorkAlt' },
+  'burnout': { label: 'topicBurnout', alt: 'topicBurnoutAlt' },
+  'trauma': { label: 'topicTrauma', alt: 'topicTraumaAlt' },
+  'anxiety': { label: 'topicAnxiety', alt: 'topicAnxietyAlt' },
+  'relationship': { label: 'topicRelationship', alt: 'topicRelationshipAlt' },
+  'fear-of-flying': { label: 'topicFearOfFlying', alt: 'topicFearOfFlyingAlt' },
+  'self-esteem': { label: 'topicSelfEsteem', alt: 'topicSelfEsteemAlt' },
+};
 
 interface HeroTopicCardProps {
   topic: HeroTopic;
@@ -11,6 +24,10 @@ interface HeroTopicCardProps {
 }
 
 export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardProps) {
+  const { t } = useTranslation();
+  const keys = topicTranslationKeys[topic.id];
+  const label = keys ? t(`marketing.${keys.label}`) : topic.label;
+  const imageAlt = keys ? t(`marketing.${keys.alt}`) : topic.imageAlt;
   // Different rotation for visual interest
   const rotation = index % 2 === 0 ? '-2deg' : '2deg';
 
@@ -54,7 +71,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
           <div className="relative h-3/4 overflow-hidden">
             <Image
               src={topic.imageSrc}
-              alt={topic.imageAlt}
+              alt={imageAlt}
               fill
               sizes={isMobile ? '128px' : '(min-width: 1280px) 176px, (min-width: 1024px) 160px, 144px'}
               className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -67,7 +84,7 @@ export function HeroTopicCard({ topic, index, isMobile = false }: HeroTopicCardP
           {/* Label section */}
           <div className="absolute bottom-0 inset-x-0 p-2 lg:p-3">
             <span className="inline-flex items-center justify-center w-full rounded-full bg-surface-1/95 px-3 py-1.5 text-xs lg:text-sm font-semibold text-default shadow-sm transition-colors duration-200 group-hover:bg-primary-50 group-hover:text-primary-900">
-              {topic.label}
+              {label}
             </span>
           </div>
 

@@ -1,85 +1,26 @@
-import { Quote, Heart, Star, Sparkles } from 'lucide-react';
+'use client';
 
-// Testimonials data - mehr für den Eindruck vieler Reviews
-const testimonials = [
-  {
-    id: 1,
-    name: 'Lisa M.',
-    location: 'Wien',
-    avatar: 'L',
-    avatarBg: 'from-rose-400 to-pink-500',
-    quote: 'Innerhalb einer Woche hatte ich meinen ersten Termin bei einer wunderbaren Therapeutin, die wirklich zu mir passt.',
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: 'Markus W.',
-    location: 'Graz',
-    avatar: 'M',
-    avatarBg: 'from-blue-400 to-indigo-500',
-    quote: 'Die Ratgeber-Artikel haben mir in einer sehr dunklen Zeit geholfen. Endlich fühle ich mich verstanden.',
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: 'Dr. Anna B.',
-    location: 'Psychotherapeutin',
-    avatar: 'A',
-    avatarBg: 'from-emerald-400 to-teal-500',
-    quote: 'Die Vorberichte sparen mir wertvolle Zeit im Erstgespräch. Meine Klient:innen kommen vorbereitet.',
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: 'Sophie K.',
-    location: 'Salzburg',
-    avatar: 'S',
-    avatarBg: 'from-amber-400 to-orange-500',
-    quote: 'Der Selbsttest hat mir die Augen geöffnet. Ich konnte die Ergebnisse direkt an meine Therapeutin schicken.',
-    rating: 5,
-  },
-  {
-    id: 5,
-    name: 'Mag. Thomas R.',
-    location: 'Psychotherapeut',
-    avatar: 'T',
-    avatarBg: 'from-purple-400 to-violet-500',
-    quote: 'Endlich eine Plattform, die versteht, was wir Therapeut:innen brauchen. Die Qualität der Anfragen ist spürbar besser.',
-    rating: 5,
-  },
-  {
-    id: 6,
-    name: 'Julia H.',
-    location: 'Innsbruck',
-    avatar: 'J',
-    avatarBg: 'from-cyan-400 to-blue-500',
-    quote: 'Als alleinerziehende Mutter haben mir die Online-Kurse ermöglicht, an meiner mentalen Gesundheit zu arbeiten.',
-    rating: 5,
-  },
-  {
-    id: 7,
-    name: 'Michael P.',
-    location: 'Linz',
-    avatar: 'M',
-    avatarBg: 'from-teal-400 to-green-500',
-    quote: 'Nach 6 Monaten Wartezeit woanders – hier hatte ich in 3 Tagen einen Termin. Unglaublich!',
-    rating: 5,
-  },
-  {
-    id: 8,
-    name: 'Elena S.',
-    location: 'Klagenfurt',
-    avatar: 'E',
-    avatarBg: 'from-pink-400 to-rose-500',
-    quote: 'Die Ersteinschätzung war der erste Schritt. Heute geht es mir so viel besser.',
-    rating: 5,
-  },
+import { Quote, Heart, Star, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
+
+// Testimonials config - quotes come from translations
+const testimonialsConfig = [
+  { id: 1, name: 'Lisa M.', location: 'Wien', avatar: 'L', avatarBg: 'from-rose-400 to-pink-500', quoteKey: 'testimonial1', rating: 5 },
+  { id: 2, name: 'Markus W.', location: 'Graz', avatar: 'M', avatarBg: 'from-blue-400 to-indigo-500', quoteKey: 'testimonial2', rating: 5 },
+  { id: 3, name: 'Dr. Anna B.', locationKey: 'psychotherapist', avatar: 'A', avatarBg: 'from-emerald-400 to-teal-500', quoteKey: 'testimonial3', rating: 5 },
+  { id: 4, name: 'Sophie K.', location: 'Salzburg', avatar: 'S', avatarBg: 'from-amber-400 to-orange-500', quoteKey: 'testimonial4', rating: 5 },
+  { id: 5, name: 'Mag. Thomas R.', locationKey: 'psychotherapist', avatar: 'T', avatarBg: 'from-purple-400 to-violet-500', quoteKey: 'testimonial5', rating: 5 },
+  { id: 6, name: 'Julia H.', location: 'Innsbruck', avatar: 'J', avatarBg: 'from-cyan-400 to-blue-500', quoteKey: 'testimonial6', rating: 5 },
+  { id: 7, name: 'Michael P.', location: 'Linz', avatar: 'M', avatarBg: 'from-teal-400 to-green-500', quoteKey: 'testimonial7', rating: 5 },
+  { id: 8, name: 'Elena S.', location: 'Klagenfurt', avatar: 'E', avatarBg: 'from-pink-400 to-rose-500', quoteKey: 'testimonial8', rating: 5 },
 ];
 
-// Duplicate for seamless loop
-const allTestimonials = [...testimonials, ...testimonials];
+type TestimonialConfig = typeof testimonialsConfig[0];
 
-function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
+function TestimonialCard({ testimonial, t }: { testimonial: TestimonialConfig; t: (key: string) => string }) {
+  const quote = t(`marketing.${testimonial.quoteKey}`);
+  const location = testimonial.locationKey ? t(`marketing.${testimonial.locationKey}`) : testimonial.location;
+
   return (
     <div className="flex-shrink-0 w-[320px] sm:w-[380px]">
       <div className="relative h-full bg-surface-1 rounded-2xl p-5 sm:p-6 shadow-lg shadow-primary-200/30 border border-primary-100/50 hover:shadow-xl hover:border-primary-200 transition-all duration-300">
@@ -97,7 +38,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
 
         {/* Quote */}
         <blockquote className="text-muted text-sm sm:text-base leading-relaxed mb-4 line-clamp-3">
-          &ldquo;{testimonial.quote}&rdquo;
+          &ldquo;{quote}&rdquo;
         </blockquote>
 
         {/* Author */}
@@ -107,7 +48,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
           </div>
           <div>
             <p className="font-semibold text-default text-sm">{testimonial.name}</p>
-            <p className="text-xs text-muted">{testimonial.location}</p>
+            <p className="text-xs text-muted">{location}</p>
           </div>
         </footer>
       </div>
@@ -116,6 +57,9 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
 }
 
 export function TestimonialsSection() {
+  const { t } = useTranslation();
+  const allTestimonials = [...testimonialsConfig, ...testimonialsConfig];
+
   return (
     <section className="relative py-16 sm:py-24 overflow-hidden">
       {/* CSS for marquee animation */}
@@ -149,13 +93,13 @@ export function TestimonialsSection() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-sm font-semibold text-primary-900 mb-4">
               <Heart className="w-4 h-4 fill-primary-500 text-primary-500" />
-              Über 500+ zufriedene Nutzer:innen
+              {t('marketing.testimonialsBadge')}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-default mb-4">
-              Was unsere Community sagt
+              {t('marketing.testimonialsHeading')}
             </h2>
             <p className="text-lg text-muted max-w-2xl mx-auto">
-              Patient:innen und Therapeut:innen teilen ihre Erfahrungen
+              {t('marketing.testimonialsSubheading')}
             </p>
           </div>
         </div>
@@ -168,10 +112,10 @@ export function TestimonialsSection() {
 
           <div className="flex gap-5 sm:gap-6 animate-marquee-left" style={{ width: 'max-content' }}>
             {allTestimonials.map((testimonial, index) => (
-              <TestimonialCard key={`row1-${testimonial.id}-${index}`} testimonial={testimonial} />
+              <TestimonialCard key={`row1-${testimonial.id}-${index}`} testimonial={testimonial} t={t} />
             ))}
             {allTestimonials.map((testimonial, index) => (
-              <TestimonialCard key={`row1-dup-${testimonial.id}-${index}`} testimonial={testimonial} />
+              <TestimonialCard key={`row1-dup-${testimonial.id}-${index}`} testimonial={testimonial} t={t} />
             ))}
           </div>
         </div>
@@ -184,10 +128,10 @@ export function TestimonialsSection() {
 
           <div className="flex gap-5 sm:gap-6 animate-marquee-right" style={{ width: 'max-content' }}>
             {[...allTestimonials].reverse().map((testimonial, index) => (
-              <TestimonialCard key={`row2-${testimonial.id}-${index}`} testimonial={testimonial} />
+              <TestimonialCard key={`row2-${testimonial.id}-${index}`} testimonial={testimonial} t={t} />
             ))}
             {[...allTestimonials].reverse().map((testimonial, index) => (
-              <TestimonialCard key={`row2-dup-${testimonial.id}-${index}`} testimonial={testimonial} />
+              <TestimonialCard key={`row2-dup-${testimonial.id}-${index}`} testimonial={testimonial} t={t} />
             ))}
           </div>
         </div>
@@ -203,7 +147,7 @@ export function TestimonialsSection() {
                   </div>
                 ))}
               </div>
-              <span className="text-sm text-muted font-medium">+500 Nutzer:innen</span>
+              <span className="text-sm text-muted font-medium">{t('marketing.usersCount')}</span>
             </div>
             <div className="h-8 w-px bg-divider hidden sm:block" />
             <div className="flex items-center gap-2">
@@ -212,12 +156,12 @@ export function TestimonialsSection() {
                   <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <span className="text-sm text-muted font-medium">4.9 / 5 Sterne</span>
+              <span className="text-sm text-muted font-medium">{t('marketing.starsRating')}</span>
             </div>
             <div className="h-8 w-px bg-divider hidden sm:block" />
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary-500" />
-              <span className="text-sm text-muted font-medium">Verifizierte Bewertungen</span>
+              <span className="text-sm text-muted font-medium">{t('marketing.verifiedReviews')}</span>
             </div>
           </div>
         </div>

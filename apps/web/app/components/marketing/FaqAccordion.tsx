@@ -5,6 +5,7 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '@mental-health/ui';
 import type { faqItems } from '../../marketing-content';
 import { Reveal } from './Reveal';
+import { useTranslation } from '@/lib/i18n';
 
 interface FaqAccordionProps {
   items: typeof faqItems;
@@ -13,6 +14,16 @@ interface FaqAccordionProps {
 export function FaqAccordion({ items }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const baseId = useId();
+  const { t } = useTranslation();
+
+  // Build translated FAQ items
+  const translatedItems = [
+    { question: t('marketing.faqQuestion1'), answer: t('marketing.faqAnswer1') },
+    { question: t('marketing.faqQuestion2'), answer: t('marketing.faqAnswer2') },
+    { question: t('marketing.faqQuestion3'), answer: t('marketing.faqAnswer3') },
+    { question: t('marketing.faqQuestion4'), answer: t('marketing.faqAnswer4') },
+    { question: t('marketing.faqQuestion5'), answer: t('marketing.faqAnswer5') },
+  ];
 
   return (
     <section id="faq" className="py-24" aria-labelledby="faq-heading">
@@ -25,10 +36,10 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
             id="faq-heading"
             className="mt-4 text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl"
           >
-            Deine wichtigsten Fragen – transparent beantwortet
+            {t('marketing.faqHeading')}
           </h2>
           <p className="mt-3 text-lg leading-relaxed text-muted">
-            Noch etwas unklar? Schreib uns an{' '}
+            {t('marketing.faqSubtext')}{' '}
             <a
               href="mailto:servus@findmytherapy.net"
               className="inline-flex min-h-12 items-center gap-1 px-2 py-3 font-semibold text-primary underline-offset-4 hover:underline"
@@ -40,13 +51,13 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
         </Reveal>
 
         <div className="space-y-3 sm:space-y-4">
-          {items.map((item, index) => {
+          {translatedItems.map((item, index) => {
             const isOpen = openIndex === index;
             const contentId = `${baseId}-content-${index}`;
             const triggerId = `${baseId}-trigger-${index}`;
 
             return (
-              <Reveal key={item.question} delay={index * 120}>
+              <Reveal key={`faq-${index}`} delay={index * 120}>
                 <div className="overflow-hidden rounded-2xl border border-divider bg-surface-1 shadow-lg shadow-secondary/10 sm:rounded-3xl">
                   <button
                     id={triggerId}

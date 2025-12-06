@@ -5,47 +5,63 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Compass, ClipboardCheck, Search, Sparkles, ArrowRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/app/components/usePrefersReducedMotion';
+import { useTranslation } from '@/lib/i18n';
 
-const searchOptions = [
+type SearchOption = {
+  id: string;
+  titleKey: string;
+  subtitleKey: string;
+  descriptionKey: string;
+  badgeKey?: string;
+  badgeIcon?: typeof Sparkles;
+  icon: typeof Compass;
+  image: string;
+  ctaKey: string;
+  color: 'primary' | 'secondary' | 'neutral';
+  featureKeys: string[];
+};
+
+const searchOptionsConfig: SearchOption[] = [
   {
     id: 'matching',
-    title: 'Sag uns, was los ist',
-    subtitle: 'Schnell-Quiz',
-    description: '6 kurze Fragen – in 2 Minuten zu personalisierten Empfehlungen',
-    badge: 'Empfohlen',
+    titleKey: 'matchingTitle',
+    subtitleKey: 'matchingSubtitle',
+    descriptionKey: 'matchingDesc',
+    badgeKey: 'matchingBadge',
     badgeIcon: Sparkles,
     icon: Compass,
     image: '/images/search/matching-hero.jpg',
-    cta: 'Quiz starten',
+    ctaKey: 'matchingCta',
     color: 'primary',
-    features: ['6 Fragen', 'Tinder-Style Swiping', 'Sofort Ergebnisse'],
+    featureKeys: ['matchingFeature1', 'matchingFeature2', 'matchingFeature3'],
   },
   {
     id: 'triage',
-    title: 'Bin ich hier richtig?',
-    subtitle: 'Wissenschaftliche Einschätzung',
-    description: 'Validierte Fragebögen helfen dir, deine Situation einzuordnen',
+    titleKey: 'triageTitle',
+    subtitleKey: 'triageSubtitle',
+    descriptionKey: 'triageDesc',
     icon: ClipboardCheck,
     image: '/images/search/triage-hero.jpg',
-    cta: 'Test starten',
+    ctaKey: 'triageCta',
     color: 'secondary',
-    features: ['PHQ-9 & GAD-7', 'Ampel-Visualisierung', 'Sofort-Ergebnis'],
+    featureKeys: ['triageFeature1', 'triageFeature2', 'triageFeature3'],
   },
   {
     id: 'search',
-    title: 'Ich weiß, was ich suche',
-    subtitle: 'Direkte Suche',
-    description: 'Filter nach deinen Kriterien und finde passende Therapeut:innen',
+    titleKey: 'searchTitle',
+    subtitleKey: 'searchSubtitle',
+    descriptionKey: 'searchDesc',
     icon: Search,
     image: '/images/search/suche-hero.jpg',
-    cta: 'Suche öffnen',
+    ctaKey: 'searchCta',
     color: 'neutral',
-    features: ['Alle Filter', 'Sofortergebnisse', 'Volle Kontrolle'],
+    featureKeys: ['searchFeature1', 'searchFeature2', 'searchFeature3'],
   },
 ];
 
 export function TherapistSearchChoice() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { t } = useTranslation();
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">
@@ -58,16 +74,16 @@ export function TherapistSearchChoice() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-            Wie möchtest du suchen?
+            {t('marketing.searchChoiceHeading')}
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted">
-            Finde die richtige Therapie für dich – auf dem Weg, der zu dir passt
+            {t('marketing.searchChoiceSubheading')}
           </p>
         </motion.div>
 
         {/* Three Cards Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
-          {searchOptions.map((option, index) => (
+          {searchOptionsConfig.map((option, index) => (
             <motion.div
               key={option.id}
               initial={{ opacity: 0, y: 30 }}
@@ -78,6 +94,7 @@ export function TherapistSearchChoice() {
               <SearchCard
                 option={option}
                 prefersReducedMotion={prefersReducedMotion}
+                t={t}
               />
             </motion.div>
           ))}
@@ -90,7 +107,7 @@ export function TherapistSearchChoice() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Nicht sicher? Die geführte Suche ist für die meisten der beste Einstieg.
+          {t('marketing.searchChoiceHint')}
         </motion.p>
       </div>
     </section>
@@ -100,12 +117,20 @@ export function TherapistSearchChoice() {
 function SearchCard({
   option,
   prefersReducedMotion,
+  t,
 }: {
-  option: (typeof searchOptions)[0];
+  option: SearchOption;
   prefersReducedMotion: boolean;
+  t: (key: string) => string;
 }) {
   const Icon = option.icon;
   const BadgeIcon = option.badgeIcon;
+  const title = t(`marketing.${option.titleKey}`);
+  const subtitle = t(`marketing.${option.subtitleKey}`);
+  const description = t(`marketing.${option.descriptionKey}`);
+  const badge = option.badgeKey ? t(`marketing.${option.badgeKey}`) : undefined;
+  const cta = t(`marketing.${option.ctaKey}`);
+  const features = option.featureKeys.map((key) => t(`marketing.${key}`));
 
   const cardContent = (
     <motion.div
@@ -117,7 +142,7 @@ function SearchCard({
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={option.image}
-          alt={option.title}
+          alt={title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -125,10 +150,10 @@ function SearchCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
         {/* Badge (only for matching) */}
-        {option.badge && BadgeIcon && (
+        {badge && BadgeIcon && (
           <div className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-primary-900 shadow-lg backdrop-blur-sm">
             <BadgeIcon className="h-3.5 w-3.5" />
-            {option.badge}
+            {badge}
           </div>
         )}
 
@@ -160,20 +185,20 @@ function SearchCard({
                 : 'text-neutral-700'
           }`}
         >
-          {option.subtitle}
+          {subtitle}
         </p>
 
         {/* Title */}
-        <h3 className="mb-2 text-xl font-bold text-neutral-900">{option.title}</h3>
+        <h3 className="mb-2 text-xl font-bold text-neutral-900">{title}</h3>
 
         {/* Description */}
-        <p className="mb-4 flex-1 text-sm leading-relaxed text-muted">{option.description}</p>
+        <p className="mb-4 flex-1 text-sm leading-relaxed text-muted">{description}</p>
 
         {/* Features */}
         <div className="mb-4 flex flex-wrap gap-2">
-          {option.features.map((feature) => (
+          {features.map((feature, index) => (
             <span
-              key={feature}
+              key={index}
               className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-800"
             >
               {feature}
@@ -191,7 +216,7 @@ function SearchCard({
                 : 'text-neutral-700'
           }`}
         >
-          {option.cta}
+          {cta}
           <ArrowRight className="h-4 w-4" />
         </div>
       </div>

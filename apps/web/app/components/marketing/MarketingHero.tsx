@@ -9,6 +9,7 @@ import { HeroTopicCard } from './HeroTopicCard';
 import { HeroVideoPlayer } from './HeroVideoPlayer';
 import { HeroScrollIndicator } from './HeroScrollIndicator';
 import { heroTopics } from './heroTopicsConfig';
+import { useTranslation } from '@/lib/i18n';
 
 // Partner/Unterstützer Logos
 const partnerLogos = [
@@ -23,6 +24,8 @@ interface HeroProps {
 }
 
 export function MarketingHero({ content }: HeroProps) {
+  const { t } = useTranslation();
+
   return (
     <section
       className="relative min-h-[800px] pb-8"
@@ -47,13 +50,13 @@ export function MarketingHero({ content }: HeroProps) {
               id="hero-heading"
               className="text-balance text-3xl font-semibold leading-tight tracking-tight text-default sm:text-4xl lg:text-5xl xl:text-6xl"
             >
-              {content.title}
+              {t('marketing.heroTitle')}
             </h1>
           </Reveal>
 
           <Reveal delay={180}>
             <p className="mt-3 sm:mt-4 max-w-2xl mx-auto text-base sm:text-lg lg:text-xl leading-relaxed text-muted">
-              {content.highlight}
+              {t('marketing.heroHighlight')}
             </p>
           </Reveal>
 
@@ -68,17 +71,17 @@ export function MarketingHero({ content }: HeroProps) {
                   size="lg"
                   className="relative min-h-[56px] lg:min-h-[64px] px-10 lg:px-14 justify-center text-lg lg:text-xl font-extrabold shadow-2xl transition-all duration-200 hover:-translate-y-1 hover:scale-105 active:scale-[0.97] bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600"
                 >
-                  <Link href="/quiz">{content.primaryCta.label}</Link>
+                  <Link href="/quiz">{t('marketing.letsGo')}</Link>
                 </Button>
               </div>
 
               {/* Secondary CTA - Ich weiß schon was ich suche */}
               <div className="transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]">
                 <Link
-                  href={content.secondaryCta.href}
+                  href="/therapists"
                   className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-surface-1 px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-900 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
                 >
-                  {content.secondaryCta.label}
+                  {t('marketing.iKnowWhatISearch')}
                   <svg className="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
@@ -157,7 +160,7 @@ export function MarketingHero({ content }: HeroProps) {
           <Reveal delay={400}>
             <div className="max-w-6xl mx-auto">
               <p className="text-center text-base sm:text-lg text-muted font-medium mb-8">
-                Empfohlen & unterstützt von
+                {t('marketing.recommendedAndSupported')}
               </p>
               {/* Logo Slider */}
               <div className="relative overflow-hidden py-2">
