@@ -26,8 +26,8 @@ export default async function ListingPage() {
     ? {
         status: listing.status,
         plan: listing.plan,
-        currentPeriodStart: listing.currentPeriodStart?.toLocaleDateString('de-AT') ?? null,
-        currentPeriodEnd: listing.currentPeriodEnd?.toLocaleDateString('de-AT') ?? null,
+        currentPeriodStart: listing.currentPeriodStart?.toISOString() ?? null,
+        currentPeriodEnd: listing.currentPeriodEnd?.toISOString() ?? null,
       }
     : null;
 

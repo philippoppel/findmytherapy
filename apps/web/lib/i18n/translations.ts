@@ -1560,6 +1560,12 @@ export const translations = {
       backToDashboard: '← Zurück zum Dashboard',
       currentPlan: 'Ihr aktueller Plan',
       planDescription: 'Status und Details Ihres Listing-Abonnements',
+      planNameFree: 'Free',
+      planNamePro: 'Pro',
+      planNameProPlus: 'Pro Plus',
+      planPriceFree: 'Kostenlos',
+      planPricePro: '€49/Monat',
+      planPriceProPlus: '€99/Monat',
       // Status
       statusActive: 'Aktiv',
       statusPastDue: 'Zahlungsrückstand',
@@ -1568,6 +1574,7 @@ export const translations = {
       plan: 'Plan',
       periodStart: 'Aktuelle Periode (Start)',
       periodEnd: 'Aktuelle Periode (Ende)',
+      notAvailable: 'Nicht verfügbar',
       // Plans
       availablePlans: 'Verfügbare Pläne',
       free: 'Kostenlos',
@@ -1588,7 +1595,8 @@ export const translations = {
       proPlusFeature5: 'Erweiterte Marketing-Tools',
       recommended: 'Empfohlen',
       currentPlanBadge: 'Aktueller Plan',
-      planChangeNote: 'Hinweis: Änderungen am Abonnement nehmen wir derzeit gemeinsam mit Ihnen vor. In Kürze können Sie hier direkt upgraden oder downgraden.',
+      noteLabel: 'Hinweis:',
+      planChangeNote: 'Änderungen am Abonnement nehmen wir derzeit gemeinsam mit dir vor. In Kürze kannst du hier direkt upgraden oder downgraden.',
       // No listing
       noListingTitle: 'Noch kein Listing aktiv',
       noListingDesc: 'Sie haben noch kein Listing-Abonnement. Aktivieren Sie ein Listing, um auf der Plattform sichtbar zu sein.',
@@ -4022,6 +4030,12 @@ export const translations = {
       backToDashboard: '← Back to Dashboard',
       currentPlan: 'Your current plan',
       planDescription: 'Status and details of your listing subscription',
+      planNameFree: 'Free',
+      planNamePro: 'Pro',
+      planNameProPlus: 'Pro Plus',
+      planPriceFree: 'Free',
+      planPricePro: '€49/month',
+      planPriceProPlus: '€99/month',
       // Status
       statusActive: 'Active',
       statusPastDue: 'Past Due',
@@ -4030,6 +4044,7 @@ export const translations = {
       plan: 'Plan',
       periodStart: 'Current Period (Start)',
       periodEnd: 'Current Period (End)',
+      notAvailable: 'Not available',
       // Plans
       availablePlans: 'Available Plans',
       free: 'Free',
@@ -4050,7 +4065,8 @@ export const translations = {
       proPlusFeature5: 'Advanced Marketing Tools',
       recommended: 'Recommended',
       currentPlanBadge: 'Current Plan',
-      planChangeNote: 'Note: Subscription changes are currently done with our support team. You will soon be able to upgrade or downgrade directly here.',
+      noteLabel: 'Note:',
+      planChangeNote: 'Subscription changes are currently handled with our support team. You will soon be able to upgrade or downgrade directly here.',
       // No listing
       noListingTitle: 'No Active Listing',
       noListingDesc: 'You do not have an active listing subscription. Activate a listing to be visible on the platform.',

@@ -2,6 +2,7 @@
 
 import { CheckCircle2, TrendingUp, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { useTranslation } from '@/lib/i18n';
 
 type ListingData = {
@@ -16,7 +17,7 @@ type ListingPageClientProps = {
 };
 
 export function ListingPageClient({ listing }: ListingPageClientProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   const getFreeFeatures = () => [
     t('listing.freeFeature1'),
@@ -38,6 +39,26 @@ export function ListingPageClient({ listing }: ListingPageClientProps) {
     t('listing.proPlusFeature4'),
     t('listing.proPlusFeature5'),
   ];
+
+  const planLabels: Record<string, string> = {
+    FREE: t('listing.planNameFree'),
+    PRO: t('listing.planNamePro'),
+    PRO_PLUS: t('listing.planNameProPlus'),
+  };
+
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(language === 'de' ? 'de-AT' : 'en-GB', { dateStyle: 'medium' }),
+    [language]
+  );
+
+  const formatDate = (value: string | null) => {
+    if (!value) return t('listing.notAvailable');
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return t('listing.notAvailable');
+    return dateFormatter.format(parsed);
+  };
+
+  const formatPlan = (plan?: string) => planLabels[plan ?? ''] ?? plan ?? t('listing.notAvailable');
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -88,14 +109,14 @@ export function ListingPageClient({ listing }: ListingPageClientProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <InfoCard label={t('listing.plan')} value={listing.plan} />
+            <InfoCard label={t('listing.plan')} value={formatPlan(listing.plan)} />
             <InfoCard
               label={t('listing.periodStart')}
-              value={listing.currentPeriodStart ?? 'N/A'}
+              value={formatDate(listing.currentPeriodStart)}
             />
             <InfoCard
               label={t('listing.periodEnd')}
-              value={listing.currentPeriodEnd ?? 'N/A'}
+              value={formatDate(listing.currentPeriodEnd)}
             />
           </div>
 
@@ -103,16 +124,16 @@ export function ListingPageClient({ listing }: ListingPageClientProps) {
             <h3 className="text-lg font-semibold text-neutral-950 mb-4">{t('listing.availablePlans')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <PlanCard
-                name="FREE"
-                price={t('listing.free')}
+                name={planLabels.FREE}
+                price={t('listing.planPriceFree')}
                 features={getFreeFeatures()}
                 isCurrent={listing.plan === 'FREE'}
                 recommendedLabel={t('listing.recommended')}
                 currentLabel={t('listing.currentPlanBadge')}
               />
               <PlanCard
-                name="PRO"
-                price="€49/Monat"
+                name={planLabels.PRO}
+                price={t('listing.planPricePro')}
                 features={getProFeatures()}
                 isCurrent={listing.plan === 'PRO'}
                 isRecommended
@@ -120,8 +141,8 @@ export function ListingPageClient({ listing }: ListingPageClientProps) {
                 currentLabel={t('listing.currentPlanBadge')}
               />
               <PlanCard
-                name="PRO_PLUS"
-                price="€99/Monat"
+                name={planLabels.PRO_PLUS}
+                price={t('listing.planPriceProPlus')}
                 features={getProPlusFeatures()}
                 isCurrent={listing.plan === 'PRO_PLUS'}
                 recommendedLabel={t('listing.recommended')}
@@ -132,7 +153,7 @@ export function ListingPageClient({ listing }: ListingPageClientProps) {
 
           <div className="bg-info-50 border border-info-200 rounded-lg p-4">
             <p className="text-sm text-info-900">
-              <strong>Hinweis:</strong> {t('listing.planChangeNote').replace('Hinweis: ', '')}
+              <strong className="font-semibold">{t('listing.noteLabel')}</strong> {t('listing.planChangeNote')}
             </p>
           </div>
         </div>
