@@ -4,15 +4,16 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, X, Calendar, Clock, ArrowRight, Filter } from 'lucide-react';
 import type { BlogPost } from '@/lib/blogData';
+import { useTranslation } from '@/lib/i18n';
 
 interface BlogSearchProps {
   posts: BlogPost[];
   categories: string[];
 }
 
-const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' });
-
 export function BlogSearch({ posts, categories }: BlogSearchProps) {
+  const { t, language } = useTranslation();
+  const dateFormatter = new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'de-AT', { dateStyle: 'medium' });
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -61,10 +62,10 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
       <div className="space-y-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-700">
-            Alle Artikel
+            {t('blogSearch.allArticles')}
           </p>
           <h2 id="all-articles" className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
-            Durchsuche unsere Beiträge
+            {t('blogSearch.browseOurPosts')}
           </h2>
         </div>
 
@@ -78,17 +79,17 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
             />
             <input
               type="search"
-              placeholder="Suche nach Titel, Thema oder Stichwort..."
+              placeholder={t('blogSearch.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-2xl border border-neutral-200 bg-white py-4 pl-12 pr-4 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
-              aria-label="Blog durchsuchen"
+              aria-label={t('blogSearch.searchAriaLabel')}
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
-                aria-label="Suche löschen"
+                aria-label={t('blogSearch.clearSearch')}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -102,14 +103,14 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
               className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
             >
               <Filter className="h-4 w-4" />
-              Filter {selectedCategory && '(1)'}
+              {t('blogSearch.filter')} {selectedCategory && '(1)'}
             </button>
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
                 className="text-sm font-medium text-neutral-500 hover:text-neutral-700"
               >
-                Filter zurücksetzen
+                {t('blogSearch.resetFilters')}
               </button>
             )}
           </div>
@@ -117,13 +118,13 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
           {/* Category Filter */}
           <div className={`${showFilters ? 'block' : 'hidden'} space-y-3 sm:block`}>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-neutral-700">Nach Kategorie filtern:</p>
+              <p className="text-sm font-semibold text-neutral-700">{t('blogSearch.filterByCategory')}</p>
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
                   className="hidden text-sm font-medium text-neutral-500 hover:text-neutral-700 sm:block"
                 >
-                  Filter zurücksetzen
+                  {t('blogSearch.resetFilters')}
                 </button>
               )}
             </div>
@@ -136,7 +137,7 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
                     : 'border border-neutral-200 bg-white text-neutral-700 hover:border-primary-300 hover:text-primary-900'
                 }`}
               >
-                Alle
+                {t('blogSearch.all')}
               </button>
               {categories.map((category) => (
                 <button
@@ -161,15 +162,15 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
       {/* Results Count */}
       <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
         <p className="text-sm text-neutral-600">
-          {filteredPosts.length} {filteredPosts.length === 1 ? 'Artikel' : 'Artikel'} gefunden
+          {filteredPosts.length} {filteredPosts.length === 1 ? t('blogSearch.article') : t('blogSearch.articlesFound')}
           {hasActiveFilters && (
             <span className="ml-1 text-primary-700">
-              {selectedCategory && ` in "${selectedCategory}"`}
-              {searchQuery && ` für "${searchQuery}"`}
+              {selectedCategory && ` ${t('blogSearch.inCategory')} "${selectedCategory}"`}
+              {searchQuery && ` ${t('blogSearch.forQuery')} "${searchQuery}"`}
             </span>
           )}
         </p>
-        <p className="text-sm text-neutral-500">Sortiert nach: Neueste zuerst</p>
+        <p className="text-sm text-neutral-500">{t('blogSearch.sortedByNewest')}</p>
       </div>
 
       {/* Results Grid */}
@@ -209,7 +210,7 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
                   href={`/blog/${post.slug}`}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900"
                 >
-                  Weiterlesen
+                  {t('blogSearch.readMore')}
                   <ArrowRight
                     className="h-4 w-4 transition group-hover:translate-x-1"
                     aria-hidden
@@ -224,15 +225,15 @@ export function BlogSearch({ posts, categories }: BlogSearchProps) {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100">
             <Search className="h-8 w-8 text-neutral-400" />
           </div>
-          <h3 className="text-xl font-semibold text-neutral-900">Keine Artikel gefunden</h3>
+          <h3 className="text-xl font-semibold text-neutral-900">{t('blogSearch.noArticlesFound')}</h3>
           <p className="mt-2 text-sm text-neutral-600">
-            Versuche andere Suchbegriffe oder setze die Filter zurück.
+            {t('blogSearch.tryOtherTermsOrReset')}
           </p>
           <button
             onClick={clearFilters}
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary-900 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5"
           >
-            Filter zurücksetzen
+            {t('blogSearch.resetFilters')}
           </button>
         </div>
       )}

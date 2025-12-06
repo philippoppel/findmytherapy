@@ -971,6 +971,27 @@ export const translations = {
       articlesLoading: 'Artikel werden geladen...',
     },
 
+    // Blog Search Component
+    blogSearch: {
+      allArticles: 'Alle Artikel',
+      browseOurPosts: 'Stöbere in unseren Beiträgen',
+      searchPlaceholder: 'Suche nach Titel, Thema oder Stichwort...',
+      searchAriaLabel: 'Blog durchsuchen',
+      clearSearch: 'Suche löschen',
+      filter: 'Filter',
+      resetFilters: 'Filter zurücksetzen',
+      filterByCategory: 'Nach Kategorie filtern:',
+      all: 'Alle',
+      articlesFound: 'Artikel gefunden',
+      article: 'Artikel',
+      inCategory: 'in',
+      forQuery: 'für',
+      sortedByNewest: 'Sortiert nach: Neueste zuerst',
+      noArticlesFound: 'Keine Artikel gefunden',
+      tryOtherTermsOrReset: 'Versuche andere Suchbegriffe oder setze die Filter zurück.',
+      readMore: 'Weiterlesen',
+    },
+
     // Triage/Assessment
     triage: {
       title: 'Ersteinschätzung',
@@ -1117,6 +1138,32 @@ export const translations = {
       saveError: 'Die Ergebnisse konnten nicht gespeichert werden.',
       progressLabel: 'Fortschritt:',
       keyboardTip: 'Tipp: Tastatur 0-3, ← →, Enter',
+    },
+
+    // WHO-5 Wellbeing Check
+    who5: {
+      result: 'WHO-5 Ergebnis',
+      yourWellbeingScore: 'Dein Wohlbefindens-Score',
+      outOf100Points: 'von 100 Punkten',
+      quickTestTitle: 'Schnelltest zur ersten Orientierung',
+      quickTestDescription: 'Der WHO-5 ist ein kurzer Screening-Test zur ersten Einschätzung deines allgemeinen Wohlbefindens. Für eine',
+      detailedAnalysis: 'detaillierte Analyse deiner psychischen Gesundheit',
+      detailedAnalysisRest: ', insbesondere zu Depressionen und Angststörungen, empfehlen wir die vollständige Ersteinschätzung mit PHQ-9 und GAD-7.',
+      fullAssessmentCta: 'Vollständige Ersteinschätzung durchführen',
+      fullAssessment: 'Vollständige Ersteinschätzung',
+      findTherapists: 'Therapeut:innen finden',
+      viewSelfHelpPrograms: 'Selbsthilfe-Programme ansehen',
+      aboutWho5: 'Über den WHO-5 Fragebogen',
+      advantages: 'Vorteile:',
+      limitations: 'Einschränkungen:',
+      sensitivity: 'Sensitivität:',
+      specificity: 'Spezifität:',
+      wellbeingCheck: 'WHO-5 Wohlbefindens-Check',
+      fiveQuestions: '5 kurze Fragen zu deinem Wohlbefinden in den letzten zwei Wochen',
+      questionOf: 'Frage {{current}} von {{total}}',
+      inTheLast2Weeks: 'In den letzten zwei Wochen...',
+      selectAnswerToContinue: 'Wähle eine Antwort um fortzufahren',
+      recommendedNextSteps: 'Empfohlene nächste Schritte',
     },
 
     // Error Messages
@@ -1527,6 +1574,9 @@ export const translations = {
       backToHome: 'Zurück zur Startseite',
       errorSending: 'Fehler beim Senden',
       errorSendingRetry: 'Fehler beim Senden. Bitte versuchen Sie es erneut.',
+      onlineAvailable: 'Online verfügbar',
+      requestAppointment: 'Termin anfragen',
+      learnMore: 'Mehr erfahren',
     },
 
     // Analytics
@@ -2910,6 +2960,27 @@ export const translations = {
       articlesLoading: 'Loading articles...',
     },
 
+    // Blog Search Component
+    blogSearch: {
+      allArticles: 'All Articles',
+      browseOurPosts: 'Browse our posts',
+      searchPlaceholder: 'Search by title, topic or keyword...',
+      searchAriaLabel: 'Search blog',
+      clearSearch: 'Clear search',
+      filter: 'Filter',
+      resetFilters: 'Reset filters',
+      filterByCategory: 'Filter by category:',
+      all: 'All',
+      articlesFound: 'articles found',
+      article: 'article',
+      inCategory: 'in',
+      forQuery: 'for',
+      sortedByNewest: 'Sorted by: Newest first',
+      noArticlesFound: 'No articles found',
+      tryOtherTermsOrReset: 'Try different search terms or reset the filters.',
+      readMore: 'Read more',
+    },
+
     // Triage/Assessment
     triage: {
       title: 'First Assessment',
@@ -3056,6 +3127,32 @@ export const translations = {
       saveError: 'Results could not be saved.',
       progressLabel: 'Progress:',
       keyboardTip: 'Tip: Keyboard 0-3, ← →, Enter',
+    },
+
+    // WHO-5 Wellbeing Check
+    who5: {
+      result: 'WHO-5 Result',
+      yourWellbeingScore: 'Your Wellbeing Score',
+      outOf100Points: 'out of 100 points',
+      quickTestTitle: 'Quick test for initial orientation',
+      quickTestDescription: 'The WHO-5 is a short screening test for an initial assessment of your general wellbeing. For a',
+      detailedAnalysis: 'detailed analysis of your mental health',
+      detailedAnalysisRest: ', especially regarding depression and anxiety disorders, we recommend the complete assessment with PHQ-9 and GAD-7.',
+      fullAssessmentCta: 'Complete full assessment',
+      fullAssessment: 'Full Assessment',
+      findTherapists: 'Find therapists',
+      viewSelfHelpPrograms: 'View self-help programs',
+      aboutWho5: 'About the WHO-5 questionnaire',
+      advantages: 'Advantages:',
+      limitations: 'Limitations:',
+      sensitivity: 'Sensitivity:',
+      specificity: 'Specificity:',
+      wellbeingCheck: 'WHO-5 Wellbeing Check',
+      fiveQuestions: '5 short questions about your wellbeing in the last two weeks',
+      questionOf: 'Question {{current}} of {{total}}',
+      inTheLast2Weeks: 'In the last two weeks...',
+      selectAnswerToContinue: 'Select an answer to continue',
+      recommendedNextSteps: 'Recommended next steps',
     },
 
     // Error Messages
@@ -3342,6 +3439,9 @@ export const translations = {
       backToHome: 'Back to home',
       errorSending: 'Error sending',
       errorSendingRetry: 'Error sending. Please try again.',
+      onlineAvailable: 'Online available',
+      requestAppointment: 'Request appointment',
+      learnMore: 'Learn more',
     },
 
     // Analytics

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, RotateCcw, Info, AlertTriangle } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { track } from '../../lib/analytics';
+import { useTranslation } from '@/lib/i18n';
 import {
   who5Questions,
   who5ResponseOptions,
@@ -20,6 +21,7 @@ import {
 import { QuestionTooltip } from './QuestionTooltip';
 
 export function WHO5Flow() {
+  const { t } = useTranslation();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [showSummary, setShowSummary] = useState(false);
@@ -95,14 +97,14 @@ export function WHO5Flow() {
               className="inline-flex items-center justify-center gap-2 text-white/70 hover:bg-white/10 hover:text-white"
             >
               <RotateCcw className="h-4 w-4" />
-              <span>Test wiederholen</span>
+              <span>{t('triage.repeatTest')}</span>
             </Button>
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
             >
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
-              Zurück zur Startseite
+              {t('microsite.backToHome')}
             </Link>
           </div>
 
@@ -111,10 +113,10 @@ export function WHO5Flow() {
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80">
                   <CheckCircle2 className="h-4 w-4" aria-hidden />
-                  WHO-5 Ergebnis
+                  {t('who5.result')}
                 </div>
                 <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                  Dein Wohlbefindens-Score
+                  {t('who5.yourWellbeingScore')}
                 </h2>
               </div>
             </header>
@@ -123,7 +125,7 @@ export function WHO5Flow() {
             <div className="mb-8 rounded-2xl border border-white/10 bg-white/5 p-6 text-center">
               <div className="mb-4">
                 <div className="text-6xl font-bold text-white">{score}</div>
-                <div className="mt-2 text-sm text-white/70">von 100 Punkten</div>
+                <div className="mt-2 text-sm text-white/70">{t('who5.outOf100Points')}</div>
               </div>
               <div className="mx-auto mt-4 h-3 w-full max-w-md overflow-hidden rounded-full bg-white/20">
                 <motion.div
@@ -150,21 +152,19 @@ export function WHO5Flow() {
                   <Info className="h-6 w-6 text-amber-200" />
                 </div>
                 <h4 className="text-lg font-bold text-white sm:text-xl">
-                  Schnelltest zur ersten Orientierung
+                  {t('who5.quickTestTitle')}
                 </h4>
                 <p className="mt-2 max-w-xl text-sm text-white/85 sm:text-base">
-                  Der WHO-5 ist ein kurzer Screening-Test zur ersten Einschätzung deines allgemeinen
-                  Wohlbefindens. Für eine{' '}
-                  <strong>detaillierte Analyse deiner psychischen Gesundheit</strong>, insbesondere
-                  zu Depressionen und Angststörungen, empfehlen wir die vollständige
-                  Ersteinschätzung mit PHQ-9 und GAD-7.
+                  {t('who5.quickTestDescription')}{' '}
+                  <strong>{t('who5.detailedAnalysis')}</strong>
+                  {t('who5.detailedAnalysisRest')}
                 </p>
                 <Button
                   asChild
                   size="default"
                   className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600"
                 >
-                  <Link href="/triage">Vollständige Ersteinschätzung durchführen</Link>
+                  <Link href="/triage">{t('who5.fullAssessmentCta')}</Link>
                 </Button>
               </div>
             </div>
@@ -184,7 +184,7 @@ export function WHO5Flow() {
                   <Info className="mt-1 h-6 w-6 flex-shrink-0 text-primary-400" />
                 )}
                 <div className="flex-1">
-                  <h4 className="text-lg font-bold text-white">Empfohlene nächste Schritte</h4>
+                  <h4 className="text-lg font-bold text-white">{t('who5.recommendedNextSteps')}</h4>
                   <p className="mt-2 text-sm text-white/70">{recommendations.message}</p>
 
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
@@ -194,7 +194,7 @@ export function WHO5Flow() {
                         size="lg"
                         className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
                       >
-                        <Link href="/triage">Vollständige Ersteinschätzung</Link>
+                        <Link href="/triage">{t('who5.fullAssessment')}</Link>
                       </Button>
                     )}
                     {recommendations.shouldSeekHelp && (
@@ -203,7 +203,7 @@ export function WHO5Flow() {
                         size="lg"
                         className="w-full bg-primary-900 text-white hover:bg-primary-800 sm:w-auto"
                       >
-                        <Link href="/therapists">Therapeut:innen finden</Link>
+                        <Link href="/therapists">{t('who5.findTherapists')}</Link>
                       </Button>
                     )}
                     {!recommendations.shouldSeekHelp && !recommendations.shouldDoFullScreening && (
@@ -212,7 +212,7 @@ export function WHO5Flow() {
                         variant="outline"
                         className="w-full border-white/40 text-white hover:bg-white/10 sm:w-auto"
                       >
-                        <Link href="/courses">Selbsthilfe-Programme ansehen</Link>
+                        <Link href="/courses">{t('who5.viewSelfHelpPrograms')}</Link>
                       </Button>
                     )}
                   </div>
@@ -224,13 +224,13 @@ export function WHO5Flow() {
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
               <details className="group">
                 <summary className="flex cursor-pointer items-center justify-between text-sm font-medium text-white/80 hover:text-white">
-                  <span>Über den WHO-5 Fragebogen</span>
+                  <span>{t('who5.aboutWho5')}</span>
                   <Info className="h-4 w-4 transition-transform group-open:rotate-180" />
                 </summary>
                 <div className="mt-4 space-y-3 text-xs text-white/70">
                   <p>{who5ScientificInfo.description}</p>
                   <div>
-                    <strong className="text-white/90">Vorteile:</strong>
+                    <strong className="text-white/90">{t('who5.advantages')}</strong>
                     <ul className="mt-1 list-inside list-disc space-y-1">
                       {who5ScientificInfo.advantages.map((adv, idx) => (
                         <li key={idx}>{adv}</li>
@@ -238,7 +238,7 @@ export function WHO5Flow() {
                     </ul>
                   </div>
                   <div>
-                    <strong className="text-white/90">Einschränkungen:</strong>
+                    <strong className="text-white/90">{t('who5.limitations')}</strong>
                     <ul className="mt-1 list-inside list-disc space-y-1">
                       {who5ScientificInfo.limitations.map((lim, idx) => (
                         <li key={idx}>{lim}</li>
@@ -246,8 +246,8 @@ export function WHO5Flow() {
                     </ul>
                   </div>
                   <p className="text-[10px] italic">
-                    {who5ScientificInfo.citation} | Sensitivität:{' '}
-                    {(who5ScientificInfo.validation.sensitivity * 100).toFixed(0)}%, Spezifität:{' '}
+                    {who5ScientificInfo.citation} | {t('who5.sensitivity')}{' '}
+                    {(who5ScientificInfo.validation.sensitivity * 100).toFixed(0)}%, {t('who5.specificity')}{' '}
                     {(who5ScientificInfo.validation.specificity * 100).toFixed(0)}%
                   </p>
                 </div>
@@ -274,16 +274,16 @@ export function WHO5Flow() {
             className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
-            Zurück zur Startseite
+            {t('microsite.backToHome')}
           </Link>
         </div>
 
         <div className="rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur sm:p-8">
           {/* Header */}
           <header className="mb-6">
-            <h1 className="text-2xl font-bold text-white sm:text-3xl">WHO-5 Wohlbefindens-Check</h1>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl">{t('who5.wellbeingCheck')}</h1>
             <p className="mt-2 text-sm text-white/70 sm:text-base">
-              5 kurze Fragen zu deinem Wohlbefinden in den letzten zwei Wochen
+              {t('who5.fiveQuestions')}
             </p>
           </header>
 
@@ -291,7 +291,7 @@ export function WHO5Flow() {
           <div className="mb-6">
             <div className="mb-2 flex items-center justify-between text-xs text-white/70 sm:text-sm">
               <span className="font-medium text-white">
-                Frage {questionIndex + 1} von {who5Questions.length}
+                {t('who5.questionOf', { current: questionIndex + 1, total: who5Questions.length })}
               </span>
               <span>{progress}%</span>
             </div>
@@ -318,7 +318,7 @@ export function WHO5Flow() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-white sm:text-xl">
-                      In den letzten zwei Wochen...
+                      {t('who5.inTheLast2Weeks')}
                     </h3>
                     <p className="mt-2 text-base font-medium text-white sm:text-lg">
                       {currentQuestion.text}
@@ -380,10 +380,10 @@ export function WHO5Flow() {
                   className="rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/15 disabled:opacity-50 sm:px-6"
                 >
                   <ArrowLeft className="mr-2 inline h-4 w-4" />
-                  Zurück
+                  {t('common.back')}
                 </button>
                 <span className="text-xs text-white/70 sm:text-sm">
-                  Wähle eine Antwort um fortzufahren
+                  {t('who5.selectAnswerToContinue')}
                 </span>
               </div>
             </motion.div>

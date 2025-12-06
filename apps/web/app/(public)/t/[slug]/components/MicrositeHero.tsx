@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import { MessageCircle, Calendar, MapPin, Award, Globe, Star, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/lib/i18n';
 
 interface MicrositeHeroProps {
   profile: {
@@ -24,6 +27,8 @@ interface MicrositeHeroProps {
 }
 
 export function MicrositeHero({ profile }: MicrositeHeroProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white overflow-hidden">
       {/* Background decoration */}
@@ -39,7 +44,7 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
           className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-6 group"
         >
           <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" aria-hidden />
-          <span>Zurück zur Startseite</span>
+          <span>{t('microsite.backToHome')}</span>
         </Link>
 
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -74,7 +79,7 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-white/20 backdrop-blur-sm">
                   <Award className="w-4 h-4" />
-                  Verifiziert
+                  {t('therapistProfile.verified')}
                 </span>
                 {profile.rating && profile.reviewCount !== null && profile.reviewCount > 0 && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-yellow-500/30 backdrop-blur-sm border border-yellow-400/30">
@@ -107,19 +112,19 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
               {profile.online && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm text-sm">
                   <Globe className="w-4 h-4" />
-                  Online verfügbar
+                  {t('microsite.onlineAvailable')}
                 </span>
               )}
               {profile.yearsExperience && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm text-sm">
                   <Award className="w-4 h-4" />
-                  {profile.yearsExperience} Jahre Erfahrung
+                  {profile.yearsExperience} {t('therapistProfile.yearsExperience')}
                 </span>
               )}
               {profile.acceptingClients && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/30 border border-green-400/30 text-sm font-medium">
                   <Calendar className="w-4 h-4" />
-                  Nimmt neue Klient:innen an
+                  {t('therapistProfile.acceptingClients')}
                 </span>
               )}
             </div>
@@ -131,13 +136,13 @@ export function MicrositeHero({ profile }: MicrositeHeroProps) {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-primary-700 font-semibold shadow-lg hover:bg-primary-50 transition-all hover:shadow-xl"
               >
                 <MessageCircle className="w-5 h-5" />
-                Termin anfragen
+                {t('microsite.requestAppointment')}
               </Link>
               <a
                 href="#about"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-sm border-2 border-white/30 font-medium hover:bg-white/20 transition-all"
               >
-                Mehr erfahren
+                {t('microsite.learnMore')}
               </a>
             </div>
           </div>
