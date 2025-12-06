@@ -446,44 +446,52 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-export const teamContent: Record<Language, TeamContentLocale & { members: TeamMember[]; ctas: typeof baseCtas }> =
-  {
-    de: {
-      heading: 'Menschen, die Versorgungslücken schließen wollen.',
-      description:
-        'Wir kombinieren psychotherapeutische Expertise, digitale Produktentwicklung und Forschung. Mit Partnerpraxen, Kliniken und Selbsthilfegruppen entwickeln wir FindMyTherapy kontinuierlich weiter.',
-      promiseTitle: 'Unser Versprechen',
-      promiseItems: [
-        'Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.',
-        'Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.',
-        'Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.',
-      ],
-      feedbackTitle: 'Feedback? Immer her damit!',
-      feedbackDescription:
-        'Schreibe uns über das Produkt direkt im Interface oder an servus@findmytherapy.net',
-      members: teamMembers,
-      ctas: baseCtas,
-    },
-    en: {
-      heading: 'People closing the care gap.',
-      description:
-        'We blend psychotherapeutic expertise, digital product development, and research. With partner practices, clinics, and self-help groups we continuously evolve FindMyTherapy.',
-      promiseTitle: 'Our promise',
-      promiseItems: [
-        'We build features together with therapists – not in a vacuum.',
-        'We listen, iterate weekly, and ship visible improvements based on your feedback.',
-        'Privacy first: zero-knowledge architecture, independent audits, EU hosting.',
-      ],
-      feedbackTitle: 'Feedback? We’re all ears!',
-      feedbackDescription:
-        'Reach us directly in the product or via servus@findmytherapy.net',
-      members: teamMembers,
-      ctas: baseCtas,
-    },
-  };
+const teamContentBase: Record<Language, TeamContentLocale> = {
+  de: {
+    heading: 'Menschen, die Versorgungslücken schließen wollen.',
+    description:
+      'Wir kombinieren psychotherapeutische Expertise, digitale Produktentwicklung und Forschung. Mit Partnerpraxen, Kliniken und Selbsthilfegruppen entwickeln wir FindMyTherapy kontinuierlich weiter.',
+    promiseTitle: 'Unser Versprechen',
+    promiseItems: [
+      'Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.',
+      'Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.',
+      'Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.',
+    ],
+    feedbackTitle: 'Feedback? Immer her damit!',
+    feedbackDescription:
+      'Schreibe uns über das Produkt direkt im Interface oder an servus@findmytherapy.net',
+  },
+  en: {
+    heading: 'People closing the care gap.',
+    description:
+      'We blend psychotherapeutic expertise, digital product development, and research. With partner practices, clinics, and self-help groups we continuously evolve FindMyTherapy.',
+    promiseTitle: 'Our promise',
+    promiseItems: [
+      'We build features together with therapists – not in a vacuum.',
+      'We listen, iterate weekly, and ship visible improvements based on your feedback.',
+      'Privacy first: zero-knowledge architecture, independent audits, EU hosting.',
+    ],
+    feedbackTitle: 'Feedback? We’re all ears!',
+    feedbackDescription:
+      'Reach us directly in the product or via servus@findmytherapy.net',
+  },
+};
 
 export function getTeamContent(language: Language = 'de') {
-  return teamContent[language] ?? teamContent.de;
+  const locale = teamContentBase[language] ?? teamContentBase.de;
+
+  const localizedMembers = teamMembers.map((member) => ({
+    name: member.name,
+    role: member.role[language] ?? member.role.de,
+    focus: member.focus[language] ?? member.focus.de,
+    image: member.image,
+  }));
+
+  return {
+    ...locale,
+    members: localizedMembers,
+    ctas: baseCtas,
+  };
 }
 
 export const partnerLogos = [

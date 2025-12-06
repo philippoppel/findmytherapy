@@ -131,7 +131,7 @@ export function AboutSection() {
                   <div className="relative aspect-[3/4] w-full overflow-hidden">
                     <Image
                       src={member.image}
-                      alt={`Portrait von ${member.name}, ${member.role[language] ?? member.role.de} bei FindMyTherapy`}
+                      alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
                       fill
                       sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
@@ -143,9 +143,7 @@ export function AboutSection() {
                       Founder Team
                     </p>
                     <p className="mt-2 text-xl font-semibold text-default">{member.name}</p>
-                    <p className="text-sm font-medium text-muted">
-                      {member.role[language] ?? member.role.de}
-                    </p>
+                    <p className="text-sm font-medium text-muted">{member.role}</p>
                     <p
                       className="mt-2 text-sm leading-relaxed text-muted"
                       style={{
@@ -155,7 +153,7 @@ export function AboutSection() {
                         overflow: 'hidden',
                       }}
                     >
-                      {member.focus[language] ?? member.focus.de}
+                      {member.focus}
                     </p>
                   </div>
                 </motion.article>

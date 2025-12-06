@@ -187,8 +187,8 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: member.name,
-    jobTitle: member.role.de,
-    description: member.focus.de,
+    jobTitle: member.role,
+    description: member.focus,
     image: `https://findmytherapy.net${member.image}`,
     worksFor: {
       '@type': 'Organization',

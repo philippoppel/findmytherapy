@@ -373,9 +373,7 @@ export default function ForTherapistsPage() {
                   />
                 </motion.div>
                 <h3 className="mb-1 font-semibold text-neutral-900">{member.name}</h3>
-                <p className="text-sm text-primary-600">
-                  {member.role[language] ?? member.role.de}
-                </p>
+                <p className="text-sm text-primary-600">{member.role}</p>
               </motion.div>
             ))}
           </motion.div>
