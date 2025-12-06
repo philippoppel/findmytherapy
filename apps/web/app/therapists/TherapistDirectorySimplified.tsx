@@ -399,7 +399,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                     className="flex items-center gap-1.5 text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
                   >
                     <RotateCcw className="h-3 w-3" />
-                    Zurücksetzen
+                    {t('common.reset')}
                   </button>
                 )}
               </div>
@@ -551,7 +551,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                   className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   <RotateCcw className="h-4 w-4" />
-                  Zurücksetzen
+                  {t('common.reset')}
                 </button>
               </div>
             </div>
@@ -668,7 +668,7 @@ function Pagination({
         className="flex h-9 items-center gap-1 rounded-lg px-2 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <ChevronLeft className="h-4 w-4" />
-        <span className="hidden sm:inline">Zurück</span>
+        <span className="hidden sm:inline">{t('common.back')}</span>
       </button>
 
       <div className="flex items-center gap-1">
@@ -699,7 +699,7 @@ function Pagination({
         disabled={currentPage === totalPages}
         className="flex h-9 items-center gap-1 rounded-lg px-2 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        <span className="hidden sm:inline">Weiter</span>
+        <span className="hidden sm:inline">{t('common.next')}</span>
         <ChevronRight className="h-4 w-4" />
       </button>
     </div>

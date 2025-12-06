@@ -12,6 +12,7 @@ import {
   LANGUAGES,
 } from './types';
 import { useMatchingWizard } from './MatchingWizardContext';
+import { useTranslation } from '@/lib/i18n';
 
 // Vereinfachte 3 Schritte
 const STEPS = [
@@ -21,6 +22,7 @@ const STEPS = [
 ];
 
 export function MatchingWizard() {
+  const { t } = useTranslation();
   const {
     isOpen,
     closeWizard,
@@ -83,7 +85,7 @@ export function MatchingWizard() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Fehler beim Matching (${response.status})`);
+        throw new Error(errorData.error || t('matching.errorMatching'));
       }
 
       const result = await response.json();
@@ -92,7 +94,7 @@ export function MatchingWizard() {
       setShowResults(true);
       resetWizard();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten';
+      const errorMessage = err instanceof Error ? err.message : t('common.error');
       console.error('Matching error:', errorMessage, err);
       setError(errorMessage);
       setIsLoading(false);
@@ -427,7 +429,7 @@ export function MatchingWizard() {
                       : 'text-neutral-700 hover:bg-neutral-100'
                   }`}
                 >
-                  ← Zurück
+                  ← {t('common.back')}
                 </button>
 
                 {currentStep < 3 ? (
@@ -440,7 +442,7 @@ export function MatchingWizard() {
                         : 'cursor-not-allowed bg-neutral-200 text-neutral-400'
                     }`}
                   >
-                    Weiter →
+                    {t('common.next')} →
                   </button>
                 ) : (
                   <button

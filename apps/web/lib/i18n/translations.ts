@@ -78,6 +78,7 @@ export const translations = {
       readyLetsGo: 'Bereit? Los geht\'s!',
       inFewSteps: 'In wenigen Schritten findest du Therapeut:innen, die wirklich zu dir passen.',
       startNow: 'Jetzt starten',
+      errorMatching: 'Fehler beim Matching',
     },
 
     // Cookie Consent
@@ -882,6 +883,7 @@ export const translations = {
       none: 'Keine',
       yes: 'Ja',
       no: 'Nein',
+      reset: 'Zurücksetzen',
       or: 'oder',
       and: 'und',
       more: 'Mehr',
@@ -2036,6 +2038,7 @@ export const translations = {
       readyLetsGo: 'Ready? Let\'s go!',
       inFewSteps: 'In just a few steps, you\'ll find therapists that are right for you.',
       startNow: 'Start now',
+      errorMatching: 'Matching error',
     },
 
     // Cookie Consent
@@ -2821,6 +2824,7 @@ export const translations = {
       none: 'None',
       yes: 'Yes',
       no: 'No',
+      reset: 'Reset',
       or: 'or',
       and: 'and',
       more: 'More',
