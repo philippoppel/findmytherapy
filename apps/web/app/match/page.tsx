@@ -7,9 +7,11 @@ import { useMatchingWizard } from '../components/matching/MatchingWizardContext'
 import { MatchingWizard } from '../components/matching/MatchingWizard';
 import { MatchingResults } from '../components/matching/MatchingResults';
 import { BackLink } from '../components/BackLink';
+import { useTranslation } from '@/lib/i18n';
 
 export default function MatchPage() {
   const { openWizard, isOpen, showResults } = useMatchingWizard();
+  const { t } = useTranslation();
 
   // Auto-open wizard on mount
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function MatchPage() {
 
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary-500" />
-            <span className="font-medium text-slate-900">Geführte Suche</span>
+            <span className="font-medium text-slate-900">{t('matchPage.guidedSearch')}</span>
           </div>
 
           <Link
@@ -35,7 +37,7 @@ export default function MatchPage() {
             className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors text-sm"
           >
             <Search className="w-4 h-4" />
-            <span className="hidden sm:inline">Selber filtern</span>
+            <span className="hidden sm:inline">{t('matchPage.filterYourself')}</span>
           </Link>
         </div>
       </header>
@@ -49,18 +51,17 @@ export default function MatchPage() {
               <Sparkles className="w-10 h-10 text-primary-500" />
             </div>
             <h1 className="text-3xl font-bold text-slate-900">
-              Geführte Therapeut:innen-Suche
+              {t('matchPage.guidedTherapistSearch')}
             </h1>
             <p className="text-slate-600 max-w-md mx-auto">
-              In wenigen Schritten findest du passende Therapeut:innen,
-              die zu deinen Bedürfnissen passen.
+              {t('matchPage.findTherapists')}
             </p>
             <button
               onClick={openWizard}
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white font-semibold rounded-2xl hover:bg-primary-600 transition-colors shadow-lg"
             >
               <Sparkles className="w-5 h-5" />
-              Jetzt starten
+              {t('matchPage.startNow')}
             </button>
           </div>
         )}
@@ -77,16 +78,16 @@ export default function MatchPage() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
             <Link href="/" className="hover:text-slate-700 transition-colors">
-              Startseite
+              {t('matchPage.homepage')}
             </Link>
             <Link href="/quiz" className="hover:text-slate-700 transition-colors">
-              Schnell-Quiz
+              {t('matchPage.quickQuiz')}
             </Link>
             <Link href="/therapists" className="hover:text-slate-700 transition-colors">
-              Alle Therapeut:innen
+              {t('matchPage.allTherapists')}
             </Link>
             <Link href="/triage" className="hover:text-slate-700 transition-colors">
-              Wissenschaftlicher Test
+              {t('matchPage.scientificTest')}
             </Link>
           </div>
         </div>

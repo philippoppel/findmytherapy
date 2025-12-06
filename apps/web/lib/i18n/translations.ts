@@ -519,6 +519,122 @@ export const translations = {
       searchFeature3: 'Volle Kontrolle',
     },
 
+    // 404 Not Found Page
+    notFound: {
+      title: 'Seite nicht gefunden',
+      description: 'Die Seite, die du suchst, existiert nicht oder wurde verschoben. Keine Sorge – wir helfen dir zurück auf den richtigen Weg.',
+      backToHome: 'Zur Startseite',
+      searchBlog: 'Blog durchsuchen',
+      popularPages: 'Beliebte Seiten',
+      assessment: 'Ersteinschätzung',
+      freeTest: 'Kostenloser Test starten',
+      contact: 'Kontakt',
+      reachCareTeam: 'Care-Team erreichen',
+      needHelp: 'Brauchst du Hilfe?',
+      contactCareTeam: 'Kontaktiere unser Care-Team',
+    },
+
+    // Error Boundary
+    errorBoundary: {
+      somethingWentWrong: 'Etwas ist schiefgelaufen',
+      assessmentError: 'Es tut uns leid, aber bei der Durchführung der Ersteinschätzung ist ein Fehler aufgetreten.',
+      devModeError: 'Entwicklermodus - Fehlerdetails:',
+      reloadPage: 'Seite neu laden',
+      or: 'oder',
+      reportProblem: 'Problem melden',
+      tip: 'Tipp:',
+      persistentProblem: 'Wenn das Problem weiterhin besteht, versuche die Seite in einem privaten/Inkognito-Fenster zu öffnen oder deinen Browser-Cache zu leeren.',
+    },
+
+    // Match Page
+    matchPage: {
+      guidedSearch: 'Geführte Suche',
+      filterYourself: 'Selber filtern',
+      guidedTherapistSearch: 'Geführte Therapeut:innen-Suche',
+      findTherapists: 'In wenigen Schritten findest du passende Therapeut:innen, die zu deinen Bedürfnissen passen.',
+      startNow: 'Jetzt starten',
+      homepage: 'Startseite',
+      quickQuiz: 'Schnell-Quiz',
+      allTherapists: 'Alle Therapeut:innen',
+      scientificTest: 'Wissenschaftlicher Test',
+    },
+
+    // Therapist Filters
+    therapistFilters: {
+      filters: 'Filter',
+      clearFilters: 'Filter löschen',
+      format: 'Format',
+      presence: 'Präsenz',
+      hybrid: 'Hybrid',
+      online: 'Online',
+      specializations: 'Schwerpunkte',
+      languages: 'Sprachen',
+      moreSpecializations: '+{{count}} weitere Schwerpunkte verfügbar',
+      moreLanguages: '+{{count}} weitere Sprachen verfügbar',
+    },
+
+    // Adaptive Triage Flow
+    adaptiveTriage: {
+      // Emotional Phase Text
+      howAreYouReally: 'Wie geht es dir wirklich?',
+      answersHelpUs: 'Deine Antworten helfen uns, dich besser zu verstehen',
+      everyStepCounts: 'Jeder Schritt zählt auf dem Weg zu mehr Wohlbefinden.',
+      howDoYouFeelInside: 'Wie fühlst du dich innerlich?',
+      worriesPartOfLife: 'Sorgen und Ängste gehören zum Leben – aber sie sollten es nicht bestimmen',
+      notAloneWithFeelings: 'Du bist nicht allein mit deinen Gefühlen.',
+      understandTogether: 'Gemeinsam verstehen wir mehr',
+      almostDone: 'Fast geschafft!',
+      youDeserveSupport: 'Du verdienst die Unterstützung, die zu dir passt.',
+      errorSaving: 'Fehler beim Speichern',
+      backToHome: 'Zurück zur Startseite',
+      thankYouForOpenness: 'Danke für deine Offenheit',
+      back: 'Zurück',
+    },
+
+    // Quiz Page
+    quiz: {
+      depression: 'Depression',
+      anxiety: 'Angst',
+      burnout: 'Burnout',
+      relationship: 'Beziehung',
+      selfEsteem: 'Selbstwert',
+      stress: 'Stress',
+      questionDepression: 'Fühlst du dich oft niedergeschlagen oder hoffnungslos?',
+      questionAnxiety: 'Hast du häufig Sorgen oder Ängste?',
+      questionBurnout: 'Fühlst du dich erschöpft und ausgebrannt?',
+      questionRelationship: 'Hast du Schwierigkeiten in Beziehungen?',
+      questionSelfEsteem: 'Zweifelst du oft an dir selbst?',
+      questionStress: 'Fühlst du dich oft gestresst oder überfordert?',
+      tipDepression: 'Kleine Schritte helfen: Versuche täglich eine Sache zu tun, die dir Freude macht.',
+      tipAnxiety: 'Atemübungen können helfen: 4 Sekunden einatmen, 4 halten, 4 ausatmen.',
+      tipBurnout: 'Plane bewusst Pausen ein – auch kurze Auszeiten können Wunder wirken.',
+      tipRelationship: 'Offene Kommunikation ist der Schlüssel – versuche deine Gefühle zu benennen.',
+      tipSelfEsteem: 'Führe ein Erfolgstagebuch – notiere täglich drei Dinge, die du gut gemacht hast.',
+      tipStress: 'Priorisiere deine Aufgaben – nicht alles muss sofort erledigt werden.',
+    },
+
+    // Triage Visualizations
+    triageViz: {
+      yourAssessment: 'Deine Einschätzung',
+      minimalSymptoms: 'Deine Einschätzung zeigt minimale bis keine Symptome. Selbsthilfe-Strategien können hilfreich sein.',
+      moderateSymptoms: 'Deine Einschätzung zeigt mittelschwere Symptome. Eine professionelle Beratung könnte hilfreich sein.',
+      severeSymptoms: 'Deine Einschätzung zeigt schwere Symptome. Wir empfehlen professionelle Unterstützung.',
+      comparedToPopulation: 'Deine Werte im Vergleich zur Allgemeinbevölkerung',
+      yourProgress: 'Dein Verlauf',
+      valuesStable: 'Deine Werte sind stabil.',
+      howAssessmentCreated: 'Wie Ihre Einschätzung erstellt wird',
+      assessmentBased: 'Ihre Einschätzung basiert auf zwei international anerkannten, wissenschaftlich validierten Fragebögen.',
+    },
+
+    // Cookie Settings
+    cookies: {
+      necessaryCookies: 'Notwendige Cookies für grundlegende Funktionen wie Login und Sicherheit. Diese können nicht deaktiviert werden.',
+      authSession: 'Authentifizierung und Sitzungsverwaltung',
+      cookiePreferences: 'Speichert Ihre Cookie-Einstellungen',
+      noCookiesTemporary: 'Keine Cookies, nur temporäre Session-Daten',
+      errorTracking: 'Erfasst technische Fehler, um die Stabilität und Sicherheit der Plattform zu verbessern. Verwendet Sentry.',
+    },
+
     // For Therapists Page
     forTherapists: {
       badge: 'Für Therapeut:innen',
@@ -725,6 +841,7 @@ export const translations = {
       close: 'Schließen',
       back: 'Zurück',
       next: 'Weiter',
+      new: 'Neu',
       reload: 'Seite neu laden',
       submit: 'Absenden',
       search: 'Suchen',
@@ -853,6 +970,12 @@ export const translations = {
       anonymousAndFree: 'Anonym & kostenlos',
       available247: 'Rund um die Uhr verfügbar',
       restartTest: 'Test neu starten',
+      repeatTest: 'Test wiederholen',
+      weRecommendProfessional: 'Wir empfehlen: Professionelle Unterstützung',
+      conversationMightHelp: 'Basierend auf deiner Einschätzung könnte ein Gespräch mit einer Fachperson hilfreich sein. Wir unterstützen dich dabei, den richtigen Kontakt zu finden.',
+      looksGood: 'Das sieht gut aus!',
+      stableWellbeing: 'Deine Ergebnisse deuten auf ein stabiles Wohlbefinden hin. Präventive Begleitung kann dennoch helfen, diesen Zustand zu erhalten und Stress vorzubeugen.',
+      discoverTherapists: 'Therapeut:innen entdecken',
       saveResults: 'Ergebnisse speichern',
       shareResults: 'Ergebnisse teilen',
       downloadPdf: 'Als PDF herunterladen',
@@ -1202,13 +1325,17 @@ export const translations = {
       directToSummary: 'Direkt zur Übersicht',
       saved: 'gemerkt',
       matchingArticles: 'Passende Artikel für dich',
+      articlesForYou: 'Passende Artikel für dich',
+      directToOverview: 'Direkt zur Übersicht ({{count}} gemerkt)',
       // Summary
       therapistsSaved: 'Therapeut:in gemerkt',
       therapistsSavedPlural: 'Therapeut:innen gemerkt',
+      therapistsSavedCount: '{{count}} Therapeut:in(nen) gemerkt',
       yourOverview: 'Deine Übersicht',
-      topics: 'Themen:',
+      topics: 'Themen',
       preferencesNotMet: 'Folgende Präferenzen konnten nicht vollständig berücksichtigt werden:',
       bestMatchesShown: 'Wir haben dir die besten verfügbaren Matches gezeigt.',
+      bestAvailableMatches: 'Wir haben dir die besten verfügbaren Matches gezeigt.',
       yourFavorites: 'Deine Favoriten',
       detailedAssessment: 'Ausführlichere Einschätzung?',
       toScientificTest: 'Zum wissenschaftlichen Test',
@@ -1216,6 +1343,7 @@ export const translations = {
       guidedSearch: 'Geführte Suche',
       // Footer
       homepage: 'Startseite',
+      allTherapists: 'Alle Therapeut:innen',
       scientificTest: 'Wissenschaftlicher Test',
       // Location errors
       locationNotSupported: 'Standorterkennung wird von deinem Browser nicht unterstützt.',
@@ -2280,6 +2408,121 @@ export const translations = {
       searchFeature3: 'Full control',
     },
 
+    // 404 Not Found Page
+    notFound: {
+      title: 'Page not found',
+      description: 'The page you are looking for does not exist or has been moved. No worries – we\'ll help you find your way back.',
+      backToHome: 'Back to home',
+      searchBlog: 'Search blog',
+      popularPages: 'Popular pages',
+      assessment: 'Assessment',
+      freeTest: 'Start free test',
+      contact: 'Contact',
+      reachCareTeam: 'Reach care team',
+      needHelp: 'Need help?',
+      contactCareTeam: 'Contact our care team',
+    },
+
+    // Error Boundary
+    errorBoundary: {
+      somethingWentWrong: 'Something went wrong',
+      assessmentError: 'We\'re sorry, but an error occurred during the assessment.',
+      devModeError: 'Developer mode - Error details:',
+      reloadPage: 'Reload page',
+      or: 'or',
+      reportProblem: 'Report problem',
+      tip: 'Tip:',
+      persistentProblem: 'If the problem persists, try opening the page in a private/incognito window or clearing your browser cache.',
+    },
+
+    // Match Page
+    matchPage: {
+      guidedSearch: 'Guided Search',
+      filterYourself: 'Filter yourself',
+      guidedTherapistSearch: 'Guided Therapist Search',
+      findTherapists: 'In just a few steps, find therapists that match your needs.',
+      startNow: 'Start now',
+      homepage: 'Homepage',
+      quickQuiz: 'Quick Quiz',
+      allTherapists: 'All Therapists',
+      scientificTest: 'Scientific Test',
+    },
+
+    // Therapist Filters
+    therapistFilters: {
+      filters: 'Filters',
+      clearFilters: 'Clear filters',
+      format: 'Format',
+      presence: 'In-person',
+      hybrid: 'Hybrid',
+      online: 'Online',
+      specializations: 'Specializations',
+      languages: 'Languages',
+      moreSpecializations: '+{{count}} more specializations available',
+      moreLanguages: '+{{count}} more languages available',
+    },
+
+    // Adaptive Triage Flow
+    adaptiveTriage: {
+      howAreYouReally: 'How are you really?',
+      answersHelpUs: 'Your answers help us understand you better',
+      everyStepCounts: 'Every step counts on the way to more well-being.',
+      howDoYouFeelInside: 'How do you feel inside?',
+      worriesPartOfLife: 'Worries and fears are part of life – but they shouldn\'t define it',
+      notAloneWithFeelings: 'You are not alone with your feelings.',
+      understandTogether: 'Together we understand more',
+      almostDone: 'Almost done!',
+      youDeserveSupport: 'You deserve the support that suits you.',
+      errorSaving: 'Error saving',
+      backToHome: 'Back to home',
+      thankYouForOpenness: 'Thank you for your openness',
+      back: 'Back',
+    },
+
+    // Quiz Page
+    quiz: {
+      depression: 'Depression',
+      anxiety: 'Anxiety',
+      burnout: 'Burnout',
+      relationship: 'Relationship',
+      selfEsteem: 'Self-Esteem',
+      stress: 'Stress',
+      questionDepression: 'Do you often feel down or hopeless?',
+      questionAnxiety: 'Do you frequently have worries or fears?',
+      questionBurnout: 'Do you feel exhausted and burned out?',
+      questionRelationship: 'Do you have difficulties in relationships?',
+      questionSelfEsteem: 'Do you often doubt yourself?',
+      questionStress: 'Do you often feel stressed or overwhelmed?',
+      tipDepression: 'Small steps help: Try to do one thing that brings you joy every day.',
+      tipAnxiety: 'Breathing exercises can help: 4 seconds inhale, 4 hold, 4 exhale.',
+      tipBurnout: 'Plan conscious breaks – even short timeouts can work wonders.',
+      tipRelationship: 'Open communication is key – try to name your feelings.',
+      tipSelfEsteem: 'Keep a success journal – write down three things you did well each day.',
+      tipStress: 'Prioritize your tasks – not everything needs to be done immediately.',
+    },
+
+    // Triage Visualizations
+    triageViz: {
+      yourAssessment: 'Your Assessment',
+      minimalSymptoms: 'Your assessment shows minimal to no symptoms. Self-help strategies can be helpful.',
+      moderateSymptoms: 'Your assessment shows moderate symptoms. Professional counseling could be helpful.',
+      severeSymptoms: 'Your assessment shows severe symptoms. We recommend professional support.',
+      comparedToPopulation: 'Your scores compared to the general population',
+      yourProgress: 'Your Progress',
+      valuesStable: 'Your values are stable.',
+      howAssessmentCreated: 'How your assessment is created',
+      assessmentBased: 'Your assessment is based on two internationally recognized, scientifically validated questionnaires.',
+    },
+
+    // Cookie Settings
+    cookies: {
+      necessaryCookies: 'Necessary cookies for basic functions like login and security. These cannot be disabled.',
+      authSession: 'Authentication and session management',
+      cookiePreferences: 'Saves your cookie preferences',
+      noCookiesTemporary: 'No cookies, only temporary session data',
+      errorTracking: 'Captures technical errors to improve platform stability and security. Uses Sentry.',
+    },
+
     // For Therapists Page
     forTherapists: {
       badge: 'For Therapists',
@@ -2486,6 +2729,7 @@ export const translations = {
       close: 'Close',
       back: 'Back',
       next: 'Next',
+      new: 'New',
       reload: 'Reload page',
       submit: 'Submit',
       search: 'Search',
@@ -2612,6 +2856,12 @@ export const translations = {
       anonymousAndFree: 'Anonymous & free',
       available247: 'Available 24/7',
       restartTest: 'Restart test',
+      repeatTest: 'Repeat test',
+      weRecommendProfessional: 'We recommend: Professional support',
+      conversationMightHelp: 'Based on your assessment, a conversation with a professional could be helpful. We support you in finding the right contact.',
+      looksGood: 'This looks good!',
+      stableWellbeing: 'Your results indicate stable well-being. Preventive support can still help maintain this state and prevent stress.',
+      discoverTherapists: 'Discover therapists',
       saveResults: 'Save results',
       shareResults: 'Share results',
       downloadPdf: 'Download as PDF',
@@ -2837,13 +3087,17 @@ export const translations = {
       directToSummary: 'Go to summary',
       saved: 'saved',
       matchingArticles: 'Matching articles for you',
+      articlesForYou: 'Matching articles for you',
+      directToOverview: 'Go to overview ({{count}} saved)',
       // Summary
       therapistsSaved: 'therapist saved',
       therapistsSavedPlural: 'therapists saved',
+      therapistsSavedCount: '{{count}} therapist(s) saved',
       yourOverview: 'Your overview',
-      topics: 'Topics:',
+      topics: 'Topics',
       preferencesNotMet: 'The following preferences could not be fully considered:',
       bestMatchesShown: 'We\'ve shown you the best available matches.',
+      bestAvailableMatches: 'We\'ve shown you the best available matches.',
       yourFavorites: 'Your favorites',
       detailedAssessment: 'Want a more detailed assessment?',
       toScientificTest: 'To the scientific test',
@@ -2851,6 +3105,7 @@ export const translations = {
       guidedSearch: 'Guided search',
       // Footer
       homepage: 'Home',
+      allTherapists: 'All therapists',
       scientificTest: 'Scientific test',
       // Location errors
       locationNotSupported: 'Location detection is not supported by your browser.',

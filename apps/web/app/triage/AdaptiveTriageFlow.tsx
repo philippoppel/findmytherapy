@@ -222,6 +222,7 @@ export function AdaptiveTriageFlow({
   embedded = false,
   historicalData = [],
 }: AdaptiveTriageFlowProps = {}) {
+  const { t } = useTranslation();
   const [currentPhase, setCurrentPhase] = useState<Phase>('phq2');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>(initialAnswers);
@@ -696,15 +697,15 @@ export function AdaptiveTriageFlow({
               className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium hover:bg-white/30"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Test wiederholen</span>
-              <span className="sm:hidden">Neu</span>
+              <span className="hidden sm:inline">{t('triage.repeatTest')}</span>
+              <span className="sm:hidden">{t('common.new')}</span>
             </Button>
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
             >
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
-              <span>Zurück zur Startseite</span>
+              <span>{t('triage.backToHome')}</span>
             </Link>
           </div>
           <div className="absolute bottom-8 left-0 right-0 text-center px-4">
@@ -715,10 +716,10 @@ export function AdaptiveTriageFlow({
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
                 <CheckCircle2 className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-semibold text-slate-700">Ersteinschätzung abgeschlossen</span>
+                <span className="text-sm font-semibold text-slate-700">{t('triage.assessmentCompleted')}</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg">
-                Deine persönlichen Ergebnisse
+                {t('triage.yourPersonalResults')}
               </h1>
             </motion.div>
           </div>
@@ -745,13 +746,13 @@ export function AdaptiveTriageFlow({
             <header className="mb-6 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 text-primary-700 text-sm font-medium mb-4">
                 <Sparkles className="w-4 h-4" />
-                Empfohlene nächste Schritte
+                {t('triage.recommendedNextSteps')}
               </div>
               <h3 className="text-2xl font-bold text-slate-900 sm:text-3xl">
-                Was du jetzt tun kannst
+                {t('triage.whatYouCanDoNow')}
               </h3>
               <p className="mt-2 text-slate-600 max-w-xl mx-auto">
-                Basierend auf deinen Antworten haben wir einige Empfehlungen für dich.
+                {t('triage.basedOnYourAnswers')}
               </p>
             </header>
 
@@ -763,27 +764,15 @@ export function AdaptiveTriageFlow({
                     <Info className="h-6 w-6 text-amber-600" />
                   </div>
                   <h4 className="text-lg font-bold text-slate-900 sm:text-xl">
-                    Verkürzte Einschätzung durchgeführt
+                    {t('triage.shortenedAssessment')}
                   </h4>
                   <p className="mt-2 max-w-xl text-sm text-slate-600 sm:text-base">
                     {answers.phq9.length === 2 && answers.gad7.length === 2 ? (
-                      <>
-                        Da deine ersten Antworten auf geringe Symptome hindeuten, wurde der Test
-                        verkürzt. Ein <strong>ausführlicher Test</strong> könnte jedoch
-                        detailliertere Erkenntnisse liefern.
-                      </>
+                      t('triage.shortenedBoth')
                     ) : answers.phq9.length === 2 ? (
-                      <>
-                        Der Stimmungs-Teil wurde verkürzt. Ein{' '}
-                        <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse
-                        liefern.
-                      </>
+                      t('triage.shortenedMood')
                     ) : (
-                      <>
-                        Der Wohlbefinden-Teil wurde verkürzt. Ein{' '}
-                        <strong>ausführlicher Test</strong> könnte detailliertere Erkenntnisse
-                        liefern.
-                      </>
+                      t('triage.shortenedWellbeing')
                     )}
                   </p>
                   <Button
@@ -791,7 +780,7 @@ export function AdaptiveTriageFlow({
                     size="md"
                     className="mt-4 bg-amber-500 px-6 font-semibold text-white hover:bg-amber-600 shadow-md"
                   >
-                    Ausführlichen Test durchführen
+                    {t('triage.fullTestCta')}
                   </Button>
                 </div>
               </div>
@@ -836,11 +825,10 @@ export function AdaptiveTriageFlow({
                   </div>
                   <div className="flex-1">
                     <h4 className="text-lg font-bold text-slate-900">
-                      Wir empfehlen: Professionelle Unterstützung
+                      {t('triage.weRecommendProfessional')}
                     </h4>
                     <p className="mt-2 text-slate-600">
-                      Basierend auf deiner Einschätzung könnte ein Gespräch mit einer Fachperson
-                      hilfreich sein. Wir unterstützen dich dabei, den richtigen Kontakt zu finden.
+                      {t('triage.conversationMightHelp')}
                     </p>
                     <div className="mt-4">
                       <Button
@@ -848,7 +836,7 @@ export function AdaptiveTriageFlow({
                         size="lg"
                         className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-lg sm:w-auto"
                       >
-                        <Link href="/therapists">Therapeut:innen finden</Link>
+                        <Link href="/therapists">{t('triage.findTherapist')}</Link>
                       </Button>
                     </div>
                   </div>
@@ -864,10 +852,9 @@ export function AdaptiveTriageFlow({
                     <Heart className="h-6 w-6 text-green-600" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-bold text-slate-900">Das sieht gut aus!</h4>
+                    <h4 className="text-lg font-bold text-slate-900">{t('triage.looksGood')}</h4>
                     <p className="mt-2 text-slate-600">
-                      Deine Ergebnisse deuten auf ein stabiles Wohlbefinden hin. Präventive Begleitung
-                      kann dennoch helfen, diesen Zustand zu erhalten und Stress vorzubeugen.
+                      {t('triage.stableWellbeing')}
                     </p>
                     <div className="mt-4">
                       <Button
@@ -875,7 +862,7 @@ export function AdaptiveTriageFlow({
                         size="lg"
                         className="w-full bg-green-500 text-white hover:bg-green-600 shadow-lg sm:w-auto"
                       >
-                        <Link href="/therapists">Therapeut:innen entdecken</Link>
+                        <Link href="/therapists">{t('triage.discoverTherapists')}</Link>
                       </Button>
                     </div>
                   </div>

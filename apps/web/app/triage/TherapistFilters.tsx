@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Filter, X } from 'lucide-react';
 import { Button } from '@mental-health/ui';
+import { useTranslation } from '@/lib/i18n';
 
 type FilterState = {
   formats: string[];
@@ -29,11 +30,12 @@ export function TherapistFilters({
     specialties: [],
     languages: [],
   });
+  const { t } = useTranslation();
 
   const formatOptions = [
-    { value: 'online', label: 'Online' },
-    { value: 'praesenz', label: 'Präsenz' },
-    { value: 'hybrid', label: 'Hybrid' },
+    { value: 'online', label: t('therapistFilters.online') },
+    { value: 'praesenz', label: t('therapistFilters.presence') },
+    { value: 'hybrid', label: t('therapistFilters.hybrid') },
   ];
 
   const toggleFilter = (category: keyof FilterState, value: string) => {
@@ -69,7 +71,7 @@ export function TherapistFilters({
       >
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-primary" aria-hidden />
-          <span className="font-semibold text-default">Filter</span>
+          <span className="font-semibold text-default">{t('therapistFilters.filters')}</span>
           {activeFilterCount > 0 && (
             <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-primary-foreground">
               {activeFilterCount}
@@ -86,7 +88,7 @@ export function TherapistFilters({
             }}
           >
             <X className="mr-1 h-3 w-3" aria-hidden />
-            Filter löschen
+            {t('therapistFilters.clearFilters')}
           </Button>
         )}
       </button>
@@ -95,7 +97,7 @@ export function TherapistFilters({
         <div className="space-y-4 border-t border-divider p-4">
           {/* Format Filter */}
           <div>
-            <h4 className="mb-2 text-sm font-semibold text-default">Format</h4>
+            <h4 className="mb-2 text-sm font-semibold text-default">{t('therapistFilters.format')}</h4>
             <div className="flex flex-wrap gap-2">
               {formatOptions.map((option) => (
                 <button
@@ -117,7 +119,7 @@ export function TherapistFilters({
           {/* Spezialisierung Filter */}
           {availableSpecialties.length > 0 && (
             <div>
-              <h4 className="mb-2 text-sm font-semibold text-default">Schwerpunkte</h4>
+              <h4 className="mb-2 text-sm font-semibold text-default">{t('therapistFilters.specializations')}</h4>
               <div className="flex flex-wrap gap-2">
                 {availableSpecialties.slice(0, 10).map((specialty) => (
                   <button
@@ -136,7 +138,7 @@ export function TherapistFilters({
               </div>
               {availableSpecialties.length > 10 && (
                 <p className="mt-2 text-xs text-muted">
-                  +{availableSpecialties.length - 10} weitere Schwerpunkte verfügbar
+                  {t('therapistFilters.moreSpecializations', { count: availableSpecialties.length - 10 })}
                 </p>
               )}
             </div>
@@ -145,7 +147,7 @@ export function TherapistFilters({
           {/* Sprachen Filter */}
           {availableLanguages.length > 0 && (
             <div>
-              <h4 className="mb-2 text-sm font-semibold text-default">Sprachen</h4>
+              <h4 className="mb-2 text-sm font-semibold text-default">{t('therapistFilters.languages')}</h4>
               <div className="flex flex-wrap gap-2">
                 {availableLanguages.slice(0, 8).map((language) => (
                   <button
@@ -164,7 +166,7 @@ export function TherapistFilters({
               </div>
               {availableLanguages.length > 8 && (
                 <p className="mt-2 text-xs text-muted">
-                  +{availableLanguages.length - 8} weitere Sprachen verfügbar
+                  {t('therapistFilters.moreLanguages', { count: availableLanguages.length - 8 })}
                 </p>
               )}
             </div>
