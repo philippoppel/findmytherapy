@@ -432,7 +432,7 @@ export default function QuizPage() {
   // Auto-detect location (stays on same phase)
   const detectLocation = async () => {
     if (!navigator.geolocation) {
-      setLocationError('Standorterkennung wird von deinem Browser nicht unterstützt.');
+      setLocationError(t('quizPage.locationNotSupported'));
       return;
     }
 
@@ -441,13 +441,13 @@ export default function QuizPage() {
       if (navigator.permissions) {
         const permission = await navigator.permissions.query({ name: 'geolocation' });
         if (permission.state === 'denied') {
-          setLocationError('Standortzugriff wurde verweigert. Bitte gib manuell einen Ort ein.');
+          setLocationError(t('quizPage.locationDenied'));
           return;
         }
       }
     } catch {
       // Permissions API not supported or geolocation blocked by policy
-      setLocationError('Standorterkennung ist nicht verfügbar. Bitte gib manuell einen Ort ein.');
+      setLocationError(t('quizPage.locationNotAvailable'));
       return;
     }
 
@@ -457,7 +457,7 @@ export default function QuizPage() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        let locationName = 'Dein Standort';
+        let locationName = t('quizPage.yourLocationLabel');
 
         // Try to get city name from coordinates using reverse geocoding
         try {
@@ -466,7 +466,7 @@ export default function QuizPage() {
             { headers: { 'Accept-Language': 'de' } }
           );
           const data = await response.json();
-          locationName = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || 'Dein Standort';
+          locationName = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality || t('quizPage.yourLocationLabel');
         } catch {
           // Continue with default location name
         }
@@ -484,16 +484,16 @@ export default function QuizPage() {
         setIsLoadingLocation(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setLocationError('Standortzugriff wurde verweigert. Bitte gib manuell einen Ort ein.');
+            setLocationError(t('quizPage.locationDenied'));
             break;
           case error.POSITION_UNAVAILABLE:
-            setLocationError('Standort konnte nicht ermittelt werden.');
+            setLocationError(t('quizPage.locationNotDetermined'));
             break;
           case error.TIMEOUT:
-            setLocationError('Zeitüberschreitung bei der Standortermittlung.');
+            setLocationError(t('quizPage.locationTimeout'));
             break;
           default:
-            setLocationError('Ein Fehler ist aufgetreten.');
+            setLocationError(t('common.errorOccurred'));
         }
       },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
@@ -556,27 +556,27 @@ export default function QuizPage() {
         if (state.genderPreference !== 'any' && breakdown?.gender?.score < 1) {
           unmetPreferences.push(
             state.genderPreference === 'female'
-              ? 'Bevorzugt: Therapeutin'
-              : 'Bevorzugt: Therapeut'
+              ? t('quizPage.preferFemale')
+              : t('quizPage.preferMale')
           );
         }
 
         // Format-Präferenz prüfen
         if (state.formatPreference === 'ONLINE' && !firstMatch.therapist.online) {
-          unmetPreferences.push('Bevorzugt: Online-Therapie');
+          unmetPreferences.push(t('quizPage.preferOnline'));
         }
         if (state.formatPreference === 'IN_PERSON' && firstMatch.therapist.online && !firstMatch.therapist.city) {
-          unmetPreferences.push('Bevorzugt: Vor-Ort-Therapie');
+          unmetPreferences.push(t('quizPage.preferInPerson'));
         }
 
         // Preis prüfen
         if (state.maxPrice && firstMatch.therapist.priceMin && firstMatch.therapist.priceMin > state.maxPrice * 100) {
-          unmetPreferences.push(`Budget: max. ${state.maxPrice}€`);
+          unmetPreferences.push(t('quizPage.budgetMax', { price: state.maxPrice.toString() }));
         }
 
         // Wartezeit prüfen
         if (state.maxWaitWeeks && breakdown?.availability?.waitWeeks && breakdown.availability.waitWeeks > state.maxWaitWeeks) {
-          unmetPreferences.push(`Wartezeit: max. ${state.maxWaitWeeks} Wochen`);
+          unmetPreferences.push(t('quizPage.waitTimeMax', { weeks: state.maxWaitWeeks.toString() }));
         }
       }
 
@@ -584,11 +584,11 @@ export default function QuizPage() {
       if (data.zeroResultsAnalysis && data.zeroResultsAnalysis.failedFilter !== 'none') {
         const analysis = data.zeroResultsAnalysis;
         if (analysis.failedFilter === 'language') {
-          unmetPreferences.push('Sprache nicht verfügbar');
+          unmetPreferences.push(t('quizPage.languageNotAvailable'));
         } else if (analysis.failedFilter === 'format') {
-          unmetPreferences.push('Format nicht verfügbar');
+          unmetPreferences.push(t('quizPage.formatNotAvailable'));
         } else if (analysis.failedFilter === 'insurance') {
-          unmetPreferences.push('Versicherungsart nicht akzeptiert');
+          unmetPreferences.push(t('quizPage.insuranceNotAccepted'));
         }
       }
 

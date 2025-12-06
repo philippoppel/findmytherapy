@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from '@/lib/i18n';
 
 interface MicrositeGalleryProps {
   images: string[];
@@ -9,6 +10,7 @@ interface MicrositeGalleryProps {
 }
 
 export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProps) {
+  const { t } = useTranslation();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -45,7 +47,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
   return (
     <>
       <section className="bg-white rounded-lg shadow-sm p-8">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-900">Galerie</h2>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-900">{t('gallery.title')}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((imageUrl, index) => (
@@ -56,7 +58,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
             >
               <Image
                 src={imageUrl}
-                alt={`${therapistName} - Bild ${index + 1}`}
+                alt={t('gallery.imageAlt', { name: therapistName, index: (index + 1).toString() })}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -74,14 +76,14 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
           className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4 border-0"
           onClick={closeLightbox}
           onKeyDown={handleKeyDown}
-          aria-label="Lightbox schließen"
+          aria-label={t('gallery.closeLightbox')}
           type="button"
         >
           {/* Close button */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 text-white hover:text-gray-300 text-4xl font-light w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white rounded-full"
-            aria-label="Schließen"
+            aria-label={t('gallery.close')}
           >
             ×
           </button>
@@ -94,7 +96,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
                 prevImage();
               }}
               className="absolute left-4 text-white hover:text-gray-300 text-4xl font-light w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white rounded-full"
-              aria-label="Vorheriges Bild"
+              aria-label={t('gallery.previousImage')}
             >
               ‹
             </button>
@@ -106,11 +108,11 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
             type="button"
-            aria-label="Bild"
+            aria-label={t('gallery.image')}
           >
             <Image
               src={images[currentImageIndex]}
-              alt={`${therapistName} - Bild ${currentImageIndex + 1}`}
+              alt={t('gallery.imageAlt', { name: therapistName, index: (currentImageIndex + 1).toString() })}
               fill
               className="object-contain"
               sizes="100vw"
@@ -126,7 +128,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
                 nextImage();
               }}
               className="absolute right-4 text-white hover:text-gray-300 text-4xl font-light w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white rounded-full"
-              aria-label="Nächstes Bild"
+              aria-label={t('gallery.nextImage')}
             >
               ›
             </button>
@@ -135,7 +137,7 @@ export function MicrositeGallery({ images, therapistName }: MicrositeGalleryProp
           {/* Image counter */}
           {images.length > 1 && (
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm">
-              {currentImageIndex + 1} / {images.length}
+              {t('gallery.imageCounter', { current: (currentImageIndex + 1).toString(), total: images.length.toString() })}
             </div>
           )}
         </button>

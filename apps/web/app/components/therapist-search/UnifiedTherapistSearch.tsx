@@ -17,6 +17,7 @@ import { PriceRangeFilter } from './PriceRangeFilter';
 import { InsuranceFilters } from './InsuranceFilters';
 import { SortOptions } from './SortOptions';
 import { GenderFilter } from './GenderFilter';
+import { useTranslation } from '@/lib/i18n';
 
 export type UnifiedTherapistSearchProps = {
   therapists: TherapistCard[];
@@ -24,17 +25,27 @@ export type UnifiedTherapistSearchProps = {
   className?: string;
 };
 
-const FORMAT_LABELS: Record<FormatFilter, string> = {
-  online: 'Online',
-  praesenz: 'Präsenz',
-  hybrid: 'Hybrid',
-};
-
 export function UnifiedTherapistSearch({
   therapists,
   onFilteredResults,
   className = '',
 }: UnifiedTherapistSearchProps) {
+  const { t } = useTranslation();
+
+  // Format labels with translations
+  const FORMAT_LABELS: Record<FormatFilter, string> = {
+    online: t('therapistDirectory.online'),
+    praesenz: t('therapistDirectory.inPerson'),
+    hybrid: t('therapistDirectory.hybrid'),
+  };
+
+  // Gender options with translations
+  const genderOptions = [
+    { value: 'any' as const, label: t('therapistDirectory.genderAny') },
+    { value: 'female' as const, label: t('therapistDirectory.genderFemale') },
+    { value: 'male' as const, label: t('therapistDirectory.genderMale') },
+  ];
+
   // Show advanced filters by default on desktop
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(true);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -140,15 +151,15 @@ export function UnifiedTherapistSearch({
           type="text"
           value={filters.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Suche nach Name oder Spezialisierung..."
+          placeholder={t('therapistDirectory.searchPlaceholder')}
           className="w-full min-h-[48px] rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/50 transition-colors"
-          aria-label="Therapeuten suchen"
+          aria-label={t('therapistDirectory.searchTherapists')}
         />
       </div>
 
       {/* Format Quick Filters */}
       <div className="mb-4">
-        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">Format</p>
+        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">{t('therapistDirectory.format')}</p>
         <div className="grid grid-cols-3 gap-2">
           {(Object.keys(FORMAT_LABELS) as FormatFilter[]).map((format) => {
             const isSelected = filters.formats.has(format);
@@ -175,14 +186,10 @@ export function UnifiedTherapistSearch({
       <div className="mb-4">
         <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500 flex items-center gap-1">
           <User className="h-3 w-3" aria-hidden />
-          Therapeut:in
+          {t('therapistDirectory.therapistLabel')}
         </p>
         <div className="grid grid-cols-3 gap-2">
-          {([
-            { value: 'any' as const, label: 'Egal' },
-            { value: 'female' as const, label: 'Weiblich' },
-            { value: 'male' as const, label: 'Männlich' },
-          ]).map((option) => {
+          {genderOptions.map((option) => {
             const isSelected = filters.gender === option.value;
             return (
               <button
@@ -214,7 +221,7 @@ export function UnifiedTherapistSearch({
           />
           <span className="flex items-center gap-2 text-sm font-medium text-slate-700">
             <Shield className="h-4 w-4 text-primary-500" aria-hidden />
-            Akzeptiert Krankenkasse
+            {t('therapistDirectory.acceptsInsurance')}
           </span>
         </label>
       </div>
@@ -233,7 +240,7 @@ export function UnifiedTherapistSearch({
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
-            Erweiterte Filter
+            {t('therapistDirectory.advancedFilters')}
             {activeFilterCount() > 0 && (
               <span className="rounded-full bg-primary-500 text-white px-2 py-0.5 text-xs font-bold">
                 {activeFilterCount()}
@@ -263,7 +270,7 @@ export function UnifiedTherapistSearch({
         >
           <span className="flex items-center gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden />
-            Erweiterte Filter
+            {t('therapistDirectory.advancedFilters')}
             {activeFilterCount() > 0 && (
               <span className="rounded-full bg-primary-500 text-white px-2 py-0.5 text-xs font-bold">
                 {activeFilterCount()}
@@ -296,7 +303,7 @@ export function UnifiedTherapistSearch({
                 type="button"
                 className="flex justify-center pt-3 pb-2 cursor-pointer touch-none w-full"
                 onClick={() => setIsFilterModalOpen(false)}
-                aria-label="Filter schließen"
+                aria-label={t('therapistDirectory.closeFilters')}
               >
                 <div className="h-1.5 w-12 rounded-full bg-white/30" />
               </button>
@@ -306,14 +313,14 @@ export function UnifiedTherapistSearch({
                 <div className="flex items-center gap-2">
                   <SlidersHorizontal className="h-5 w-5 text-primary-400" aria-hidden="true" />
                   <h2 id="modal-title" className="text-lg font-semibold text-white">
-                    Erweiterte Filter
+                    {t('therapistDirectory.advancedFilters')}
                   </h2>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsFilterModalOpen(false)}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-all hover:bg-white/10 hover:text-white hover:scale-110 active:scale-95"
-                  aria-label="Filter schließen"
+                  aria-label={t('therapistDirectory.closeFilters')}
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -334,7 +341,7 @@ export function UnifiedTherapistSearch({
                   onClick={() => setIsFilterModalOpen(false)}
                   className="w-full min-h-[48px] rounded-xl bg-primary-600 px-6 py-3 text-base font-semibold text-white hover:bg-primary-500 active:bg-primary-700 transition-colors shadow-lg"
                 >
-                  Ergebnisse anzeigen ({filteredTherapists.length})
+                  {t('therapistDirectory.showResults', { count: filteredTherapists.length.toString() })}
                 </button>
               </div>
             </div>
@@ -345,7 +352,7 @@ export function UnifiedTherapistSearch({
       {/* Active Filters Display */}
       {hasActiveFilters && (
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-slate-500">Aktive Filter:</span>
+          <span className="text-xs font-medium text-slate-500">{t('therapistDirectory.activeFilters')}</span>
 
           {filters.searchQuery && (
             <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700 border border-slate-200">
@@ -374,21 +381,21 @@ export function UnifiedTherapistSearch({
 
           {filters.nearbyOnly && (
             <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
-              📍 {filters.radius}km Umkreis
+              📍 {filters.radius}km {t('therapistDirectory.radius')}
             </span>
           )}
 
           {filters.gender !== 'any' && (
             <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               <User className="h-3 w-3" aria-hidden />
-              {filters.gender === 'female' ? 'Weiblich' : 'Männlich'}
+              {filters.gender === 'female' ? t('therapistDirectory.genderFemale') : t('therapistDirectory.genderMale')}
             </span>
           )}
 
           {filters.acceptsInsurance && (
             <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 text-xs font-semibold text-primary-700 border border-primary-200">
               <Shield className="h-3 w-3" aria-hidden />
-              Krankenkasse
+              {t('therapistDirectory.insurance')}
             </span>
           )}
 
@@ -413,15 +420,15 @@ export function UnifiedTherapistSearch({
             className="inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 border border-red-200 hover:bg-red-200 transition-colors"
           >
             <X className="h-3 w-3" aria-hidden />
-            Alle zurücksetzen
+            {t('therapistDirectory.resetAll')}
           </button>
         </div>
       )}
 
       {/* Results Count */}
       <div className="mt-4 text-sm text-slate-500">
-        <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> von{' '}
-        {totalCount} {totalCount === 1 ? 'Profil' : 'Profile'}
+        <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> {t('therapistDirectory.of')}{' '}
+        {totalCount} {totalCount === 1 ? t('therapistDirectory.profile') : t('therapistDirectory.profiles')}
       </div>
     </div>
   );

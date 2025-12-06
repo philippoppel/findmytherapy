@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { z } from 'zod';
+import { useTranslation } from '@/lib/i18n';
 
 interface MicrositeContactProps {
   slug: string;
@@ -9,19 +10,21 @@ interface MicrositeContactProps {
   acceptingClients: boolean;
 }
 
-const leadSchema = z.object({
-  name: z.string().min(2, 'Name muss mindestens 2 Zeichen lang sein'),
-  email: z.string().email('Ungültige E-Mail-Adresse'),
-  phone: z.string().optional(),
-  message: z.string().min(10, 'Nachricht muss mindestens 10 Zeichen lang sein'),
-  consent: z.boolean().refine((val) => val === true, {
-    message: 'Einwilligung ist erforderlich',
-  }),
-});
-
-type LeadFormData = z.infer<typeof leadSchema>;
-
 export function MicrositeContact({ slug, therapistName, acceptingClients }: MicrositeContactProps) {
+  const { t } = useTranslation();
+
+  const leadSchema = z.object({
+    name: z.string().min(2, t('microsite.nameMinLength')),
+    email: z.string().email(t('microsite.invalidEmail')),
+    phone: z.string().optional(),
+    message: z.string().min(10, t('microsite.messageMinLength')),
+    consent: z.boolean().refine((val) => val === true, {
+      message: t('microsite.consentRequiredError'),
+    }),
+  });
+
+  type LeadFormData = z.infer<typeof leadSchema>;
+
   const [formData, setFormData] = useState<LeadFormData>({
     name: '',
     email: '',
@@ -62,7 +65,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
           });
           setErrors(fieldErrors);
         } else {
-          throw new Error(data.message || 'Fehler beim Senden');
+          throw new Error(data.message || t('microsite.errorSending'));
         }
         setSubmitStatus('error');
         return;
@@ -120,15 +123,15 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Anfrage gesendet!</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('microsite.requestSent')}</h3>
           <p className="text-sm text-gray-600 mb-4">
-            {therapistName} wird sich in Kürze bei Ihnen melden.
+            {t('microsite.willContactYou', { name: therapistName })}
           </p>
           <button
             onClick={() => setSubmitStatus('idle')}
             className="text-sm text-primary-600 hover:text-primary-700 font-medium"
           >
-            Weitere Anfrage senden
+            {t('microsite.sendAnother')}
           </button>
         </div>
       </div>
@@ -137,12 +140,12 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
 
   return (
     <div id="kontakt" className="bg-white rounded-lg shadow-sm p-6 scroll-mt-8">
-      <h3 className="text-xl font-semibold mb-4 text-gray-900">Kontaktanfrage</h3>
+      <h3 className="text-xl font-semibold mb-4 text-gray-900">{t('microsite.contactTitle')}</h3>
 
       {!acceptingClients && (
         <div className="mb-4 p-3 bg-orange-50 border border-orange-200 rounded-md">
           <p className="text-sm text-orange-800">
-            Derzeit Warteliste. Anfragen werden nach Verfügbarkeit bearbeitet.
+            {t('microsite.waitlistNotice')}
           </p>
         </div>
       )}
@@ -150,7 +153,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Name *
+            {t('microsite.nameLabel')}
           </label>
           <input
             type="text"
@@ -167,7 +170,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
 
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            E-Mail *
+            {t('microsite.emailLabel')}
           </label>
           <input
             type="email"
@@ -184,7 +187,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
 
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Telefon (optional)
+            {t('microsite.phoneLabel')}
           </label>
           <input
             type="tel"
@@ -198,7 +201,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
 
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-            Nachricht *
+            {t('microsite.messageLabel')}
           </label>
           <textarea
             id="message"
@@ -208,7 +211,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
             className={`w-full px-3 py-2 border ${
               errors.message ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
-            placeholder="Beschreiben Sie kurz Ihr Anliegen..."
+            placeholder={t('microsite.messagePlaceholder')}
             disabled={isSubmitting}
           />
           {errors.message && <p className="mt-1 text-sm text-red-600">{errors.message}</p>}
@@ -224,11 +227,11 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
               disabled={isSubmitting}
             />
             <span className="text-sm text-gray-600">
-              Ich stimme der Verarbeitung meiner Daten gemäß der{' '}
+              {t('microsite.consentText')}{' '}
               <a href="/privacy" className="text-primary-600 hover:text-primary-700 underline">
-                Datenschutzerklärung
+                {t('microsite.privacyPolicy')}
               </a>{' '}
-              zu. *
+              {t('microsite.consentRequired')}
             </span>
           </label>
           {errors.consent && <p className="mt-1 text-sm text-red-600">{errors.consent}</p>}
@@ -237,7 +240,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
         {submitStatus === 'error' && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-md">
             <p className="text-sm text-red-800">
-              Fehler beim Senden. Bitte versuchen Sie es erneut.
+              {t('microsite.errorSendingRetry')}
             </p>
           </div>
         )}
@@ -247,7 +250,7 @@ export function MicrositeContact({ slug, therapistName, acceptingClients }: Micr
           disabled={isSubmitting}
           className="w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting ? 'Sende...' : 'Anfrage senden'}
+          {isSubmitting ? t('microsite.sending') : t('microsite.sendRequest')}
         </button>
       </form>
     </div>

@@ -174,13 +174,20 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
     return count;
   }, [filters]);
 
+  // Gender options with translations
+  const genderOptions = [
+    { value: 'any' as const, label: t('therapistDirectory.genderAny') },
+    { value: 'female' as const, label: t('therapistDirectory.genderFemale') },
+    { value: 'male' as const, label: t('therapistDirectory.genderMale') },
+  ];
+
   // Filter sidebar content (shared between desktop and mobile)
   const FilterContent = () => (
     <div className="space-y-1">
       {/* Search */}
       <div className="p-4 border-b border-slate-200">
         <label htmlFor="filter-search" className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-          Suchbegriff
+          {t('therapistDirectory.searchTerm')}
         </label>
         <div className="relative">
           <input
@@ -188,7 +195,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             type="text"
             value={filters.searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Name, Spezialisierung..."
+            placeholder={t('therapistDirectory.searchPlaceholder')}
             className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-3 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-100"
           />
           <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -197,7 +204,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Location Section */}
       <FilterSection
-        title="Standort"
+        title={t('therapistDirectory.location')}
         isExpanded={expandedSections.location}
         onToggle={() => toggleSection('location')}
       >
@@ -215,7 +222,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Format Section */}
       <FilterSection
-        title="Format"
+        title={t('therapistDirectory.format')}
         isExpanded={expandedSections.format}
         onToggle={() => toggleSection('format')}
       >
@@ -252,16 +259,12 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Gender Section */}
       <FilterSection
-        title="Geschlecht"
+        title={t('therapistDirectory.gender')}
         isExpanded={expandedSections.gender}
         onToggle={() => toggleSection('gender')}
       >
         <div className="space-y-2">
-          {([
-            { value: 'any' as const, label: 'Egal' },
-            { value: 'female' as const, label: 'Weiblich' },
-            { value: 'male' as const, label: 'Männlich' },
-          ]).map((option) => {
+          {genderOptions.map((option) => {
             const isSelected = filters.gender === option.value;
             return (
               <label
@@ -293,7 +296,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Insurance */}
       <FilterSection
-        title="Krankenkasse"
+        title={t('therapistDirectory.insurance')}
         isExpanded={expandedSections.insurance}
         onToggle={() => toggleSection('insurance')}
       >
@@ -305,7 +308,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
           />
           <Shield className="h-4 w-4 text-slate-400" />
-          <span className="text-sm font-medium text-slate-700">Akzeptiert Krankenkasse</span>
+          <span className="text-sm font-medium text-slate-700">{t('therapistDirectory.acceptsInsurance')}</span>
         </label>
         {filters.acceptsInsurance && (
           <div className="mt-3">
@@ -323,7 +326,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Specializations */}
       <FilterSection
-        title="Spezialisierung"
+        title={t('therapistDirectory.specializations')}
         isExpanded={expandedSections.specializations}
         onToggle={() => toggleSection('specializations')}
         badge={filters.specializations.size > 0 ? filters.specializations.size : undefined}
@@ -338,7 +341,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Languages */}
       <FilterSection
-        title="Sprachen"
+        title={t('therapistDirectory.languages')}
         isExpanded={expandedSections.languages}
         onToggle={() => toggleSection('languages')}
         badge={filters.languages.size > 0 ? filters.languages.size : undefined}
@@ -353,7 +356,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
 
       {/* Price Range */}
       <FilterSection
-        title="Preis"
+        title={t('therapistDirectory.price')}
         isExpanded={expandedSections.price}
         onToggle={() => toggleSection('price')}
       >
@@ -373,7 +376,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
           >
             <RotateCcw className="h-4 w-4" />
-            Filter zurücksetzen
+            {t('therapistDirectory.resetFilters')}
           </button>
         </div>
       )}
@@ -411,7 +414,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             {/* Footer with count */}
             <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
               <p className="text-xs text-slate-500 text-center">
-                <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> Therapeut:innen gefunden
+                <span className="font-semibold text-slate-700">{filteredTherapists.length}</span> {t('therapistDirectory.therapists')}
               </p>
             </div>
           </div>
@@ -438,7 +441,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
           </div>
         </div>
         <p className="text-xs text-slate-500 text-center mt-2">
-          <span className="font-medium text-slate-700">{filteredTherapists.length}</span> Ergebnisse
+          <span className="font-medium text-slate-700">{filteredTherapists.length}</span> {t('therapistDirectory.results')}
         </p>
       </div>
 
@@ -450,7 +453,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
             type="button"
             className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-default animate-in fade-in duration-200"
             onClick={() => setIsMobileFilterOpen(false)}
-            aria-label="Filter schließen"
+            aria-label={t('therapistDirectory.closeFilters')}
           />
           {/* Drawer */}
           <div className="absolute inset-y-0 left-0 w-full max-w-[340px] bg-white shadow-2xl animate-in slide-in-from-left duration-300">
@@ -458,9 +461,9 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               {/* Header */}
               <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 bg-white">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">Filter</h2>
+                  <h2 className="text-lg font-bold text-slate-900">{t('therapistDirectory.filters')}</h2>
                   {activeFilterCount > 0 && (
-                    <p className="text-xs text-slate-500 mt-0.5">{activeFilterCount} aktiv</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{activeFilterCount} {t('therapistDirectory.active')}</p>
                   )}
                 </div>
                 <button
@@ -484,14 +487,14 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                     className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
                   >
                     <RotateCcw className="h-4 w-4" />
-                    Alle Filter zurücksetzen
+                    {t('therapistDirectory.resetAllFilters')}
                   </button>
                 )}
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="w-full rounded-xl bg-primary-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-primary-700 transition-colors"
                 >
-                  {filteredTherapists.length} Ergebnisse anzeigen
+                  {t('therapistDirectory.showResults', { count: filteredTherapists.length.toString() })}
                 </button>
               </div>
             </div>
@@ -505,7 +508,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
         <div className="hidden lg:flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
             <span className="text-sm text-slate-600">
-              <span className="font-semibold text-slate-900">{filteredTherapists.length}</span> Therapeut:innen
+              <span className="font-semibold text-slate-900">{filteredTherapists.length}</span> {t('therapistDirectory.therapists')}
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -520,9 +523,10 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              t={t}
             />
             <span className="text-xs text-slate-500">
-              {startIndex + 1}–{Math.min(endIndex, filteredTherapists.length)} von {filteredTherapists.length}
+              {startIndex + 1}–{Math.min(endIndex, filteredTherapists.length)} {t('therapistDirectory.of')} {filteredTherapists.length}
             </span>
           </div>
         )}
@@ -534,9 +538,9 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
                 <Search className="h-8 w-8 text-slate-400" />
               </div>
-              <p className="text-base font-semibold text-slate-900">Keine Ergebnisse gefunden</p>
+              <p className="text-base font-semibold text-slate-900">{t('therapistDirectory.noResults')}</p>
               <p className="text-sm text-slate-600">
-                Passe die Filter an oder starte das Quiz für personalisierte Empfehlungen.
+                {t('therapistDirectory.noResultsMessage')}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                 <Link
@@ -544,14 +548,14 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
                   className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-primary-700"
                 >
                   <Sparkles className="h-4 w-4" />
-                  Quiz starten
+                  {t('therapistDirectory.startQuiz')}
                 </Link>
                 <button
                   onClick={resetFilters}
                   className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                 >
                   <RotateCcw className="h-4 w-4" />
-                  {t('common.reset')}
+                  {t('therapistDirectory.reset')}
                 </button>
               </div>
             </div>
@@ -571,6 +575,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              t={t}
             />
           </div>
         )}
@@ -623,10 +628,12 @@ function Pagination({
   currentPage,
   totalPages,
   onPageChange,
+  t,
 }: {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  t: (key: string) => string;
 }) {
   const getPageNumbers = () => {
     const pages: (number | 'ellipsis')[] = [];

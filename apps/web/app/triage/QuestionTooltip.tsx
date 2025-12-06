@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Info, HelpCircle } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 type QuestionTooltipProps = {
   helpText?: string;
@@ -16,6 +17,7 @@ export function QuestionTooltip({
   variant = 'icon',
   className = '',
 }: QuestionTooltipProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -54,7 +56,7 @@ export function QuestionTooltip({
             {helpText && <p className="text-primary-900">{helpText}</p>}
             {scientificContext && (
               <p className="mt-1 text-xs text-primary-700">
-                <span className="font-semibold">Hintergrund:</span> {scientificContext}
+                <span className="font-semibold">{t('tooltip.background')}:</span> {scientificContext}
               </p>
             )}
           </div>
@@ -70,7 +72,7 @@ export function QuestionTooltip({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex h-6 w-6 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-950"
-        aria-label="Mehr Informationen"
+        aria-label={t('tooltip.moreInfo')}
       >
         <HelpCircle className="h-4 w-4 text-white" aria-hidden />
       </button>
@@ -84,13 +86,13 @@ export function QuestionTooltip({
           <div className="space-y-2">
             {helpText && (
               <div>
-                <p className="text-sm font-semibold text-default">Erklärung</p>
+                <p className="text-sm font-semibold text-default">{t('tooltip.explanation')}</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted">{helpText}</p>
               </div>
             )}
             {scientificContext && (
               <div>
-                <p className="text-sm font-semibold text-primary">Wissenschaftlicher Hintergrund</p>
+                <p className="text-sm font-semibold text-primary">{t('tooltip.scientificBackground')}</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted">{scientificContext}</p>
               </div>
             )}

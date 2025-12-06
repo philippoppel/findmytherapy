@@ -6,25 +6,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Star, X, RotateCcw, Heart, ArrowRight } from 'lucide-react';
 import type { MatchResult } from '@/lib/matching';
 import { useMatchingWizard } from './MatchingWizardContext';
+import { useTranslation } from '@/lib/i18n';
 
-// Warme Stockbilder von Unsplash (kostenlos & kommerziell nutzbar)
+// Warm stock images from Unsplash (free & commercially usable)
 const STORY_IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1200&q=80', // Person in Sonnenlicht
-  divider1: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80', // Zwei Menschen im Gespräch
-  divider2: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80', // Freundschaft, Zusammenhalt
-  footer: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80', // Weg/Pfad in Natur
+  hero: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1200&q=80',
+  divider1: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80',
+  divider2: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80',
+  footer: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
 };
 
-// Score zu Prozent konvertieren
+// Convert score to percentage
 function getScorePercent(score: number) {
   return Math.round(score * 100);
 }
 
-// Vereinfachte Match-Card - emotional & clean
-function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchResult; rank: number; isTopMatch?: boolean }) {
+// Simplified Match Card - emotional & clean
+function EmotionalMatchCard({ match, rank, isTopMatch = false, t }: { match: MatchResult; rank: number; isTopMatch?: boolean; t: (key: string, params?: Record<string, string | number>) => string }) {
   const percent = getScorePercent(match.score);
 
-  // Initiale für Avatar
+  // Initials for avatar
   const initials =
     match.therapist.displayName
       ?.split(' ')
@@ -33,8 +34,8 @@ function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchR
       .toUpperCase()
       .slice(0, 2) || '?';
 
-  // Personalisierter Satz basierend auf Match-Gründen
-  const personalizedReason = match.explanation.primary[0] || 'Passt gut zu deinen Bedürfnissen';
+  // Personalized sentence based on match reasons
+  const personalizedReason = match.explanation.primary[0] || t('matchingResults.defaultReason');
 
   return (
     <motion.div
@@ -46,15 +47,15 @@ function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchR
       }`}
     >
       <div className={`p-6 sm:p-8 ${isTopMatch ? 'bg-gradient-to-br from-amber-50/50 to-orange-50/30' : ''}`}>
-        {/* Therapeut Info */}
+        {/* Therapist Info */}
         <div className="flex items-center gap-4 sm:gap-5 mb-5">
-          {/* Großes Foto */}
+          {/* Large Photo */}
           <div className="relative flex-shrink-0">
             {match.therapist.profileImageUrl ? (
               <div className={`${isTopMatch ? 'w-20 h-20 sm:w-24 sm:h-24' : 'w-16 h-16 sm:w-20 sm:h-20'} rounded-full overflow-hidden ring-4 ring-white shadow-lg`}>
                 <Image
                   src={match.therapist.profileImageUrl}
-                  alt={match.therapist.displayName || 'Therapeut'}
+                  alt={match.therapist.displayName || t('matchingResults.therapist')}
                   width={96}
                   height={96}
                   className="object-cover w-full h-full"
@@ -70,27 +71,27 @@ function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchR
           {/* Name & Score Badge */}
           <div className="flex-1 min-w-0">
             <h3 className={`font-bold text-gray-900 mb-1 ${isTopMatch ? 'text-xl sm:text-2xl' : 'text-lg sm:text-xl'}`}>
-              {match.therapist.displayName || 'Therapeut:in'}
+              {match.therapist.displayName || t('matchingResults.therapist')}
             </h3>
             {match.therapist.title && (
               <p className="text-sm text-gray-500 mb-2">
                 {match.therapist.title}
               </p>
             )}
-            {/* Match Score als schöner Badge */}
+            {/* Match Score as badge */}
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold shadow-md">
               <Star className="w-4 h-4" fill="white" />
-              {percent}% Match
+              {percent}% {t('matchingResults.match')}
             </div>
           </div>
         </div>
 
-        {/* Personalisierter Satz - nur 1-2 Zeilen */}
+        {/* Personalized sentence - 1-2 lines */}
         <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 line-clamp-2">
           {personalizedReason}
         </p>
 
-        {/* Ein Button */}
+        {/* One Button */}
         <Link
           href={`/therapists/${match.therapist.id}`}
           className={`w-full flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-white shadow-lg transition-all hover:scale-[1.02] active:scale-95 ${
@@ -100,14 +101,14 @@ function EmotionalMatchCard({ match, rank, isTopMatch = false }: { match: MatchR
           }`}
         >
           <Eye className="w-5 h-5" />
-          Profil ansehen
+          {t('matchingResults.viewProfile')}
         </Link>
       </div>
     </motion.div>
   );
 }
 
-// Story Divider - Bild mit emotionalem Text
+// Story Divider - Image with emotional text
 function StoryDivider({ image, text, delay = 0 }: { image: string; text: string; delay?: number }) {
   return (
     <motion.div
@@ -135,6 +136,7 @@ function StoryDivider({ image, text, delay = 0 }: { image: string; text: string;
 }
 
 export function MatchingResults() {
+  const { t } = useTranslation();
   const { results, showResults, closeWizard, openWizard } = useMatchingWizard();
 
   if (!showResults || !results) return null;
@@ -148,7 +150,7 @@ export function MatchingResults() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Therapeuten in Gruppen aufteilen für Story-Flow
+  // Split therapists into groups for story flow
   const topMatch = results.matches[0];
   const secondaryMatches = results.matches.slice(1, 3);
   const remainingMatches = results.matches.slice(3);
@@ -168,7 +170,7 @@ export function MatchingResults() {
           <div className="relative h-[50vh] sm:h-[60vh] min-h-[400px]">
             <Image
               src={STORY_IMAGES.hero}
-              alt="Hoffnung und Neubeginn"
+              alt={t('matchingResults.heroImageAlt')}
               fill
               className="object-cover"
               priority
@@ -179,7 +181,7 @@ export function MatchingResults() {
             <button
               onClick={handleClose}
               className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 bg-white/90 backdrop-blur-sm rounded-full text-gray-600 hover:text-gray-900 hover:bg-white transition-all shadow-lg"
-              aria-label="Schließen"
+              aria-label={t('matchingResults.close')}
             >
               <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
@@ -194,18 +196,18 @@ export function MatchingResults() {
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-amber-600 font-medium text-sm sm:text-base mb-4 shadow-lg">
                   <Heart className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" />
                   {results.total === 0
-                    ? 'Wir suchen weiter für dich'
-                    : `${results.total} ${results.total === 1 ? 'Therapeut:in' : 'Therapeut:innen'} gefunden`}
+                    ? t('matchingResults.searchingForYou')
+                    : t('matchingResults.therapistsFound', { count: results.total })}
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                   {results.total === 0
-                    ? 'Lass uns gemeinsam suchen'
-                    : 'Deine Reise beginnt hier'}
+                    ? t('matchingResults.letsSearchTogether')
+                    : t('matchingResults.yourJourneyStarts')}
                 </h1>
                 <p className="text-lg sm:text-xl text-white/90 max-w-lg mx-auto drop-shadow">
                   {results.total === 0
-                    ? 'Wir helfen dir, die richtige Unterstützung zu finden'
-                    : 'Menschen, die dir helfen können'}
+                    ? t('matchingResults.weHelpYouFind')
+                    : t('matchingResults.peopleWhoCanHelp')}
                 </p>
               </motion.div>
             </div>
@@ -216,7 +218,7 @@ export function MatchingResults() {
         <div className="bg-gradient-to-b from-white via-amber-50/20 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
 
-            {/* Keine Matches */}
+            {/* No Matches */}
             {results.matches.length === 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -226,8 +228,7 @@ export function MatchingResults() {
               >
                 <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12">
                   <p className="text-gray-600 text-lg mb-8">
-                    Aktuell haben wir keine exakten Treffer, aber das bedeutet nicht,
-                    dass es keine Hilfe gibt. Lass uns die Suche anpassen.
+                    {t('matchingResults.noExactMatchesDesc')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button
@@ -235,13 +236,13 @@ export function MatchingResults() {
                       className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
                     >
                       <RotateCcw className="w-5 h-5" />
-                      Suche anpassen
+                      {t('matchingResults.adjustSearch')}
                     </button>
                     <Link
                       href="/therapists"
                       className="flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-200 text-gray-700 font-bold rounded-2xl hover:border-amber-300 hover:bg-amber-50 transition-all"
                     >
-                      Alle Therapeuten ansehen
+                      {t('matchingResults.viewAllTherapists')}
                       <ArrowRight className="w-5 h-5" />
                     </Link>
                   </div>
@@ -249,11 +250,11 @@ export function MatchingResults() {
               </motion.div>
             )}
 
-            {/* Story Flow mit Matches */}
+            {/* Story Flow with Matches */}
             {results.matches.length > 0 && (
               <div className="py-8 sm:py-12">
 
-                {/* Top Match - Groß und prominent */}
+                {/* Top Match - Large and prominent */}
                 {topMatch && (
                   <div className="mb-8 sm:mb-12">
                     <motion.p
@@ -262,9 +263,9 @@ export function MatchingResults() {
                       transition={{ delay: 0.4 }}
                       className="text-center text-amber-600 font-medium text-sm sm:text-base mb-4"
                     >
-                      Deine beste Übereinstimmung
+                      {t('matchingResults.yourBestMatch')}
                     </motion.p>
-                    <EmotionalMatchCard match={topMatch} rank={0} isTopMatch={true} />
+                    <EmotionalMatchCard match={topMatch} rank={0} isTopMatch={true} t={t} />
                   </div>
                 )}
 
@@ -272,7 +273,7 @@ export function MatchingResults() {
                 {secondaryMatches.length > 0 && (
                   <StoryDivider
                     image={STORY_IMAGES.divider1}
-                    text="Der erste Schritt ist oft der schwerste – du hast ihn gemacht"
+                    text={t('matchingResults.storyDivider1')}
                     delay={0.5}
                   />
                 )}
@@ -281,7 +282,7 @@ export function MatchingResults() {
                 {secondaryMatches.length > 0 && (
                   <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 mb-8 sm:mb-12">
                     {secondaryMatches.map((match, index) => (
-                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 1} />
+                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 1} t={t} />
                     ))}
                   </div>
                 )}
@@ -290,7 +291,7 @@ export function MatchingResults() {
                 {remainingMatches.length > 0 && (
                   <StoryDivider
                     image={STORY_IMAGES.divider2}
-                    text="Jeder dieser Menschen kann dir helfen, dein Leben zu verändern"
+                    text={t('matchingResults.storyDivider2')}
                     delay={0.6}
                   />
                 )}
@@ -299,7 +300,7 @@ export function MatchingResults() {
                 {remainingMatches.length > 0 && (
                   <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
                     {remainingMatches.map((match, index) => (
-                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 3} />
+                      <EmotionalMatchCard key={match.therapist.id} match={match} rank={index + 3} t={t} />
                     ))}
                   </div>
                 )}
@@ -314,17 +315,17 @@ export function MatchingResults() {
                   <div className="relative h-64 sm:h-80">
                     <Image
                       src={STORY_IMAGES.footer}
-                      alt="Dein Weg"
+                      alt={t('matchingResults.yourPath')}
                       fill
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 sm:pb-12 px-4">
                       <h2 className="text-white text-2xl sm:text-3xl font-bold mb-3 text-center">
-                        Bereit für den nächsten Schritt?
+                        {t('matchingResults.readyForNextStep')}
                       </h2>
                       <p className="text-white/80 text-center mb-6 max-w-md">
-                        Du musst das nicht alleine durchstehen
+                        {t('matchingResults.notAlone')}
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3">
                         <button
@@ -332,13 +333,13 @@ export function MatchingResults() {
                           className="flex items-center justify-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm border border-white/40 text-white font-medium rounded-full hover:bg-white/30 transition-all"
                         >
                           <RotateCcw className="w-4 h-4" />
-                          Suche anpassen
+                          {t('matchingResults.adjustSearch')}
                         </button>
                         <Link
                           href="/therapists"
                           className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 font-medium rounded-full hover:bg-amber-50 transition-all"
                         >
-                          Alle ansehen
+                          {t('matchingResults.viewAll')}
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>

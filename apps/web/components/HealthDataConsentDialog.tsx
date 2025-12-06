@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Shield, Lock, Eye, FileText, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Button } from '@mental-health/ui';
+import { useTranslation } from '@/lib/i18n';
 
 interface HealthDataConsentDialogProps {
   onConsent: () => void;
@@ -16,6 +17,7 @@ export function HealthDataConsentDialog({
   onDecline,
   source = 'triage_flow',
 }: HealthDataConsentDialogProps) {
+  const { t } = useTranslation();
   const [hasRead, setHasRead] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -68,10 +70,10 @@ export function HealthDataConsentDialog({
               </div>
               <div className="flex-1 text-white">
                 <h2 className="mb-2 text-2xl font-bold sm:text-3xl">
-                  Einwilligung zur Verarbeitung von Gesundheitsdaten
+                  {t('healthConsent.title')}
                 </h2>
                 <p className="text-sm text-white/90 sm:text-base">
-                  Ihre Privatsphäre und die Sicherheit Ihrer Daten haben für uns höchste Priorität.
+                  {t('healthConsent.subtitle')}
                 </p>
               </div>
             </div>
@@ -84,16 +86,12 @@ export function HealthDataConsentDialog({
               <div className="flex gap-3">
                 <AlertTriangle className="h-6 w-6 shrink-0 text-amber-600" />
                 <div className="space-y-2 text-sm text-amber-900">
-                  <p className="font-semibold">Wichtiger Hinweis zu Gesundheitsdaten</p>
+                  <p className="font-semibold">{t('healthConsent.importantNote')}</p>
                   <p>
-                    Die Ersteinschätzung erfasst Informationen zu Ihrem psychischen Befinden (PHQ-9
-                    und GAD-7 Fragebögen). Da Sie eingeloggt sind, werden diese Daten{' '}
-                    <strong>mit Ihrem Account verknüpft gespeichert</strong> und gehören zu den
-                    besonders schützenswerten Gesundheitsdaten gemäß Art. 9 DSGVO.
+                    {t('healthConsent.importantNoteText')}
                   </p>
                   <p className="text-xs text-amber-800">
-                    💡 Hinweis: Sie können die Ersteinschätzung auch ohne Login anonym durchführen.
-                    Dabei werden keine personenbezogenen Daten gespeichert.
+                    {t('healthConsent.anonymousHint')}
                   </p>
                 </div>
               </div>
@@ -103,34 +101,31 @@ export function HealthDataConsentDialog({
             <div className="space-y-4">
               <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
                 <FileText className="h-5 w-5 text-teal-600" />
-                Welche Daten wir erheben
+                {t('healthConsent.whatWeCollect')}
               </h3>
               <div className="space-y-3 text-sm text-gray-700">
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                   <h4 className="mb-2 font-semibold text-gray-900">
-                    PHQ-9 Fragebogen (Depressive Symptome)
+                    {t('healthConsent.phq9Title')}
                   </h4>
                   <p className="text-gray-700">
-                    9 Fragen zu depressiven Symptomen in den letzten 2 Wochen (z.B.
-                    Niedergeschlagenheit, Interessenverlust, Müdigkeit).
+                    {t('healthConsent.phq9Desc')}
                   </p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                   <h4 className="mb-2 font-semibold text-gray-900">
-                    GAD-7 Fragebogen (Angstsymptome)
+                    {t('healthConsent.gad7Title')}
                   </h4>
                   <p className="text-gray-700">
-                    7 Fragen zu Angstsymptomen in den letzten 2 Wochen (z.B. Nervosität, Sorgen,
-                    Entspannungsschwierigkeiten).
+                    {t('healthConsent.gad7Desc')}
                   </p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                   <h4 className="mb-2 font-semibold text-gray-900">
-                    Risikobewertung & Therapieempfehlungen
+                    {t('healthConsent.riskTitle')}
                   </h4>
                   <p className="text-gray-700">
-                    Automatische Auswertung Ihrer Antworten zur Einschätzung des Schweregrads und
-                    Empfehlung passender Unterstützungsangebote.
+                    {t('healthConsent.riskDesc')}
                   </p>
                 </div>
               </div>
@@ -140,43 +135,43 @@ export function HealthDataConsentDialog({
             <div className="space-y-4">
               <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
                 <Lock className="h-5 w-5 text-teal-600" />
-                Wie wir Ihre Daten schützen
+                {t('healthConsent.howWeProtect')}
               </h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg border border-teal-200 bg-teal-50 p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-teal-600" />
-                    <h4 className="font-semibold text-teal-900">Verschlüsselung</h4>
+                    <h4 className="font-semibold text-teal-900">{t('healthConsent.encryption')}</h4>
                   </div>
                   <p className="text-sm text-teal-800">
-                    AES-256-GCM Verschlüsselung für alle Gesundheitsdaten
+                    {t('healthConsent.encryptionDesc')}
                   </p>
                 </div>
                 <div className="rounded-lg border border-teal-200 bg-teal-50 p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-teal-600" />
-                    <h4 className="font-semibold text-teal-900">Zugriffskontrolle</h4>
+                    <h4 className="font-semibold text-teal-900">{t('healthConsent.accessControl')}</h4>
                   </div>
                   <p className="text-sm text-teal-800">
-                    Nur autorisierte Therapeut:innen mit Ihrer Erlaubnis
+                    {t('healthConsent.accessControlDesc')}
                   </p>
                 </div>
                 <div className="rounded-lg border border-teal-200 bg-teal-50 p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-teal-600" />
-                    <h4 className="font-semibold text-teal-900">Audit-Logs</h4>
+                    <h4 className="font-semibold text-teal-900">{t('healthConsent.auditLogs')}</h4>
                   </div>
                   <p className="text-sm text-teal-800">
-                    Jeder Zugriff wird protokolliert und überwacht
+                    {t('healthConsent.auditLogsDesc')}
                   </p>
                 </div>
                 <div className="rounded-lg border border-teal-200 bg-teal-50 p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-teal-600" />
-                    <h4 className="font-semibold text-teal-900">EU-Server</h4>
+                    <h4 className="font-semibold text-teal-900">{t('healthConsent.euServer')}</h4>
                   </div>
                   <p className="text-sm text-teal-800">
-                    Alle Daten werden in der EU (Frankfurt) gespeichert
+                    {t('healthConsent.euServerDesc')}
                   </p>
                 </div>
               </div>
@@ -186,36 +181,32 @@ export function HealthDataConsentDialog({
             <div className="space-y-4">
               <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
                 <Eye className="h-5 w-5 text-teal-600" />
-                Ihre Rechte
+                {t('healthConsent.yourRights')}
               </h3>
               <div className="space-y-2 text-sm text-gray-700">
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                     <span>
-                      <strong>Widerruf jederzeit möglich:</strong> Sie können Ihre Einwilligung
-                      jederzeit widerrufen. Bereits erhobene Daten werden dann gelöscht.
+                      <strong>{t('healthConsent.rightRevoke')}</strong> {t('healthConsent.rightRevokeDesc')}
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                     <span>
-                      <strong>Auskunftsrecht:</strong> Sie können jederzeit Auskunft über Ihre
-                      gespeicherten Daten anfordern.
+                      <strong>{t('healthConsent.rightAccess')}</strong> {t('healthConsent.rightAccessDesc')}
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                     <span>
-                      <strong>Löschrecht:</strong> Sie können die Löschung Ihrer Gesundheitsdaten
-                      verlangen (sofern keine Aufbewahrungspflichten bestehen).
+                      <strong>{t('healthConsent.rightDelete')}</strong> {t('healthConsent.rightDeleteDesc')}
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                     <span>
-                      <strong>Sie bestimmen die Freigabe:</strong> Sie kontrollieren, welche
-                      Therapeut:innen Zugriff auf Ihre Dossiers erhalten.
+                      <strong>{t('healthConsent.rightControl')}</strong> {t('healthConsent.rightControlDesc')}
                     </span>
                   </li>
                 </ul>
@@ -225,13 +216,10 @@ export function HealthDataConsentDialog({
             {/* Legal basis */}
             <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 text-sm text-gray-700">
               <p className="mb-2">
-                <strong>Rechtsgrundlage:</strong> Art. 9 Abs. 2 lit. a DSGVO (ausdrückliche
-                Einwilligung in die Verarbeitung besonderer Kategorien personenbezogener Daten).
+                <strong>{t('healthConsent.legalBasis')}</strong> {t('healthConsent.legalBasisText')}
               </p>
               <p>
-                <strong>Speicherfrist:</strong> 10 Jahre nach letztem Zugriff (gemäß
-                Dokumentationspflicht für Gesundheitsberufe) oder bis zum Widerruf Ihrer
-                Einwilligung.
+                <strong>{t('healthConsent.retention')}</strong> {t('healthConsent.retentionText')}
               </p>
             </div>
 
@@ -245,9 +233,7 @@ export function HealthDataConsentDialog({
                   className="mt-1 h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500"
                 />
                 <span className="text-sm text-gray-900">
-                  Ich habe die Informationen zur Datenverarbeitung gelesen und verstanden. Ich
-                  willige ausdrücklich in die Erhebung und Verarbeitung meiner Gesundheitsdaten
-                  (PHQ-9, GAD-7) ein. Ich kann diese Einwilligung jederzeit widerrufen.
+                  {t('healthConsent.consentText')}
                 </span>
               </label>
             </div>
@@ -259,13 +245,13 @@ export function HealthDataConsentDialog({
                 target="_blank"
                 className="hover:text-teal-600 hover:underline"
               >
-                → Mehr zum Schutz von Gesundheitsdaten
+                {t('healthConsent.moreInfo')}
               </Link>
               <Link href="/privacy" target="_blank" className="hover:text-teal-600 hover:underline">
-                → Vollständige Datenschutzerklärung
+                {t('healthConsent.fullPrivacy')}
               </Link>
               <Link href="/contact" target="_blank" className="hover:text-teal-600 hover:underline">
-                → Kontakt für Datenschutzfragen
+                {t('healthConsent.contactPrivacy')}
               </Link>
             </div>
           </div>
@@ -279,7 +265,7 @@ export function HealthDataConsentDialog({
                 className="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 disabled:cursor-not-allowed disabled:opacity-50"
                 size="lg"
               >
-                {isSubmitting ? 'Wird gespeichert...' : 'Ich willige ein und möchte fortfahren'}
+                {isSubmitting ? t('healthConsent.saving') : t('healthConsent.consentAndContinue')}
               </Button>
               <Button
                 onClick={onDecline}
@@ -288,12 +274,12 @@ export function HealthDataConsentDialog({
                 size="lg"
                 disabled={isSubmitting}
               >
-                Ablehnen
+                {t('healthConsent.decline')}
               </Button>
             </div>
             {!hasRead && (
               <p className="mt-3 text-center text-xs text-gray-500">
-                Bitte bestätigen Sie, dass Sie die Informationen gelesen haben.
+                {t('healthConsent.pleaseConfirm')}
               </p>
             )}
           </div>

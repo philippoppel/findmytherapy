@@ -11,6 +11,7 @@ import {
   formatCurrencyInput,
 } from '@/lib/therapist/setcard';
 import type { SetcardPayload } from '@/lib/therapist/setcard';
+import { useTranslation } from '@/lib/i18n';
 
 type SetcardFormValues = {
   displayName: string;
@@ -160,6 +161,7 @@ const mapPayloadToFormValues = (payload: SetcardPayload): SetcardFormValues => (
 });
 
 export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEditorProps) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -193,7 +195,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           });
         }
       }
-      setErrorMessage('Bitte überprüfe deine Eingaben und versuche es erneut.');
+      setErrorMessage(t('profileEditor.checkInputs'));
       return;
     }
 
@@ -211,7 +213,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
 
       if (!response.ok || !result.success) {
         setStatus('error');
-        setErrorMessage(result.message ?? 'Die Setcard konnte nicht gespeichert werden.');
+        setErrorMessage(result.message ?? t('profileEditor.couldNotSave'));
         return;
       }
 
@@ -225,7 +227,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
     } catch (error) {
       console.error('Failed to update setcard', error);
       setStatus('error');
-      setErrorMessage('Beim Speichern ist ein Fehler aufgetreten.');
+      setErrorMessage(t('profileEditor.errorSaving'));
     }
   };
 
@@ -235,19 +237,19 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
       <div className="sticky top-0 z-10 -mx-6 -mt-6 mb-6 border-b border-neutral-200 bg-white/95 backdrop-blur-sm px-6 py-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-bold text-neutral-900">Profil bearbeiten</h2>
+            <h2 className="text-xl font-bold text-neutral-900">{t('profileEditor.editProfile')}</h2>
             <p className="text-sm text-muted mt-1">
-              Aktualisiere deine öffentliche Setcard für Klient:innen
+              {t('profileEditor.updatePublicSetcard')}
             </p>
           </div>
           <Button type="submit" disabled={status === 'saving' || !isDirty} className="shrink-0">
             {status === 'saving' ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                Speichern...
+                {t('profileEditor.saving')}
               </>
             ) : (
-              'Änderungen speichern'
+              t('profileEditor.saveChanges')
             )}
           </Button>
         </div>
@@ -257,14 +259,14 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           <div className="mt-3">
             <Alert
               variant="success"
-              title="Erfolgreich gespeichert"
-              description="Deine Änderungen wurden gespeichert."
+              title={t('profileEditor.savedSuccess')}
+              description={t('profileEditor.changesSaved')}
             />
           </div>
         )}
         {status === 'error' && errorMessage && (
           <div className="mt-3">
-            <Alert variant="danger" title="Fehler beim Speichern" description={errorMessage} />
+            <Alert variant="danger" title={t('profileEditor.errorSavingTitle')} description={errorMessage} />
           </div>
         )}
       </div>
@@ -288,54 +290,54 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Öffentliche Darstellung</h3>
-            <p className="text-sm text-muted">Wie du auf deinem Profil erscheinst</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.publicPresentation')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.howYouAppear')}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField id="displayName" label="Angezeigter Name" required>
-            <Input {...register('displayName')} placeholder="z. B. Dr.in Lena Huber" />
+          <FormField id="displayName" label={t('profileEditor.displayedName')} required>
+            <Input {...register('displayName')} placeholder={t('profileEditor.displayedNamePlaceholder')} />
           </FormField>
-          <FormField id="title" label="Titel" required>
+          <FormField id="title" label={t('profileEditor.title')} required>
             <Input
               {...register('title')}
-              placeholder="z. B. Klinische Psychologin & Gesundheitspsychologin"
+              placeholder={t('profileEditor.titleExtendedPlaceholder')}
             />
           </FormField>
           <FormField
             id="headline"
-            label="Headline"
+            label={t('profileEditor.headline')}
             required
-            helperText="Kurzer Satz, der deinen Schwerpunkt zusammenfasst."
+            helperText={t('profileEditor.headlineHelper')}
           >
             <Input
               {...register('headline')}
-              placeholder="z. B. Ressourcen aktivieren und neue Stabilität finden"
+              placeholder={t('profileEditor.headlinePlaceholder')}
             />
           </FormField>
           <FormField
             id="profileImageUrl"
-            label="Profilbild URL"
-            helperText="Erlaubt sind volle URLs oder relative Pfade."
+            label={t('profileEditor.profileImage')}
+            helperText={t('profileEditor.profileImageHelper')}
           >
             <Input
               {...register('profileImageUrl')}
-              placeholder="/images/therapeut:innen/mein-bild.jpg"
+              placeholder={t('profileEditor.profileImagePlaceholder')}
             />
           </FormField>
           <FormField
             id="videoUrl"
-            label="Vorstellungsvideo (optional)"
-            helperText="YouTube- oder Vimeo-Link."
+            label={t('profileEditor.videoLabel')}
+            helperText={t('profileEditor.videoHelper')}
           >
             <Input {...register('videoUrl')} placeholder="https://www.youtube.com/watch?v=..." />
           </FormField>
           <FormField
             id="responseTime"
-            label="Antwortzeit"
-            helperText="z. B. Antwort innerhalb von 24 Stunden."
+            label={t('profileEditor.responseTime')}
+            helperText={t('profileEditor.responseTimeHelper')}
           >
-            <Input {...register('responseTime')} placeholder="Antwort innerhalb von 24 Stunden" />
+            <Input {...register('responseTime')} placeholder={t('profileEditor.responseTimePlaceholder')} />
           </FormField>
         </div>
       </section>
@@ -359,30 +361,30 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Galerie</h3>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.gallery')}</h3>
             <p className="text-sm text-muted">
-              Bis zu 5 Bilder für deine Microsite (Praxisräume, Team, etc.)
+              {t('profileEditor.galleryDescription')}
             </p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4">
           <FormField
             id="galleryImage1"
-            label="Bild 1 (URL)"
-            helperText="Vollständige URL oder relativer Pfad"
+            label={t('profileEditor.galleryImage1')}
+            helperText={t('profileEditor.galleryImageFullHelper')}
           >
             <Input {...register('galleryImage1')} placeholder="/images/praxis-empfang.jpg" />
           </FormField>
-          <FormField id="galleryImage2" label="Bild 2 (URL)" helperText="Optional">
+          <FormField id="galleryImage2" label={t('profileEditor.galleryImage2')} helperText={t('profileEditor.optional')}>
             <Input {...register('galleryImage2')} placeholder="/images/praxis-raum.jpg" />
           </FormField>
-          <FormField id="galleryImage3" label="Bild 3 (URL)" helperText="Optional">
+          <FormField id="galleryImage3" label={t('profileEditor.galleryImage3')} helperText={t('profileEditor.optional')}>
             <Input {...register('galleryImage3')} placeholder="/images/praxis-wartebereich.jpg" />
           </FormField>
-          <FormField id="galleryImage4" label="Bild 4 (URL)" helperText="Optional">
+          <FormField id="galleryImage4" label={t('profileEditor.galleryImage4')} helperText={t('profileEditor.optional')}>
             <Input {...register('galleryImage4')} placeholder="/images/praxis-aussenansicht.jpg" />
           </FormField>
-          <FormField id="galleryImage5" label="Bild 5 (URL)" helperText="Optional">
+          <FormField id="galleryImage5" label={t('profileEditor.galleryImage5')} helperText={t('profileEditor.optional')}>
             <Input {...register('galleryImage5')} placeholder="/images/team.jpg" />
           </FormField>
         </div>
@@ -407,22 +409,22 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Online-Präsenz & Social Media</h3>
-            <p className="text-sm text-muted">Verlinke deine Website und Social-Media-Profile</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.socialMediaSection')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.socialMediaDescription')}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             id="websiteUrl"
-            label="Website"
-            helperText="Deine Praxis-Website oder persönliche Website"
+            label={t('profileEditor.website')}
+            helperText={t('profileEditor.websiteHelper')}
           >
-            <Input {...register('websiteUrl')} placeholder="https://meine-praxis.at" type="url" />
+            <Input {...register('websiteUrl')} placeholder={t('profileEditor.websitePlaceholder')} type="url" />
           </FormField>
           <FormField
             id="socialLinkedin"
-            label="LinkedIn"
-            helperText="Vollständige LinkedIn-Profil-URL"
+            label={t('profileEditor.linkedin')}
+            helperText={t('profileEditor.linkedinHelper')}
           >
             <Input
               {...register('socialLinkedin')}
@@ -432,8 +434,8 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </FormField>
           <FormField
             id="socialInstagram"
-            label="Instagram"
-            helperText="Vollständige Instagram-Profil-URL"
+            label={t('profileEditor.instagram')}
+            helperText={t('profileEditor.instagramHelper')}
           >
             <Input
               {...register('socialInstagram')}
@@ -443,8 +445,8 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           </FormField>
           <FormField
             id="socialFacebook"
-            label="Facebook"
-            helperText="Vollständige Facebook-Seiten-URL"
+            label={t('profileEditor.facebook')}
+            helperText={t('profileEditor.facebookHelper')}
           >
             <Input
               {...register('socialFacebook')}
@@ -474,27 +476,27 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Beschreibung & Über mich</h3>
-            <p className="text-sm text-muted">Deine Arbeitsweise und Erfahrung</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.descriptionSection')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.descriptionSectionDesc')}</p>
           </div>
         </div>
         <FormField
           id="approachSummary"
-          label="Therapeutischer Ansatz"
+          label={t('profileEditor.approach')}
           required
-          helperText="Was erwartet Klient:innen in der Zusammenarbeit?"
+          helperText={t('profileEditor.approachHelper')}
         >
           <Textarea rows={4} {...register('approachSummary')} />
         </FormField>
         <FormField
           id="experienceSummary"
-          label="Erfahrung & Zielgruppen"
+          label={t('profileEditor.experience')}
           required
-          helperText="Fasse relevante Erfahrungen und Zielgruppen zusammen."
+          helperText={t('profileEditor.experienceHelper')}
         >
           <Textarea rows={3} {...register('experienceSummary')} />
         </FormField>
-        <FormField id="about" label="Über mich (optional)">
+        <FormField id="about" label={t('profileEditor.aboutMe')}>
           <Textarea rows={5} {...register('about')} />
         </FormField>
       </section>
@@ -518,44 +520,44 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Angebot & Spezialisierungen</h3>
-            <p className="text-sm text-muted">Deine Leistungen und Schwerpunkte</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.offerSection')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.offerSectionDesc')}</p>
           </div>
         </div>
         <FormField
           id="services"
-          label="Leistungen"
+          label={t('profileEditor.services')}
           required
-          helperText="Eine Leistung pro Zeile, z. B. Einzeltherapie, Online-Sitzung."
+          helperText={t('profileEditor.servicesHelperFull')}
         >
           <Textarea rows={3} {...register('services')} />
         </FormField>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             id="specialties"
-            label="Schwerpunkte"
+            label={t('profileEditor.specialties')}
             required
-            helperText="Eine Spezialisierung pro Zeile."
+            helperText={t('profileEditor.specialtiesHelperFull')}
           >
             <Textarea rows={3} {...register('specialties')} />
           </FormField>
           <FormField
             id="modalities"
-            label="Modalitäten"
+            label={t('profileEditor.modalities')}
             required
-            helperText="z. B. Verhaltenstherapie, Achtsamkeit."
+            helperText={t('profileEditor.modalitiesHelper')}
           >
             <Textarea rows={3} {...register('modalities')} />
           </FormField>
         </div>
-        <FormField id="languages" label="Sprachen" required helperText="Eine Sprache pro Zeile.">
+        <FormField id="languages" label={t('profileEditor.languages')} required helperText={t('profileEditor.languagesHelper')}>
           <Textarea rows={2} {...register('languages')} />
         </FormField>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField id="availabilityNote" label="Verfügbarkeit">
+          <FormField id="availabilityNote" label={t('profileEditor.availability')}>
             <Textarea rows={2} {...register('availabilityNote')} />
           </FormField>
-          <FormField id="pricingNote" label="Hinweis zu Preisen/Konditionen">
+          <FormField id="pricingNote" label={t('profileEditor.pricingNote')}>
             <Textarea rows={2} {...register('pricingNote')} />
           </FormField>
         </div>
@@ -580,41 +582,41 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Qualifikationen & Zielgruppen</h3>
-            <p className="text-sm text-muted">Ausbildung, Zertifikate und Zielgruppen</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.qualificationsSection')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.qualificationsSectionDesc')}</p>
           </div>
         </div>
         <FormField
           id="qualifications"
-          label="Ausbildung & Qualifikationen"
-          helperText="Eine Qualifikation pro Zeile, z. B. 'Master in Klinischer Psychologie', 'Systemische Familientherapie'"
+          label={t('profileEditor.qualifications')}
+          helperText={t('profileEditor.qualificationsHelperFull')}
         >
           <Textarea
             rows={4}
             {...register('qualifications')}
-            placeholder="Master in Klinischer Psychologie&#10;Systemische Familientherapie&#10;Traumatherapie (EMDR)"
+            placeholder={t('profileEditor.qualificationsPlaceholder')}
           />
         </FormField>
         <FormField
           id="ageGroups"
-          label="Zielgruppen / Altersgruppen"
-          helperText="Eine Zielgruppe pro Zeile, z. B. 'Erwachsene', 'Jugendliche', 'Kinder'"
+          label={t('profileEditor.ageGroups')}
+          helperText={t('profileEditor.ageGroupsHelper')}
         >
           <Textarea
             rows={3}
             {...register('ageGroups')}
-            placeholder="Erwachsene&#10;Jugendliche (ab 14 Jahren)&#10;Paare"
+            placeholder={t('profileEditor.ageGroupsPlaceholder')}
           />
         </FormField>
         <FormField
           id="acceptedInsurance"
-          label="Akzeptierte Versicherungen"
-          helperText="Eine Versicherung pro Zeile, oder 'Alle Kassen', 'Privat'"
+          label={t('profileEditor.acceptedInsurance')}
+          helperText={t('profileEditor.acceptedInsuranceHelper')}
         >
           <Textarea
             rows={3}
             {...register('acceptedInsurance')}
-            placeholder="Alle Kassen&#10;Private Zusatzversicherungen&#10;Selbstzahler"
+            placeholder={t('profileEditor.acceptedInsurancePlaceholder')}
           />
         </FormField>
         <label className="flex items-center gap-3 rounded-lg border border-divider bg-surface-1 px-4 py-3 text-sm font-medium text-default">
@@ -623,7 +625,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             className="h-4 w-4 rounded border-divider text-primary focus:ring-primary"
             {...register('privatePractice')}
           />
-          Ausschließlich Privatpraxis (keine Kassenleistung)
+          {t('profileEditor.privatePractice')}
         </label>
       </section>
 
@@ -652,24 +654,24 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-neutral-900">Rahmendaten & Preise</h3>
-            <p className="text-sm text-muted">Standort, Preise und Erfahrung</p>
+            <h3 className="text-lg font-bold text-neutral-900">{t('profileEditor.frameworkSection')}</h3>
+            <p className="text-sm text-muted">{t('profileEditor.frameworkSectionDesc')}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField id="city" label="Praxisort">
-            <Input {...register('city')} placeholder="z. B. Wien" />
+          <FormField id="city" label={t('profileEditor.location')}>
+            <Input {...register('city')} placeholder={t('profileEditor.cityPlaceholder')} />
           </FormField>
-          <FormField id="country" label="Land" helperText="Zweibuchstabiger Code, z. B. AT.">
-            <Input {...register('country')} placeholder="AT" />
+          <FormField id="country" label={t('profileEditor.country')} helperText={t('profileEditor.countryHelper')}>
+            <Input {...register('country')} placeholder={t('profileEditor.countryPlaceholder')} />
           </FormField>
-          <FormField id="priceMin" label="Preis Minimum (€)">
+          <FormField id="priceMin" label={t('profileEditor.priceMin')}>
             <Input type="number" step="1" min="0" {...register('priceMin')} placeholder="80" />
           </FormField>
-          <FormField id="priceMax" label="Preis Maximum (€)">
+          <FormField id="priceMax" label={t('profileEditor.priceMax')}>
             <Input type="number" step="1" min="0" {...register('priceMax')} placeholder="120" />
           </FormField>
-          <FormField id="yearsExperience" label="Jahre Erfahrung">
+          <FormField id="yearsExperience" label={t('profileEditor.yearsExperience')}>
             <Input
               type="number"
               min="0"
@@ -686,7 +688,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
               className="h-4 w-4 rounded border-divider text-primary focus:ring-primary"
               {...register('acceptingClients')}
             />
-            Nimmt neue Klient:innen an
+            {t('profileEditor.acceptingClients')}
           </label>
           <label className="flex items-center gap-3 rounded-lg border border-divider bg-surface-1 px-4 py-3 text-sm font-medium text-default">
             <input
@@ -694,7 +696,7 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
               className="h-4 w-4 rounded border-divider text-primary focus:ring-primary"
               {...register('online')}
             />
-            Bietet Online-Termine an
+            {t('profileEditor.offersOnline')}
           </label>
         </div>
       </section>
@@ -705,10 +707,10 @@ export function SetcardEditor({ initialValues, onSuccessfulUpdate }: SetcardEdit
           {status === 'saving' ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-              Speichern...
+              {t('profileEditor.saving')}
             </>
           ) : (
-            'Änderungen speichern'
+            t('profileEditor.saveChanges')
           )}
         </Button>
       </div>

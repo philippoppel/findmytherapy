@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { X, Filter, Search } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '@/lib/i18n';
 
 type FilterState = {
   formats: string[];
@@ -20,12 +21,6 @@ type TherapistFilterModalProps = {
   initialFilters?: FilterState;
 };
 
-const formatOptions = [
-  { value: 'online', label: 'Online' },
-  { value: 'praesenz', label: 'Vor Ort' },
-  { value: 'hybrid', label: 'Hybrid' },
-];
-
 export function TherapistFilterModal({
   isOpen,
   onClose,
@@ -34,6 +29,14 @@ export function TherapistFilterModal({
   onApplyFilters,
   initialFilters,
 }: TherapistFilterModalProps) {
+  const { t } = useTranslation();
+
+  const formatOptions = [
+    { value: 'online', labelKey: 'therapistFilter.online' },
+    { value: 'praesenz', labelKey: 'therapistFilter.inPerson' },
+    { value: 'hybrid', labelKey: 'therapistFilter.hybrid' },
+  ];
+
   const [filters, setFilters] = useState<FilterState>(
     initialFilters || {
       formats: [],
@@ -113,15 +116,15 @@ export function TherapistFilterModal({
                   <Filter className="h-5 w-5 text-white" aria-hidden />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Erweiterte Filter</h2>
-                  <p className="text-sm text-white/70">Finde die passende Therapeut:in</p>
+                  <h2 className="text-xl font-bold text-white">{t('therapistFilter.title')}</h2>
+                  <p className="text-sm text-white/70">{t('therapistFilter.subtitle')}</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={onClose}
                 className="flex h-10 w-10 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
-                aria-label="Schließen"
+                aria-label={t('therapistFilter.close')}
               >
                 <X className="h-5 w-5" aria-hidden />
               </button>
@@ -134,11 +137,11 @@ export function TherapistFilterModal({
                 <div>
                   <div className="mb-3 flex items-center justify-between">
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-white/80">
-                      Format
+                      {t('therapistFilter.format')}
                     </h3>
                     {filters.formats.length > 0 && (
                       <span className="text-xs text-white/60">
-                        {filters.formats.length} ausgewählt
+                        {t('therapistFilter.selected', { count: filters.formats.length.toString() })}
                       </span>
                     )}
                   </div>
@@ -154,7 +157,7 @@ export function TherapistFilterModal({
                             : 'border-white/30 bg-white/10 text-white hover:border-white/50 hover:bg-white/20'
                         }`}
                       >
-                        {option.label}
+                        {t(option.labelKey)}
                       </button>
                     ))}
                   </div>
@@ -165,11 +168,11 @@ export function TherapistFilterModal({
                   <div>
                     <div className="mb-3 flex items-center justify-between">
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-white/80">
-                        Schwerpunkte
+                        {t('therapistFilter.specialties')}
                       </h3>
                       {filters.specialties.length > 0 && (
                         <span className="text-xs text-white/60">
-                          {filters.specialties.length} ausgewählt
+                          {t('therapistFilter.selected', { count: filters.specialties.length.toString() })}
                         </span>
                       )}
                     </div>
@@ -197,11 +200,11 @@ export function TherapistFilterModal({
                   <div>
                     <div className="mb-3 flex items-center justify-between">
                       <h3 className="text-sm font-semibold uppercase tracking-wide text-white/80">
-                        Sprachen
+                        {t('therapistFilter.languages')}
                       </h3>
                       {filters.languages.length > 0 && (
                         <span className="text-xs text-white/60">
-                          {filters.languages.length} ausgewählt
+                          {t('therapistFilter.selected', { count: filters.languages.length.toString() })}
                         </span>
                       )}
                     </div>
@@ -232,7 +235,7 @@ export function TherapistFilterModal({
                 {activeFilterCount > 0 ? (
                   <>
                     <span className="text-sm text-white/80">
-                      {activeFilterCount} {activeFilterCount === 1 ? 'Filter' : 'Filter'} aktiv
+                      {t('therapistFilter.activeFilters', { count: activeFilterCount.toString() })}
                     </span>
                     <Button
                       variant="ghost"
@@ -240,11 +243,11 @@ export function TherapistFilterModal({
                       onClick={clearAllFilters}
                       className="text-white/70 hover:bg-white/10 hover:text-white"
                     >
-                      Zurücksetzen
+                      {t('common.reset')}
                     </Button>
                   </>
                 ) : (
-                  <span className="text-sm text-white/50">Keine Filter ausgewählt</span>
+                  <span className="text-sm text-white/50">{t('triage.noFiltersSelected')}</span>
                 )}
               </div>
               <div className="flex gap-3">
@@ -253,14 +256,14 @@ export function TherapistFilterModal({
                   onClick={onClose}
                   className="border-white/60 bg-white/5 text-white hover:border-white hover:bg-white/15"
                 >
-                  Abbrechen
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   onClick={handleApply}
                   className="bg-primary-600 text-white shadow-lg hover:bg-primary-500"
                 >
                   <Search className="mr-2 h-4 w-4" aria-hidden />
-                  Anwenden
+                  {t('common.apply')}
                 </Button>
               </div>
             </div>

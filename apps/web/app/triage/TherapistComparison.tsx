@@ -3,6 +3,7 @@
 import { X, Star, MapPin, Globe, Clock } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import Image from 'next/image';
+import { useTranslation } from '@/lib/i18n';
 
 type TherapistRecommendation = {
   id: string;
@@ -28,7 +29,20 @@ type TherapistComparisonProps = {
 };
 
 export function TherapistComparison({ therapists, onClose }: TherapistComparisonProps) {
+  const { t } = useTranslation();
+
   if (therapists.length === 0) return null;
+
+  const getFormatLabel = (tag: 'online' | 'praesenz' | 'hybrid') => {
+    switch (tag) {
+      case 'online':
+        return t('therapistComparison.online');
+      case 'praesenz':
+        return t('therapistComparison.inPerson');
+      case 'hybrid':
+        return t('therapistComparison.hybrid');
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -36,13 +50,16 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-divider bg-white/95 px-6 py-4 backdrop-blur">
           <div>
-            <h2 className="text-xl font-bold text-default">Therapeuten-Vergleich</h2>
-            <p className="text-sm text-muted">{therapists.length} Therapeut:innen im Vergleich</p>
+            <h2 className="text-xl font-bold text-default">{t('therapistComparison.title')}</h2>
+            <p className="text-sm text-muted">
+              {t('therapistComparison.therapistsInComparison', { count: therapists.length.toString() })}
+            </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="rounded-full p-2 transition hover:bg-surface-1"
+            aria-label={t('common.close')}
           >
             <X className="h-5 w-5 text-muted" aria-hidden />
           </button>
@@ -54,7 +71,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
             <thead className="border-b border-divider bg-surface-1">
               <tr>
                 <th className="sticky left-0 z-10 bg-surface-1 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted">
-                  Kriterium
+                  {t('therapistComparison.criterion')}
                 </th>
                 {therapists.map((therapist) => (
                   <th key={therapist.id} className="min-w-[250px] px-4 py-3">
@@ -87,7 +104,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
               {/* Rating */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Bewertung
+                  {t('therapistComparison.rating')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
@@ -102,30 +119,30 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                         )}
                       </div>
                     ) : (
-                      <span className="text-xs text-muted">Noch keine Bewertungen</span>
+                      <span className="text-xs text-muted">{t('therapistComparison.noRatingsYet')}</span>
                     )}
                   </td>
                 ))}
               </tr>
 
-              {/* Erfahrung */}
+              {/* Experience */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Berufserfahrung
+                  {t('therapistComparison.experience')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
                     <span className="text-sm text-default">
-                      {therapist.yearsExperience ? `${therapist.yearsExperience} Jahre` : '—'}
+                      {therapist.yearsExperience ? `${therapist.yearsExperience} ${t('common.years')}` : '—'}
                     </span>
                   </td>
                 ))}
               </tr>
 
-              {/* Schwerpunkte */}
+              {/* Specialties */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Schwerpunkte
+                  {t('therapistComparison.specialties')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4">
@@ -140,7 +157,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                       ))}
                       {therapist.focus.length > 4 && (
                         <span className="text-xs text-muted">
-                          +{therapist.focus.length - 4} weitere
+                          +{therapist.focus.length - 4} {t('common.more')}
                         </span>
                       )}
                     </div>
@@ -151,7 +168,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
               {/* Format */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Format
+                  {t('therapistComparison.format')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4">
@@ -161,9 +178,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                           key={tag}
                           className="rounded-full bg-primary-100 px-2 py-1 text-xs font-medium text-primary-800"
                         >
-                          {tag === 'online' && 'Online'}
-                          {tag === 'praesenz' && 'Präsenz'}
-                          {tag === 'hybrid' && 'Hybrid'}
+                          {getFormatLabel(tag)}
                         </span>
                       ))}
                     </div>
@@ -171,10 +186,10 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                 ))}
               </tr>
 
-              {/* Standort */}
+              {/* Location */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Standort
+                  {t('therapistComparison.location')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
@@ -186,10 +201,10 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                 ))}
               </tr>
 
-              {/* Sprachen */}
+              {/* Languages */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Sprachen
+                  {t('therapistComparison.languages')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
@@ -202,10 +217,10 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                 ))}
               </tr>
 
-              {/* Verfügbarkeit */}
+              {/* Availability */}
               <tr>
                 <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                  Verfügbarkeit
+                  {t('therapistComparison.availability')}
                 </td>
                 {therapists.map((therapist) => (
                   <td key={therapist.id} className="px-4 py-4 text-center">
@@ -228,7 +243,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
               {therapists.some((t) => t.services && t.services.length > 0) && (
                 <tr>
                   <td className="sticky left-0 z-10 bg-white px-4 py-4 text-sm font-medium text-default">
-                    Leistungen
+                    {t('therapistComparison.services')}
                   </td>
                   {therapists.map((therapist) => (
                     <td key={therapist.id} className="px-4 py-4">
@@ -241,7 +256,7 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
                             </li>
                           ))}
                           {therapist.services.length > 3 && (
-                            <li className="text-muted">+{therapist.services.length - 3} weitere</li>
+                            <li className="text-muted">+{therapist.services.length - 3} {t('common.more')}</li>
                           )}
                         </ul>
                       ) : (
@@ -259,13 +274,13 @@ export function TherapistComparison({ therapists, onClose }: TherapistComparison
         <div className="sticky bottom-0 border-t border-divider bg-white/95 px-6 py-4 backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Button variant="ghost" onClick={onClose}>
-              Schließen
+              {t('common.close')}
             </Button>
             <div className="flex gap-3">
               {therapists.map((therapist) => (
                 <Button key={therapist.id} size="sm" asChild>
                   <a href={`/therapists/${therapist.id}`}>
-                    {therapist.name.split(' ')[0]} kontaktieren
+                    {therapist.name.split(' ')[0]} {t('common.contact')}
                   </a>
                 </Button>
               ))}

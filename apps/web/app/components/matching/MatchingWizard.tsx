@@ -14,15 +14,15 @@ import {
 import { useMatchingWizard } from './MatchingWizardContext';
 import { useTranslation } from '@/lib/i18n';
 
-// Vereinfachte 3 Schritte
-const STEPS = [
-  { id: 1, title: 'Thema', description: 'Was beschäftigt dich?' },
-  { id: 2, title: 'Format', description: 'Wie möchtest du?' },
-  { id: 3, title: 'Details', description: 'Fast geschafft' },
-];
-
 export function MatchingWizard() {
   const { t } = useTranslation();
+
+  // Translated steps
+  const STEPS = [
+    { id: 1, title: t('wizard.steps.topic.title'), description: t('wizard.steps.topic.description') },
+    { id: 2, title: t('wizard.steps.format.title'), description: t('wizard.steps.format.description') },
+    { id: 3, title: t('wizard.steps.details.title'), description: t('wizard.steps.details.description') },
+  ];
   const {
     isOpen,
     closeWizard,
@@ -142,7 +142,7 @@ export function MatchingWizard() {
               <button
                 onClick={handleClose}
                 className="absolute right-0 top-0 rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-                aria-label="Schließen"
+                aria-label={t('wizard.close')}
               >
                 <X className="h-6 w-6" />
               </button>
@@ -151,7 +151,7 @@ export function MatchingWizard() {
                 {STEPS[currentStep - 1].description}
               </h2>
               <p className="text-muted" role="status" aria-live="polite" aria-atomic="true">
-                Schritt {currentStep} von {STEPS.length}
+                {t('wizard.stepOf', { current: currentStep.toString(), total: STEPS.length.toString() })}
               </p>
             </div>
 
@@ -163,7 +163,7 @@ export function MatchingWizard() {
             )}
 
             {/* Progress */}
-            <div className="mb-8" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={STEPS.length} aria-label={`Fortschritt: Schritt ${currentStep} von ${STEPS.length}`}>
+            <div className="mb-8" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={STEPS.length} aria-label={t('wizard.progress', { current: currentStep.toString(), total: STEPS.length.toString() })}>
               <div className="h-2 overflow-hidden rounded-full bg-neutral-200">
                 <motion.div
                   className="h-full bg-gradient-to-r from-primary-500 to-primary-600"
@@ -184,11 +184,11 @@ export function MatchingWizard() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* Schritt 1: Themen mit Bildern */}
+                  {/* Step 1: Topics with images */}
                   {currentStep === 1 && (
                     <div>
                       <p className="mb-6 text-center text-muted">
-                        Wähle alle Themen aus, die auf dich zutreffen
+                        {t('wizard.selectTopics')}
                       </p>
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                         {PROBLEM_AREAS.map((area) => {
@@ -243,11 +243,11 @@ export function MatchingWizard() {
                     </div>
                   )}
 
-                  {/* Schritt 2: Format mit Bildern */}
+                  {/* Step 2: Format with images */}
                   {currentStep === 2 && (
                     <div>
                       <p className="mb-6 text-center text-muted">
-                        Wie möchtest du deine Therapie machen?
+                        {t('wizard.selectFormat')}
                       </p>
 
                       {/* Format-Auswahl */}
@@ -302,12 +302,12 @@ export function MatchingWizard() {
                         })}
                       </div>
 
-                      {/* Standort (nur wenn nicht rein Online) */}
+                      {/* Location (only when not purely online) */}
                       {formData.format !== 'ONLINE' && (
                         <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
                           <label htmlFor="location-input" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                             <MapPin className="h-4 w-4 text-primary-600" />
-                            Wo suchst du?
+                            {t('wizard.locationQuestion')}
                           </label>
                           <input
                             id="location-input"
@@ -321,11 +321,11 @@ export function MatchingWizard() {
                                 updateForm({ city: value, postalCode: '' });
                               }
                             }}
-                            placeholder="PLZ oder Stadt eingeben"
+                            placeholder={`${t('wizard.postalCode')} ${t('wizard.or')} ${t('wizard.city')}`}
                             className="w-full rounded-xl border-2 border-neutral-200 px-4 py-3 text-base transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
                           />
                           <p className="mt-3 text-sm text-muted">
-                            Umkreis: <span className="font-medium">{formData.maxDistanceKm} km</span>
+                            {t('triage.radiusLabel')}: <span className="font-medium">{formData.maxDistanceKm} km</span>
                             <input
                               type="range"
                               min="5"
@@ -343,14 +343,14 @@ export function MatchingWizard() {
                     </div>
                   )}
 
-                  {/* Schritt 3: Details (vereinfacht) */}
+                  {/* Step 3: Details (simplified) */}
                   {currentStep === 3 && (
                     <div className="space-y-8">
-                      {/* Sprachen */}
+                      {/* Languages */}
                       <div role="group" aria-labelledby="language-label">
                         <div id="language-label" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                           <Globe className="h-4 w-4 text-primary-600" />
-                          In welcher Sprache?
+                          {t('wizard.selectLanguages')}
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {LANGUAGES.map((lang) => {
@@ -372,18 +372,18 @@ export function MatchingWizard() {
                         </div>
                       </div>
 
-                      {/* Versicherung */}
+                      {/* Insurance */}
                       <div role="group" aria-labelledby="insurance-label">
                         <div id="insurance-label" className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                           <Wallet className="h-4 w-4 text-primary-600" />
-                          Kostenübernahme
+                          {t('triage.insurance')}
                         </div>
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                           {[
-                            { id: 'ANY', label: 'Egal', Icon: Check },
-                            { id: 'PUBLIC', label: 'Kasse', Icon: Heart },
-                            { id: 'PRIVATE', label: 'Privat', Icon: Briefcase },
-                            { id: 'SELF_PAY', label: 'Selbst', Icon: CreditCard },
+                            { id: 'ANY', labelKey: 'triage.genderAny', Icon: Check },
+                            { id: 'PUBLIC', labelKey: 'triage.publicInsurance', Icon: Heart },
+                            { id: 'PRIVATE', labelKey: 'triage.privateInsurance', Icon: Briefcase },
+                            { id: 'SELF_PAY', labelKey: 'triage.selfPay', Icon: CreditCard },
                           ].map((ins) => {
                             const isSelected = formData.insuranceType === ins.id;
                             return (
@@ -406,7 +406,7 @@ export function MatchingWizard() {
                                 <span
                                   className={`text-sm font-medium ${isSelected ? 'text-primary-700' : 'text-neutral-700'}`}
                                 >
-                                  {ins.label}
+                                  {t(ins.labelKey)}
                                 </span>
                               </button>
                             );
@@ -468,12 +468,12 @@ export function MatchingWizard() {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           />
                         </svg>
-                        Suche läuft...
+                        {t('wizard.searching')}
                       </>
                     ) : (
                       <>
                         <Search className="h-5 w-5" />
-                        Ergebnisse anzeigen
+                        {t('wizard.findTherapists')}
                       </>
                     )}
                   </button>
@@ -484,7 +484,7 @@ export function MatchingWizard() {
             {/* Privacy note */}
             <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted">
               <Lock className="h-4 w-4" />
-              Deine Daten werden vertraulich behandelt
+              {t('triage.privacyNoteData')}
             </div>
           </div>
         </div>

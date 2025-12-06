@@ -1,6 +1,7 @@
 'use client';
 
 import { TrendingDown, TrendingUp, Minus } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 type TriageDataPoint = {
   date: string;
@@ -37,12 +38,13 @@ function calculateTrend(
 }
 
 export function ProgressChart({ data, className = '' }: ProgressChartProps) {
+  const { t } = useTranslation();
+
   if (data.length === 0) {
     return (
       <div className={`rounded-2xl border border-divider bg-surface-1/90 p-6 ${className}`}>
         <p className="text-center text-sm text-muted">
-          Noch keine Verlaufsdaten vorhanden. Führe die Ersteinschätzung regelmäßig durch, um deinen
-          Fortschritt zu sehen.
+          {t('progressChart.noData')}
         </p>
       </div>
     );
@@ -55,26 +57,26 @@ export function ProgressChart({ data, className = '' }: ProgressChartProps) {
   const maxGAD7 = Math.max(...data.map((d) => d.gad7Score), 21);
 
   return (
-    <div className={`rounded-2xl border border-divider bg-white p-6 ${className}`} aria-label="Fortschrittsdiagramm">
+    <div className={`rounded-2xl border border-divider bg-white p-6 ${className}`} aria-label={t('progressChart.ariaLabel')}>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-default">Dein Verlauf</h3>
-        <p className="text-sm text-muted" aria-live="polite">{data.length} Messungen</p>
+        <h3 className="text-lg font-semibold text-default">{t('progressChart.title')}</h3>
+        <p className="text-sm text-muted" aria-live="polite">{data.length} {t('progressChart.measurements')}</p>
       </div>
 
       {/* PHQ-9 Chart */}
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-default">PHQ-9 (Depression)</span>
+            <span className="text-sm font-semibold text-default">{t('progressChart.phq9Label')}</span>
             {phq9Trend === 'down' && (
-              <TrendingDown className="h-4 w-4 text-emerald-600" aria-label="Verbesserung" />
+              <TrendingDown className="h-4 w-4 text-emerald-600" aria-label={t('progressChart.improving')} />
             )}
             {phq9Trend === 'up' && (
-              <TrendingUp className="h-4 w-4 text-red-600" aria-label="Verschlechterung" />
+              <TrendingUp className="h-4 w-4 text-red-600" aria-label={t('progressChart.worsening')} />
             )}
-            {phq9Trend === 'stable' && <Minus className="h-4 w-4 text-muted" aria-label="Stabil" />}
+            {phq9Trend === 'stable' && <Minus className="h-4 w-4 text-muted" aria-label={t('progressChart.stable')} />}
           </div>
-          <span className="text-sm text-muted">Aktuell: {data[data.length - 1]?.phq9Score}/27</span>
+          <span className="text-sm text-muted">{t('progressChart.current')}: {data[data.length - 1]?.phq9Score}/27</span>
         </div>
         <div className="relative h-24 w-full">
           {/* Background grid */}
@@ -135,16 +137,16 @@ export function ProgressChart({ data, className = '' }: ProgressChartProps) {
       <div>
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-default">GAD-7 (Angst)</span>
+            <span className="text-sm font-semibold text-default">{t('progressChart.gad7Label')}</span>
             {gad7Trend === 'down' && (
-              <TrendingDown className="h-4 w-4 text-emerald-600" aria-label="Verbesserung" />
+              <TrendingDown className="h-4 w-4 text-emerald-600" aria-label={t('progressChart.improving')} />
             )}
             {gad7Trend === 'up' && (
-              <TrendingUp className="h-4 w-4 text-red-600" aria-label="Verschlechterung" />
+              <TrendingUp className="h-4 w-4 text-red-600" aria-label={t('progressChart.worsening')} />
             )}
-            {gad7Trend === 'stable' && <Minus className="h-4 w-4 text-muted" aria-label="Stabil" />}
+            {gad7Trend === 'stable' && <Minus className="h-4 w-4 text-muted" aria-label={t('progressChart.stable')} />}
           </div>
-          <span className="text-sm text-muted">Aktuell: {data[data.length - 1]?.gad7Score}/21</span>
+          <span className="text-sm text-muted">{t('progressChart.current')}: {data[data.length - 1]?.gad7Score}/21</span>
         </div>
         <div className="relative h-24 w-full">
           {/* Background grid */}
@@ -203,18 +205,18 @@ export function ProgressChart({ data, className = '' }: ProgressChartProps) {
 
       {/* Trend summary */}
       <div className="mt-4 rounded-lg bg-surface-1 p-3 text-sm" role="status" aria-live="polite">
-        <p className="font-semibold text-default">Zusammenfassung</p>
+        <p className="font-semibold text-default">{t('progressChart.summary')}</p>
         <p className="mt-1 text-muted">
           {phq9Trend === 'down' &&
             gad7Trend === 'down' &&
-            'Beide Werte zeigen eine positive Entwicklung. Bleib dran!'}
+            t('progressChart.bothImproving')}
           {phq9Trend === 'up' &&
             gad7Trend === 'up' &&
-            'Beide Werte haben sich erhöht. Lass uns gemeinsam schauen, was helfen könnte.'}
-          {phq9Trend === 'stable' && gad7Trend === 'stable' && 'Deine Werte sind stabil.'}
+            t('progressChart.bothWorsening')}
+          {phq9Trend === 'stable' && gad7Trend === 'stable' && t('progressChart.bothStable')}
           {((phq9Trend === 'down' && gad7Trend !== 'down') ||
             (phq9Trend !== 'down' && gad7Trend === 'down')) &&
-            'Gemischte Entwicklung. Manche Bereiche verbessern sich, andere benötigen mehr Aufmerksamkeit.'}
+            t('progressChart.mixedProgress')}
         </p>
       </div>
     </div>

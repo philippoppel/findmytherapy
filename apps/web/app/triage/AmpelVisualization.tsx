@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
 import { ScoringExplainer } from './ScoringExplainer';
 import { populationBenchmarks, findClosestBenchmark } from '../../lib/triage/scientific-benchmarks';
+import { useTranslation } from '@/lib/i18n';
 
 type AmpelColor = 'green' | 'yellow' | 'red';
 
@@ -17,11 +18,9 @@ type AmpelVisualizationProps = {
   className?: string;
 };
 
-const ampelConfig: Record<
+const ampelStyleConfig: Record<
   AmpelColor,
   {
-    label: string;
-    description: string;
     bgColor: string;
     borderColor: string;
     lightColor: string;
@@ -29,85 +28,22 @@ const ampelConfig: Record<
   }
 > = {
   green: {
-    label: 'Grün – Geringe Belastung',
-    description:
-      'Minimale bis leichte Symptome. Präventive Maßnahmen und Selbsthilfe-Programme werden empfohlen.',
     bgColor: 'bg-emerald-50',
     borderColor: 'border-emerald-300',
     lightColor: 'bg-emerald-500',
     textColor: 'text-emerald-900',
   },
   yellow: {
-    label: 'Gelb – Mittlere Belastung',
-    description:
-      'Mittelschwere Symptome mit spürbarer Beeinträchtigung. Professionelle Unterstützung wird empfohlen.',
     bgColor: 'bg-amber-50',
     borderColor: 'border-amber-300',
     lightColor: 'bg-amber-500',
     textColor: 'text-amber-900',
   },
   red: {
-    label: 'Rot – Hohe Belastung',
-    description:
-      'Schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe erforderlich.',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-300',
     lightColor: 'bg-red-500',
     textColor: 'text-red-900',
-  },
-};
-
-const ampelDetailsContent: Record<
-  AmpelColor,
-  {
-    meaning: string;
-    nextSteps: string[];
-    resources: string[];
-  }
-> = {
-  green: {
-    meaning:
-      'Deine Einschätzung zeigt minimale bis keine Symptome. Das ist ein gutes Zeichen für dein aktuelles Wohlbefinden.',
-    nextSteps: [
-      'Präventive Maßnahmen: Achte weiterhin auf dein Wohlbefinden',
-      'Selbstfürsorge: Integriere regelmäßige Entspannung in deinen Alltag',
-      'Weiterbildung: Nutze Psychoedukation zur Stärkung deiner Resilienz',
-    ],
-    resources: [
-      'Selbsthilfe-Kurse zur Stressbewältigung',
-      'Achtsamkeits- und Entspannungsübungen',
-      'Informationsressourcen zu mentaler Gesundheit',
-    ],
-  },
-  yellow: {
-    meaning:
-      'Deine Einschätzung zeigt mittelschwere Symptome, die im Alltag spürbar sind. Professionelle Unterstützung kann hilfreich sein.',
-    nextSteps: [
-      'Therapeutische Unterstützung: Erwäge eine professionelle Beratung oder Psychotherapie',
-      'Strukturierte Programme: Nutze angeleitete Selbsthilfe-Programme',
-      'Regelmäßige Selbstbeobachtung: Führe ein Stimmungstagebuch',
-    ],
-    resources: [
-      'Vermittlung zu qualifizierten Therapeut:innen',
-      'Strukturierte Online-Kurse mit therapeutischer Begleitung',
-      'Check-ins mit unserem Care-Team',
-    ],
-  },
-  red: {
-    meaning:
-      'Deine Einschätzung zeigt schwere Symptome mit erheblicher Beeinträchtigung. Dringende professionelle Hilfe ist erforderlich.',
-    nextSteps: [
-      'SOFORT: Kontaktiere professionelle Hilfe bei akuter Gefahr (Notruf 144, Telefonseelsorge 142)',
-      'Therapeutische Behandlung: Vereinbare zeitnah einen Termin bei Therapeut:in oder Psychiater:in',
-      'Unterstützungsnetzwerk: Informiere vertraute Personen über deine Situation',
-      'Medizinische Abklärung: Erwäge eine psychiatrische Untersuchung',
-    ],
-    resources: [
-      'Kriseninterventionsdienste (24/7 verfügbar)',
-      'Sofortvermittlung zu Therapeut:innen',
-      'Psychiatrische Notfallambulanzen',
-      'Unser Care-Team für sofortige Unterstützung',
-    ],
   },
 };
 
@@ -119,11 +55,58 @@ export function AmpelVisualization({
   gad7Severity,
   className = '',
 }: AmpelVisualizationProps) {
-  const config = ampelConfig[color];
+  const { t } = useTranslation();
+  const styleConfig = ampelStyleConfig[color];
   const populationAvg = populationBenchmarks[0];
   const closestBenchmark = findClosestBenchmark(phq9Score, gad7Score);
   const [showDetails, setShowDetails] = useState(false);
-  const details = ampelDetailsContent[color];
+
+  // Get translated config based on color
+  const getConfig = () => {
+    switch (color) {
+      case 'green':
+        return {
+          label: t('ampel.greenLabel'),
+          description: t('ampel.greenDesc'),
+        };
+      case 'yellow':
+        return {
+          label: t('ampel.yellowLabel'),
+          description: t('ampel.yellowDesc'),
+        };
+      case 'red':
+        return {
+          label: t('ampel.redLabel'),
+          description: t('ampel.redDesc'),
+        };
+    }
+  };
+
+  const getDetails = () => {
+    switch (color) {
+      case 'green':
+        return {
+          meaning: t('ampel.greenMeaning'),
+          nextSteps: [t('ampel.greenStep1'), t('ampel.greenStep2'), t('ampel.greenStep3')],
+          resources: [t('ampel.greenRes1'), t('ampel.greenRes2'), t('ampel.greenRes3')],
+        };
+      case 'yellow':
+        return {
+          meaning: t('ampel.yellowMeaning'),
+          nextSteps: [t('ampel.yellowStep1'), t('ampel.yellowStep2'), t('ampel.yellowStep3')],
+          resources: [t('ampel.yellowRes1'), t('ampel.yellowRes2'), t('ampel.yellowRes3')],
+        };
+      case 'red':
+        return {
+          meaning: t('ampel.redMeaning'),
+          nextSteps: [t('ampel.redStep1'), t('ampel.redStep2'), t('ampel.redStep3'), t('ampel.redStep4')],
+          resources: [t('ampel.redRes1'), t('ampel.redRes2'), t('ampel.redRes3'), t('ampel.redRes4')],
+        };
+    }
+  };
+
+  const config = { ...styleConfig, ...getConfig() };
+  const details = getDetails();
 
   return (
     <div className={`space-y-4 ${className}`}>
@@ -146,7 +129,7 @@ export function AmpelVisualization({
                 repeat: color === 'red' ? Infinity : 0,
                 ease: 'easeInOut',
               }}
-              aria-label="Rote Ampel"
+              aria-label={t('ampel.ariaRed')}
             />
             {/* Gelb */}
             <motion.div
@@ -165,7 +148,7 @@ export function AmpelVisualization({
                 repeat: color === 'yellow' ? Infinity : 0,
                 ease: 'easeInOut',
               }}
-              aria-label="Gelbe Ampel"
+              aria-label={t('ampel.ariaYellow')}
             />
             {/* Grün */}
             <motion.div
@@ -184,7 +167,7 @@ export function AmpelVisualization({
                 repeat: color === 'green' ? Infinity : 0,
                 ease: 'easeInOut',
               }}
-              aria-label="Grüne Ampel"
+              aria-label={t('ampel.ariaGreen')}
             />
           </div>
         </div>
@@ -205,7 +188,7 @@ export function AmpelVisualization({
             className={`mx-auto flex items-center gap-2 rounded-full border-2 ${config.borderColor} bg-white px-4 py-2 text-sm font-semibold ${config.textColor} transition hover:opacity-90`}
           >
             <Lightbulb className="h-4 w-4" aria-hidden />
-            {showDetails ? 'Details ausblenden' : 'Was bedeutet das für mich?'}
+            {showDetails ? t('ampel.hideDetails') : t('ampel.showDetails')}
             {showDetails ? (
               <ChevronUp className="h-4 w-4" aria-hidden />
             ) : (
@@ -224,14 +207,14 @@ export function AmpelVisualization({
               {/* Bedeutung */}
               <div className="mb-4">
                 <h4 className="text-sm font-semibold text-default">
-                  Was bedeutet diese Einschätzung?
+                  {t('ampel.meaningTitle')}
                 </h4>
                 <p className="mt-2 text-xs text-muted">{details.meaning}</p>
               </div>
 
               {/* Nächste Schritte */}
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-default">Empfohlene nächste Schritte</h4>
+                <h4 className="text-sm font-semibold text-default">{t('ampel.nextStepsTitle')}</h4>
                 <ul className="mt-2 space-y-2">
                   {details.nextSteps.map((step, index) => (
                     <li key={index} className="flex items-start gap-2 text-xs text-muted">
@@ -246,7 +229,7 @@ export function AmpelVisualization({
 
               {/* Verfügbare Ressourcen */}
               <div>
-                <h4 className="text-sm font-semibold text-default">Verfügbare Unterstützung</h4>
+                <h4 className="text-sm font-semibold text-default">{t('ampel.resourcesTitle')}</h4>
                 <ul className="mt-2 space-y-1">
                   {details.resources.map((resource, index) => (
                     <li key={index} className="flex items-start gap-2 text-xs text-muted">
@@ -264,11 +247,11 @@ export function AmpelVisualization({
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="rounded-xl border border-divider bg-white/70 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-              PHQ-9 (Depression)
+              {t('ampel.phq9Label')}
             </p>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="text-3xl font-bold text-default">{phq9Score}</span>
-              <span className="text-sm text-muted">von 27</span>
+              <span className="text-sm text-muted">{t('ampel.of')} 27</span>
             </div>
             <p className="mt-1 text-xs capitalize text-muted">{phq9Severity.replace('_', ' ')}</p>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-2">
@@ -281,11 +264,11 @@ export function AmpelVisualization({
 
           <div className="rounded-xl border border-divider bg-white/70 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">
-              GAD-7 (Angst)
+              {t('ampel.gad7Label')}
             </p>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="text-3xl font-bold text-default">{gad7Score}</span>
-              <span className="text-sm text-muted">von 21</span>
+              <span className="text-sm text-muted">{t('ampel.of')} 21</span>
             </div>
             <p className="mt-1 text-xs capitalize text-muted">{gad7Severity.replace('_', ' ')}</p>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-2">
@@ -299,16 +282,16 @@ export function AmpelVisualization({
 
         {/* Vergleich mit wissenschaftlichen Durchschnittswerten */}
         <div className="mt-6 rounded-xl border border-divider bg-white/70 p-4">
-          <h4 className="text-sm font-semibold text-default">Vergleich mit Durchschnittswerten</h4>
+          <h4 className="text-sm font-semibold text-default">{t('ampel.comparisonTitle')}</h4>
           <p className="mt-1 text-xs text-muted">
-            Deine Werte im Vergleich zur Allgemeinbevölkerung
+            {t('ampel.comparisonDesc')}
           </p>
 
           {/* PHQ-9 Vergleich */}
           <div className="mt-4">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted">PHQ-9 Depression</span>
-              <span className="font-semibold text-default">{phq9Score} von 27</span>
+              <span className="text-muted">{t('ampel.phq9Depression')}</span>
+              <span className="font-semibold text-default">{phq9Score} {t('ampel.of')} 27</span>
             </div>
             <div className="mt-2 relative h-6 rounded-full bg-surface-2 overflow-hidden">
               {/* Durchschnitt Marker */}
@@ -331,8 +314,8 @@ export function AmpelVisualization({
           {/* GAD-7 Vergleich */}
           <div className="mt-4">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-muted">GAD-7 Angst</span>
-              <span className="font-semibold text-default">{gad7Score} von 21</span>
+              <span className="text-muted">{t('ampel.gad7Anxiety')}</span>
+              <span className="font-semibold text-default">{gad7Score} {t('ampel.of')} 21</span>
             </div>
             <div className="mt-2 relative h-6 rounded-full bg-surface-2 overflow-hidden">
               {/* Durchschnitt Marker */}
@@ -353,9 +336,9 @@ export function AmpelVisualization({
           </div>
 
           <div className="mt-3 text-[10px] text-muted space-y-1">
-            <p>⌀ = Durchschnitt Allgemeinbevölkerung: {populationAvg.description}</p>
+            <p>⌀ = {t('ampel.avgPopulation')}: {populationAvg.description}</p>
             <p>
-              Am nächsten liegst du bei: <strong>{closestBenchmark.label}</strong> –{' '}
+              {t('ampel.closestTo')}: <strong>{closestBenchmark.label}</strong> –{' '}
               {closestBenchmark.description}
             </p>
           </div>

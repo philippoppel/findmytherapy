@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { Copy, QrCode, Shield, ShieldOff } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { disableTotp, enableTotp, startTotpSetup } from '../../app/dashboard/security/actions';
+import { useTranslation } from '@/lib/i18n';
 
 type Props = {
   email: string;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export function SecuritySettings({ email, totpEnabled }: Props) {
+  const { t } = useTranslation();
   const [isPending, startTransition] = useTransition();
   const [setupSecret, setSetupSecret] = useState<string | null>(null);
   const [otpauthUrl, setOtpauthUrl] = useState<string | null>(null);
@@ -29,7 +31,7 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
         console.error(error);
         setMessage({
           type: 'error',
-          text: 'TOTP-Einrichtung konnte nicht gestartet werden.',
+          text: t('security.setupFailed'),
         });
       }
     });
@@ -40,7 +42,7 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
     if (!setupSecret) {
       setMessage({
         type: 'error',
-        text: 'Bitte generiere zuerst einen Setup-Code.',
+        text: t('security.generateFirst'),
       });
       return;
     }
@@ -53,15 +55,15 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
           type: 'error',
           text:
             result.error === 'invalid'
-              ? 'Der eingegebene Code ist ungültig oder abgelaufen.'
-              : 'Die Aktivierung ist fehlgeschlagen.',
+              ? t('security.invalidCode')
+              : t('security.activationFailed'),
         });
         return;
       }
 
       setMessage({
         type: 'success',
-        text: 'Zwei-Faktor-Authentifizierung wurde aktiviert.',
+        text: t('security.totpEnabled'),
       });
       setSetupSecret(null);
       setOtpauthUrl(null);
@@ -76,14 +78,14 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
       if (!result.ok) {
         setMessage({
           type: 'error',
-          text: 'Die Deaktivierung ist fehlgeschlagen. Bitte versuche es erneut.',
+          text: t('security.disableFailed'),
         });
         return;
       }
 
       setMessage({
         type: 'success',
-        text: 'Zwei-Faktor-Authentifizierung wurde deaktiviert.',
+        text: t('security.totpDisabled'),
       });
       setSetupSecret(null);
       setOtpauthUrl(null);
@@ -97,30 +99,29 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
 
     try {
       await navigator.clipboard.writeText(setupSecret);
-      setMessage({ type: 'success', text: 'Setup-Code wurde in die Zwischenablage kopiert.' });
+      setMessage({ type: 'success', text: t('security.codeCopied') });
     } catch {
-      setMessage({ type: 'error', text: 'Setup-Code konnte nicht kopiert werden.' });
+      setMessage({ type: 'error', text: t('security.copyFailed') });
     }
   };
 
   return (
     <section
       className="bg-white rounded-lg shadow p-6 space-y-6"
-      aria-label="Zwei-Faktor-Authentifizierung"
+      aria-label={t('security.sectionLabel')}
     >
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold uppercase tracking-wide">
           <Shield className="h-4 w-4" />
-          Sicherheit
+          {t('security.securityBadge')}
         </div>
         <h2 className="text-xl font-semibold text-gray-900">
-          Zwei-Faktor-Authentifizierung (TOTP)
+          {t('security.totpTitle')}
         </h2>
         <p className="text-sm text-gray-600">
-          Schütze dein Konto mit einem zeitbasierten Einmalpasswort. Verwende z.&nbsp;B. Microsoft
-          Authenticator, 1Password oder Google Authenticator.
+          {t('security.totpDescription')}
         </p>
-        <p className="text-xs text-gray-500">Aktuelles Konto: {email}</p>
+        <p className="text-xs text-gray-500">{t('security.currentAccount')} {email}</p>
       </header>
 
       {message && (
@@ -138,10 +139,9 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
 
       <div className="flex flex-col gap-3 rounded-lg border border-gray-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-900">Aktueller Status</p>
+          <p className="text-sm font-medium text-gray-900">{t('security.currentStatus')}</p>
           <p className="text-sm text-gray-600">
-            {totpEnabled ? 'Aktiviert' : 'Nicht aktiviert'} – empfohlen für alle Therapeut:innen
-            &amp; Admins
+            {totpEnabled ? t('security.enabled') : t('security.notEnabled')} {t('security.recommendedFor')}
           </p>
         </div>
         {totpEnabled ? (
@@ -153,7 +153,7 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
             className="self-start sm:self-auto"
           >
             <ShieldOff className="h-4 w-4 mr-2" />
-            Deaktivieren
+            {t('security.disable')}
           </Button>
         ) : (
           <Button
@@ -163,7 +163,7 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
             className="self-start sm:self-auto"
           >
             <Shield className="h-4 w-4 mr-2" />
-            Setup starten
+            {t('security.startSetup')}
           </Button>
         )}
       </div>
@@ -171,10 +171,9 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
       {setupSecret && otpauthUrl && (
         <form onSubmit={handleEnable} className="space-y-4" noValidate>
           <div className="rounded-lg border border-dashed border-gray-300 p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-gray-900">Setup-Code</h3>
+            <h3 className="text-sm font-semibold text-gray-900">{t('security.setupCode')}</h3>
             <p className="text-sm text-gray-600">
-              Scanne den Code mit deiner Authenticator-App oder gib den geheimen Schlüssel manuell
-              ein.
+              {t('security.scanCode')}
             </p>
             <code className="block rounded-md bg-gray-900 text-white text-sm tracking-widest px-4 py-3">
               {setupSecret}
@@ -182,21 +181,21 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="ghost" size="sm" onClick={copySecret}>
                 <Copy className="h-4 w-4 mr-2" />
-                Code kopieren
+                {t('security.copyCode')}
               </Button>
               <a
                 href={otpauthUrl}
                 className="inline-flex items-center rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 <QrCode className="h-4 w-4 mr-2" />
-                In Authenticator öffnen
+                {t('security.openInAuthenticator')}
               </a>
             </div>
           </div>
 
           <div>
             <label htmlFor="totpToken" className="block text-sm font-medium text-gray-700 mb-1">
-              Bestätigungs-Code
+              {t('security.confirmationCode')}
             </label>
             <input
               id="totpToken"
@@ -210,13 +209,13 @@ export function SecuritySettings({ email, totpEnabled }: Props) {
               required
             />
             <p className="text-xs text-gray-500 mt-1">
-              Gib den aktuellen 6-stelligen Code aus deiner Authenticator-App ein.
+              {t('security.enterCode')}
             </p>
           </div>
 
           <div className="flex justify-end">
             <Button type="submit" disabled={isPending}>
-              Aktivieren
+              {t('security.activate')}
             </Button>
           </div>
         </form>
