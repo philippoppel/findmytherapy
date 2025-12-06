@@ -49,6 +49,37 @@ export const translations = {
       countryBadge: 'Österreich',
     },
 
+    // Navigation
+    navigation: {
+      home: 'Startseite',
+      blog: 'Blog',
+      therapists: 'Therapeut:innen',
+      about: 'Über uns',
+      contact: 'Kontakt',
+    },
+
+    // Search Mode Selector
+    searchMode: {
+      guidedSearch: 'Geführte Suche',
+      guided: 'Geführt',
+      filterYourself: 'Selber filtern',
+      filter: 'Filter',
+      quickQuiz: 'Schnell-Quiz',
+      quiz: 'Quiz',
+      scientificTest: 'Wissenschaftlicher Test',
+      allTherapists: 'Alle Therapeut:innen',
+    },
+
+    // Matching Flow
+    matching: {
+      stepByStepTo: 'Schritt für Schritt zur',
+      fittingTherapy: 'passenden Therapie',
+      weHelpYouFind: 'Wir helfen dir, die richtigen Fragen zu stellen und finden Therapeut:innen, die zu deinen Bedürfnissen passen.',
+      readyLetsGo: 'Bereit? Los geht\'s!',
+      inFewSteps: 'In wenigen Schritten findest du Therapeut:innen, die wirklich zu dir passen.',
+      startNow: 'Jetzt starten',
+    },
+
     // Cookie Consent
     cookies: {
       closeEssentialOnly: 'Schließen (nur essenziell)',
@@ -911,11 +942,31 @@ export const translations = {
       tableOfContents: 'Inhaltsverzeichnis',
       medicalDisclaimer: 'Medizinischer Hinweis',
       disclaimerText: 'Dieser Artikel dient nur zu Informationszwecken und ersetzt keine professionelle medizinische Beratung, Diagnose oder Behandlung. Bei Fragen zu Ihrer Gesundheit wenden Sie sich bitte an eine qualifizierte medizinische Fachkraft.',
-      searchPlaceholder: 'Artikel suchen...',
+      searchPlaceholder: 'Suchen...',
       noArticlesFound: 'Keine Artikel gefunden',
       loadMore: 'Mehr laden',
       allCategories: 'Alle Kategorien',
       allTags: 'Alle Tags',
+      resultsFor: '{{count}} Ergebnisse für',
+      tryOtherTerms: 'Versuche andere Suchbegriffe.',
+      showAllArticles: 'Alle Artikel anzeigen',
+      browseByTopic: 'Nach Thema durchsuchen',
+      articlesCount: '{{count}} Artikel',
+      moreArticles: 'Weitere Artikel',
+      notSureWhereToStart: 'Nicht sicher wo du anfangen sollst?',
+      startQuiz: 'Quiz starten',
+      findTherapists: 'Therapeut:innen finden',
+      backToBlog: 'Zurück zum Blog',
+      articles: 'Artikel',
+      articlesWithTag: 'Artikel mit diesem Tag',
+      tagsInTopic: 'Tags in diesem Themenfeld',
+      articlesInFocus: 'Artikel im Fokus',
+      allArticlesOnTopic: 'Alle Artikel zum Themenbereich',
+      shareTopicWish: 'Themenwunsch senden',
+      noArticlesPublished: 'Noch keine Artikel veröffentlicht.',
+      articlesBy: 'Artikel von',
+      backToOverview: 'Zurück zur Übersicht',
+      articlesLoading: 'Artikel werden geladen...',
     },
 
     // Triage/Assessment
@@ -1956,6 +2007,37 @@ export const translations = {
       countryBadge: 'Austria',
     },
 
+    // Navigation
+    navigation: {
+      home: 'Home',
+      blog: 'Blog',
+      therapists: 'Therapists',
+      about: 'About',
+      contact: 'Contact',
+    },
+
+    // Search Mode Selector
+    searchMode: {
+      guidedSearch: 'Guided Search',
+      guided: 'Guided',
+      filterYourself: 'Filter yourself',
+      filter: 'Filter',
+      quickQuiz: 'Quick Quiz',
+      quiz: 'Quiz',
+      scientificTest: 'Scientific Test',
+      allTherapists: 'All Therapists',
+    },
+
+    // Matching Flow
+    matching: {
+      stepByStepTo: 'Step by step to',
+      fittingTherapy: 'the right therapy',
+      weHelpYouFind: 'We help you ask the right questions and find therapists that match your needs.',
+      readyLetsGo: 'Ready? Let\'s go!',
+      inFewSteps: 'In just a few steps, you\'ll find therapists that are right for you.',
+      startNow: 'Start now',
+    },
+
     // Cookie Consent
     cookies: {
       closeEssentialOnly: 'Close (essential only)',
@@ -2797,11 +2879,31 @@ export const translations = {
       tableOfContents: 'Table of Contents',
       medicalDisclaimer: 'Medical Disclaimer',
       disclaimerText: 'This article is for informational purposes only and does not replace professional medical advice, diagnosis or treatment. For questions about your health, please consult a qualified healthcare professional.',
-      searchPlaceholder: 'Search articles...',
+      searchPlaceholder: 'Search...',
       noArticlesFound: 'No articles found',
       loadMore: 'Load more',
       allCategories: 'All categories',
       allTags: 'All tags',
+      resultsFor: '{{count}} results for',
+      tryOtherTerms: 'Try different search terms.',
+      showAllArticles: 'Show all articles',
+      browseByTopic: 'Browse by topic',
+      articlesCount: '{{count}} articles',
+      moreArticles: 'More articles',
+      notSureWhereToStart: 'Not sure where to start?',
+      startQuiz: 'Start quiz',
+      findTherapists: 'Find therapists',
+      backToBlog: 'Back to blog',
+      articles: 'Articles',
+      articlesWithTag: 'Articles with this tag',
+      tagsInTopic: 'Tags in this topic',
+      articlesInFocus: 'Articles in focus',
+      allArticlesOnTopic: 'All articles on this topic',
+      shareTopicWish: 'Share topic wish',
+      noArticlesPublished: 'No articles published yet.',
+      articlesBy: 'Articles by',
+      backToOverview: 'Back to overview',
+      articlesLoading: 'Loading articles...',
     },
 
     // Triage/Assessment

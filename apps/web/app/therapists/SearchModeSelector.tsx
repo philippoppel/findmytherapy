@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Sparkles, Search, BookOpen } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 export type SearchMode = 'filter' | 'guided' | 'quiz';
 
@@ -15,6 +16,7 @@ interface SearchModeSelectorProps {
 function SearchModeSelectorInner({ initialMode = 'filter', onModeChange }: SearchModeSelectorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useTranslation();
   const [activeMode, setActiveMode] = useState<SearchMode>(initialMode);
 
   // Sync with URL on mount
@@ -46,9 +48,9 @@ function SearchModeSelectorInner({ initialMode = 'filter', onModeChange }: Searc
   }, [router, onModeChange]);
 
   const modes = [
-    { id: 'guided' as const, label: 'Geführte Suche', shortLabel: 'Geführt', icon: Sparkles },
-    { id: 'filter' as const, label: 'Selber filtern', shortLabel: 'Filter', icon: Search },
-    { id: 'quiz' as const, label: 'Schnell-Quiz', shortLabel: 'Quiz', icon: BookOpen },
+    { id: 'guided' as const, label: t('searchMode.guidedSearch'), shortLabel: t('searchMode.guided'), icon: Sparkles },
+    { id: 'filter' as const, label: t('searchMode.filterYourself'), shortLabel: t('searchMode.filter'), icon: Search },
+    { id: 'quiz' as const, label: t('searchMode.quickQuiz'), shortLabel: t('searchMode.quiz'), icon: BookOpen },
   ];
 
   return (
@@ -101,10 +103,11 @@ export function SearchModeSelector(props: SearchModeSelectorProps) {
 
 // Standalone navigation pills for pages that don't use the unified search
 export function NavigationPills({ active }: { active: SearchMode }) {
+  const { t } = useTranslation();
   const modes = [
-    { id: 'guided' as const, label: 'Geführte Suche', shortLabel: 'Geführt', icon: Sparkles, href: '/therapists?matching=true' },
-    { id: 'filter' as const, label: 'Selber filtern', shortLabel: 'Filter', icon: Search, href: '/therapists' },
-    { id: 'quiz' as const, label: 'Schnell-Quiz', shortLabel: 'Quiz', icon: BookOpen, href: '/quiz' },
+    { id: 'guided' as const, label: t('searchMode.guidedSearch'), shortLabel: t('searchMode.guided'), icon: Sparkles, href: '/therapists?matching=true' },
+    { id: 'filter' as const, label: t('searchMode.filterYourself'), shortLabel: t('searchMode.filter'), icon: Search, href: '/therapists' },
+    { id: 'quiz' as const, label: t('searchMode.quickQuiz'), shortLabel: t('searchMode.quiz'), icon: BookOpen, href: '/quiz' },
   ];
 
   return (

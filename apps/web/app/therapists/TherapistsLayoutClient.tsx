@@ -9,12 +9,14 @@ import { useMatchingWizard } from '../components/matching/MatchingWizardContext'
 import { MatchingWizard } from '../components/matching/MatchingWizard';
 import { MatchingResults } from '../components/matching/MatchingResults';
 import { NavigationPills } from './SearchModeSelector';
+import { useTranslation } from '@/lib/i18n';
 
 interface Props {
   children: ReactNode;
 }
 
 export function TherapistsLayoutClient({ children }: Props) {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const isMatchingMode = searchParams.get('matching') === 'true';
   const { openWizard, closeWizard, isOpen, showResults } = useMatchingWizard();
@@ -60,15 +62,15 @@ export function TherapistsLayoutClient({ children }: Props) {
                 className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors"
               >
                 <Home className="w-5 h-5" />
-                <span className="font-medium">Startseite</span>
+                <span className="font-medium">{t('navigation.home')}</span>
               </Link>
               <Link
                 href="/triage"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
-                aria-label="Wissenschaftlicher Test"
+                aria-label={t('searchMode.scientificTest')}
               >
                 <ClipboardCheck className="w-4 h-4" aria-hidden />
-                <span className="hidden sm:inline" aria-hidden>Wissenschaftlicher Test</span>
+                <span className="hidden sm:inline" aria-hidden>{t('searchMode.scientificTest')}</span>
               </Link>
             </nav>
 
@@ -76,16 +78,15 @@ export function TherapistsLayoutClient({ children }: Props) {
             <div className="text-center px-4 pt-8 pb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" />
-                Geführte Suche
+                {t('searchMode.guidedSearch')}
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Schritt für Schritt zur
+                {t('matching.stepByStepTo')}
                 <br className="hidden sm:block" />
-                <span className="text-primary-200"> passenden Therapie</span>
+                <span className="text-primary-200"> {t('matching.fittingTherapy')}</span>
               </h1>
               <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10">
-                Wir helfen dir, die richtigen Fragen zu stellen und finden
-                Therapeut:innen, die zu deinen Bedürfnissen passen.
+                {t('matching.weHelpYouFind')}
               </p>
 
               {/* Navigation Pills */}
@@ -106,18 +107,17 @@ export function TherapistsLayoutClient({ children }: Props) {
                     <Sparkles className="w-10 h-10 text-primary-500" />
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">
-                    Bereit? Los geht&apos;s!
+                    {t('matching.readyLetsGo')}
                   </h2>
                   <p className="text-slate-600 max-w-md mx-auto">
-                    In wenigen Schritten findest du Therapeut:innen,
-                    die wirklich zu dir passen.
+                    {t('matching.inFewSteps')}
                   </p>
                   <button
                     onClick={openWizard}
                     className="inline-flex items-center gap-2 px-8 py-4 bg-primary-500 text-white font-semibold rounded-2xl hover:bg-primary-600 transition-colors shadow-lg"
                   >
                     <Sparkles className="w-5 h-5" />
-                    Jetzt starten
+                    {t('matching.startNow')}
                   </button>
                 </div>
               )}
@@ -136,16 +136,16 @@ export function TherapistsLayoutClient({ children }: Props) {
           <div className="max-w-4xl mx-auto px-4">
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
               <Link href="/" className="hover:text-slate-700 transition-colors">
-                Startseite
+                {t('navigation.home')}
               </Link>
               <Link href="/quiz" className="hover:text-slate-700 transition-colors">
-                Schnell-Quiz
+                {t('searchMode.quickQuiz')}
               </Link>
               <Link href="/therapists" className="hover:text-slate-700 transition-colors">
-                Alle Therapeut:innen
+                {t('searchMode.allTherapists')}
               </Link>
               <Link href="/triage" className="hover:text-slate-700 transition-colors">
-                Wissenschaftlicher Test
+                {t('searchMode.scientificTest')}
               </Link>
             </div>
           </div>

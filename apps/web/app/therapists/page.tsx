@@ -7,6 +7,7 @@ import { TherapistDirectory } from './TherapistDirectorySimplified';
 import { getTherapistCards } from './getTherapistCards';
 import { NavigationPills } from './SearchModeSelector';
 import { BackLink } from '../components/BackLink';
+import { FooterLinks } from './FooterLinks';
 
 // Force dynamic rendering to prevent database access during build
 export const dynamic = 'force-dynamic';
@@ -133,20 +134,7 @@ export default async function TherapistsPage() {
       {/* Footer */}
       <footer className="border-t border-divider bg-surface-1 py-8">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted">
-            <Link href="/" className="hover:text-default transition-colors">
-              Startseite
-            </Link>
-            <Link href="/quiz" className="hover:text-default transition-colors">
-              Schnell-Quiz
-            </Link>
-            <Link href="/therapists?matching=true" className="hover:text-default transition-colors">
-              Geführte Suche
-            </Link>
-            <Link href="/triage" className="hover:text-default transition-colors">
-              Wissenschaftlicher Test
-            </Link>
-          </div>
+          <FooterLinks />
         </div>
       </footer>
 

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search, X } from 'lucide-react';
 import { BackLink } from '../components/BackLink';
+import { useTranslation } from '@/lib/i18n';
 
 type BlogPost = {
   id: string;
@@ -22,7 +23,6 @@ type BlogPost = {
 };
 
 const categoryToSlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
-const dateFormatter = new Intl.DateTimeFormat('de-AT', { dateStyle: 'medium' });
 
 // Category images for hero banners (Unsplash)
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -58,7 +58,9 @@ type BlogPageClientProps = {
 };
 
 export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
+  const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
+  const dateFormatter = new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'de-AT', { dateStyle: 'medium' });
 
   // Sort posts by date (newest first) - already sorted from server but ensure it
   const sortedPosts = useMemo(() => {
@@ -105,7 +107,7 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
             <input
               type="search"
-              placeholder="Suchen..."
+              placeholder={t('blog.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-lg border border-neutral-200 bg-neutral-50 py-3 sm:py-2.5 pl-11 pr-10 text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-100 transition-all"
@@ -127,7 +129,7 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
         {/* Search Results Info */}
         {searchQuery && (
           <div className="mb-6 sm:mb-8 flex flex-wrap items-center gap-2 sm:gap-3">
-            <span className="text-sm text-neutral-500">{filteredPosts.length} Ergebnisse für</span>
+            <span className="text-sm text-neutral-500">{t('blog.resultsFor').replace('{{count}}', String(filteredPosts.length))}</span>
             <span className="bg-neutral-100 text-neutral-700 px-3 py-1 rounded-md text-sm font-medium">
               &quot;{searchQuery}&quot;
             </span>
@@ -138,13 +140,13 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
           /* No Results */
           <div className="py-16 sm:py-24 text-center">
             <Search className="mx-auto mb-4 h-10 w-10 sm:h-12 sm:w-12 text-neutral-300" />
-            <h2 className="text-lg sm:text-xl font-semibold text-neutral-900">Keine Artikel gefunden</h2>
-            <p className="mt-2 text-sm sm:text-base text-neutral-500">Versuche andere Suchbegriffe.</p>
+            <h2 className="text-lg sm:text-xl font-semibold text-neutral-900">{t('blog.noArticlesFound')}</h2>
+            <p className="mt-2 text-sm sm:text-base text-neutral-500">{t('blog.tryOtherTerms')}</p>
             <button
               onClick={() => setSearchQuery('')}
               className="mt-6 rounded-lg bg-neutral-900 px-6 py-3 text-sm font-medium text-white hover:bg-neutral-800 transition min-h-[44px]"
             >
-              Alle Artikel anzeigen
+              {t('blog.showAllArticles')}
             </button>
           </div>
         ) : (
@@ -220,7 +222,7 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
             {/* Category Hero Banners - Horizontal scroll on mobile */}
             {!searchQuery && categories.length > 0 && (
               <section className="mb-12 sm:mb-20">
-                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">Nach Thema durchsuchen</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">{t('blog.browseByTopic')}</h2>
                 {/* Horizontal scroll on mobile */}
                 <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible snap-x snap-mandatory">
                   {categories.slice(0, 6).map((category) => {
@@ -243,7 +245,7 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
                           <h3 className="text-lg sm:text-xl font-bold text-white">{category}</h3>
-                          <p className="text-white/70 text-xs sm:text-sm mt-1">{count} Artikel</p>
+                          <p className="text-white/70 text-xs sm:text-sm mt-1">{t('blog.articlesCount').replace('{{count}}', String(count))}</p>
                         </div>
                       </Link>
                     );
@@ -273,7 +275,7 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
             {/* More Articles */}
             {!searchQuery && restPosts.length > 9 && (
               <section className="mb-12 sm:mb-20">
-                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">Weitere Artikel</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-6 sm:mb-8">{t('blog.moreArticles')}</h2>
                 <div className="space-y-4 sm:space-y-6">
                   {restPosts.slice(9).map((post) => (
                     <article key={post.slug} className="group">
@@ -308,19 +310,19 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
             {!searchQuery && (
               <section className="py-8 sm:py-12 border-t border-neutral-100">
                 <div className="text-center">
-                  <p className="text-sm sm:text-base text-neutral-500 mb-4">Nicht sicher wo du anfangen sollst?</p>
+                  <p className="text-sm sm:text-base text-neutral-500 mb-4">{t('blog.notSureWhereToStart')}</p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                     <Link
                       href="/quiz"
                       className="px-6 py-3 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition min-h-[44px] flex items-center justify-center"
                     >
-                      Quiz starten
+                      {t('blog.startQuiz')}
                     </Link>
                     <Link
                       href="/therapists"
                       className="px-6 py-3 rounded-lg border border-neutral-200 text-neutral-700 text-sm font-medium hover:bg-neutral-50 transition min-h-[44px] flex items-center justify-center"
                     >
-                      Therapeut:innen finden
+                      {t('blog.findTherapists')}
                     </Link>
                   </div>
                 </div>
