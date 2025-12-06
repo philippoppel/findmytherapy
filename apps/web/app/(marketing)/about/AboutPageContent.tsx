@@ -2,11 +2,12 @@
 
 import { useTranslation } from '@/lib/i18n';
 import { TeamSection } from '@/app/components/marketing/TeamSection';
-import { teamContent } from '@/app/components/marketing-content';
+import { getTeamContent } from '@/app/components/marketing-content';
 import { BackLink } from '@/app/components/BackLink';
 
 export function AboutPageContent() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const teamContent = getTeamContent(language);
 
   return (
     <div className="marketing-theme bg-surface text-default">

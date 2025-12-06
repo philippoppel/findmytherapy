@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, X, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 type TherapistSearchItem = {
   id: string;
@@ -16,6 +17,7 @@ type TherapistSearchItem = {
 };
 
 export function HeaderSearch() {
+  const { t } = useTranslation();
   const [therapists, setTherapists] = useState<TherapistSearchItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [query, setQuery] = useState('');
@@ -147,9 +149,9 @@ export function HeaderSearch() {
                   loadTherapists();
                 }}
             onKeyDown={handleKeyDown}
-            placeholder="Therapeut:in suchen..."
+            placeholder={t('headerSearch.placeholder')}
             className="h-10 w-64 rounded-full border border-divider bg-surface-1/80 pl-10 pr-4 text-sm text-default placeholder:text-muted transition focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            aria-label="Therapeut:innen suchen"
+            aria-label={t('headerSearch.placeholder')}
             aria-expanded={isOpen}
             aria-controls="search-results"
             aria-activedescendant={activeIndex >= 0 ? `search-item-${activeIndex}` : undefined}
@@ -167,11 +169,11 @@ export function HeaderSearch() {
           >
             {query.trim().length < 2 ? (
               <div className="px-3 py-4 text-center text-sm text-muted">
-                Mind. 2 Zeichen eingeben...
+                {t('headerSearch.minChars')}
               </div>
             ) : results.length === 0 ? (
               <div className="px-3 py-4 text-center text-sm text-muted">
-                Keine Treffer gefunden
+                {t('headerSearch.noResults')}
               </div>
             ) : (
               <div className="space-y-1">
@@ -234,8 +236,8 @@ export function HeaderSearch() {
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-default">Matching starten</div>
-                  <div className="text-xs text-muted">Finde passende Empfehlungen</div>
+                  <div className="text-sm font-medium text-default">{t('headerSearch.startMatchingTitle')}</div>
+                  <div className="text-xs text-muted">{t('headerSearch.startMatchingSubtitle')}</div>
                 </div>
               </Link>
 
@@ -255,8 +257,8 @@ export function HeaderSearch() {
                   <SlidersHorizontal className="h-5 w-5" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-default">Erweiterte Filter</div>
-                  <div className="text-xs text-muted">Alle Suchoptionen nutzen</div>
+                  <div className="text-sm font-medium text-default">{t('headerSearch.advancedFiltersTitle')}</div>
+                  <div className="text-xs text-muted">{t('headerSearch.advancedFiltersSubtitle')}</div>
                 </div>
               </Link>
             </div>
@@ -272,7 +274,7 @@ export function HeaderSearch() {
           loadTherapists();
         }}
         className="flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:bg-primary-50 hover:text-primary-700 lg:hidden"
-        aria-label="Suche öffnen"
+        aria-label={t('headerSearch.openSearch')}
       >
         <Search className="h-5 w-5" />
       </button>
@@ -291,7 +293,7 @@ export function HeaderSearch() {
                   value={query}
                   onChange={(e) => handleInputChange(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Therapeut:in suchen..."
+                  placeholder={t('headerSearch.placeholder')}
                   className="h-11 w-full rounded-xl border border-divider bg-surface-2 pl-10 pr-4 text-base text-default placeholder:text-muted focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
                   autoComplete="off"
                 />
@@ -300,7 +302,7 @@ export function HeaderSearch() {
                 type="button"
                 onClick={closeSearch}
                 className="flex h-11 w-11 items-center justify-center rounded-xl text-muted transition hover:bg-surface-2"
-                aria-label="Suche schließen"
+                aria-label={t('headerSearch.closeSearch')}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -310,11 +312,11 @@ export function HeaderSearch() {
             <div className="flex-1 overflow-y-auto p-4">
               {query.trim().length < 2 ? (
                 <div className="py-8 text-center text-sm text-muted">
-                  Mind. 2 Zeichen eingeben...
+                  {t('headerSearch.minChars')}
                 </div>
               ) : results.length === 0 ? (
                 <div className="py-8 text-center text-sm text-muted">
-                  Keine Treffer gefunden
+                  {t('headerSearch.noResults')}
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -367,8 +369,8 @@ export function HeaderSearch() {
                     <Sparkles className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-secondary-900">Matching starten</div>
-                    <div className="text-sm text-secondary-700">Finde passende Empfehlungen</div>
+                    <div className="font-semibold text-secondary-900">{t('headerSearch.startMatchingTitle')}</div>
+                    <div className="text-sm text-secondary-700">{t('headerSearch.startMatchingSubtitle')}</div>
                   </div>
                 </Link>
 
@@ -381,8 +383,8 @@ export function HeaderSearch() {
                     <SlidersHorizontal className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="font-semibold text-default">Erweiterte Filter</div>
-                    <div className="text-sm text-muted">Alle Suchoptionen nutzen</div>
+                    <div className="font-semibold text-default">{t('headerSearch.advancedFiltersTitle')}</div>
+                    <div className="text-sm text-muted">{t('headerSearch.advancedFiltersSubtitle')}</div>
                   </div>
                 </Link>
               </div>

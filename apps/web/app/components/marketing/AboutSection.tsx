@@ -5,11 +5,14 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Reveal } from './Reveal';
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
-import { teamContent } from '../../marketing-content';
+import { getTeamContent } from '../../marketing-content';
+import { useTranslation } from '@/lib/i18n';
 
 export function AboutSection() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
+  const { language } = useTranslation();
+  const teamContent = getTeamContent(language);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -128,7 +131,7 @@ export function AboutSection() {
                   <div className="relative aspect-[3/4] w-full overflow-hidden">
                     <Image
                       src={member.image}
-                      alt={`Portrait von ${member.name}, ${member.role} bei FindMyTherapy`}
+                      alt={`Portrait von ${member.name}, ${member.role[language] ?? member.role.de} bei FindMyTherapy`}
                       fill
                       sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
@@ -140,7 +143,9 @@ export function AboutSection() {
                       Founder Team
                     </p>
                     <p className="mt-2 text-xl font-semibold text-default">{member.name}</p>
-                    <p className="text-sm font-medium text-muted">{member.role}</p>
+                    <p className="text-sm font-medium text-muted">
+                      {member.role[language] ?? member.role.de}
+                    </p>
                     <p
                       className="mt-2 text-sm leading-relaxed text-muted"
                       style={{
@@ -150,7 +155,7 @@ export function AboutSection() {
                         overflow: 'hidden',
                       }}
                     >
-                      {member.focus}
+                      {member.focus[language] ?? member.focus.de}
                     </p>
                   </div>
                 </motion.article>

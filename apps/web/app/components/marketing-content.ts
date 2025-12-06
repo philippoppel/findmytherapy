@@ -372,41 +372,119 @@ export const earlyAccessContent = {
   },
 } as const;
 
-export const teamContent = {
-  heading: 'Menschen, die Versorgungslücken schließen wollen.',
-  description:
-    'Wir kombinieren psychotherapeutische Expertise, digitale Produktentwicklung und Forschung. Mit Partnerpraxen, Kliniken und Selbsthilfegruppen entwickeln wir FindMyTherapy kontinuierlich weiter.',
-  members: [
-    {
-      name: 'MMag. Dr. Gregor Studlar BA',
-      role: 'Psychotherapeut – Verhaltenstherapie • Founder',
-      focus: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
-      image: '/images/team/gregorstudlar.jpg',
-    },
-    {
-      name: 'Thomas Kaufmann, BA pth.',
-      role: 'Psychotherapeut i.A.u.S • Verhaltenstherapie • Founder',
-      focus: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
-      image: '/images/team/thomaskaufmann.jpeg',
-    },
-    {
-      name: 'Dipl. Ing. Philipp Oppel',
-      role: 'Full Stack Developer',
-      focus: 'Technische Leitung & Plattformentwicklung',
-      image: '/images/team/philippoppel.jpeg',
-    },
-    {
-      name: 'Hannes Freudenthaler',
-      role: 'Unternehmer & Marketing-Spezialist',
-      focus: 'Skaliert Marken & Webpräsenzen – Growth, Content & Sichtbarkeit',
-      image: '/images/team/hannesfreudenthaler.jpeg',
-    },
-  ],
-  ctas: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/findmytherapy' },
-    { label: 'Instagram', href: 'https://www.instagram.com/findmytherapy' },
-  ],
+import { Language } from '@/lib/i18n/LanguageContext';
+
+type TeamMember = {
+  name: string;
+  role: Record<Language, string>;
+  focus: Record<Language, string>;
+  image: string;
 };
+
+type TeamContentLocale = {
+  heading: string;
+  description: string;
+  promiseTitle: string;
+  promiseItems: string[];
+  feedbackTitle: string;
+  feedbackDescription: string;
+};
+
+const baseCtas = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/findmytherapy' },
+  { label: 'Instagram', href: 'https://www.instagram.com/findmytherapy' },
+] as const;
+
+const teamMembers: TeamMember[] = [
+  {
+    name: 'MMag. Dr. Gregor Studlar BA',
+    role: {
+      de: 'Psychotherapeut – Verhaltenstherapie • Founder',
+      en: 'Psychotherapist – Cognitive Behavioral Therapy • Founder',
+    },
+    focus: {
+      de: 'Klinische Erfahrung Neuromed Campus • Schwerpunkt: Angst, Depression, Burnout',
+      en: 'Clinical experience at Neuromed Campus • Focus: anxiety, depression, burnout',
+    },
+    image: '/images/team/gregorstudlar.jpg',
+  },
+  {
+    name: 'Thomas Kaufmann, BA pth.',
+    role: {
+      de: 'Psychotherapeut i.A.u.S • Verhaltenstherapie • Founder',
+      en: 'Psychotherapist in training under supervision • CBT • Founder',
+    },
+    focus: {
+      de: 'Sigmund Freud Universität Wien • Notfallsanitäter-Hintergrund (Krisenkompetenz)',
+      en: 'Sigmund Freud University Vienna • Paramedic background (crisis expertise)',
+    },
+    image: '/images/team/thomaskaufmann.jpeg',
+  },
+  {
+    name: 'Dipl. Ing. Philipp Oppel',
+    role: {
+      de: 'Full Stack Developer',
+      en: 'Full Stack Developer',
+    },
+    focus: {
+      de: 'Technische Leitung & Plattformentwicklung',
+      en: 'Technical lead & platform engineering',
+    },
+    image: '/images/team/philippoppel.jpeg',
+  },
+  {
+    name: 'Hannes Freudenthaler',
+    role: {
+      de: 'Unternehmer & Marketing-Spezialist',
+      en: 'Entrepreneur & marketing specialist',
+    },
+    focus: {
+      de: 'Skaliert Marken & Webpräsenzen – Growth, Content & Sichtbarkeit',
+      en: 'Scales brands & web presence – growth, content & visibility',
+    },
+    image: '/images/team/hannesfreudenthaler.jpeg',
+  },
+];
+
+export const teamContent: Record<Language, TeamContentLocale & { members: TeamMember[]; ctas: typeof baseCtas }> =
+  {
+    de: {
+      heading: 'Menschen, die Versorgungslücken schließen wollen.',
+      description:
+        'Wir kombinieren psychotherapeutische Expertise, digitale Produktentwicklung und Forschung. Mit Partnerpraxen, Kliniken und Selbsthilfegruppen entwickeln wir FindMyTherapy kontinuierlich weiter.',
+      promiseTitle: 'Unser Versprechen',
+      promiseItems: [
+        'Wir entwickeln Funktionen gemeinsam mit Therapeut:innen – nicht im stillen Kämmerchen.',
+        'Wir hören zu, iterieren wöchentlich und liefern sichtbare Verbesserungen auf Basis eures Feedbacks.',
+        'Wir nehmen Datenschutz ernster als nur als Häkchen: Zero-Knowledge-Architektur, unabhängige Audits und Hosting in der EU.',
+      ],
+      feedbackTitle: 'Feedback? Immer her damit!',
+      feedbackDescription:
+        'Schreibe uns über das Produkt direkt im Interface oder an servus@findmytherapy.net',
+      members: teamMembers,
+      ctas: baseCtas,
+    },
+    en: {
+      heading: 'People closing the care gap.',
+      description:
+        'We blend psychotherapeutic expertise, digital product development, and research. With partner practices, clinics, and self-help groups we continuously evolve FindMyTherapy.',
+      promiseTitle: 'Our promise',
+      promiseItems: [
+        'We build features together with therapists – not in a vacuum.',
+        'We listen, iterate weekly, and ship visible improvements based on your feedback.',
+        'Privacy first: zero-knowledge architecture, independent audits, EU hosting.',
+      ],
+      feedbackTitle: 'Feedback? We’re all ears!',
+      feedbackDescription:
+        'Reach us directly in the product or via servus@findmytherapy.net',
+      members: teamMembers,
+      ctas: baseCtas,
+    },
+  };
+
+export function getTeamContent(language: Language = 'de') {
+  return teamContent[language] ?? teamContent.de;
+}
 
 export const partnerLogos = [
   { name: 'Austrian Startups', initials: 'AS' },

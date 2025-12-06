@@ -15,7 +15,7 @@ import {
   Shield,
 } from 'lucide-react';
 import { Reveal } from '../components/marketing/Reveal';
-import { teamContent } from '../components/marketing-content';
+import { getTeamContent } from '../components/marketing-content';
 import { BackLink } from '../components/BackLink';
 import { useTranslation } from '@/lib/i18n';
 
@@ -36,7 +36,8 @@ const staggerContainer = {
 };
 
 export default function ForTherapistsPage() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const teamContent = getTeamContent(language);
 
   return (
     <div className="min-h-screen">
@@ -372,7 +373,9 @@ export default function ForTherapistsPage() {
                   />
                 </motion.div>
                 <h3 className="mb-1 font-semibold text-neutral-900">{member.name}</h3>
-                <p className="text-sm text-primary-600">{member.role}</p>
+                <p className="text-sm text-primary-600">
+                  {member.role[language] ?? member.role.de}
+                </p>
               </motion.div>
             ))}
           </motion.div>

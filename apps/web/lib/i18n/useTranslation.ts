@@ -34,10 +34,17 @@ export function useTranslation() {
   const { language } = useLanguage();
 
   const t = (key: string, params?: Record<string, string | number>): string => {
-    const translation = getNestedValue(
+    const primary = getNestedValue(
       translations[language] as unknown as Record<string, unknown>,
       key
     );
+
+    const fallback =
+      language !== 'de'
+        ? getNestedValue(translations.de as unknown as Record<string, unknown>, key)
+        : getNestedValue(translations.en as unknown as Record<string, unknown>, key);
+
+    const translation = primary === key ? fallback : primary;
 
     if (!params) return translation;
 

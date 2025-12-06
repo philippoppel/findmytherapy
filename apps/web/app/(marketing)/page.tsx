@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
-import { getHeroContent, getFAQItems, teamContent } from '../components/marketing-content';
+import { getHeroContent, getFAQItems, getTeamContent } from '../components/marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 import { TestimonialsSection } from '../components/marketing/TestimonialsSection';
@@ -70,6 +70,7 @@ export default function HomePage() {
   // Get content for simplified homepage
   const heroContent = getHeroContent();
   const faqItems = getFAQItems();
+  const teamContent = getTeamContent('de');
 
   // Structured Data for SEO
   const faqStructuredData = {
@@ -186,8 +187,8 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: member.name,
-    jobTitle: member.role,
-    description: member.focus,
+    jobTitle: member.role.de,
+    description: member.focus.de,
     image: `https://findmytherapy.net${member.image}`,
     worksFor: {
       '@type': 'Organization',
