@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CalendarPlus, CheckCircle2, Loader2, PhoneCall } from 'lucide-react';
 import { Button, Input, Textarea } from '@mental-health/ui';
+import { useTranslation } from '@/lib/i18n';
 
 type Topic = 'orientation' | 'matching' | 'corporate' | 'support';
 
@@ -29,6 +30,21 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const { t } = useTranslation();
+
+  const timeSlots = [
+    { value: 'morning', label: t('contact.morning') },
+    { value: 'afternoon', label: t('contact.afternoon') },
+    { value: 'evening', label: t('contact.evening') },
+    { value: 'flexible', label: t('contact.flexible') },
+  ];
+
+  const topics = [
+    { value: 'orientation', label: t('contact.topicAssessment') },
+    { value: 'matching', label: t('contact.topicMatching') },
+    { value: 'corporate', label: t('contact.topicBusiness') },
+    { value: 'support', label: t('contact.topicTechnical') },
+  ];
 
   const handleChange =
     (field: keyof FormState) =>
@@ -64,7 +80,7 @@ export function ContactForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
+        throw new Error(data.message || t('errors.general'));
       }
 
       setStatus('success');
@@ -72,7 +88,7 @@ export function ContactForm() {
     } catch (error) {
       console.error('Error submitting contact form:', error);
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
+      setErrorMessage(error instanceof Error ? error.message : t('errors.general'));
     } finally {
       setIsSubmitting(false);
     }
@@ -83,12 +99,11 @@ export function ContactForm() {
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
           <PhoneCall className="h-4 w-4" aria-hidden />
-          Kontakt aufnehmen
+          {t('contact.getInTouch')}
         </div>
-        <h2 className="text-2xl font-semibold text-default">Nachricht an das Care-Team</h2>
+        <h2 className="text-2xl font-semibold text-default">{t('contact.messageToCareTeam')}</h2>
         <p className="text-sm text-muted">
-          Sende uns dein Anliegen – wir melden uns werktags innerhalb von 45 Minuten mit einer
-          persönlichen Antwort oder einem Terminvorschlag.
+          {t('contact.contactDescription')}
         </p>
       </header>
 
@@ -99,11 +114,8 @@ export function ContactForm() {
         >
           <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
           <div>
-            <p className="font-semibold">Vielen Dank! Deine Nachricht ist eingegangen.</p>
-            <p>
-              Das Care-Team meldet sich telefonisch oder per E-Mail, je nachdem, welche
-              Kontaktmöglichkeit du angegeben hast.
-            </p>
+            <p className="font-semibold">{t('contact.thankYou')}</p>
+            <p>{t('contact.careTeamWillRespond')}</p>
           </div>
         </div>
       )}
@@ -120,8 +132,8 @@ export function ContactForm() {
             !
           </div>
           <div>
-            <p className="font-semibold">Fehler beim Senden</p>
-            <p>{errorMessage || 'Bitte versuche es später erneut oder kontaktiere uns direkt.'}</p>
+            <p className="font-semibold">{t('contact.errorSending')}</p>
+            <p>{errorMessage || t('contact.tryAgainLater')}</p>
           </div>
         </div>
       )}
@@ -139,7 +151,7 @@ export function ContactForm() {
             />
           </label>
           <label className="space-y-1 text-sm text-muted" htmlFor="email">
-            <span className="font-medium text-default">E-Mail</span>
+            <span className="font-medium text-default">{t('contact.emailLabel')}</span>
             <Input
               id="email"
               type="email"
@@ -153,7 +165,7 @@ export function ContactForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_0.65fr]">
           <label className="space-y-1 text-sm text-muted" htmlFor="phone">
-            <span className="font-medium text-default">Telefon (optional)</span>
+            <span className="font-medium text-default">{t('contact.phoneOptional')}</span>
             <Input
               id="phone"
               type="tel"
@@ -165,15 +177,10 @@ export function ContactForm() {
 
           <fieldset className="space-y-2">
             <legend className="text-sm font-medium text-default">
-              Wann passt es dir für einen Rückruf?
+              {t('contact.whenCallBack')}
             </legend>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              {[
-                { value: 'morning', label: 'Vormittag' },
-                { value: 'afternoon', label: 'Nachmittag' },
-                { value: 'evening', label: 'Abends' },
-                { value: 'flexible', label: 'Flexibel' },
-              ].map((slot) => {
+              {timeSlots.map((slot) => {
                 const isActive = form.preferredSlot === slot.value;
                 return (
                   <button
@@ -195,14 +202,9 @@ export function ContactForm() {
         </div>
 
         <fieldset>
-          <legend className="text-sm font-medium text-default">Anliegen</legend>
+          <legend className="text-sm font-medium text-default">{t('contact.topic')}</legend>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {[
-              { value: 'orientation', label: 'Ersteinschätzung & Einstieg' },
-              { value: 'matching', label: 'Therapeut:innen-Matching' },
-              { value: 'corporate', label: 'Unternehmen & Teams' },
-              { value: 'support', label: 'Technische Unterstützung' },
-            ].map((topic) => {
+            {topics.map((topic) => {
               const isActive = form.topic === topic.value;
               return (
                 <button
@@ -223,13 +225,13 @@ export function ContactForm() {
         </fieldset>
 
         <label className="space-y-1 text-sm text-muted" htmlFor="message">
-          <span className="font-medium text-default">Nachricht oder Fragen</span>
+          <span className="font-medium text-default">{t('contact.messageLabel')}</span>
           <Textarea
             id="message"
             value={form.message}
             onChange={handleChange('message')}
             rows={5}
-            placeholder="Erzähl uns kurz, worum es geht oder welche Schwerpunkte wir vorbereiten sollen."
+            placeholder={t('contact.messagePlaceholder')}
             required
           />
         </label>
@@ -239,18 +241,17 @@ export function ContactForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                Wird gesendet …
+                {t('contact.sending')}
               </>
             ) : (
               <>
-                Abschicken
+                {t('contact.submit')}
                 <CalendarPlus className="ml-2 h-4 w-4" aria-hidden />
               </>
             )}
           </Button>
           <p className="text-xs text-muted">
-            Deine Anfrage bleibt vertraulich. Im Livebetrieb erfolgt die Antwort innerhalb von 45
-            Minuten.
+            {t('contact.confidentialNote')}
           </p>
         </div>
       </form>

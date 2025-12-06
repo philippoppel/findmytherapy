@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { LayoutDashboard, LogOut, Shield, User, Loader2 } from 'lucide-react';
 import { useLogout } from '@/hooks/useLogout';
+import { useTranslation } from '@/lib/i18n';
 
 export function AuthHeader() {
   const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { logout, isLoggingOut } = useLogout();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,13 +35,13 @@ export function AuthHeader() {
           href="/login"
           className="w-full rounded-full border border-neutral-300 px-4 py-2 text-center text-sm font-medium text-neutral-700 transition hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 md:w-auto"
         >
-          Anmelden
+          {t('authHeader.login')}
         </Link>
         <Link
           href="/register"
           className="w-full rounded-full bg-primary-100 px-4 py-2 text-center text-sm font-semibold text-primary-900 shadow-sm transition hover:bg-primary-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2 md:w-auto"
         >
-          Registrieren
+          {t('authHeader.register')}
         </Link>
       </div>
     );
@@ -53,10 +55,10 @@ export function AuthHeader() {
   const showSecurityLink = isTherapist || isAdmin;
   const profileHref = isTherapist ? '/dashboard/profile' : isAdmin ? '/admin' : '/settings';
   const profileLabel = isTherapist
-    ? 'Profil verwalten'
+    ? t('authHeader.manageProfile')
     : isAdmin
-      ? 'Adminbereich'
-      : 'Profil & Einstellungen';
+      ? t('authHeader.adminArea')
+      : t('authHeader.profileSettings');
 
   return (
     <div className="relative" ref={menuRef}>
@@ -75,7 +77,7 @@ export function AuthHeader() {
           <div className="border-b border-neutral-200 px-5 pb-3">
             <p className="text-sm font-semibold text-neutral-900">{session.user?.email}</p>
             <p className="text-xs text-muted">
-              {isAdmin ? 'Administrator' : isTherapist ? 'Therapeut:in' : 'Klient:in'}
+              {isAdmin ? t('authHeader.administrator') : isTherapist ? t('authHeader.therapist') : t('authHeader.client')}
             </p>
           </div>
 
@@ -91,7 +93,7 @@ export function AuthHeader() {
           {isClient && (
             <HeaderMenuLink
               href="/courses"
-              label="Meine Kurse"
+              label={t('authHeader.myCourses')}
               icon={<LayoutDashboard className="h-4 w-4" />}
               onClick={() => setIsMenuOpen(false)}
             />
@@ -100,7 +102,7 @@ export function AuthHeader() {
           {showSecurityLink && (
             <HeaderMenuLink
               href="/dashboard/security"
-              label="Sicherheit"
+              label={t('authHeader.security')}
               icon={<Shield className="h-4 w-4" />}
               onClick={() => setIsMenuOpen(false)}
             />
@@ -126,7 +128,7 @@ export function AuthHeader() {
             ) : (
               <LogOut className="h-4 w-4" />
             )}
-            {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
+            {isLoggingOut ? t('authHeader.loggingOut') : t('authHeader.logout')}
           </button>
         </div>
       )}

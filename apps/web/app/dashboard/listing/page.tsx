@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { requireTherapist } from '../../../lib/auth-guards';
+import { requireTherapist } from '@/lib/auth-guards';
 import { CheckCircle2, TrendingUp, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 

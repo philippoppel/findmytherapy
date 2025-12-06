@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import { BackLink } from '../../components/BackLink';
-
-const ERROR_MESSAGES: Record<string, string> = {
-  INVALID_CREDENTIALS: 'Ungültige E-Mail oder Passwort',
-  TOTP_REQUIRED: '2FA-Code erforderlich',
-  TOTP_INVALID: 'Ungültiger 2FA-Code',
-  INTERNAL_ERROR: 'Ein interner Fehler ist aufgetreten',
-};
+import { useTranslation } from '@/lib/i18n';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -16,6 +10,14 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
+
+  const ERROR_MESSAGES: Record<string, string> = {
+    INVALID_CREDENTIALS: t('auth.invalidCredentials'),
+    TOTP_REQUIRED: t('auth.twoFaRequired'),
+    TOTP_INVALID: t('auth.invalidTwoFa'),
+    INTERNAL_ERROR: t('auth.internalError'),
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,19 +44,19 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        const errorMessage = ERROR_MESSAGES[data.error] || data.error || 'Login fehlgeschlagen';
+        const errorMessage = ERROR_MESSAGES[data.error] || data.error || t('auth.loginFailed');
         setError(errorMessage);
         setIsLoading(false);
         return;
       }
 
       // Success! Show feedback and redirect
-      setSuccess('Erfolgreich angemeldet! Du wirst weitergeleitet...');
+      setSuccess(t('auth.loginSuccess'));
       await new Promise((resolve) => setTimeout(resolve, 500));
       window.location.href = '/dashboard';
     } catch (err) {
       console.error('Login error:', err);
-      setError('Ein unerwarteter Fehler ist aufgetreten');
+      setError(t('auth.unexpectedError'));
       setIsLoading(false);
     }
   };
@@ -74,18 +76,18 @@ export default function LoginPage() {
         <div className="space-y-8 p-8 bg-white/10 rounded-3xl border border-white/10 shadow-2xl backdrop-blur">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white/80 mb-4">
-              Therapeuten-Login
+              {t('auth.therapistLogin')}
             </div>
-            <h2 className="text-3xl font-bold text-white">Anmelden</h2>
+            <h2 className="text-3xl font-bold text-white">{t('auth.login')}</h2>
             <p className="mt-2 text-sm text-white/70">
-              Melde dich mit deinem Therapeuten-Account an
+              {t('auth.loginDescription')}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-white mb-1">
-                Email
+                {t('auth.email')}
               </label>
               <input
                 id="email"
@@ -102,7 +104,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-white mb-1">
-                Passwort
+                {t('auth.password')}
               </label>
               <input
                 id="password"
@@ -134,7 +136,7 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full bg-primary-700 text-white py-3 px-4 rounded-xl hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold shadow-lg"
             >
-              {isLoading ? 'Anmelden...' : 'Anmelden'}
+              {isLoading ? t('auth.loggingIn') : t('auth.login')}
             </button>
           </form>
         </div>

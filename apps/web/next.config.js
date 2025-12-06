@@ -1,6 +1,3 @@
-// Temporarily disable next-intl plugin to fix middleware conflict
-// const withNextIntl = require('next-intl/plugin')();
-
 /** @type {import('next').NextConfig} */
 const baseSecurityHeaders = [
   {
@@ -91,5 +88,4 @@ const nextConfig = {
   },
 };
 
-// Export directly without next-intl wrapper for now
 module.exports = nextConfig;

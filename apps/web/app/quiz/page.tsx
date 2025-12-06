@@ -29,6 +29,7 @@ import { PROBLEM_AREAS } from '@/app/components/matching/types';
 import type { MatchingResponse, MatchResult } from '@/lib/matching/types';
 import { blogPosts, type BlogPost } from '@/lib/blogData';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { useTranslation } from '@/lib/i18n';
 
 // Fallback Problem Areas für den Fall dass der Import fehlschlägt
 const FALLBACK_TOPICS = [
@@ -230,6 +231,7 @@ const SWIPE_CONFIG = {
 };
 
 export default function QuizPage() {
+  const { t } = useTranslation();
   const [state, setState] = useState<QuizState>(initialState);
   const [isLoadingResults, setIsLoadingResults] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
@@ -238,6 +240,41 @@ export default function QuizPage() {
   const [tipTimeoutId, setTipTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
   const { saveQuizResults } = useUserPreferences();
+
+  // Translated topic data
+  const TOPIC_LABELS: Record<string, string> = {
+    angst: t('quizPage.topicAnxiety'),
+    depression: t('quizPage.topicDepression'),
+    stress: t('quizPage.topicStress'),
+    trauma: t('quizPage.topicTrauma'),
+    beziehung: t('quizPage.topicRelationship'),
+    selbstwert: t('quizPage.topicSelfWorth'),
+  };
+
+  const TOPIC_QUESTIONS_T: Record<string, string> = {
+    angst: t('quizPage.questionAnxiety'),
+    depression: t('quizPage.questionDepression'),
+    stress: t('quizPage.questionStress'),
+    trauma: t('quizPage.questionTrauma'),
+    beziehung: t('quizPage.questionRelationship'),
+    selbstwert: t('quizPage.questionSelfWorth'),
+    trauer: t('quizPage.questionGrief'),
+    sucht: t('quizPage.questionAddiction'),
+    essstoerung: t('quizPage.questionEating'),
+    schlaf: t('quizPage.questionSleep'),
+    zwang: t('quizPage.questionOcd'),
+    adhs: t('quizPage.questionAdhd'),
+    arbeit: t('quizPage.questionWork'),
+  };
+
+  const TOPIC_TIPS_T: Record<string, { tip: string; emoji: string }> = {
+    angst: { tip: t('quizPage.tipAnxiety'), emoji: '🌬️' },
+    depression: { tip: t('quizPage.tipDepression'), emoji: '🚶' },
+    stress: { tip: t('quizPage.tipStress'), emoji: '☕' },
+    trauma: { tip: t('quizPage.tipTrauma'), emoji: '💚' },
+    beziehung: { tip: t('quizPage.tipRelationship'), emoji: '💬' },
+    selbstwert: { tip: t('quizPage.tipSelfWorth'), emoji: '🪞' },
+  };
 
   // Load state from localStorage on mount
   useEffect(() => {
@@ -654,16 +691,16 @@ export default function QuizPage() {
             <div className="flex items-center gap-3">
               {state.phase === 'topics' && (
                 <span className="text-sm text-white/70" role="status" aria-live="polite" aria-atomic="true">
-                  <span className="sr-only">Frage </span>{state.topicIndex + 1} / {CORE_TOPICS.length}
+                  <span className="sr-only">{t('quizPage.questionProgress')} </span>{state.topicIndex + 1} / {CORE_TOPICS.length}
                 </span>
               )}
               {state.phase === 'therapists' && (
                 <span className="text-sm text-white/70" role="status" aria-live="polite" aria-atomic="true">
-                  <span className="sr-only">Vorschlag </span>{state.therapistIndex + 1} / {state.matches.length}
+                  <span className="sr-only">{t('quizPage.suggestionProgress')} </span>{state.therapistIndex + 1} / {state.matches.length}
                 </span>
               )}
               {state.phase === 'location-preferences' && (
-                <span className="text-sm text-white/70" role="status" aria-live="polite">Fast fertig</span>
+                <span className="text-sm text-white/70" role="status" aria-live="polite">{t('quizPage.almostDone')}</span>
               )}
 
               {/* Exit/Restart */}
@@ -672,7 +709,7 @@ export default function QuizPage() {
                   onClick={goToSummary}
                   className="px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
                 >
-                  {state.phase === 'therapists' ? 'Fertig' : 'Beenden'}
+                  {state.phase === 'therapists' ? t('quizPage.done') : t('quizPage.exit')}
                 </button>
               ) : (
                 <button
@@ -680,7 +717,7 @@ export default function QuizPage() {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-white/80 hover:text-white transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  <span className="hidden sm:inline">Neu starten</span>
+                  <span className="hidden sm:inline">{t('quizPage.restart')}</span>
                 </button>
               )}
             </div>
@@ -690,15 +727,15 @@ export default function QuizPage() {
           <div className="text-center px-4 pt-6 pb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium mb-4">
               <BookOpen className="w-4 h-4" />
-              Schnell-Quiz
+              {t('quizPage.quickQuiz')}
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
-              Finde heraus, was
+              {t('quizPage.heroTitle')}
               <br className="hidden sm:block" />
-              <span className="text-primary-200"> zu dir passt</span>
+              <span className="text-primary-200"> {t('quizPage.heroTitleHighlight')}</span>
             </h1>
             <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mb-8">
-              6 kurze Fragen – in 2 Minuten zu persönlichen Empfehlungen
+              {t('quizPage.heroSubtitle')}
             </p>
 
             {/* Navigation Pills */}
@@ -728,11 +765,10 @@ export default function QuizPage() {
                   <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-primary-500" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
-                  Lass uns gemeinsam schauen
+                  {t('quizPage.introTitle')}
                 </h1>
                 <p className="text-slate-600 max-w-md mx-auto text-base md:text-lg">
-                  Ein paar kurze Fragen helfen uns, die richtige Unterstützung für dich zu finden.
-                  Du kannst jederzeit abbrechen.
+                  {t('quizPage.introSubtitle')}
                 </p>
               </div>
 
@@ -742,7 +778,7 @@ export default function QuizPage() {
                   onClick={handleStart}
                   className="w-full py-4 px-8 rounded-2xl bg-primary-500 text-white font-semibold text-lg hover:bg-primary-600 transition-colors"
                 >
-                  Los geht&apos;s
+                  {t('quizPage.letsGo')}
                 </motion.button>
 
                 <Link
@@ -750,12 +786,12 @@ export default function QuizPage() {
                   className="flex items-center justify-center gap-2 py-3 text-slate-600 hover:text-primary-600 transition-colors"
                 >
                   <ClipboardCheck className="w-5 h-5" />
-                  <span>Lieber einen ausführlichen Test machen</span>
+                  <span>{t('quizPage.preferDetailedTest')}</span>
                 </Link>
               </div>
 
               <p className="text-sm text-slate-400">
-                Schnell-Quiz: ca. 1-2 Minuten
+                {t('quizPage.quickQuizDuration')}
               </p>
             </motion.div>
           )}
@@ -774,11 +810,11 @@ export default function QuizPage() {
               <div className="flex items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-400 mb-2 sm:mb-3">
                 <span className="flex items-center gap-1">
                   <X className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400" />
-                  ← Nein
+                  {t('quizPage.swipeNo')}
                 </span>
                 <span className="text-slate-300">|</span>
                 <span className="flex items-center gap-1">
-                  Ja →
+                  {t('quizPage.swipeYes')}
                   <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-primary-400" />
                 </span>
               </div>
@@ -829,20 +865,20 @@ export default function QuizPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
-                    <p className="text-white/80 text-xs sm:text-sm mb-1">Thema</p>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{currentTopic.label}</h2>
+                    <p className="text-white/80 text-xs sm:text-sm mb-1">{t('quizPage.topic')}</p>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{TOPIC_LABELS[currentTopic.id] || currentTopic.label}</h2>
                   </div>
                 </div>
 
                 <div className="p-4 sm:p-6 md:p-8">
                   <p className="text-lg sm:text-xl md:text-2xl text-slate-700 text-center leading-relaxed">
-                    {TOPIC_QUESTIONS[currentTopic.id]}
+                    {TOPIC_QUESTIONS_T[currentTopic.id] || TOPIC_QUESTIONS[currentTopic.id]}
                   </p>
                 </div>
 
                 {/* Tip Overlay */}
                 <AnimatePresence mode="wait">
-                  {showTip && TOPIC_TIPS[showTip] && (
+                  {showTip && (TOPIC_TIPS_T[showTip] || TOPIC_TIPS[showTip]) && (
                     <motion.div
                       initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
@@ -866,13 +902,13 @@ export default function QuizPage() {
                       className="absolute inset-0 bg-gradient-to-br from-primary-500 to-primary-600 flex flex-col items-center justify-center p-6 md:p-8 text-center cursor-pointer"
                     >
                       <span className="text-5xl md:text-6xl mb-4">
-                        {TOPIC_TIPS[showTip].emoji}
+                        {(TOPIC_TIPS_T[showTip] || TOPIC_TIPS[showTip]).emoji}
                       </span>
                       <p className="text-white text-lg md:text-xl font-medium leading-relaxed max-w-md">
-                        {TOPIC_TIPS[showTip].tip}
+                        {(TOPIC_TIPS_T[showTip] || TOPIC_TIPS[showTip]).tip}
                       </p>
                       <p className="text-white/50 text-sm mt-6">
-                        Schnell Weiter
+                        {t('quizPage.skipQuickly')}
                       </p>
                     </motion.div>
                   )}
@@ -887,7 +923,7 @@ export default function QuizPage() {
                   disabled={!!showTip}
                   className="flex-1 py-4 sm:py-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-600 font-semibold text-base sm:text-lg hover:border-slate-300 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Nein
+                  {t('quizPage.answerNo')}
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
@@ -895,7 +931,7 @@ export default function QuizPage() {
                   disabled={!!showTip}
                   className="flex-1 py-4 sm:py-5 rounded-2xl bg-primary-500 text-white font-semibold text-base sm:text-lg hover:bg-primary-600 transition-all shadow-lg shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Ja, das kenne ich
+                  {t('quizPage.answerYes')}
                 </motion.button>
               </div>
 
@@ -918,7 +954,7 @@ export default function QuizPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
                       <BookOpen className="w-3 h-3" />
-                      Lesetipp
+                      {t('quizPage.readingTip')}
                     </p>
                     <p className="text-sm font-medium text-slate-700 line-clamp-2">{currentTopicBlogPost.title}</p>
                   </div>
@@ -938,7 +974,7 @@ export default function QuizPage() {
                     className="w-full py-3 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
-                    Vorschläge ansehen ({state.selectedTopics.length} Themen)
+                    {t('quizPage.viewSuggestions')} ({state.selectedTopics.length} {t('quizPage.topicsSelected')})
                   </button>
                 </motion.div>
               )}
@@ -976,9 +1012,9 @@ export default function QuizPage() {
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-primary-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">Fast geschafft!</h2>
+                <h2 className="text-2xl font-bold text-slate-900">{t('quizPage.almostDoneTitle')}</h2>
                 <p className="text-slate-600">
-                  Wo suchst du und was ist dir wichtig?
+                  {t('quizPage.whereAndWhat')}
                 </p>
               </div>
 
@@ -988,7 +1024,7 @@ export default function QuizPage() {
                 <div className="space-y-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
                   <h3 className="font-semibold text-slate-900 flex items-center gap-2">
                     <MapPin className="w-5 h-5 text-primary-500" />
-                    Dein Standort
+                    {t('quizPage.yourLocation')}
                   </h3>
 
                   {/* Auto-detect location button */}
@@ -1005,7 +1041,7 @@ export default function QuizPage() {
                     {isLoadingLocation ? (
                       <>
                         <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                        Ermittle...
+                        {t('quizPage.detecting')}
                       </>
                     ) : state.locationName ? (
                       <>
@@ -1015,7 +1051,7 @@ export default function QuizPage() {
                     ) : (
                       <>
                         <Crosshair className="w-4 h-4" />
-                        Automatisch ermitteln
+                        {t('quizPage.autoDetect')}
                       </>
                     )}
                   </motion.button>
@@ -1029,7 +1065,7 @@ export default function QuizPage() {
                       <div className="w-full border-t border-slate-200" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-3 bg-white text-slate-500">oder</span>
+                      <span className="px-3 bg-white text-slate-500">{t('quizPage.or')}</span>
                     </div>
                   </div>
 
@@ -1043,12 +1079,12 @@ export default function QuizPage() {
                       longitude: undefined,
                       locationName: undefined,
                     }))}
-                    placeholder="PLZ oder Stadt"
+                    placeholder={t('quizPage.postalOrCity')}
                     className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all text-center"
                   />
 
                   <p className="text-xs text-slate-400 text-center">
-                    Leer lassen für bundesweite Suche
+                    {t('quizPage.leaveEmptyNationwide')}
                   </p>
                 </div>
 
@@ -1056,20 +1092,20 @@ export default function QuizPage() {
                 <div className="space-y-4 p-4 lg:p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
                   <h3 className="font-semibold text-slate-900 flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-primary-500" />
-                    Deine Präferenzen
+                    {t('quizPage.yourPreferences')}
                   </h3>
 
                   {/* Geschlecht */}
                   <div className="space-y-2">
                     <p className="flex items-center gap-2 text-sm text-slate-600">
                       <User className="w-4 h-4" />
-                      Therapeut:in
+                      {t('quizPage.therapistLabel')}
                     </p>
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { value: 'any', label: 'Egal' },
-                        { value: 'female', label: 'Weiblich' },
-                        { value: 'male', label: 'Männlich' },
+                        { value: 'any', label: t('quizPage.anyGender') },
+                        { value: 'female', label: t('quizPage.female') },
+                        { value: 'male', label: t('quizPage.male') },
                       ].map((option) => (
                         <button
                           key={option.value}
@@ -1090,13 +1126,13 @@ export default function QuizPage() {
                   <div className="space-y-2">
                     <p className="flex items-center gap-2 text-sm text-slate-600">
                       <Video className="w-4 h-4" />
-                      Format
+                      {t('quizPage.format')}
                     </p>
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { value: 'BOTH', label: 'Beides' },
-                        { value: 'ONLINE', label: 'Online' },
-                        { value: 'IN_PERSON', label: 'Vor Ort' },
+                        { value: 'BOTH', label: t('quizPage.both') },
+                        { value: 'ONLINE', label: t('quizPage.online') },
+                        { value: 'IN_PERSON', label: t('quizPage.inPerson') },
                       ].map((option) => (
                         <button
                           key={option.value}
@@ -1117,14 +1153,14 @@ export default function QuizPage() {
                   <div className="space-y-2">
                     <p className="flex items-center gap-2 text-sm text-slate-600">
                       <Euro className="w-4 h-4" />
-                      Kostenübernahme
+                      {t('quizPage.costCoverage')}
                     </p>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { value: 'ANY', label: 'Egal' },
-                        { value: 'PUBLIC', label: 'Kasse' },
-                        { value: 'PRIVATE', label: 'Privat' },
-                        { value: 'SELF_PAY', label: 'Selbstzahler' },
+                        { value: 'ANY', label: t('quizPage.anyGender') },
+                        { value: 'PUBLIC', label: t('quizPage.publicInsurance') },
+                        { value: 'PRIVATE', label: t('quizPage.privateInsurance') },
+                        { value: 'SELF_PAY', label: t('quizPage.selfPay') },
                       ].map((option) => (
                         <button
                           key={option.value}
@@ -1149,7 +1185,7 @@ export default function QuizPage() {
                 <div className="space-y-2">
                   <p className="flex items-center gap-2 text-sm text-slate-600">
                     <Euro className="w-4 h-4" />
-                    Max. Preis/Sitzung
+                    {t('quizPage.maxPriceSession')}
                   </p>
                   <div className="flex gap-2">
                     {[null, 100, 150, 200].map((price) => (
@@ -1162,7 +1198,7 @@ export default function QuizPage() {
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
                       >
-                        {price ? `${price}€` : 'Egal'}
+                        {price ? `${price}€` : t('quizPage.anyGender')}
                       </button>
                     ))}
                   </div>
@@ -1172,7 +1208,7 @@ export default function QuizPage() {
                 <div className="space-y-2">
                   <p className="flex items-center gap-2 text-sm text-slate-600">
                     <Clock className="w-4 h-4" />
-                    Max. Wartezeit
+                    {t('quizPage.maxWaitTime')}
                   </p>
                   <div className="flex gap-2">
                     {[null, 2, 4, 8].map((weeks) => (
@@ -1185,7 +1221,7 @@ export default function QuizPage() {
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
                       >
-                        {weeks ? `${weeks} Wo.` : 'Egal'}
+                        {weeks ? `${weeks} ${t('quizPage.weeks')}` : t('quizPage.anyGender')}
                       </button>
                     ))}
                   </div>
@@ -1202,12 +1238,12 @@ export default function QuizPage() {
                 {isLoadingResults ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Suche läuft...
+                    {t('quizPage.searchRunning')}
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5" />
-                    Therapeut:innen finden
+                    {t('quizPage.findTherapists')}
                   </>
                 )}
               </motion.button>
@@ -1217,7 +1253,7 @@ export default function QuizPage() {
                 onClick={() => setState((prev) => ({ ...prev, phase: 'topics', topicIndex: 0 }))}
                 className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors text-sm"
               >
-                ← Zurück zu den Themen
+                {t('quiz.backToTopics')}
               </button>
             </motion.div>
           )}
@@ -1235,7 +1271,7 @@ export default function QuizPage() {
                 <div className="w-16 h-16 border-4 border-primary-100 rounded-full" />
                 <div className="absolute inset-0 w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
               </div>
-              <p className="text-slate-600">Finde passende Therapeut:innen...</p>
+              <p className="text-slate-600">{t('quizPage.findingTherapists')}</p>
             </motion.div>
           )}
 
@@ -1252,11 +1288,10 @@ export default function QuizPage() {
               </div>
               <div className="space-y-2">
                 <h2 className="text-xl font-bold text-slate-900">
-                  Keine passenden Therapeut:innen gefunden
+                  {t('quizPage.noMatchesFound')}
                 </h2>
                 <p className="text-slate-600 max-w-md mx-auto">
-                  Leider konnten wir mit deinen Kriterien keine Matches finden.
-                  Versuche es mit anderen Präferenzen oder schau dir alle Therapeut:innen an.
+                  {t('quizPage.noMatchesDescription')}
                 </p>
               </div>
               <div className="space-y-3 max-w-sm mx-auto">
@@ -1264,20 +1299,20 @@ export default function QuizPage() {
                   onClick={() => setState((prev) => ({ ...prev, phase: 'location-preferences' }))}
                   className="w-full py-3 rounded-xl bg-primary-500 text-white font-semibold hover:bg-primary-600 transition-colors"
                 >
-                  Präferenzen anpassen
+                  {t('quizPage.adjustPreferences')}
                 </button>
                 <Link
                   href="/therapists"
                   className="block w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-colors"
                 >
-                  Alle Therapeut:innen ansehen
+                  {t('quizPage.viewAllTherapists')}
                 </Link>
                 <button
                   onClick={handleRestart}
                   className="w-full py-3 text-slate-500 hover:text-slate-700 transition-colors text-sm flex items-center justify-center gap-2"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Quiz neu starten
+                  {t('quizPage.restartQuiz')}
                 </button>
               </div>
             </motion.div>
@@ -1356,7 +1391,7 @@ export default function QuizPage() {
                       <div className="text-3xl font-bold text-primary-600">
                         {Math.round(currentTherapist.score * 100)}%
                       </div>
-                      <div className="text-xs text-slate-500 font-medium">Match</div>
+                      <div className="text-xs text-slate-500 font-medium">{t('quizPage.match')}</div>
                     </div>
                     {/* Unmet Preferences */}
                     {state.unmetPreferences.length > 0 && (
@@ -1376,7 +1411,10 @@ export default function QuizPage() {
                   {/* Remaining Count */}
                   <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <span className="text-white text-sm">
-                      Noch {remainingTherapists} {remainingTherapists === 1 ? 'Vorschlag' : 'Vorschläge'}
+                      {remainingTherapists === 1
+                        ? t('quizPage.suggestionsRemaining').replace('{{count}}', String(remainingTherapists))
+                        : t('quizPage.suggestionsRemainingPlural').replace('{{count}}', String(remainingTherapists))
+                      }
                     </span>
                   </div>
 
@@ -1419,7 +1457,7 @@ export default function QuizPage() {
                   {/* Why this match */}
                   {currentTherapist.explanation?.primary && currentTherapist.explanation.primary.length > 0 && (
                     <div>
-                      <p className="text-sm font-medium text-slate-500 mb-2">Warum dieses Match?</p>
+                      <p className="text-sm font-medium text-slate-500 mb-2">{t('quizPage.whyThisMatch')}</p>
                       <div className="flex flex-wrap gap-2">
                         {currentTherapist.explanation.primary.map((reason, i) => (
                           <span

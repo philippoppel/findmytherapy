@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { CalendarDays, Clock3, Euro, Globe2, MapPin, ShieldCheck, UsersRound } from 'lucide-react';
 
 import { prisma } from '@/lib/prisma';
-import { requireTherapist } from '../../../lib/auth-guards';
-import { formatCurrencyInput, joinList } from '../../../lib/therapist/setcard';
+import { requireTherapist } from '@/lib/auth-guards';
+import { formatCurrencyInput, joinList } from '@/lib/therapist/setcard';
 import { SetcardEditor, type SetcardFormValues } from './SetcardEditor';
 import { MicrositePreviewButton } from './MicrositePreviewButton';
 

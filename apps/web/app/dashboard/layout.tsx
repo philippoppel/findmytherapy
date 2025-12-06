@@ -20,26 +20,26 @@ import {
 import { useState, useEffect } from 'react';
 import { FEATURES } from '@/lib/features';
 import { useLogout } from '@/hooks/useLogout';
-
-const baseNavigation = [
-  { name: 'Dashboard', href: '/dashboard/therapist', icon: LayoutDashboard },
-  { name: 'Profil', href: '/dashboard/profile', icon: User },
-  ...(FEATURES.MICROSITE
-    ? [{ name: 'Meine Microsite', href: '/dashboard/therapist/microsite', icon: Globe }]
-    : []),
-  { name: 'Blog-Beiträge', href: '/dashboard/therapist/blog', icon: FileText },
-  { name: 'Analytics', href: '/dashboard/therapist/analytics', icon: BarChart3 },
-  { name: 'Kontaktanfragen', href: '/dashboard/therapist/leads', icon: Mail },
-  { name: 'Sicherheit', href: '/dashboard/security', icon: Shield },
-];
-
-const navigation = baseNavigation;
+import { useTranslation } from '@/lib/i18n';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [unreadLeadsCount, setUnreadLeadsCount] = useState(0);
   const { logout, isLoggingOut } = useLogout();
+  const { t } = useTranslation();
+
+  const navigation = [
+    { name: t('dashboard.dashboard'), href: '/dashboard/therapist', icon: LayoutDashboard },
+    { name: t('dashboard.profile'), href: '/dashboard/profile', icon: User },
+    ...(FEATURES.MICROSITE
+      ? [{ name: t('dashboard.myMicrosite'), href: '/dashboard/therapist/microsite', icon: Globe }]
+      : []),
+    { name: t('dashboard.blogPosts'), href: '/dashboard/therapist/blog', icon: FileText },
+    { name: t('dashboard.analytics'), href: '/dashboard/therapist/analytics', icon: BarChart3 },
+    { name: t('dashboard.contactRequests'), href: '/dashboard/therapist/leads', icon: Mail },
+    { name: t('dashboard.security'), href: '/dashboard/security', icon: Shield },
+  ];
 
   useEffect(() => {
     // Fetch unread leads count
@@ -86,7 +86,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <span className="text-sm font-semibold leading-tight text-neutral-900">
                   FindMyTherapy
                 </span>
-                <span className="text-[10px] font-medium text-primary-900">Dashboard</span>
+                <span className="text-[10px] font-medium text-primary-900">{t('dashboard.dashboard')}</span>
               </div>
             </Link>
           </div>
@@ -96,7 +96,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className="flex items-center gap-2 rounded-full border border-primary-200 bg-white px-4 py-2 text-sm font-medium text-primary-900 transition hover:bg-primary-50"
           >
             <Home className="h-4 w-4" />
-            <span className="hidden sm:inline">Zur Homepage</span>
+            <span className="hidden sm:inline">{t('dashboard.toHomepage')}</span>
           </Link>
         </div>
       </header>
@@ -139,7 +139,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               ) : (
                 <LogOut className="h-5 w-5" />
               )}
-              {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
+              {isLoggingOut ? t('dashboard.loggingOut') : t('dashboard.logout')}
             </button>
           </nav>
         </aside>
@@ -195,7 +195,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   ) : (
                     <LogOut className="h-5 w-5" />
                   )}
-                  {isLoggingOut ? 'Abmelden...' : 'Abmelden'}
+                  {isLoggingOut ? t('dashboard.loggingOut') : t('dashboard.logout')}
                 </button>
               </nav>
             </div>

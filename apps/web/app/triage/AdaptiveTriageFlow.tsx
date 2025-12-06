@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { track } from '../../lib/analytics';
+import { useTranslation } from '@/lib/i18n';
 import {
   standardResponseOptions,
   supportOptions,
@@ -44,7 +45,7 @@ import { AmpelVisualization } from './AmpelVisualization';
 import { CrisisResources } from './CrisisResources';
 import { ProgressChart } from './ProgressChart';
 import { blogPosts, type BlogPost } from '../../lib/blogData';
-import { useUserPreferences } from '../../hooks/useUserPreferences';
+import { useUserPreferences } from '@/hooks/useUserPreferences';
 
 // Emotionale Stockbilder für verschiedene Phasen
 const PHASE_IMAGES = {

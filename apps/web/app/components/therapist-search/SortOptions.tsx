@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ArrowUpDown } from 'lucide-react';
-import type { SortOption } from '../../hooks/useTherapistFiltering';
+import type { SortOption } from '@/hooks/useTherapistFiltering';
 
 export type SortOptionsProps = {
   sortBy: SortOption;

@@ -15,8 +15,9 @@ import {
   Shield,
 } from 'lucide-react';
 import { Reveal } from '../components/marketing/Reveal';
-import { teamContent } from '../marketing-content';
+import { teamContent } from '../components/marketing-content';
 import { BackLink } from '../components/BackLink';
+import { useTranslation } from '@/lib/i18n';
 
 // Animation variants
 const fadeInUp = {
@@ -35,6 +36,8 @@ const staggerContainer = {
 };
 
 export default function ForTherapistsPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen">
       {/* Back Link */}
@@ -56,16 +59,15 @@ export default function ForTherapistsPage() {
                   transition={{ delay: 0.2 }}
                 >
                   <Sparkles className="h-4 w-4" />
-                  Für Therapeut:innen
+                  {t('forTherapists.badge')}
                 </motion.div>
 
                 <h1 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-                  Ihre Praxis.{' '}
-                  <span className="text-primary-600">Modern präsentiert.</span>
+                  {t('forTherapists.heading')}
                 </h1>
 
                 <p className="mb-8 text-lg text-muted sm:text-xl lg:max-w-xl">
-                  Professionelle Microsite. SEO-optimiert. Kostenlos.
+                  {t('forTherapists.tagline')}
                 </p>
 
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
@@ -75,7 +77,7 @@ export default function ForTherapistsPage() {
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Jetzt kostenlos starten
+                      {t('forTherapists.startFreeCta')}
                       <ArrowRight className="h-5 w-5" />
                     </motion.span>
                   </Link>
@@ -92,7 +94,7 @@ export default function ForTherapistsPage() {
               >
                 <Image
                   src="/images/for-therapists/hero.jpg"
-                  alt="Moderne Therapiepraxis"
+                  alt={t('forTherapists.modernPractice')}
                   fill
                   className="object-cover"
                   priority
@@ -125,7 +127,7 @@ export default function ForTherapistsPage() {
                     75%
                   </motion.div>
                   <p className="text-lg font-medium text-neutral-800">
-                    beurteilen Glaubwürdigkeit nach Design
+                    {t('forTherapists.judgeCredibility')}
                   </p>
                   <a
                     href="https://credibility.stanford.edu/"
@@ -149,7 +151,7 @@ export default function ForTherapistsPage() {
                     50ms
                   </motion.div>
                   <p className="text-lg font-medium text-neutral-800">
-                    für den ersten Eindruck
+                    {t('forTherapists.firstImpression')}
                   </p>
                   <span className="mt-2 inline-block text-sm text-muted">
                     Lindgaard et al., 2006
@@ -166,10 +168,10 @@ export default function ForTherapistsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-bold text-neutral-900 sm:text-4xl">
-              Warum FindMyTherapy?
+              {t('forTherapists.whyFindMyTherapy')}
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-muted">
-              Drei Gründe, warum Therapeut:innen uns vertrauen.
+              {t('forTherapists.threeReasons')}
             </p>
           </Reveal>
 
@@ -186,7 +188,7 @@ export default function ForTherapistsPage() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src="/images/for-therapists/microsite.jpg"
-                    alt="Professionelle Website auf Laptop"
+                    alt={t('forTherapists.professionalWebsite')}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -198,7 +200,7 @@ export default function ForTherapistsPage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="mb-2 text-xl font-bold text-neutral-900">Eigene Microsite</h3>
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">{t('forTherapists.ownMicrosite')}</h3>
                   <p className="text-muted">findmytherapy.net/t/[ihr-name]</p>
                 </div>
               </div>
@@ -210,7 +212,7 @@ export default function ForTherapistsPage() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src="/images/for-therapists/seo.jpg"
-                    alt="SEO und Sichtbarkeit"
+                    alt={t('forTherapists.seoVisibility')}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -222,8 +224,8 @@ export default function ForTherapistsPage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="mb-2 text-xl font-bold text-neutral-900">SEO-optimiert</h3>
-                  <p className="text-muted">Gefunden werden auf Google</p>
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">{t('forTherapists.seoOptimized')}</h3>
+                  <p className="text-muted">{t('forTherapists.foundOnGoogle')}</p>
                 </div>
               </div>
             </motion.div>
@@ -234,7 +236,7 @@ export default function ForTherapistsPage() {
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src="/images/for-therapists/knowledge.jpg"
-                    alt="Wissensplattform"
+                    alt={t('forTherapists.knowledgePlatform')}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -246,8 +248,8 @@ export default function ForTherapistsPage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="mb-2 text-xl font-bold text-neutral-900">Wissensplattform</h3>
-                  <p className="text-muted">Klient:innen informiert</p>
+                  <h3 className="mb-2 text-xl font-bold text-neutral-900">{t('forTherapists.knowledgePlatform')}</h3>
+                  <p className="text-muted">{t('forTherapists.clientsInformed')}</p>
                 </div>
               </div>
             </motion.div>
@@ -296,10 +298,10 @@ export default function ForTherapistsPage() {
             <Reveal delay={200}>
               <div>
                 <h2 className="mb-6 text-3xl font-bold text-neutral-900 sm:text-4xl">
-                  Ihre persönliche Microsite
+                  {t('forTherapists.yourPersonalMicrosite')}
                 </h2>
                 <p className="mb-8 text-lg text-muted">
-                  Professionell präsentiert, automatisch optimiert für Suchmaschinen.
+                  {t('forTherapists.micrositeDesc')}
                 </p>
 
                 <motion.div
@@ -310,10 +312,10 @@ export default function ForTherapistsPage() {
                   viewport={{ once: true }}
                 >
                   {[
-                    { icon: TrendingUp, text: 'SEO-optimiert für maximale Sichtbarkeit' },
-                    { icon: Users, text: 'Professionelle Präsentation Ihrer Praxis' },
-                    { icon: Shield, text: 'DSGVO-konform & sicher' },
-                    { icon: Sparkles, text: 'Vollständig anpassbar' },
+                    { icon: TrendingUp, text: t('forTherapists.seoMaxVisibility') },
+                    { icon: Users, text: t('forTherapists.professionalPresentation') },
+                    { icon: Shield, text: t('forTherapists.gdprSecure') },
+                    { icon: Sparkles, text: t('forTherapists.fullyCustomizable') },
                   ].map((item, index) => (
                     <motion.div
                       key={index}
@@ -338,10 +340,10 @@ export default function ForTherapistsPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-bold text-neutral-900 sm:text-4xl">
-              Von Therapeut:innen für Therapeut:innen
+              {t('forTherapists.byTherapistsForTherapists')}
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-muted">
-              Unser Team vereint therapeutische Expertise mit moderner Technologie.
+              {t('forTherapists.teamDescription')}
             </p>
           </Reveal>
 
@@ -389,19 +391,19 @@ export default function ForTherapistsPage() {
                 <div>
                   <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-100 px-4 py-2 text-sm font-medium text-secondary-800">
                     <BookOpen className="h-4 w-4" />
-                    Mehr als ein Verzeichnis
+                    {t('forTherapists.moreThanDirectory')}
                   </div>
                   <h2 className="mb-4 text-3xl font-bold text-neutral-900">
-                    Wissensplattform mit Peer-Review
+                    {t('forTherapists.peerReviewPlatform')}
                   </h2>
                   <p className="mb-6 text-muted">
-                    Ihre Klient:innen kommen informiert. Unsere Fachartikel werden von Expert:innen geprüft.
+                    {t('forTherapists.clientsComeInformed')}
                   </p>
                   <ul className="space-y-3">
                     {[
-                      'Peer-reviewed Inhalte',
-                      'Klient:innen besser vorbereitet',
-                      'Teilen Sie Ihr Fachwissen',
+                      t('forTherapists.peerReviewedContent'),
+                      t('forTherapists.clientsBetterPrepared'),
+                      t('forTherapists.shareExpertise'),
                     ].map((item, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle2 className="h-5 w-5 text-secondary-600" />
@@ -433,10 +435,10 @@ export default function ForTherapistsPage() {
               whileHover={{ scale: 1.02 }}
             >
               <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-                Starten Sie heute kostenlos
+                {t('forTherapists.startFreeToday')}
               </h2>
               <p className="mb-8 text-lg text-white/90">
-                Keine Kreditkarte erforderlich. Keine versteckten Kosten.
+                {t('forTherapists.noCreditCard')}
               </p>
               <Link href="/register">
                 <motion.span
@@ -444,7 +446,7 @@ export default function ForTherapistsPage() {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Jetzt registrieren
+                  {t('forTherapists.registerNow')}
                   <ArrowRight className="h-5 w-5" />
                 </motion.span>
               </Link>
@@ -453,7 +455,7 @@ export default function ForTherapistsPage() {
                   href="/"
                   className="text-white/80 transition-colors hover:text-white hover:underline"
                 >
-                  ← Zurück zur Startseite
+                  {t('forTherapists.backToHome')}
                 </Link>
               </div>
             </motion.div>

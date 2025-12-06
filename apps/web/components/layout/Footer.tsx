@@ -1,28 +1,33 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Compass, Mail, ShieldCheck, Lock, Award, Users, Linkedin, Instagram } from 'lucide-react';
 import { FEATURES } from '@/lib/features';
+import { useTranslation } from '@/lib/i18n';
 
 export function Footer() {
+  const { t } = useTranslation();
+
   const footerLinks = {
     main: {
-      title: 'Navigation',
+      title: t('footer.navigation'),
       links: [
-        ...(FEATURES.ASSESSMENT ? [{ name: 'Ersteinschätzung', href: '/triage' }] : []),
-        { name: 'Therapeut:innen', href: '/therapists' },
-        { name: 'Das Team', href: '/about' },
-        { name: 'Für Therapeut:innen', href: '/for-therapists' },
-        { name: 'FAQ', href: '/help' },
-        { name: 'Kontakt', href: '/contact' },
+        ...(FEATURES.ASSESSMENT ? [{ name: t('footer.firstAssessment'), href: '/triage' }] : []),
+        { name: t('footer.therapists'), href: '/therapists' },
+        { name: t('footer.theTeam'), href: '/about' },
+        { name: t('footer.forTherapists'), href: '/for-therapists' },
+        { name: t('footer.faq'), href: '/help' },
+        { name: t('footer.contact'), href: '/contact' },
       ],
     },
     legal: {
-      title: 'Rechtliches',
+      title: t('footer.legal'),
       links: [
-        { name: 'Datenschutz', href: '/privacy' },
-        { name: 'Cookie-Richtlinie', href: '/cookies' },
-        { name: 'Impressum', href: '/imprint' },
-        { name: 'AGB', href: '/terms' },
+        { name: t('footer.privacy'), href: '/privacy' },
+        { name: t('footer.cookiePolicy'), href: '/cookies' },
+        { name: t('footer.imprint'), href: '/imprint' },
+        { name: t('footer.terms'), href: '/terms' },
       ],
     },
   };
@@ -50,7 +55,7 @@ export function Footer() {
               </span>
             </div>
             <p className="mb-4 text-sm text-muted" itemProp="description">
-              Der klare Weg zur richtigen Hilfe in Österreich.
+              {t('footer.tagline')}
             </p>
             <address className="not-italic">
               <div className="space-y-1 text-sm text-muted">
@@ -115,7 +120,7 @@ export function Footer() {
         {/* Partner & Empfehlungen Section */}
         <section className="mt-12 rounded-3xl border border-primary-100 bg-gradient-to-br from-primary-50/50 to-surface-1 p-6 sm:p-8">
           <p className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-primary-700">
-            Empfohlen & unterstützt von
+            {t('footer.recommendedBy')}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-12">
             {/* ÖBVP */}
@@ -160,7 +165,7 @@ export function Footer() {
                 height={60}
                 className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 sm:h-14"
               />
-              <span className="text-[10px] text-muted text-center max-w-[100px]">Bekannt aus TV</span>
+              <span className="text-[10px] text-muted text-center max-w-[100px]">{t('footer.asSeenOnTv')}</span>
             </div>
           </div>
         </section>
@@ -168,7 +173,7 @@ export function Footer() {
         {/* Trust Badges Section */}
         <section
           className="mt-8 rounded-3xl border border-divider bg-surface-1/70 p-6 shadow-soft"
-          aria-label="Vertrauensindikatoren"
+          aria-label={t('footer.trustIndicators')}
         >
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {/* Verified Therapists */}
@@ -179,8 +184,8 @@ export function Footer() {
               >
                 <ShieldCheck className="h-5 w-5" />
               </div>
-              <h4 className="mb-1 text-sm font-semibold text-default">Geprüfte Therapeut:innen</h4>
-              <p className="text-xs text-muted">Alle Profile werden verifiziert</p>
+              <h4 className="mb-1 text-sm font-semibold text-default">{t('footer.verifiedTherapists')}</h4>
+              <p className="text-xs text-muted">{t('footer.allProfilesVerified')}</p>
             </article>
 
             {/* Data Protection */}
@@ -191,8 +196,8 @@ export function Footer() {
               >
                 <Lock className="h-5 w-5" />
               </div>
-              <h4 className="mb-1 text-sm font-semibold text-default">DSGVO-konform</h4>
-              <p className="text-xs text-muted">Deine Daten sind sicher</p>
+              <h4 className="mb-1 text-sm font-semibold text-default">{t('footer.gdprCompliant')}</h4>
+              <p className="text-xs text-muted">{t('footer.yourDataIsSafe')}</p>
             </article>
 
             {/* Quality Standards */}
@@ -203,8 +208,8 @@ export function Footer() {
               >
                 <Award className="h-5 w-5" />
               </div>
-              <h4 className="mb-1 text-sm font-semibold text-default">Qualitätsstandards</h4>
-              <p className="text-xs text-muted">Höchste professionelle Standards</p>
+              <h4 className="mb-1 text-sm font-semibold text-default">{t('footer.qualityStandards')}</h4>
+              <p className="text-xs text-muted">{t('footer.highestProfessionalStandards')}</p>
             </article>
 
             {/* Austrian Focus */}
@@ -215,8 +220,8 @@ export function Footer() {
               >
                 <Users className="h-5 w-5" />
               </div>
-              <h4 className="mb-1 text-sm font-semibold text-default">Österreich-Fokus</h4>
-              <p className="text-xs text-muted">Spezialisiert auf den österreichischen Markt</p>
+              <h4 className="mb-1 text-sm font-semibold text-default">{t('footer.austriaFocus')}</h4>
+              <p className="text-xs text-muted">{t('footer.specializedAustrianMarket')}</p>
             </article>
           </div>
         </section>
@@ -225,11 +230,11 @@ export function Footer() {
         <div className="mt-10 border-t border-divider pt-6">
           <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted md:flex-row md:text-left">
             <p className="text-center md:text-left">
-              © {new Date().getFullYear()} FindMyTherapy. Der klare Weg zur richtigen Hilfe.
+              © {new Date().getFullYear()} FindMyTherapy. {t('footer.copyrightTagline')}
             </p>
             <div className="flex items-center gap-4">
               <span className="rounded-full bg-surface-2/70 px-3 py-1 text-sm text-default">
-                🇦🇹 Österreich
+                🇦🇹 {t('footer.countryBadge')}
               </span>
             </div>
           </div>

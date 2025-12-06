@@ -11,80 +11,73 @@ import {
   ChevronUp,
   ExternalLink,
 } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 type CrisisResourcesProps = {
   className?: string;
 };
 
-const emergencyContacts = [
-  {
-    name: 'Telefonseelsorge',
-    number: '142',
-    description: 'Kostenlos, anonym, rund um die Uhr',
-    available: '24/7',
-    type: 'crisis' as const,
-  },
-  {
-    name: 'Kriseninterventionszentrum Wien',
-    number: '01 406 95 95',
-    description: 'Professionelle Krisenintervention',
-    available: 'Mo-Fr 10-17 Uhr',
-    website: 'https://www.kriseninterventionszentrum.at',
-    type: 'crisis' as const,
-  },
-  {
-    name: 'Psychiatrische Soforthilfe (Wien)',
-    number: '01 313 30',
-    description: 'Psychiatrischer Notdienst',
-    available: '24/7',
-    type: 'emergency' as const,
-  },
-  {
-    name: 'Rat auf Draht (Jugendliche)',
-    number: '147',
-    description: 'Für Kinder und Jugendliche bis 18 Jahre',
-    available: '24/7',
-    website: 'https://www.rataufdraht.at',
-    type: 'youth' as const,
-  },
-  {
-    name: 'Österreichische Gesellschaft für Suizidprävention',
-    number: '',
-    description: 'Informationen und Hilfsangebote',
-    available: 'Online',
-    website: 'https://www.suizidpraevention-austria.at',
-    type: 'info' as const,
-  },
-];
-
-const immediateExercises = [
-  {
-    title: '5-4-3-2-1 Grounding',
-    icon: Wind,
-    description: 'Erdungstechnik bei akuter Panik oder Überwältigung',
-    steps: [
-      'Benenne 5 Dinge, die du sehen kannst',
-      'Benenne 4 Dinge, die du berühren kannst',
-      'Benenne 3 Dinge, die du hören kannst',
-      'Benenne 2 Dinge, die du riechen kannst',
-      'Benenne 1 Sache, die du schmecken kannst',
-    ],
-  },
-  {
-    title: '4-7-8 Atemtechnik',
-    icon: Heart,
-    description: 'Beruhigende Atmung bei Anspannung und Angst',
-    steps: [
-      'Atme 4 Sekunden durch die Nase ein',
-      'Halte den Atem 7 Sekunden an',
-      'Atme 8 Sekunden durch den Mund aus',
-      'Wiederhole 4-5 Zyklen',
-    ],
-  },
-];
-
 export function CrisisResources({ className = '' }: CrisisResourcesProps) {
+  const { t } = useTranslation();
   const [expandedExercise, setExpandedExercise] = useState<number | null>(null);
+
+  const emergencyContacts = [
+    {
+      name: t('crisis.telefonseelsorge'),
+      number: '142',
+      description: t('crisis.telefonseelsorgeDesc'),
+      available: '24/7',
+      type: 'crisis' as const,
+    },
+    {
+      name: t('crisis.kiz'),
+      number: '01 406 95 95',
+      description: t('crisis.kizDesc'),
+      available: 'Mo-Fr 10-17',
+      website: 'https://www.kriseninterventionszentrum.at',
+      type: 'crisis' as const,
+    },
+    {
+      name: t('crisis.psychiatricHelp'),
+      number: '01 313 30',
+      description: t('crisis.psychiatricHelpDesc'),
+      available: '24/7',
+      type: 'emergency' as const,
+    },
+    {
+      name: t('crisis.emergencyCall'),
+      number: '144',
+      description: t('crisis.emergencyCallDesc'),
+      available: '24/7',
+      type: 'emergency' as const,
+    },
+  ];
+
+  const immediateExercises = [
+    {
+      title: t('crisis.grounding'),
+      icon: Wind,
+      description: t('crisis.groundingDesc'),
+      steps: [
+        t('crisis.groundingStep1'),
+        t('crisis.groundingStep2'),
+        t('crisis.groundingStep3'),
+        t('crisis.groundingStep4'),
+        t('crisis.groundingStep5'),
+      ],
+    },
+    {
+      title: t('crisis.breathing'),
+      icon: Heart,
+      description: t('crisis.breathingDesc'),
+      steps: [
+        t('crisis.breathingStep1'),
+        t('crisis.breathingStep2'),
+        t('crisis.breathingStep3'),
+        t('crisis.breathingStep4'),
+      ],
+    },
+  ];
 
   return (
     <div className={`rounded-3xl border-2 border-red-300 bg-red-50 p-6 shadow-lg ${className}`}>
@@ -93,23 +86,22 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
           <AlertTriangle className="h-6 w-6" aria-hidden />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-red-900">Sofortige Unterstützung verfügbar</h3>
-          <p className="text-sm text-red-800">Du musst das nicht alleine durchstehen</p>
+          <h3 className="text-xl font-bold text-red-900">{t('crisis.immediateSupport')}</h3>
+          <p className="text-sm text-red-800">{t('crisis.notAlone')}</p>
         </div>
       </div>
 
       {/* Emergency Notice */}
       <div className="mb-6 rounded-xl bg-red-100 p-4">
         <p className="text-sm font-semibold text-red-900">
-          Wenn du in akuter Gefahr bist oder an Selbstverletzung denkst, rufe bitte sofort den
-          Notruf (144) oder die Telefonseelsorge (142).
+          {t('crisis.dangerWarning')}
         </p>
       </div>
 
       {/* Emergency Contacts */}
       <div className="mb-6">
         <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-red-900">
-          Notfallnummern in Österreich
+          {t('crisis.emergencyNumbersAustria')}
         </h4>
         <div className="space-y-2">
           {emergencyContacts.map((contact) => (
@@ -118,7 +110,7 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
                 <div className="flex-1">
                   <h5 className="font-semibold text-default">{contact.name}</h5>
                   <p className="mt-0.5 text-xs text-muted">{contact.description}</p>
-                  <p className="mt-1 text-xs text-muted">Verfügbar: {contact.available}</p>
+                  <p className="mt-1 text-xs text-muted">{t('crisis.available')}: {contact.available}</p>
                 </div>
                 <div className="flex flex-col gap-2 sm:items-end">
                   {contact.number && (
@@ -137,7 +129,7 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
                       rel="noopener noreferrer"
                       className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-primary-600 bg-white px-3 py-1.5 text-sm font-semibold text-primary-700 transition hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto"
                     >
-                      Website
+                      {t('crisis.website')}
                       <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                     </a>
                   )}
@@ -151,7 +143,7 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
       {/* Immediate Exercises */}
       <div>
         <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-red-900">
-          Sofort-Übungen
+          {t('crisis.immediateExercises')}
         </h4>
         <div className="space-y-2">
           {immediateExercises.map((exercise, index) => (
@@ -199,8 +191,7 @@ export function CrisisResources({ className = '' }: CrisisResourcesProps) {
       <div className="mt-6 flex items-start gap-2 rounded-lg bg-red-100 p-3">
         <Info className="h-4 w-4 flex-none text-red-800" aria-hidden />
         <p className="text-xs text-red-800">
-          Diese Ressourcen ersetzen keine professionelle Behandlung. Bei akuten Notfällen
-          kontaktiere bitte sofort den Notruf 144.
+          {t('crisis.disclaimer')}
         </p>
       </div>
     </div>

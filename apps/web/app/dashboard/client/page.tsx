@@ -11,7 +11,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 
-import { requireClient } from '../../../lib/auth-guards';
+import { requireClient } from '@/lib/auth-guards';
 
 // Force dynamic rendering for auth-protected page
 export const dynamic = 'force-dynamic';

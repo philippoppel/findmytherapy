@@ -9,8 +9,8 @@ import {
   splitToList,
   parseCurrencyInput,
   formatCurrencyInput,
-} from '../../../lib/therapist/setcard';
-import type { SetcardPayload } from '../../../lib/therapist/setcard';
+} from '@/lib/therapist/setcard';
+import type { SetcardPayload } from '@/lib/therapist/setcard';
 
 type SetcardFormValues = {
   displayName: string;

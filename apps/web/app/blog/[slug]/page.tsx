@@ -2,11 +2,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
 import { getBlogPostBySlug, getAllBlogPosts, getRelatedPosts } from '@/lib/blogService';
 import { getAuthorById } from '@/lib/authors';
-import { BackLink } from '../../components/BackLink';
+import { TranslatedBackLink } from '../../components/TranslatedBackLink';
 import ViewTracker from './ViewTracker';
+import {
+  AtAGlanceHeading,
+  FAQHeading,
+  SourcesHeading,
+  BlogCTASection,
+  RelatedArticlesHeader,
+  FinalCTABanner,
+} from './BlogArticleLabels';
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -140,7 +147,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* Clean Header */}
       <header className="border-b border-neutral-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4">
-          <BackLink href="/blog" label="Zurück zum Blog" />
+          <TranslatedBackLink href="/blog" translationKey="blogPages.backToBlog" />
         </div>
       </header>
 
@@ -200,9 +207,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Key Takeaways - Reader Mode friendly */}
           {post.summary && post.summary.length > 0 && (
             <aside className="mb-8 sm:mb-12 p-4 sm:p-6 rounded-xl bg-neutral-50 border border-neutral-100">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500 mb-4">
-                Auf einen Blick
-              </h2>
+              <AtAGlanceHeading />
               <ul className="space-y-2 sm:space-y-3">
                 {post.summary.map((point, idx) => (
                   <li key={idx} className="flex items-start gap-3">
@@ -269,9 +274,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* FAQ Section */}
           {post.faq && post.faq.length > 0 && (
             <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
-              <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-6">
-                Häufige Fragen
-              </h2>
+              <FAQHeading />
               <dl className="space-y-4">
                 {post.faq.map((item, idx) => (
                   <div key={idx} className="p-4 rounded-lg bg-neutral-50">
@@ -290,9 +293,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Sources Section */}
           {post.sources && post.sources.length > 0 && (
             <section className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-100">
-              <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 mb-6">
-                Quellen & Literatur
-              </h2>
+              <SourcesHeading />
               <ol className="space-y-3 list-decimal list-inside">
                 {post.sources.map((source, idx) => (
                   <li key={idx} className="text-sm text-neutral-600">
@@ -343,42 +344,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* CTAs - Outside article for Reader Mode */}
         <div className="mx-auto max-w-3xl py-8 sm:py-12">
-          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-            <Link
-              href="/therapists"
-              className="p-4 sm:p-6 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 transition min-h-[44px]"
-            >
-              <p className="font-semibold mb-1">Therapeut:in finden</p>
-              <p className="text-sm text-neutral-400">
-                Spezialist:innen für deine Themen
-              </p>
-            </Link>
-            <Link
-              href="/quiz"
-              className="p-4 sm:p-6 rounded-xl border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 transition min-h-[44px]"
-            >
-              <p className="font-semibold text-neutral-900 mb-1">Schnell-Quiz</p>
-              <p className="text-sm text-neutral-500">
-                In 2 Min. zur Orientierung
-              </p>
-            </Link>
-          </div>
+          <BlogCTASection />
         </div>
 
         {/* Related Articles - Horizontal scroll on mobile */}
         {relatedPosts.length > 0 && (
           <section className="border-t border-neutral-100 py-10 sm:py-16">
             <div className="mx-auto max-w-7xl">
-              <div className="flex items-center justify-between mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">Weitere Artikel</h2>
-                <Link
-                  href="/blog"
-                  className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition flex items-center gap-1 min-h-[44px] px-2"
-                >
-                  Alle Artikel
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+              <RelatedArticlesHeader />
               {/* Horizontal scroll on mobile, grid on larger screens */}
               <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8 sm:overflow-visible snap-x snap-mandatory">
                 {relatedPosts.map((relatedPost) => (
@@ -413,28 +386,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Final CTA Banner */}
         <section className="border-t border-neutral-100 py-10 sm:py-16">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900 mb-3 sm:mb-4">
-              Bereit für den nächsten Schritt?
-            </h2>
-            <p className="text-sm sm:text-base text-neutral-600 mb-6 sm:mb-8">
-              Finde professionelle Unterstützung, die zu dir passt.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <Link
-                href="/therapists"
-                className="px-6 py-3 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition min-h-[44px] flex items-center justify-center"
-              >
-                Therapeut:innen durchsuchen
-              </Link>
-              <Link
-                href="/triage"
-                className="px-6 py-3 rounded-lg border border-neutral-200 text-neutral-700 font-medium hover:bg-neutral-50 transition min-h-[44px] flex items-center justify-center"
-              >
-                Ersteinschätzung starten
-              </Link>
-            </div>
-          </div>
+          <FinalCTABanner />
         </section>
       </main>
 

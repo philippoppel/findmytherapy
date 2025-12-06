@@ -9,6 +9,7 @@ import {
   type ChatMessage,
   type ConversationState,
 } from '@/lib/chatbot/engine';
+import { useTranslation } from '@/lib/i18n';
 
 type PersistedMessage = Omit<ChatMessage, 'timestamp'> & { timestamp: string };
 type PersistedState = Omit<ConversationState, 'messages'> & {
@@ -18,6 +19,7 @@ type PersistedState = Omit<ConversationState, 'messages'> & {
 const STORAGE_KEY = 'findmytherapy-chat-state';
 
 export function ChatWidget() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [state, setState] = useState<ConversationState | null>(null);
@@ -112,9 +114,7 @@ export function ChatWidget() {
   };
 
   const resetChat = () => {
-    const confirmed = confirm(
-      'Möchtest du das Gespräch wirklich zurücksetzen? Die bisherige Konversation geht verloren.',
-    );
+    const confirmed = confirm(t('chatWidget.resetConfirm'));
     if (confirmed) {
       localStorage.removeItem(STORAGE_KEY);
       setState(createInitialState());
@@ -143,8 +143,8 @@ export function ChatWidget() {
                   <div className="absolute inset-0 w-2 h-2 rounded-full bg-success/30 animate-ping"></div>
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-default">Vertraulicher Chat</p>
-                  <p className="text-xs text-muted">Immer für dich da · Vollständig vertraulich</p>
+                  <p className="text-base font-semibold text-default">{t('chatWidget.confidentialChat')}</p>
+                  <p className="text-xs text-muted">{t('chatWidget.alwaysHere')}</p>
                 </div>
               </div>
             </div>
@@ -153,8 +153,8 @@ export function ChatWidget() {
                 type="button"
                 onClick={() => setShowInfoPanel(!showInfoPanel)}
                 className={`rounded-xl p-2 text-muted transition-all hover:text-info hover:bg-info/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${showInfoPanel ? 'bg-info/10 text-info' : ''}`}
-                aria-label="Info anzeigen"
-                title="Datenschutz & Funktionsweise"
+                aria-label={t('chatWidget.showInfo')}
+                title={t('chatWidget.privacyAndHow')}
               >
                 <Info className="h-4 w-4" />
               </button>
@@ -162,8 +162,8 @@ export function ChatWidget() {
                 type="button"
                 onClick={resetChat}
                 className="rounded-xl p-2 text-muted transition-all hover:text-primary hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                aria-label="Chat zurücksetzen"
-                title="Chat zurücksetzen"
+                aria-label={t('chatWidget.resetChat')}
+                title={t('chatWidget.resetChat')}
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -178,7 +178,7 @@ export function ChatWidget() {
                 type="button"
                 onClick={() => setIsOpen(false)}
                 className="rounded-xl p-2 text-muted transition-all hover:text-danger hover:bg-danger/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                aria-label="Chat schließen"
+                aria-label={t('chatWidget.closeChat')}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -205,7 +205,7 @@ export function ChatWidget() {
                   {message.metadata?.sentiment === 'crisis' && message.role === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2 text-red-700">
                       <AlertTriangle className="h-4 w-4" />
-                      <span className="text-xs font-semibold">WICHTIG - Sofortige Hilfe</span>
+                      <span className="text-xs font-semibold">{t('chatWidget.importantHelp')}</span>
                     </div>
                   )}
 
@@ -220,7 +220,7 @@ export function ChatWidget() {
                           onClick={() => handleActionClick('take_assessment')}
                           className="w-full rounded-xl bg-gradient-to-r from-primary to-primary-600 px-5 py-3.5 text-sm font-semibold text-primary-foreground hover:shadow-lg hover:shadow-primary/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
                         >
-                          ✓ Ersteinschätzung starten (2 Min.)
+                          {t('chatWidget.startAssessment')}
                         </button>
                       )}
                       {message.metadata.suggestedAction === 'crisis_resources' && (
@@ -230,14 +230,14 @@ export function ChatWidget() {
                             className="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-danger to-danger-700 px-5 py-3 text-sm font-semibold text-white hover:shadow-lg hover:shadow-danger/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Phone className="h-4 w-4" />
-                            Telefonseelsorge: 142
+                            {t('chatWidget.crisisHotline')}
                           </a>
                           <a
                             href="tel:144"
                             className="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-danger to-danger-700 px-5 py-3 text-sm font-semibold text-white hover:shadow-lg hover:shadow-danger/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Phone className="h-4 w-4" />
-                            Notruf: 144
+                            {t('chatWidget.emergency')}
                           </a>
                         </div>
                       )}
@@ -246,7 +246,7 @@ export function ChatWidget() {
                           onClick={() => handleActionClick('contact_support')}
                           className="w-full rounded-xl bg-gradient-to-r from-primary to-primary-600 px-5 py-3 text-sm font-semibold text-primary-foreground hover:shadow-lg hover:shadow-primary/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
                         >
-                          Kontakt aufnehmen
+                          {t('chatWidget.getInTouch')}
                         </button>
                       )}
                     </div>
@@ -255,7 +255,7 @@ export function ChatWidget() {
                   {message.metadata?.references && message.metadata.references.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-neutral-200 space-y-2">
                       <p className="text-xs font-semibold text-muted tracking-wide uppercase">
-                        Weiterlesen:
+                        {t('chatWidget.readMore')}
                       </p>
                       {message.metadata.references.map((reference) => (
                         <a
@@ -311,14 +311,12 @@ export function ChatWidget() {
                 <div className="flex items-start gap-3">
                   <Shield className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-default mb-1">100% Datenschutz garantiert</h3>
-                    <p className="text-muted leading-relaxed">
-                      Alle deine Nachrichten werden <strong>ausschließlich lokal</strong> in deinem
-                      Browser gespeichert. Es werden <strong>keine personenbezogenen Daten</strong>{' '}
-                      an Server übertragen oder in einer Datenbank gespeichert. Wenn du den Chat
-                      zurücksetzt oder deinen Browser-Cache löschst, sind alle Daten unwiderruflich
-                      gelöscht.
-                    </p>
+                    <h3 className="font-semibold text-default mb-1">{t('chatWidget.privacyGuaranteed')}</h3>
+                    <ul className="text-muted leading-relaxed space-y-1">
+                      <li>• {t('chatWidget.privacyText1')}</li>
+                      <li>• {t('chatWidget.privacyText2')}</li>
+                      <li>• {t('chatWidget.privacyText3')}</li>
+                    </ul>
                   </div>
                 </div>
 
@@ -326,13 +324,10 @@ export function ChatWidget() {
                   <Info className="h-5 w-5 text-info mt-0.5 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold text-default mb-1">
-                      Wie funktioniert dieser Chat?
+                      {t('chatWidget.howDoesItWork')}
                     </h3>
                     <p className="text-muted leading-relaxed">
-                      Dies ist ein <strong>regelbasiertes Support-Tool</strong> (keine künstliche
-                      Intelligenz). Ich erkenne Schlüsselwörter in deinen Nachrichten und antworte
-                      nach vordefinierten Mustern. Deshalb können meine Antworten manchmal unpassend
-                      oder generisch wirken – das ist völlig normal für diese Technologie.
+                      {t('chatWidget.howItWorksText')}
                     </p>
                   </div>
                 </div>
@@ -340,22 +335,12 @@ export function ChatWidget() {
                 <div className="flex items-start gap-3">
                   <MessageCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-default mb-1">Was ist der Zweck?</h3>
-                    <p className="text-muted leading-relaxed">
-                      Mein Ziel ist es, dir <strong>erste Orientierung</strong> zu geben und dich an
-                      die richtigen Ressourcen weiterzuleiten:
-                    </p>
+                    <h3 className="font-semibold text-default mb-1">{t('chatWidget.whatIsThePurpose')}</h3>
                     <ul className="mt-2 space-y-1 text-muted">
-                      <li>• Ersteinschätzung deiner Situation</li>
-                      <li>• Empfehlung von passenden Therapeuten</li>
-                      <li>• Krisenintervention bei akuten Notfällen</li>
-                      <li>• Verlinkung zu hilfreichen Ressourcen</li>
+                      <li>• {t('chatWidget.purposePoint1')}</li>
+                      <li>• {t('chatWidget.purposePoint2')}</li>
+                      <li>• {t('chatWidget.purposePoint3')}</li>
                     </ul>
-                    <p className="text-muted leading-relaxed mt-2">
-                      Bei wichtigen Anliegen empfehle ich dir, die{' '}
-                      <strong>Ersteinschätzung zu machen</strong> oder unser{' '}
-                      <strong>Care-Team zu kontaktieren</strong>.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -371,14 +356,14 @@ export function ChatWidget() {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="flex-1 rounded-2xl border border-neutral-200 bg-white px-5 py-3 text-sm text-default placeholder:text-muted shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary disabled:opacity-50"
-              placeholder="Schreibe eine Nachricht..."
+              placeholder={t('chatWidget.writeMessage')}
               disabled={isTyping}
             />
             <button
               type="submit"
               disabled={!inputValue.trim() || isTyping}
               className="rounded-2xl bg-gradient-to-br from-primary to-primary-600 p-3 text-primary-foreground shadow-md shadow-primary/25 transition-all hover:shadow-lg hover:shadow-primary/30 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              aria-label="Nachricht senden"
+              aria-label={t('chatWidget.sendMessage')}
             >
               <Send className="h-5 w-5" />
             </button>
@@ -399,7 +384,7 @@ export function ChatWidget() {
         aria-controls="findmytherapy-chat-widget"
       >
         <MessageCircle className="h-5 w-5 md:h-5 md:w-5 transition-transform group-hover:rotate-12" />
-        <span className="hidden sm:inline">{isOpen ? 'Schließen' : "Wie geht's dir?"}</span>
+        <span className="hidden sm:inline">{isOpen ? t('chatWidget.close') : t('chatWidget.howAreYou')}</span>
         <span className="sm:hidden">{isOpen ? '✕' : 'Chat'}</span>
 
         {/* Unread Badge */}

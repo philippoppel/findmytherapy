@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, LocateFixed, Loader2 } from 'lucide-react';
 import type { Coordinates } from '../../therapists/location-data';
 import { validateLocationInput } from '../../therapists/location-data';
-import { useDebouncedValue } from '../../hooks/useDebouncedValue';
+import { useDebouncedValue } from '@/app/components/hooks/useDebouncedValue';
 
 export type LocationInputProps = {
   value: string;

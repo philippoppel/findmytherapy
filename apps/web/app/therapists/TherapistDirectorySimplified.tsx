@@ -23,13 +23,14 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import type { TherapistCard } from './types';
-import { useTherapistFiltering, type FormatFilter } from '../hooks/useTherapistFiltering';
+import { useTherapistFiltering, type FormatFilter } from '../components/hooks/useTherapistFiltering';
 import { LocationInput } from '../components/therapist-search/LocationInput';
 import { SpecializationFilters } from '../components/therapist-search/SpecializationFilters';
 import { LanguageFilters } from '../components/therapist-search/LanguageFilters';
 import { PriceRangeFilter } from '../components/therapist-search/PriceRangeFilter';
 import { InsuranceFilters } from '../components/therapist-search/InsuranceFilters';
 import { SortOptions } from '../components/therapist-search/SortOptions';
+import { useTranslation } from '@/lib/i18n';
 
 // Utility function to merge classNames
 function cn(...classes: (string | undefined | null | false)[]): string {
@@ -38,16 +39,11 @@ function cn(...classes: (string | undefined | null | false)[]): string {
 
 const ITEMS_PER_PAGE = 20;
 
-const statusLabel: Record<TherapistCard['status'], string> = {
-  VERIFIED: 'Verifiziert',
-  PENDING: 'In Prüfung',
-  DRAFT: 'Entwurf',
-};
-
-const FORMAT_LABELS: Record<FormatFilter, { label: string; icon: typeof Video }> = {
-  online: { label: 'Online', icon: Video },
-  praesenz: { label: 'Vor Ort', icon: Building2 },
-  hybrid: { label: 'Hybrid', icon: Monitor },
+// These will be replaced with translations inside the component
+const FORMAT_ICONS: Record<FormatFilter, typeof Video> = {
+  online: Video,
+  praesenz: Building2,
+  hybrid: Monitor,
 };
 
 const gradients = [
@@ -72,6 +68,7 @@ export type TherapistDirectoryProps = {
 };
 
 export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
@@ -84,6 +81,19 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
     insurance: false,
   });
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Translated labels
+  const statusLabel: Record<TherapistCard['status'], string> = {
+    VERIFIED: t('therapistDirectory.verified'),
+    PENDING: t('therapistDirectory.pending'),
+    DRAFT: t('therapistDirectory.draft'),
+  };
+
+  const FORMAT_LABELS: Record<FormatFilter, { label: string; icon: typeof Video }> = {
+    online: { label: t('therapistDirectory.online'), icon: FORMAT_ICONS.online },
+    praesenz: { label: t('therapistDirectory.inPerson'), icon: FORMAT_ICONS.praesenz },
+    hybrid: { label: t('therapistDirectory.hybrid'), icon: FORMAT_ICONS.hybrid },
+  };
 
   const {
     filters,

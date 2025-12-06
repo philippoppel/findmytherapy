@@ -22,10 +22,16 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://findmytherapy.net/triage',
     locale: 'de_AT',
+    alternateLocale: 'en',
     siteName: 'FindMyTherapy',
   },
   alternates: {
     canonical: 'https://findmytherapy.net/triage',
+    languages: {
+      'de-AT': 'https://findmytherapy.net/triage',
+      'en': 'https://findmytherapy.net/triage',
+      'x-default': 'https://findmytherapy.net/triage',
+    },
   },
   twitter: {
     card: 'summary_large_image',

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { Button, Input } from '@mental-health/ui';
 import { Loader2, CheckCircle2, Mail } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 export function ForgotPasswordForm() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -28,7 +30,7 @@ export function ForgotPasswordForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
+        throw new Error(data.message || t('forgotPassword.errorOccurred'));
       }
 
       setStatus('success');
@@ -36,7 +38,7 @@ export function ForgotPasswordForm() {
     } catch (error) {
       console.error('Error requesting password reset:', error);
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
+      setErrorMessage(error instanceof Error ? error.message : t('forgotPassword.errorOccurred'));
     } finally {
       setIsSubmitting(false);
     }
@@ -50,17 +52,16 @@ export function ForgotPasswordForm() {
             <CheckCircle2 className="h-8 w-8 text-emerald-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-emerald-900">E-Mail versendet!</h3>
+            <h3 className="text-lg font-semibold text-emerald-900">{t('forgotPassword.successTitle')}</h3>
             <p className="mt-2 text-sm text-emerald-800">
-              Wir haben dir einen Link zum Zurücksetzen deines Passworts an deine E-Mail-Adresse
-              gesendet. Bitte überprüfe dein Postfach (auch den Spam-Ordner).
+              {t('forgotPassword.successMessage')}
             </p>
-            <p className="mt-3 text-sm text-emerald-800">Der Link ist 1 Stunde gültig.</p>
+            <p className="mt-3 text-sm text-emerald-800">{t('forgotPassword.linkValidFor')}</p>
             <button
               onClick={() => setStatus('idle')}
               className="mt-4 text-sm font-medium text-emerald-700 hover:text-emerald-900 underline"
             >
-              Weitere E-Mail anfordern
+              {t('forgotPassword.requestAnother')}
             </button>
           </div>
         </div>
@@ -72,12 +73,11 @@ export function ForgotPasswordForm() {
     <div className="mt-8 rounded-3xl border border-divider bg-white/90 p-8 shadow-lg shadow-primary/10 backdrop-blur">
       <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
         <Mail className="h-4 w-4" aria-hidden />
-        Passwort zurücksetzen
+        {t('forgotPassword.title')}
       </div>
-      <h2 className="mt-4 text-2xl font-semibold text-default">Passwort vergessen?</h2>
+      <h2 className="mt-4 text-2xl font-semibold text-default">{t('forgotPassword.heading')}</h2>
       <p className="mt-2 text-sm text-muted">
-        Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen deines
-        Passworts.
+        {t('forgotPassword.description')}
       </p>
 
       {status === 'error' && (
@@ -92,7 +92,7 @@ export function ForgotPasswordForm() {
             !
           </div>
           <div>
-            <p className="font-semibold">Fehler</p>
+            <p className="font-semibold">{t('forgotPassword.error')}</p>
             <p>{errorMessage}</p>
           </div>
         </div>
@@ -100,13 +100,13 @@ export function ForgotPasswordForm() {
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
         <label className="space-y-2 text-sm text-neutral-700" htmlFor="reset-email">
-          <span className="font-medium text-default">E-Mail-Adresse</span>
+          <span className="font-medium text-default">{t('forgotPassword.emailLabel')}</span>
           <Input
             id="reset-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="deine@email.at"
+            placeholder={t('forgotPassword.emailPlaceholder')}
             required
             autoComplete="email"
           />
@@ -116,15 +116,15 @@ export function ForgotPasswordForm() {
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              Wird gesendet…
+              {t('forgotPassword.sending')}
             </span>
           ) : (
-            'Reset-Link anfordern'
+            t('forgotPassword.submitButton')
           )}
         </Button>
 
         <p className="text-center text-xs text-subtle">
-          Du erhältst nur eine E-Mail, wenn ein Konto mit dieser Adresse existiert.
+          {t('forgotPassword.onlyIfExists')}
         </p>
       </form>
     </div>

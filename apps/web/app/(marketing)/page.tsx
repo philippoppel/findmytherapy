@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
-import { getHeroContent, getFAQItems, teamContent } from '../marketing-content';
+import { getHeroContent, getFAQItems, teamContent } from '../components/marketing-content';
 import { MarketingHero } from '../components/marketing/MarketingHero';
 import { TherapistFinderSection } from '../components/marketing/TherapistFinderSection';
 import { TestimonialsSection } from '../components/marketing/TestimonialsSection';
@@ -35,6 +35,7 @@ export const metadata: Metadata = {
       'Gratis Wissen von Psychotherapeut:innen für Soforthilfe. Verifizierte Therapeut:innen mit professionellen, SEO-optimierten Microsites.',
     type: 'website',
     locale: 'de_AT',
+    alternateLocale: 'en',
     url: 'https://findmytherapy.net/',
     siteName: 'FindMyTherapy',
     images: [
@@ -48,6 +49,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://findmytherapy.net/',
+    languages: {
+      'de-AT': 'https://findmytherapy.net/',
+      'en': 'https://findmytherapy.net/',
+      'x-default': 'https://findmytherapy.net/',
+    },
   },
   twitter: {
     card: 'summary_large_image',

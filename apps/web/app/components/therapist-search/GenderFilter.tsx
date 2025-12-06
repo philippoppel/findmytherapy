@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { User } from 'lucide-react';
-import type { GenderFilter as GenderFilterType } from '../../hooks/useTherapistFiltering';
+import type { GenderFilter as GenderFilterType } from '@/hooks/useTherapistFiltering';
 
 export type GenderFilterProps = {
   gender: GenderFilterType;

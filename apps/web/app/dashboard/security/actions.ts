@@ -2,13 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
-import { requireRoles } from '../../../lib/auth-guards';
+import { requireRoles } from '@/lib/auth-guards';
 import {
   createTotpUri,
   generateTotpSecret,
   sealTotpSecret,
   verifyTotpCode,
-} from '../../../lib/totp';
+} from '@/lib/totp';
 
 const ALLOWED_ROLES: import('@/lib/prisma').UserRole[] = ['THERAPIST', 'ADMIN'];
 

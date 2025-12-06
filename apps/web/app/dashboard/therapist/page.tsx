@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { prisma } from '@/lib/prisma';
-import { requireTherapist } from '../../../lib/auth-guards';
+import { requireTherapist } from '@/lib/auth-guards';
 import { Users, BookOpen, Calendar, TrendingUp, Settings, CreditCard, Heart } from 'lucide-react';
 import { TherapistDashboardClient } from './components/TherapistDashboardClient';
 import { GettingStartedWidget } from './components/GettingStartedWidget';

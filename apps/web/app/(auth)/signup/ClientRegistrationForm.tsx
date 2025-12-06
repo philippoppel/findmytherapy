@@ -7,7 +7,8 @@ import { signIn } from 'next-auth/react';
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 
 import { Button, Input } from '@mental-health/ui';
-import { track } from '../../../lib/analytics';
+import { track } from '@/lib/analytics';
+import { useTranslation } from '@/lib/i18n';
 
 type FormState = {
   firstName: string;
@@ -33,6 +34,7 @@ const initialState: FormState = {
 
 export function ClientRegistrationForm() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,12 +43,12 @@ export function ClientRegistrationForm() {
 
   const passwordHints = useMemo(
     () => [
-      { rule: 'Mindestens 8 Zeichen', ok: form.password.length >= 8 },
-      { rule: 'Mindestens ein Großbuchstabe', ok: /[A-Z]/.test(form.password) },
-      { rule: 'Mindestens ein Kleinbuchstabe', ok: /[a-z]/.test(form.password) },
-      { rule: 'Mindestens eine Zahl', ok: /\d/.test(form.password) },
+      { rule: t('auth.minChars'), ok: form.password.length >= 8 },
+      { rule: t('auth.minUppercase'), ok: /[A-Z]/.test(form.password) },
+      { rule: t('auth.minLowercase'), ok: /[a-z]/.test(form.password) },
+      { rule: t('auth.minNumber'), ok: /\d/.test(form.password) },
     ],
-    [form.password],
+    [form.password, t],
   );
 
   const handleChange = (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,34 +61,34 @@ export function ClientRegistrationForm() {
     const nextErrors: FormErrors = {};
 
     if (!form.firstName.trim()) {
-      nextErrors.firstName = 'Pflichtfeld';
+      nextErrors.firstName = t('auth.requiredField');
     }
     if (!form.lastName.trim()) {
-      nextErrors.lastName = 'Pflichtfeld';
+      nextErrors.lastName = t('auth.requiredField');
     }
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben';
+      nextErrors.email = t('auth.validEmail');
     }
     if (!form.password.trim()) {
-      nextErrors.password = 'Bitte Passwort vergeben';
+      nextErrors.password = t('auth.enterPassword');
     } else {
       if (form.password.length < 8) {
-        nextErrors.password = 'Mindestens 8 Zeichen';
+        nextErrors.password = t('auth.minChars');
       } else if (!/[A-Z]/.test(form.password)) {
-        nextErrors.password = 'Mindestens ein Großbuchstabe';
+        nextErrors.password = t('auth.minUppercase');
       } else if (!/[a-z]/.test(form.password)) {
-        nextErrors.password = 'Mindestens ein Kleinbuchstabe';
+        nextErrors.password = t('auth.minLowercase');
       } else if (!/\d/.test(form.password)) {
-        nextErrors.password = 'Mindestens eine Zahl';
+        nextErrors.password = t('auth.minNumber');
       }
     }
     if (!form.confirmPassword.trim()) {
-      nextErrors.confirmPassword = 'Bitte Passwort bestätigen';
+      nextErrors.confirmPassword = t('auth.confirmPasswordRequired');
     } else if (form.password !== form.confirmPassword) {
-      nextErrors.confirmPassword = 'Passwörter stimmen nicht überein';
+      nextErrors.confirmPassword = t('auth.passwordsMismatch');
     }
     if (!form.acceptTerms) {
-      nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu';
+      nextErrors.acceptTerms = t('auth.acceptTermsRequired');
     }
 
     return nextErrors;
@@ -139,7 +141,7 @@ export function ClientRegistrationForm() {
           setErrors((prev) => ({ ...prev, ...apiErrors }));
         }
 
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
+        throw new Error(data.message || t('auth.errorOccurred'));
       }
 
       track('client_registration_submitted', {
@@ -147,7 +149,7 @@ export function ClientRegistrationForm() {
       });
 
       setStatus('success');
-      setMessage('Account erstellt – du wirst jetzt angemeldet …');
+      setMessage(t('auth.accountCreatedSigningIn'));
 
       const signInResult = await signIn('credentials', {
         redirect: false,
@@ -156,7 +158,7 @@ export function ClientRegistrationForm() {
       });
 
       if (signInResult?.error) {
-        setMessage('Account erstellt. Bitte melde dich jetzt an.');
+        setMessage(t('auth.accountCreatedPleaseLogin'));
         router.push('/login?status=registered');
         return;
       }
@@ -166,7 +168,7 @@ export function ClientRegistrationForm() {
     } catch (error) {
       console.error('Error registering client:', error);
       setStatus('error');
-      setMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
+      setMessage(error instanceof Error ? error.message : t('auth.errorOccurred'));
     } finally {
       setIsSubmitting(false);
     }
@@ -175,10 +177,10 @@ export function ClientRegistrationForm() {
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
       <header className="mb-6">
-        <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">Account erstellen</h2>
-        <p className="mt-2 text-sm text-neutral-800">
-          Sichere dir den Zugang zu empfohlenen Programmen, Kursfortschritt und deinem Care-Team.
-        </p>
+        <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">
+          {t('auth.createAccountTitle')}
+        </h2>
+        <p className="mt-2 text-sm text-neutral-800">{t('auth.createAccountDesc')}</p>
       </header>
 
       {status === 'success' && (
@@ -188,7 +190,7 @@ export function ClientRegistrationForm() {
         >
           <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
           <div>
-            <p className="font-semibold">Registrierung erfolgreich</p>
+            <p className="font-semibold">{t('auth.registrationSuccess')}</p>
             <p>{message}</p>
           </div>
         </div>
@@ -201,8 +203,8 @@ export function ClientRegistrationForm() {
         >
           <AlertCircle className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
           <div>
-            <p className="font-semibold">Fehler bei der Registrierung</p>
-            <p>{message || 'Bitte versuche es später erneut.'}</p>
+            <p className="font-semibold">{t('auth.registrationError')}</p>
+            <p>{message || t('auth.tryAgainLater')}</p>
           </div>
         </div>
       )}
@@ -210,7 +212,7 @@ export function ClientRegistrationForm() {
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="firstName">
-            <span className="font-medium text-default">Vorname</span>
+            <span className="font-medium text-default">{t('auth.firstName')}</span>
             <Input
               id="firstName"
               value={form.firstName}
@@ -223,7 +225,7 @@ export function ClientRegistrationForm() {
             {errors.firstName && <span className="text-xs text-red-600">{errors.firstName}</span>}
           </label>
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="lastName">
-            <span className="font-medium text-default">Nachname</span>
+            <span className="font-medium text-default">{t('auth.lastName')}</span>
             <Input
               id="lastName"
               value={form.lastName}
@@ -238,7 +240,7 @@ export function ClientRegistrationForm() {
         </div>
 
         <label className="space-y-1 text-sm text-neutral-700" htmlFor="email">
-          <span className="font-medium text-default">E-Mail-Adresse</span>
+          <span className="font-medium text-default">{t('auth.emailAddress')}</span>
           <Input
             id="email"
             type="email"
@@ -255,14 +257,14 @@ export function ClientRegistrationForm() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1 text-sm text-neutral-700">
             <label htmlFor="password" className="font-medium text-default">
-              Passwort
+              {t('auth.password')}
             </label>
             <Input
               id="password"
               type="password"
               value={form.password}
               onChange={handleChange('password')}
-              placeholder="Mindestens 8 Zeichen"
+              placeholder={t('auth.minChars')}
               hasError={Boolean(errors.password)}
               required
               autoComplete="new-password"
@@ -271,14 +273,14 @@ export function ClientRegistrationForm() {
           </div>
           <div className="space-y-1 text-sm text-neutral-700">
             <label htmlFor="confirmPassword" className="font-medium text-default">
-              Passwort bestätigen
+              {t('auth.confirmPassword')}
             </label>
             <Input
               id="confirmPassword"
               type="password"
               value={form.confirmPassword}
               onChange={handleChange('confirmPassword')}
-              placeholder="Passwort wiederholen"
+              placeholder={t('auth.repeatPassword')}
               hasError={Boolean(errors.confirmPassword)}
               required
               autoComplete="new-password"
@@ -308,10 +310,7 @@ export function ClientRegistrationForm() {
             onChange={handleChange('marketingOptIn')}
             className="mt-1 h-4 w-4 rounded border border-divider"
           />
-          <span>
-            Ich möchte Updates zu neuen Kursen, Notfall-Features und Angeboten erhalten. Abmeldung
-            jederzeit möglich.
-          </span>
+          <span>{t('auth.marketingOptInLabel')}</span>
         </label>
 
         <label className="flex items-start gap-3 rounded-2xl border border-divider bg-surface-1/90 p-4 text-sm text-neutral-800">
@@ -323,15 +322,15 @@ export function ClientRegistrationForm() {
             required
           />
           <span>
-            Ich stimme den{' '}
+            {t('auth.agreeToTerms')}{' '}
             <Link className="text-primary underline" href="/terms">
-              Nutzungsbedingungen
+              {t('auth.termsOfService')}
             </Link>{' '}
-            und der{' '}
+            {t('auth.and')}{' '}
             <Link className="text-primary underline" href="/privacy">
-              Datenschutzrichtlinie
+              {t('auth.privacyPolicyLink')}
             </Link>{' '}
-            zu.
+            {t('auth.agreeTermsSuffix')}
             {errors.acceptTerms && (
               <span className="mt-1 block text-xs text-red-600">{errors.acceptTerms}</span>
             )}
@@ -342,17 +341,17 @@ export function ClientRegistrationForm() {
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              Registrierung läuft …
+              {t('auth.registering')}
             </span>
           ) : (
-            'Account erstellen'
+            t('auth.createAccountTitle')
           )}
         </Button>
 
         <p className="text-center text-xs text-neutral-700">
-          Bereits ein Konto?{' '}
+          {t('auth.alreadyHaveAccount')}{' '}
           <Link href="/login" className="text-primary underline">
-            Hier anmelden
+            {t('auth.signInHere')}
           </Link>
         </p>
       </form>

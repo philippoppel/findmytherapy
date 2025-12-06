@@ -38,55 +38,54 @@ import { ProgressChart } from './ProgressChart';
 import { TherapistCard } from './TherapistCard';
 import { TherapistComparison } from './TherapistComparison';
 import { TherapistFilters } from './TherapistFilters';
-import { HealthDataConsentDialog } from '../../components/HealthDataConsentDialog';
+import { HealthDataConsentDialog } from '@/components/HealthDataConsentDialog';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n';
 
 type QuestionSection = {
   id: string;
   type: 'phq9' | 'gad7' | 'support' | 'availability';
-  title: string;
-  subtitle: string;
+  titleKey: string;
+  subtitleKey: string;
   icon: ComponentType<{ className?: string }>;
 };
 
-const questionSections: QuestionSection[] = [
+const questionSectionsDef: QuestionSection[] = [
   {
     id: 'phq9',
     type: 'phq9',
-    title: 'PHQ-9: Depressive Symptome',
-    subtitle:
-      'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    titleKey: 'triage.phq9Title',
+    subtitleKey: 'triage.phq9Subtitle',
     icon: CheckCircle2,
   },
   {
     id: 'gad7',
     type: 'gad7',
-    title: 'GAD-7: Angstsymptome',
-    subtitle:
-      'Wie oft wurden Sie in den letzten 2 Wochen durch die folgenden Beschwerden beeinträchtigt?',
+    titleKey: 'triage.gad7Title',
+    subtitleKey: 'triage.gad7Subtitle',
     icon: Sparkles,
   },
   {
     id: 'support',
     type: 'support',
-    title: 'Gewünschte Unterstützung',
-    subtitle: 'Welche Form der Unterstützung könntest du dir vorstellen?',
+    titleKey: 'triage.supportTitle',
+    subtitleKey: 'triage.supportSubtitle',
     icon: BookOpen,
   },
   {
     id: 'availability',
     type: 'availability',
-    title: 'Verfügbarkeit & Präferenzen',
-    subtitle: 'Welche Optionen passen zu deinem Alltag?',
+    titleKey: 'triage.availabilityTitle',
+    subtitleKey: 'triage.availabilitySubtitle',
     icon: Calendar,
   },
 ];
 
-const riskLabelMap = {
-  LOW: 'Niedrig',
-  MEDIUM: 'Erhöht',
-  HIGH: 'Hoch',
+const RISK_LABEL_KEYS = {
+  LOW: 'triage.riskLow',
+  MEDIUM: 'triage.riskMedium',
+  HIGH: 'triage.riskHigh',
 } as const;
 
 type Answers = {
@@ -154,9 +153,26 @@ type NextStepConfig = {
 };
 
 export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlowProps = {}) {
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const router = useRouter();
   const [hasConsent, setHasConsent] = useState(false);
+
+  // Get translated question sections
+  const questionSections = useMemo(() =>
+    questionSectionsDef.map(section => ({
+      ...section,
+      title: t(section.titleKey as any),
+      subtitle: t(section.subtitleKey as any),
+    })),
+  [t]);
+
+  // Get translated risk labels
+  const riskLabelMap = useMemo(() => ({
+    LOW: t(RISK_LABEL_KEYS.LOW as any),
+    MEDIUM: t(RISK_LABEL_KEYS.MEDIUM as any),
+    HIGH: t(RISK_LABEL_KEYS.HIGH as any),
+  }), [t]);
   const [showConsentDialog, setShowConsentDialog] = useState(true);
   const [isCheckingConsent, setIsCheckingConsent] = useState(true);
 
@@ -299,16 +315,16 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
   const progress = Math.round((answeredQuestions / totalQuestions) * 100);
   const progressCopy = useMemo(() => {
     if (progress >= 90) {
-      return 'Fast geschafft – nur noch letzte Antworten.';
+      return t('triage.almostDoneProg');
     }
     if (progress >= 60) {
-      return 'Mehr als die Hälfte ist erledigt.';
+      return t('triage.halfwayProg');
     }
     if (progress >= 30) {
-      return 'Guter Start – bleib kurz dran.';
+      return t('triage.goodStartProg');
     }
-    return 'Kurzer Check – das dauert nur eine Minute.';
-  }, [progress]);
+    return t('triage.quickCheckProg');
+  }, [progress, t]);
 
   const handleScaleAnswer = useCallback(
     (value: number) => {
@@ -459,72 +475,69 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
   const nextStepConfig = useMemo<NextStepConfig>(() => {
     if (requiresEmergency) {
       return {
-        badgeLabel: 'Akute Unterstützung',
+        badgeLabel: t('triage.emergencyBadge'),
         containerClass: 'border-red-200 bg-red-50 text-red-900',
         icon: AlertTriangle,
-        headline: 'Sofortige Hilfe in Anspruch nehmen',
+        headline: t('triage.emergencyHeadline'),
         description: hasSuicidalIdeation
-          ? 'Deine Antwort auf Frage 9 weist auf Suizidgedanken hin. Bitte nimm umgehend Krisenhilfe in Anspruch und nutze die Ressourcen unten.'
-          : 'Deine Werte liegen im roten Bereich. Hol dir sofort professionelle Unterstützung über Krisendienste oder Notruf.',
+          ? t('triage.emergencyDescSuicidal')
+          : t('triage.emergencyDescGeneral'),
         actions: [
-          'Notruf 144 (oder 112) wählen, wenn du dich akut gefährdet fühlst.',
-          'Telefonseelsorge 142 kontaktieren – rund um die Uhr, anonym und kostenlos.',
-          'Eine Vertrauensperson informieren und nicht alleine bleiben.',
+          t('triage.emergencyAction1'),
+          t('triage.emergencyAction2'),
+          t('triage.emergencyAction3'),
         ],
       };
     }
 
     if (riskLevel === 'HIGH') {
       return {
-        badgeLabel: 'Hohe Priorität',
+        badgeLabel: t('triage.highBadge'),
         containerClass: 'border-amber-200 bg-amber-50 text-amber-900',
         icon: Star,
-        headline: 'Zeitnah professionelle Begleitung sichern',
-        description:
-          'Die Kombination deiner PHQ-9 und GAD-7 Werte zeigt eine hohe Belastung. Vereinbare in den nächsten Tagen ein Erstgespräch und kläre weitere Schritte ärztlich ab.',
+        headline: t('triage.highHeadline'),
+        description: t('triage.highDesc'),
         actions: [
-          'Therapeut:in aus den Empfehlungen auswählen und innerhalb von 14 Tagen ein Erstgespräch fixieren.',
-          'Hausärzt:in oder Psychiater:in konsultieren, um eine kombinierte Behandlung zu prüfen.',
-          'Digitale Programme nur ergänzend einsetzen, nicht als Ersatz für Therapie.',
+          t('triage.highAction1'),
+          t('triage.highAction2'),
+          t('triage.highAction3'),
         ],
       };
     }
 
     if (riskLevel === 'MEDIUM') {
       return {
-        badgeLabel: 'Empfohlene Schritte',
+        badgeLabel: t('triage.mediumBadge'),
         containerClass: 'border-sky-200 bg-sky-50 text-sky-900',
         icon: Sparkles,
-        headline: 'Professionelle Begleitung planen',
-        description:
-          'Mittelschwere Symptome profitieren stark von strukturierter Psychotherapie. Kombiniere sie mit alltagstauglichen Selbsthilfe-Tools.',
+        headline: t('triage.mediumHeadline'),
+        description: t('triage.mediumDesc'),
         actions: [
-          'Ein Erstgespräch mit einer empfohlenen Therapeut:in planen.',
-          'Zwischen den Terminen ein digitales Programm zur Stabilisierung nutzen.',
-          'In 4–6 Wochen einen erneuten Check durchführen, um Veränderungen zu sehen.',
+          t('triage.mediumAction1'),
+          t('triage.mediumAction2'),
+          t('triage.mediumAction3'),
         ],
       };
     }
 
     return {
-      badgeLabel: 'Prävention',
+      badgeLabel: t('triage.lowBadge'),
       containerClass: 'border-emerald-200 bg-emerald-50 text-emerald-900',
       icon: CheckCircle2,
-      headline: 'Ressourcen stärken & dranbleiben',
-      description:
-        'Aktuell zeigen sich nur geringe Symptome. Pflege deine Routinen und nutze Prävention, um stabil zu bleiben.',
+      headline: t('triage.lowHeadline'),
+      description: t('triage.lowDesc'),
       actions: [
-        'Regelmäßige Bewegung, Schlafhygiene und soziale Kontakte fest einplanen.',
-        'Ein niedrigschwelliges Programm testen, um Resilienz weiter auszubauen.',
-        'Bei Veränderungen oder erneuter Belastung die Ersteinschätzung wiederholen.',
+        t('triage.lowAction1'),
+        t('triage.lowAction2'),
+        t('triage.lowAction3'),
       ],
     };
-  }, [requiresEmergency, hasSuicidalIdeation, riskLevel]);
+  }, [requiresEmergency, hasSuicidalIdeation, riskLevel, t]);
 
   const scoreBadges = useMemo(
     () => [
       {
-        label: 'Risikoniveau',
+        label: t('triage.riskLevel'),
         value: riskLabelMap[riskLevel],
       },
       {
@@ -536,7 +549,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         value: `${gad7Score}/21 · ${gad7SeverityLabels[gad7Severity]}`,
       },
     ],
-    [riskLevel, phq9Score, phq9Severity, gad7Score, gad7Severity],
+    [riskLevel, riskLabelMap, phq9Score, phq9Severity, gad7Score, gad7Severity, t],
   );
 
   const persistResults = useCallback(
@@ -584,7 +597,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Die Ergebnisse konnten nicht gespeichert werden.');
+          throw new Error(data.message || t('triage.saveError'));
         }
 
         setRecommendations({
@@ -742,18 +755,15 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           <header className="space-y-2">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               <CheckCircle2 className="h-4 w-4" aria-hidden />
-              Detaillierte Ergebnisse
+              {t('triage.detailedResults')}
             </div>
-            <h3 className="text-2xl font-semibold text-default">Deine Ersteinschätzung</h3>
+            <h3 className="text-2xl font-semibold text-default">{t('triage.yourAssessment')}</h3>
           </header>
 
           {hasSuicidalIdeation && (
             <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
-              <p className="font-semibold">Wichtige Information zu Frage 9</p>
-              <p className="mt-1">
-                Du hast angegeben, dass Gedanken an Selbstverletzung oder Tod vorhanden sind. Bitte
-                nutze die oben genannten Krisenangebote und wende dich umgehend an Fachpersonen.
-              </p>
+              <p className="font-semibold">{t('triage.item9Warning')}</p>
+              <p className="mt-1">{t('triage.item9WarningText')}</p>
             </div>
           )}
 
@@ -776,7 +786,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Gewünschte Unterstützung
+                {t('triage.desiredSupport')}
               </p>
               <p className="mt-2 text-sm text-muted">
                 {answers.support.length
@@ -785,12 +795,12 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                         (item) => supportOptions.find((opt) => opt.value === item)?.label ?? item,
                       )
                       .join(' · ')
-                  : 'Keine Auswahl'}
+                  : t('triage.noSelection')}
               </p>
             </div>
             <div className="rounded-2xl border border-divider bg-surface-1/90 p-5">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Verfügbarkeit
+                {t('triage.availability')}
               </p>
               <p className="mt-2 text-sm text-muted">
                 {answers.availability.length
@@ -800,7 +810,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                           availabilityOptions.find((opt) => opt.value === item)?.label ?? item,
                       )
                       .join(' · ')
-                  : 'Keine Auswahl'}
+                  : t('triage.noSelection')}
               </p>
             </div>
           </div>
@@ -809,10 +819,10 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           {recommendations.therapists.length > 0 && (
             <section className="mt-6 space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-lg font-semibold text-default">Empfohlene Therapeut:innen</h4>
+                <h4 className="text-lg font-semibold text-default">{t('triage.recommendedTherapists')}</h4>
                 {selectedTherapists.length > 0 && (
                   <span className="text-xs text-muted">
-                    {selectedTherapists.length} von 3 ausgewählt für Vergleich
+                    {t('triage.selectedForComparison', { count: selectedTherapists.length })}
                   </span>
                 )}
               </div>
@@ -827,8 +837,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               {/* Filtered Results Count */}
               {filteredTherapists.length !== recommendations.therapists.length && (
                 <p className="text-sm text-muted">
-                  {filteredTherapists.length} von {recommendations.therapists.length}{' '}
-                  Therapeut:innen gefunden
+                  {t('triage.therapistsFound', { count: filteredTherapists.length, total: recommendations.therapists.length })}
                 </p>
               )}
 
@@ -849,7 +858,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               {selectedTherapists.length >= 2 && (
                 <div className="mt-4 flex justify-center">
                   <Button onClick={() => setShowComparison(true)}>
-                    {selectedTherapists.length} Therapeut:innen vergleichen
+                    {t('triage.compareTherapists', { count: selectedTherapists.length })}
                   </Button>
                 </div>
               )}
@@ -858,7 +867,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
 
           {recommendations.courses.length > 0 && (
             <section className="mt-6 space-y-4">
-              <h4 className="text-lg font-semibold text-default">Empfohlene Programme</h4>
+              <h4 className="text-lg font-semibold text-default">{t('triage.recommendedPrograms')}</h4>
               <div className="space-y-4">
                 {recommendations.courses.map((course) => (
                   <article
@@ -883,7 +892,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                     </div>
                     <Button variant="secondary" size="sm" asChild className="mt-4">
                       <a href={`/courses/${course.slug}`} target="_blank" rel="noopener noreferrer">
-                        Demo ansehen
+                        {t('triage.viewDemo')}
                       </a>
                     </Button>
                   </article>
@@ -897,9 +906,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
             <Info className="h-5 w-5 flex-none text-primary-600" aria-hidden />
             <div className="flex-1">
               <p className="text-sm text-primary-900">
-                <strong>Hinweis:</strong> Diese Ersteinschätzung ist keine medizinische Diagnose und
-                ersetzt keine professionelle Beratung. Bei Fragen oder zur weiteren Abklärung wende
-                dich bitte an qualifizierte Therapeut:innen oder Ärzt:innen.
+                <strong>{t('triage.disclaimer')}</strong> {t('triage.disclaimerText')}
               </p>
             </div>
           </div>
@@ -908,15 +915,15 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
             <Button variant="ghost" onClick={resetFlow} className="inline-flex items-center gap-2">
               <RotateCcw className="h-4 w-4" aria-hidden />
-              Neue Ersteinschätzung
+              {t('triage.newAssessment')}
             </Button>
             {!embedded && (
               <div className="flex gap-3">
                 <Button variant="outline" asChild>
-                  <a href="/courses">Kurse ansehen</a>
+                  <a href="/courses">{t('triage.viewCourses')}</a>
                 </Button>
                 <Button asChild>
-                  <a href="/therapists">Therapeut:innen finden</a>
+                  <a href="/therapists">{t('triage.findTherapists')}</a>
                 </Button>
               </div>
             )}
@@ -956,7 +963,7 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600"></div>
-          <p className="text-sm text-gray-600">Wird geladen...</p>
+          <p className="text-sm text-gray-600">{t('triage.loading')}</p>
         </div>
       </div>
     );
@@ -972,11 +979,9 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               <Info className="h-4 w-4" aria-hidden />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-semibold text-primary-900">Wichtiger Hinweis</h4>
+              <h4 className="text-sm font-semibold text-primary-900">{t('triage.importantNote')}</h4>
               <p className="mt-1 text-xs text-primary-800">
-                Diese Ersteinschätzung ist <strong>keine medizinische Diagnose</strong>, sondern
-                dient zur Orientierung. Die Ergebnisse ersetzen keine professionelle Beratung durch
-                Therapeut:innen oder Ärzt:innen.
+                {t('triage.disclaimerIntro')} <strong>{t('triage.disclaimerNoDiagnosis')}</strong>{t('triage.disclaimerOrientationOnly')}
               </p>
             </div>
           </div>
@@ -991,10 +996,9 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
               <AlertTriangle className="h-5 w-5" aria-hidden />
             </div>
             <div className="flex-1">
-              <h4 className="font-bold text-red-900">Wichtig: Sofortige Unterstützung verfügbar</h4>
+              <h4 className="font-bold text-red-900">{t('triage.crisisBannerTitle')}</h4>
               <p className="mt-1 text-sm text-red-800">
-                Wir nehmen deine Antwort sehr ernst. Wenn du akut Hilfe brauchst, kontaktiere bitte
-                sofort die Telefonseelsorge (142, kostenlos & anonym, 24/7) oder den Notruf (144).
+                {t('triage.crisisBannerText')}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a
@@ -1002,14 +1006,14 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                   className="inline-flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-red-600"
                 >
                   <Phone className="h-4 w-4" aria-hidden />
-                  Telefonseelsorge 142
+                  {t('triage.crisisHotline142')}
                 </a>
                 <a
                   href="tel:144"
                   className="inline-flex items-center gap-2 rounded-lg border-2 border-red-500 bg-white px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50"
                 >
                   <Phone className="h-4 w-4" aria-hidden />
-                  Notruf 144
+                  {t('triage.crisisEmergency144')}
                 </a>
               </div>
             </div>
@@ -1097,10 +1101,10 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                     disabled={sectionIndex === 0 && questionIndex === 0}
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
-                    Zurück
+                    {t('triage.backNav')}
                   </Button>
                   <Button onClick={goNext}>
-                    Weiter
+                    {t('triage.nextNav')}
                     <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
                   </Button>
                 </div>
@@ -1147,14 +1151,14 @@ export function TriageFlow({ embedded = false, historicalData = [] }: TriageFlow
                     disabled={sectionIndex === 0 && questionIndex === 0}
                     className="rounded-full border border-divider bg-surface-1 px-3 py-1.5 font-medium text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    Zurück
+                    {t('triage.backNav')}
                   </button>
                   <div className="flex flex-col items-center gap-1">
                     <span>
-                      Fortschritt: {progress}% · {progressCopy}
+                      {t('triage.progressLabel')} {progress}% · {progressCopy}
                     </span>
                     <span className="text-[10px] text-subtle opacity-60">
-                      Tipp: Tastatur 0-3, ← →, Enter
+                      {t('triage.keyboardTip')}
                     </span>
                   </div>
                 </div>

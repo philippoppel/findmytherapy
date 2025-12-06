@@ -9,8 +9,9 @@ import {
   acceptAllCookies,
   rejectAllCookies,
   saveCookieConsent,
-  cookieCategoryInfo,
+  useCookieCategoryInfo,
 } from '../lib/cookies';
+import { useTranslation } from '@/lib/i18n';
 
 const disableCookieBanner =
   typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DISABLE_COOKIE_BANNER === 'true';
@@ -23,6 +24,8 @@ export function CookieConsentBanner() {
     analytics: false,
     errorTracking: false,
   });
+  const { t } = useTranslation();
+  const cookieCategoryInfo = useCookieCategoryInfo();
 
   useEffect(() => {
     // Show banner if consent not given (unless explicitly disabled for tests)
@@ -63,7 +66,7 @@ export function CookieConsentBanner() {
         onKeyDown={(e) => e.key === 'Escape' && handleClose()}
         role="button"
         tabIndex={0}
-        aria-label="Schließen (nur essenziell)"
+        aria-label={t('cookies.closeEssentialOnly')}
       />
 
       {/* Banner */}
@@ -76,7 +79,7 @@ export function CookieConsentBanner() {
           <button
             onClick={handleClose}
             className="absolute right-4 top-4 rounded-lg p-1 text-muted transition hover:bg-surface-2 hover:text-default"
-            aria-label="Cookie-Banner schließen (nur essenziell)"
+            aria-label={t('cookies.closeBanner')}
             data-testid="cookie-banner-close"
           >
             <X className="h-5 w-5" />
@@ -89,12 +92,9 @@ export function CookieConsentBanner() {
                 <Cookie className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <h2 className="mb-2 text-xl font-semibold text-default">Cookies & Datenschutz</h2>
+                <h2 className="mb-2 text-xl font-semibold text-default">{t('cookies.title')}</h2>
                 <p className="text-sm leading-relaxed text-muted">
-                  Wir nutzen Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Essenziell
-                  notwendige Cookies sind für die Grundfunktionen erforderlich. Mit Ihrer Zustimmung
-                  können wir zusätzlich Analytics und Fehlererfassung aktivieren, um unseren Service
-                  zu verbessern.
+                  {t('cookies.description')}
                 </p>
               </div>
             </div>
@@ -108,7 +108,7 @@ export function CookieConsentBanner() {
                   size="lg"
                   data-testid="cookie-accept-all"
                 >
-                  Alle akzeptieren
+                  {t('cookies.acceptAll')}
                 </Button>
                 <Button
                   onClick={handleRejectAll}
@@ -117,7 +117,7 @@ export function CookieConsentBanner() {
                   size="lg"
                   data-testid="cookie-reject-all"
                 >
-                  Nur Essenziell
+                  {t('cookies.essentialOnly')}
                 </Button>
                 <Button
                   onClick={() => setShowDetails(!showDetails)}
@@ -125,7 +125,7 @@ export function CookieConsentBanner() {
                   size="lg"
                   className="sm:w-auto"
                 >
-                  Einstellungen
+                  {t('cookies.settings')}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -142,7 +142,7 @@ export function CookieConsentBanner() {
                         {cookieCategoryInfo.essential.title}
                       </h3>
                       <span className="rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">
-                        Immer aktiv
+                        {t('cookies.alwaysActive')}
                       </span>
                     </div>
                   </div>
@@ -167,7 +167,7 @@ export function CookieConsentBanner() {
                     </h3>
                     <label
                       className="relative inline-flex cursor-pointer items-center"
-                      aria-label="Analytics aktivieren/deaktivieren"
+                      aria-label={t('cookies.toggleAnalytics')}
                     >
                       <input
                         type="checkbox"
@@ -176,7 +176,7 @@ export function CookieConsentBanner() {
                           setPreferences({ ...preferences, analytics: e.target.checked })
                         }
                         className="peer sr-only"
-                        aria-label="Analytics aktivieren/deaktivieren"
+                        aria-label={t('cookies.toggleAnalytics')}
                       />
                       <div className="peer h-6 w-11 rounded-full bg-surface-3 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-divider after:bg-surface-1 after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
@@ -202,7 +202,7 @@ export function CookieConsentBanner() {
                     </h3>
                     <label
                       className="relative inline-flex cursor-pointer items-center"
-                      aria-label="Fehlererfassung aktivieren/deaktivieren"
+                      aria-label={t('cookies.toggleErrorTracking')}
                     >
                       <input
                         type="checkbox"
@@ -211,7 +211,7 @@ export function CookieConsentBanner() {
                           setPreferences({ ...preferences, errorTracking: e.target.checked })
                         }
                         className="peer sr-only"
-                        aria-label="Fehlererfassung aktivieren/deaktivieren"
+                        aria-label={t('cookies.toggleErrorTracking')}
                       />
                       <div className="peer h-6 w-11 rounded-full bg-surface-3 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-divider after:bg-surface-1 after:transition-all after:content-[''] peer-checked:bg-teal-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300"></div>
                     </label>
@@ -239,10 +239,10 @@ export function CookieConsentBanner() {
                   className="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700"
                   size="lg"
                 >
-                  Auswahl speichern
+                  {t('cookies.saveSelection')}
                 </Button>
                 <Button onClick={handleAcceptAll} variant="outline" className="flex-1" size="lg">
-                  Alle akzeptieren
+                  {t('cookies.acceptAll')}
                 </Button>
                 <Button
                   onClick={() => setShowDetails(false)}
@@ -251,7 +251,7 @@ export function CookieConsentBanner() {
                   className="sm:w-auto"
                 >
                   <ChevronUp className="mr-2 h-4 w-4" />
-                  Weniger
+                  {t('cookies.less')}
                 </Button>
               </div>
             )}
@@ -259,13 +259,13 @@ export function CookieConsentBanner() {
             {/* Legal links */}
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-divider pt-4 text-xs text-subtle">
               <Link href="/privacy" className="hover:text-teal-600 hover:underline">
-                Datenschutzerklärung
+                {t('cookies.privacyPolicy')}
               </Link>
               <Link href="/cookies" className="hover:text-teal-600 hover:underline">
-                Cookie-Richtlinie
+                {t('cookies.cookiePolicy')}
               </Link>
               <Link href="/imprint" className="hover:text-teal-600 hover:underline">
-                Impressum
+                {t('cookies.imprint')}
               </Link>
             </div>
           </div>

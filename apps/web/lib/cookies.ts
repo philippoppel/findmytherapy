@@ -154,3 +154,54 @@ export const cookieCategoryInfo = {
     ],
   },
 } as const;
+
+/**
+ * Hook for translated cookie category info
+ */
+export function useCookieCategoryInfo() {
+  // Import dynamically to avoid issues with server-side rendering
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { useTranslation } = require('@/lib/i18n');
+  const { t } = useTranslation();
+
+  return {
+    essential: {
+      title: t('cookies.essential'),
+      description: t('cookies.essentialDesc'),
+      cookies: [
+        {
+          name: 'next-auth.session-token',
+          purpose: t('cookies.authPurpose'),
+          duration: t('cookies.duration30Days'),
+        },
+        {
+          name: 'findmytherapy_cookie_consent',
+          purpose: t('cookies.cookieSettingsPurpose'),
+          duration: t('cookies.duration1Year'),
+        },
+      ],
+    },
+    analytics: {
+      title: t('cookies.analytics'),
+      description: t('cookies.analyticsDesc'),
+      cookies: [
+        {
+          name: t('cookies.plausibleAnalytics'),
+          purpose: t('cookies.anonymousStats'),
+          duration: t('cookies.noCookies'),
+        },
+      ],
+    },
+    errorTracking: {
+      title: t('cookies.errorTracking'),
+      description: t('cookies.errorTrackingDesc'),
+      cookies: [
+        {
+          name: 'Sentry',
+          purpose: t('cookies.errorMonitoring'),
+          duration: t('cookies.sessionBased'),
+        },
+      ],
+    },
+  };
+}

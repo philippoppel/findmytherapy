@@ -31,10 +31,16 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://findmytherapy.net/therapists',
     locale: 'de_AT',
+    alternateLocale: 'en',
     siteName: 'FindMyTherapy',
   },
   alternates: {
     canonical: 'https://findmytherapy.net/therapists',
+    languages: {
+      'de-AT': 'https://findmytherapy.net/therapists',
+      'en': 'https://findmytherapy.net/therapists',
+      'x-default': 'https://findmytherapy.net/therapists',
+    },
   },
   twitter: {
     card: 'summary_large_image',

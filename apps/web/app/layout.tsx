@@ -6,6 +6,8 @@ import Script from 'next/script';
 import { SessionProvider } from '../components/providers/SessionProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CookieConsentBanner } from '../components/CookieConsentBanner';
+import { LanguageProvider } from '@/lib/i18n';
+import { LanguageHtmlUpdater } from '../components/providers/LanguageHtmlUpdater';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -33,44 +35,19 @@ export const metadata: Metadata = {
   description:
     'FindMyTherapy verbindet dich mit qualifizierter Unterstützung, digitalen Programmen und einer klaren Orientierung für deine mentale Gesundheit.',
   keywords: [
-    // Hauptkeywords
     'Therapeut finden Österreich',
     'Psychotherapie Wien',
     'Psychotherapeut Österreich',
     'Therapeutensuche',
     'mentale Gesundheit',
-    // Städte Österreich
     'Psychotherapie Graz',
     'Therapeut Linz',
     'Psychotherapie Salzburg',
     'Therapeut Innsbruck',
-    'Psychotherapie Klagenfurt',
-    'Therapeut St. Pölten',
-    'Psychotherapie Villach',
-    'Therapeut Wels',
-    // Störungsbilder
     'Therapie Depression Österreich',
     'Angststörung Behandlung',
     'Burnout Therapie Wien',
-    'Panikattacken Hilfe',
-    'Trauma Therapeut Österreich',
-    'PTBS Behandlung',
-    'Essstörung Therapie',
-    'ADHS Therapie Erwachsene',
-    // Therapieformen
-    'Verhaltenstherapie Österreich',
-    'Psychoanalyse Wien',
-    'Systemische Therapie',
-    'Gesprächstherapie',
-    'Tiefenpsychologie',
-    // Long-Tail
-    'Psychotherapie Kosten Österreich',
-    'Psychotherapie Krankenkasse',
     'Online Therapie Österreich',
-    'Erstgespräch Psychotherapie',
-    'Kassenplatz Psychotherapie',
-    'Psychotherapie Wartezeit',
-    // Tools
     'PHQ-9',
     'GAD-7',
     'Ersteinschätzung',
@@ -94,13 +71,18 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    // Add your verification codes when available
-    // google: 'your-google-verification-code',
+  alternates: {
+    canonical: 'https://findmytherapy.net',
+    languages: {
+      'de-AT': 'https://findmytherapy.net',
+      'en': 'https://findmytherapy.net',
+      'x-default': 'https://findmytherapy.net',
+    },
   },
   openGraph: {
     type: 'website',
     locale: 'de_AT',
+    alternateLocale: 'en',
     siteName: 'FindMyTherapy',
     title: 'FindMyTherapy – Der klare Weg zur richtigen Hilfe',
     description:
@@ -147,9 +129,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${plusJakartaSans.className} theme-light`} suppressHydrationWarning>
         <ErrorBoundary>
-          <SessionProvider>{children}</SessionProvider>
+          <LanguageProvider>
+            <LanguageHtmlUpdater />
+            <SessionProvider>{children}</SessionProvider>
+            <CookieConsentBanner />
+          </LanguageProvider>
         </ErrorBoundary>
-        <CookieConsentBanner />
         <Script id="analytics-placeholder" strategy="lazyOnload">
           {`
             window.findMyTherapyAnalytics = window.findMyTherapyAnalytics || {

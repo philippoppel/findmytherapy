@@ -1,6 +1,6 @@
-import { requireRoles } from '../../../lib/auth-guards';
+import { requireRoles } from '@/lib/auth-guards';
 import { prisma } from '@/lib/prisma';
-import { SecuritySettings } from '../../../components/security/totp-settings';
+import { SecurityContent } from './SecurityContent';
 
 // Force dynamic rendering for auth-protected page
 export const dynamic = 'force-dynamic';
@@ -19,20 +19,9 @@ export default async function SecurityPage() {
   });
 
   return (
-    <div className="max-w-4xl space-y-8">
-      <header className="space-y-3">
-        <h1 className="text-3xl font-bold text-neutral-900">Sicherheit</h1>
-        <p className="text-muted">
-          Aktiviere Zwei-Faktor-Authentifizierung (TOTP), um dein Konto zusätzlich zu schützen.
-        </p>
-      </header>
-
-      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6">
-        <SecuritySettings
-          email={user?.email ?? session.user.email}
-          totpEnabled={Boolean(user?.twoFASecret)}
-        />
-      </div>
-    </div>
+    <SecurityContent
+      email={user?.email ?? session.user.email}
+      totpEnabled={Boolean(user?.twoFASecret)}
+    />
   );
 }

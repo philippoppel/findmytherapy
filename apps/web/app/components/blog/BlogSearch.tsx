@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, X, Calendar, Clock, ArrowRight, Filter } from 'lucide-react';
-import type { BlogPost } from '../../../lib/blogData';
+import type { BlogPost } from '@/lib/blogData';
 
 interface BlogSearchProps {
   posts: BlogPost[];

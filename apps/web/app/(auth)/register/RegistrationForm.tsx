@@ -3,7 +3,8 @@
 import { useMemo, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button, Input, Textarea } from '@mental-health/ui';
-import { track } from '../../../lib/analytics';
+import { track } from '@/lib/analytics';
+import { useTranslation } from '@/lib/i18n';
 
 type AccessRole = 'THERAPIST' | 'ORGANISATION' | 'PRIVATE';
 type TherapistFormat = 'ONLINE' | 'PRAESENZ' | 'HYBRID';
@@ -44,28 +45,25 @@ const initialState: FormState = {
   acceptTerms: false,
 };
 
-const roleLabels: Record<AccessRole, string> = {
-  THERAPIST: 'Therapeut:in / Praxis',
-  ORGANISATION: 'Unternehmen / HR / BGM',
-  PRIVATE: 'Privatperson / Angehörige:r',
-};
-
-const specialtyOptions = [
-  'Depression & Burnout',
-  'Angst & Panik',
-  'Trauma & Krisen',
-  'ADHS & Neurodiversität',
-  'Familie & Beziehungen',
-  'Corporate Mental Health',
+// Specialty keys for translation
+const SPECIALTY_KEYS = [
+  'specialtyDepression',
+  'specialtyAnxiety',
+  'specialtyTrauma',
+  'specialtyAdhd',
+  'specialtyFamily',
+  'specialtyCorporate',
 ] as const;
 
-const formatOptions: Array<{ id: TherapistFormat; label: string }> = [
-  { id: 'ONLINE', label: 'Online' },
-  { id: 'PRAESENZ', label: 'Vor Ort' },
-  { id: 'HYBRID', label: 'Hybrid' },
+// Format keys for translation
+const FORMAT_KEYS: Array<{ id: TherapistFormat; key: string }> = [
+  { id: 'ONLINE', key: 'formatOnline' },
+  { id: 'PRAESENZ', key: 'formatOnsite' },
+  { id: 'HYBRID', key: 'formatHybrid' },
 ];
 
 export function RegistrationForm() {
+  const { t } = useTranslation();
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -73,31 +71,48 @@ export function RegistrationForm() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [submittedRole, setSubmittedRole] = useState<AccessRole | null>(null);
 
+  // Role labels with translations
+  const roleLabels: Record<AccessRole, string> = useMemo(() => ({
+    THERAPIST: t('register.roleTherapist'),
+    ORGANISATION: t('register.roleOrganisation'),
+    PRIVATE: t('register.rolePrivate'),
+  }), [t]);
+
+  // Specialty options with translations
+  const specialtyOptions = useMemo(() =>
+    SPECIALTY_KEYS.map(key => t(`register.${key}` as any)),
+  [t]);
+
+  // Format options with translations
+  const formatOptions = useMemo(() =>
+    FORMAT_KEYS.map(({ id, key }) => ({ id, label: t(`register.${key}` as any) })),
+  [t]);
+
   const accessSummary = useMemo(() => {
     if (form.role === 'THERAPIST') {
-      return 'Nach der Registrierung prüfen wir dein Profil und schalten dir das Pilot-Dashboard frei. Du erhältst alle Infos zum Listing und zur Onboarding-Storyline.';
+      return t('register.accessSummaryTherapist');
     }
 
     if (form.role === 'ORGANISATION') {
-      return 'Du erhältst einen Überblick über Team-Zugänge, Reporting und Employer Branding. Wir stimmen Termin und Storyline mit dir ab.';
+      return t('register.accessSummaryOrganisation');
     }
 
-    return 'Wir zeigen dir die Ersteinschätzung inklusive Empfehlungen, Kursübersicht und Follow-up mit dem Care-Team.';
-  }, [form.role]);
+    return t('register.accessSummaryPrivate');
+  }, [form.role, t]);
 
   const successCopy = useMemo(() => {
     if (submittedRole === 'THERAPIST') {
       return {
-        title: 'Danke für deine Registrierung!',
-        body: 'Wir haben dein Konto angelegt und prüfen dein Profil. Du erhältst werktags innerhalb von 24 Stunden Zugang zum Pilot-Dashboard und weitere Hinweise zur Verifizierung.',
+        title: t('register.successTherapistTitle'),
+        body: t('register.successTherapistBody'),
       };
     }
 
     return {
-      title: 'Vielen Dank! Deine Anfrage ist bei uns angekommen.',
-      body: 'Wir melden uns werktags innerhalb von 24 Stunden mit dem passenden Ablauf. Schau gerne gleich in dein Postfach.',
+      title: t('register.successOtherTitle'),
+      body: t('register.successOtherBody'),
     };
-  }, [submittedRole]);
+  }, [submittedRole, t]);
 
   const handleChange =
     (field: keyof FormState) =>
@@ -145,43 +160,43 @@ export function RegistrationForm() {
     const nextErrors: FormErrors = {};
 
     if (!form.firstName.trim()) {
-      nextErrors.firstName = 'Pflichtfeld';
+      nextErrors.firstName = t('register.requiredField');
     }
     if (!form.lastName.trim()) {
-      nextErrors.lastName = 'Pflichtfeld';
+      nextErrors.lastName = t('register.requiredField');
     }
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      nextErrors.email = 'Bitte eine gültige E-Mail-Adresse angeben';
+      nextErrors.email = t('register.validEmail');
     }
     if (!['THERAPIST', 'ORGANISATION', 'PRIVATE'].includes(form.role)) {
-      nextErrors.role = 'Bitte Rolle auswählen';
+      nextErrors.role = t('register.selectRole');
     }
     if (form.role === 'ORGANISATION' && !form.company.trim()) {
-      nextErrors.company = 'Bitte Unternehmensname ergänzen';
+      nextErrors.company = t('register.companyRequired');
     }
 
     if (form.role === 'THERAPIST') {
       if (!form.password.trim()) {
-        nextErrors.password = 'Bitte Passwort vergeben';
+        nextErrors.password = t('register.passwordRequired');
       } else if (form.password.length < 8) {
-        nextErrors.password = 'Mindestens 8 Zeichen';
+        nextErrors.password = t('register.passwordMin8');
       }
       if (!form.confirmPassword.trim()) {
-        nextErrors.confirmPassword = 'Bitte bestätigen';
+        nextErrors.confirmPassword = t('register.confirmRequired');
       } else if (form.password !== form.confirmPassword) {
-        nextErrors.confirmPassword = 'Passwörter stimmen nicht überein';
+        nextErrors.confirmPassword = t('register.passwordsMismatch');
       }
       if (!form.city.trim()) {
-        nextErrors.city = 'Bitte Stadt angeben';
+        nextErrors.city = t('register.cityRequired');
       }
       if (form.specialties.length === 0) {
-        nextErrors.specialties = 'Mindestens einen Schwerpunkt auswählen';
+        nextErrors.specialties = t('register.selectSpecialty');
       }
       if (form.modalities.length === 0) {
-        nextErrors.modalities = 'Mindestens ein Format auswählen';
+        nextErrors.modalities = t('register.selectFormat');
       }
       if (!form.acceptTerms) {
-        nextErrors.acceptTerms = 'Bitte stimme den Bedingungen zu';
+        nextErrors.acceptTerms = t('register.acceptTerms');
       }
     }
 
@@ -251,7 +266,7 @@ export function RegistrationForm() {
           }
           setErrors((prev) => ({ ...prev, ...apiErrors }));
         }
-        throw new Error(data.message || 'Ein Fehler ist aufgetreten');
+        throw new Error(data.message || t('register.errorOccurred'));
       }
 
       if (currentRole === 'THERAPIST') {
@@ -274,22 +289,22 @@ export function RegistrationForm() {
     } catch (error) {
       console.error('Error submitting registration:', error);
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten');
+      setErrorMessage(error instanceof Error ? error.message : t('register.errorOccurred'));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const submitLabel = form.role === 'THERAPIST' ? 'Registrierung abschließen' : 'Zugang anfragen';
+  const submitLabel = form.role === 'THERAPIST' ? t('register.submitTherapist') : t('register.submitOther');
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
       <header className="mb-6">
         <h2 className="text-xl font-bold text-neutral-900 sm:text-2xl">
-          {form.role === 'THERAPIST' ? 'Pilot-Registrierung' : 'Zugangsanfrage'}
+          {form.role === 'THERAPIST' ? t('register.pilotRegistration') : t('register.accessRequest')}
         </h2>
         <p className="mt-2 text-sm text-neutral-800">
-          Fülle das Formular aus – wir melden uns werktags innerhalb von 24 Stunden.
+          {t('register.formIntro')}
         </p>
       </header>
 
@@ -318,8 +333,8 @@ export function RegistrationForm() {
             !
           </div>
           <div>
-            <p className="font-semibold">Fehler beim Senden</p>
-            <p>{errorMessage || 'Bitte versuche es später erneut oder kontaktiere uns direkt.'}</p>
+            <p className="font-semibold">{t('register.errorTitle')}</p>
+            <p>{errorMessage || t('register.errorRetry')}</p>
           </div>
         </div>
       )}
@@ -327,24 +342,24 @@ export function RegistrationForm() {
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="firstName">
-            <span className="font-medium text-default">Vorname</span>
+            <span className="font-medium text-default">{t('register.firstName')}</span>
             <Input
               id="firstName"
               value={form.firstName}
               onChange={handleChange('firstName')}
-              placeholder="Alex"
+              placeholder={t('register.placeholderFirstName')}
               hasError={Boolean(errors.firstName)}
               required
             />
             {errors.firstName && <span className="text-xs text-red-600">{errors.firstName}</span>}
           </label>
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="lastName">
-            <span className="font-medium text-default">Nachname</span>
+            <span className="font-medium text-default">{t('register.lastName')}</span>
             <Input
               id="lastName"
               value={form.lastName}
               onChange={handleChange('lastName')}
-              placeholder="Muster"
+              placeholder={t('register.placeholderLastName')}
               hasError={Boolean(errors.lastName)}
               required
             />
@@ -353,13 +368,13 @@ export function RegistrationForm() {
         </div>
 
         <label className="space-y-1 text-sm text-neutral-700" htmlFor="email">
-          <span className="font-medium text-default">E-Mail</span>
+          <span className="font-medium text-default">{t('register.email')}</span>
           <Input
             id="email"
             type="email"
             value={form.email}
             onChange={handleChange('email')}
-            placeholder="kontakt@findmytherapy.net"
+            placeholder={t('register.placeholderEmail')}
             hasError={Boolean(errors.email)}
             required
           />
@@ -367,7 +382,7 @@ export function RegistrationForm() {
         </label>
 
         <label className="space-y-1 text-sm text-neutral-700" htmlFor="role">
-          <span className="font-medium text-default">Ich interessiere mich als</span>
+          <span className="font-medium text-default">{t('register.interestedAs')}</span>
           <select
             id="role"
             value={form.role}
@@ -387,20 +402,20 @@ export function RegistrationForm() {
         {form.role === 'THERAPIST' && (
           <div className="space-y-5 rounded-2xl border border-divider bg-surface-1/90 p-4">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-primary">
-              Profil-Angaben
+              {t('register.profileDetails')}
             </h3>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1 text-sm text-neutral-700">
                 <label htmlFor="password" className="font-medium text-default">
-                  Passwort
+                  {t('register.password')}
                 </label>
                 <Input
                   id="password"
                   type="password"
                   value={form.password}
                   onChange={handleChange('password')}
-                  placeholder="Mindestens 8 Zeichen"
+                  placeholder={t('register.min8Chars')}
                   hasError={Boolean(errors.password)}
                   required
                   autoComplete="new-password"
@@ -409,14 +424,14 @@ export function RegistrationForm() {
               </div>
               <div className="space-y-1 text-sm text-neutral-700">
                 <label htmlFor="confirmPassword" className="font-medium text-default">
-                  Passwort bestätigen
+                  {t('register.confirmPassword')}
                 </label>
                 <Input
                   id="confirmPassword"
                   type="password"
                   value={form.confirmPassword}
                   onChange={handleChange('confirmPassword')}
-                  placeholder="Passwort wiederholen"
+                  placeholder={t('register.repeatPassword')}
                   hasError={Boolean(errors.confirmPassword)}
                   required
                   autoComplete="new-password"
@@ -428,12 +443,12 @@ export function RegistrationForm() {
             </div>
 
             <label className="space-y-1 text-sm text-neutral-700" htmlFor="city">
-              <span className="font-medium text-default">Praxisstandort</span>
+              <span className="font-medium text-default">{t('register.practiceLocation')}</span>
               <Input
                 id="city"
                 value={form.city}
                 onChange={handleChange('city')}
-                placeholder="z. B. Wien"
+                placeholder={t('register.placeholderCity')}
                 hasError={Boolean(errors.city)}
                 required
               />
@@ -441,7 +456,7 @@ export function RegistrationForm() {
             </label>
 
             <fieldset className="space-y-2">
-              <legend className="text-sm font-medium text-default">Schwerpunkte</legend>
+              <legend className="text-sm font-medium text-default">{t('register.specialties')}</legend>
               <div className="flex flex-wrap gap-2">
                 {specialtyOptions.map((option) => {
                   const isActive = form.specialties.includes(option);
@@ -467,7 +482,7 @@ export function RegistrationForm() {
             </fieldset>
 
             <fieldset className="space-y-2">
-              <legend className="text-sm font-medium text-default">Formate</legend>
+              <legend className="text-sm font-medium text-default">{t('register.formats')}</legend>
               <div className="flex flex-wrap gap-2">
                 {formatOptions.map((option) => {
                   const isActive = form.modalities.includes(option.id);
@@ -494,24 +509,24 @@ export function RegistrationForm() {
 
             <div className="space-y-4 rounded-2xl border border-primary/30 bg-primary/10 p-4 dark:border-primary/50 dark:bg-primary/20">
               <h4 className="text-sm font-semibold uppercase tracking-wide text-primary">
-                Sichtbarkeit &amp; Konditionen
+                {t('register.visibilityConditions')}
               </h4>
               <label className="space-y-1 text-sm text-neutral-700" htmlFor="availabilityNote">
-                <span className="font-medium text-default">Freie Termine &amp; Erreichbarkeit</span>
+                <span className="font-medium text-default">{t('register.availabilityLabel')}</span>
                 <Textarea
                   id="availabilityNote"
                   value={form.availabilityNote}
                   onChange={handleChange('availabilityNote')}
                   rows={3}
                   maxLength={500}
-                  placeholder="z. B. Erstgespräche ab Juni, Abendtermine Mittwoch & Donnerstag, dringende Slots auf Anfrage …"
+                  placeholder={t('register.availabilityPlaceholder')}
                 />
-                <span className="text-xs text-neutral-900">Optional, max. 500 Zeichen</span>
+                <span className="text-xs text-neutral-900">{t('register.optionalMax500')}</span>
               </label>
 
               <label className="space-y-1 text-sm text-neutral-700" htmlFor="pricingNote">
                 <span className="font-medium text-default">
-                  Preishinweise &amp; Sonderkonditionen
+                  {t('register.pricingLabel')}
                 </span>
                 <Textarea
                   id="pricingNote"
@@ -519,9 +534,9 @@ export function RegistrationForm() {
                   onChange={handleChange('pricingNote')}
                   rows={3}
                   maxLength={500}
-                  placeholder="z. B. €80–110 pro Einheit, Sozialtarife für Studierende, Firmenabrechnung via FindMyTherapy …"
+                  placeholder={t('register.pricingPlaceholder')}
                 />
-                <span className="text-xs text-neutral-900">Optional, max. 500 Zeichen</span>
+                <span className="text-xs text-neutral-900">{t('register.optionalMax500')}</span>
               </label>
             </div>
           </div>
@@ -529,12 +544,12 @@ export function RegistrationForm() {
 
         {form.role === 'ORGANISATION' && (
           <label className="space-y-1 text-sm text-neutral-700" htmlFor="company">
-            <span className="font-medium text-default">Unternehmen / Organisation</span>
+            <span className="font-medium text-default">{t('register.companyLabel')}</span>
             <Input
               id="company"
               value={form.company}
               onChange={handleChange('company')}
-              placeholder="FindMyTherapy GmbH"
+              placeholder={t('register.placeholderCompany')}
               hasError={Boolean(errors.company)}
               required
             />
@@ -546,10 +561,10 @@ export function RegistrationForm() {
           <div className="flex items-center justify-between">
             <span className="font-medium text-default">
               {form.role === 'THERAPIST'
-                ? 'Was sollen wir über dich wissen?'
-                : 'Worauf sollen wir uns vorbereiten?'}
+                ? t('register.notesLabelTherapist')
+                : t('register.notesLabelOther')}
             </span>
-            <span className="text-xs text-neutral-900">Optional</span>
+            <span className="text-xs text-neutral-900">{t('register.optional')}</span>
           </div>
           <Textarea
             id="notes"
@@ -557,8 +572,8 @@ export function RegistrationForm() {
             onChange={handleChange('notes')}
             placeholder={
               form.role === 'THERAPIST'
-                ? 'Z. B. gewünschte Zielgruppen, zusätzliche Qualifikationen, bevorzugte Termine …'
-                : 'Z. B. Fokus auf Kursinhalte, Employer Branding, Abrechnung …'
+                ? t('register.notesPlaceholderTherapist')
+                : t('register.notesPlaceholderOther')
             }
             rows={4}
           />
@@ -578,25 +593,25 @@ export function RegistrationForm() {
               required
             />
             <span>
-              Ich stimme den{' '}
+              {t('register.termsPrefix')}{' '}
               <a
                 className="text-primary underline"
                 href="/terms"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Nutzungsbedingungen
+                {t('register.termsLink')}
               </a>{' '}
-              und der{' '}
+              {t('auth.and')}{' '}
               <a
                 className="text-primary underline"
                 href="/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Datenschutzrichtlinie
+                {t('register.privacyLink')}
               </a>{' '}
-              zu.
+              {t('register.termsSuffix')}
               {errors.acceptTerms && (
                 <span className="mt-1 block text-xs text-red-600">{errors.acceptTerms}</span>
               )}
@@ -608,7 +623,7 @@ export function RegistrationForm() {
           {isSubmitting ? (
             <span className="flex items-center justify-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              Wird gesendet …
+              {t('register.submitting')}
             </span>
           ) : (
             submitLabel
@@ -616,8 +631,7 @@ export function RegistrationForm() {
         </Button>
 
         <p className="text-center text-xs text-neutral-800">
-          Mit dem Absenden bestätigst du, dass wir dich per E-Mail oder Telefon kontaktieren dürfen.
-          Keine Werbung, keine Weitergabe deiner Daten.
+          {t('register.submitNote')}
         </p>
       </form>
     </div>

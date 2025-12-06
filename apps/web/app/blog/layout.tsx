@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: 'https://findmytherapy.net/blog',
+    languages: {
+      'de-AT': 'https://findmytherapy.net/blog',
+      'en': 'https://findmytherapy.net/blog',
+      'x-default': 'https://findmytherapy.net/blog',
+    },
   },
   openGraph: {
     title: 'Blog | FindMyTherapy',
@@ -22,6 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://findmytherapy.net/blog',
     locale: 'de_AT',
+    alternateLocale: 'en',
     siteName: 'FindMyTherapy',
     images: [
       {

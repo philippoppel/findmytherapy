@@ -8,7 +8,7 @@ import {
   type FormatFilter,
   type TherapistFilters,
   type GenderFilter as GenderFilterType,
-} from '../../hooks/useTherapistFiltering';
+} from '@/hooks/useTherapistFiltering';
 import type { Coordinates } from '../../therapists/location-data';
 import { LocationInput } from './LocationInput';
 import { SpecializationFilters } from './SpecializationFilters';

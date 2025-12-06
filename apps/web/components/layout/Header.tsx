@@ -8,16 +8,19 @@ import { useSession } from 'next-auth/react';
 import { useAnchorNavigation } from '@/app/components/useAnchorNavigation';
 import { HeaderSearch } from './HeaderSearch';
 import { useLogout } from '@/hooks/useLogout';
-
-const navItems = [
-  { label: 'Wissen', href: '/blog', type: 'link' as const },
-  { label: 'Therapeut:innen finden', href: '/therapists', type: 'link' as const },
-  { label: 'FAQ', href: '#faq', type: 'anchor' as const },
-];
+import { LanguageToggle } from './LanguageToggle';
+import { useTranslation } from '@/lib/i18n';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleAnchorNavigation = useAnchorNavigation();
+  const { t } = useTranslation();
+
+  const navItems = [
+    { label: t('header.knowledge'), href: '/blog', type: 'link' as const },
+    { label: t('header.findTherapist'), href: '/therapists', type: 'link' as const },
+    { label: t('header.faq'), href: '#faq', type: 'anchor' as const },
+  ];
 
   return (
     <header className="fixed top-3 left-0 right-0 z-50">
@@ -38,7 +41,7 @@ export function Header() {
             <span className="text-base font-semibold leading-tight text-default">
               FindMyTherapy
             </span>
-            <span className="hidden text-xs font-medium text-muted sm:block">Mentale Orientierung</span>
+            <span className="hidden text-xs font-medium text-muted sm:block">{t('header.mentalOrientation')}</span>
           </div>
         </Link>
 
@@ -66,6 +69,7 @@ export function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <HeaderSearch />
+          <LanguageToggle />
           <TherapistMenu />
         </div>
 
@@ -76,7 +80,7 @@ export function Header() {
             type="button"
             onClick={() => setIsMenuOpen((prev) => !prev)}
             className="flex h-11 w-11 items-center justify-center rounded-xl text-muted transition hover:bg-primary-50 hover:text-default"
-            aria-label="Menü öffnen"
+            aria-label={t('header.openMenu')}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -109,7 +113,8 @@ export function Header() {
               ),
             )}
           </div>
-          <div className="mt-4 border-t border-divider pt-4">
+          <div className="mt-4 flex items-center justify-between border-t border-divider pt-4">
+            <LanguageToggle />
             <TherapistMenu dense />
           </div>
         </div>
@@ -125,6 +130,7 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { logout, isLoggingOut } = useLogout();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setOpen(false);
@@ -147,7 +153,7 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
   return (
     <div className="relative" ref={menuRef}>
       <button className={buttonClasses} onClick={() => setOpen((prev) => !prev)}>
-        Für Therapeut:innen
+        {t('header.forTherapists')}
         <ChevronDown className="h-4 w-4 text-muted" aria-hidden />
       </button>
 
@@ -155,8 +161,8 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
         <div className="absolute right-0 z-50 mt-3 w-64 rounded-2xl border border-divider bg-surface-1 p-2 shadow-soft-xl">
           {status === 'authenticated' ? (
             <div className="space-y-1">
-              <MenuItem href="/dashboard" label="Zum Dashboard" onClick={() => setOpen(false)} />
-              <MenuItem href="/dashboard/profile" label="Profil & Praxis" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard" label={t('header.toDashboard')} onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/profile" label={t('header.profileAndPractice')} onClick={() => setOpen(false)} />
               <button
                 onClick={() => {
                   setOpen(false);
@@ -168,18 +174,18 @@ function TherapistMenu({ dense = false }: { dense?: boolean }) {
                 {isLoggingOut ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Abmelden...
+                    {t('header.loggingOut')}
                   </>
                 ) : (
-                  'Abmelden'
+                  t('header.logout')
                 )}
               </button>
             </div>
           ) : (
             <div className="space-y-1">
-              <MenuItem href="/for-therapists" label="Überzeugt mich" onClick={() => setOpen(false)} />
-              <MenuItem href="/login" label="Anmelden" onClick={() => setOpen(false)} />
-              <MenuItem href="/register" label="Registrieren" onClick={() => setOpen(false)} />
+              <MenuItem href="/for-therapists" label={t('header.convinceMe')} onClick={() => setOpen(false)} />
+              <MenuItem href="/login" label={t('header.login')} onClick={() => setOpen(false)} />
+              <MenuItem href="/register" label={t('header.register')} onClick={() => setOpen(false)} />
             </div>
           )}
         </div>
