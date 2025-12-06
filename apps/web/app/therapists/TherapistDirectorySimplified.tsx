@@ -83,11 +83,14 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
   const resultsRef = useRef<HTMLDivElement>(null);
 
   // Translated labels
-  const statusLabel: Record<TherapistCard['status'], string> = {
-    VERIFIED: t('therapistDirectory.verified'),
-    PENDING: t('therapistDirectory.pending'),
-    DRAFT: t('therapistDirectory.draft'),
-  };
+  const statusLabels = useMemo(
+    () => ({
+      VERIFIED: t('therapistDirectory.verified'),
+      PENDING: t('therapistDirectory.pending'),
+      DRAFT: t('therapistDirectory.draft'),
+    }),
+    [t]
+  );
 
   const FORMAT_LABELS: Record<FormatFilter, { label: string; icon: typeof Video }> = {
     online: { label: t('therapistDirectory.online'), icon: FORMAT_ICONS.online },
@@ -761,7 +764,9 @@ function TherapistListCard({ therapist }: { therapist: TherapistCard }) {
               )}
             >
               <ShieldCheck className="h-3 w-3" />
-              <span className="hidden sm:inline">{statusLabel[therapist.status]}</span>
+              <span className="hidden sm:inline">
+                {statusLabels[therapist.status] ?? therapist.status}
+              </span>
             </span>
           </div>
 
