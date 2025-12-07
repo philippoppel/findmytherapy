@@ -458,7 +458,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
       if (data.success) {
         return data.image.url;
       } else {
-        throw new Error(data.error || 'Upload fehlgeschlagen');
+        throw new Error(data.error || t('blogEditor.uploadFailed'));
       }
     } catch (err) {
       console.error('Image upload error:', err);
@@ -474,7 +474,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
       const url = await handleImageUpload(file);
       updateFormData({ featuredImageUrl: url });
     } catch (err) {
-      setError('Fehler beim Hochladen des Bildes');
+      setError(t('blogEditor.imageUploadError'));
     }
   };
 
@@ -483,12 +483,12 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
     setError(null);
 
     if (!formData.title.trim()) {
-      setError('Bitte geben Sie einen Titel ein');
+      setError(t('blogEditor.enterTitle'));
       return;
     }
 
     if (!formData.excerpt.trim()) {
-      setError('Bitte geben Sie einen Auszug ein');
+      setError(t('blogEditor.enterExcerpt'));
       return;
     }
 
@@ -510,7 +510,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
       const data = await res.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Fehler beim Speichern');
+        throw new Error(data.error || t('blogEditor.saveError'));
       }
 
       // If publishing, make a second request
@@ -520,14 +520,14 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
         });
 
         if (!publishRes.ok) {
-          throw new Error('Fehler beim Veröffentlichen');
+          throw new Error(t('blogEditor.publishError'));
         }
       }
 
       router.push('/dashboard/therapist/blog');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten');
+      setError(err instanceof Error ? err.message : t('blogEditor.genericError'));
     } finally {
       setSaving(false);
       setPublishing(false);
@@ -547,10 +547,10 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           </Link>
           <div>
             <h1 className="text-xl font-bold text-neutral-900">
-              {isEditing ? 'Beitrag bearbeiten' : 'Neuer Beitrag'}
+              {isEditing ? t('blogEditor.editPost') : t('blogEditor.newPost')}
             </h1>
             <p className="text-sm text-neutral-500">
-              {isEditing ? `Slug: ${initialData?.slug}` : 'Erstellen Sie einen neuen Fachartikel'}
+              {isEditing ? t('blogEditor.slugLabel', { slug: initialData?.slug }) : t('blogEditor.createNew')}
             </p>
           </div>
         </div>
@@ -562,7 +562,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
               className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-700 hover:bg-emerald-100 transition"
             >
               <Upload className="w-4 h-4" />
-              <span className="hidden sm:inline">Artikel importieren</span>
+              <span className="hidden sm:inline">{t('blogEditor.importArticle')}</span>
             </button>
           )}
           <button
@@ -570,7 +570,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
             className="inline-flex items-center gap-2 px-4 py-2 border border-neutral-200 rounded-lg text-neutral-700 hover:bg-neutral-50 transition"
           >
             <Eye className="w-4 h-4" />
-            <span className="hidden sm:inline">Vorschau</span>
+            <span className="hidden sm:inline">{t('blogEditor.preview')}</span>
           </button>
           <button
             onClick={() => handleSave(false)}
@@ -578,7 +578,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
             className="inline-flex items-center gap-2 px-4 py-2 border border-neutral-200 rounded-lg text-neutral-700 hover:bg-neutral-50 transition disabled:opacity-50"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Speichern
+            {t('blogEditor.save')}
           </button>
           <button
             onClick={() => handleSave(true)}
@@ -586,7 +586,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50"
           >
             {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-            Veröffentlichen
+            {t('blogEditor.publish')}
           </button>
         </div>
       </div>
@@ -602,9 +602,9 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
       {/* Tabs */}
       <div className="flex gap-1 p-1 bg-neutral-100 rounded-xl mb-6">
         {[
-          { id: 'content', label: 'Inhalt' },
-          { id: 'seo', label: 'SEO & Meta' },
-          { id: 'sources', label: 'Quellen' },
+          { id: 'content', label: t('blogEditor.tabContent') },
+          { id: 'seo', label: t('blogEditor.tabSeo') },
+          { id: 'sources', label: t('blogEditor.tabSources') },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -625,7 +625,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
         <div className="space-y-6">
           {/* Author Selection */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <label htmlFor="blog-author" className="block text-sm font-medium text-neutral-700 mb-2">Autor:in *</label>
+            <label htmlFor="blog-author" className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.author')} *</label>
             <select
               id="blog-author"
               value={formData.authorId}
@@ -642,13 +642,13 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
           {/* Title */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <label htmlFor="blog-title" className="block text-sm font-medium text-neutral-700 mb-2">Titel *</label>
+            <label htmlFor="blog-title" className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.title')} *</label>
             <input
               id="blog-title"
               type="text"
               value={formData.title}
               onChange={(e) => updateFormData({ title: e.target.value })}
-              placeholder="z.B. Panikattacken verstehen und bewältigen"
+              placeholder={t('blogEditor.titlePlaceholder')}
               className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-lg"
             />
           </div>
@@ -656,13 +656,13 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           {/* Excerpt */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <label htmlFor="blog-excerpt" className="block text-sm font-medium text-neutral-700 mb-2">
-              Auszug / Kurzbeschreibung *
+              {t('blogEditor.excerpt')} *
             </label>
             <textarea
               id="blog-excerpt"
               value={formData.excerpt}
               onChange={(e) => updateFormData({ excerpt: e.target.value })}
-              placeholder="Eine kurze Zusammenfassung des Artikels (erscheint in der Vorschau)"
+              placeholder={t('blogEditor.excerptPlaceholder')}
               rows={3}
               className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
