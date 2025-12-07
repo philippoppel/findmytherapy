@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import BlogPreview from './BlogPreview';
 import { DEEP_RESEARCH_PROMPT, parseBlogImport, ParsedBlogData } from '@/lib/blogImportTemplate';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 type SectionImage = {
   src: string;
@@ -88,16 +89,19 @@ const BLOG_AUTHORS = [
   { id: 'cmioi9mg50004jebhox1rq688', name: 'MMag. Dr. Gregor Studlar BA', title: 'Klinischer Psychologe & Psychotherapeut' },
 ];
 
-const CATEGORIES = [
-  'Angst & Panik',
-  'Depression',
-  'Burnout & Stress',
-  'Beziehungen',
-  'Trauma',
-  'Selbstwert',
-  'Schlaf',
-  'Allgemein',
-];
+// Category values (stored in database) with translation key mappings
+const CATEGORY_KEYS: Record<string, string> = {
+  'Angst & Panik': 'categoryAnxiety',
+  'Depression': 'categoryDepression',
+  'Burnout & Stress': 'categoryBurnout',
+  'Beziehungen': 'categoryRelationships',
+  'Trauma': 'categoryTrauma',
+  'Selbstwert': 'categorySelfWorth',
+  'Schlaf': 'categorySleep',
+  'Allgemein': 'categoryGeneral',
+};
+
+const CATEGORIES = Object.keys(CATEGORY_KEYS);
 
 type BlogEditorProps = {
   initialData?: BlogPostData;
@@ -105,6 +109,7 @@ type BlogEditorProps = {
 };
 
 export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) {
+  const { t } = useTranslation();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
@@ -740,17 +745,17 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
           {/* Category */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <label htmlFor="blog-category" className="block text-sm font-medium text-neutral-700 mb-2">Kategorie</label>
+            <label htmlFor="blog-category" className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.category')}</label>
             <select
               id="blog-category"
               value={formData.category}
               onChange={(e) => updateFormData({ category: e.target.value })}
               className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
-              <option value="">Kategorie wählen</option>
+              <option value="">{t('blogEditor.selectCategory')}</option>
               {CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
-                  {cat}
+                  {t(`blogEditor.${CATEGORY_KEYS[cat]}`)}
                 </option>
               ))}
             </select>

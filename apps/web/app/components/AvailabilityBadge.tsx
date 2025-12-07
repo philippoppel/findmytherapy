@@ -1,6 +1,7 @@
 'use client';
 
 import { Clock, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 type AvailabilityStatus = 'AVAILABLE' | 'LIMITED' | 'WAITLIST' | 'UNAVAILABLE';
 
@@ -19,6 +20,8 @@ export function AvailabilityBadge({
   variant = 'default',
   className = '',
 }: AvailabilityBadgeProps) {
+  const { t } = useTranslation();
+
   // Fallback: wenn kein Status, aber acceptingClients gesetzt ist
   if (!status && acceptingClients !== undefined) {
     status = acceptingClients ? 'AVAILABLE' : 'WAITLIST';
@@ -29,7 +32,7 @@ export function AvailabilityBadge({
     return null;
   }
 
-  const config = getStatusConfig(status, estimatedWaitWeeks);
+  const config = getStatusConfig(status, estimatedWaitWeeks, t);
 
   if (variant === 'compact') {
     return (
@@ -66,12 +69,16 @@ export function AvailabilityBadge({
   );
 }
 
-function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number | null) {
+function getStatusConfig(
+  status: AvailabilityStatus,
+  estimatedWaitWeeks: number | null | undefined,
+  t: (key: string, params?: Record<string, string | number>) => string
+) {
   switch (status) {
     case 'AVAILABLE':
       return {
-        label: 'Verfügbar',
-        sublabel: 'Nimmt neue Klient:innen auf',
+        label: t('availabilityBadge.available'),
+        sublabel: t('availabilityBadge.availableDesc'),
         icon: CheckCircle,
         bgColor: 'bg-green-100',
         textColor: 'text-green-800',
@@ -79,9 +86,11 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
       };
 
     case 'LIMITED': {
-      const waitText = estimatedWaitWeeks ? `~${estimatedWaitWeeks} Wochen` : 'Begrenzt verfügbar';
+      const waitText = estimatedWaitWeeks
+        ? t('availabilityBadge.waitlistWeeks', { weeks: estimatedWaitWeeks })
+        : t('availabilityBadge.limitedDesc');
       return {
-        label: 'Eingeschränkt',
+        label: t('availabilityBadge.limited'),
         sublabel: waitText,
         icon: Clock,
         bgColor: 'bg-amber-100',
@@ -93,10 +102,10 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
     case 'WAITLIST': {
       const waitlistText =
         estimatedWaitWeeks && estimatedWaitWeeks > 0
-          ? `~${estimatedWaitWeeks} Wochen Wartezeit`
-          : 'Warteliste';
+          ? t('availabilityBadge.waitlistDesc', { weeks: estimatedWaitWeeks })
+          : t('availabilityBadge.waitlist');
       return {
-        label: 'Warteliste',
+        label: t('availabilityBadge.waitlist'),
         sublabel: waitlistText,
         icon: AlertCircle,
         bgColor: 'bg-orange-100',
@@ -107,8 +116,8 @@ function getStatusConfig(status: AvailabilityStatus, estimatedWaitWeeks?: number
 
     case 'UNAVAILABLE':
       return {
-        label: 'Nicht verfügbar',
-        sublabel: 'Nimmt aktuell keine neuen Klient:innen auf',
+        label: t('availabilityBadge.unavailable'),
+        sublabel: t('availabilityBadge.unavailableDesc'),
         icon: XCircle,
         bgColor: 'bg-red-100',
         textColor: 'text-red-800',

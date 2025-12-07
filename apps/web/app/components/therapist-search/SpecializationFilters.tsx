@@ -1,6 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export type SpecializationFiltersProps = {
   availableSpecializations: string[];
@@ -17,6 +18,8 @@ export function SpecializationFilters({
   className = '',
   compact = false,
 }: SpecializationFiltersProps) {
+  const { t } = useTranslation();
+
   const handleToggle = (specialization: string) => {
     const newSet = new Set(selectedSpecializations);
     if (newSet.has(specialization)) {
@@ -35,7 +38,7 @@ export function SpecializationFilters({
     <div className={className}>
       {!compact && (
         <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
-          Spezialisierung
+          {t('directory.specialization')}
         </p>
       )}
       {compact ? (

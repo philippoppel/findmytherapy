@@ -2,24 +2,27 @@
 
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export function ReassuranceBox() {
+  const { t } = useTranslation();
+
   const reassurances = [
     {
-      title: 'Es ist normal, nervös zu sein',
-      text: 'Viele Menschen zögern beim ersten Kontakt. Das ist völlig in Ordnung – nimm dir die Zeit, die du brauchst.',
+      title: t('reassurance.normalToBeNervous'),
+      text: t('reassurance.normalToBeNervousDesc'),
     },
     {
-      title: 'Du bist nicht allein',
-      text: 'Über 1 Million Menschen in Österreich suchen jährlich psychotherapeutische Unterstützung. Du machst einen mutigen Schritt.',
+      title: t('reassurance.notAlone'),
+      text: t('reassurance.notAloneDesc'),
     },
     {
-      title: 'Keine Verpflichtung',
-      text: 'Das Erstgespräch ist unverbindlich. Du kannst danach in Ruhe entscheiden, ob es passt.',
+      title: t('reassurance.noObligation'),
+      text: t('reassurance.noObligationDesc'),
     },
     {
-      title: 'Die Chemie muss stimmen',
-      text: 'Es ist völlig okay, mehrere Therapeut:innen zu kontaktieren, bis du die richtige Person findest.',
+      title: t('reassurance.chemistryMatters'),
+      text: t('reassurance.chemistryMattersDesc'),
     },
   ];
 
@@ -32,7 +35,7 @@ export function ReassuranceBox() {
     >
       <h3 className="mb-3 sm:mb-4 flex items-center gap-2 text-base sm:text-lg font-bold text-gray-900 break-words">
         <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 text-blue-600" />
-        <span>Wichtig zu wissen</span>
+        <span>{t('reassurance.importantToKnow')}</span>
       </h3>
 
       <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
@@ -50,9 +53,7 @@ export function ReassuranceBox() {
 
       <div className="mt-4 sm:mt-6 rounded-xl bg-blue-100 border border-blue-200 p-3 sm:p-4">
         <p className="text-xs sm:text-sm text-blue-900 leading-relaxed break-words">
-          <strong>📞 Tipp für den ersten Kontakt:</strong> Du musst nicht sofort alles erzählen. Ein
-          einfaches &ldquo;Ich interessiere mich für ein Erstgespräch&rdquo; reicht völlig aus. Die
-          meisten Therapeut:innen sind sehr verständnisvoll und erklären dir den weiteren Ablauf.
+          <strong>{t('reassurance.tipTitle')}</strong> {t('reassurance.tipContent')}
         </p>
       </div>
     </motion.div>

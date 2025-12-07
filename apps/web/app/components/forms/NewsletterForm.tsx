@@ -5,6 +5,7 @@ import { useId, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Input, Textarea } from '@mental-health/ui';
 import { CheckCircle2, Loader2, MailPlus, PenLine } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 type Variant = 'newsletter' | 'topic';
 
@@ -13,19 +14,6 @@ type NewsletterFormProps = {
   className?: string;
   title?: string;
   description?: string;
-};
-
-const defaultCopy: Record<Variant, { title: string; description: string }> = {
-  newsletter: {
-    title: 'Newsletter & Produkt-Updates',
-    description:
-      'Monatliche Insights zu neuen Features, Studien und mental-health-relevanten Ressourcen.',
-  },
-  topic: {
-    title: 'Themenwunsch teilen',
-    description:
-      'Sag uns, welche Fragen wir beantworten dürfen – wir bereiten fundierte Artikel und Interviews vor.',
-  },
 };
 
 const topicMap: Record<Variant, 'orientation' | 'support'> = {
@@ -39,6 +27,7 @@ export function NewsletterForm({
   title,
   description,
 }: NewsletterFormProps) {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -49,6 +38,17 @@ export function NewsletterForm({
   const fieldId = (field: 'name' | 'email' | 'message' | 'consent') => `${formId}-${field}`;
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState<string>('');
+
+  const defaultCopy = {
+    newsletter: {
+      title: t('newsletter.newsletterTitle'),
+      description: t('newsletter.newsletterDesc'),
+    },
+    topic: {
+      title: t('newsletter.topicRequestTitle'),
+      description: t('newsletter.topicRequestDesc'),
+    },
+  };
 
   const handleChange =
     (field: 'name' | 'email' | 'message') =>
@@ -93,7 +93,7 @@ export function NewsletterForm({
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data?.message || 'Senden fehlgeschlagen');
+        throw new Error(data?.message || t('newsletter.errorTitle'));
       }
 
       setStatus('success');
@@ -106,9 +106,7 @@ export function NewsletterForm({
     } catch (err) {
       console.error('Newsletter form error', err);
       setStatus('error');
-      setError(
-        err instanceof Error ? err.message : 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
-      );
+      setError(err instanceof Error ? err.message : t('newsletter.errorDesc'));
     } finally {
       setStatus((prev) => (prev === 'loading' ? 'idle' : prev));
     }
@@ -118,7 +116,7 @@ export function NewsletterForm({
     <div
       className={clsx(
         'rounded-3xl border border-white/25 bg-white/10 p-6 text-white shadow-xl shadow-black/10 backdrop-blur',
-        className,
+        className
       )}
     >
       <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.3em] text-white/80">
@@ -127,21 +125,19 @@ export function NewsletterForm({
         ) : (
           <PenLine className="h-4 w-4" aria-hidden />
         )}
-        {variant === 'newsletter' ? 'Newsletter' : 'Themenwunsch'}
+        {variant === 'newsletter' ? t('newsletter.newsletter') : t('newsletter.topicRequest')}
       </div>
       <h3 className="mt-4 text-2xl font-semibold text-white">
         {title ?? defaultCopy[variant].title}
       </h3>
-      <p className="mt-2 text-sm text-white/80">
-        {description ?? defaultCopy[variant].description}
-      </p>
+      <p className="mt-2 text-sm text-white/80">{description ?? defaultCopy[variant].description}</p>
 
       {status === 'success' && (
         <div className="mt-4 flex items-start gap-3 rounded-2xl border border-emerald-400/60 bg-emerald-500/15 px-4 py-3 text-sm text-white">
           <CheckCircle2 className="h-5 w-5 flex-none text-emerald-300" aria-hidden />
           <div>
-            <p className="font-semibold">Danke! Wir haben dich auf die Liste gesetzt.</p>
-            <p>Du erhältst eine persönliche Bestätigung per E-Mail.</p>
+            <p className="font-semibold">{t('newsletter.successTitle')}</p>
+            <p>{t('newsletter.successDesc')}</p>
           </div>
         </div>
       )}
@@ -154,7 +150,7 @@ export function NewsletterForm({
 
       <form onSubmit={handleSubmit} className="mt-5 space-y-4">
         <label className="space-y-1 text-sm" htmlFor={fieldId('name')}>
-          <span className="font-semibold text-white/90">Name</span>
+          <span className="font-semibold text-white/90">{t('newsletter.name')}</span>
           <Input
             id={fieldId('name')}
             value={form.name}
@@ -165,7 +161,7 @@ export function NewsletterForm({
           />
         </label>
         <label className="space-y-1 text-sm" htmlFor={fieldId('email')}>
-          <span className="font-semibold text-white/90">E-Mail</span>
+          <span className="font-semibold text-white/90">{t('newsletter.email')}</span>
           <Input
             id={fieldId('email')}
             type="email"
@@ -179,8 +175,8 @@ export function NewsletterForm({
         <label className="space-y-1 text-sm" htmlFor={fieldId('message')}>
           <span className="font-semibold text-white/90">
             {variant === 'newsletter'
-              ? 'Optional: Welche Updates interessieren dich?'
-              : 'Was sollen wir behandeln?'}
+              ? t('newsletter.optionalInterests')
+              : t('newsletter.whatToCover')}
           </span>
           <Textarea
             id={fieldId('message')}
@@ -189,14 +185,14 @@ export function NewsletterForm({
             rows={4}
             placeholder={
               variant === 'newsletter'
-                ? 'z. B. Produkt-Roadmap, Unternehmensangebote, Research ...'
-                : 'z. B. „Mehr zu PHQ-9 Ergebnissen bei Jugendlichen“'
+                ? t('newsletter.interestPlaceholder')
+                : t('newsletter.topicPlaceholder')
             }
             required
             className="border-white/30 bg-white/10 text-white placeholder:text-white/60"
           />
           <span className="text-xs text-white/70">
-            Mindestens 10 Zeichen – damit wir zielgerichtet antworten können.
+            {t('newsletter.minChars', { remaining: Math.max(0, 10 - form.message.length) })}
           </span>
         </label>
 
@@ -210,11 +206,11 @@ export function NewsletterForm({
             required
           />
           <label htmlFor={fieldId('consent')}>
-            Ich bin mit der einmaligen Kontaktaufnahme und der Speicherung meiner Angaben gemäß{' '}
-            <Link href="/privacy" className="underline" aria-label="Datenschutzerklärung">
-              Datenschutzerklärung
-            </Link>{' '}
-            einverstanden.
+            {t('newsletter.privacyConsent')}{' '}
+            <Link href="/privacy" className="underline" aria-label={t('newsletter.privacyPolicy')}>
+              {t('newsletter.privacyPolicy')}
+            </Link>
+            .
           </label>
         </div>
 
@@ -226,18 +222,15 @@ export function NewsletterForm({
           {status === 'loading' ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-              Wird gesendet...
+              {t('newsletter.sending')}
             </>
           ) : variant === 'newsletter' ? (
-            'Newsletter abonnieren'
+            t('newsletter.subscribeNewsletter')
           ) : (
-            'Themenwunsch senden'
+            t('newsletter.sendTopicRequest')
           )}
         </Button>
-        <p className="text-[11px] text-white/70">
-          Keine Spam-Mails. Wir melden uns nur, wenn neue Blogposts, Studien oder Produktfeatures
-          live gehen.
-        </p>
+        <p className="text-[11px] text-white/70">{t('newsletter.noSpam')}</p>
       </form>
     </div>
   );

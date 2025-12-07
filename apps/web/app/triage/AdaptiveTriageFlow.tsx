@@ -59,33 +59,36 @@ const PHASE_IMAGES = {
   summary: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=1200&h=800&q=80',
 };
 
-// Emotionale Texte für die Phasen
-const EMOTIONAL_PHASE_TEXT = {
-  phq2: {
-    title: 'Wie geht es dir wirklich?',
-    subtitle: 'Nimm dir einen Moment, um in dich hineinzuspüren',
-    encouragement: 'Es ist mutig, sich selbst ehrlich zu begegnen.',
-  },
-  phq9: {
-    title: 'Lass uns genauer hinschauen',
-    subtitle: 'Deine Antworten helfen uns, dich besser zu verstehen',
-    encouragement: 'Jeder Schritt zählt auf dem Weg zu mehr Wohlbefinden.',
-  },
-  gad2: {
-    title: 'Wie fühlst du dich innerlich?',
-    subtitle: 'Sorgen und Ängste gehören zum Leben – aber sie sollten es nicht bestimmen',
-    encouragement: 'Du bist nicht allein mit deinen Gefühlen.',
-  },
-  gad7: {
-    title: 'Gemeinsam verstehen wir mehr',
-    subtitle: 'Diese Fragen helfen uns, ein vollständigeres Bild zu bekommen',
-    encouragement: 'Ehrlichkeit mit dir selbst ist der erste Schritt zur Veränderung.',
-  },
-  preferences: {
-    title: 'Fast geschafft!',
-    subtitle: 'Erzähl uns, wie wir dich am besten unterstützen können',
-    encouragement: 'Du verdienst die Unterstützung, die zu dir passt.',
-  },
+// Function to get emotional phase text using translations
+const getEmotionalPhaseText = (phase: string, t: (key: string) => string) => {
+  const phaseTexts: Record<string, { title: string; subtitle: string; encouragement: string }> = {
+    phq2: {
+      title: t('triageFlow.howAreYouReally'),
+      subtitle: t('triageFlow.howAreYouReallyDesc'),
+      encouragement: t('triageFlow.howAreYouReallyNote'),
+    },
+    phq9: {
+      title: t('triageFlow.letsLookCloser'),
+      subtitle: t('triageFlow.letsLookCloserDesc'),
+      encouragement: t('triageFlow.letsLookCloserNote'),
+    },
+    gad2: {
+      title: t('triageFlow.howDoYouFeel'),
+      subtitle: t('triageFlow.howDoYouFeelDesc'),
+      encouragement: t('triageFlow.howDoYouFeelNote'),
+    },
+    gad7: {
+      title: t('triageFlow.togetherUnderstand'),
+      subtitle: t('triageFlow.togetherUnderstandDesc'),
+      encouragement: t('triageFlow.togetherUnderstandNote'),
+    },
+    preferences: {
+      title: t('triageFlow.almostDone'),
+      subtitle: t('triageFlow.almostDoneDesc'),
+      encouragement: t('triageFlow.almostDoneNote'),
+    },
+  };
+  return phaseTexts[phase] || phaseTexts.phq2;
 };
 
 // Keywords für Blog-Suche passend zu Themen
@@ -683,7 +686,7 @@ export function AdaptiveTriageFlow({
         <div className="relative h-64 sm:h-80 overflow-hidden">
           <Image
             src={PHASE_IMAGES.summary}
-            alt="Deine Ergebnisse"
+            alt={t('triageFlow.yourResults')}
             fill
             className="object-cover"
             priority
@@ -876,8 +879,8 @@ export function AdaptiveTriageFlow({
                 <>
                   <h4 className="mb-4 text-lg font-bold text-slate-900 sm:text-xl">
                     {riskLevel === 'LOW'
-                      ? 'Therapeut:innen für präventive Begleitung'
-                      : 'Passende Therapeut:innen für dich'}
+                      ? t('triageFlow.therapistsPreventive')
+                      : t('triageFlow.therapistsForYou')}
                   </h4>
                   <div className="space-y-4">
                     {recommendations.therapists.map((therapist) => (
@@ -938,10 +941,10 @@ export function AdaptiveTriageFlow({
                                     className="rounded-full bg-slate-100 px-3 py-1 font-medium text-slate-600"
                                   >
                                     {tag === 'online'
-                                      ? 'Online'
+                                      ? t('triageFlow.formatOnline')
                                       : tag === 'praesenz'
-                                        ? 'Vor Ort'
-                                        : 'Hybrid'}
+                                        ? t('triageFlow.formatOnSite')
+                                        : t('triageFlow.formatHybrid')}
                                   </span>
                                 ))}
                               </div>
@@ -953,12 +956,12 @@ export function AdaptiveTriageFlow({
                               className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-md sm:w-auto"
                             >
                               <Link href={`/therapists/${therapist.id}?from=triage`}>
-                                Profil ansehen
+                                {t('triageFlow.viewProfile')}
                               </Link>
                             </Button>
                             {therapist.acceptingClients === false ? (
                               <span className="text-xs font-medium text-amber-600">
-                                Aktuell Warteliste
+                                {t('triageFlow.currentlyWaitlist')}
                               </span>
                             ) : null}
                           </div>
@@ -969,10 +972,9 @@ export function AdaptiveTriageFlow({
                 </>
               ) : (
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                  <h4 className="text-lg font-bold text-slate-900">Finde deine Unterstützung</h4>
+                  <h4 className="text-lg font-bold text-slate-900">{t('triageFlow.findYourSupport')}</h4>
                   <p className="mt-2 text-sm text-slate-600">
-                    Entdecke Therapeut:innen, die zu dir passen. Unser Netzwerk wächst ständig –
-                    schau auf unserer Übersichtsseite vorbei oder kontaktiere unser Team.
+                    {t('triageFlow.findSupportDesc')}
                   </p>
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Button
@@ -980,14 +982,14 @@ export function AdaptiveTriageFlow({
                       size="lg"
                       className="w-full bg-primary-500 text-white shadow-lg hover:bg-primary-600 sm:w-auto"
                     >
-                      <Link href="/therapists">Therapeut:innen entdecken</Link>
+                      <Link href="/therapists">{t('triageFlow.discoverTherapistsBtn')}</Link>
                     </Button>
                     <Button
                       variant="outline"
                       asChild
                       className="w-full border-slate-300 text-slate-700 hover:bg-slate-100 sm:w-auto"
                     >
-                      <Link href="/contact">Uns kontaktieren</Link>
+                      <Link href="/contact">{t('triageFlow.contactUs')}</Link>
                     </Button>
                   </div>
                 </div>
@@ -997,7 +999,7 @@ export function AdaptiveTriageFlow({
             {recommendations.courses.length > 0 && (
               <section className="mt-8">
                 <h4 className="mb-4 text-lg font-bold text-slate-900 sm:text-xl">
-                  Empfohlene Programme
+                  {t('triageFlow.recommendedPrograms')}
                 </h4>
                 <div className="space-y-4">
                   {recommendations.courses.map((course) => (
@@ -1030,7 +1032,7 @@ export function AdaptiveTriageFlow({
                         asChild
                         className="mt-4 w-full border-slate-300 text-slate-700 hover:bg-slate-100 sm:w-auto"
                       >
-                        <Link href={`/courses/${course.slug}`}>Demo ansehen</Link>
+                        <Link href={`/courses/${course.slug}`}>{t('triageFlow.viewDemo')}</Link>
                       </Button>
                     </article>
                   ))}
@@ -1044,10 +1046,10 @@ export function AdaptiveTriageFlow({
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-lg font-bold text-slate-900 sm:text-xl flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-primary-500" />
-                    Passende Artikel für dich
+                    {t('triageFlow.matchingArticles')}
                   </h4>
                   <Link href="/blog" className="text-sm text-primary-600 font-medium hover:underline flex items-center gap-1">
-                    Alle Artikel
+                    {t('triageFlow.allArticles')}
                     <ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -1102,12 +1104,12 @@ export function AdaptiveTriageFlow({
 
   // Get emotional text for current phase
   const getEmotionalText = () => {
-    if (currentPhase === 'phq2') return EMOTIONAL_PHASE_TEXT.phq2;
-    if (currentPhase === 'phq9-expanded') return EMOTIONAL_PHASE_TEXT.phq9;
-    if (currentPhase === 'gad2') return EMOTIONAL_PHASE_TEXT.gad2;
-    if (currentPhase === 'gad7-expanded') return EMOTIONAL_PHASE_TEXT.gad7;
-    if (currentPhase === 'preferences') return EMOTIONAL_PHASE_TEXT.preferences;
-    return EMOTIONAL_PHASE_TEXT.phq2;
+    if (currentPhase === 'phq2') return getEmotionalPhaseText('phq2', t);
+    if (currentPhase === 'phq9-expanded') return getEmotionalPhaseText('phq9', t);
+    if (currentPhase === 'gad2') return getEmotionalPhaseText('gad2', t);
+    if (currentPhase === 'gad7-expanded') return getEmotionalPhaseText('gad7', t);
+    if (currentPhase === 'preferences') return getEmotionalPhaseText('preferences', t);
+    return getEmotionalPhaseText('phq2', t);
   };
 
   return (
@@ -1116,7 +1118,7 @@ export function AdaptiveTriageFlow({
       <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden">
         <Image
           src={getCurrentPhaseImage()}
-          alt="Emotionales Stimmungsbild"
+          alt={t('triageFlow.emotionalImage')}
           fill
           className="object-cover"
           priority
@@ -1129,10 +1131,10 @@ export function AdaptiveTriageFlow({
             className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors group"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden />
-            <span>Zurück zur Startseite</span>
+            <span>{t('triageFlow.backToHome')}</span>
           </Link>
           <div className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-medium">
-            {progress}% geschafft
+            {t('triageFlow.progressPercent', { progress })}
           </div>
         </div>
         <div className="absolute bottom-6 left-0 right-0 text-center px-4">
@@ -1180,7 +1182,7 @@ export function AdaptiveTriageFlow({
                     <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden shadow-lg">
                       <Image
                         src={currentPhase === 'phq2-to-gad2' ? PHASE_IMAGES.gad2 : PHASE_IMAGES.preferences}
-                        alt="Fortschritt in der Ersteinschätzung"
+                        alt={t('triageFlow.progressInTriage')}
                         fill
                         className="object-cover"
                       />
@@ -1195,14 +1197,13 @@ export function AdaptiveTriageFlow({
                             <div>
                               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 mb-4">
                                 <CheckCircle2 className="w-5 h-5" />
-                                <span className="font-medium">Gut gemacht!</span>
+                                <span className="font-medium">{t('triageFlow.wellDone')}</span>
                               </div>
                               <h3 className="text-2xl font-bold text-slate-900">
-                                Das sieht gut aus
+                                {t('triageFlow.looksGoodTitle')}
                               </h3>
                               <p className="mt-2 text-slate-600 max-w-md mx-auto">
-                                Deine Antworten deuten auf ein stabiles Stimmungsbild hin.
-                                Lass uns jetzt noch schauen, wie es dir mit Sorgen und Ängsten geht.
+                                {t('triageFlow.looksGoodDesc')}
                               </p>
                             </div>
                           </>
@@ -1211,14 +1212,13 @@ export function AdaptiveTriageFlow({
                             <div>
                               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 text-amber-700 mb-4">
                                 <Heart className="w-5 h-5" />
-                                <span className="font-medium">Wir hören dir zu</span>
+                                <span className="font-medium">{t('triageFlow.weListenToYou')}</span>
                               </div>
                               <h3 className="text-2xl font-bold text-slate-900">
-                                Danke für deine Offenheit
+                                {t('triageFlow.thankYouOpenness')}
                               </h3>
                               <p className="mt-2 text-slate-600 max-w-md mx-auto">
-                                Deine Antworten zeigen, dass du gerade einiges durchmachst.
-                                Ein paar weitere Fragen helfen uns, dich noch besser zu verstehen.
+                                {t('triageFlow.opennessDesc')}
                               </p>
                             </div>
                           </>
@@ -1233,14 +1233,13 @@ export function AdaptiveTriageFlow({
                             <div>
                               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 mb-4">
                                 <CheckCircle2 className="w-5 h-5" />
-                                <span className="font-medium">Fast geschafft!</span>
+                                <span className="font-medium">{t('triageFlow.almostDoneTitle')}</span>
                               </div>
                               <h3 className="text-2xl font-bold text-slate-900">
-                                Nur noch ein kleiner Schritt
+                                {t('triageFlow.oneMoreStep')}
                               </h3>
                               <p className="mt-2 text-slate-600 max-w-md mx-auto">
-                                Super, du hast es fast geschafft! Zum Schluss noch ein paar
-                                Fragen zu deinen Wünschen und Präferenzen.
+                                {t('triageFlow.oneMoreStepDesc')}
                               </p>
                             </div>
                           </>
@@ -1249,14 +1248,13 @@ export function AdaptiveTriageFlow({
                             <div>
                               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 text-amber-700 mb-4">
                                 <Heart className="w-5 h-5" />
-                                <span className="font-medium">Du bist nicht allein</span>
+                                <span className="font-medium">{t('triageFlow.youAreNotAlone')}</span>
                               </div>
                               <h3 className="text-2xl font-bold text-slate-900">
-                                Wir verstehen dich
+                                {t('triageFlow.weUnderstandYou')}
                               </h3>
                               <p className="mt-2 text-slate-600 max-w-md mx-auto">
-                                Ängste und Sorgen können belastend sein. Ein paar weitere Fragen
-                                helfen uns, die richtige Unterstützung für dich zu finden.
+                                {t('triageFlow.anxietyDesc')}
                               </p>
                             </div>
                           </>
@@ -1282,7 +1280,7 @@ export function AdaptiveTriageFlow({
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
                               <BookOpen className="w-3 h-3" />
-                              Lesetipp
+                              {t('triageFlow.readingTip')}
                             </p>
                             <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[0].title}</p>
                           </div>
@@ -1294,7 +1292,7 @@ export function AdaptiveTriageFlow({
                     <div className="pt-2">
                       <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
                         <div className="w-2 h-2 rounded-full bg-primary-400 animate-pulse" />
-                        Weiter in einem Moment...
+                        {t('triageFlow.continueInMoment')}
                       </div>
                     </div>
                   </div>
@@ -1314,7 +1312,7 @@ export function AdaptiveTriageFlow({
                         <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden shadow-md">
                           <Image
                             src={PHASE_IMAGES.preferences}
-                            alt="Präferenzen auswählen"
+                            alt={t('triageFlow.selectPreferences')}
                             fill
                             className="object-cover"
                           />
@@ -1327,7 +1325,7 @@ export function AdaptiveTriageFlow({
 
                     <div>
                       <p className="mb-3 text-sm font-semibold text-slate-700">
-                        Welche Unterstützung wünschst du dir?
+                        {t('triageFlow.whatSupportWish')}
                       </p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {supportOptions.map((option) => {
@@ -1359,7 +1357,7 @@ export function AdaptiveTriageFlow({
 
                     <div>
                       <p className="mb-3 text-sm font-semibold text-slate-700">
-                        Wann passt es dir am besten?
+                        {t('triageFlow.whenFitsYou')}
                       </p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {availabilityOptions.map((option) => {
@@ -1407,7 +1405,7 @@ export function AdaptiveTriageFlow({
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
                               <BookOpen className="w-3 h-3" />
-                              Während du wartest
+                              {t('triageFlow.whileYouWait')}
                             </p>
                             <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[0].title}</p>
                           </div>
@@ -1423,14 +1421,14 @@ export function AdaptiveTriageFlow({
                         className="w-full text-slate-600 hover:bg-slate-100 sm:w-auto"
                       >
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        Zurück
+                        {t('triageFlow.back')}
                       </Button>
                       <Button
                         onClick={goNext}
                         size="lg"
                         className="w-full bg-primary-500 text-white hover:bg-primary-600 shadow-lg sm:w-auto"
                       >
-                        Ergebnis anzeigen
+                        {t('triageFlow.showResults')}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
@@ -1515,28 +1513,32 @@ export function AdaptiveTriageFlow({
                         {(currentPhase === 'phq2' || currentPhase === 'phq9-expanded') && (
                           <>
                             <span className="hidden sm:inline">
-                              Stimmung: Frage{' '}
-                              {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)} von{' '}
-                              {currentPhase === 'phq9-expanded' ? 9 : 2}
+                              {t('triageFlow.moodQuestion', {
+                                current: questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0),
+                                total: currentPhase === 'phq9-expanded' ? 9 : 2,
+                              })}
                             </span>
                             <span className="sm:hidden">
-                              Stimmung:{' '}
-                              {questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0)}/
-                              {currentPhase === 'phq9-expanded' ? 9 : 2}
+                              {t('triageFlow.moodQuestionShort', {
+                                current: questionIndex + 1 + (currentPhase === 'phq9-expanded' ? 2 : 0),
+                                total: currentPhase === 'phq9-expanded' ? 9 : 2,
+                              })}
                             </span>
                           </>
                         )}
                         {(currentPhase === 'gad2' || currentPhase === 'gad7-expanded') && (
                           <>
                             <span className="hidden sm:inline">
-                              Wohlbefinden: Frage{' '}
-                              {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)} von{' '}
-                              {currentPhase === 'gad7-expanded' ? 7 : 2}
+                              {t('triageFlow.wellbeingQuestion', {
+                                current: questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0),
+                                total: currentPhase === 'gad7-expanded' ? 7 : 2,
+                              })}
                             </span>
                             <span className="sm:hidden">
-                              Wohlbefinden:{' '}
-                              {questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0)}/
-                              {currentPhase === 'gad7-expanded' ? 7 : 2}
+                              {t('triageFlow.wellbeingQuestionShort', {
+                                current: questionIndex + 1 + (currentPhase === 'gad7-expanded' ? 2 : 0),
+                                total: currentPhase === 'gad7-expanded' ? 7 : 2,
+                              })}
                             </span>
                           </>
                         )}
@@ -1561,7 +1563,7 @@ export function AdaptiveTriageFlow({
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-primary-600 font-medium flex items-center gap-1">
                               <BookOpen className="w-3 h-3" />
-                              Das könnte dich interessieren
+                              {t('triageFlow.mightInterestYou')}
                             </p>
                             <p className="text-sm font-medium text-slate-700 line-clamp-1">{currentBlogPosts[1].title}</p>
                             <p className="text-xs text-slate-500 mt-0.5">{currentBlogPosts[1].readingTime}</p>

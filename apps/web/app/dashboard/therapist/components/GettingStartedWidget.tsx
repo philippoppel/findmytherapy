@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CheckCircle, Circle, X, Rocket, ExternalLink } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface ChecklistItem {
   id: string;
@@ -23,6 +24,7 @@ export function GettingStartedWidget({
   micrositePublished: boolean;
   hasLeads: boolean;
 }) {
+  const { t } = useTranslation();
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
@@ -33,22 +35,22 @@ export function GettingStartedWidget({
   const checklist: ChecklistItem[] = [
     {
       id: 'profile',
-      label: 'Profil vervollständigen',
-      description: 'Mindestens 3 Spezialisierungen, Headline und Erfahrung hinzufügen',
+      label: t('gettingStarted.completeProfile'),
+      description: t('gettingStarted.completeProfileDesc'),
       completed: profileComplete,
       link: '/dashboard/profile',
     },
     {
       id: 'microsite',
-      label: 'Microsite veröffentlichen',
-      description: 'Ihre persönliche Website online stellen',
+      label: t('gettingStarted.publishMicrosite'),
+      description: t('gettingStarted.publishMicrositeDesc'),
       completed: micrositePublished,
       link: '/dashboard/therapist/microsite',
     },
     {
       id: 'leads',
-      label: 'Erste Kontaktanfrage erhalten',
-      description: 'Teilen Sie Ihre Microsite-URL, um Anfragen zu empfangen',
+      label: t('gettingStarted.firstContact'),
+      description: t('gettingStarted.firstContactDesc'),
       completed: hasLeads,
       link: '/dashboard/therapist/leads',
     },
@@ -74,7 +76,7 @@ export function GettingStartedWidget({
       <button
         onClick={handleDismiss}
         className="absolute top-4 right-4 p-1 rounded-full hover:bg-primary-100 transition text-primary-700"
-        aria-label="Widget ausblenden"
+        aria-label={t('gettingStarted.hideWidget')}
       >
         <X className="h-4 w-4" />
       </button>
@@ -85,17 +87,14 @@ export function GettingStartedWidget({
         </div>
 
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Starten Sie durch!</h3>
-          <p className="text-gray-600 mb-4">
-            Vervollständigen Sie Ihre Einrichtung, um das volle Potenzial Ihrer Microsite
-            auszuschöpfen.
-          </p>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{t('gettingStarted.getStarted')}</h3>
+          <p className="text-gray-600 mb-4">{t('gettingStarted.getStartedDesc')}</p>
 
           {/* Progress Bar */}
           <div className="mb-5">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">
-                Fortschritt: {completedCount} von {totalCount}
+                {t('gettingStarted.progress', { completed: completedCount, total: totalCount })}
               </span>
               <span className="text-sm font-bold text-primary-600">{progress}%</span>
             </div>
@@ -138,7 +137,7 @@ export function GettingStartedWidget({
                     href={item.link}
                     className="flex-shrink-0 px-3 py-1.5 text-sm font-medium text-primary-700 hover:text-primary-800 hover:bg-primary-100 rounded-md transition flex items-center gap-1"
                   >
-                    Los
+                    {t('gettingStarted.go')}
                     <ExternalLink className="h-3 w-3" />
                   </Link>
                 )}

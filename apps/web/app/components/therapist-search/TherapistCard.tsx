@@ -7,33 +7,36 @@ import { InteractiveCard } from '../InteractiveCard';
 import type { TherapistWithListing } from './types';
 import { PlaceholderImage } from './PlaceholderImage';
 import { AvailabilityBadge } from '../AvailabilityBadge';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface TherapistCardProps {
   therapist: TherapistWithListing;
 }
 
-function formatLocation(city?: string | null, online?: boolean) {
-  const parts: string[] = [];
-  if (city) parts.push(city);
-  if (online) parts.push('Online');
-  if (parts.length === 0) return 'Standort auf Anfrage';
-  return parts.join(' & ');
-}
-
-function formatPrice(min?: number | null, max?: number | null) {
-  if (!min && !max) return 'Preis auf Anfrage';
-  if (min && max && min === max) return `€${(min / 100).toFixed(0)}`;
-  if (min && max) return `€${(min / 100).toFixed(0)} - €${(max / 100).toFixed(0)}`;
-  if (min) return `Ab €${(min / 100).toFixed(0)}`;
-  if (max) return `Bis €${(max / 100).toFixed(0)}`;
-  return 'Preis auf Anfrage';
-}
-
 export function TherapistCard({ therapist }: TherapistCardProps) {
-  const name = therapist.displayName || 'Therapeut:in';
-  const specialty = therapist.specialties[0] || 'Psychotherapie';
+  const { t } = useTranslation();
+
+  const formatLocation = (city?: string | null, online?: boolean) => {
+    const parts: string[] = [];
+    if (city) parts.push(city);
+    if (online) parts.push(t('therapistCard.online'));
+    if (parts.length === 0) return t('therapistCard.locationOnRequest');
+    return parts.join(' & ');
+  };
+
+  const formatPrice = (min?: number | null, max?: number | null) => {
+    if (!min && !max) return t('therapistCard.priceOnRequest');
+    if (min && max && min === max) return `€${(min / 100).toFixed(0)}`;
+    if (min && max) return `€${(min / 100).toFixed(0)} - €${(max / 100).toFixed(0)}`;
+    if (min) return t('therapistCard.priceFrom', { price: `€${(min / 100).toFixed(0)}` });
+    if (max) return `Bis €${(max / 100).toFixed(0)}`;
+    return t('therapistCard.priceOnRequest');
+  };
+
+  const name = therapist.displayName || t('therapistCard.therapist');
+  const specialty = therapist.specialties[0] || t('therapistCard.psychotherapy');
   const approach =
-    therapist.approachSummary || therapist.modalities[0] || 'Individuelle Begleitung';
+    therapist.approachSummary || therapist.modalities[0] || t('therapistCard.individualSupport');
   const location = formatLocation(therapist.city, therapist.online);
   const rating = therapist.rating || 0;
   const reviewCount = therapist.reviewCount || 0;
@@ -110,7 +113,9 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
               {therapist.yearsExperience && (
                 <div className="flex items-center gap-2.5">
                   <Calendar className="h-4 w-4 flex-shrink-0 text-teal-500" aria-hidden />
-                  <span>{therapist.yearsExperience} Jahre Erfahrung</span>
+                  <span>
+                    {t('therapistCard.yearsExperience', { years: therapist.yearsExperience })}
+                  </span>
                 </div>
               )}
             </div>
@@ -127,7 +132,7 @@ export function TherapistCard({ therapist }: TherapistCardProps) {
 
             {/* CTA */}
             <span className="mt-2 flex items-center justify-center rounded-xl border-2 border-teal-100 bg-teal-50 py-3 text-sm font-semibold text-teal-700 transition-all duration-200 group-hover:border-teal-200 group-hover:bg-teal-100 group-hover:text-teal-800">
-              Profil ansehen
+              {t('therapistCard.viewProfile')}
             </span>
           </div>
         </article>
