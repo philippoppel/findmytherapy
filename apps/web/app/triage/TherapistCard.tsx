@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@mental-health/ui';
 import { AvailabilityBadge } from '@/app/components/AvailabilityBadge';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 type TherapistRecommendation = {
   id: string;
@@ -54,11 +55,12 @@ export function TherapistCard({
   onSelect,
 }: TherapistCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const { t } = useTranslation();
 
   const renderFormatTag = (tag: 'online' | 'praesenz' | 'hybrid') => {
-    if (tag === 'online') return 'Online';
-    if (tag === 'praesenz') return 'Vor Ort';
-    return 'Hybrid';
+    if (tag === 'online') return t('triage.formatOnline');
+    if (tag === 'praesenz') return t('triage.formatInPerson');
+    return t('triage.formatHybrid');
   };
 
   return (
@@ -87,7 +89,7 @@ export function TherapistCard({
           )}
           {index === 0 && (
             <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground shadow-md">
-              Top-Empfehlung
+              {t('triage.topRecommendation')}
             </span>
           )}
         </div>
@@ -102,7 +104,7 @@ export function TherapistCard({
             }`}
           >
             {isSelected ? <CheckCircle className="h-4 w-4" /> : null}
-            {isSelected ? 'Zum Vergleich hinzugefügt' : 'Zur Gegenüberstellung'}
+            {isSelected ? t('triage.addedToCompare') : t('triage.addToCompare')}
           </button>
         )}
       </div>
@@ -190,14 +192,14 @@ export function TherapistCard({
               ))}
             </div>
           ) : (
-            <span className="text-xs text-muted">Leistungen auf Anfrage</span>
+            <span className="text-xs text-muted">{t('triage.servicesOnRequest')}</span>
           )}
 
           {!embedded && (
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm" asChild>
                 <Link href={`/therapists/${therapist.id}?from=triage`} prefetch={false}>
-                  Profil ansehen
+                  {t('triage.viewProfile')}
                 </Link>
               </Button>
             </div>
@@ -210,7 +212,7 @@ export function TherapistCard({
             onClick={() => setShowDetails(!showDetails)}
             className="flex w-full items-center justify-between rounded-lg border border-divider bg-surface-1 px-4 py-2 text-sm font-medium text-default transition hover:bg-surface-2"
           >
-            <span>{showDetails ? 'Weniger anzeigen' : 'Alle Details anzeigen'}</span>
+            <span>{showDetails ? t('triage.showLess') : t('triage.showAllDetails')}</span>
             {showDetails ? (
               <ChevronUp className="h-4 w-4 text-muted" aria-hidden />
             ) : (
@@ -223,7 +225,7 @@ export function TherapistCard({
               <div>
                 <h5 className="flex items-center gap-2 text-sm font-semibold text-default">
                   <Globe className="h-4 w-4 text-primary" aria-hidden />
-                  Alle Schwerpunkte
+                  {t('triage.allSpecializations')}
                 </h5>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {therapist.focus.map((item) => (
@@ -239,16 +241,16 @@ export function TherapistCard({
 
               {therapist.languages && therapist.languages.length > 0 && (
                 <div>
-                  <h5 className="text-sm font-semibold text-default">Sprachen</h5>
+                  <h5 className="text-sm font-semibold text-default">{t('triage.languagesLabel')}</h5>
                   <p className="mt-1 text-xs text-muted">{therapist.languages.join(', ')}</p>
                 </div>
               )}
 
               {therapist.yearsExperience && (
                 <div>
-                  <h5 className="text-sm font-semibold text-default">Berufserfahrung</h5>
+                  <h5 className="text-sm font-semibold text-default">{t('triage.experienceLabel')}</h5>
                   <p className="mt-1 text-xs text-muted">
-                    {therapist.yearsExperience} Jahre praktische Erfahrung
+                    {t('triage.yearsExperience', { years: therapist.yearsExperience })}
                   </p>
                 </div>
               )}
@@ -257,7 +259,7 @@ export function TherapistCard({
                 <div>
                   <h5 className="flex items-center gap-2 text-sm font-semibold text-default">
                     <Calendar className="h-4 w-4 text-primary" aria-hidden />
-                    Angebotene Leistungen
+                    {t('triage.offeredServices')}
                   </h5>
                   <ul className="mt-2 space-y-1">
                     {therapist.services.map((service) => (
@@ -273,7 +275,7 @@ export function TherapistCard({
               <div>
                 <h5 className="flex items-center gap-2 text-sm font-semibold text-default">
                   <MapPin className="h-4 w-4 text-primary" aria-hidden />
-                  Standort & Format
+                  {t('triage.locationAndFormat')}
                 </h5>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {therapist.formatTags.map((tag) => (
@@ -291,11 +293,11 @@ export function TherapistCard({
               <div>
                 <h5 className="flex items-center gap-2 text-sm font-semibold text-default">
                   <Clock className="h-4 w-4 text-primary" aria-hidden />
-                  Verfügbarkeit
+                  {t('triage.availabilityLabel')}
                 </h5>
                 <p className="mt-1 text-xs text-muted">{therapist.availability}</p>
                 {therapist.responseTime && (
-                  <p className="mt-1 text-xs text-muted">Antwortzeit: {therapist.responseTime}</p>
+                  <p className="mt-1 text-xs text-muted">{t('triage.responseTimeLabel')}: {therapist.responseTime}</p>
                 )}
               </div>
             </div>

@@ -1254,6 +1254,32 @@ export const translations = {
       radiusLabel: 'Umkreis',
       noFiltersSelected: 'Keine Filter ausgewählt',
       privacyNoteData: 'Deine Daten werden vertraulich behandelt',
+      // Therapist Card
+      topRecommendation: 'Top-Empfehlung',
+      addedToCompare: 'Zum Vergleich hinzugefügt',
+      addToCompare: 'Zur Gegenüberstellung',
+      formatOnline: 'Online',
+      formatInPerson: 'Vor Ort',
+      formatHybrid: 'Hybrid',
+      servicesOnRequest: 'Leistungen auf Anfrage',
+      viewProfile: 'Profil ansehen',
+      showLess: 'Weniger anzeigen',
+      showAllDetails: 'Alle Details anzeigen',
+      allSpecializations: 'Alle Schwerpunkte',
+      languagesLabel: 'Sprachen',
+      experienceLabel: 'Berufserfahrung',
+      yearsExperience: '{{years}} Jahre praktische Erfahrung',
+      offeredServices: 'Angebotene Leistungen',
+      locationAndFormat: 'Standort & Format',
+      availabilityLabel: 'Verfügbarkeit',
+      responseTimeLabel: 'Antwortzeit',
+      // Error Boundary
+      somethingWentWrong: 'Etwas ist schiefgelaufen',
+      errorOccurred: 'Es tut uns leid, aber bei der Durchführung der Ersteinschätzung ist ein Fehler aufgetreten.',
+      devModeError: 'Entwicklermodus - Fehlerdetails:',
+      reloadPage: 'Seite neu laden',
+      reportProblem: 'Problem melden',
+      persistentErrorHint: 'Wenn das Problem weiterhin besteht, versuche die Seite in einem privaten/Inkognito-Fenster zu öffnen oder deinen Browser-Cache zu leeren.',
     },
 
     // WHO-5 Wellbeing Check
@@ -1755,6 +1781,46 @@ export const translations = {
       preview: 'Vorschau',
       publishedLabel: 'Veröffentlicht:',
       publishedCourses: 'Veröffentlichte Kurse',
+    },
+
+    // Therapist Dashboard
+    therapistDashboard: {
+      welcomeBack: 'Willkommen zurück',
+      status: 'Status',
+      verified: 'Verifiziert',
+      pending: 'In Prüfung',
+      rejected: 'Abgelehnt',
+      // Metrics
+      activeClients: 'Aktive Klient:innen',
+      publishedCourses: 'Veröffentlichte Kurse',
+      listingPlan: 'Listing-Plan',
+      pendingPayouts: 'Ausstehende Auszahlungen',
+      // Appointments
+      upcomingAppointments: 'Ihre nächsten Termine',
+      confirmed: 'Bestätigt',
+      scheduled: 'Geplant',
+      with: 'mit',
+      noAppointments: 'Noch keine Termine geplant',
+      noAppointmentsDesc: 'Sobald Sie Termine erstellen, erscheinen sie hier.',
+      createAppointment: 'Termin erstellen',
+      // Courses
+      manageCourses: 'Kurse verwalten',
+      courseStatus: 'Status',
+      open: 'Öffnen',
+      noCourses: 'Noch keine Kurse angelegt',
+      noCoursesDesc: 'Starten Sie mit Ihrem ersten Kurs und erreichen Sie Klient:innen digital.',
+      createCourse: 'Kurs erstellen',
+      // Quick Access
+      quickAccess: 'Schnellzugriff',
+      manage2FA: 'Zwei-Faktor-Schutz verwalten',
+      updateProfile: 'Profil aktualisieren',
+      adjustListing: 'Listing-Plan anpassen',
+      checkPayouts: 'Auszahlungen prüfen',
+      // Listing Status
+      listingStatus: 'Listing-Status',
+      listingActive: 'Ihr Auftritt ist aktiv und wird Klient:innen angezeigt.',
+      listingInactive: 'Ihr Listing ist derzeit nicht aktiv.',
+      manageListing: 'Listing verwalten',
     },
 
     // Listing Page
@@ -4617,6 +4683,32 @@ export const translations = {
       radiusLabel: 'Radius',
       noFiltersSelected: 'No filters selected',
       privacyNoteData: 'Your data is handled confidentially',
+      // Therapist Card
+      topRecommendation: 'Top Recommendation',
+      addedToCompare: 'Added to comparison',
+      addToCompare: 'Add to comparison',
+      formatOnline: 'Online',
+      formatInPerson: 'In Person',
+      formatHybrid: 'Hybrid',
+      servicesOnRequest: 'Services on request',
+      viewProfile: 'View profile',
+      showLess: 'Show less',
+      showAllDetails: 'Show all details',
+      allSpecializations: 'All specializations',
+      languagesLabel: 'Languages',
+      experienceLabel: 'Experience',
+      yearsExperience: '{{years}} years of practical experience',
+      offeredServices: 'Offered services',
+      locationAndFormat: 'Location & Format',
+      availabilityLabel: 'Availability',
+      responseTimeLabel: 'Response time',
+      // Error Boundary
+      somethingWentWrong: 'Something went wrong',
+      errorOccurred: 'We\'re sorry, but an error occurred during the assessment.',
+      devModeError: 'Developer mode - Error details:',
+      reloadPage: 'Reload page',
+      reportProblem: 'Report problem',
+      persistentErrorHint: 'If the problem persists, try opening the page in a private/incognito window or clearing your browser cache.',
     },
 
     // WHO-5 Wellbeing Check
@@ -4930,6 +5022,46 @@ export const translations = {
       preview: 'Preview',
       publishedLabel: 'Published:',
       publishedCourses: 'Published Courses',
+    },
+
+    // Therapist Dashboard
+    therapistDashboard: {
+      welcomeBack: 'Welcome back',
+      status: 'Status',
+      verified: 'Verified',
+      pending: 'In Review',
+      rejected: 'Rejected',
+      // Metrics
+      activeClients: 'Active Clients',
+      publishedCourses: 'Published Courses',
+      listingPlan: 'Listing Plan',
+      pendingPayouts: 'Pending Payouts',
+      // Appointments
+      upcomingAppointments: 'Your upcoming appointments',
+      confirmed: 'Confirmed',
+      scheduled: 'Scheduled',
+      with: 'with',
+      noAppointments: 'No appointments scheduled yet',
+      noAppointmentsDesc: 'Once you create appointments, they will appear here.',
+      createAppointment: 'Create appointment',
+      // Courses
+      manageCourses: 'Manage courses',
+      courseStatus: 'Status',
+      open: 'Open',
+      noCourses: 'No courses created yet',
+      noCoursesDesc: 'Start with your first course and reach clients digitally.',
+      createCourse: 'Create course',
+      // Quick Access
+      quickAccess: 'Quick access',
+      manage2FA: 'Manage two-factor authentication',
+      updateProfile: 'Update profile',
+      adjustListing: 'Adjust listing plan',
+      checkPayouts: 'Check payouts',
+      // Listing Status
+      listingStatus: 'Listing Status',
+      listingActive: 'Your listing is active and visible to clients.',
+      listingInactive: 'Your listing is currently not active.',
+      manageListing: 'Manage listing',
     },
 
     // Listing Page
