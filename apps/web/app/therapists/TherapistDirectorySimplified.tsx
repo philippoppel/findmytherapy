@@ -566,7 +566,7 @@ export function TherapistDirectory({ therapists }: TherapistDirectoryProps) {
         ) : (
           <div className="space-y-3">
             {paginatedTherapists.map((therapist) => (
-              <TherapistListCard key={therapist.id} therapist={therapist} />
+              <TherapistListCard key={therapist.id} therapist={therapist} statusLabels={statusLabels} formatLabels={FORMAT_LABELS} />
             ))}
           </div>
         )}
@@ -717,7 +717,15 @@ function Pagination({
 }
 
 // Horizontal List Card
-function TherapistListCard({ therapist }: { therapist: TherapistCard }) {
+function TherapistListCard({
+  therapist,
+  statusLabels,
+  formatLabels
+}: {
+  therapist: TherapistCard;
+  statusLabels: Record<string, string>;
+  formatLabels: Record<FormatFilter, { label: string; icon: typeof Video }>;
+}) {
   const gradientClass = getGradientClass(therapist.id);
   const primaryFocus = therapist.focus.slice(0, 4);
   const distance =
@@ -839,7 +847,7 @@ function TherapistListCard({ therapist }: { therapist: TherapistCard }) {
           {/* Format Tags */}
           <div className="mt-auto flex items-center gap-2">
             {therapist.formatTags.map((tag) => {
-              const config = FORMAT_LABELS[tag];
+              const config = formatLabels[tag];
               const Icon = config.icon;
               return (
                 <span
