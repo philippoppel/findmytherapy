@@ -1614,6 +1614,20 @@ export const translations = {
       topicTrauma: 'Trauma & PTBS',
       topicRelationship: 'Beziehungen',
       topicSelfWorth: 'Selbstwert',
+      topicGrief: 'Trauer & Verlust',
+      topicAddiction: 'Sucht',
+      topicEating: 'Essstörungen',
+      topicSleep: 'Schlafprobleme',
+      topicOcd: 'Zwänge',
+      topicAdhd: 'ADHS',
+      topicWork: 'Arbeit & Karriere',
+      // Format Labels
+      formatOnline: 'Online',
+      formatOnlineDesc: 'Von überall aus',
+      formatInPerson: 'Vor Ort',
+      formatInPersonDesc: 'Persönlich treffen',
+      formatFlexible: 'Flexibel',
+      formatFlexibleDesc: 'Beides möglich',
       // Topic Questions
       questionAnxiety: 'Begleiten dich manchmal Ängste oder Sorgen?',
       questionDepression: 'Fällt es dir schwer, dich aufzuraffen oder Freude zu empfinden?',
@@ -2957,6 +2971,19 @@ export const translations = {
       shareOnWhatsApp: 'Auf WhatsApp teilen',
       copyLink: 'Link kopieren',
       linkCopied: 'Link kopiert!',
+    },
+
+    // Language names
+    languages: {
+      german: 'Deutsch',
+      english: 'Englisch',
+      turkish: 'Türkisch',
+      serbian: 'Serbisch',
+      croatian: 'Kroatisch',
+      polish: 'Polnisch',
+      arabic: 'Arabisch',
+      french: 'Französisch',
+      spanish: 'Spanisch',
     },
 
     // Medical Disclaimer
@@ -4762,6 +4789,20 @@ export const translations = {
       topicTrauma: 'Trauma & PTSD',
       topicRelationship: 'Relationships',
       topicSelfWorth: 'Self-esteem',
+      topicGrief: 'Grief & Loss',
+      topicAddiction: 'Addiction',
+      topicEating: 'Eating Disorders',
+      topicSleep: 'Sleep Issues',
+      topicOcd: 'OCD',
+      topicAdhd: 'ADHD',
+      topicWork: 'Work & Career',
+      // Format Labels
+      formatOnline: 'Online',
+      formatOnlineDesc: 'From anywhere',
+      formatInPerson: 'In Person',
+      formatInPersonDesc: 'Meet in person',
+      formatFlexible: 'Flexible',
+      formatFlexibleDesc: 'Both options',
       // Topic Questions
       questionAnxiety: 'Are you sometimes accompanied by fears or worries?',
       questionDepression: 'Do you find it hard to motivate yourself or feel joy?',
@@ -6054,6 +6095,19 @@ export const translations = {
       shareOnWhatsApp: 'Share on WhatsApp',
       copyLink: 'Copy link',
       linkCopied: 'Link copied!',
+    },
+
+    // Language names
+    languages: {
+      german: 'German',
+      english: 'English',
+      turkish: 'Turkish',
+      serbian: 'Serbian',
+      croatian: 'Croatian',
+      polish: 'Polish',
+      arabic: 'Arabic',
+      french: 'French',
+      spanish: 'Spanish',
     },
 
     // Medical Disclaimer

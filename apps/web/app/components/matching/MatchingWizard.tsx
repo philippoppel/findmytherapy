@@ -23,6 +23,43 @@ export function MatchingWizard() {
     { id: 2, title: t('wizard.steps.format.title'), description: t('wizard.steps.format.description') },
     { id: 3, title: t('wizard.steps.details.title'), description: t('wizard.steps.details.description') },
   ];
+
+  // Topic label translations
+  const TOPIC_LABELS: Record<string, string> = {
+    angst: t('quizPage.topicAnxiety'),
+    depression: t('quizPage.topicDepression'),
+    stress: t('quizPage.topicStress'),
+    trauma: t('quizPage.topicTrauma'),
+    beziehung: t('quizPage.topicRelationship'),
+    selbstwert: t('quizPage.topicSelfWorth'),
+    trauer: t('quizPage.topicGrief'),
+    sucht: t('quizPage.topicAddiction'),
+    essstoerung: t('quizPage.topicEating'),
+    schlaf: t('quizPage.topicSleep'),
+    zwang: t('quizPage.topicOcd'),
+    adhs: t('quizPage.topicAdhd'),
+    arbeit: t('quizPage.topicWork'),
+  };
+
+  // Format label translations
+  const FORMAT_LABELS: Record<string, { label: string; desc: string }> = {
+    ONLINE: { label: t('quizPage.formatOnline'), desc: t('quizPage.formatOnlineDesc') },
+    IN_PERSON: { label: t('quizPage.formatInPerson'), desc: t('quizPage.formatInPersonDesc') },
+    BOTH: { label: t('quizPage.formatFlexible'), desc: t('quizPage.formatFlexibleDesc') },
+  };
+
+  // Language label translations
+  const LANGUAGE_LABELS: Record<string, string> = {
+    Deutsch: t('languages.german'),
+    Englisch: t('languages.english'),
+    Türkisch: t('languages.turkish'),
+    Serbisch: t('languages.serbian'),
+    Kroatisch: t('languages.croatian'),
+    Polnisch: t('languages.polish'),
+    Arabisch: t('languages.arabic'),
+    Französisch: t('languages.french'),
+    Spanisch: t('languages.spanish'),
+  };
   const {
     isOpen,
     closeWizard,
@@ -226,7 +263,7 @@ export function MatchingWizard() {
                                 {/* Label */}
                                 <div className="absolute inset-x-0 bottom-0 p-3">
                                   <span className="text-sm font-semibold text-white drop-shadow-lg">
-                                    {area.label}
+                                    {TOPIC_LABELS[area.id] || area.label}
                                   </span>
                                 </div>
                                 {/* Checkmark */}
@@ -287,9 +324,9 @@ export function MatchingWizard() {
                                 />
                                 <div className="absolute inset-x-0 bottom-0 p-4 text-left">
                                   <span className="block text-lg font-bold text-white drop-shadow-lg">
-                                    {format.label}
+                                    {FORMAT_LABELS[format.id]?.label || format.label}
                                   </span>
-                                  <span className="text-sm text-white/80">{format.desc}</span>
+                                  <span className="text-sm text-white/80">{FORMAT_LABELS[format.id]?.desc || format.desc}</span>
                                 </div>
                                 {isSelected && (
                                   <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-lg">
@@ -365,7 +402,7 @@ export function MatchingWizard() {
                                     : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                                 }`}
                               >
-                                {lang.label}
+                                {LANGUAGE_LABELS[lang.id] || lang.label}
                               </button>
                             );
                           })}
