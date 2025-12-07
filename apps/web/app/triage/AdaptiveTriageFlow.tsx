@@ -1507,7 +1507,7 @@ export function AdaptiveTriageFlow({
                         disabled={currentPhase === 'phq2' && questionIndex === 0}
                         className="rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 sm:px-6"
                       >
-                        Zurück
+                        {t('triage.back')}
                       </button>
                       <span className="text-center text-slate-500">
                         {(currentPhase === 'phq2' || currentPhase === 'phq9-expanded') && (

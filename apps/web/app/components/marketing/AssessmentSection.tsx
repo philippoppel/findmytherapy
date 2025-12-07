@@ -16,61 +16,58 @@ import {
 import Link from 'next/link';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
-
-const triageHighlights = [
-  {
-    icon: TrendingUp,
-    title: 'Klares Ampel-Ergebnis',
-    description:
-      'Grün, Gelb oder Rot – du siehst sofort, wie es um deine mentale Gesundheit steht und welche Schritte sinnvoll sind.',
-  },
-  {
-    icon: Award,
-    title: 'Wissenschaftlich fundiert',
-    description:
-      'Basierend auf international anerkannten Screening-Tools (PHQ-9 & GAD-7), die auch Therapeut:innen verwenden.',
-  },
-  {
-    icon: Lock,
-    title: 'Deine Daten, deine Kontrolle',
-    description:
-      'Vollständig anonym nutzbar. Optional kannst du deine Ergebnisse speichern und mit Therapeut:innen teilen – DSGVO-konform verschlüsselt.',
-  },
-];
-
-const quickFeatures = [
-  { icon: Clock, label: 'Unter 5 Minuten', description: 'Super schnell & einfach' },
-  { icon: Check, label: 'Sofort-Ergebnis', description: 'Direkt nach Abschluss' },
-  { icon: Gift, label: '100% kostenlos', description: 'Keine versteckten Kosten' },
-  { icon: Shield, label: '100% anonym', description: 'Keine Anmeldung nötig' },
-];
-
-const screeningTools = [
-  {
-    name: 'PHQ-9',
-    icon: ClipboardList,
-    description:
-      'Patient Health Questionnaire – misst, wie stark depressive Symptome deinen Alltag beeinflussen.',
-    details: [
-      '9 Fragen aus internationalen Leitlinien',
-      'Erkennt leichte bis schwere Ausprägungen',
-      'Hilft Veränderungen über die Zeit zu dokumentieren',
-    ],
-  },
-  {
-    name: 'GAD-7',
-    icon: Brain,
-    description:
-      'Generalized Anxiety Disorder Scale – zeigt, wie stark Anspannung und Sorgen präsent sind.',
-    details: [
-      '7 Fragen zu Angst und Anspannung',
-      'Unterstützt Entscheidung für Selbsthilfe oder Therapie',
-      'Dokumentiert Fortschritte bei Verlaufsmessungen',
-    ],
-  },
-];
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export function AssessmentSection() {
+  const { t } = useTranslation();
+
+  const triageHighlights = [
+    {
+      icon: TrendingUp,
+      title: t('marketing.triageHighlight1Title'),
+      description: t('marketing.triageHighlight1Desc'),
+    },
+    {
+      icon: Award,
+      title: t('marketing.triageHighlight2Title'),
+      description: t('marketing.triageHighlight2Desc'),
+    },
+    {
+      icon: Lock,
+      title: t('marketing.triageHighlight3Title'),
+      description: t('marketing.triageHighlight3Desc'),
+    },
+  ];
+
+  const quickFeatures = [
+    { icon: Clock, label: t('marketing.quickFeatureUnder5Min'), description: t('marketing.quickFeatureUnder5MinDesc') },
+    { icon: Check, label: t('marketing.quickFeatureInstantResult'), description: t('marketing.quickFeatureInstantResultDesc') },
+    { icon: Gift, label: t('marketing.quickFeature100Free'), description: t('marketing.quickFeature100FreeDesc') },
+    { icon: Shield, label: t('marketing.quickFeature100Anonymous'), description: t('marketing.quickFeature100AnonymousDesc') },
+  ];
+
+  const screeningTools = [
+    {
+      name: 'PHQ-9',
+      icon: ClipboardList,
+      description: t('marketing.phq9Desc'),
+      details: [
+        t('marketing.phq9Detail1'),
+        t('marketing.phq9Detail2'),
+        t('marketing.phq9Detail3'),
+      ],
+    },
+    {
+      name: 'GAD-7',
+      icon: Brain,
+      description: t('marketing.gad7Desc'),
+      details: [
+        t('marketing.gad7Detail1'),
+        t('marketing.gad7Detail2'),
+        t('marketing.gad7Detail3'),
+      ],
+    },
+  ];
   return (
     <section
       id="assessment"
@@ -80,14 +77,13 @@ export function AssessmentSection() {
         <Reveal className="mb-12 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-gradient-to-r from-primary-100 to-primary-200 px-4 py-2 text-sm font-bold uppercase tracking-wider text-primary-900 shadow-sm">
             <Gift className="h-4 w-4" aria-hidden />
-            100% Kostenlos
+            {t('marketing.assessment100PercentFree')}
           </div>
           <h2 className="mt-6 text-balance text-4xl font-bold tracking-tight text-default sm:text-5xl lg:text-6xl">
-            In weniger als 5 Minuten zu Klarheit
+            {t('marketing.assessmentClarityIn5Min')}
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-muted sm:text-xl">
-            Erhalte sofort dein persönliches Ampel-Ergebnis – wissenschaftlich fundiert, kostenlos
-            und ohne Anmeldung.
+            {t('marketing.assessmentGetResult')}
           </p>
         </Reveal>
 
@@ -95,12 +91,10 @@ export function AssessmentSection() {
           <Reveal className="space-y-6">
             <div className="rounded-lg border border-divider bg-white p-6 shadow-md sm:p-8">
               <h3 className="mb-6 text-xl font-semibold text-default sm:text-2xl">
-                So einfach geht&apos;s
+                {t('marketing.assessmentHowItWorks')}
               </h3>
               <p className="mb-6 text-pretty text-base leading-relaxed text-muted">
-                Klick auf &quot;Starten&quot;, beantworte ein paar einfache Fragen und erhalte
-                sofort dein Ampel-Ergebnis mit konkreten Empfehlungen. Dauert weniger als 5 Minuten
-                – wissenschaftlich fundiert und vollständig anonym.
+                {t('marketing.assessmentHowItWorksDesc')}
               </p>
               <ul className="space-y-4">
                 {triageHighlights.map((item) => (
@@ -129,13 +123,13 @@ export function AssessmentSection() {
                 <div className="space-y-3">
                   <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-md">
                     <Heart className="h-3.5 w-3.5" aria-hidden />
-                    Jetzt starten
+                    {t('marketing.startNowBadge')}
                   </div>
                   <h3 className="text-3xl font-bold text-default">
-                    Starte jetzt – dauert weniger als 5 Minuten
+                    {t('marketing.startNowLong')}
                   </h3>
                   <p className="text-base text-muted">
-                    Kostenlos, anonym und sofort verfügbar. Keine Anmeldung erforderlich.
+                    {t('marketing.startNowDesc')}
                   </p>
                 </div>
 
@@ -160,7 +154,7 @@ export function AssessmentSection() {
                   href="/triage"
                   className="group flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:from-primary-500 hover:to-primary-600 hover:shadow-xl"
                 >
-                  Ersteinschätzung starten
+                  {t('marketing.startAssessment')}
                   <ArrowRight
                     className="h-5 w-5 transition-transform group-hover:translate-x-1"
                     aria-hidden
@@ -169,8 +163,7 @@ export function AssessmentSection() {
 
                 <div className="rounded-xl bg-primary-100/50 p-3 text-center">
                   <p className="text-xs font-semibold text-primary-900">
-                    <Shield className="mb-0.5 inline h-3.5 w-3.5" aria-hidden /> Keine Anmeldung
-                    erforderlich • Vollständig anonym
+                    <Shield className="mb-0.5 inline h-3.5 w-3.5" aria-hidden /> {t('marketing.noRegistrationRequired')}
                   </p>
                 </div>
               </div>
@@ -182,9 +175,9 @@ export function AssessmentSection() {
         <div className="mt-20">
           <Reveal>
             <SectionHeading
-              eyebrow="Screenings verstanden"
-              title="Warum wir mit PHQ-9 und GAD-7 arbeiten"
-              description="Beide Fragebögen sind wissenschaftlich geprüft, werden weltweit eingesetzt und lassen sich gut mit persönlichen Gesprächen kombinieren."
+              eyebrow={t('marketing.screeningsExplained')}
+              title={t('marketing.whyPhqGad')}
+              description={t('marketing.whyPhqGadDesc')}
             />
           </Reveal>
           <div className="mt-10 grid gap-6 md:grid-cols-2">

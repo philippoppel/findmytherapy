@@ -7,8 +7,10 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { KnowledgeHubSection } from './KnowledgeHubSection';
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export function TwoPillarSection() {
+  const { t } = useTranslation();
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -96,15 +98,14 @@ export function TwoPillarSection() {
           <div className="mb-5 flex justify-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary-100 to-secondary-100 px-5 py-2.5 text-sm font-medium text-neutral-800 shadow-sm">
               <HeartIcon className="h-4 w-4 text-primary-600" />
-              <span>Unsere Mission</span>
+              <span>{t('marketing.ourMission')}</span>
             </div>
           </div>
           <h2 className="mb-6 text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-            Zwei Wege zu mentaler Gesundheit
+            {t('marketing.twoWaysToMentalHealth')}
           </h2>
           <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted sm:text-xl">
-            Ob sofortige Hilfe durch Expert:innen-Wissen oder professionelle Begleitung durch
-            verifizierte Therapeut:innen – wir sind für dich da.
+            {t('marketing.twoWaysDesc')}
           </p>
         </Reveal>
 
@@ -160,10 +161,10 @@ export function TwoPillarSection() {
 
               {/* Text */}
               <h3 className="mb-3 text-center text-2xl font-bold text-neutral-900 sm:text-3xl">
-                Sind Sie Therapeut:in?
+                {t('marketing.areYouTherapist')}
               </h3>
               <p className="mb-8 max-w-sm text-center text-base text-muted sm:text-lg">
-                Entdecken Sie, wie FindMyTherapy Ihre Praxis modern präsentiert und neue Klient:innen erreicht.
+                {t('marketing.areYouTherapistDesc')}
               </p>
 
               {/* CTA Button */}
@@ -181,7 +182,7 @@ export function TwoPillarSection() {
                   }
                   whileTap={{ scale: 0.95 }}
                 >
-                  Mehr erfahren
+                  {t('marketing.learnMore')}
                   <ArrowRight className="h-5 w-5" />
                 </motion.span>
               </Link>
@@ -227,10 +228,10 @@ export function TwoPillarSection() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <p className="mb-2 text-xl font-semibold text-neutral-900">
-                Bereit für den nächsten Schritt?
+                {t('marketing.readyForNextStep')}
               </p>
               <p className="text-base text-muted">
-                Entdecke kostenlose Artikel oder finde deine:n Therapeut:in.
+                {t('marketing.discoverArticlesOrTherapist')}
               </p>
             </motion.div>
             <motion.div
@@ -246,7 +247,7 @@ export function TwoPillarSection() {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Wissen entdecken
+                {t('marketing.discoverKnowledge')}
               </motion.a>
               <motion.a
                 href="/therapists"
@@ -258,7 +259,7 @@ export function TwoPillarSection() {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Therapeut:in finden
+                {t('marketing.findTherapist')}
                 {!prefersReducedMotion && (
                   <motion.span
                     className="inline-block"

@@ -148,14 +148,14 @@ export function TriageErrorBoundary({ children, fallback }: Omit<ErrorBoundaryPr
   const { t } = useTranslation();
 
   const translations = {
-    title: t('errorBoundary.title'),
-    description: t('errorBoundary.description'),
-    devMode: t('errorBoundary.devMode'),
+    title: t('errorBoundary.somethingWentWrong'),
+    description: t('errorBoundary.assessmentError'),
+    devMode: t('errorBoundary.devModeError'),
     reloadPage: t('errorBoundary.reloadPage'),
     or: t('errorBoundary.or'),
     reportProblem: t('errorBoundary.reportProblem'),
     tip: t('errorBoundary.tip'),
-    tipText: t('errorBoundary.tipText'),
+    tipText: t('errorBoundary.persistentProblem'),
   };
 
   return (

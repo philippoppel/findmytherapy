@@ -2,14 +2,17 @@
 
 import Link from 'next/link';
 import { Button } from '@mental-health/ui';
-import type { contactCta } from '../../marketing-content';
+import type { contactCta } from '../marketing-content';
 import { Reveal } from './Reveal';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface ContactCtaProps {
   content: typeof contactCta;
 }
 
 export function ContactCta({ content }: ContactCtaProps) {
+  const { t } = useTranslation();
+
   return (
     <section className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -27,7 +30,7 @@ export function ContactCta({ content }: ContactCtaProps) {
           />
           <div className="relative">
             <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-              Bereit für den nächsten Schritt?
+              {t('marketing.readyForNextStep')}
             </span>
             <h2 className="mt-6 text-pretty text-3xl font-semibold tracking-tight text-default sm:text-4xl">
               {content.heading}
