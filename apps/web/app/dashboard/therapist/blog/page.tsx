@@ -17,6 +17,7 @@ import {
   Archive,
 } from 'lucide-react';
 import { BlogPostStatus } from '@prisma/client';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 type BlogPost = {
   id: string;
@@ -41,29 +42,31 @@ type BlogPost = {
   isStatic?: boolean;
 };
 
-const statusConfig: Record<BlogPostStatus, { label: string; icon: typeof FileText; color: string }> = {
-  DRAFT: { label: 'Entwurf', icon: FileText, color: 'bg-gray-100 text-gray-700' },
-  PENDING_REVIEW: { label: 'Zur Prüfung', icon: Clock, color: 'bg-yellow-100 text-yellow-700' },
-  REVIEWED: { label: 'Geprüft', icon: CheckCircle2, color: 'bg-blue-100 text-blue-700' },
-  PUBLISHED: { label: 'Veröffentlicht', icon: Eye, color: 'bg-green-100 text-green-700' },
-  ARCHIVED: { label: 'Archiviert', icon: Archive, color: 'bg-gray-100 text-gray-500' },
-};
-
 // Only show these statuses in the filter dropdown (the ones that can actually be set)
 const filterableStatuses: BlogPostStatus[] = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
 
 // Sort options
 type SortOption = 'updatedAt' | 'publishedAt' | 'viewCount' | 'title';
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: 'updatedAt', label: 'Zuletzt geändert' },
-  { value: 'publishedAt', label: 'Veröffentlichungsdatum' },
-  { value: 'viewCount', label: 'Meiste Aufrufe' },
-  { value: 'title', label: 'Titel (A-Z)' },
-];
 
 export default function BlogDashboardPage() {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const statusConfig: Record<BlogPostStatus, { label: string; icon: typeof FileText; color: string }> = {
+    DRAFT: { label: t('blogDashboard.statusDraft'), icon: FileText, color: 'bg-gray-100 text-gray-700' },
+    PENDING_REVIEW: { label: t('blogDashboard.statusPendingReview'), icon: Clock, color: 'bg-yellow-100 text-yellow-700' },
+    REVIEWED: { label: t('blogDashboard.statusReviewed'), icon: CheckCircle2, color: 'bg-blue-100 text-blue-700' },
+    PUBLISHED: { label: t('blogDashboard.statusPublished'), icon: Eye, color: 'bg-green-100 text-green-700' },
+    ARCHIVED: { label: t('blogDashboard.statusArchived'), icon: Archive, color: 'bg-gray-100 text-gray-500' },
+  };
+
+  const sortOptions: { value: SortOption; label: string }[] = [
+    { value: 'updatedAt', label: t('blogDashboard.sortLastModified') },
+    { value: 'publishedAt', label: t('blogDashboard.sortPublishDate') },
+    { value: 'viewCount', label: t('blogDashboard.sortMostViews') },
+    { value: 'title', label: t('blogDashboard.sortTitleAZ') },
+  ];
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<BlogPostStatus | ''>('');
   const [filterCategory, setFilterCategory] = useState('');
@@ -125,7 +128,7 @@ export default function BlogDashboardPage() {
     });
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Möchten Sie diesen Beitrag wirklich löschen?')) return;
+    if (!confirm(t('blogDashboard.confirmDelete'))) return;
 
     try {
       const res = await fetch(`/api/therapist/blog/${id}`, { method: 'DELETE' });
@@ -172,15 +175,15 @@ export default function BlogDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Blog-Beiträge</h1>
-          <p className="text-neutral-600">Verwalten Sie Ihre Fachartikel und Beiträge</p>
+          <h1 className="text-2xl font-bold text-neutral-900">{t('blogDashboard.title')}</h1>
+          <p className="text-neutral-600">{t('blogDashboard.subtitle')}</p>
         </div>
         <Link
           href="/dashboard/therapist/blog/new"
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition shadow-lg shadow-primary-500/25"
         >
           <Plus className="w-5 h-5" />
-          Neuer Beitrag
+          {t('blogDashboard.newPost')}
         </Link>
       </div>
 
@@ -191,7 +194,7 @@ export default function BlogDashboardPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
             <input
               type="text"
-              placeholder="Beiträge durchsuchen..."
+              placeholder={t('blogDashboard.searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
@@ -202,7 +205,7 @@ export default function BlogDashboardPage() {
             onChange={(e) => setFilterStatus(e.target.value as BlogPostStatus | '')}
             className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
           >
-            <option value="">Alle Status</option>
+            <option value="">{t('blogDashboard.allStatuses')}</option>
             {filterableStatuses.map((status) => (
               <option key={status} value={status}>
                 {statusConfig[status].label}
@@ -215,7 +218,7 @@ export default function BlogDashboardPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
             >
-              <option value="">Alle Kategorien</option>
+              <option value="">{t('blogDashboard.allCategories')}</option>
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
@@ -243,7 +246,7 @@ export default function BlogDashboardPage() {
               onChange={(e) => setShowAllPosts(e.target.checked)}
               className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
             />
-            <span className="text-sm text-neutral-700">Alle Beiträge anzeigen</span>
+            <span className="text-sm text-neutral-700">{t('blogDashboard.showAllPosts')}</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -252,7 +255,7 @@ export default function BlogDashboardPage() {
               onChange={(e) => setIncludeStatic(e.target.checked)}
               className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
             />
-            <span className="text-sm text-neutral-700">Statische Beiträge einbeziehen</span>
+            <span className="text-sm text-neutral-700">{t('blogDashboard.includeStatic')}</span>
           </label>
         </div>
       </div>
@@ -279,12 +282,12 @@ export default function BlogDashboardPage() {
             <FileText className="w-8 h-8 text-neutral-400" />
           </div>
           <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-            {search || filterStatus ? 'Keine Beiträge gefunden' : 'Noch keine Beiträge'}
+            {search || filterStatus ? t('blogDashboard.noPostsFound') : t('blogDashboard.noPosts')}
           </h3>
           <p className="text-neutral-600 mb-6">
             {search || filterStatus
-              ? 'Versuchen Sie eine andere Suche oder Filter'
-              : 'Erstellen Sie Ihren ersten Fachartikel'}
+              ? t('blogDashboard.tryDifferentSearch')
+              : t('blogDashboard.createFirstPost')}
           </p>
           {!search && !filterStatus && (
             <Link
@@ -292,7 +295,7 @@ export default function BlogDashboardPage() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition"
             >
               <Plus className="w-4 h-4" />
-              Ersten Beitrag erstellen
+              {t('blogDashboard.createFirst')}
             </Link>
           )}
         </div>
@@ -335,7 +338,7 @@ export default function BlogDashboardPage() {
                           </span>
                           {post.isStatic && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                              Statisch
+                              {t('blogDashboard.staticBadge')}
                             </span>
                           )}
                           {post.category && (
@@ -355,7 +358,7 @@ export default function BlogDashboardPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
-                            title="Ansehen"
+                            title={t('blogDashboard.viewTooltip')}
                           >
                             <Eye className="w-5 h-5" />
                           </a>
@@ -365,7 +368,7 @@ export default function BlogDashboardPage() {
                             <Link
                               href={`/dashboard/therapist/blog/${post.id}`}
                               className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
-                              title="Bearbeiten"
+                              title={t('blogDashboard.editTooltip')}
                             >
                               <Edit className="w-5 h-5" />
                             </Link>
@@ -377,7 +380,7 @@ export default function BlogDashboardPage() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="p-2 hover:bg-neutral-100 rounded-lg transition text-neutral-500 hover:text-neutral-700"
-                                title="Ansehen"
+                                title={t('blogDashboard.viewTooltip')}
                               >
                                 <Eye className="w-5 h-5" />
                               </a>
@@ -388,7 +391,7 @@ export default function BlogDashboardPage() {
                               <button
                                 onClick={() => handlePublish(post.id)}
                                 className="p-2 hover:bg-green-50 rounded-lg transition text-green-600 hover:text-green-700"
-                                title="Veröffentlichen"
+                                title={t('blogDashboard.publishTooltip')}
                               >
                                 <Send className="w-5 h-5" />
                               </button>
@@ -396,7 +399,7 @@ export default function BlogDashboardPage() {
                               <button
                                 onClick={() => handleUnpublish(post.id)}
                                 className="p-2 hover:bg-yellow-50 rounded-lg transition text-yellow-600 hover:text-yellow-700"
-                                title="Zurückziehen"
+                                title={t('blogDashboard.unpublishTooltip')}
                               >
                                 <AlertCircle className="w-5 h-5" />
                               </button>
@@ -406,7 +409,7 @@ export default function BlogDashboardPage() {
                             <button
                               onClick={() => handleDelete(post.id)}
                               className="p-2 hover:bg-red-50 rounded-lg transition text-neutral-400 hover:text-red-600"
-                              title="Löschen"
+                              title={t('blogDashboard.deleteTooltip')}
                             >
                               <Trash2 className="w-5 h-5" />
                             </button>
@@ -419,19 +422,19 @@ export default function BlogDashboardPage() {
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-neutral-500">
                       {post.author?.displayName && (
                         <span className="font-medium text-neutral-700">
-                          Von: {post.author.displayName}
+                          {t('blogDashboard.byAuthor')} {post.author.displayName}
                         </span>
                       )}
                       <span className="flex items-center gap-1">
                         <Eye className="w-3 h-3" />
-                        {post.viewCount || 0} Aufrufe
+                        {post.viewCount || 0} {t('blogDashboard.views')}
                       </span>
-                      <span>Aktualisiert: {formatDate(post.updatedAt)}</span>
+                      <span>{t('blogDashboard.updated')} {formatDate(post.updatedAt)}</span>
                       {post.publishedAt && (
-                        <span>Veröffentlicht: {formatDate(post.publishedAt)}</span>
+                        <span>{t('blogDashboard.published')} {formatDate(post.publishedAt)}</span>
                       )}
                       {post.readingTimeMinutes && (
-                        <span>{post.readingTimeMinutes} Min. Lesezeit</span>
+                        <span>{post.readingTimeMinutes} {t('blogDashboard.readingTime')}</span>
                       )}
                     </div>
                   </div>

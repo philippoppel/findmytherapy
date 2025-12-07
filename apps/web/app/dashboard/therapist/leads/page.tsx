@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface Lead {
   id: string;
@@ -13,6 +14,7 @@ interface Lead {
 }
 
 export default function LeadsPage() {
+  const { t } = useTranslation();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,17 +37,27 @@ export default function LeadsPage() {
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      NEW: t('leads.statusNew'),
+      READ: t('leads.statusRead'),
+      CONTACTED: t('leads.statusContacted'),
+      ARCHIVED: t('leads.statusArchived'),
+    };
+    return statusMap[status] || status;
+  };
+
   if (isLoading) {
-    return <div className="p-8">Lädt...</div>;
+    return <div className="p-8">{t('leads.loading')}</div>;
   }
 
   return (
     <div className="p-8 max-w-6xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Kontaktanfragen</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">{t('leads.title')}</h1>
 
       {leads.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-          <p className="text-gray-600">Noch keine Anfragen erhalten</p>
+          <p className="text-gray-600">{t('leads.noRequests')}</p>
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -53,19 +65,19 @@ export default function LeadsPage() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Name
+                  {t('leads.headerName')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Kontakt
+                  {t('leads.headerContact')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Nachricht
+                  {t('leads.headerMessage')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Status
+                  {t('leads.headerStatus')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Datum
+                  {t('leads.headerDate')}
                 </th>
               </tr>
             </thead>
@@ -90,7 +102,7 @@ export default function LeadsPage() {
                           : 'bg-gray-100 text-gray-800'
                       }`}
                     >
-                      {lead.status}
+                      {getStatusLabel(lead.status)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
