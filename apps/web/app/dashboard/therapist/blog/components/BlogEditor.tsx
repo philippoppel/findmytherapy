@@ -550,7 +550,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
               {isEditing ? t('blogEditor.editPost') : t('blogEditor.newPost')}
             </h1>
             <p className="text-sm text-neutral-500">
-              {isEditing ? t('blogEditor.slugLabel', { slug: initialData?.slug }) : t('blogEditor.createNew')}
+              {isEditing ? t('blogEditor.slugLabel', { slug: initialData?.slug || '' }) : t('blogEditor.createNew')}
             </p>
           </div>
         </div>
@@ -670,13 +670,13 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
           {/* Featured Image */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <span className="block text-sm font-medium text-neutral-700 mb-2">Titelbild</span>
+            <span className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.featuredImage')}</span>
             <div className="space-y-4">
               {formData.featuredImageUrl ? (
                 <div className="relative aspect-[2/1] rounded-xl overflow-hidden bg-neutral-100">
                   <Image
                     src={formData.featuredImageUrl}
-                    alt={formData.featuredImageAlt || 'Titelbild'}
+                    alt={formData.featuredImageAlt || t('blogEditor.featuredImage')}
                     fill
                     className="object-cover"
                   />
@@ -694,8 +694,8 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                   className="w-full aspect-[2/1] rounded-xl border-2 border-dashed border-neutral-300 flex flex-col items-center justify-center cursor-pointer hover:border-primary-500 hover:bg-primary-50/50 transition"
                 >
                   <Upload className="w-10 h-10 text-neutral-400 mb-2" />
-                  <p className="text-neutral-600">Bild hochladen</p>
-                  <p className="text-sm text-neutral-400">oder Bild-URL unten eingeben</p>
+                  <p className="text-neutral-600">{t('blogEditor.uploadImage')}</p>
+                  <p className="text-sm text-neutral-400">{t('blogEditor.orEnterUrl')}</p>
                 </button>
               )}
 
@@ -709,7 +709,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="featured-image-url" className="block text-xs text-neutral-500 mb-1">Bild-URL (extern)</label>
+                  <label htmlFor="featured-image-url" className="block text-xs text-neutral-500 mb-1">{t('blogEditor.imageUrl')}</label>
                   <div className="flex gap-2">
                     <input
                       id="featured-image-url"
@@ -729,13 +729,13 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="featured-image-alt" className="block text-xs text-neutral-500 mb-1">Alt-Text</label>
+                  <label htmlFor="featured-image-alt" className="block text-xs text-neutral-500 mb-1">{t('blogEditor.altText')}</label>
                   <input
                     id="featured-image-alt"
                     type="text"
                     value={formData.featuredImageAlt}
                     onChange={(e) => updateFormData({ featuredImageAlt: e.target.value })}
-                    placeholder="Bildbeschreibung für Barrierefreiheit"
+                    placeholder={t('blogEditor.altTextPlaceholder')}
                     className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
                   />
                 </div>
@@ -765,20 +765,20 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="block text-sm font-medium text-neutral-700">
-                Auf einen Blick (Zusammenfassung)
+                {t('blogEditor.summaryTitle')}
               </span>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowSummaryImportModal(true)}
                   className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
                 >
-                  <Upload className="w-4 h-4" /> Importieren
+                  <Upload className="w-4 h-4" /> {t('blogEditor.import')}
                 </button>
                 <button
                   onClick={addSummaryPoint}
                   className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
                 >
-                  <Plus className="w-4 h-4" /> Punkt hinzufügen
+                  <Plus className="w-4 h-4" /> {t('blogEditor.addPoint')}
                 </button>
               </div>
             </div>
@@ -789,7 +789,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                     type="text"
                     value={point}
                     onChange={(e) => updateSummaryPoint(index, e.target.value)}
-                    placeholder="Wichtiger Punkt..."
+                    placeholder={t('blogEditor.pointPlaceholder')}
                     className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg text-sm"
                   />
                   <button
@@ -802,7 +802,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
               ))}
               {formData.summaryPoints.length === 0 && (
                 <p className="text-sm text-neutral-400 py-4 text-center">
-                  Keine Zusammenfassungspunkte. Klicken Sie auf &quot;Punkt hinzufügen&quot;.
+                  {t('blogEditor.noSummaryPoints')}
                 </p>
               )}
             </div>
@@ -811,19 +811,19 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           {/* Content Sections */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <span className="block text-sm font-medium text-neutral-700">Inhaltssektionen</span>
+              <span className="block text-sm font-medium text-neutral-700">{t('blogEditor.contentSections')}</span>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowImportModal(true)}
                   className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
                 >
-                  <Upload className="w-4 h-4" /> Text importieren
+                  <Upload className="w-4 h-4" /> {t('blogEditor.importText')}
                 </button>
                 <button
                   onClick={addSection}
                   className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
                 >
-                  <Plus className="w-4 h-4" /> Sektion hinzufügen
+                  <Plus className="w-4 h-4" /> {t('blogEditor.addSection')}
                 </button>
               </div>
             </div>
@@ -849,7 +849,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                           setExpandedSections(newExpanded);
                         }}
                       >
-                        {section.heading || `Sektion ${sectionIndex + 1}`}
+                        {section.heading || t('blogEditor.sectionNumber', { number: sectionIndex + 1 })}
                       </button>
                       <button
                         type="button"
@@ -870,7 +870,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                           setExpandedSections(newExpanded);
                         }}
                         className="p-1 hover:bg-neutral-200 rounded"
-                        aria-label={isExpanded ? 'Sektion zuklappen' : 'Sektion aufklappen'}
+                        aria-label={isExpanded ? t('blogEditor.collapseSection') : t('blogEditor.expandSection')}
                       >
                         {isExpanded ? (
                           <ChevronUp className="w-4 h-4 text-neutral-400" />
@@ -883,25 +883,25 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                     {isExpanded && (
                       <div className="p-4 space-y-4">
                         <div>
-                          <label htmlFor={`section-heading-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Überschrift</label>
+                          <label htmlFor={`section-heading-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">{t('blogEditor.heading')}</label>
                           <input
                             id={`section-heading-${sectionIndex}`}
                             type="text"
                             value={section.heading}
                             onChange={(e) => updateSection(sectionIndex, { heading: e.target.value })}
-                            placeholder="Sektionsüberschrift..."
+                            placeholder={t('blogEditor.headingPlaceholder')}
                             className="w-full px-3 py-2 border border-neutral-200 rounded-lg"
                           />
                         </div>
 
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <span className="block text-xs text-neutral-500">Absätze</span>
+                            <span className="block text-xs text-neutral-500">{t('blogEditor.paragraphs')}</span>
                             <button
                               onClick={() => addParagraph(sectionIndex)}
                               className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1"
                             >
-                              <Plus className="w-3 h-3" /> Absatz
+                              <Plus className="w-3 h-3" /> {t('blogEditor.addParagraph')}
                             </button>
                           </div>
                           <div className="space-y-2">
@@ -910,7 +910,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 <textarea
                                   value={paragraph}
                                   onChange={(e) => updateParagraph(sectionIndex, pIndex, e.target.value)}
-                                  placeholder="Absatztext..."
+                                  placeholder={t('blogEditor.paragraphPlaceholder')}
                                   rows={3}
                                   className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg text-sm resize-none"
                                 />
@@ -930,7 +930,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                         {/* Section Image */}
                         <div className="border-t border-neutral-100 pt-4">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="block text-xs text-neutral-500">Bild (optional)</span>
+                            <span className="block text-xs text-neutral-500">{t('blogEditor.imageOptional')}</span>
                             {!section.image && (
                               <button
                                 onClick={() => updateSection(sectionIndex, {
@@ -938,7 +938,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 })}
                                 className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1"
                               >
-                                <ImageIcon className="w-3 h-3" /> Bild hinzufügen
+                                <ImageIcon className="w-3 h-3" /> {t('blogEditor.addImage')}
                               </button>
                             )}
                           </div>
@@ -946,7 +946,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                           {section.image && (
                             <div className="space-y-3 p-3 bg-neutral-50 rounded-lg">
                               <div>
-                                <label htmlFor={`section-image-src-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Bild-URL</label>
+                                <label htmlFor={`section-image-src-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">{t('blogEditor.imageSrc')}</label>
                                 <input
                                   id={`section-image-src-${sectionIndex}`}
                                   type="text"
@@ -959,7 +959,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 />
                               </div>
                               <div>
-                                <label htmlFor={`section-image-alt-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Alt-Text</label>
+                                <label htmlFor={`section-image-alt-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">{t('blogEditor.altText')}</label>
                                 <input
                                   id={`section-image-alt-${sectionIndex}`}
                                   type="text"
@@ -967,12 +967,12 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                   onChange={(e) => updateSection(sectionIndex, {
                                     image: { ...section.image!, alt: e.target.value }
                                   })}
-                                  placeholder="Beschreibung des Bildes..."
+                                  placeholder={t('blogEditor.altTextPlaceholder')}
                                   className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
                                 />
                               </div>
                               <div>
-                                <label htmlFor={`section-image-caption-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">Bildunterschrift (optional)</label>
+                                <label htmlFor={`section-image-caption-${sectionIndex}`} className="block text-xs text-neutral-500 mb-1">{t('blogEditor.imageCaption')}</label>
                                 <input
                                   id={`section-image-caption-${sectionIndex}`}
                                   type="text"
@@ -980,7 +980,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                   onChange={(e) => updateSection(sectionIndex, {
                                     image: { ...section.image!, caption: e.target.value }
                                   })}
-                                  placeholder="Bildunterschrift..."
+                                  placeholder={t('blogEditor.altTextPlaceholder')}
                                   className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm"
                                 />
                               </div>
@@ -988,7 +988,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 <div className="relative aspect-video rounded-lg overflow-hidden bg-neutral-100">
                                   <Image
                                     src={section.image.src}
-                                    alt={section.image.alt || 'Vorschau'}
+                                    alt={section.image.alt || t('blogEditor.preview')}
                                     fill
                                     className="object-cover"
                                     unoptimized
@@ -999,7 +999,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                                 onClick={() => updateSection(sectionIndex, { image: undefined })}
                                 className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
                               >
-                                <Trash2 className="w-3 h-3" /> Bild entfernen
+                                <Trash2 className="w-3 h-3" /> {t('blogEditor.removeImage')}
                               </button>
                             </div>
                           )}
@@ -1012,7 +1012,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
               {formData.content.sections.length === 0 && (
                 <div className="text-center py-8 text-neutral-400">
-                  <p>Keine Inhaltssektionen. Klicken Sie auf &quot;Sektion hinzufügen&quot;.</p>
+                  <p>{t('blogEditor.noSections')}</p>
                 </div>
               )}
             </div>
@@ -1026,42 +1026,42 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           {/* Meta Title */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <label htmlFor="meta-title" className="block text-sm font-medium text-neutral-700 mb-2">
-              SEO Titel (optional)
+              {t('blogEditor.seoTitle')}
             </label>
             <input
               id="meta-title"
               type="text"
               value={formData.metaTitle}
               onChange={(e) => updateFormData({ metaTitle: e.target.value })}
-              placeholder="Leer lassen um Artikel-Titel zu verwenden"
+              placeholder={t('blogEditor.seoTitlePlaceholder')}
               className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
             <p className="text-xs text-neutral-400 mt-1">
-              {(formData.metaTitle || formData.title).length}/60 Zeichen
+              {(formData.metaTitle || formData.title).length}/60 {t('blogEditor.characters')}
             </p>
           </div>
 
           {/* Meta Description */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <label htmlFor="meta-description" className="block text-sm font-medium text-neutral-700 mb-2">
-              Meta-Beschreibung (optional)
+              {t('blogEditor.metaDescription')}
             </label>
             <textarea
               id="meta-description"
               value={formData.metaDescription}
               onChange={(e) => updateFormData({ metaDescription: e.target.value })}
-              placeholder="Leer lassen um Auszug zu verwenden"
+              placeholder={t('blogEditor.metaDescPlaceholder')}
               rows={3}
               className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
             <p className="text-xs text-neutral-400 mt-1">
-              {(formData.metaDescription || formData.excerpt).length}/160 Zeichen
+              {(formData.metaDescription || formData.excerpt).length}/160 {t('blogEditor.characters')}
             </p>
           </div>
 
           {/* Keywords */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <label htmlFor="keyword-input" className="block text-sm font-medium text-neutral-700 mb-2">Keywords</label>
+            <label htmlFor="keyword-input" className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.keywords')}</label>
             <div className="flex gap-2 mb-3">
               <input
                 id="keyword-input"
@@ -1069,7 +1069,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                 value={keywordInput}
                 onChange={(e) => setKeywordInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                placeholder="Keyword eingeben..."
+                placeholder={t('blogEditor.keywordPlaceholder')}
                 className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg"
               />
               <button
@@ -1096,7 +1096,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
           {/* Tags */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <label htmlFor="tag-input" className="block text-sm font-medium text-neutral-700 mb-2">Tags</label>
+            <label htmlFor="tag-input" className="block text-sm font-medium text-neutral-700 mb-2">{t('blogEditor.tags')}</label>
             <div className="flex gap-2 mb-3">
               <input
                 id="tag-input"
@@ -1104,7 +1104,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                placeholder="Tag eingeben..."
+                placeholder={t('blogEditor.tagPlaceholder')}
                 className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg"
               />
               <button
@@ -1137,19 +1137,19 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           {/* Sources */}
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <span className="block text-sm font-medium text-neutral-700">Quellen</span>
+              <span className="block text-sm font-medium text-neutral-700">{t('blogEditor.sources')}</span>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowSourcesImportModal(true)}
                   className="text-sm text-neutral-600 hover:text-neutral-700 flex items-center gap-1"
                 >
-                  <Upload className="w-4 h-4" /> Importieren
+                  <Upload className="w-4 h-4" /> {t('blogEditor.import')}
                 </button>
                 <button
                   onClick={addSource}
                   className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
                 >
-                  <Plus className="w-4 h-4" /> Quelle hinzufügen
+                  <Plus className="w-4 h-4" /> {t('blogEditor.addSource')}
                 </button>
               </div>
             </div>
@@ -1158,7 +1158,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
               {formData.sources.map((source, index) => (
                 <div key={index} className="p-4 border border-neutral-200 rounded-xl space-y-3">
                   <div className="flex items-start justify-between">
-                    <span className="text-sm font-medium text-neutral-500">Quelle {index + 1}</span>
+                    <span className="text-sm font-medium text-neutral-500">{t('blogEditor.sourceNumber', { number: index + 1 })}</span>
                     <button
                       onClick={() => removeSource(index)}
                       className="p-1 text-red-500 hover:bg-red-50 rounded"
@@ -1171,7 +1171,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                       type="text"
                       value={source.title}
                       onChange={(e) => updateSource(index, { title: e.target.value })}
-                      placeholder="Titel der Quelle"
+                      placeholder={t('blogEditor.sourceTitle')}
                       className="px-3 py-2 border border-neutral-200 rounded-lg text-sm"
                     />
                     <div className="flex items-center gap-2">
@@ -1188,7 +1188,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
                   <textarea
                     value={source.description}
                     onChange={(e) => updateSource(index, { description: e.target.value })}
-                    placeholder="Kurze Beschreibung (optional)"
+                    placeholder={t('blogEditor.sourceDesc')}
                     rows={2}
                     className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm resize-none"
                   />
@@ -1197,7 +1197,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
               {formData.sources.length === 0 && (
                 <p className="text-sm text-neutral-400 py-4 text-center">
-                  Keine Quellen. Klicken Sie auf &quot;Quelle hinzufügen&quot;.
+                  {t('blogEditor.noSources')}
                 </p>
               )}
             </div>
@@ -1207,11 +1207,10 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <ImageIcon className="w-5 h-5 text-neutral-400" />
-              <span className="block text-sm font-medium text-neutral-700">Bilder im Artikel</span>
+              <span className="block text-sm font-medium text-neutral-700">{t('blogEditor.imagesInArticle')}</span>
             </div>
             <p className="text-sm text-neutral-500">
-              Bilder können direkt in den Inhaltssektionen über die Bild-URL eingebunden werden.
-              Sie können auch Bilder über das Titelbild-Feld hochladen und die URL kopieren.
+              {t('blogEditor.imagesInfo')}
             </p>
           </div>
         </div>
@@ -1240,7 +1239,7 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b">
-              <h3 className="text-lg font-semibold text-neutral-900">Text importieren</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">{t('blogEditor.importTextTitle')}</h3>
               <button
                 onClick={() => {
                   setShowImportModal(false);
@@ -1254,12 +1253,12 @@ export default function BlogEditor({ initialData, isEditing }: BlogEditorProps) 
 
             <div className="p-6 flex-1 overflow-auto">
               <p className="text-sm text-neutral-600 mb-4">
-                Füge deinen Text ein. Überschriften werden automatisch erkannt wenn sie:
+                {t('blogEditor.importTextHint')}
               </p>
               <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
-                <li>Mit ## beginnen (Markdown)</li>
-                <li>Mit einem Doppelpunkt enden</li>
-                <li>Kurze Zeilen gefolgt von längerem Text sind</li>
+                <li>{t('blogEditor.importTextHint1')}</li>
+                <li>{t('blogEditor.importTextHint2')}</li>
+                <li>{t('blogEditor.importTextHint3')}</li>
               </ul>
               <textarea
                 value={importText}
@@ -1280,7 +1279,7 @@ Und hier geht es weiter mit neuem Inhalt..."
 
             <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
               <p className="text-sm text-neutral-500">
-                {importText.trim() ? `${parseTextToSections(importText).length} Sektion(en) erkannt` : 'Noch kein Text eingefügt'}
+                {importText.trim() ? t('blogEditor.sectionsDetected', { count: parseTextToSections(importText).length }) : t('blogEditor.noTextYet')}
               </p>
               <div className="flex gap-3">
                 <button
@@ -1290,14 +1289,14 @@ Und hier geht es weiter mit neuem Inhalt..."
                   }}
                   className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                 >
-                  Abbrechen
+                  {t('blogEditor.cancel')}
                 </button>
                 <button
                   onClick={handleImportText}
                   disabled={!importText.trim()}
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Importieren
+                  {t('blogEditor.import')}
                 </button>
               </div>
             </div>
@@ -1310,7 +1309,7 @@ Und hier geht es weiter mit neuem Inhalt..."
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b">
-              <h3 className="text-lg font-semibold text-neutral-900">Zusammenfassung importieren</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">{t('blogEditor.importSummaryTitle')}</h3>
               <button
                 onClick={() => {
                   setShowSummaryImportModal(false);
@@ -1324,11 +1323,11 @@ Und hier geht es weiter mit neuem Inhalt..."
 
             <div className="p-6 flex-1 overflow-auto">
               <p className="text-sm text-neutral-600 mb-4">
-                Füge deine Zusammenfassungspunkte ein (ein Punkt pro Zeile).
+                {t('blogEditor.importSummaryHint')}
               </p>
               <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
-                <li>Ein Punkt pro Zeile</li>
-                <li>Bindestriche (-) oder Aufzählungszeichen (•) werden automatisch entfernt</li>
+                <li>{t('blogEditor.importSummaryHint1')}</li>
+                <li>{t('blogEditor.importSummaryHint2')}</li>
               </ul>
               <textarea
                 value={summaryImportText}
@@ -1343,7 +1342,7 @@ Und hier geht es weiter mit neuem Inhalt..."
 
             <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
               <p className="text-sm text-neutral-500">
-                {summaryImportText.trim() ? `${parseSummaryPoints(summaryImportText).length} Punkt(e) erkannt` : 'Noch kein Text eingefügt'}
+                {summaryImportText.trim() ? t('blogEditor.pointsDetected', { count: parseSummaryPoints(summaryImportText).length }) : t('blogEditor.noTextYet')}
               </p>
               <div className="flex gap-3">
                 <button
@@ -1353,14 +1352,14 @@ Und hier geht es weiter mit neuem Inhalt..."
                   }}
                   className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                 >
-                  Abbrechen
+                  {t('blogEditor.cancel')}
                 </button>
                 <button
                   onClick={handleImportSummary}
                   disabled={!summaryImportText.trim()}
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Importieren
+                  {t('blogEditor.import')}
                 </button>
               </div>
             </div>
@@ -1373,7 +1372,7 @@ Und hier geht es weiter mit neuem Inhalt..."
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b">
-              <h3 className="text-lg font-semibold text-neutral-900">Quellen importieren</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">{t('blogEditor.importSourcesTitle')}</h3>
               <button
                 onClick={() => {
                   setShowSourcesImportModal(false);
@@ -1387,12 +1386,12 @@ Und hier geht es weiter mit neuem Inhalt..."
 
             <div className="p-6 flex-1 overflow-auto">
               <p className="text-sm text-neutral-600 mb-4">
-                Füge deine Quellen ein (eine pro Zeile).
+                {t('blogEditor.importSourcesHint')}
               </p>
               <ul className="text-sm text-neutral-500 mb-4 list-disc list-inside space-y-1">
-                <li>Eine Quelle pro Zeile</li>
-                <li>Optional: Titel | URL | Beschreibung</li>
-                <li>URLs werden automatisch erkannt</li>
+                <li>{t('blogEditor.importSourcesHint1')}</li>
+                <li>{t('blogEditor.importSourcesHint2')}</li>
+                <li>{t('blogEditor.importSourcesHint3')}</li>
               </ul>
               <textarea
                 value={sourcesImportText}
@@ -1407,7 +1406,7 @@ Studie zur Wirksamkeit von Psychotherapie"
 
             <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
               <p className="text-sm text-neutral-500">
-                {sourcesImportText.trim() ? `${parseSources(sourcesImportText).length} Quelle(n) erkannt` : 'Noch kein Text eingefügt'}
+                {sourcesImportText.trim() ? t('blogEditor.sourcesDetected', { count: parseSources(sourcesImportText).length }) : t('blogEditor.noTextYet')}
               </p>
               <div className="flex gap-3">
                 <button
@@ -1417,14 +1416,14 @@ Studie zur Wirksamkeit von Psychotherapie"
                   }}
                   className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                 >
-                  Abbrechen
+                  {t('blogEditor.cancel')}
                 </button>
                 <button
                   onClick={handleImportSources}
                   disabled={!sourcesImportText.trim()}
                   className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Importieren
+                  {t('blogEditor.import')}
                 </button>
               </div>
             </div>
@@ -1438,9 +1437,9 @@ Studie zur Wirksamkeit von Psychotherapie"
           <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[95vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b">
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900">Vollständigen Artikel importieren</h3>
+                <h3 className="text-lg font-semibold text-neutral-900">{t('blogEditor.fullImportTitle')}</h3>
                 <p className="text-sm text-neutral-500 mt-1">
-                  Füge einen mit Deep Research generierten Artikel im Template-Format ein
+                  {t('blogEditor.fullImportDesc')}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -1448,7 +1447,7 @@ Studie zur Wirksamkeit von Psychotherapie"
                   onClick={() => setShowTemplateModal(true)}
                   className="px-3 py-1.5 text-sm bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition"
                 >
-                  Template anzeigen
+                  {t('blogEditor.showTemplate')}
                 </button>
                 <button
                   onClick={() => {
@@ -1467,13 +1466,13 @@ Studie zur Wirksamkeit von Psychotherapie"
               {!fullImportPreview ? (
                 <>
                   <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
-                    <h4 className="font-medium text-emerald-800 mb-2">So funktioniert es:</h4>
+                    <h4 className="font-medium text-emerald-800 mb-2">{t('blogEditor.howItWorks')}</h4>
                     <ol className="text-sm text-emerald-700 space-y-1 list-decimal list-inside">
-                      <li>Kopiere das Template (Button oben) in ChatGPT/Claude</li>
-                      <li>Ersetze [THEMA] mit deinem gewünschten Thema</li>
-                      <li>Lass Deep Research den Artikel generieren</li>
-                      <li>Kopiere das Ergebnis hier hinein</li>
-                      <li>Prüfe die Vorschau und importiere</li>
+                      <li>{t('blogEditor.howItWorksStep1')}</li>
+                      <li>{t('blogEditor.howItWorksStep2')}</li>
+                      <li>{t('blogEditor.howItWorksStep3')}</li>
+                      <li>{t('blogEditor.howItWorksStep4')}</li>
+                      <li>{t('blogEditor.howItWorksStep5')}</li>
                     </ol>
                   </div>
                   <textarea
@@ -1499,7 +1498,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
                       <h4 className="font-medium text-amber-800 mb-2 flex items-center gap-2">
                         <AlertCircle className="w-4 h-4" />
-                        Hinweise ({fullImportPreview.parseWarnings.length})
+                        {t('blogEditor.warnings')} ({fullImportPreview.parseWarnings.length})
                       </h4>
                       <ul className="text-sm text-amber-700 space-y-1">
                         {fullImportPreview.parseWarnings.map((w, i) => (
@@ -1513,10 +1512,10 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                   <div className="grid md:grid-cols-2 gap-4">
                     {/* Meta */}
                     <div className="bg-neutral-50 rounded-xl p-4">
-                      <h4 className="font-medium text-neutral-700 mb-3">Meta-Daten</h4>
+                      <h4 className="font-medium text-neutral-700 mb-3">{t('blogEditor.metaData')}</h4>
                       <dl className="space-y-2 text-sm">
                         <div>
-                          <dt className="text-neutral-500">Titel</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.title')}</dt>
                           <dd className="font-medium">{fullImportPreview.title || '—'}</dd>
                         </div>
                         <div>
@@ -1524,11 +1523,11 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                           <dd className="font-mono text-xs">{fullImportPreview.slug || '—'}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Kategorie</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.category')}</dt>
                           <dd>{fullImportPreview.category}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Lesezeit</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.readingTime')}</dt>
                           <dd>{fullImportPreview.readingTime}</dd>
                         </div>
                       </dl>
@@ -1536,41 +1535,41 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
 
                     {/* Content Overview */}
                     <div className="bg-neutral-50 rounded-xl p-4">
-                      <h4 className="font-medium text-neutral-700 mb-3">Inhalt</h4>
+                      <h4 className="font-medium text-neutral-700 mb-3">{t('blogEditor.content')}</h4>
                       <dl className="space-y-2 text-sm">
                         <div>
-                          <dt className="text-neutral-500">Kurzbeschreibung</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.shortDescription')}</dt>
                           <dd className="line-clamp-2">{fullImportPreview.excerpt || '—'}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Zusammenfassung</dt>
-                          <dd>{fullImportPreview.summaryPoints.length} Punkte</dd>
+                          <dt className="text-neutral-500">{t('blogEditor.summary')}</dt>
+                          <dd>{fullImportPreview.summaryPoints.length} {t('blogEditor.points')}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Inhaltssektionen</dt>
-                          <dd>{fullImportPreview.content.sections.length} Sektionen</dd>
+                          <dt className="text-neutral-500">{t('blogEditor.contentSectionsPreview')}</dt>
+                          <dd>{fullImportPreview.content.sections.length} {t('blogEditor.sections')}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">FAQ</dt>
-                          <dd>{fullImportPreview.faq.length} Fragen</dd>
+                          <dt className="text-neutral-500">{t('blogEditor.faq')}</dt>
+                          <dd>{fullImportPreview.faq.length} {t('blogEditor.questions')}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Quellen</dt>
-                          <dd>{fullImportPreview.sources.length} Quellen</dd>
+                          <dt className="text-neutral-500">{t('blogEditor.sources')}</dt>
+                          <dd>{fullImportPreview.sources.length} {t('blogEditor.sources')}</dd>
                         </div>
                       </dl>
                     </div>
 
                     {/* SEO */}
                     <div className="bg-neutral-50 rounded-xl p-4">
-                      <h4 className="font-medium text-neutral-700 mb-3">SEO</h4>
+                      <h4 className="font-medium text-neutral-700 mb-3">{t('blogEditor.seo')}</h4>
                       <dl className="space-y-2 text-sm">
                         <div>
-                          <dt className="text-neutral-500">Meta-Titel</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.metaTitleLabel')}</dt>
                           <dd className="line-clamp-1">{fullImportPreview.metaTitle || '—'}</dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Keywords</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.keywords')}</dt>
                           <dd className="flex flex-wrap gap-1 mt-1">
                             {fullImportPreview.keywords.slice(0, 5).map((k, i) => (
                               <span key={i} className="px-2 py-0.5 bg-neutral-200 rounded text-xs">{k}</span>
@@ -1579,10 +1578,10 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                           </dd>
                         </div>
                         <div>
-                          <dt className="text-neutral-500">Tags</dt>
+                          <dt className="text-neutral-500">{t('blogEditor.tags')}</dt>
                           <dd className="flex flex-wrap gap-1 mt-1">
-                            {fullImportPreview.tags.slice(0, 5).map((t, i) => (
-                              <span key={i} className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs">{t}</span>
+                            {fullImportPreview.tags.slice(0, 5).map((tg, i) => (
+                              <span key={i} className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs">{tg}</span>
                             ))}
                             {fullImportPreview.tags.length === 0 && '—'}
                           </dd>
@@ -1592,7 +1591,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
 
                     {/* Bild */}
                     <div className="bg-neutral-50 rounded-xl p-4">
-                      <h4 className="font-medium text-neutral-700 mb-3">Titelbild</h4>
+                      <h4 className="font-medium text-neutral-700 mb-3">{t('blogEditor.featuredImage')}</h4>
                       {fullImportPreview.featuredImageUrl ? (
                         <div className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden">
                           <Image
@@ -1604,7 +1603,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                           />
                         </div>
                       ) : (
-                        <p className="text-sm text-neutral-500">Kein Bild gefunden</p>
+                        <p className="text-sm text-neutral-500">{t('blogEditor.noImageFound')}</p>
                       )}
                     </div>
                   </div>
@@ -1612,7 +1611,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                   {/* Sections Preview */}
                   {fullImportPreview.content.sections.length > 0 && (
                     <div className="bg-neutral-50 rounded-xl p-4">
-                      <h4 className="font-medium text-neutral-700 mb-3">Inhaltssektionen</h4>
+                      <h4 className="font-medium text-neutral-700 mb-3">{t('blogEditor.contentSectionsPreview')}</h4>
                       <div className="space-y-2">
                         {fullImportPreview.content.sections.map((section, i) => (
                           <div key={i} className="flex items-start gap-3 text-sm">
@@ -1622,9 +1621,9 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                             <div>
                               <p className="font-medium">{section.heading}</p>
                               <p className="text-neutral-500 text-xs">
-                                {section.paragraphs.length} Absätze
-                                {section.list ? `, ${section.list.length} Listenpunkte` : ''}
-                                {section.image ? ', 1 Bild' : ''}
+                                {t('blogEditor.paragraphCount', { count: section.paragraphs.length })}
+                                {section.list ? t('blogEditor.listPoints', { count: section.list.length }) : ''}
+                                {section.image ? t('blogEditor.oneImage') : ''}
                               </p>
                             </div>
                           </div>
@@ -1639,10 +1638,10 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
             <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
               <p className="text-sm text-neutral-500">
                 {fullImportPreview
-                  ? `Bereit zum Import mit ${fullImportPreview.content.sections.length} Sektionen`
+                  ? t('blogEditor.readyToImport', { count: fullImportPreview.content.sections.length })
                   : fullImportText.trim()
-                    ? 'Klicke auf "Vorschau" um die erkannten Daten zu prüfen'
-                    : 'Füge den generierten Artikel ein'}
+                    ? t('blogEditor.clickPreview')
+                    : t('blogEditor.pasteArticle')}
               </p>
               <div className="flex gap-3">
                 {fullImportPreview ? (
@@ -1651,13 +1650,13 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                       onClick={() => setFullImportPreview(null)}
                       className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                     >
-                      Zurück
+                      {t('blogEditor.back')}
                     </button>
                     <button
                       onClick={handleFullImport}
                       className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
                     >
-                      Importieren
+                      {t('blogEditor.import')}
                     </button>
                   </>
                 ) : (
@@ -1669,14 +1668,14 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                       }}
                       className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                     >
-                      Abbrechen
+                      {t('blogEditor.cancel')}
                     </button>
                     <button
                       onClick={handleFullImportPreview}
                       disabled={!fullImportText.trim()}
                       className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Vorschau
+                      {t('blogEditor.preview')}
                     </button>
                   </>
                 )}
@@ -1692,9 +1691,9 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
           <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b">
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900">Deep Research Template</h3>
+                <h3 className="text-lg font-semibold text-neutral-900">{t('blogEditor.templateTitle')}</h3>
                 <p className="text-sm text-neutral-500 mt-1">
-                  Kopiere dieses Template für ChatGPT/Claude Deep Research
+                  {t('blogEditor.templateDesc')}
                 </p>
               </div>
               <button
@@ -1711,8 +1710,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
             <div className="flex-1 overflow-auto p-6">
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
                 <p className="text-sm text-emerald-700">
-                  <strong>Tipp:</strong> Kopiere den gesamten Text unten und ersetze [THEMA HIER EINFÜGEN] mit deinem gewünschten Thema.
-                  Die AI generiert dann einen vollständigen wissenschaftlichen Artikel im korrekten Format.
+                  {t('blogEditor.templateTip')}
                 </p>
               </div>
               <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-xl text-xs font-mono whitespace-pre-wrap overflow-auto max-h-[50vh]">
@@ -1722,7 +1720,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
 
             <div className="flex items-center justify-between p-6 border-t bg-neutral-50 rounded-b-2xl">
               <p className="text-sm text-neutral-500">
-                Das Template enthält alle erforderlichen Abschnitte
+                {t('blogEditor.templateContains')}
               </p>
               <div className="flex gap-3">
                 <button
@@ -1732,7 +1730,7 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                   }}
                   className="px-4 py-2 text-neutral-600 hover:bg-neutral-200 rounded-lg transition"
                 >
-                  Schließen
+                  {t('blogEditor.close')}
                 </button>
                 <button
                   onClick={() => {
@@ -1749,12 +1747,12 @@ Der Parser erkennt automatisch alle Abschnitte und korrigiert kleine Formatfehle
                   {templateCopied ? (
                     <>
                       <Check className="w-4 h-4" />
-                      Kopiert!
+                      {t('blogEditor.copied')}
                     </>
                   ) : (
                     <>
                       <Copy className="w-4 h-4" />
-                      Kopieren
+                      {t('blogEditor.copy')}
                     </>
                   )}
                 </button>
