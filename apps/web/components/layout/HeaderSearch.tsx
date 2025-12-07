@@ -135,38 +135,57 @@ export function HeaderSearch() {
 
   return (
     <>
-      {/* Desktop Search */}
-      <div ref={containerRef} className="relative hidden lg:block">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => handleInputChange(e.target.value)}
-            onFocus={() => {
-                  setIsOpen(true);
-                  loadTherapists();
-                }}
-            onKeyDown={handleKeyDown}
-            placeholder={t('headerSearch.placeholder')}
-            className="h-10 w-64 rounded-full border border-divider bg-surface-1/80 pl-10 pr-4 text-sm text-default placeholder:text-muted transition focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            aria-label={t('headerSearch.placeholder')}
-            aria-expanded={isOpen}
-            aria-controls="search-results"
-            aria-activedescendant={activeIndex >= 0 ? `search-item-${activeIndex}` : undefined}
-            role="combobox"
-            autoComplete="off"
-          />
-        </div>
+      {/* SEO: Verstecktes Suchformular für Crawler */}
+      <form action="/therapists" method="get" className="sr-only" aria-hidden="true">
+        <label htmlFor="seo-therapist-search">Therapeutensuche</label>
+        <input type="search" id="seo-therapist-search" name="q" placeholder="Therapeut suchen" />
+        <button type="submit">Suchen</button>
+      </form>
 
-        {/* Dropdown */}
+      {/* Desktop Search - Lupe-Icon mit Dropdown */}
+      <div ref={containerRef} className="relative hidden lg:block">
+        {/* Lupe-Button */}
+        <button
+          type="button"
+          onClick={() => {
+            setIsOpen(true);
+            loadTherapists();
+            setTimeout(() => inputRef.current?.focus(), 50);
+          }}
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:bg-primary-50 hover:text-primary-700"
+          aria-label={t('headerSearch.openSearch')}
+        >
+          <Search className="h-5 w-5" />
+        </button>
+
+        {/* Dropdown mit Suchfeld */}
         {isOpen && (
           <div
             id="search-results"
             role="listbox"
             className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-divider bg-surface-1 p-2 shadow-lg"
           >
+            {/* Suchfeld im Dropdown */}
+            <div className="relative mb-2 px-1">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(e) => handleInputChange(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={t('headerSearch.placeholder')}
+                className="h-10 w-full rounded-xl border border-divider bg-surface-2 pl-10 pr-4 text-sm text-default placeholder:text-muted transition focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                aria-label={t('headerSearch.placeholder')}
+                aria-expanded={isOpen}
+                aria-controls="search-results"
+                aria-activedescendant={activeIndex >= 0 ? `search-item-${activeIndex}` : undefined}
+                role="combobox"
+                autoComplete="off"
+              />
+            </div>
+
+            {/* Ergebnisse */}
             {query.trim().length < 2 ? (
               <div className="px-3 py-4 text-center text-sm text-muted">
                 {t('headerSearch.minChars')}

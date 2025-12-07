@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@mental-health/ui';
-import type { heroContent } from '../../marketing-content';
+import type { heroContent } from '../marketing-content';
 import { Reveal } from './Reveal';
 import { HeroTopicCard } from './HeroTopicCard';
 import { HeroVideoPlayer } from './HeroVideoPlayer';
@@ -60,9 +60,9 @@ export function MarketingHero({ content }: HeroProps) {
             </p>
           </Reveal>
 
-          {/* CTAs - ÜBER den Bildern */}
+          {/* CTA - ÜBER den Bildern */}
           <Reveal delay={260}>
-            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+            <div className="mt-8 sm:mt-10 flex items-center justify-center">
               {/* Primary CTA - Los geht's */}
               <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-2xl blur-xl opacity-50 animate-pulse" />
@@ -73,19 +73,6 @@ export function MarketingHero({ content }: HeroProps) {
                 >
                   <Link href="/quiz">{t('marketing.letsGo')}</Link>
                 </Button>
-              </div>
-
-              {/* Secondary CTA - Ich weiß schon was ich suche */}
-              <div className="transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]">
-                <Link
-                  href="/therapists"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary-200 bg-surface-1 px-6 lg:px-8 py-3 lg:py-4 text-sm lg:text-base font-bold text-primary-900 shadow-lg backdrop-blur-sm transition-all hover:bg-primary-50 hover:border-primary-300 hover:shadow-xl"
-                >
-                  {t('marketing.iKnowWhatISearch')}
-                  <svg className="h-4 w-4 lg:h-5 lg:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
               </div>
             </div>
           </Reveal>
